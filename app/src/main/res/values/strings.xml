@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Platform</string>
+    <string name="content_description">Description</string>
+    <string name="back_string">Please click BACK again to exit </string>
+
+    <!--Login screen-->
+    <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
+    <string name="msg_mobile_number_is_empty">Mobile Number is empty</string>
+    <string name="msg_mobile_number_is_invalid">Not a valid Mobile Number</string>
+    <string name="hint_enter_otp">_ _ _ _ _ _</string>
+    <string name="label_mobile_no">Mobile Number *</string>
+    <string name="label_forget_your_pass">Forgot your Password?</string>
+    <string name="label_login">Login</string>
+    <string name="label_time">time</string>
+    <string name="resend"> <u>Resend Password</u></string>
+</resources>
