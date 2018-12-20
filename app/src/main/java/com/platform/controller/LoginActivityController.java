@@ -37,14 +37,17 @@ public class LoginActivityController implements LoginRequestCallListener {
     }
 
     public void cancelNetworkRequest() {
-
+        Log.i(TAG, "Cancel network requests here...");
     }
 
     @Override
     public void onSuccessListener(Login login) {
         if (loginActivity == null || loginActivity.get() == null) {
             Log.e(TAG, "Activity returned null");
+            return;
         }
+
+        Log.e(TAG, "Request success :" + login.toString());
     }
 
     @Override

@@ -14,6 +14,6 @@ public class GeneralFormActivityController {
 
     public GeneralFormActivityController(GeneralFormActivityListener activity) {
         this.generalFormActivity = new WeakReference<>(activity);
-        gson = new GsonBuilder().serializeNulls().create();
+        this.gson = new GsonBuilder().serializeNulls().create();
     }
 }

@@ -25,7 +25,7 @@ public class GeneralFormActivity extends BaseActivity implements GeneralFormActi
         openNewFragment();
     }
 
-    public void openNewFragment() {
+    private void openNewFragment() {
         addFragment();
     }
 
@@ -47,6 +47,9 @@ public class GeneralFormActivity extends BaseActivity implements GeneralFormActi
     @Override
     protected void onDestroy() {
         fragment = null;
+        if (formController != null) {
+            formController = null;
+        }
         super.onDestroy();
     }
 

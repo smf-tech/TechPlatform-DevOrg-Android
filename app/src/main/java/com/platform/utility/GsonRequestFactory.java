@@ -3,7 +3,6 @@ package com.platform.utility;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -51,7 +50,7 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
     }
 
     @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
+    public Map<String, String> getHeaders() {
         return headerParams;
     }
 

@@ -3,6 +3,7 @@ package com.platform.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,9 +16,9 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.platform.R;
+import com.platform.controller.LoginActivityController;
 import com.platform.listeners.LoginActivityListener;
 import com.platform.models.login.LoginInfo;
-import com.platform.controller.LoginActivityController;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
 
@@ -30,6 +31,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;
     private LoginActivityController loginController;
+
+    private final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +124,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
     }
 
     private void onResendOTPClick() {
-
+        Log.i(TAG, "Handle resend OTP event");
     }
 
     @Override
