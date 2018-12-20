@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">@dimen/text_size_14</item>
+    </style>
+
 </resources>

@@ -47,12 +47,12 @@ public class LoginRequestCall {
     private JsonObject createBodyParams(LoginActivityListener.ILoginInfo loginInfo) {
         JsonObject bodyParams = new JsonObject();
         try {
-            bodyParams.addProperty(Constants.USERNAME, BuildConfig.USERNAME);
-            bodyParams.addProperty(Constants.PASSWORD, BuildConfig.PASSWORD);
-            bodyParams.addProperty(Constants.CLIENT_SECRET, BuildConfig.CLIENT_SECRET);
-            bodyParams.addProperty(Constants.CLIENT_ID, BuildConfig.CLIENT_ID);
-            bodyParams.addProperty(Constants.GRANT_TYPE, "password");
-            bodyParams.addProperty(Constants.RESPONSE_TYPE, "token");
+            bodyParams.addProperty(Constants.App.USERNAME, BuildConfig.USERNAME);
+            bodyParams.addProperty(Constants.App.PASSWORD, BuildConfig.PASSWORD);
+            bodyParams.addProperty(Constants.App.CLIENT_SECRET, BuildConfig.CLIENT_SECRET);
+            bodyParams.addProperty(Constants.App.CLIENT_ID, BuildConfig.CLIENT_ID);
+            bodyParams.addProperty(Constants.App.GRANT_TYPE, "password");
+            bodyParams.addProperty(Constants.App.RESPONSE_TYPE, "token");
 
             if (loginInfo != null) {
                 Log.d(TAG, loginInfo.getMobileNumber());

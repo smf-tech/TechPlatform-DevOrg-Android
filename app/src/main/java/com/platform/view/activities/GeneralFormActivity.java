@@ -21,7 +21,7 @@ public class GeneralFormActivity extends BaseActivity implements GeneralFormActi
         super.onCreate(savedInstanceState);
 
         formController = new GeneralFormActivityController(this);
-        setContentView(R.layout.gen_form_activity);
+        setContentView(R.layout.activity_gen_form);
         openNewFragment();
     }
 
