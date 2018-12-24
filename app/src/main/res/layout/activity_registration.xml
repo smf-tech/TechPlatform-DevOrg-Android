@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--First Name-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_first_name"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_first_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/first_name"
+                    android:inputType="text|textCapWords" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Middle Name-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_middle_name"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_middle_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/middle_name"
+                    android:inputType="text|textCapWords" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Last Name-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_last_name"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_last_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/last_name"
+                    android:inputType="text|textCapWords" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Birth Date-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_birth_date"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_birth_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="@string/birth_date"
+                    android:inputType="date" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Mobile Number-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_mobile_number"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_mobile_number"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789"
+                    android:hint="@string/mobile_no"
+                    android:inputType="phone"
+                    android:maxLength="10" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Email-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_email_id"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_email_id"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/email_id"
+                    android:inputType="textEmailAddress" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Geo Location-->
+            <LinearLayout
+                android:id="@+id/user_geo_location_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_user_geo_location"
+                    style="@style/RegistrationTextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_user_geo_location"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/work_location"
+                        android:inputType="textEmailAddress" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/btn_user_refresh_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/dimen_20dp"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_weight="2"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/ic_refresh" />
+            </LinearLayout>
+
+            <!--Address-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_address"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_address"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/address"
+                    android:inputType="textPostalAddress" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Gender-->
+            <RelativeLayout
+                android:id="@+id/user_gender_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:padding="@dimen/dimen_10dp">
+
+                <TextView
+                    android:id="@+id/tv_user_gender_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <RadioGroup
+                    android:id="@+id/user_gender_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_user_gender_label"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/gender_male"
+                        style="@style/GenderTypes"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/gender_female"
+                        style="@style/GenderTypes"
+                        android:text="@string/female" />
+
+                    <RadioButton
+                        android:id="@+id/gender_other"
+                        style="@style/GenderTypes"
+                        android:text="@string/other" />
+                </RadioGroup>
+            </RelativeLayout>
+
+            <!--Organization-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/organization" />
+
+            <Spinner
+                android:id="@+id/sp_user_organization"
+                style="@style/FormSpinner"
+                android:prompt="@string/organization" />
+
+            <!--Project-->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_user_project"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/ed_user_project"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/project"
+                    android:inputType="textPostalAddress"
+                    android:maxLines="3"
+                    android:singleLine="false" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--Role-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_role" />
+
+            <Spinner
+                android:id="@+id/sp_user_role"
+                style="@style/FormSpinner"
+                android:prompt="@string/role" />
+
+            <!--State-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_state" />
+
+            <Spinner
+                android:id="@+id/sp_user_state"
+                style="@style/FormSpinner"
+                android:prompt="@string/state" />
+
+            <!--District-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_district" />
+
+            <Spinner
+                android:id="@+id/sp_user_district"
+                style="@style/FormSpinner"
+                android:prompt="@string/district" />
+
+            <!--Taluka-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_taluka" />
+
+            <Spinner
+                android:id="@+id/sp_user_taluka"
+                style="@style/FormSpinner"
+                android:prompt="@string/taluka" />
+
+            <!--Cluster-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_cluster" />
+
+            <Spinner
+                android:id="@+id/sp_user_cluster"
+                style="@style/FormSpinner"
+                android:prompt="@string/cluster" />
+
+            <!--Village-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_village" />
+
+            <Spinner
+                android:id="@+id/sp_user_village"
+                style="@style/FormSpinner"
+                android:prompt="@string/village" />
+
+            <!--School-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_school" />
+
+            <Spinner
+                android:id="@+id/sp_user_school"
+                style="@style/FormSpinner"
+                android:prompt="@string/school" />
+
+            <!--Profile Pic-->
+            <ImageView
+                android:id="@+id/user_profile_pic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/add" />
+
+            <TextView
+                style="@style/FormLabel"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:text="@string/profile_pic"
+                android:textSize="@dimen/medium_text" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_profile_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:background="@color/pink"
+        android:text="@string/btn_submit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_22" />
+</LinearLayout>

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.platform.utility.Config;
 
 public class Platform extends Application {
 
@@ -29,5 +30,9 @@ public class Platform extends Application {
         }
 
         return mRequestQueue;
+    }
+
+    public String getAppMode() {
+        return Config.getInstance().getAppMode();
     }
 }

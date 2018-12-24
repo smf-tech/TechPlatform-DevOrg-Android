@@ -37,10 +37,16 @@ public class Util {
 
     public static Map<String, String> requestHeader() {
         Map<String, String> headers = new HashMap<>();
-//        headers.put("ClientId", BuildConfig.CLIENT_ID);
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("Content-Type", "application/json;charset=UTF-8");
 
         return headers;
+    }
+
+    public static String getTwoDigit(int i) {
+        if (i < 10) {
+            return "0" + i;
+        }
+        return "" + i;
     }
 }

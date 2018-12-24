@@ -13,4 +13,37 @@
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend Password</u></string>
+
+    <!--Registration-->
+    <string name="registration_title">Registration</string>
+    <string name="btn_submit">Submit</string>
+    <string name="first_name">First Name *</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="mobile_no">Mobile Number *</string>
+    <string name="email_id">Email Id</string>
+    <string name="address">Address</string>
+    <string name="work_location">Work Location</string>
+    <string name="gender">Gender *</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="organization">Organization</string>
+    <string name="project">Project</string>
+    <string name="mandatory_role">Role *</string>
+    <string name="role">Role</string>
+    <string name="mandatory_state">State *</string>
+    <string name="state">State </string>
+    <string name="mandatory_district">District *</string>
+    <string name="district">District </string>
+    <string name="mandatory_taluka">Taluka *</string>
+    <string name="taluka">Taluka</string>
+    <string name="mandatory_cluster">Cluster *</string>
+    <string name="cluster">Cluster</string>
+    <string name="mandatory_village">Village *</string>
+    <string name="village">Village</string>
+    <string name="mandatory_school">Structure Name  *</string>
+    <string name="school">Structure Name</string>
+    <string name="profile_pic">Add Profile Picture</string>
 </resources>
