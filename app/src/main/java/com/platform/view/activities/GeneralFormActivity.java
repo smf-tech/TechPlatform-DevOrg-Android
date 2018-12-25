@@ -52,14 +52,4 @@ public class GeneralFormActivity extends BaseActivity implements GeneralFormActi
         }
         super.onDestroy();
     }
-
-    @Override
-    public void showProgressBar() {
-
-    }
-
-    @Override
-    public void hideProgressBar() {
-
-    }
 }

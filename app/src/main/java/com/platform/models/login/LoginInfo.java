@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class LoginInfo implements Parcelable {
 
     private String mobileNumber;
+    private String otp;
 
     public LoginInfo() {
 
@@ -13,6 +14,7 @@ public class LoginInfo implements Parcelable {
 
     private LoginInfo(Parcel in) {
         mobileNumber = in.readString();
+        otp = in.readString();
     }
 
     public String getMobileNumber() {
@@ -23,6 +25,14 @@ public class LoginInfo implements Parcelable {
         this.mobileNumber = mobileNumber;
     }
 
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -31,6 +41,7 @@ public class LoginInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mobileNumber);
+        parcel.writeString(otp);
     }
 
     public static final Creator<LoginInfo> CREATOR = new Creator<LoginInfo>() {

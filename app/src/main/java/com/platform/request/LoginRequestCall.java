@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.platform.Platform;
 import com.platform.BuildConfig;
+import com.platform.Platform;
 import com.platform.listeners.LoginActivityListener;
 import com.platform.models.login.Login;
 import com.platform.utility.Constants;
@@ -47,15 +47,13 @@ public class LoginRequestCall {
     private JsonObject createBodyParams(LoginActivityListener.ILoginInfo loginInfo) {
         JsonObject bodyParams = new JsonObject();
         try {
-            bodyParams.addProperty(Constants.App.USERNAME, BuildConfig.USERNAME);
-            bodyParams.addProperty(Constants.App.PASSWORD, BuildConfig.PASSWORD);
             bodyParams.addProperty(Constants.App.CLIENT_SECRET, BuildConfig.CLIENT_SECRET);
             bodyParams.addProperty(Constants.App.CLIENT_ID, BuildConfig.CLIENT_ID);
-            bodyParams.addProperty(Constants.App.GRANT_TYPE, "password");
-            bodyParams.addProperty(Constants.App.RESPONSE_TYPE, "token");
+            bodyParams.addProperty(Constants.App.GRANT_TYPE, Constants.App.PASSWORD);
 
             if (loginInfo != null) {
-                Log.d(TAG, loginInfo.getMobileNumber());
+                bodyParams.addProperty(Constants.Login.USERNAME, loginInfo.getMobileNumber());
+                bodyParams.addProperty(Constants.Login.OTP, loginInfo.getOneTimePassword());
             }
         } catch (Exception e) {
             e.printStackTrace();

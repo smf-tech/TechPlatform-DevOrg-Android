@@ -54,7 +54,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationAc
         toolbar_title.setText(title);
     }
 
-    public void showDateDialog(Context context, final EditText editText) {
+    private void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);

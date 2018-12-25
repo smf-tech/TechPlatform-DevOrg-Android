@@ -10,7 +10,6 @@ public class GeneralFormActivityController {
 
     private Gson gson;
     private WeakReference<GeneralFormActivityListener> generalFormActivity;
-    private final String TAG = GeneralFormActivityController.class.getSimpleName();
 
     public GeneralFormActivityController(GeneralFormActivityListener activity) {
         this.generalFormActivity = new WeakReference<>(activity);

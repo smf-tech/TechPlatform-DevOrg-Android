@@ -37,17 +37,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
+                android:layout_weight="1"
                 android:animateLayoutChanges="true"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/dimen_20dp">
 
-                <TextSwitcher
+                <TextView
                     android:id="@+id/enter_mobile_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:gravity="center"
                     android:text="@string/msg_enter_mobile"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
@@ -130,9 +130,10 @@
                     android:textSize="@dimen/large_text" />
 
                 <TextView
-                    android:id="@+id/tv_timer"
+                    android:id="@+id/tv_otp_timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dimen_15dp"
                     android:drawablePadding="@dimen/dimen_10dp"
                     android:drawableStart="@drawable/alarm_clock"
@@ -152,7 +153,7 @@
                     android:text="@string/resend"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/medium_text"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
             </LinearLayout>
         </LinearLayout>
 

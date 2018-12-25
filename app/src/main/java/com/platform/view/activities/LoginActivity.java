@@ -19,10 +19,12 @@ import com.platform.R;
 import com.platform.controller.LoginActivityController;
 import com.platform.listeners.LoginActivityListener;
 import com.platform.models.login.LoginInfo;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
 
-public class LoginActivity extends BaseActivity implements LoginActivityListener {
+public class LoginActivity extends BaseActivity implements LoginActivityListener,
+        View.OnClickListener {
 
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
@@ -50,20 +52,20 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
         pbVerifyLoginLayout = findViewById(R.id.login_progress_bar);
         etUserMobileNumber = findViewById(R.id.edt_mobile_number);
 
-        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+//        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+//        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 
-        TextSwitcher label = findViewById(R.id.enter_mobile_label);
-        label.setFactory(factory);
-        label.setInAnimation(in);
-        label.setOutAnimation(out);
+        TextView label = findViewById(R.id.enter_mobile_label);
+//        label.setFactory(factory);
+//        label.setInAnimation(in);
+//        label.setOutAnimation(out);
         label.setText(getResources().getString(R.string.msg_enter_mobile));
 
         Button loginButton = findViewById(R.id.btn_login);
-        loginButton.setOnClickListener(view -> onLoginClick());
+        loginButton.setOnClickListener(this);
 
         TextView resendOTP = findViewById(R.id.tv_resend_otp);
-        resendOTP.setOnClickListener(view -> onResendOTPClick());
+        resendOTP.setOnClickListener(this);
     }
 
     final private ViewSwitcher.ViewFactory factory = () -> {
@@ -78,10 +80,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
     public void onStop() {
         super.onStop();
         hideProgressBar();
-
-        if (loginController != null) {
-            loginController.cancelNetworkRequest();
-        }
     }
 
     @Override
@@ -119,8 +117,32 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
     private void onLoginClick() {
         if (isAllInputsValid()) {
             loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
-            loginController.loginToSalesForce(loginInfo);
+            goToVerifyOtpScreen();
         }
+    }
+
+    private void goToVerifyOtpScreen() {
+        loginInfo = new LoginInfo();
+        loginInfo.setMobileNumber(getLoginInfo().getMobileNumber());
+
+        Intent intent = new Intent(this, OtpActivity.class);
+        intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+        startActivityForResult(intent, Constants.VERIFY_OTP_REQUEST);
+    }
+
+    private ILoginInfo getLoginInfo() {
+        return new ILoginInfo() {
+
+            @Override
+            public String getMobileNumber() {
+                return String.valueOf(etUserMobileNumber.getText()).trim();
+            }
+
+            @Override
+            public String getOneTimePassword() {
+                return "";
+            }
+        };
     }
 
     private void onResendOTPClick() {
@@ -160,12 +182,25 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
         boolean isInputValid = true;
         if (getUserMobileNumber().length() == 0) {
             Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_empty));
-            isInputValid  = false;
+            isInputValid = false;
         } else if (getUserMobileNumber().trim().length() < 10) {
             Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_invalid));
-            isInputValid  = false;
+            isInputValid = false;
         }
 
         return isInputValid;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                onLoginClick();
+                break;
+
+            case R.id.tv_resend_otp:
+                onResendOTPClick();
+                break;
+        }
     }
 }

@@ -6,5 +6,6 @@ public interface LoginActivityListener extends PlatformTaskListener {
 
     interface ILoginInfo {
         String getMobileNumber();
+        String getOneTimePassword();
     }
 }
