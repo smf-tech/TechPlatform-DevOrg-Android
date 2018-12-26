@@ -1,4 +1,4 @@
-package com.platform.controller;
+package com.platform.presenter;
 
 import android.util.Log;
 
@@ -9,12 +9,12 @@ import com.platform.request.LoginRequestCallListener;
 
 import java.lang.ref.WeakReference;
 
-public class LoginActivityController implements LoginRequestCallListener {
+public class LoginActivityPresenter implements LoginRequestCallListener {
 
     private WeakReference<LoginActivityListener> loginActivity;
-    private final String TAG = LoginActivityController.class.getSimpleName();
+    private final String TAG = LoginActivityPresenter.class.getSimpleName();
 
-    public LoginActivityController(LoginActivityListener loginActivity) {
+    public LoginActivityPresenter(LoginActivityListener loginActivity) {
         this.loginActivity = new WeakReference<>(loginActivity);
     }
 

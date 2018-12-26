@@ -1,6 +1,6 @@
 package com.platform.listeners;
 
-public interface GeneralFormFragmentListener {
+public interface FormFragmentListener {
 
     void showProgressBar();
 

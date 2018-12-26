@@ -10,17 +10,17 @@ import android.widget.RelativeLayout;
 
 import com.platform.R;
 import com.platform.models.forms.FormData;
-import com.platform.view.fragments.GeneralFormFragment;
+import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("ConstantConditions")
 public class FormComponentCreator {
 
-    private final WeakReference<GeneralFormFragment> fragment;
+    private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
 
-    public FormComponentCreator(GeneralFormFragment fragment) {
+    public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
     }
 

@@ -6,21 +6,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.platform.R;
-import com.platform.controller.GeneralFormActivityController;
-import com.platform.listeners.GeneralFormActivityListener;
-import com.platform.view.fragments.GeneralFormFragment;
+import com.platform.presenter.FormActivityPresenter;
+import com.platform.listeners.FormActivityListener;
+import com.platform.view.fragments.FormFragment;
 
-public class GeneralFormActivity extends BaseActivity implements GeneralFormActivityListener {
+public class FormActivity extends BaseActivity implements FormActivityListener {
 
-    private GeneralFormFragment fragment;
-    private GeneralFormActivityController formController;
+    private FormFragment fragment;
+    private FormActivityPresenter formPresenter;
     private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        formController = new GeneralFormActivityController(this);
+        formPresenter = new FormActivityPresenter(this);
         setContentView(R.layout.activity_gen_form);
         openNewFragment();
     }
@@ -30,7 +30,7 @@ public class GeneralFormActivity extends BaseActivity implements GeneralFormActi
     }
 
     private void addFragment() {
-        fragment = new GeneralFormFragment();
+        fragment = new FormFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.gen_form_container, fragment, "fragment");
@@ -47,8 +47,8 @@ public class GeneralFormActivity extends BaseActivity implements GeneralFormActi
     @Override
     protected void onDestroy() {
         fragment = null;
-        if (formController != null) {
-            formController = null;
+        if (formPresenter != null) {
+            formPresenter = null;
         }
         super.onDestroy();
     }

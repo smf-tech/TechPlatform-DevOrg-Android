@@ -1,4 +1,4 @@
-package com.platform.controller;
+package com.platform.presenter;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -21,12 +21,12 @@ import com.platform.utility.Util;
 
 import java.lang.ref.WeakReference;
 
-public class OtpFragmentController implements LoginRequestCallListener {
+public class OtpFragmentPresenter implements LoginRequestCallListener {
 
     private Gson gson;
     private WeakReference<OtpFragmentListener> otpFragment;
 
-    public OtpFragmentController(OtpFragmentListener otpFragment) {
+    public OtpFragmentPresenter(OtpFragmentListener otpFragment) {
         this.otpFragment = new WeakReference<>(otpFragment);
         this.gson = new GsonBuilder().serializeNulls().create();
     }

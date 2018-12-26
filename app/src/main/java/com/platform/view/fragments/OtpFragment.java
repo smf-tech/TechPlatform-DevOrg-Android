@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.platform.R;
-import com.platform.controller.OtpFragmentController;
+import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.listeners.OtpFragmentListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.utility.Constants;
@@ -38,7 +38,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
     private boolean isSmsReceiverRegistered;
 
     private CountDownTimer timer;
-    private OtpFragmentController otpFragmentController;
+    private OtpFragmentPresenter otpPresenter;
     private SmsReceiveReceiver smsReceiver;
 
     @Override
@@ -83,7 +83,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
             loginInfo = bundle.getParcelable(Constants.Login.LOGIN_OTP_VERIFY_DATA);
         }
 
-        otpFragmentController = new OtpFragmentController(this);
+        otpPresenter = new OtpFragmentPresenter(this);
 
         if (loginInfo != null && !loginInfo.getMobileNumber().contentEquals("")) {
             mobileNumber = loginInfo.getMobileNumber();
@@ -107,15 +107,15 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
     public void onDestroy() {
         super.onDestroy();
 
-        if (otpFragmentController != null) {
-            otpFragmentController = null;
+        if (otpPresenter != null) {
+            otpPresenter = null;
         }
     }
 
     private void checkSmsPermission() {
         if (Util.isSMSPermissionGranted(getActivity(), this)) {
             registerOtpSmsReceiver();
-            otpFragmentController.getOtp(loginInfo);
+            otpPresenter.getOtp(loginInfo);
         }
     }
 
@@ -128,7 +128,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
                 }
 
                 tvOtpTimer.setText("");
-                otpFragmentController.loginUser(loginInfo, String.valueOf(etOtp.getText()).trim());
+                otpPresenter.loginUser(loginInfo, String.valueOf(etOtp.getText()).trim());
                 break;
 
             case R.id.tv_resend_otp:
@@ -143,7 +143,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
                 }
 
                 if (mobileNumber.equalsIgnoreCase(loginInfo.getMobileNumber())) {
-                    otpFragmentController.getOtp(loginInfo);
+                    otpPresenter.getOtp(loginInfo);
                 }
                 break;
         }
@@ -240,7 +240,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     registerOtpSmsReceiver();
                 }
-                otpFragmentController.getOtp(loginInfo);
+                otpPresenter.getOtp(loginInfo);
                 break;
         }
     }

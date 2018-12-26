@@ -5,20 +5,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import com.platform.R;
-import com.platform.controller.LoginActivityController;
 import com.platform.listeners.LoginActivityListener;
 import com.platform.models.login.LoginInfo;
+import com.platform.presenter.LoginActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
@@ -32,7 +28,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
 
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;
-    private LoginActivityController loginController;
+    private LoginActivityPresenter loginPresenter;
 
     private final String TAG = LoginActivity.class.getSimpleName();
 
@@ -44,7 +40,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
         initViews();
 
         loginInfo = new LoginInfo();
-        loginController = new LoginActivityController(this);
+        loginPresenter = new LoginActivityPresenter(this);
     }
 
     private void initViews() {
@@ -52,13 +48,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
         pbVerifyLoginLayout = findViewById(R.id.login_progress_bar);
         etUserMobileNumber = findViewById(R.id.edt_mobile_number);
 
-//        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-//        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-
         TextView label = findViewById(R.id.enter_mobile_label);
-//        label.setFactory(factory);
-//        label.setInAnimation(in);
-//        label.setOutAnimation(out);
         label.setText(getResources().getString(R.string.msg_enter_mobile));
 
         Button loginButton = findViewById(R.id.btn_login);
@@ -68,14 +58,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
         resendOTP.setOnClickListener(this);
     }
 
-    final private ViewSwitcher.ViewFactory factory = () -> {
-        // Create a new TextView
-        TextView t = new TextView(getApplicationContext());
-        t.setTextAppearance(getApplicationContext(), android.R.style.TextAppearance_Medium);
-        t.setTextColor(getApplicationContext().getResources().getColor(R.color.black));
-        return t;
-    };
-
     @Override
     public void onStop() {
         super.onStop();
@@ -84,9 +66,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
 
     @Override
     protected void onDestroy() {
-        if (loginController != null) {
-            loginController.detachView();
-            loginController = null;
+        if (loginPresenter != null) {
+            loginPresenter.detachView();
+            loginPresenter = null;
         }
 
         hideProgressBar();
