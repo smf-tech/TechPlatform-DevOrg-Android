@@ -6,15 +6,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.platform.R;
-import com.platform.presenter.FormActivityPresenter;
 import com.platform.listeners.FormActivityListener;
+import com.platform.presenter.FormActivityPresenter;
 import com.platform.view.fragments.FormFragment;
 
 public class FormActivity extends BaseActivity implements FormActivityListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     private FormFragment fragment;
     private FormActivityPresenter formPresenter;
-    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -27,14 +27,13 @@ import java.util.ArrayList;
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormFragmentListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     private View viewFormFragment;
     private LinearLayout customFormView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-
     private ArrayList<FormData> formDataArrayList;
     private FormComponentCreator formComponentCreator;
-    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,7 +50,7 @@ public class FormFragment extends Fragment implements FormFragmentListener {
     }
 
     private void initViews() {
-        progressBarLayout = viewFormFragment.findViewById (R.id.gen_frag_progress_bar);
+        progressBarLayout = viewFormFragment.findViewById(R.id.gen_frag_progress_bar);
         progressBar = viewFormFragment.findViewById(R.id.pb_gen_form_fragment);
 
         //TODO: Dummy data to test form generation
@@ -87,7 +86,7 @@ public class FormFragment extends Fragment implements FormFragmentListener {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Log.d(TAG, "TEXT_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.textInputTemplate(formData));
-                    break;
+                        break;
                 }
             }
         }
@@ -105,8 +104,8 @@ public class FormFragment extends Fragment implements FormFragmentListener {
     public void showProgressBar() {
         getActivity().runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility (View.VISIBLE);
-                progressBarLayout.setVisibility (View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -115,8 +114,8 @@ public class FormFragment extends Fragment implements FormFragmentListener {
     public void hideProgressBar() {
         getActivity().runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility (View.GONE);
-                progressBarLayout.setVisibility (View.GONE);
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
             }
         });
     }

@@ -1,11 +1,13 @@
 package com.platform.view.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,15 +24,13 @@ import com.platform.widgets.PlatformEditTextView;
 public class LoginActivity extends BaseActivity implements LoginActivityListener,
         View.OnClickListener {
 
+    private final String TAG = LoginActivity.class.getSimpleName();
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
     private PlatformEditTextView etUserMobileNumber;
-
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;
     private LoginActivityPresenter loginPresenter;
-
-    private final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
 
         TextView resendOTP = findViewById(R.id.tv_resend_otp);
         resendOTP.setOnClickListener(this);
+
+        if (Util.isFirstTimeLaunch(true)) {
+            showLanguageSelectionDialog();
+        }
     }
 
     @Override
@@ -94,6 +98,40 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+    }
+
+    private void showLanguageSelectionDialog() {
+        final String[] items = {"English", "मराठी", "हिंदी"};
+
+        AlertDialog languageSelectionDialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.select_lang))
+                .setCancelable(false)
+                .setSingleChoiceItems(items, 0, (dialogInterface, i) -> {
+                })
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+
+                    ListView listView = ((AlertDialog) dialog).getListView();
+                    switch (listView.getCheckedItemPosition()) {
+                        case 0:
+                            Util.setLocaleLanguageCode(Constants.App.LANGUAGE_ENGLISH);
+                            break;
+
+                        case 1:
+                            Util.setLocaleLanguageCode(Constants.App.LANGUAGE_MARATHI);
+                            break;
+
+                        case 2:
+                            Util.setLocaleLanguageCode(Constants.App.LANGUAGE_HINDI);
+                            break;
+                    }
+
+                    Util.setFirstTimeLaunch(false);
+                    dialog.dismiss();
+                    finish();
+                    startActivity(getIntent());
+                }).create();
+
+        languageSelectionDialog.show();
     }
 
     private void onLoginClick() {

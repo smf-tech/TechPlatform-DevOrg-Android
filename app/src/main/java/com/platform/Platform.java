@@ -12,15 +12,15 @@ public class Platform extends Application {
     private static Platform mPlatformInstance;
     private RequestQueue mRequestQueue;
 
+    public static Platform getInstance() {
+        return mPlatformInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         mPlatformInstance = this;
-    }
-
-    public static Platform getInstance() {
-        return mPlatformInstance;
     }
 
     @NonNull

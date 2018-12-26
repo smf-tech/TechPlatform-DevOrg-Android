@@ -6,12 +6,24 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FormData  implements Parcelable {
+public class FormData implements Parcelable {
 
+    public static final Creator<FormData> CREATOR = new Creator<FormData>() {
+
+        public FormData createFromParcel(Parcel in) {
+            FormData formData = new FormData();
+            formData.type = ((String) in.readValue((String.class.getClassLoader())));
+            formData.name = ((String) in.readValue((String.class.getClassLoader())));
+            return formData;
+        }
+
+        public FormData[] newArray(int size) {
+            return new FormData[size];
+        }
+    };
     @SerializedName("type")
     @Expose
     private String type;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -42,18 +54,4 @@ public class FormData  implements Parcelable {
         parcel.writeValue(type);
         parcel.writeValue(name);
     }
-
-    public static final Creator<FormData> CREATOR = new Creator<FormData>() {
-
-        public FormData createFromParcel(Parcel in) {
-            FormData formData = new FormData();
-            formData.type = ((String) in.readValue((String.class.getClassLoader())));
-            formData.name = ((String) in.readValue((String.class.getClassLoader())));
-            return formData;
-        }
-
-        public FormData[] newArray(int size) {
-            return new FormData[size];
-        }
-    };
 }

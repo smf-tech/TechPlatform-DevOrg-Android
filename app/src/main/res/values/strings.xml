@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Platform</string>
     <string name="content_description">Description</string>
-    <string name="back_string">Please click BACK again to exit </string>
+    <string name="back_string">Please click BACK again to exit</string>
+    <string name="select_lang">Select Language</string>
+
+    <string name="ok">OK</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
@@ -14,6 +17,8 @@
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
+    <string name="check_otp">Please check OTP</string>
+    <string name="otp_timeout_text">Time Out %1$s sec</string>
 
     <!--Registration-->
     <string name="registration_title">Registration</string>
@@ -47,6 +52,4 @@
     <string name="mandatory_school">Structure Name  *</string>
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add Profile Picture</string>
-    <string name="check_otp">Please check OTP</string>
-    <string name="otp_timeout_text">Time Out %1$s sec</string>
 </resources>

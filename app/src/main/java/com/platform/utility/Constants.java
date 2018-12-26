@@ -14,6 +14,15 @@ public class Constants {
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
         public static final String GRANT_TYPE = "grant_type";
+
+        public static final String FIRST_TIME_KEY = "FirstTimeKey";
+        public static final String FIRST_TIME_CODE = "FirstTimeCode";
+
+        public static final String LANGUAGE_LOCALE = "LanguageLocale";
+        public static final String LANGUAGE_CODE = "languageCode";
+        public static final String LANGUAGE_ENGLISH = "en";
+        public static final String LANGUAGE_MARATHI = "mr";
+        public static final String LANGUAGE_HINDI = "hi";
     }
 
     public static class Login {

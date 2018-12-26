@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Platform</string>
+    <string name="content_description">Description</string>
+    <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
+    <string name="select_lang">भाषा चुनें</string>
+
+    <string name="ok">ओके</string>
+
+    <!--Login screen-->
+    <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>
+    <string name="msg_manual_otp">यदि हम एसएमएस से स्वचालित रूप से OTP का पता लगाने में विफल रहते हैं, तो नीचे दिए गए OTP को दर्ज करें</string>
+    <string name="msg_mobile_number_is_empty">मोबाइल नंबर खाली है</string>
+    <string name="msg_mobile_number_is_invalid">मान्य मोबाइल नंबर नहीं</string>
+    <string name="hint_enter_otp">_ _ _ _ _ _</string>
+    <string name="label_mobile_no">मोबाइल नंबर *</string>
+    <string name="label_forget_your_pass">क्या आप पासवर्ड भूल गए?</string>
+    <string name="label_login">लॉगइन करें</string>
+    <string name="label_time">पहर</string>
+    <string name="resend"> <u>OTP को फिर से भेजें</u></string>
+    <string name="check_otp">कृपया OTP जांचें</string>
+    <string name="otp_timeout_text">समय आउट %1$s सेकंड</string>
+
+    <!--Registration-->
+    <string name="registration_title">पंजीकरण</string>
+    <string name="btn_submit">जमा करें</string>
+    <string name="first_name">पहला नाम *</string>
+    <string name="middle_name">मध्य नाम</string>
+    <string name="last_name">अंतिम नाम</string>
+    <string name="birth_date">जन्म दिन</string>
+    <string name="mobile_no">मोबाइल नंबर *</string>
+    <string name="email_id">ई—मेल आईडी</string>
+    <string name="address">पता</string>
+    <string name="work_location">काम करने की जगह</string>
+    <string name="gender">लिंग *</string>
+    <string name="male">पुरुष</string>
+    <string name="female">महिला</string>
+    <string name="other">अन्य</string>
+    <string name="organization">संगठन</string>
+    <string name="project">परियोजना</string>
+    <string name="mandatory_role">भूमिका *</string>
+    <string name="role">भूमिका</string>
+    <string name="mandatory_state">राज्य *</string>
+    <string name="state">राज्य</string>
+    <string name="mandatory_district">जिला *</string>
+    <string name="district">जिला</string>
+    <string name="mandatory_taluka">तालुका *</string>
+    <string name="taluka">तालुका</string>
+    <string name="mandatory_cluster">समूह *</string>
+    <string name="cluster">समूह</string>
+    <string name="mandatory_village">गाँव *</string>
+    <string name="village">गाँव</string>
+    <string name="mandatory_school">संरचना का नाम  *</string>
+    <string name="school">संरचना का नाम</string>
+    <string name="profile_pic">प्रोफ़ाइल चित्र जोड़ें</string>
+</resources>

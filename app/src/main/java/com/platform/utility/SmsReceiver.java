@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
-public class SmsReceiveReceiver extends BroadcastReceiver {
+public class SmsReceiver extends BroadcastReceiver {
 
     private OtpSmsReceiverListener listener;
 
@@ -35,15 +35,15 @@ public class SmsReceiveReceiver extends BroadcastReceiver {
         }
     }
 
-    public interface OtpSmsReceiverListener {
-        void smsReceive(String otp);
-    }
-
     public void setListener(OtpSmsReceiverListener listener) {
         this.listener = listener;
     }
 
     public void deRegisterListener() {
         this.listener = null;
+    }
+
+    public interface OtpSmsReceiverListener {
+        void smsReceive(String otp);
     }
 }

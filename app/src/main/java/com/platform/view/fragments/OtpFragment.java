@@ -8,8 +8,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.platform.R;
-import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.listeners.OtpFragmentListener;
 import com.platform.models.login.LoginInfo;
+import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
-import com.platform.utility.SmsReceiveReceiver;
+import com.platform.utility.SmsReceiver;
 import com.platform.utility.Util;
 
 public class OtpFragment extends Fragment implements View.OnClickListener, OtpFragmentListener,
-        TextWatcher, SmsReceiveReceiver.OtpSmsReceiverListener {
+        SmsReceiver.OtpSmsReceiverListener {
 
     private TextView tvOtpTimer;
     private Button btnLogin;
@@ -39,12 +37,12 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
 
     private CountDownTimer timer;
     private OtpFragmentPresenter otpPresenter;
-    private SmsReceiveReceiver smsReceiver;
+    private SmsReceiver smsReceiver;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        smsReceiver = new SmsReceiveReceiver();
+        smsReceiver = new SmsReceiver();
         smsReceiver.setListener(this);
     }
 
@@ -69,7 +67,6 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
 
         etOtp = view.findViewById(R.id.edt_otp);
         etOtp.setVisibility(View.VISIBLE);
-        etOtp.addTextChangedListener(this);
 
         return view;
     }
@@ -128,6 +125,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
                 }
 
                 tvOtpTimer.setText("");
+                tvOtpTimer.setVisibility(View.GONE);
                 otpPresenter.loginUser(loginInfo, String.valueOf(etOtp.getText()).trim());
                 break;
 
@@ -169,6 +167,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
         }
 
         tvOtpTimer.setText("");
+        tvOtpTimer.setVisibility(View.GONE);
         currentSec = 0;
     }
 
@@ -177,6 +176,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
         if (timer != null) {
             timer.cancel();
             tvOtpTimer.setText("");
+            tvOtpTimer.setVisibility(View.GONE);
         }
 
         timer = new CountDownTimer(3000, 1000) {
@@ -200,6 +200,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
 
     private void resetTimer() {
         tvOtpTimer.setText("");
+        tvOtpTimer.setVisibility(View.GONE);
         deRegisterOtpSmsReceiver();
         currentSec = 0;
     }
@@ -258,20 +259,5 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
     @Override
     public void hideProgressBar() {
         btnLogin.setClickable(true);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 }

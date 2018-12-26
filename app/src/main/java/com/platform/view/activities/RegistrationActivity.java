@@ -16,7 +16,7 @@ import com.platform.utility.Util;
 import java.util.Calendar;
 
 public class RegistrationActivity extends BaseActivity implements RegistrationActivityListener,
-        View.OnClickListener{
+        View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

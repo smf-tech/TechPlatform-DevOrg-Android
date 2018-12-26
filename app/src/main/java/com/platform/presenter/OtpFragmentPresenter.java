@@ -64,7 +64,8 @@ public class OtpFragmentPresenter implements LoginRequestCallListener {
         otpFragment.get().showProgressBar();
         final GsonRequestFactory<Model> gsonRequest = new GsonRequestFactory<>(Request.Method.GET,
                 Urls.BASE_URL + Urls.Login.RESEND_OTP + loginInfo.getMobileNumber(),
-                new TypeToken<Model>() {}.getType(),
+                new TypeToken<Model>() {
+                }.getType(),
                 gson,
                 resendOTPResponseListener,
                 resendOTPErrorListener

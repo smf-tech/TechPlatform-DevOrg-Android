@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.platform.R;
+import com.platform.utility.Util;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -15,11 +16,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        Util.setApplicationLocale();
 
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);

@@ -5,6 +5,17 @@ import android.os.Parcelable;
 
 public class LoginInfo implements Parcelable {
 
+    public static final Creator<LoginInfo> CREATOR = new Creator<LoginInfo>() {
+        @Override
+        public LoginInfo createFromParcel(Parcel in) {
+            return new LoginInfo(in);
+        }
+
+        @Override
+        public LoginInfo[] newArray(int size) {
+            return new LoginInfo[size];
+        }
+    };
     private String mobileNumber;
     private String otp;
 
@@ -43,16 +54,4 @@ public class LoginInfo implements Parcelable {
         parcel.writeString(mobileNumber);
         parcel.writeString(otp);
     }
-
-    public static final Creator<LoginInfo> CREATOR = new Creator<LoginInfo>() {
-        @Override
-        public LoginInfo createFromParcel(Parcel in) {
-            return new LoginInfo(in);
-        }
-
-        @Override
-        public LoginInfo[] newArray(int size) {
-            return new LoginInfo[size];
-        }
-    };
 }

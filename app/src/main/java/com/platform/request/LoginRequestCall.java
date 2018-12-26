@@ -20,9 +20,49 @@ import com.platform.utility.Util;
 
 public class LoginRequestCall {
 
+    private final String TAG = this.getClass().getSimpleName();
     private Login loginData;
     private LoginRequestCallListener listener;
-    private final String TAG = this.getClass().getSimpleName();
+    private final Response.Listener<JsonObject> loginSuccessListener = new Response.Listener<JsonObject>() {
+        @Override
+        public void onResponse(JsonObject response) {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    loginData = new Gson().fromJson(res, Login.class);
+                    listener.onSuccessListener(loginData);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                listener.onFailureListener("");
+            }
+        }
+    };
+    private final Response.ErrorListener loginErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            listener.onErrorListener(error);
+        }
+    };
+    private final Response.Listener<JsonObject> successNotificationListener = new Response.Listener<JsonObject>() {
+        @Override
+        public void onResponse(JsonObject response) {
+            if (response != null) {
+                Log.d(TAG, response.getAsString());
+            }
+
+            listener.onSuccessListener(loginData);
+        }
+    };
+    private final Response.ErrorListener errorNotificationListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            // Deal with the uploadFileError here
+            Log.e(TAG, new ParseError(error).getMessage());
+            listener.onSuccessListener(loginData);
+            listener.onErrorListener(error);
+        }
+    };
 
     public void setListener(LoginRequestCallListener listener) {
         this.listener = listener;
@@ -33,7 +73,8 @@ public class LoginRequestCall {
         GsonRequestFactory<JsonObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
                 BuildConfig.LOGIN_URL,
-                new TypeToken<JsonObject>() {}.getType(),
+                new TypeToken<JsonObject>() {
+                }.getType(),
                 gson,
                 loginSuccessListener,
                 loginErrorListener
@@ -61,48 +102,4 @@ public class LoginRequestCall {
 
         return bodyParams;
     }
-
-    private final Response.Listener<JsonObject> loginSuccessListener = new Response.Listener<JsonObject>() {
-        @Override
-        public void onResponse(JsonObject response) {
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    loginData = new Gson().fromJson(res, Login.class);
-                    listener.onSuccessListener(loginData);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                listener.onFailureListener("");
-            }
-        }
-    };
-
-    private final Response.ErrorListener loginErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            listener.onErrorListener(error);
-        }
-    };
-
-    private final Response.Listener<JsonObject> successNotificationListener = new Response.Listener<JsonObject>() {
-        @Override
-        public void onResponse(JsonObject response) {
-            if (response != null) {
-                Log.d(TAG, response.getAsString());
-            }
-
-            listener.onSuccessListener(loginData);
-        }
-    };
-
-    private final Response.ErrorListener errorNotificationListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            // Deal with the uploadFileError here
-            Log.e(TAG, new ParseError(error).getMessage());
-            listener.onSuccessListener(loginData);
-            listener.onErrorListener(error);
-        }
-    };
 }

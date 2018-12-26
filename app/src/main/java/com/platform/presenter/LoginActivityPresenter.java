@@ -11,8 +11,8 @@ import java.lang.ref.WeakReference;
 
 public class LoginActivityPresenter implements LoginRequestCallListener {
 
-    private WeakReference<LoginActivityListener> loginActivity;
     private final String TAG = LoginActivityPresenter.class.getSimpleName();
+    private WeakReference<LoginActivityListener> loginActivity;
 
     public LoginActivityPresenter(LoginActivityListener loginActivity) {
         this.loginActivity = new WeakReference<>(loginActivity);
