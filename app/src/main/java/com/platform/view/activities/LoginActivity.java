@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -14,20 +16,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.listeners.LoginActivityListener;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.LoginActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
 
-public class LoginActivity extends BaseActivity implements LoginActivityListener,
-        View.OnClickListener {
+public class LoginActivity extends BaseActivity implements PlatformTaskListener,
+        View.OnClickListener, TextView.OnEditorActionListener {
 
     private final String TAG = LoginActivity.class.getSimpleName();
+
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
     private PlatformEditTextView etUserMobileNumber;
+
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;
     private LoginActivityPresenter loginPresenter;
@@ -46,7 +50,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
     private void initViews() {
         pbVerifyLogin = findViewById(R.id.pb_login);
         pbVerifyLoginLayout = findViewById(R.id.login_progress_bar);
+
         etUserMobileNumber = findViewById(R.id.edt_mobile_number);
+        etUserMobileNumber.setOnEditorActionListener(this);
 
         TextView label = findViewById(R.id.enter_mobile_label);
         label.setText(getResources().getString(R.string.msg_enter_mobile));
@@ -135,34 +141,18 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
     }
 
     private void onLoginClick() {
-        if (isAllInputsValid()) {
-            loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
+        if (validateAllInputs()) {
             goToVerifyOtpScreen();
         }
     }
 
     private void goToVerifyOtpScreen() {
         loginInfo = new LoginInfo();
-        loginInfo.setMobileNumber(getLoginInfo().getMobileNumber());
+        loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
 
         Intent intent = new Intent(this, OtpActivity.class);
         intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
         startActivityForResult(intent, Constants.VERIFY_OTP_REQUEST);
-    }
-
-    private ILoginInfo getLoginInfo() {
-        return new ILoginInfo() {
-
-            @Override
-            public String getMobileNumber() {
-                return String.valueOf(etUserMobileNumber.getText()).trim();
-            }
-
-            @Override
-            public String getOneTimePassword() {
-                return "";
-            }
-        };
     }
 
     private void onResendOTPClick() {
@@ -187,11 +177,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
                 pbVerifyLoginLayout.setVisibility(View.GONE);
             }
         }
-    }
-
-    @Override
-    public boolean isAllInputsValid() {
-        return validateAllInputs();
     }
 
     private String getUserMobileNumber() {
@@ -222,5 +207,18 @@ public class LoginActivity extends BaseActivity implements LoginActivityListener
                 onResendOTPClick();
                 break;
         }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_DONE) {
+            if (validateAllInputs()) {
+                goToVerifyOtpScreen();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

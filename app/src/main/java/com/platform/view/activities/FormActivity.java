@@ -6,11 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.platform.R;
-import com.platform.listeners.FormActivityListener;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.view.fragments.FormFragment;
 
-public class FormActivity extends BaseActivity implements FormActivityListener {
+public class FormActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private FormFragment fragment;

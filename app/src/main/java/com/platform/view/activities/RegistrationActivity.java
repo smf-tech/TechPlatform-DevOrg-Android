@@ -9,14 +9,12 @@ import android.widget.TextView;
 
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.listeners.RegistrationActivityListener;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 
 import java.util.Calendar;
 
-public class RegistrationActivity extends BaseActivity implements RegistrationActivityListener,
-        View.OnClickListener {
+public class RegistrationActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

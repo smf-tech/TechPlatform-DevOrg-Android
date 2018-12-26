@@ -1,9 +1,9 @@
-package com.platform.request;
+package com.platform.listeners;
 
 import com.android.volley.VolleyError;
 import com.platform.models.login.Login;
 
-public interface LoginRequestCallListener {
+public interface PlatformRequestCallListener {
 
     void onSuccessListener(Login login);
 

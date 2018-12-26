@@ -16,6 +16,7 @@ public class LoginInfo implements Parcelable {
             return new LoginInfo[size];
         }
     };
+
     private String mobileNumber;
     private String otp;
 

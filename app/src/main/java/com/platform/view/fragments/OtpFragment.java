@@ -16,14 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.platform.R;
-import com.platform.listeners.OtpFragmentListener;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.SmsReceiver;
 import com.platform.utility.Util;
 
-public class OtpFragment extends Fragment implements View.OnClickListener, OtpFragmentListener,
+public class OtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
         SmsReceiver.OtpSmsReceiverListener {
 
     private TextView tvOtpTimer;
@@ -147,7 +147,6 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
         }
     }
 
-    @Override
     public boolean isAllFieldsValid() {
         if (String.valueOf(etOtp.getText()).trim().length() != 6) {
             Util.setError(etOtp, getResources().getString(R.string.check_otp));
@@ -171,7 +170,6 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
         currentSec = 0;
     }
 
-    @Override
     public void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
@@ -205,8 +203,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
         currentSec = 0;
     }
 
-    @Override
-    public void registerOtpSmsReceiver() {
+    private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
                 getActivity().registerReceiver(smsReceiver,
@@ -218,7 +215,6 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
         }
     }
 
-    @Override
     public void deRegisterOtpSmsReceiver() {
         if (getActivity() != null && smsReceiver != null && isSmsReceiverRegistered) {
             try {
@@ -244,11 +240,6 @@ public class OtpFragment extends Fragment implements View.OnClickListener, OtpFr
                 otpPresenter.getOtp(loginInfo);
                 break;
         }
-    }
-
-    @Override
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
     }
 
     @Override

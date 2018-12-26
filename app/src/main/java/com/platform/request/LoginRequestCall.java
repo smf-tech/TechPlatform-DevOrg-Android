@@ -12,8 +12,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.LoginActivityListener;
+import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.login.Login;
+import com.platform.models.login.LoginInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Util;
@@ -21,8 +22,10 @@ import com.platform.utility.Util;
 public class LoginRequestCall {
 
     private final String TAG = this.getClass().getSimpleName();
+
     private Login loginData;
-    private LoginRequestCallListener listener;
+    private PlatformRequestCallListener listener;
+
     private final Response.Listener<JsonObject> loginSuccessListener = new Response.Listener<JsonObject>() {
         @Override
         public void onResponse(JsonObject response) {
@@ -38,12 +41,14 @@ public class LoginRequestCall {
             }
         }
     };
+
     private final Response.ErrorListener loginErrorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
             listener.onErrorListener(error);
         }
     };
+
     private final Response.Listener<JsonObject> successNotificationListener = new Response.Listener<JsonObject>() {
         @Override
         public void onResponse(JsonObject response) {
@@ -54,6 +59,7 @@ public class LoginRequestCall {
             listener.onSuccessListener(loginData);
         }
     };
+
     private final Response.ErrorListener errorNotificationListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -64,11 +70,11 @@ public class LoginRequestCall {
         }
     };
 
-    public void setListener(LoginRequestCallListener listener) {
+    public void setListener(PlatformRequestCallListener listener) {
         this.listener = listener;
     }
 
-    public void login(LoginActivityListener.ILoginInfo loginInfo) {
+    public void login(LoginInfo loginInfo) {
         Gson gson = new GsonBuilder().serializeNulls().create();
         GsonRequestFactory<JsonObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
@@ -85,7 +91,7 @@ public class LoginRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    private JsonObject createBodyParams(LoginActivityListener.ILoginInfo loginInfo) {
+    private JsonObject createBodyParams(LoginInfo loginInfo) {
         JsonObject bodyParams = new JsonObject();
         try {
             bodyParams.addProperty(Constants.App.CLIENT_SECRET, BuildConfig.CLIENT_SECRET);
@@ -94,7 +100,7 @@ public class LoginRequestCall {
 
             if (loginInfo != null) {
                 bodyParams.addProperty(Constants.Login.USERNAME, loginInfo.getMobileNumber());
-                bodyParams.addProperty(Constants.Login.OTP, loginInfo.getOneTimePassword());
+                bodyParams.addProperty(Constants.Login.OTP, loginInfo.getOtp());
             }
         } catch (Exception e) {
             e.printStackTrace();

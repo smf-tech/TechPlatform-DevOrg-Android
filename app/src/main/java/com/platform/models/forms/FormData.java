@@ -21,9 +21,11 @@ public class FormData implements Parcelable {
             return new FormData[size];
         }
     };
+
     @SerializedName("type")
     @Expose
     private String type;
+
     @SerializedName("name")
     @Expose
     private String name;

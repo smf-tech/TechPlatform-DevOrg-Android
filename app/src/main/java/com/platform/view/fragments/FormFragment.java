@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.platform.R;
-import com.platform.listeners.FormFragmentListener;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.forms.FormData;
 import com.platform.utility.Constants;
 import com.platform.view.customs.FormComponentCreator;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements FormFragmentListener {
+public class FormFragment extends Fragment implements PlatformTaskListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private View viewFormFragment;

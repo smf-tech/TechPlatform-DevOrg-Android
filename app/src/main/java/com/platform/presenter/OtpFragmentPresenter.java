@@ -8,25 +8,24 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
-import com.platform.listeners.LoginActivityListener;
-import com.platform.listeners.OtpFragmentListener;
 import com.platform.models.Model;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
-import com.platform.request.LoginRequestCallListener;
+import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
+import com.platform.view.fragments.OtpFragment;
 
 import java.lang.ref.WeakReference;
 
-public class OtpFragmentPresenter implements LoginRequestCallListener {
+public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
     private Gson gson;
-    private WeakReference<OtpFragmentListener> otpFragment;
+    private WeakReference<OtpFragment> otpFragment;
 
-    public OtpFragmentPresenter(OtpFragmentListener otpFragment) {
+    public OtpFragmentPresenter(OtpFragment otpFragment) {
         this.otpFragment = new WeakReference<>(otpFragment);
         this.gson = new GsonBuilder().serializeNulls().create();
     }
@@ -62,6 +61,7 @@ public class OtpFragmentPresenter implements LoginRequestCallListener {
         };
 
         otpFragment.get().showProgressBar();
+
         final GsonRequestFactory<Model> gsonRequest = new GsonRequestFactory<>(Request.Method.GET,
                 Urls.BASE_URL + Urls.Login.RESEND_OTP + loginInfo.getMobileNumber(),
                 new TypeToken<Model>() {
@@ -82,22 +82,7 @@ public class OtpFragmentPresenter implements LoginRequestCallListener {
         loginRequestCall.setListener(this);
 
         otpFragment.get().showProgressBar();
-        loginRequestCall.login(getLoginInfo(loginInfo));
-    }
-
-    private LoginActivityListener.ILoginInfo getLoginInfo(LoginInfo loginInfo) {
-        return new LoginActivityListener.ILoginInfo() {
-
-            @Override
-            public String getMobileNumber() {
-                return loginInfo.getMobileNumber();
-            }
-
-            @Override
-            public String getOneTimePassword() {
-                return loginInfo.getOtp();
-            }
-        };
+        loginRequestCall.login(loginInfo);
     }
 
     public void loginUser(final LoginInfo loginInfo, String otp) {
