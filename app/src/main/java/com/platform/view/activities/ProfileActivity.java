@@ -28,8 +28,6 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private EditText etUserFirstName;
-    private EditText etUserMiddleName;
-    private EditText etUserLastName;
     private EditText etUserBirthDate;
     private EditText etUserMobileNumber;
     private EditText etUserEmailId;
@@ -64,8 +62,8 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         setActionbar(getString(R.string.registration_title));
 
         etUserFirstName = findViewById(R.id.et_user_first_name);
-        etUserMiddleName = findViewById(R.id.et_user_middle_name);
-        etUserLastName = findViewById(R.id.et_user_last_name);
+        //EditText etUserMiddleName = findViewById(R.id.et_user_middle_name);
+        //EditText etUserLastName = findViewById(R.id.et_user_last_name);
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
         etUserEmailId = findViewById(R.id.et_user_email_id);
@@ -110,6 +108,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
     private void setListeners() {
         etUserBirthDate.setOnClickListener(this);
+        etUserProject.setOnClickListener(this);
 
         spOrganization.setOnItemSelectedListener(this);
         spRole.setOnItemSelectedListener(this);
@@ -129,6 +128,9 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         switch (view.getId()) {
             case R.id.et_user_birth_date:
                 showDateDialog(ProfileActivity.this, findViewById(R.id.et_user_birth_date));
+                break;
+
+            case R.id.et_user_project:
                 break;
 
             case R.id.user_profile_pic:
@@ -163,6 +165,8 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     private void submitProfileDetails() {
         if (isAllInputsValid()) {
             UserInfo userInfo = new UserInfo();
+            userInfo.setUserFirstName(String.valueOf(etUserFirstName.getText()).trim());
+            userInfo.setUserGender(userGender);
             profilePresenter.submitProfile(userInfo);
         }
     }
@@ -180,6 +184,8 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(
                         etUserEmailId.getText().toString().trim()).matches()) {
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
+        } else if (etUserProject.getText().toString().trim().equals("")) {
+            msg = getString(R.string.msg_select_project);
         }
 
         if (TextUtils.isEmpty(msg)) {

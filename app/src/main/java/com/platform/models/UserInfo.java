@@ -18,6 +18,7 @@ public class UserInfo implements Parcelable {
     };
 
     private String userFirstName;
+    private String userGender;
 
     public UserInfo() {
 
@@ -25,10 +26,19 @@ public class UserInfo implements Parcelable {
 
     private UserInfo(Parcel in) {
         userFirstName = in.readString();
+        userGender = in.readString();
     }
 
     public String getUserFirstName() {
         return userFirstName;
+    }
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
     }
 
     public void setUserFirstName(String userFirstName) {
@@ -43,5 +53,6 @@ public class UserInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(userFirstName);
+        parcel.writeString(userGender);
     }
 }

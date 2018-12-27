@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.UserInfo;
-import com.platform.models.login.Login;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -69,6 +68,7 @@ public class ProfileRequestCall {
         JsonObject body = new JsonObject();
         if (userInfo != null) {
             body.addProperty(Constants.Login.USERNAME, userInfo.getUserFirstName());
+            body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
         }
         return body;
     }

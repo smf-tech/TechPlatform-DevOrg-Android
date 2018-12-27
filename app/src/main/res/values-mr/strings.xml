@@ -52,4 +52,11 @@
     <string name="mandatory_school">संरचना नाव  *</string>
     <string name="school">संरचना नाव</string>
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
+
+    <!--Profile error message-->
+    <string name="msg_enter_name">कृपया नाव प्रविष्ट करा</string>
+    <string name="msg_enter_mobile_number">कृपया मोबाइल नंबर प्रविष्ट करा</string>
+    <string name="msg_enter_valid_mobile_no">कृपया 10 अंकी मोबाइल नंबर प्रविष्ट करा</string>
+    <string name="msg_enter_valid_email_id">कृपया वैध ई-मेल पत्ता प्रविष्ट करा</string>
+    <string name="msg_select_project">कृपया प्रकल्प निवडा</string>
 </resources>

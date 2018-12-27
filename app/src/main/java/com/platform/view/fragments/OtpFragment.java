@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -29,6 +31,8 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     private TextView tvOtpTimer;
     private Button btnLogin;
     private EditText etOtp;
+    private ProgressBar pbVerifyLogin;
+    private RelativeLayout pbVerifyLoginLayout;
 
     private LoginInfo loginInfo;
     private String mobileNumber;
@@ -67,6 +71,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
         etOtp = view.findViewById(R.id.edt_otp);
         etOtp.setVisibility(View.VISIBLE);
+
+        pbVerifyLogin = view.findViewById(R.id.pb_login);
+        pbVerifyLoginLayout = view.findViewById(R.id.login_progress_bar);
 
         return view;
     }
@@ -245,10 +252,22 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     @Override
     public void showProgressBar() {
         btnLogin.setClickable(false);
+        if (pbVerifyLogin != null && pbVerifyLoginLayout.getVisibility() == View.GONE) {
+            if (pbVerifyLogin != null && !pbVerifyLogin.isShown()) {
+                pbVerifyLogin.setVisibility(View.VISIBLE);
+                pbVerifyLoginLayout.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
     public void hideProgressBar() {
         btnLogin.setClickable(true);
+        if (pbVerifyLoginLayout != null && pbVerifyLoginLayout.getVisibility() == View.VISIBLE) {
+            if (pbVerifyLogin != null && pbVerifyLogin.isShown()) {
+                pbVerifyLogin.setVisibility(View.GONE);
+                pbVerifyLoginLayout.setVisibility(View.GONE);
+            }
+        }
     }
 }

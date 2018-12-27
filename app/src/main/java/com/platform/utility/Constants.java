@@ -28,6 +28,7 @@ public class Constants {
     public static class Login {
         public static final String LOGIN_OTP_VERIFY_DATA = "loginOtpData";
         public static final String USERNAME = "username";
+        public static final String USER_GENDER = "gender";
         public static final String OTP = "otp";
     }
 
