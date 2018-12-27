@@ -179,6 +179,7 @@
                     <RadioButton
                         android:id="@+id/gender_male"
                         style="@style/GenderTypes"
+                        android:checked="true"
                         android:text="@string/male" />
 
                     <RadioButton
@@ -210,7 +211,7 @@
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
-                    android:id="@+id/ed_user_project"
+                    android:id="@+id/et_user_project"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/project"
                     android:inputType="textPostalAddress"
@@ -284,7 +285,7 @@
                 android:text="@string/mandatory_school" />
 
             <Spinner
-                android:id="@+id/sp_user_school"
+                android:id="@+id/sp_user_structure"
                 style="@style/FormSpinner"
                 android:prompt="@string/school" />
 

@@ -1,11 +1,10 @@
 package com.platform.listeners;
 
 import com.android.volley.VolleyError;
-import com.platform.models.login.Login;
 
 public interface PlatformRequestCallListener {
 
-    void onSuccessListener(Login login);
+    void onSuccessListener(String response);
 
     void onFailureListener(String message);
 

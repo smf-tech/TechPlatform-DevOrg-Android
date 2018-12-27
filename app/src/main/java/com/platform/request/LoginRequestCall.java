@@ -1,8 +1,5 @@
 package com.platform.request;
 
-import android.util.Log;
-
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -13,17 +10,14 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
 public class LoginRequestCall {
 
-    private final String TAG = this.getClass().getSimpleName();
-
-    private Login loginData;
     private PlatformRequestCallListener listener;
 
     private final Response.Listener<JsonObject> loginSuccessListener = new Response.Listener<JsonObject>() {
@@ -32,8 +26,8 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    loginData = new Gson().fromJson(res, Login.class);
-                    listener.onSuccessListener(loginData);
+                    // Login loginData = new Gson().fromJson(res, Login.class);
+                    listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -46,27 +40,7 @@ public class LoginRequestCall {
         @Override
         public void onErrorResponse(VolleyError error) {
             listener.onErrorListener(error);
-        }
-    };
 
-    private final Response.Listener<JsonObject> successNotificationListener = new Response.Listener<JsonObject>() {
-        @Override
-        public void onResponse(JsonObject response) {
-            if (response != null) {
-                Log.d(TAG, response.getAsString());
-            }
-
-            listener.onSuccessListener(loginData);
-        }
-    };
-
-    private final Response.ErrorListener errorNotificationListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            // Deal with the uploadFileError here
-            Log.e(TAG, new ParseError(error).getMessage());
-            listener.onSuccessListener(loginData);
-            listener.onErrorListener(error);
         }
     };
 
@@ -78,7 +52,7 @@ public class LoginRequestCall {
         Gson gson = new GsonBuilder().serializeNulls().create();
         GsonRequestFactory<JsonObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
-                BuildConfig.LOGIN_URL,
+                Urls.Login.LOGIN,
                 new TypeToken<JsonObject>() {
                 }.getType(),
                 gson,
@@ -100,7 +74,7 @@ public class LoginRequestCall {
 
             if (loginInfo != null) {
                 bodyParams.addProperty(Constants.Login.USERNAME, loginInfo.getMobileNumber());
-                bodyParams.addProperty(Constants.Login.OTP, loginInfo.getOtp());
+                bodyParams.addProperty(Constants.Login.OTP, loginInfo.getOneTimePassword());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,17 +10,17 @@
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
     <string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>
     <string name="msg_mobile_number_is_empty">Mobile Number is empty</string>
-    <string name="msg_mobile_number_is_invalid">Not a valid Mobile Number</string>
+    <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
     <string name="label_mobile_no">Mobile Number *</string>
-    <string name="label_forget_your_pass">Forgot your Password?</string>
+    <string name="label_forget_your_pass">Forgot your password?</string>
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
     <string name="check_otp">Please check OTP</string>
-    <string name="otp_timeout_text">Time Out %1$s sec</string>
+    <string name="otp_timeout_text">Time out %1$s sec</string>
 
-    <!--Registration-->
+    <!--Profile-->
     <string name="registration_title">Registration</string>
     <string name="btn_submit">Submit</string>
     <string name="first_name">First Name *</string>
@@ -51,5 +51,11 @@
     <string name="village">Village</string>
     <string name="mandatory_school">Structure Name  *</string>
     <string name="school">Structure Name</string>
-    <string name="profile_pic">Add Profile Picture</string>
+    <string name="profile_pic">Add profile picture</string>
+
+    <!--Profile error message-->
+    <string name="msg_enter_name">Please enter name</string>
+    <string name="msg_enter_mobile_number">Please enter mobile number</string>
+    <string name="msg_enter_valid_mobile_no">Please enter 10 digit mobile number</string>
+    <string name="msg_enter_valid_email_id">Please enter valid email address</string>
 </resources>

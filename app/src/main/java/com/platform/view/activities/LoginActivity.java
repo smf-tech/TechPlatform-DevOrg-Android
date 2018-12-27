@@ -141,7 +141,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void onLoginClick() {
-        if (validateAllInputs()) {
+        if (isAllInputsValid()) {
             goToVerifyOtpScreen();
         }
     }
@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         return String.valueOf(etUserMobileNumber.getText());
     }
 
-    private boolean validateAllInputs() {
+    private boolean isAllInputsValid() {
         boolean isInputValid = true;
         if (getUserMobileNumber().length() == 0) {
             Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_empty));
@@ -212,7 +212,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE) {
-            if (validateAllInputs()) {
+            if (isAllInputsValid()) {
                 goToVerifyOtpScreen();
             }
 

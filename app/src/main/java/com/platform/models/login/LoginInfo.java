@@ -37,11 +37,11 @@ public class LoginInfo implements Parcelable {
         this.mobileNumber = mobileNumber;
     }
 
-    public String getOtp() {
+    public String getOneTimePassword() {
         return otp;
     }
 
-    public void setOtp(String otp) {
+    public void setOneTimePassword(String otp) {
         this.otp = otp;
     }
 

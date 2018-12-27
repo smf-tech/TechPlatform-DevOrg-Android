@@ -3,7 +3,6 @@ package com.platform.presenter;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.platform.models.login.Login;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.view.activities.LoginActivity;
 
@@ -23,13 +22,13 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
     }
 
     @Override
-    public void onSuccessListener(Login login) {
+    public void onSuccessListener(String response) {
         if (loginActivity == null || loginActivity.get() == null) {
             Log.e(TAG, "Activity returned null");
             return;
         }
 
-        Log.e(TAG, "Request success :" + login.toString());
+        Log.e(TAG, "Request success :" + response);
     }
 
     @Override
