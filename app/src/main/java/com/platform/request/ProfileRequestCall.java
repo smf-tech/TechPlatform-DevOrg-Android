@@ -18,6 +18,28 @@ import com.platform.utility.Util;
 public class ProfileRequestCall {
 
     private PlatformRequestCallListener listener;
+    private final Response.Listener<JsonObject> profileSuccessListener = new Response.Listener<JsonObject>() {
+        @Override
+        public void onResponse(JsonObject response) {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    // Login loginData = new Gson().fromJson(res, Login.class);
+                    listener.onSuccessListener(res);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                listener.onFailureListener("");
+            }
+        }
+    };
+    private final Response.ErrorListener profileErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            listener.onErrorListener(error);
+
+        }
+    };
 
     public void setListener(PlatformRequestCallListener listener) {
         this.listener = listener;
@@ -40,34 +62,14 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    private final Response.Listener<JsonObject> profileSuccessListener = new Response.Listener<JsonObject>() {
-        @Override
-        public void onResponse(JsonObject response) {
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    // Login loginData = new Gson().fromJson(res, Login.class);
-                    listener.onSuccessListener(res);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                listener.onFailureListener("");
-            }
-        }
-    };
-
-    private final Response.ErrorListener profileErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            listener.onErrorListener(error);
-
-        }
-    };
-
     private JsonObject createBodyParams(UserInfo userInfo) {
         JsonObject body = new JsonObject();
         if (userInfo != null) {
-            body.addProperty(Constants.Login.USERNAME, userInfo.getUserFirstName());
+            body.addProperty(Constants.Login.USER_F_NAME, userInfo.getUserFirstName());
+            body.addProperty(Constants.Login.USER_M_NAME, userInfo.getUserMiddleName());
+            body.addProperty(Constants.Login.USER_L_NAME, userInfo.getUserLastName());
+            body.addProperty(Constants.Login.USER_BIRTH_DATE, userInfo.getUserBirthDate());
+            body.addProperty(Constants.Login.USER_EMAIL_ID, userInfo.getUserEmailId());
             body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
         }
         return body;

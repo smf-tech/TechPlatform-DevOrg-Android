@@ -18,6 +18,10 @@ public class UserInfo implements Parcelable {
     };
 
     private String userFirstName;
+    private String userMiddleName;
+    private String userLastName;
+    private String userBirthDate;
+    private String userEmailId;
     private String userGender;
 
     public UserInfo() {
@@ -26,11 +30,51 @@ public class UserInfo implements Parcelable {
 
     private UserInfo(Parcel in) {
         userFirstName = in.readString();
+        userMiddleName = in.readString();
+        userLastName = in.readString();
+        userBirthDate = in.readString();
+        userEmailId = in.readString();
         userGender = in.readString();
     }
 
     public String getUserFirstName() {
         return userFirstName;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    public String getUserMiddleName() {
+        return userMiddleName;
+    }
+
+    public void setUserMiddleName(String userMiddleName) {
+        this.userMiddleName = userMiddleName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    public String getUserBirthDate() {
+        return userBirthDate;
+    }
+
+    public void setUserBirthDate(String userBirthDate) {
+        this.userBirthDate = userBirthDate;
+    }
+
+    public String getUserEmailId() {
+        return userEmailId;
+    }
+
+    public void setUserEmailId(String userEmailId) {
+        this.userEmailId = userEmailId;
     }
 
     public String getUserGender() {
@@ -41,10 +85,6 @@ public class UserInfo implements Parcelable {
         this.userGender = userGender;
     }
 
-    public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -53,6 +93,10 @@ public class UserInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(userFirstName);
+        parcel.writeString(userMiddleName);
+        parcel.writeString(userLastName);
+        parcel.writeString(userBirthDate);
+        parcel.writeString(userEmailId);
         parcel.writeString(userGender);
     }
 }

@@ -5,6 +5,7 @@
     <string name="select_lang">भाषा निवडा</string>
 
     <string name="ok">ठीक</string>
+    <string name="cancel">रद्द</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाइल नंबर प्रविष्ट करा!</string>
@@ -52,6 +53,8 @@
     <string name="mandatory_school">संरचना नाव  *</string>
     <string name="school">संरचना नाव</string>
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
+    <string name="label_select">निवडा</string>
+    <string name="title_select_project">प्रकल्प निवडा</string>
 
     <!--Profile error message-->
     <string name="msg_enter_name">कृपया नाव प्रविष्ट करा</string>

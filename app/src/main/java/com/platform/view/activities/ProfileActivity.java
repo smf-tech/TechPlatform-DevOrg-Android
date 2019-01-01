@@ -1,8 +1,18 @@
 package com.platform.view.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,20 +24,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.UserInfo;
 import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Permissions;
 import com.platform.utility.Util;
+import com.soundcloud.android.crop.Crop;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class ProfileActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private EditText etUserFirstName;
+    private EditText etUserMiddleName;
+    private EditText etUserLastName;
     private EditText etUserBirthDate;
     private EditText etUserMobileNumber;
     private EditText etUserEmailId;
@@ -46,7 +64,13 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     private Button btnProfileSubmit;
 
     private String userGender = "Male";
+    private String selectedProjects = "";
+    private ArrayList<String> projectsList;
 
+    private boolean[] projectSelection = null;
+
+    private Uri outputUri;
+    private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
 
     @Override
@@ -62,8 +86,8 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         setActionbar(getString(R.string.registration_title));
 
         etUserFirstName = findViewById(R.id.et_user_first_name);
-        //EditText etUserMiddleName = findViewById(R.id.et_user_middle_name);
-        //EditText etUserLastName = findViewById(R.id.et_user_last_name);
+        etUserMiddleName = findViewById(R.id.et_user_middle_name);
+        etUserLastName = findViewById(R.id.et_user_last_name);
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
         etUserEmailId = findViewById(R.id.et_user_email_id);
@@ -104,6 +128,9 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
             findViewById(R.id.input_user_address).setVisibility(View.GONE);
         }
+
+        projectsList = new ArrayList<>();
+        projectsList.add(getString(R.string.label_select));
     }
 
     private void setListeners() {
@@ -131,9 +158,11 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
                 break;
 
             case R.id.et_user_project:
+                showMultiSelectDialogProject(projectsList);
                 break;
 
             case R.id.user_profile_pic:
+                onAddImageClick();
                 break;
 
             case R.id.btn_profile_submit:
@@ -162,11 +191,74 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         dpd.show();
     }
 
+    private void showMultiSelectDialogProject(ArrayList<String> projectList) {
+        if (projectList.contains(getString(R.string.label_select))) {
+            projectList.remove(projectList.indexOf(getString(R.string.label_select)));
+        }
+
+        final String[] items = projectList.toArray(new String[projectList.size()]);
+        projectSelection = new boolean[(items.length)];
+        Arrays.fill(projectSelection, false);
+
+        if (!selectedProjects.isEmpty()) {
+            String[] projects = selectedProjects.split(";");
+            for (String project : projects) {
+                if (projectList.contains(project.trim())) {
+                    projectSelection[projectList.indexOf(project.trim())] = true;
+                }
+            }
+        }
+
+        AlertDialog dialog = new AlertDialog.Builder(ProfileActivity.this)
+                .setTitle(getString(R.string.title_select_project))
+                .setMultiChoiceItems(items, projectSelection, (dialog1, which, isChecked) -> {
+                    if (projectSelection != null && which < projectSelection.length) {
+                        projectSelection[which] = isChecked;
+                        selectedProjects = buildStringArrayToString(items);
+                    } else {
+                        throw new IllegalArgumentException("Exception in showing projects");
+                    }
+                })
+                .setPositiveButton(ProfileActivity.this.getString(R.string.ok),
+                        (dialog12, id) -> etUserProject.setText(selectedProjects))
+                .setNegativeButton(getString(R.string.cancel), (dialog13, id) -> {
+                }).create();
+
+        dialog.show();
+    }
+
+    private String buildStringArrayToString(String[] items) {
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (int i = 0; i < items.length; ++i) {
+            if (projectSelection[i]) {
+                if (foundOne) {
+                    sb.append(";");
+                }
+                foundOne = true;
+                sb.append(items[i]);
+            }
+        }
+        return sb.toString();
+    }
+
+    private void onAddImageClick() {
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            showPictureDialog();
+        }
+    }
+
     private void submitProfileDetails() {
         if (isAllInputsValid()) {
             UserInfo userInfo = new UserInfo();
             userInfo.setUserFirstName(String.valueOf(etUserFirstName.getText()).trim());
+            userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
+            userInfo.setUserLastName(String.valueOf(etUserLastName.getText()).trim());
+            userInfo.setUserBirthDate(String.valueOf(etUserBirthDate.getText()).trim());
+            userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);
+
             profilePresenter.submitProfile(userInfo);
         }
     }
@@ -196,9 +288,136 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         return false;
     }
 
+    private void showPictureDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.title_choose_picture));
+        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+
+                case 1:
+                    takePhotoFromCamera();
+                    break;
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            String errorMessage = "Problem in taking photo from gallery, please use camera to take photo.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void takePhotoFromCamera() {
+        try {
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/MV/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(this, getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            //display an error message
+            String errorMessage = "Whoops - your device doesn't support image capturing!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            String errorMessage = "App do not have permission to take a photo, please allow it.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
+            try {
+                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + "/MV/Image/picture_crop.jpg";
+
+                File imageFile = new File(imageFilePath);
+                finalUri = Uri.fromFile(imageFile);
+                Crop.of(outputUri, finalUri).asSquare().start(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                try {
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                            + "/MV/Image/picture_crop.jpg";
+
+                    outputUri = data.getData();
+                    File imageFile = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile);
+                    Crop.of(outputUri, finalUri).asSquare().start(this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            Glide.with(this)
+                    .load(finalUri)
+                    .into(imgUserProfilePic);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constants.CAMERA_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showPictureDialog();
+                }
+                break;
+        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        switch (adapterView.getId()) {
+            case R.id.sp_user_organization:
+                break;
 
+            case R.id.sp_user_role:
+                break;
+
+            case R.id.sp_user_state:
+                break;
+
+            case R.id.sp_user_district:
+                break;
+
+            case R.id.sp_user_taluka:
+                break;
+
+            case R.id.sp_user_cluster:
+                break;
+
+            case R.id.sp_user_village:
+                break;
+
+            case R.id.sp_user_structure:
+                break;
+        }
     }
 
     @Override

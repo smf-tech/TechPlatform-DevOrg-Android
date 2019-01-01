@@ -22,6 +22,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Permissions;
 import com.platform.utility.SmsReceiver;
 import com.platform.utility.Util;
 
@@ -117,7 +118,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     }
 
     private void checkSmsPermission() {
-        if (Util.isSMSPermissionGranted(getActivity(), this)) {
+        if (Permissions.isSMSPermissionGranted(getActivity(), this)) {
             registerOtpSmsReceiver();
             otpPresenter.getOtp(loginInfo);
         }
@@ -236,9 +237,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         switch (requestCode) {
             case Constants.SMS_RECEIVE_REQUEST:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

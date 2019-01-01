@@ -5,6 +5,7 @@
     <string name="select_lang">Select Language</string>
 
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
@@ -52,6 +53,12 @@
     <string name="mandatory_school">Structure Name  *</string>
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
+    <string name="label_select">Select</string>
+    <string name="title_select_project">Select Project</string>
+
+    <string name="title_choose_picture">Choose Picture</string>
+    <string name="label_gallery">Gallery</string>
+    <string name="label_camera">Camera</string>
 
     <!--Profile error message-->
     <string name="msg_enter_name">Please enter name</string>

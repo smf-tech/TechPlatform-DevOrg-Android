@@ -26,9 +26,9 @@ import java.lang.ref.WeakReference;
 
 public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
+    private final String TAG = OtpFragmentPresenter.class.getSimpleName();
     private Gson gson;
     private WeakReference<OtpFragment> otpFragment;
-    private final String TAG = OtpFragmentPresenter.class.getSimpleName();
 
     public OtpFragmentPresenter(OtpFragment otpFragment) {
         this.otpFragment = new WeakReference<>(otpFragment);
@@ -95,7 +95,7 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
             loginInfo.setOneTimePassword(otp);
             login(loginInfo);
         }
-}
+    }
 
     @Override
     public void onSuccessListener(String response) {

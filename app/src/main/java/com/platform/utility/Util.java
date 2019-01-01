@@ -1,14 +1,8 @@
 package com.platform.utility;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,6 +10,7 @@ import android.widget.EditText;
 
 import com.platform.Platform;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -48,28 +43,6 @@ public class Util {
 
             }
         });
-    }
-
-    public static <T> boolean isSMSPermissionGranted(Activity context, T objectInstance) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (context.checkSelfPermission(Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                if (objectInstance instanceof Fragment) {
-                    ((Fragment) objectInstance).requestPermissions(
-                            new String[]{Manifest.permission.RECEIVE_SMS},
-                            Constants.SMS_RECEIVE_REQUEST);
-                } else {
-                    ActivityCompat.requestPermissions(context,
-                            new String[]{Manifest.permission.RECEIVE_SMS},
-                            Constants.SMS_RECEIVE_REQUEST);
-                }
-                return false;
-            }
-        } else {
-            return true;
-        }
     }
 
     public static boolean isFirstTimeLaunch(boolean flag) {
@@ -142,5 +115,13 @@ public class Util {
             return "0" + i;
         }
         return "" + i;
+    }
+
+    public static void makeDirectory(String dir) {
+        File tempDirectory = new File(dir);
+        if (!tempDirectory.exists()) {
+            boolean mkdirs = tempDirectory.mkdirs();
+            Log.i(TAG, "" + mkdirs);
+        }
     }
 }

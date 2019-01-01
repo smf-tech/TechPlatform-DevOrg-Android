@@ -5,6 +5,11 @@ public class Constants {
     public static final int VERIFY_OTP_REQUEST = 1000;
 
     public static final int SMS_RECEIVE_REQUEST = 1;
+    public static final int CAMERA_REQUEST = 2;
+
+    public static Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
+    public static Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
+
     public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static class App {
@@ -28,8 +33,14 @@ public class Constants {
     public static class Login {
         public static final String LOGIN_OTP_VERIFY_DATA = "loginOtpData";
         public static final String USERNAME = "username";
-        public static final String USER_GENDER = "gender";
         public static final String OTP = "otp";
+
+        public static final String USER_F_NAME = "firstName";
+        public static final String USER_M_NAME = "middleName";
+        public static final String USER_L_NAME = "lastName";
+        public static final String USER_BIRTH_DATE = "birthDate";
+        public static final String USER_EMAIL_ID = "emailId";
+        public static final String USER_GENDER = "gender";
     }
 
     public static class FormsFactory {
