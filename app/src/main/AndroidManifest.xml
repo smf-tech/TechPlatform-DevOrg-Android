@@ -43,6 +43,9 @@
             android:name=".view.activities.ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+
         <activity
             android:name=".view.activities.OtpActivity"
             android:configChanges="locale"

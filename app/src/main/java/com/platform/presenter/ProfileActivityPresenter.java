@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 
 public class ProfileActivityPresenter implements PlatformRequestCallListener {
 
+    @SuppressWarnings("CanBeFinal")
     private WeakReference<ProfileActivity> profileActivity;
 
     public ProfileActivityPresenter(ProfileActivity activity) {

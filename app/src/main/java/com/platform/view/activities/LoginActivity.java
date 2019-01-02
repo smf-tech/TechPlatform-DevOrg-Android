@@ -23,6 +23,9 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
 
@@ -150,9 +153,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         loginInfo = new LoginInfo();
         loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
 
-        Intent intent = new Intent(this, OtpActivity.class);
-        intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
-        startActivityForResult(intent, Constants.VERIFY_OTP_REQUEST);
+        loginPresenter.getOtp(loginInfo);
     }
 
     private void onResendOTPClick() {
@@ -176,6 +177,21 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                 pbVerifyLogin.setVisibility(View.GONE);
                 pbVerifyLoginLayout.setVisibility(View.GONE);
             }
+        }
+    }
+
+    @Override
+    public void gotoNextScreen(String response) {
+        response = "{\"status\":\"success\",\"data\":{\"otp\":812481},\"message\":\"Otp Sent successfully\"}";
+        try {
+            JSONObject loginData = (JSONObject) new JSONObject(response).get("data");
+            loginInfo.setOneTimePassword(loginData.getString("otp"));
+
+            Intent intent = new Intent(this, OtpActivity.class);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+            startActivity(intent);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

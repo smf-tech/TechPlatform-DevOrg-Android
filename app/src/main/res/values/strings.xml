@@ -19,7 +19,9 @@
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
     <string name="check_otp">Please check OTP</string>
-    <string name="otp_timeout_text">Time out %1$s sec</string>
+    <string name="otp_timeout_text">Time out in %1$s sec</string>
+    <string name="msg_otp_verification_timeout">OTP verification time out, please try again.</string>
+    <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your above mobile number.</string>
 
     <!--Profile-->
     <string name="registration_title">Registration</string>

@@ -119,4 +119,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
             }
         });
     }
+
+    @Override
+    public void gotoNextScreen(String response) {
+
+    }
 }

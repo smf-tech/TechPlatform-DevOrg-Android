@@ -3,6 +3,7 @@ package com.platform.utility;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -30,6 +31,9 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
     private Object bodyParams;
     private Map<String, String> headerParams;
 
+    public int currentTimeout = 30000;
+    public int maxNumRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
+
     public GsonRequestFactory(final int requestMethod,
                               @NonNull final String url,
                               @NonNull final Type type,
@@ -43,6 +47,8 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
         this.gson = gson;
         this.listener = listener;
         this.errorListener = errorListener;
+
+        setRetryPolicy(new TokenRetryPolicy(this));
     }
 
     public void setHeaderParams(Map<String, String> headerParams) {

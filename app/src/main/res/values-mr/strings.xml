@@ -20,6 +20,8 @@
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
     <string name="check_otp">कृपया OTP तपासा</string>
     <string name="otp_timeout_text">वेळ संपला %1$s सेकंद</string>
+    <string name="msg_otp_verification_timeout"> OTP सत्यापित करण्याची वेळ संपली, कृपया पुन्हा प्रयत्न करा</string>
+    <string name="msg_waiting_for_otp_text">वर दिलेल्या तुमच्या नोंणदणीकृत मोबाइल क्रमांकावर पाठविलेल्या OTP प्रतिक्षा करत आहात</string>
 
     <!--Registration-->
     <string name="registration_title">नोंदणी</string>
@@ -55,6 +57,10 @@
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
     <string name="label_select">निवडा</string>
     <string name="title_select_project">प्रकल्प निवडा</string>
+
+    <string name="title_choose_picture">चित्र निवडा</string>
+    <string name="label_gallery">गॅलरी</string>
+    <string name="label_camera">कॅमेरा</string>
 
     <!--Profile error message-->
     <string name="msg_enter_name">कृपया नाव प्रविष्ट करा</string>

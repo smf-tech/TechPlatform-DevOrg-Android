@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,11 +26,14 @@ import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.SmsReceiver;
 import com.platform.utility.Util;
+import com.platform.view.activities.OtpActivity;
+import com.platform.view.activities.ProfileActivity;
 
 public class OtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
         SmsReceiver.OtpSmsReceiverListener {
 
     private TextView tvOtpTimer;
+    private TextView tvOtpMessage;
     private Button btnLogin;
     private EditText etOtp;
     private ProgressBar pbVerifyLogin;
@@ -38,7 +42,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     private LoginInfo loginInfo;
     private String mobileNumber;
     private long currentSec = 0;
+
     private boolean isSmsReceiverRegistered;
+    private boolean isSmSPermissionNotDenied;
 
     private CountDownTimer timer;
     private OtpFragmentPresenter otpPresenter;
@@ -57,8 +63,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
         View view = inflater.inflate(R.layout.activity_login, container, false);
         view.findViewById(R.id.edt_mobile_number).setVisibility(View.GONE);
-        ((TextView) view.findViewById(R.id.enter_mobile_label))
-                .setText(getString(R.string.msg_manual_otp));
+
+        tvOtpMessage = view.findViewById(R.id.enter_mobile_label);
+        tvOtpMessage.setText(getString(R.string.msg_manual_otp));
 
         TextView tvResendOtp = view.findViewById(R.id.tv_resend_otp);
         tvResendOtp.setVisibility(View.VISIBLE);
@@ -119,8 +126,8 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
     private void checkSmsPermission() {
         if (Permissions.isSMSPermissionGranted(getActivity(), this)) {
+            isSmSPermissionNotDenied = true;
             registerOtpSmsReceiver();
-            otpPresenter.getOtp(loginInfo);
         }
     }
 
@@ -134,7 +141,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
                 tvOtpTimer.setText("");
                 tvOtpTimer.setVisibility(View.GONE);
-                otpPresenter.loginUser(loginInfo, String.valueOf(etOtp.getText()).trim());
+                otpPresenter.getLoginToken(loginInfo, String.valueOf(etOtp.getText()).trim());
                 break;
 
             case R.id.tv_resend_otp:
@@ -149,7 +156,8 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
                 }
 
                 if (mobileNumber.equalsIgnoreCase(loginInfo.getMobileNumber())) {
-                    otpPresenter.getOtp(loginInfo);
+                    loginInfo.setOneTimePassword("");
+                    otpPresenter.resendOtp(loginInfo);
                 }
                 break;
         }
@@ -185,19 +193,25 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
             tvOtpTimer.setVisibility(View.GONE);
         }
 
-        timer = new CountDownTimer(3000, 1000) {
+        timer = new CountDownTimer(30000, 1000) {
 
             @Override
             public void onTick(long l) {
                 if (getActivity() != null) {
                     currentSec = l / 1000;
                     tvOtpTimer.setText(getString(R.string.otp_timeout_text, "" + currentSec));
+                    if (isSmSPermissionNotDenied) {
+                        tvOtpMessage.setText(R.string.msg_waiting_for_otp_text);
+                    }
                 }
             }
 
             @Override
             public void onFinish() {
                 if (getActivity() != null) {
+                    if (isSmSPermissionNotDenied) {
+                        tvOtpMessage.setText(R.string.msg_otp_verification_timeout);
+                    }
                     resetTimer();
                 }
             }
@@ -214,6 +228,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
+                startOtpTimer();
                 getActivity().registerReceiver(smsReceiver,
                         new IntentFilter(Constants.SMS_RECEIVE_IDENTIFIER));
                 isSmsReceiverRegistered = true;
@@ -242,8 +257,10 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
             case Constants.SMS_RECEIVE_REQUEST:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     registerOtpSmsReceiver();
+                    isSmSPermissionNotDenied = true;
+                } else {
+                    isSmSPermissionNotDenied = false;
                 }
-                otpPresenter.getOtp(loginInfo);
                 break;
         }
     }
@@ -267,6 +284,17 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
                 pbVerifyLogin.setVisibility(View.GONE);
                 pbVerifyLoginLayout.setVisibility(View.GONE);
             }
+        }
+    }
+
+    @Override
+    public void gotoNextScreen(String response) {
+        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        OtpActivity activity = (OtpActivity) getActivity();
+        if (activity != null) {
+            activity.startActivity(intent);
         }
     }
 }

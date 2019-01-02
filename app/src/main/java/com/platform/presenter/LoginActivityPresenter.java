@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.login.LoginInfo;
+import com.platform.request.LoginRequestCall;
 import com.platform.view.activities.LoginActivity;
 
 import java.lang.ref.WeakReference;
@@ -21,6 +23,14 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
         detachReferences();
     }
 
+    public void getOtp(LoginInfo loginInfo) {
+        LoginRequestCall loginRequestCall = new LoginRequestCall();
+        loginRequestCall.setListener(this);
+
+        loginActivity.get().showProgressBar();
+        loginRequestCall.generateOtp(loginInfo);
+    }
+
     @Override
     public void onSuccessListener(String response) {
         if (loginActivity == null || loginActivity.get() == null) {
@@ -28,7 +38,8 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
             return;
         }
 
-        Log.e(TAG, "Request success :" + response);
+        loginActivity.get().hideProgressBar();
+        loginActivity.get().gotoNextScreen(response);
     }
 
     @Override
@@ -41,6 +52,8 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
         loginActivity.get().hideProgressBar();
         if (message != null) {
             Log.e(TAG, "Request failed :" + message);
+            // TODO: testing
+            loginActivity.get().gotoNextScreen(message);
         }
     }
 
@@ -52,7 +65,9 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
         }
 
         loginActivity.get().hideProgressBar();
-        Log.e(TAG, "Login::onErrorResponse " + error.networkResponse.statusCode);
+        Log.e(TAG, "Login::onErrorResponse " + error);
+        // TODO: testing
+        loginActivity.get().gotoNextScreen(error.getMessage());
     }
 
     private void detachReferences() {

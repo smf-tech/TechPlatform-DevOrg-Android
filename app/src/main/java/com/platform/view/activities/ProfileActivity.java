@@ -256,6 +256,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
             userInfo.setUserLastName(String.valueOf(etUserLastName.getText()).trim());
             userInfo.setUserBirthDate(String.valueOf(etUserBirthDate.getText()).trim());
+            userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);
 
@@ -432,6 +433,11 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
     @Override
     public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void gotoNextScreen(String response) {
 
     }
 }

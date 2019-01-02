@@ -21,6 +21,7 @@ public class UserInfo implements Parcelable {
     private String userMiddleName;
     private String userLastName;
     private String userBirthDate;
+    private String userMobileNumber;
     private String userEmailId;
     private String userGender;
 
@@ -33,6 +34,7 @@ public class UserInfo implements Parcelable {
         userMiddleName = in.readString();
         userLastName = in.readString();
         userBirthDate = in.readString();
+        userMobileNumber = in.readString();
         userEmailId = in.readString();
         userGender = in.readString();
     }
@@ -69,6 +71,14 @@ public class UserInfo implements Parcelable {
         this.userBirthDate = userBirthDate;
     }
 
+    public String getUserMobileNumber() {
+        return userMobileNumber;
+    }
+
+    public void setUserMobileNumber(String userMobileNumber) {
+        this.userMobileNumber = userMobileNumber;
+    }
+
     public String getUserEmailId() {
         return userEmailId;
     }
@@ -96,6 +106,7 @@ public class UserInfo implements Parcelable {
         parcel.writeString(userMiddleName);
         parcel.writeString(userLastName);
         parcel.writeString(userBirthDate);
+        parcel.writeString(userMobileNumber);
         parcel.writeString(userEmailId);
         parcel.writeString(userGender);
     }

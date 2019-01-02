@@ -102,10 +102,14 @@ public class Util {
         }
     }
 
-    public static Map<String, String> requestHeader() {
+    public static Map<String, String> requestHeader(boolean isTokenPresent) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("Content-Type", "application/json;charset=UTF-8");
+
+        if (isTokenPresent) {
+            headers.put(Constants.Login.AUTHORIZATION, "Bearer ");
+        }
 
         return headers;
     }
