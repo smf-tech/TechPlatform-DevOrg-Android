@@ -68,4 +68,15 @@
     <string name="msg_enter_valid_mobile_no">Please enter 10 digit mobile number</string>
     <string name="msg_enter_valid_email_id">Please enter valid email address</string>
     <string name="msg_select_project">Please select project</string>
+
+    <!--Home Menu Items-->
+    <string name="change_language">Change Language</string>
+    <string name="my_profile">My Profile</string>
+    <string name="add_location">Add Location</string>
+    <string name="update_user_data">Update Data</string>
+    <string name="notification">Notification</string>
+    <string name="share_app">Share App</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="call_us">Call Us</string>
+    <string name="logout">Logout</string>
 </resources>

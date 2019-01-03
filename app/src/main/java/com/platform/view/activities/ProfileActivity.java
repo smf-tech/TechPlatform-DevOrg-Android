@@ -29,6 +29,7 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.UserInfo;
+import com.platform.models.login.LoginInfo;
 import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -71,6 +72,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
     private Uri outputUri;
     private Uri finalUri;
+    private LoginInfo loginInfo;
     private ProfileActivityPresenter profilePresenter;
 
     @Override
@@ -85,11 +87,19 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     private void initViews() {
         setActionbar(getString(R.string.registration_title));
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            loginInfo = bundle.getParcelable(Constants.Login.LOGIN_OTP_VERIFY_DATA);
+        }
+
         etUserFirstName = findViewById(R.id.et_user_first_name);
         etUserMiddleName = findViewById(R.id.et_user_middle_name);
         etUserLastName = findViewById(R.id.et_user_last_name);
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
+
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
+        etUserMobileNumber.setText(loginInfo.getMobileNumber());
+
         etUserEmailId = findViewById(R.id.et_user_email_id);
         etUserProject = findViewById(R.id.et_user_project);
 
@@ -192,11 +202,9 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     }
 
     private void showMultiSelectDialogProject(ArrayList<String> projectList) {
-        if (projectList.contains(getString(R.string.label_select))) {
-            projectList.remove(projectList.indexOf(getString(R.string.label_select)));
-        }
+        projectList.remove(getString(R.string.label_select));
 
-        final String[] items = projectList.toArray(new String[projectList.size()]);
+        String[] items = projectList.toArray(new String[projectList.size()]);
         projectSelection = new boolean[(items.length)];
         Arrays.fill(projectSelection, false);
 
@@ -273,13 +281,13 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
-        } else if (etUserEmailId.getText().toString().trim().length() == 0 &&
+        } /*else if (etUserEmailId.getText().toString().trim().length() == 0 &&
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(
                         etUserEmailId.getText().toString().trim()).matches()) {
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
         } else if (etUserProject.getText().toString().trim().equals("")) {
             msg = getString(R.string.msg_select_project);
-        }
+        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;
@@ -349,11 +357,8 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
-                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/MV/Image/picture_crop.jpg";
-
-                File imageFile = new File(imageFilePath);
-                finalUri = Uri.fromFile(imageFile);
+                String imageFilePath = "/MV/Image/picture_crop.jpg";
+                finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).asSquare().start(this);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -361,12 +366,9 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                            + "/MV/Image/picture_crop.jpg";
-
+                    String imageFilePath = "/MV/Image/picture_crop.jpg";
                     outputUri = data.getData();
-                    File imageFile = new File(imageFilePath);
-                    finalUri = Uri.fromFile(imageFile);
+                    finalUri = Util.getUri(imageFilePath);
                     Crop.of(outputUri, finalUri).asSquare().start(this);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -438,6 +440,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
     @Override
     public void gotoNextScreen(String response) {
-
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 }

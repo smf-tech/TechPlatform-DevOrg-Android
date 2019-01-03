@@ -15,16 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.LoginActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
@@ -182,17 +181,13 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     public void gotoNextScreen(String response) {
-        response = "{\"status\":\"success\",\"data\":{\"otp\":812481},\"message\":\"Otp Sent successfully\"}";
-        try {
-            JSONObject loginData = (JSONObject) new JSONObject(response).get("data");
-            loginInfo.setOneTimePassword(loginData.getString("otp"));
+        //response = "{\"status\":\"success\",\"data\":{\"otp\":812481},\"message\":\"Otp Sent successfully\"}";
+        Login login = new Gson().fromJson(response, Login.class);
+        loginInfo.setOneTimePassword(String.valueOf(login.getData().getOtp()));
 
-            Intent intent = new Intent(this, OtpActivity.class);
-            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
-            startActivity(intent);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Intent intent = new Intent(this, OtpActivity.class);
+        intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+        startActivity(intent);
     }
 
     private String getUserMobileNumber() {

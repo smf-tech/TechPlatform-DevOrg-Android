@@ -75,8 +75,5 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
         }
 
         otpFragment.get().hideProgressBar();
-
-        //TODO: Removed once API integration done
-        otpFragment.get().gotoNextScreen(error.getMessage());
     }
 }

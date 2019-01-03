@@ -68,4 +68,15 @@
     <string name="msg_enter_valid_mobile_no">कृपया 10 अंकों का मोबाइल नंबर दर्ज करें</string>
     <string name="msg_enter_valid_email_id">कृपया मान्य ई-मेल पता दर्ज करें</string>
     <string name="msg_select_project">कृपया प्रोजेक्ट चुनें</string>
+
+    <!--Home Menu Items-->
+    <string name="change_language">भाषा बदलो</string>
+    <string name="my_profile">मेरी प्रोफाइल</string>
+    <string name="add_location">स्थान जोड़ना</string>
+    <string name="update_user_data">डेटा को अद्यतन करें</string>
+    <string name="notification">अधिसूचना</string>
+    <string name="share_app">ऐप शेयर करें</string>
+    <string name="rate_us">रेटिंग दें</string>
+    <string name="call_us">कॉल करें</string>
+    <string name="logout">लोगआउट</string>
 </resources>

@@ -3,12 +3,16 @@ package com.platform.utility;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.platform.Platform;
+import com.platform.models.login.Login;
 
 import java.io.File;
 import java.util.HashMap;
@@ -108,7 +112,9 @@ public class Util {
         headers.put("Content-Type", "application/json;charset=UTF-8");
 
         if (isTokenPresent) {
-            headers.put(Constants.Login.AUTHORIZATION, "Bearer ");
+            Login loginObj = getLoginObjectFromPref();
+            headers.put(Constants.Login.AUTHORIZATION,
+                    "Bearer " + loginObj.getData().getAccessToken());
         }
 
         return headers;
@@ -127,5 +133,31 @@ public class Util {
             boolean mkdirs = tempDirectory.mkdirs();
             Log.i(TAG, "" + mkdirs);
         }
+    }
+
+    private static String getFilePath(String fileName) {
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + fileName;
+    }
+
+    public static Uri getUri(String fileName) {
+        File file = new File(getFilePath(fileName));
+        return Uri.fromFile(file);
+    }
+
+    private static Login getLoginObjectFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.LOGIN_OBJ, "{}");
+
+        return new Gson().fromJson(obj, Login.class);
+    }
+
+    public static void saveLoginObjectInPref(String loginData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.LOGIN_OBJ, loginData);
+        editor.apply();
     }
 }

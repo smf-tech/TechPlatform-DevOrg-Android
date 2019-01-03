@@ -18,8 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
@@ -99,7 +101,14 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
         if (loginInfo != null && !loginInfo.getMobileNumber().contentEquals("")) {
             mobileNumber = loginInfo.getMobileNumber();
-            checkSmsPermission();
+
+            if (!loginInfo.getOneTimePassword().isEmpty()) {
+                etOtp.setText(loginInfo.getOneTimePassword());
+                tvOtpTimer.setVisibility(View.GONE);
+            } else {
+                checkSmsPermission();
+                tvOtpTimer.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -289,12 +298,20 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
     @Override
     public void gotoNextScreen(String response) {
-        Intent intent = new Intent(getActivity(), ProfileActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Login login = new Gson().fromJson(response, Login.class);
 
-        OtpActivity activity = (OtpActivity) getActivity();
-        if (activity != null) {
-            activity.startActivity(intent);
+        if (login != null && login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
+            // Save response
+            Util.saveLoginObjectInPref(response);
+
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+
+            OtpActivity activity = (OtpActivity) getActivity();
+            if (activity != null) {
+                activity.startActivity(intent);
+            }
         }
     }
 }

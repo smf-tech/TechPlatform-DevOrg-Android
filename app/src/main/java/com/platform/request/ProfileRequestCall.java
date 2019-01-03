@@ -14,6 +14,8 @@ import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
+import org.json.JSONObject;
+
 public class ProfileRequestCall {
 
     private PlatformRequestCallListener listener;
@@ -23,7 +25,7 @@ public class ProfileRequestCall {
     }
 
     public void submitUserProfile(UserInfo userInfo) {
-        Response.Listener<JsonObject> profileSuccessListener = response -> {
+        Response.Listener<JSONObject> profileSuccessListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
@@ -41,10 +43,10 @@ public class ProfileRequestCall {
         final String submitProfileUrl = Urls.BASE_URL
                 + String.format(Urls.Login.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
 
-        GsonRequestFactory<JsonObject> gsonRequest = new GsonRequestFactory<>(
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
                 submitProfileUrl,
-                new TypeToken<JsonObject>() {
+                new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
                 profileSuccessListener,

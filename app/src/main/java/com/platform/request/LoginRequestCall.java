@@ -14,6 +14,8 @@ import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
+import org.json.JSONObject;
+
 public class LoginRequestCall {
 
     private PlatformRequestCallListener listener;
@@ -23,7 +25,7 @@ public class LoginRequestCall {
     }
 
     public void generateOtp(LoginInfo loginInfo) {
-        Response.Listener<Model> generateOTPResponseListener = response -> {
+        Response.Listener<JSONObject> generateOTPResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
@@ -42,10 +44,10 @@ public class LoginRequestCall {
         final String generateOtpUrl = Urls.BASE_URL
                 + String.format(Urls.Login.GENERATE_OTP, loginInfo.getMobileNumber());
 
-        GsonRequestFactory<Model> gsonRequest = new GsonRequestFactory<>(
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 generateOtpUrl,
-                new TypeToken<Model>() {
+                new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
                 generateOTPResponseListener,
@@ -95,7 +97,7 @@ public class LoginRequestCall {
     }
 
     public void getToken(LoginInfo loginInfo) {
-        Response.Listener<Model> loginSuccessListener = response -> {
+        Response.Listener<JSONObject> loginSuccessListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
@@ -114,10 +116,10 @@ public class LoginRequestCall {
         final String getTokenUrl = Urls.BASE_URL + String.format(Urls.Login.GENERATE_TOKEN,
                 loginInfo.getMobileNumber(), loginInfo.getOneTimePassword());
 
-        GsonRequestFactory<Model> gsonRequest = new GsonRequestFactory<>(
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getTokenUrl,
-                new TypeToken<Model>() {
+                new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
                 loginSuccessListener,

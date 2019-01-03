@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/action_lang"
+        android:title="@string/change_language" />
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/my_profile" />
+    <item
+        android:id="@+id/action_add_school"
+        android:title="@string/add_location"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_update_user_data"
+        android:title="@string/update_user_data" />
+    <item
+        android:id="@+id/action_notification"
+        android:title="@string/notification"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/share_app"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_rate"
+        android:title="@string/rate_us"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_callus"
+        android:title="@string/call_us"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout" />
+</menu>
