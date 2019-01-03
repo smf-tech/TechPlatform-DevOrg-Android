@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Platform</string>
     <string name="content_description">Description</string>
     <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
@@ -66,8 +66,10 @@
     <string name="msg_enter_name">कृपया नाम दर्ज करें</string>
     <string name="msg_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
     <string name="msg_enter_valid_mobile_no">कृपया 10 अंकों का मोबाइल नंबर दर्ज करें</string>
-    <string name="msg_enter_valid_email_id">कृपया मान्य ई-मेल पता दर्ज करें</string>
-    <string name="msg_select_project">कृपया प्रोजेक्ट चुनें</string>
+    <string name="msg_enter_valid_email_id"
+        tools:keep="@string/msg_enter_valid_email_id">कृपया मान्य ई-मेल पता दर्ज करें</string>
+    <string name="msg_select_project"
+        tools:keep="@string/msg_select_project">कृपया प्रोजेक्ट चुनें</string>
 
     <!--Home Menu Items-->
     <string name="change_language">भाषा बदलो</string>

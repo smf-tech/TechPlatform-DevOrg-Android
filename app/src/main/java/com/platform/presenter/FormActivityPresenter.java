@@ -8,7 +8,9 @@ import java.lang.ref.WeakReference;
 
 public class FormActivityPresenter {
 
-    private Gson gson;
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private final Gson gson;
+    @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
     private WeakReference<FormActivity> formActivity;
 
     public FormActivityPresenter(FormActivity activity) {

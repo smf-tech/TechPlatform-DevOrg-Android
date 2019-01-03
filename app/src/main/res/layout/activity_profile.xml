@@ -31,7 +31,8 @@
                     android:id="@+id/et_user_first_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/first_name"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Middle Name-->
@@ -44,7 +45,8 @@
                     android:id="@+id/et_user_middle_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/middle_name"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Last Name-->
@@ -57,7 +59,8 @@
                     android:id="@+id/et_user_last_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/last_name"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Birth Date-->
@@ -72,7 +75,8 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:hint="@string/birth_date"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Mobile Number-->
@@ -87,7 +91,8 @@
                     android:digits="0123456789"
                     android:hint="@string/mobile_no"
                     android:inputType="phone"
-                    android:maxLength="10" />
+                    android:maxLength="10"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Email-->
@@ -100,7 +105,8 @@
                     android:id="@+id/et_user_email_id"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/email_id"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Geo Location-->
@@ -122,7 +128,8 @@
                         android:id="@+id/et_user_geo_location"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/work_location"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        tools:ignore="Autofill" />
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageView
@@ -148,7 +155,8 @@
                     android:id="@+id/et_user_address"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/address"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Gender-->
@@ -220,7 +228,7 @@
                     android:inputType="textPostalAddress"
                     android:maxLines="3"
                     android:singleLine="false"
-                    tools:ignore="KeyboardInaccessibleWidget" />
+                    tools:ignore="Autofill,KeyboardInaccessibleWidget" />
             </android.support.design.widget.TextInputLayout>
 
             <!--Role-->

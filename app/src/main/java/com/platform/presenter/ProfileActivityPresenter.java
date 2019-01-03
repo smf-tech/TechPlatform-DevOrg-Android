@@ -14,6 +14,7 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
 
     @SuppressWarnings("CanBeFinal")
     private final String TAG = ProfileActivityPresenter.class.getName();
+    @SuppressWarnings("CanBeFinal")
     private WeakReference<ProfileActivity> profileActivity;
 
     public ProfileActivityPresenter(ProfileActivity activity) {
@@ -30,7 +31,7 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
 
     @Override
     public void onSuccessListener(String response) {
-        // {"_id":"5c2ddcaed503a33074095df3","email":"","phone":"7972129849","approve_status":"pending","updated_at":"2019-01-03 14:03:35","created_at":"2019-01-03 09:58:06","dob":"1970-01-01"}
+        // {"_id":"5c2503a33074095df3","email":"","phone":"7972129849","approve_status":"pending","updated_at":"2019-01-03 14:03:35","created_at":"2019-01-03 09:58:06","dob":"1970-01-01"}
         Log.i(TAG, "Success" + response);
     }
 

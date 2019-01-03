@@ -16,6 +16,7 @@ public class Config {
     }
 
 
+    @SuppressWarnings("SameReturnValue")
     public String getAppMode() {
         return Constants.App.BJS_MODE;
     }

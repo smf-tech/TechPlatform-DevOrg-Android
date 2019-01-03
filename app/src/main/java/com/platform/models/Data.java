@@ -3,6 +3,7 @@ package com.platform.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class Data {
 
     @SerializedName("otp")

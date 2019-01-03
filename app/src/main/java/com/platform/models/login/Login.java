@@ -6,6 +6,7 @@ import com.platform.models.Data;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public class Login implements Serializable {
     @SerializedName("status")
     @Expose

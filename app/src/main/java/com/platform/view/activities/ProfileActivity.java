@@ -201,6 +201,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         dpd.show();
     }
 
+    @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     private void showMultiSelectDialogProject(ArrayList<String> projectList) {
         projectList.remove(getString(R.string.label_select));
 

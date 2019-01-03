@@ -31,7 +31,7 @@
             android:longClickable="false"
             android:maxLines="1"
             android:textColor="@color/colorPrimaryDark"
-            tools:ignore="LabelFor,PrivateResource" />
+            tools:ignore="Autofill,LabelFor,PrivateResource" />
     </android.support.design.widget.TextInputLayout>
 
     <ImageView

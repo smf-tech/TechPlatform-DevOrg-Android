@@ -7,6 +7,7 @@ import com.platform.request.RefreshToken;
 
 import java.net.HttpURLConnection;
 
+@SuppressWarnings("CanBeFinal")
 public class TokenRetryPolicy implements RetryPolicy {
 
     private GsonRequestFactory gsonFactory;

@@ -11,6 +11,7 @@ import java.util.Locale;
 
 public class LocaleManager extends ContextWrapper {
 
+    @SuppressWarnings("WeakerAccess")
     public LocaleManager(Context base) {
         super(base);
     }

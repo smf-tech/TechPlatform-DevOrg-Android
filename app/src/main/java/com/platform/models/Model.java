@@ -2,6 +2,7 @@ package com.platform.models;
 
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class Model {
 
     @SerializedName("ResultCode")
