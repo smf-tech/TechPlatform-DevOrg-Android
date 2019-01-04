@@ -81,4 +81,10 @@
     <string name="rate_us">Rate Us</string>
     <string name="call_us">Call Us</string>
     <string name="logout">Logout</string>
+
+    <!--App Error Message-->
+    <string name="msg_something_went_wrong">Something went wrong</string>
+    <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>
+    <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
+    <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
 </resources>

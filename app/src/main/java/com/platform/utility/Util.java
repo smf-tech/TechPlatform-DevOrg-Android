@@ -1,17 +1,22 @@
 package com.platform.utility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.platform.Platform;
+import com.platform.R;
+import com.platform.models.UserInfo;
 import com.platform.models.login.Login;
 
 import java.io.File;
@@ -144,7 +149,22 @@ public class Util {
         return Uri.fromFile(file);
     }
 
-    private static Login getLoginObjectFromPref() {
+    public static String getUserMobileFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        return preferences.getString(Constants.Login.USER_MOBILE_NO, "");
+    }
+
+    public static void saveUserMobileInPref(String phone) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_MOBILE_NO, phone);
+        editor.apply();
+    }
+
+    public static Login getLoginObjectFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.LOGIN_OBJ, "{}");
@@ -159,5 +179,34 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.LOGIN_OBJ, loginData);
         editor.apply();
+    }
+
+    public static UserInfo getUserObjectFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_OBJ, "{}");
+
+        return new Gson().fromJson(obj, UserInfo.class);
+    }
+
+    public static void saveUserObjectInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_OBJ, userData);
+        editor.apply();
+    }
+
+    public static <T> void showToast(String msg, T context) {
+        if (msg == null || msg.isEmpty()) {
+            msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
+        }
+
+        if (context instanceof Fragment) {
+            Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
+        }
     }
 }

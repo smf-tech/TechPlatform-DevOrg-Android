@@ -56,7 +56,7 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
 
         if (message != null) {
             Log.e(TAG, "Request failed :" + message);
-            loginActivity.get().showErrorDialog(message);
+            loginActivity.get().showErrorMessage(message);
         }
     }
 
@@ -71,7 +71,7 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
 
         if (error != null) {
             Log.e(TAG, "Login::onErrorResponse " + error);
-            loginActivity.get().showErrorDialog(error.getLocalizedMessage());
+            loginActivity.get().showErrorMessage(error.getLocalizedMessage());
         }
     }
 

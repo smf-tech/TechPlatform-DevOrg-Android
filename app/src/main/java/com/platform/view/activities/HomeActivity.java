@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.utility.Util;
 
 public class HomeActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
 
@@ -35,7 +36,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener, 
     }
 
     @Override
-    public void showErrorDialog(String result) {
-
+    public void showErrorMessage(String result) {
+        Util.showToast(result, this);
     }
 }

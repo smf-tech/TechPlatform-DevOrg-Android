@@ -1,6 +1,7 @@
 package com.platform.view.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -91,12 +93,16 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
 
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            Runtime.getRuntime().gc();
-            startActivity(startMain);
-            System.exit(0);
+            try {
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(startMain);
+                System.exit(0);
+            } catch (Exception e) {
+                Log.e(TAG, "Exception :: LoginActivity : onBackPressed");
+                e.printStackTrace();
+            }
 
             finish();
             return;
@@ -148,10 +154,11 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void goToVerifyOtpScreen() {
-        loginInfo = new LoginInfo();
-        loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
-
-        loginPresenter.getOtp(loginInfo);
+        if (etUserMobileNumber != null) {
+            loginInfo = new LoginInfo();
+            loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
+            loginPresenter.getOtp(loginInfo);
+        }
     }
 
     private void onResendOTPClick() {
@@ -183,28 +190,33 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         if (data != null) {
             loginInfo.setOneTimePassword(String.valueOf(((Login) data).getData().getOtp()));
 
-            Intent intent = new Intent(this, OtpActivity.class);
-            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
-            startActivity(intent);
+            try {
+                Intent intent = new Intent(this, OtpActivity.class);
+                intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+                startActivity(intent);
+            } catch (Exception e) {
+                Log.e(TAG, "Exception :: LoginActivity : gotoNextScreen");
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void showErrorDialog(String result) {
-        if (result != null && !result.isEmpty()) {
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
+    public void showErrorMessage(String result) {
+        Util.showToast(result, this);
     }
 
     private String getUserMobileNumber() {
-        return String.valueOf(etUserMobileNumber.getText());
+        if (etUserMobileNumber != null) {
+            return String.valueOf(etUserMobileNumber.getText());
+        }
+
+        return "";
     }
 
     private boolean isAllInputsValid() {
         boolean isInputValid = true;
-        if (getUserMobileNumber().length() == 0) {
+        if (getUserMobileNumber().isEmpty()) {
             Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_empty));
             isInputValid = false;
         } else if (getUserMobileNumber().trim().length() < 10) {
@@ -228,9 +240,22 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         }
     }
 
+    private void hideKeyboard(View v) {
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE) {
+
+            hideKeyboard (etUserMobileNumber);
+
             if (isAllInputsValid()) {
                 goToVerifyOtpScreen();
             }

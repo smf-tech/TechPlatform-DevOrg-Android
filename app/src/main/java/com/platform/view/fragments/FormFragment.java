@@ -16,6 +16,7 @@ import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.forms.FormData;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
 
 import org.json.JSONArray;
@@ -126,7 +127,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
     }
 
     @Override
-    public void showErrorDialog(String result) {
-
+    public void showErrorMessage(String result) {
+        Util.showToast(result, this);
     }
 }

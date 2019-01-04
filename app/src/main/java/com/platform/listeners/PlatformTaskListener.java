@@ -9,5 +9,5 @@ public interface PlatformTaskListener {
 
     <T> void gotoNextScreen(T data);
 
-    void showErrorDialog(String result);
+    void showErrorMessage(String result);
 }

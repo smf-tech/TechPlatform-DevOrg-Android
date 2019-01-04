@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
@@ -33,6 +33,7 @@ import com.platform.view.activities.ProfileActivity;
 public class OtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
         SmsReceiver.OtpSmsReceiverListener {
 
+    private final String TAG = OtpFragment.class.getName();
     private TextView tvOtpTimer;
     private TextView tvOtpMessage;
     private Button btnLogin;
@@ -113,7 +114,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
     @Override
     public void onDestroyView() {
-        smsReceiver.deRegisterListener();
+        if (smsReceiver != null) {
+            smsReceiver.deRegisterListener();
+        }
 
         if (timer != null) {
             timer.cancel();
@@ -297,22 +300,27 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
 
     @Override
     public <T> void gotoNextScreen(T data) {
-        Intent intent = new Intent(getActivity(), ProfileActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+        if (data != null) {
+            try {
+                Util.saveUserMobileInPref(loginInfo.getMobileNumber());
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
 
-        OtpActivity activity = (OtpActivity) getActivity();
-        if (activity != null) {
-            activity.startActivity(intent);
+                OtpActivity activity = (OtpActivity) getActivity();
+                if (activity != null) {
+                    activity.startActivity(intent);
+                    activity.finish();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "Exception :: OtpFragment : gotoNextScreen");
+            }
         }
     }
 
     @Override
-    public void showErrorDialog(String result) {
-        if (result != null && !result.isEmpty()) {
-            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
+    public void showErrorMessage(String result) {
+        Util.showToast(result, this);
     }
 }

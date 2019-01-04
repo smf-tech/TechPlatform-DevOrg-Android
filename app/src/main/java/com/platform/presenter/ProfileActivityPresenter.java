@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.UserInfo;
 import com.platform.request.ProfileRequestCall;
+import com.platform.utility.Util;
 import com.platform.view.activities.ProfileActivity;
 
 import java.lang.ref.WeakReference;
@@ -33,7 +34,9 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
     @Override
     public void onSuccessListener(String response) {
         UserInfo userInfo = new Gson().fromJson(response, UserInfo.class);
+
         // Save response
+        Util.saveUserObjectInPref(response);
 
         profileActivity.get().hideProgressBar();
         profileActivity.get().gotoNextScreen(userInfo);
@@ -43,7 +46,7 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
     public void onFailureListener(String message) {
         Log.i(TAG, "Fail" + message);
         profileActivity.get().hideProgressBar();
-        profileActivity.get().showErrorDialog(message);
+        profileActivity.get().showErrorMessage(message);
     }
 
     @Override
@@ -52,7 +55,7 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
         profileActivity.get().hideProgressBar();
 
         if (error != null) {
-            profileActivity.get().showErrorDialog(error.getLocalizedMessage());
+            profileActivity.get().showErrorMessage(error.getLocalizedMessage());
         }
     }
 }

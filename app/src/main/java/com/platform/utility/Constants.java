@@ -40,7 +40,9 @@ public class Constants {
 
     public static class Login {
         public static final String LOGIN_OTP_VERIFY_DATA = "loginOtpData";
+        static final String USER_MOBILE_NO = "userMobile";
         static final String LOGIN_OBJ = "loginObj";
+        static final String USER_OBJ = "userObj";
 
         // public static final String USERNAME = "username";
         // public static final String OTP = "otp";

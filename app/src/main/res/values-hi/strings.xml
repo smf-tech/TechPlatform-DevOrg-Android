@@ -81,4 +81,10 @@
     <string name="rate_us">रेटिंग दें</string>
     <string name="call_us">कॉल करें</string>
     <string name="logout">लोगआउट</string>
+
+    <!--App Error Message-->
+    <string name="msg_something_went_wrong">कुछ गलत हो गया</string>
+    <string name="msg_error_in_photo_gallery">गैलरी से फ़ोटो लेने में समस्या, फ़ोटो लेने के लिए कृपया कैमरे का उपयोग करें।</string>
+    <string name="msg_image_capture_not_support">वूप्स - आपका डिवाइस छवि कैप्चरिंग का समर्थन नहीं करता है!</string>
+    <string name="msg_take_photo_error">ऐप में फोटो लेने की अनुमति नहीं है, कृपया इसकी अनुमति दें।</string>
 </resources>

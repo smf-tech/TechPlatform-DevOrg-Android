@@ -62,6 +62,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     private Spinner spStructure;
 
     private ImageView imgUserProfilePic;
+    private ImageView backButton;
     private Button btnProfileSubmit;
 
     private String userGender = "Male";
@@ -72,7 +73,6 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
     private Uri outputUri;
     private Uri finalUri;
-    private LoginInfo loginInfo;
     private ProfileActivityPresenter profilePresenter;
 
     @Override
@@ -87,19 +87,12 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     private void initViews() {
         setActionbar(getString(R.string.registration_title));
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            loginInfo = bundle.getParcelable(Constants.Login.LOGIN_OTP_VERIFY_DATA);
-        }
-
+        backButton = findViewById(R.id.toolbar_back_action);
         etUserFirstName = findViewById(R.id.et_user_first_name);
         etUserMiddleName = findViewById(R.id.et_user_middle_name);
         etUserLastName = findViewById(R.id.et_user_last_name);
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
-
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
-        etUserMobileNumber.setText(loginInfo.getMobileNumber());
-
         etUserEmailId = findViewById(R.id.et_user_email_id);
         etUserProject = findViewById(R.id.et_user_project);
 
@@ -107,15 +100,15 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
             switch (checkedId) {
                 case R.id.gender_male:
-                    userGender = "Male";
+                    userGender = getResources().getString(R.string.male);
                     break;
 
                 case R.id.gender_female:
-                    userGender = "Female";
+                    userGender = getResources().getString(R.string.female);
                     break;
 
                 case R.id.gender_other:
-                    userGender = "Other";
+                    userGender = getResources().getString(R.string.other);
                     break;
             }
         });
@@ -139,11 +132,22 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             findViewById(R.id.input_user_address).setVisibility(View.GONE);
         }
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            LoginInfo loginInfo = bundle.getParcelable(Constants.Login.LOGIN_OTP_VERIFY_DATA);
+            if (loginInfo != null) {
+                etUserMobileNumber.setText(loginInfo.getMobileNumber());
+            }
+        } else {
+            etUserMobileNumber.setText(Util.getUserMobileFromPref());
+        }
+
         projectsList = new ArrayList<>();
         projectsList.add(getString(R.string.label_select));
     }
 
     private void setListeners() {
+        backButton.setOnClickListener(this);
         etUserBirthDate.setOnClickListener(this);
         etUserProject.setOnClickListener(this);
 
@@ -163,6 +167,10 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.toolbar_back_action:
+                onBackPressed();
+                break;
+
             case R.id.et_user_birth_date:
                 showDateDialog(ProfileActivity.this, findViewById(R.id.et_user_birth_date));
                 break;
@@ -192,61 +200,64 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dpd = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
             String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
             editText.setText(date);
         }, mYear, mMonth, mDay);
 
-        dpd.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dpd.show();
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateDialog.show();
     }
 
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     private void showMultiSelectDialogProject(ArrayList<String> projectList) {
-        projectList.remove(getString(R.string.label_select));
+        if (projectList != null) {
+            projectList.remove(getString(R.string.label_select));
 
-        String[] items = projectList.toArray(new String[projectList.size()]);
-        projectSelection = new boolean[(items.length)];
-        Arrays.fill(projectSelection, false);
+            String[] items = projectList.toArray(new String[projectList.size()]);
+            projectSelection = new boolean[(items.length)];
+            Arrays.fill(projectSelection, false);
 
-        if (!selectedProjects.isEmpty()) {
-            String[] projects = selectedProjects.split(";");
-            for (String project : projects) {
-                if (projectList.contains(project.trim())) {
-                    projectSelection[projectList.indexOf(project.trim())] = true;
+            if (!selectedProjects.isEmpty()) {
+                String[] projects = selectedProjects.split(";");
+                for (String project : projects) {
+                    if (projectList.contains(project.trim())) {
+                        projectSelection[projectList.indexOf(project.trim())] = true;
+                    }
                 }
             }
+
+            AlertDialog dialog = new AlertDialog.Builder(ProfileActivity.this)
+                    .setTitle(getString(R.string.title_select_project))
+                    .setMultiChoiceItems(items, projectSelection, (dialog1, which, isChecked) -> {
+                        if (projectSelection != null && which < projectSelection.length) {
+                            projectSelection[which] = isChecked;
+                            selectedProjects = buildStringArrayToString(items);
+                        } else {
+                            throw new IllegalArgumentException("Exception in showing projects");
+                        }
+                    })
+                    .setPositiveButton(ProfileActivity.this.getString(R.string.ok), (dialog12, id) -> etUserProject.setText(selectedProjects))
+                    .setNegativeButton(getString(R.string.cancel), (dialog13, id) -> {
+                    }).create();
+
+            dialog.show();
         }
-
-        AlertDialog dialog = new AlertDialog.Builder(ProfileActivity.this)
-                .setTitle(getString(R.string.title_select_project))
-                .setMultiChoiceItems(items, projectSelection, (dialog1, which, isChecked) -> {
-                    if (projectSelection != null && which < projectSelection.length) {
-                        projectSelection[which] = isChecked;
-                        selectedProjects = buildStringArrayToString(items);
-                    } else {
-                        throw new IllegalArgumentException("Exception in showing projects");
-                    }
-                })
-                .setPositiveButton(ProfileActivity.this.getString(R.string.ok),
-                        (dialog12, id) -> etUserProject.setText(selectedProjects))
-                .setNegativeButton(getString(R.string.cancel), (dialog13, id) -> {
-                }).create();
-
-        dialog.show();
     }
 
     private String buildStringArrayToString(String[] items) {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
-        for (int i = 0; i < items.length; ++i) {
-            if (projectSelection[i]) {
-                if (foundOne) {
-                    sb.append(";");
+        if (items != null) {
+            for (int i = 0; i < items.length; ++i) {
+                if (projectSelection[i]) {
+                    if (foundOne) {
+                        sb.append(";");
+                    }
+                    foundOne = true;
+                    sb.append(items[i]);
                 }
-                foundOne = true;
-                sb.append(items[i]);
             }
         }
         return sb.toString();
@@ -322,8 +333,9 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
         } catch (ActivityNotFoundException e) {
-            String errorMessage = "Problem in taking photo from gallery, please use camera to take photo.";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getResources().getString(R.string.msg_error_in_photo_gallery),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -343,11 +355,12 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
-            String errorMessage = "Whoops - your device doesn't support image capturing!";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getResources().getString(R.string.msg_image_capture_not_support),
+                    Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
-            String errorMessage = "App do not have permission to take a photo, please allow it.";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -442,14 +455,22 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     public <T> void gotoNextScreen(T data) {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
-    public void showErrorDialog(String result) {
-        if (result != null && !result.isEmpty()) {
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+    public void showErrorMessage(String result) {
+        Util.showToast(result, this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        try {
+            hideProgressBar();
+            setResult(RESULT_CANCELED);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

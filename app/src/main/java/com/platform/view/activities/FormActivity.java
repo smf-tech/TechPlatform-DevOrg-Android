@@ -21,20 +21,21 @@ public class FormActivity extends BaseActivity {
 
         formPresenter = new FormActivityPresenter(this);
         setContentView(R.layout.activity_gen_form);
-        openNewFragment();
-    }
-
-    private void openNewFragment() {
         addFragment();
     }
 
     private void addFragment() {
         fragment = new FormFragment();
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.gen_form_container, fragment, "fragment");
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+        try {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.gen_form_container, fragment, "fragment");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception :: FormActivity : addFragment");
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -46,6 +47,7 @@ public class FormActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         fragment = null;
+
         if (formPresenter != null) {
             formPresenter = null;
         }

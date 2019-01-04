@@ -51,16 +51,15 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
             return;
         }
 
-        otpFragment.get().hideProgressBar();
-        Util.saveLoginObjectInPref(response);
-
         Login login = new Gson().fromJson(response, Login.class);
         if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
             otpFragment.get().startOtpTimer();
+            Util.saveLoginObjectInPref(response);
         } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
             otpFragment.get().deRegisterOtpSmsReceiver();
         }
 
+        otpFragment.get().hideProgressBar();
         otpFragment.get().gotoNextScreen(login);
     }
 
@@ -72,8 +71,7 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
         otpFragment.get().hideProgressBar();
         otpFragment.get().deRegisterOtpSmsReceiver();
-
-        otpFragment.get().showErrorDialog(message);
+        otpFragment.get().showErrorMessage(message);
     }
 
     @Override
@@ -83,9 +81,8 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
         }
 
         otpFragment.get().hideProgressBar();
-
         if (error != null) {
-            otpFragment.get().showErrorDialog(error.getLocalizedMessage());
+            otpFragment.get().showErrorMessage(error.getLocalizedMessage());
         }
     }
 }

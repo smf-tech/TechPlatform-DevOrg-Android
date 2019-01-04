@@ -20,7 +20,22 @@ public class SplashActivity extends AppCompatActivity {
         Util.setApplicationLocale();
 
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent;
+            // Check user profile available or not
+            if (Util.getUserObjectFromPref().getId() == null ||
+                    Util.getUserObjectFromPref().getId().isEmpty()) {
+
+                // Check user has registered mobile number or not
+                if (Util.getLoginObjectFromPref().getData() == null ||
+                        Util.getLoginObjectFromPref().getData().getAccessToken().isEmpty()) {
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, ProfileActivity.class);
+
+                }
+            } else {
+                intent = new Intent(SplashActivity.this, HomeActivity.class);
+            }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
