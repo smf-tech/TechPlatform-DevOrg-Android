@@ -3,6 +3,7 @@ package com.platform.presenter;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.UserInfo;
 import com.platform.request.ProfileRequestCall;
@@ -31,17 +32,27 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
 
     @Override
     public void onSuccessListener(String response) {
-        // {"_id":"5c2503a33074095df3","email":"","phone":"7972129849","approve_status":"pending","updated_at":"2019-01-03 14:03:35","created_at":"2019-01-03 09:58:06","dob":"1970-01-01"}
-        Log.i(TAG, "Success" + response);
+        UserInfo userInfo = new Gson().fromJson(response, UserInfo.class);
+        // Save response
+
+        profileActivity.get().hideProgressBar();
+        profileActivity.get().gotoNextScreen(userInfo);
     }
 
     @Override
     public void onFailureListener(String message) {
         Log.i(TAG, "Fail" + message);
+        profileActivity.get().hideProgressBar();
+        profileActivity.get().showErrorDialog(message);
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.i(TAG, "Error" + error);
+        profileActivity.get().hideProgressBar();
+
+        if (error != null) {
+            profileActivity.get().showErrorDialog(error.getLocalizedMessage());
+        }
     }
 }

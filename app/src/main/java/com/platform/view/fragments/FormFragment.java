@@ -121,7 +121,12 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
     }
 
     @Override
-    public void gotoNextScreen(String response) {
+    public <T> void gotoNextScreen(T data) {
+
+    }
+
+    @Override
+    public void showErrorDialog(String result) {
 
     }
 }

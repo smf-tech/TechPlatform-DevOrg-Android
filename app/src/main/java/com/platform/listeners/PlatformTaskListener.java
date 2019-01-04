@@ -7,5 +7,7 @@ public interface PlatformTaskListener {
 
     void hideProgressBar();
 
-    void gotoNextScreen(String response);
+    <T> void gotoNextScreen(T data);
+
+    void showErrorDialog(String result);
 }

@@ -282,13 +282,12 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
-        } /*else if (etUserEmailId.getText().toString().trim().length() == 0 &&
-                !android.util.Patterns.EMAIL_ADDRESS.matcher(
-                        etUserEmailId.getText().toString().trim()).matches()) {
-            msg = getResources().getString(R.string.msg_enter_valid_email_id);
-        } else if (etUserProject.getText().toString().trim().equals("")) {
-            msg = getString(R.string.msg_select_project);
-        }*/
+//        } else if (etUserEmailId.getText().toString().trim().length() == 0 &&
+//                !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
+//            msg = getResources().getString(R.string.msg_enter_valid_email_id);
+//        } else if (etUserProject.getText().toString().trim().equals("")) {
+//            msg = getString(R.string.msg_select_project);
+        }
 
         if (TextUtils.isEmpty(msg)) {
             return true;
@@ -440,8 +439,17 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     }
 
     @Override
-    public void gotoNextScreen(String response) {
+    public <T> void gotoNextScreen(T data) {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showErrorDialog(String result) {
+        if (result != null && !result.isEmpty()) {
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
     }
 }

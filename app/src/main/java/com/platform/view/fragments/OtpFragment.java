@@ -17,11 +17,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
@@ -297,21 +296,23 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     }
 
     @Override
-    public void gotoNextScreen(String response) {
-        Login login = new Gson().fromJson(response, Login.class);
+    public <T> void gotoNextScreen(T data) {
+        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
 
-        if (login != null && login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
-            // Save response
-            Util.saveLoginObjectInPref(response);
+        OtpActivity activity = (OtpActivity) getActivity();
+        if (activity != null) {
+            activity.startActivity(intent);
+        }
+    }
 
-            Intent intent = new Intent(getActivity(), ProfileActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
-
-            OtpActivity activity = (OtpActivity) getActivity();
-            if (activity != null) {
-                activity.startActivity(intent);
-            }
+    @Override
+    public void showErrorDialog(String result) {
+        if (result != null && !result.isEmpty()) {
+            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 }

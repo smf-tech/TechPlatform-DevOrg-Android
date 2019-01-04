@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.Login;
@@ -180,14 +179,23 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     @Override
-    public void gotoNextScreen(String response) {
-        //response = "{\"status\":\"success\",\"data\":{\"otp\":812481},\"message\":\"Otp Sent successfully\"}";
-        Login login = new Gson().fromJson(response, Login.class);
-        loginInfo.setOneTimePassword(String.valueOf(login.getData().getOtp()));
+    public <T> void gotoNextScreen(T data) {
+        if (data != null) {
+            loginInfo.setOneTimePassword(String.valueOf(((Login) data).getData().getOtp()));
 
-        Intent intent = new Intent(this, OtpActivity.class);
-        intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
-        startActivity(intent);
+            Intent intent = new Intent(this, OtpActivity.class);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void showErrorDialog(String result) {
+        if (result != null && !result.isEmpty()) {
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private String getUserMobileNumber() {

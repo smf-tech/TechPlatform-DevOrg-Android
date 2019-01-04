@@ -30,7 +30,12 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener, 
     }
 
     @Override
-    public void gotoNextScreen(String response) {
+    public <T> void gotoNextScreen(T data) {
+
+    }
+
+    @Override
+    public void showErrorDialog(String result) {
 
     }
 }

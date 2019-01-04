@@ -3,7 +3,9 @@ package com.platform.presenter;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
 import com.platform.view.activities.LoginActivity;
@@ -38,8 +40,9 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
             return;
         }
 
+        Login login = new Gson().fromJson(response, Login.class);
         loginActivity.get().hideProgressBar();
-        loginActivity.get().gotoNextScreen(response);
+        loginActivity.get().gotoNextScreen(login);
     }
 
     @Override
@@ -50,10 +53,10 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
         }
 
         loginActivity.get().hideProgressBar();
+
         if (message != null) {
             Log.e(TAG, "Request failed :" + message);
-            // TODO: testing
-            loginActivity.get().gotoNextScreen(message);
+            loginActivity.get().showErrorDialog(message);
         }
     }
 
@@ -65,9 +68,11 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
         }
 
         loginActivity.get().hideProgressBar();
-        Log.e(TAG, "Login::onErrorResponse " + error);
-        // TODO: testing
-        loginActivity.get().gotoNextScreen(error.getMessage());
+
+        if (error != null) {
+            Log.e(TAG, "Login::onErrorResponse " + error);
+            loginActivity.get().showErrorDialog(error.getLocalizedMessage());
+        }
     }
 
     private void detachReferences() {

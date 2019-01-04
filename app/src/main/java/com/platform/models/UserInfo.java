@@ -3,6 +3,9 @@ package com.platform.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class UserInfo implements Parcelable {
 
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
@@ -17,19 +20,40 @@ public class UserInfo implements Parcelable {
         }
     };
 
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("firstname")
+    @Expose
     private String userFirstName;
+    @SerializedName("middlename")
+    @Expose
     private String userMiddleName;
+    @SerializedName("lastname")
+    @Expose
     private String userLastName;
+    @SerializedName("dob")
+    @Expose
     private String userBirthDate;
+    @SerializedName("phone")
+    @Expose
     private String userMobileNumber;
+    @SerializedName("email")
+    @Expose
     private String userEmailId;
+    @SerializedName("gender")
+    @Expose
     private String userGender;
+    @SerializedName("approve_status")
+    @Expose
+    private String approveStatus;
 
     public UserInfo() {
 
     }
 
     private UserInfo(Parcel in) {
+        id = in.readString();
         userFirstName = in.readString();
         userMiddleName = in.readString();
         userLastName = in.readString();
@@ -37,6 +61,15 @@ public class UserInfo implements Parcelable {
         userMobileNumber = in.readString();
         userEmailId = in.readString();
         userGender = in.readString();
+        approveStatus = in.readString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserFirstName() {
@@ -95,6 +128,14 @@ public class UserInfo implements Parcelable {
         this.userGender = userGender;
     }
 
+    public String getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(String approveStatus) {
+        this.approveStatus = approveStatus;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -102,6 +143,7 @@ public class UserInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
         parcel.writeString(userFirstName);
         parcel.writeString(userMiddleName);
         parcel.writeString(userLastName);
@@ -109,5 +151,6 @@ public class UserInfo implements Parcelable {
         parcel.writeString(userMobileNumber);
         parcel.writeString(userEmailId);
         parcel.writeString(userGender);
+        parcel.writeString(approveStatus);
     }
 }

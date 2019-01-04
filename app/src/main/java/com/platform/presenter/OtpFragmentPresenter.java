@@ -1,9 +1,13 @@
 package com.platform.presenter;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
+import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.fragments.OtpFragment;
 
 import java.lang.ref.WeakReference;
@@ -48,14 +52,16 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
         }
 
         otpFragment.get().hideProgressBar();
+        Util.saveLoginObjectInPref(response);
 
-        if (response.equalsIgnoreCase("Success")) {
+        Login login = new Gson().fromJson(response, Login.class);
+        if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
             otpFragment.get().startOtpTimer();
-        } else if (response.equalsIgnoreCase("Failure")) {
+        } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
             otpFragment.get().deRegisterOtpSmsReceiver();
         }
 
-        otpFragment.get().gotoNextScreen(response);
+        otpFragment.get().gotoNextScreen(login);
     }
 
     @Override
@@ -66,6 +72,8 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
         otpFragment.get().hideProgressBar();
         otpFragment.get().deRegisterOtpSmsReceiver();
+
+        otpFragment.get().showErrorDialog(message);
     }
 
     @Override
@@ -75,5 +83,9 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
         }
 
         otpFragment.get().hideProgressBar();
+
+        if (error != null) {
+            otpFragment.get().showErrorDialog(error.getLocalizedMessage());
+        }
     }
 }
