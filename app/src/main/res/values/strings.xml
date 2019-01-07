@@ -6,6 +6,12 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="update">Update</string>
+    
+    <!--App Update-->
+    <string name="title_new_version_available">New version available</string>
+    <string name="msg_update_app">Please, update app to new version to continue.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>

@@ -59,4 +59,6 @@ public class Constants {
     public static class FormsFactory {
         public static final String TEXT_TEMPLATE = "text";
     }
+
+    public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 }

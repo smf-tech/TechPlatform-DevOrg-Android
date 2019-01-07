@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/gender"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/medium_text" />
+                    android:textSize="@dimen/text_size_16" />
 
                 <RadioGroup
                     android:id="@+id/user_gender_group"
@@ -317,7 +317,7 @@
                 android:layout_marginTop="0dp"
                 android:gravity="center"
                 android:text="@string/profile_pic"
-                android:textSize="@dimen/medium_text" />
+                android:textSize="@dimen/text_size_16" />
         </LinearLayout>
     </ScrollView>
 

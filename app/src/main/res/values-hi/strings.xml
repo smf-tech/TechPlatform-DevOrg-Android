@@ -6,6 +6,12 @@
 
     <string name="ok">ओके</string>
     <string name="cancel">रद्द</string>
+    <string name="no_thanks">धन्यवाद</string>
+    <string name="update">अद्यतन करें</string>
+
+    <!--App Update-->
+    <string name="title_new_version_available">नया संस्करण उपलब्ध है</string>
+    <string name="msg_update_app">जारी रखने के लिए कृपया नए संस्करण में एप्लिकेशन अपडेट करें।</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>

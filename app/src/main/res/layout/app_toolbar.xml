@@ -39,7 +39,7 @@
                 android:gravity="center"
                 android:lines="2"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/medium_text" />
+                android:textSize="@dimen/text_size_16" />
 
             <ImageView
                 android:id="@+id/toolbar_more_action"
