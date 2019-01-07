@@ -82,6 +82,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
         initViews();
         profilePresenter = new ProfileActivityPresenter(this);
+        profilePresenter.getOrganizations();
     }
 
     private void initViews() {
@@ -452,7 +453,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     }
 
     @Override
-    public <T> void gotoNextScreen(T data) {
+    public <T> void showNextScreen(T data) {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();

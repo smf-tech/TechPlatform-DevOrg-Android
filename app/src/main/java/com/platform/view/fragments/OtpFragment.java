@@ -299,7 +299,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
     }
 
     @Override
-    public <T> void gotoNextScreen(T data) {
+    public <T> void showNextScreen(T data) {
         if (data != null) {
             try {
                 Util.saveUserMobileInPref(loginInfo.getMobileNumber());
@@ -314,7 +314,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e(TAG, "Exception :: OtpFragment : gotoNextScreen");
+                Log.e(TAG, "Exception :: OtpFragment : showNextScreen");
             }
         }
     }

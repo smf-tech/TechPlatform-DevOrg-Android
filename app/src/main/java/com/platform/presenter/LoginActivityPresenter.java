@@ -42,7 +42,7 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
 
         Login login = new Gson().fromJson(response, Login.class);
         loginActivity.get().hideProgressBar();
-        loginActivity.get().gotoNextScreen(login);
+        loginActivity.get().showNextScreen(login);
     }
 
     @Override

@@ -122,7 +122,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
     }
 
     @Override
-    public <T> void gotoNextScreen(T data) {
+    public <T> void showNextScreen(T data) {
 
     }
 

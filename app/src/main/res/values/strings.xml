@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Platform</string>
+    <string name="app_name_ss">Sujalam Suphalam</string>
     <string name="content_description">Description</string>
     <string name="back_string">Please click BACK again to exit</string>
     <string name="select_lang">Select Language</string>
@@ -87,6 +88,9 @@
     <string name="rate_us">Rate Us</string>
     <string name="call_us">Call Us</string>
     <string name="logout">Logout</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+    <string name="app_version">App Version</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>

@@ -1,5 +1,7 @@
 package com.platform.request;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -18,10 +20,46 @@ import org.json.JSONObject;
 
 public class ProfileRequestCall {
 
+    @SuppressWarnings("CanBeFinal")
+    private Gson gson;
     private PlatformRequestCallListener listener;
+    private final String TAG = ProfileRequestCall.class.getName();
+
+    public ProfileRequestCall() {
+        gson = new GsonBuilder().serializeNulls().create();
+    }
 
     public void setListener(PlatformRequestCallListener listener) {
         this.listener = listener;
+    }
+
+    public void getOrganizations() {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.i(TAG, "Org Response:" + res);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
+
+        final String getOrgUrl = Urls.BASE_URL + Urls.Profile.GET_ORGANIZATION;
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
     public void submitUserProfile(UserInfo userInfo) {
@@ -39,9 +77,8 @@ public class ProfileRequestCall {
 
         Response.ErrorListener profileErrorListener = error -> listener.onErrorListener(error);
 
-        Gson gson = new GsonBuilder().serializeNulls().create();
         final String submitProfileUrl = Urls.BASE_URL
-                + String.format(Urls.Login.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
+                + String.format(Urls.Profile.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,

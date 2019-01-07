@@ -186,7 +186,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     @Override
-    public <T> void gotoNextScreen(T data) {
+    public <T> void showNextScreen(T data) {
         if (data != null) {
             loginInfo.setOneTimePassword(String.valueOf(((Login) data).getData().getOtp()));
 
@@ -195,7 +195,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                 intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
                 startActivity(intent);
             } catch (Exception e) {
-                Log.e(TAG, "Exception :: LoginActivity : gotoNextScreen");
+                Log.e(TAG, "Exception :: LoginActivity : showNextScreen");
                 e.printStackTrace();
             }
         }

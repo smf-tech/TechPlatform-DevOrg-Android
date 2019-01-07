@@ -3,6 +3,7 @@ package com.platform.utility;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Environment;
@@ -208,5 +209,19 @@ public class Util {
         } else {
             Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public static String getAppVersion() {
+        String result = "";
+        try {
+            result = Platform.getInstance().getPackageManager()
+                    .getPackageInfo(Platform.getInstance().getPackageName(), 0)
+                    .versionName;
+            result = result.replaceAll("[a-zA-Z]|-", "");
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("TAG", e.getMessage());
+        }
+
+        return result;
     }
 }

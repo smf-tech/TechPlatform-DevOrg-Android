@@ -60,7 +60,7 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
         }
 
         otpFragment.get().hideProgressBar();
-        otpFragment.get().gotoNextScreen(login);
+        otpFragment.get().showNextScreen(login);
     }
 
     @Override

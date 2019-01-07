@@ -12,6 +12,11 @@
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
 
+        <include
+            layout="@layout/home_header_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <android.support.design.widget.NavigationView
             android:id="@+id/home_menu_view"
             android:layout_width="wrap_content"

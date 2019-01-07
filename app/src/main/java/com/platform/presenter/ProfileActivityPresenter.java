@@ -31,6 +31,12 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
         requestCall.submitUserProfile(userInfo);
     }
 
+    public void getOrganizations() {
+        ProfileRequestCall requestCall = new ProfileRequestCall();
+        requestCall.setListener(this);
+        requestCall.getOrganizations();
+    }
+
     @Override
     public void onSuccessListener(String response) {
         UserInfo userInfo = new Gson().fromJson(response, UserInfo.class);
@@ -39,7 +45,7 @@ public class ProfileActivityPresenter implements PlatformRequestCallListener {
         Util.saveUserObjectInPref(response);
 
         profileActivity.get().hideProgressBar();
-        profileActivity.get().gotoNextScreen(userInfo);
+        profileActivity.get().showNextScreen(userInfo);
     }
 
     @Override
