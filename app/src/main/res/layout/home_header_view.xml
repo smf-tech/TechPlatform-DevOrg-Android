@@ -37,7 +37,7 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_05dp"
-                android:src="@drawable/ic_bell" />
+                android:src="@mipmap/ic_bell" />
 
             <TextView
                 android:id="@+id/unread_notification_count"
@@ -46,7 +46,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/dimen_07dp"
                 android:layout_marginEnd="@dimen/dimen_07dp"
-                android:background="@drawable/circle_bg_red"
+                android:background="@drawable/bg_circle_red"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_10"

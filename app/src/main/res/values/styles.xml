@@ -20,7 +20,7 @@
     <style name="RegistrationTextInputLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/grey_box</item>
+        <item name="android:background">@drawable/bg_grey_box</item>
         <item name="android:layout_marginStart">@dimen/dimen_10dp</item>
         <item name="android:layout_marginEnd">@dimen/dimen_10dp</item>
         <item name="android:layout_marginTop">@dimen/dimen_10dp</item>
@@ -59,7 +59,7 @@
     <style name="FormSpinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_45dp</item>
-        <item name="android:background">@drawable/grey_box</item>
+        <item name="android:background">@drawable/bg_grey_box</item>
         <item name="android:layout_marginStart">@dimen/dimen_10dp</item>
         <item name="android:layout_marginEnd">@dimen/dimen_10dp</item>
         <item name="android:layout_marginTop">@dimen/dimen_05dp</item>

@@ -142,7 +142,7 @@
                     android:layout_marginTop="@dimen/dimen_05dp"
                     android:layout_weight="2"
                     android:contentDescription="@string/content_description"
-                    android:src="@drawable/ic_refresh" />
+                    android:src="@mipmap/ic_refresh" />
             </LinearLayout>
 
             <!--Address-->
@@ -313,7 +313,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/add" />
+                android:src="@mipmap/add_img" />
 
             <TextView
                 style="@style/FormLabel"

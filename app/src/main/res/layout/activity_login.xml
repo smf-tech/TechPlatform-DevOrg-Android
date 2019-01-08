@@ -22,7 +22,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/app_logo" />
+                android:src="@mipmap/app_logo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,10 +63,10 @@
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/dimen_10dp"
-                        android:background="@drawable/transparent_grey_box_radius"
+                        android:background="@drawable/bg_transparent_grey_box"
                         android:digits="0123456789"
                         android:drawablePadding="@dimen/dimen_10dp"
-                        android:drawableStart="@drawable/ic_call"
+                        android:drawableStart="@mipmap/ic_call"
                         android:gravity="center_vertical"
                         android:hint="@string/label_mobile_no"
                         android:inputType="phone"
@@ -83,7 +83,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/dimen_10dp"
-                        android:background="@drawable/transparent_grey_box_radius"
+                        android:background="@drawable/bg_transparent_grey_box"
                         android:digits="0123456789"
                         android:drawablePadding="@dimen/dimen_10dp"
                         android:drawableStart="@android:drawable/ic_lock_lock"
@@ -136,7 +136,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dimen_15dp"
                     android:drawablePadding="@dimen/dimen_10dp"
-                    android:drawableStart="@drawable/alarm_clock"
+                    android:drawableStart="@mipmap/ic_alarm_clock"
                     android:gravity="center_horizontal"
                     android:text="@string/label_time"
                     android:textColor="@color/colorPrimaryDark"
@@ -148,7 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_15dp"
-                    android:background="@drawable/opt_selector"
+                    android:background="@drawable/selector_resend_otp"
                     android:gravity="center_horizontal"
                     android:text="@string/resend"
                     android:textColor="@color/colorPrimaryDark"

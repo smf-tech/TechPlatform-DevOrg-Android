@@ -64,6 +64,8 @@
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
     <string name="label_select">निवडा</string>
     <string name="title_select_project">प्रकल्प निवडा</string>
+    <string name="approve_profile">आपण अद्याप मंजूर नाही.</string>
+    <!--<string name="approve_profile2">तुम्हाला मान्यता देईल.</string>-->
 
     <string name="title_choose_picture">चित्र निवडा</string>
     <string name="label_gallery">गॅलरी</string>
@@ -91,6 +93,7 @@
     <string name="drawer_open">ड्रॉवर उघडा</string>
     <string name="drawer_close">ड्रॉवर बंद करा</string>
     <string name="app_version">अॅप आवृत्ती</string>
+    <string name="locked">लॉक</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">काहीतरी चूक झाली</string>
