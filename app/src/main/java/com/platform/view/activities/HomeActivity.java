@@ -9,12 +9,16 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 
@@ -49,6 +53,14 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         View headerLayout = navigationView.getHeaderView(0);
         TextView versionName = headerLayout.findViewById(R.id.menu_version_name);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_home_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -104,5 +116,66 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_lang:
+                showLanguageChangeDialog();
+                return true;
+
+            case R.id.action_profile:
+                return true;
+
+            case R.id.action_update_user_data:
+                return true;
+
+            case R.id.action_logout:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showLanguageChangeDialog() {
+        final String[] items = {"English", "मराठी", "हिंदी "};
+
+        int checkId = 0;
+        if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
+            checkId = 1;
+        } else if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_HINDI)) {
+            checkId = 2;
+        }
+
+        AlertDialog languageSelectionDialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.select_lang))
+                .setCancelable(true)
+                .setSingleChoiceItems(items, checkId, (dialogInterface, i) -> {
+                })
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    ListView listView = ((AlertDialog) dialog).getListView();
+                    switch (listView.getCheckedItemPosition()) {
+                        case 0:
+                            Util.setLocaleLanguageCode(Constants.App.LANGUAGE_ENGLISH);
+                            break;
+
+                        case 1:
+                            Util.setLocaleLanguageCode(Constants.App.LANGUAGE_MARATHI);
+                            break;
+
+                        case 2:
+                            Util.setLocaleLanguageCode(Constants.App.LANGUAGE_HINDI);
+                            break;
+                    }
+
+                    Util.setFirstTimeLaunch(false);
+                    dialog.dismiss();
+                    finish();
+                    startActivity(getIntent());
+                }).create();
+
+        languageSelectionDialog.show();
     }
 }

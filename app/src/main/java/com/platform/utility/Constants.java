@@ -12,6 +12,7 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
+    public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static class App {

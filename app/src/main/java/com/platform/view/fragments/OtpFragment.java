@@ -25,7 +25,7 @@ import com.platform.models.login.LoginInfo;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
-import com.platform.utility.SmsReceiver;
+import com.platform.receivers.SmsReceiver;
 import com.platform.utility.Util;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
