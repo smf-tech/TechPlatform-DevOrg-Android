@@ -14,8 +14,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,9 +29,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.listeners.PlatformTaskListener;
+import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.UserInfo;
 import com.platform.models.login.LoginInfo;
+import com.platform.models.profile.Jurisdiction;
+import com.platform.models.profile.JurisdictionLevel;
+import com.platform.models.profile.Organization;
+import com.platform.models.profile.OrganizationProject;
+import com.platform.models.profile.OrganizationRole;
+import com.platform.models.profile.State;
 import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -40,8 +48,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
-public class ProfileActivity extends BaseActivity implements PlatformTaskListener,
+public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private EditText etUserFirstName;
@@ -67,13 +76,16 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
 
     private String userGender = "Male";
     private String selectedProjects = "";
-    private ArrayList<String> projectsList;
+    private ArrayList<String> projectsList = new ArrayList<>();
 
     private boolean[] projectSelection = null;
 
     private Uri outputUri;
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
+
+    private List<Organization> orgs = new ArrayList<>();
+    private List<State> states = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +95,7 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         initViews();
         profilePresenter = new ProfileActivityPresenter(this);
         profilePresenter.getOrganizations();
+        profilePresenter.getStates();
     }
 
     private void initViews() {
@@ -294,11 +307,13 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
-//        } else if (etUserEmailId.getText().toString().trim().length() == 0 &&
-//                !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
-//            msg = getResources().getString(R.string.msg_enter_valid_email_id);
-//        } else if (etUserProject.getText().toString().trim().equals("")) {
-//            msg = getString(R.string.msg_select_project);
+        } else if (etUserEmailId.getText().toString().trim().length() == 0 &&
+                !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
+            msg = getResources().getString(R.string.msg_enter_valid_email_id);
+        } else if (TextUtils.isEmpty(userGender)) {
+            msg = getString(R.string.msg_select_gender);
+        } else if (etUserProject.getText().toString().trim().equals("")) {
+            msg = getString(R.string.msg_select_project);
         }
 
         if (TextUtils.isEmpty(msg)) {
@@ -412,12 +427,24 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.sp_user_organization:
+                if (orgs != null && !orgs.isEmpty() && orgs.get(i) != null && !TextUtils.isEmpty(orgs.get(i).getId())) {
+                    profilePresenter.getOrganizationProjects(orgs.get(i).getId());
+                    profilePresenter.getOrganizationRoles(orgs.get(i).getId());
+                }
                 break;
 
             case R.id.sp_user_role:
                 break;
 
             case R.id.sp_user_state:
+                if (states != null && !states.isEmpty() && states.get(i) != null && states.get(i).getJurisdictions() != null
+                        && !states.get(i).getJurisdictions().isEmpty() && states.get(i).getJurisdictions().size() > 0) {
+                    for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()
+                            ) {
+                        profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
+                                jurisdiction.getLevel());
+                    }
+                }
                 break;
 
             case R.id.sp_user_district:
@@ -457,6 +484,98 @@ public class ProfileActivity extends BaseActivity implements PlatformTaskListene
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showOrganizations(List<Organization> organizations) {
+        this.orgs = organizations;
+        List<String> orgs = new ArrayList<>();
+        for (int i = 0; i < organizations.size(); i++) {
+            orgs.add(organizations.get(i).getOrgName());
+        }
+        ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, orgs);
+        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spOrganization.setAdapter(a);
+
+    }
+
+    @Override
+    public void showOrganizationProjects(List<OrganizationProject> organizationProjects) {
+        if (organizationProjects != null && !organizationProjects.isEmpty()) {
+            for (OrganizationProject organizationProject :
+                    organizationProjects) {
+                projectsList.add(organizationProject.getOrgProjectName());
+            }
+        }
+    }
+
+    @Override
+    public void showOrganizationRoles(List<OrganizationRole> organizationRoles) {
+        List<String> orgRoles = new ArrayList<>();
+        for (int i = 0; i < organizationRoles.size(); i++) {
+            orgRoles.add(organizationRoles.get(i).getOrgName());
+        }
+        ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, orgRoles);
+        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spRole.setAdapter(a);
+    }
+
+    @Override
+    public void showStates(List<State> states) {
+        this.states = states;
+        List<String> stateNames = new ArrayList<>();
+        for (int i = 0; i < states.size(); i++) {
+            stateNames.add(states.get(i).getOrgName());
+        }
+        ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, stateNames);
+        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spState.setAdapter(a);
+    }
+
+    @Override
+    public void showJurisdictionLevel(List<JurisdictionLevel> jurisdictionLevels, int level) {
+        switch (level) {
+            case 1:
+                List<String> districts = new ArrayList<>();
+                for (JurisdictionLevel jurisdictionLevel :
+                        jurisdictionLevels) {
+                    districts.add(jurisdictionLevel.getJurisdictionLevelName());
+                }
+                ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, districts);
+                a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spDistrict.setAdapter(a);
+                break;
+            case 2:
+                List<String> talukas = new ArrayList<>();
+                for (JurisdictionLevel jurisdictionLevel :
+                        jurisdictionLevels) {
+                    talukas.add(jurisdictionLevel.getJurisdictionLevelName());
+                }
+                ArrayAdapter<String> a1 = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, talukas);
+                a1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spTaluka.setAdapter(a1);
+                break;
+            case 3:
+                List<String> clusters = new ArrayList<>();
+                for (JurisdictionLevel jurisdictionLevel :
+                        jurisdictionLevels) {
+                    clusters.add(jurisdictionLevel.getJurisdictionLevelName());
+                }
+                ArrayAdapter<String> a2 = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, clusters);
+                a2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spCluster.setAdapter(a2);
+                break;
+            case 4:
+                List<String> villages = new ArrayList<>();
+                for (JurisdictionLevel jurisdictionLevel :
+                        jurisdictionLevels) {
+                    villages.add(jurisdictionLevel.getJurisdictionLevelName());
+                }
+                ArrayAdapter<String> a3 = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, villages);
+                a3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spVillage.setAdapter(a3);
+                break;
+        }
     }
 
     @Override
