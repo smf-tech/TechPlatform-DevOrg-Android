@@ -18,4 +18,8 @@ public class Urls {
         public static final String GET_STATES = "api/states";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s";
     }
+
+    public class Home {
+        public static final String GET_MODULES = "api/modules/%1$s/%2$s";
+    }
 }

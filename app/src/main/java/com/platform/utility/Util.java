@@ -120,7 +120,7 @@ public class Util {
         if (isTokenPresent) {
             Login loginObj = getLoginObjectFromPref();
             headers.put(Constants.Login.AUTHORIZATION,
-                    "Bearer " + loginObj.getData().getAccessToken());
+                    "Bearer " + loginObj.getLoginData().getAccessToken());
         }
 
         return headers;

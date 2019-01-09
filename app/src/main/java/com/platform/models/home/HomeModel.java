@@ -3,10 +3,19 @@ package com.platform.models.home;
 @SuppressWarnings("unused")
 public class HomeModel {
 
+    private String moduleId;
     private String moduleName;
     private Integer moduleIcon;
     private Class<?> destination;
     private Boolean isAccessible;
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
 
     public String getModuleName() {
         return moduleName;

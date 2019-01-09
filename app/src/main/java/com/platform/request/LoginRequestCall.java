@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.models.Model;
 import com.platform.models.login.LoginInfo;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -62,7 +61,7 @@ public class LoginRequestCall {
 
     public void resendOtp(LoginInfo loginInfo) {
 
-        Response.Listener<Model> resendOTPResponseListener = response -> {
+        Response.Listener<JSONObject> resendOTPResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
@@ -81,9 +80,9 @@ public class LoginRequestCall {
         final String resendOtpUrl = Urls.BASE_URL
                 + String.format(Urls.Login.GENERATE_OTP, loginInfo.getMobileNumber());
 
-        GsonRequestFactory<Model> gsonRequest = new GsonRequestFactory<>(Request.Method.GET,
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(Request.Method.GET,
                 resendOtpUrl,
-                new TypeToken<Model>() {
+                new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
                 resendOTPResponseListener,

@@ -1,21 +1,23 @@
-package com.platform.models.login;
+package com.platform.models.home;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
 @SuppressWarnings("unused")
-public class Login implements Serializable {
+public class Home {
+
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("data")
     @Expose
-    private LoginData loginData;
+    private HomeData data;
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("user_approve_status")
+    @Expose
+    private String userApproveStatus;
 
     public String getStatus() {
         return status;
@@ -25,12 +27,12 @@ public class Login implements Serializable {
         this.status = status;
     }
 
-    public LoginData getLoginData() {
-        return loginData;
+    public HomeData getHomeData() {
+        return data;
     }
 
-    public void setLoginData(LoginData loginData) {
-        this.loginData = loginData;
+    public void setHomeData(HomeData data) {
+        this.data = data;
     }
 
     public String getMessage() {
@@ -39,5 +41,13 @@ public class Login implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getUserApproveStatus() {
+        return userApproveStatus;
+    }
+
+    public void setUserApproveStatus(String userApproveStatus) {
+        this.userApproveStatus = userApproveStatus;
     }
 }

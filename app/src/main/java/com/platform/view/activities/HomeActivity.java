@@ -23,29 +23,44 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.UserInfo;
+import com.platform.models.home.Home;
 import com.platform.models.home.HomeModel;
+import com.platform.models.home.Modules;
+import com.platform.presenter.HomeActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 import com.platform.view.adapters.HomeAdapter;
+import com.platform.view.fragments.PMFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private AlertDialog dialogNotApproved;
+    private HomeActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        presenter = new HomeActivityPresenter(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         dialogNotApproved = new AlertDialog.Builder(this).create();
         initMenuView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (presenter != null) {
+            presenter.getModules();
+        }
     }
 
     private void initMenuView() {
@@ -66,16 +81,25 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         View headerLayout = navigationView.getHeaderView(0);
         TextView versionName = headerLayout.findViewById(R.id.menu_version_name);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
-
-        initViews();
     }
 
     @SuppressWarnings("deprecation")
-    private void initViews() {
-        UserInfo userInfo = Util.getUserObjectFromPref();
-        if (userInfo != null) {
-            if (userInfo.getApproveStatus().equalsIgnoreCase("pending")) {
+    private void initViews(Home data) {
+        if (data != null) {
+            ArrayList<HomeModel> modelItemList = new ArrayList<>();
+
+            if (data.getUserApproveStatus().equalsIgnoreCase("pending")) {
                 showApprovedDialog();
+
+                List<Modules> defaultModules = data.getHomeData().getDefaultModules();
+                for (Modules modules : defaultModules) {
+                    modelItemList.add(setClass(modules, false));
+                }
+            } else {
+                List<Modules> defaultModules = data.getHomeData().getDefaultModules();
+                for (Modules modules : defaultModules) {
+                    modelItemList.add(setClass(modules, true));
+                }
             }
 
             RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -89,9 +113,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             gridLayoutManager.setAutoMeasureEnabled(true);
             recyclerView.setLayoutManager(gridLayoutManager);
 
-            ArrayList<HomeModel> menuList = new ArrayList<>();
-            HomeAdapter mAdapter = new HomeAdapter(menuList, HomeActivity.this);
-            recyclerView.setAdapter(mAdapter);
+            HomeAdapter homeAdapter = new HomeAdapter(modelItemList, HomeActivity.this);
+            recyclerView.setAdapter(homeAdapter);
         }
     }
 
@@ -117,6 +140,22 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         } catch (Exception e) {
             Log.e("Error in showing dialog", e.getMessage());
         }
+    }
+
+    private HomeModel setClass(Modules module, Boolean isAccessible) {
+        HomeModel homeModel = new HomeModel();
+        homeModel.setModuleId(module.getId());
+        homeModel.setAccessible(isAccessible);
+
+        switch (module.getName()) {
+            case Constants.Home.Programme_Management:
+                homeModel.setModuleName(getString(R.string.programme_management));
+                homeModel.setModuleIcon(R.mipmap.ic_program_mangement);
+                homeModel.setDestination(PMFragment.class);
+                break;
+        }
+
+        return homeModel;
     }
 
     @Override
@@ -153,7 +192,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     public <T> void showNextScreen(T data) {
-
+        initViews((Home) data);
     }
 
     @Override

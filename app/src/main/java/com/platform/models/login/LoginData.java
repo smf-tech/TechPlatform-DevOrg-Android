@@ -1,10 +1,10 @@
-package com.platform.models;
+package com.platform.models.login;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
-public class Data {
+public class LoginData {
 
     @SerializedName("otp")
     @Expose
