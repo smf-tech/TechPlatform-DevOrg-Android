@@ -7,6 +7,7 @@ public class Constants {
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
+    public static final String PENDING = "pending";
     public static final String RESULT_CODE = "ResultCode";
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;

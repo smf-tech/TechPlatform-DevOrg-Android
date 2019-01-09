@@ -518,7 +518,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public void showOrganizationRoles(List<OrganizationRole> organizationRoles) {
         List<String> orgRoles = new ArrayList<>();
         for (int i = 0; i < organizationRoles.size(); i++) {
-            orgRoles.add(organizationRoles.get(i).getOrgName());
+            orgRoles.add(organizationRoles.get(i).getDisplayName());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,

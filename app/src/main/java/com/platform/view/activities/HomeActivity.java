@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -68,7 +69,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
         title.setText(R.string.app_name_ss);
 
-        final DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
@@ -88,7 +89,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         if (data != null) {
             ArrayList<HomeModel> modelItemList = new ArrayList<>();
 
-            if (data.getUserApproveStatus().equalsIgnoreCase("pending")) {
+            if (data.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING)) {
                 showApprovedDialog();
 
                 List<Modules> defaultModules = data.getHomeData().getDefaultModules();
@@ -123,7 +124,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             dialogNotApproved.dismiss();
         }
 
-        dialogNotApproved.setTitle(getString(R.string.app_name));
+        dialogNotApproved.setTitle(getString(R.string.app_name_ss));
         String message = getString(R.string.approve_profile);
         dialogNotApproved.setMessage(message);
 
@@ -227,7 +228,24 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+        switch (menuItem.getItemId()) {
+            case R.id.action_lang:
+                showLanguageChangeDialog();
+                break;
+
+            case R.id.action_profile:
+                break;
+
+            case R.id.action_update_user_data:
+                break;
+
+            case R.id.action_logout:
+                break;
+        }
+
+        DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
