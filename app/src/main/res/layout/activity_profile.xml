@@ -277,11 +277,13 @@
 
             <!--Cluster-->
             <TextView
+                android:visibility="gone"
                 style="@style/FormLabel"
                 android:text="@string/mandatory_cluster" />
 
             <Spinner
                 android:id="@+id/sp_user_cluster"
+                android:visibility="gone"
                 style="@style/FormSpinner"
                 android:prompt="@string/cluster" />
 
@@ -297,10 +299,12 @@
 
             <!--School-->
             <TextView
+                android:visibility="gone"
                 style="@style/FormLabel"
                 android:text="@string/mandatory_school" />
 
             <Spinner
+                android:visibility="gone"
                 android:id="@+id/sp_user_structure"
                 style="@style/FormSpinner"
                 android:prompt="@string/school" />

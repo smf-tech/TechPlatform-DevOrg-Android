@@ -10,7 +10,7 @@ public interface ProfileRequestCallListener {
 
     void onStatesFetched(String response);
 
-    void onJurisdictionFetched(String response);
+    void onJurisdictionFetched(String response, int level);
 
     void onOrganizationProjectsFetched(String response);
 

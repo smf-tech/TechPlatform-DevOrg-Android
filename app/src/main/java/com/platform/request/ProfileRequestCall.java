@@ -153,13 +153,13 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getJurisdictionLevelData(String stateId, int level) {
+    public void getJurisdictionLevelData(String stateId, final int level) {
         Response.Listener<JSONObject> jurisdictionSuccessListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.i(TAG, "API Jurisdiction Response:" + res);
-                    listener.onJurisdictionFetched(res);
+                    listener.onJurisdictionFetched(res, level);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

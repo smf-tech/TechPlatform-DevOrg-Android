@@ -7,6 +7,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.UserInfo;
+import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
@@ -98,8 +99,13 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     }
 
     @Override
-    public void onJurisdictionFetched(String response) {
-
+    public void onJurisdictionFetched(String response, int level) {
+        if (!TextUtils.isEmpty(response)) {
+            JurisdictionLevelResponse jurisdictionLevelResponse = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+            if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty() && jurisdictionLevelResponse.getData().size() > 0) {
+                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
+            }
+        }
     }
 
     @Override
