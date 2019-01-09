@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class OrganizationRolesResponse {
     @SerializedName("status")
     private String status;

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
@@ -200,7 +201,7 @@ public class Util {
     }
 
     public static <T> void showToast(String msg, T context) {
-        if (msg == null || msg.isEmpty()) {
+        if (TextUtils.isEmpty(msg)) {
             msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
         }
 

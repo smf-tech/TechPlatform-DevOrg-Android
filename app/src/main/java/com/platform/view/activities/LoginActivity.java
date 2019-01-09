@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -216,7 +217,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
     private boolean isAllInputsValid() {
         boolean isInputValid = true;
-        if (getUserMobileNumber().isEmpty()) {
+        if (TextUtils.isEmpty(getUserMobileNumber())) {
             Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_empty));
             isInputValid = false;
         } else if (getUserMobileNumber().trim().length() < 10) {

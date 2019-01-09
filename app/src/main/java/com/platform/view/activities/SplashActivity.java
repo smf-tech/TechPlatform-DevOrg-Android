@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.platform.R;
 import com.platform.utility.Util;
@@ -22,8 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Intent intent;
             // Check user profile available or not
-            if (Util.getUserObjectFromPref().getId() == null ||
-                    Util.getUserObjectFromPref().getId().isEmpty()) {
+            if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
 
                 // Check user has registered mobile number or not
                 if (Util.getLoginObjectFromPref().getLoginData() == null ||

@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -51,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String messageTitle, String messageBody) {
         Intent intent = null;
-        if (remoteMessageId == null || remoteMessageId.isEmpty()) {
+        if (TextUtils.isEmpty(remoteMessageId)) {
             intent = new Intent(this, SplashActivity.class);
         } else {
             Log.i(TAG, "Create message" + messageTitle + messageBody);

@@ -82,7 +82,9 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     public void onOrganizationsFetched(String response) {
         if (!TextUtils.isEmpty(response)) {
             OrganizationResponse organizationResponse = new Gson().fromJson(response, OrganizationResponse.class);
-            if (organizationResponse != null && organizationResponse.getData() != null && !organizationResponse.getData().isEmpty() && organizationResponse.getData().size() > 0) {
+            if (organizationResponse != null && organizationResponse.getData() != null
+                    && !organizationResponse.getData().isEmpty()
+                    && organizationResponse.getData().size() > 0) {
                 profileActivity.get().showOrganizations(organizationResponse.getData());
             }
         }
@@ -92,7 +94,8 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     public void onStatesFetched(String response) {
         if (!TextUtils.isEmpty(response)) {
             StateResponse stateResponse = new Gson().fromJson(response, StateResponse.class);
-            if (stateResponse != null && stateResponse.getData() != null && !stateResponse.getData().isEmpty() && stateResponse.getData().size() > 0) {
+            if (stateResponse != null && stateResponse.getData() != null
+                    && !stateResponse.getData().isEmpty() && stateResponse.getData().size() > 0) {
                 profileActivity.get().showStates(stateResponse.getData());
             }
         }
@@ -101,8 +104,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onJurisdictionFetched(String response, int level) {
         if (!TextUtils.isEmpty(response)) {
-            JurisdictionLevelResponse jurisdictionLevelResponse = new Gson().fromJson(response, JurisdictionLevelResponse.class);
-            if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty() && jurisdictionLevelResponse.getData().size() > 0) {
+            JurisdictionLevelResponse jurisdictionLevelResponse
+                    = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+            if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
+                    && !jurisdictionLevelResponse.getData().isEmpty()
+                    && jurisdictionLevelResponse.getData().size() > 0) {
                 profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
             }
         }
@@ -111,8 +117,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onOrganizationProjectsFetched(String response) {
         if (!TextUtils.isEmpty(response)) {
-            OrganizationProjectsResponse organizationProjectsResponse = new Gson().fromJson(response, OrganizationProjectsResponse.class);
-            if (organizationProjectsResponse != null && organizationProjectsResponse.getData() != null && !organizationProjectsResponse.getData().isEmpty() && organizationProjectsResponse.getData().size() > 0) {
+            OrganizationProjectsResponse organizationProjectsResponse
+                    = new Gson().fromJson(response, OrganizationProjectsResponse.class);
+            if (organizationProjectsResponse != null && organizationProjectsResponse.getData() != null
+                    && !organizationProjectsResponse.getData().isEmpty()
+                    && organizationProjectsResponse.getData().size() > 0) {
                 profileActivity.get().showOrganizationProjects(organizationProjectsResponse.getData());
             }
         }
@@ -121,8 +130,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onOrganizationRolesFetched(String response) {
         if (!TextUtils.isEmpty(response)) {
-            OrganizationRolesResponse organizationRolesResponse = new Gson().fromJson(response, OrganizationRolesResponse.class);
-            if (organizationRolesResponse != null && organizationRolesResponse.getData() != null && !organizationRolesResponse.getData().isEmpty() && organizationRolesResponse.getData().size() > 0) {
+            OrganizationRolesResponse organizationRolesResponse
+                    = new Gson().fromJson(response, OrganizationRolesResponse.class);
+            if (organizationRolesResponse != null && organizationRolesResponse.getData() != null
+                    && !organizationRolesResponse.getData().isEmpty()
+                    && organizationRolesResponse.getData().size() > 0) {
                 profileActivity.get().showOrganizationRoles(organizationRolesResponse.getData());
             }
         }

@@ -2,6 +2,7 @@ package com.platform.models.profile;
 
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class OrganizationProject {
     @SerializedName("_id")
     private String id;

@@ -77,9 +77,9 @@
     <string name="msg_enter_valid_mobile_no">Please enter 10 digit mobile number</string>
     <string name="msg_enter_valid_email_id"
         tools:keep="@string/msg_enter_valid_email_id">Please enter valid email address</string>
-    <string name="msg_select_gender">Please select Gender</string>
     <string name="msg_select_project"
         tools:keep="@string/msg_select_project">Please select project</string>
+    <string name="msg_select_gender">Please select gender</string>
 
     <!--Home Menu Items-->
     <string name="change_language">Change Language</string>

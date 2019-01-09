@@ -78,10 +78,12 @@ public class ProfileRequestCall {
 
         Response.ErrorListener orgProjectsErrorListener = error -> listener.onErrorListener(error);
 
-        final String getOrgProjUrl = Urls.BASE_URL + String.format(Urls.Profile.GET_ORGANIZATION_PROJECTS, orgId);
+        final String getOrgProjectUrl = Urls.BASE_URL
+                + String.format(Urls.Profile.GET_ORGANIZATION_PROJECTS, orgId);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
-                getOrgProjUrl,
+                getOrgProjectUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -108,10 +110,12 @@ public class ProfileRequestCall {
 
         Response.ErrorListener orgRolesErrorListener = error -> listener.onErrorListener(error);
 
-        final String getOrgProjUrl = Urls.BASE_URL + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId);
+        final String getOrgProjectUrl = Urls.BASE_URL
+                + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
-                getOrgProjUrl,
+                getOrgProjectUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -168,7 +172,9 @@ public class ProfileRequestCall {
 
         Response.ErrorListener jurisdictionErrorListener = error -> listener.onErrorListener(error);
 
-        final String getStateUrl = Urls.BASE_URL + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, stateId, level);
+        final String getStateUrl = Urls.BASE_URL
+                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, stateId, level);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getStateUrl,

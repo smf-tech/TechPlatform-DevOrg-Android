@@ -84,7 +84,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
 
-    private List<Organization> orgs = new ArrayList<>();
+    private List<Organization> organizations = new ArrayList<>();
     private List<State> states = new ArrayList<>();
 
     @Override
@@ -427,9 +427,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.sp_user_organization:
-                if (orgs != null && !orgs.isEmpty() && orgs.get(i) != null && !TextUtils.isEmpty(orgs.get(i).getId())) {
-                    profilePresenter.getOrganizationProjects(orgs.get(i).getId());
-                    profilePresenter.getOrganizationRoles(orgs.get(i).getId());
+                if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
+                        && !TextUtils.isEmpty(organizations.get(i).getId())) {
+                    profilePresenter.getOrganizationProjects(organizations.get(i).getId());
+                    profilePresenter.getOrganizationRoles(organizations.get(i).getId());
                 }
                 break;
 
@@ -437,10 +438,12 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 break;
 
             case R.id.sp_user_state:
-                if (states != null && !states.isEmpty() && states.get(i) != null && states.get(i).getJurisdictions() != null
-                        && !states.get(i).getJurisdictions().isEmpty() && states.get(i).getJurisdictions().size() > 0) {
-                    for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()
-                            ) {
+                if (states != null && !states.isEmpty() && states.get(i) != null
+                        && states.get(i).getJurisdictions() != null
+                        && !states.get(i).getJurisdictions().isEmpty()
+                        && states.get(i).getJurisdictions().size() > 0) {
+
+                    for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()) {
                         profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
                                 jurisdiction.getLevel());
                     }
@@ -488,14 +491,16 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public void showOrganizations(List<Organization> organizations) {
-        this.orgs = organizations;
-        List<String> orgs = new ArrayList<>();
+        this.organizations = organizations;
+        List<String> org = new ArrayList<>();
         for (int i = 0; i < organizations.size(); i++) {
-            orgs.add(organizations.get(i).getOrgName());
+            org.add(organizations.get(i).getOrgName());
         }
-        ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, orgs);
-        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spOrganization.setAdapter(a);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                android.R.layout.simple_spinner_item, org);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spOrganization.setAdapter(adapter);
 
     }
 
@@ -515,9 +520,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         for (int i = 0; i < organizationRoles.size(); i++) {
             orgRoles.add(organizationRoles.get(i).getOrgName());
         }
-        ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, orgRoles);
-        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spRole.setAdapter(a);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                android.R.layout.simple_spinner_item, orgRoles);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spRole.setAdapter(adapter);
     }
 
     @Override
@@ -527,9 +534,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         for (int i = 0; i < states.size(); i++) {
             stateNames.add(states.get(i).getOrgName());
         }
-        ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, stateNames);
-        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spState.setAdapter(a);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                android.R.layout.simple_spinner_item, stateNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spState.setAdapter(adapter);
     }
 
     @Override
@@ -541,39 +550,50 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         jurisdictionLevels) {
                     districts.add(jurisdictionLevel.getJurisdictionLevelName());
                 }
-                ArrayAdapter<String> a = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, districts);
-                a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spDistrict.setAdapter(a);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                        android.R.layout.simple_spinner_item, districts);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spDistrict.setAdapter(adapter);
                 break;
+
             case 2:
-                List<String> talukas = new ArrayList<>();
+                List<String> talukaList = new ArrayList<>();
                 for (JurisdictionLevel jurisdictionLevel :
                         jurisdictionLevels) {
-                    talukas.add(jurisdictionLevel.getJurisdictionLevelName());
+                    talukaList.add(jurisdictionLevel.getJurisdictionLevelName());
                 }
-                ArrayAdapter<String> a1 = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, talukas);
-                a1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spTaluka.setAdapter(a1);
+
+                ArrayAdapter<String> talukaAdapter = new ArrayAdapter<>(ProfileActivity.this,
+                        android.R.layout.simple_spinner_item, talukaList);
+                talukaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spTaluka.setAdapter(talukaAdapter);
                 break;
+
             case 3:
                 List<String> clusters = new ArrayList<>();
                 for (JurisdictionLevel jurisdictionLevel :
                         jurisdictionLevels) {
                     clusters.add(jurisdictionLevel.getJurisdictionLevelName());
                 }
-                ArrayAdapter<String> a2 = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, clusters);
-                a2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spCluster.setAdapter(a2);
+
+                ArrayAdapter<String> clusterAdapter = new ArrayAdapter<>(ProfileActivity.this,
+                        android.R.layout.simple_spinner_item, clusters);
+                clusterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spCluster.setAdapter(clusterAdapter);
                 break;
+
             case 4:
                 List<String> villages = new ArrayList<>();
                 for (JurisdictionLevel jurisdictionLevel :
                         jurisdictionLevels) {
                     villages.add(jurisdictionLevel.getJurisdictionLevelName());
                 }
-                ArrayAdapter<String> a3 = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, villages);
-                a3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spVillage.setAdapter(a3);
+
+                ArrayAdapter<String> villageAdapter = new ArrayAdapter<>(ProfileActivity.this,
+                        android.R.layout.simple_spinner_item, villages);
+                villageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spVillage.setAdapter(villageAdapter);
                 break;
         }
     }
