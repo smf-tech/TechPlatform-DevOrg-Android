@@ -64,6 +64,8 @@
     <string name="profile_pic">Add profile picture</string>
     <string name="label_select">Select</string>
     <string name="title_select_project">Select Project</string>
+    <string name="approve_profile">You are not approved yet.</string>
+    <!--<string name="approve_profile2">will approve you.</string>-->
 
     <string name="title_choose_picture">Choose Picture</string>
     <string name="label_gallery">Gallery</string>
@@ -91,6 +93,7 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="app_version">App Version</string>
+    <string name="locked">Locked</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>

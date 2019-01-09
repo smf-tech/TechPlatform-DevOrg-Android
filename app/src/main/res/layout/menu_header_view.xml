@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dimen_30dp"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/app_logo" />
+        android:src="@mipmap/app_logo" />
 
     <TextView
         android:id="@+id/menu_version_name"
