@@ -95,6 +95,9 @@
     <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="locked">बंद</string>
 
+    <!--Home-->
+    <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
+
     <!--App Error Message-->
     <string name="msg_something_went_wrong">कुछ गलत हो गया</string>
     <string name="msg_error_in_photo_gallery">गैलरी से फ़ोटो लेने में समस्या, फ़ोटो लेने के लिए कृपया कैमरे का उपयोग करें।</string>

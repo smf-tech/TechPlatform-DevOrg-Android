@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.login.Login;
 import com.platform.utility.Constants;
 import com.platform.utility.TokenRetryPolicy;
 import com.platform.utility.Urls;
@@ -22,15 +23,10 @@ import java.util.Map;
 public class RefreshToken implements PlatformRequestCallListener {
 
     private static final String TAG = RefreshToken.class.getName();
-
     private int retryCounter = 0;
     private TokenRetryPolicy tokenRetryPolicy;
 
-    public RefreshToken() {
-
-    }
-
-    public void refreshToken(final TokenRetryPolicy tokenRetryPolicy) {
+    public void refreshAccessToken(final TokenRetryPolicy tokenRetryPolicy) {
         this.tokenRetryPolicy = tokenRetryPolicy;
 
         Response.Listener<JSONObject> refreshTokenSuccessListener = response -> {
@@ -112,13 +108,16 @@ public class RefreshToken implements PlatformRequestCallListener {
 
     private JsonObject createRefreshTokenBodyParams() {
         JsonObject bodyParams = new JsonObject();
-
         bodyParams.addProperty(Constants.App.GRANT_TYPE, Constants.App.REFRESH_TOKEN);
         bodyParams.addProperty(Constants.App.CLIENT_ID, BuildConfig.CLIENT_ID);
         bodyParams.addProperty(Constants.App.CLIENT_SECRET, BuildConfig.CLIENT_SECRET);
-        //TODO: use refresh token
-        bodyParams.addProperty(Constants.App.REFRESH_TOKEN, "");
         bodyParams.addProperty(Constants.App.SCOPE, "*");
+
+        //use refresh token
+        Login login = Util.getLoginObjectFromPref();
+        if (login != null) {
+            bodyParams.addProperty(Constants.App.REFRESH_TOKEN, login.getLoginData().getRefreshToken());
+        }
 
         return bodyParams;
     }

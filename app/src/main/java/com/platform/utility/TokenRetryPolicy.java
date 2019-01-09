@@ -58,7 +58,7 @@ public class TokenRetryPolicy implements RetryPolicy {
                 currentRetryCount <= maxNumRetries) {
 
             currentRetryCount = maxNumRetries + 1;
-            new RefreshToken().refreshToken(this);
+            new RefreshToken().refreshAccessToken(this);
         }
 
         if (this.currentRetryCount >= this.maxNumRetries) {

@@ -57,6 +57,10 @@ public class Constants {
         public static final String USER_GENDER = "gender";
     }
 
+    public static class Home {
+        public static final String Programme_Management = "Forms";
+    }
+
     public static class FormsFactory {
         public static final String TEXT_TEMPLATE = "text";
     }

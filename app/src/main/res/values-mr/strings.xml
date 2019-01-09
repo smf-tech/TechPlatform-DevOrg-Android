@@ -95,6 +95,9 @@
     <string name="app_version">अॅप आवृत्ती</string>
     <string name="locked">लॉक</string>
 
+    <!--Home-->
+    <string name="programme_management">कार्यक्रम\nव्यवस्थापन</string>
+
     <!--App Error Message-->
     <string name="msg_something_went_wrong">काहीतरी चूक झाली</string>
     <string name="msg_error_in_photo_gallery">गॅलरीमधून फोटो घेण्यात समस्या, कृपया फोटो घेण्यासाठी कॅमेरा वापरा.</string>

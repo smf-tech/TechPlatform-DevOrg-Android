@@ -14,4 +14,8 @@ public class Urls {
         public static final String SUBMIT_PROFILE = "api/users/%1$s";
         public static final String GET_ORGANIZATION = "api/organizations";
     }
+
+    public class Home {
+        public static final String GET_MODULES = "api/modules/%1$s/%2$s";
+    }
 }

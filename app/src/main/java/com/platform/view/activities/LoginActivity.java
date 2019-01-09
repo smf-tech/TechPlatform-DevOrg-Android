@@ -187,8 +187,8 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     public <T> void showNextScreen(T data) {
-        if (data != null) {
-            loginInfo.setOneTimePassword(String.valueOf(((Login) data).getData().getOtp()));
+        if (data != null && ((Login) data).getLoginData() != null) {
+            loginInfo.setOneTimePassword(String.valueOf(((Login) data).getLoginData().getOtp()));
 
             try {
                 Intent intent = new Intent(this, OtpActivity.class);
