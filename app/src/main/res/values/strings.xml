@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Platform</string>
+    <string name="app_name" tools:keep="@string/app_name">Platform</string>
     <string name="app_name_ss">Sujalam Suphalam</string>
     <string name="content_description">Description</string>
     <string name="back_string">Please click BACK again to exit</string>

@@ -22,7 +22,7 @@
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name_ss"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">

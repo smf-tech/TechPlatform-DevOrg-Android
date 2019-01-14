@@ -52,7 +52,7 @@
                 android:layout_height="@dimen/dimen_40dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/content_description"
-                android:src="@mipmap/ic_unlocked" />
+                android:src="@drawable/ic_unlocked" />
 
             <TextView
                 android:layout_width="wrap_content"

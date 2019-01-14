@@ -150,7 +150,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         switch (module.getName()) {
             case Constants.Home.Programme_Management:
                 homeModel.setModuleName(getString(R.string.programme_management));
-                homeModel.setModuleIcon(R.mipmap.ic_program_mangement);
+                homeModel.setModuleIcon(R.drawable.ic_program_mangement);
                 homeModel.setDestination(PMActivity.class);
                 break;
         }
