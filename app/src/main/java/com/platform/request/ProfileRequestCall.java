@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
@@ -229,9 +230,20 @@ public class ProfileRequestCall {
             body.addProperty(Constants.Login.USER_M_NAME, userInfo.getUserMiddleName());
             body.addProperty(Constants.Login.USER_L_NAME, userInfo.getUserLastName());
             body.addProperty(Constants.Login.USER_BIRTH_DATE, userInfo.getUserBirthDate());
-            body.addProperty(Constants.Login.USER_EMAIL_ID, userInfo.getUserEmailId());
+            body.addProperty(Constants.Login.USER_EMAIL, userInfo.getUserEmailId());
             body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
+            body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getUserRoleId());
+            body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getUserOrgId());
+
+            JsonArray projectIdArray = new JsonArray();
+            String[] userProjectIds = userInfo.getUserProjectIds();
+            for (String projectId : userProjectIds) {
+                projectIdArray.add(projectId);
+            }
+            body.add(Constants.Login.USER_PROJECTS, projectIdArray);
         }
+
+        Log.i(TAG, "BODY: " + body);
         return body;
     }
 }

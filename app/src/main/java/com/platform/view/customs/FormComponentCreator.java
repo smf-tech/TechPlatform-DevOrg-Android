@@ -9,7 +9,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.platform.R;
-import com.platform.models.forms.FormData;
+import com.platform.models.forms.Elements;
+import com.platform.utility.Constants;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
@@ -24,7 +25,7 @@ public class FormComponentCreator {
         this.fragment = new WeakReference<>(fragment);
     }
 
-    public View textInputTemplate(final FormData formData) {
+    public View textInputTemplate(final Elements formData) {
 
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "View returned null");
@@ -56,8 +57,27 @@ public class FormComponentCreator {
         });
 
         TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
-        textInputLayout.setHint(formData.getName());
+        textInputLayout.setHint(formData.getTitle());
 
         return textTemplateView;
+    }
+
+    public synchronized Object[] dropDownTemplate(Elements formData) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "dropDownTemplate returned null");
+            return null;
+        }
+
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get());
+        View view = template.init(setFieldAsMandatory(formData.isRequired()));
+
+        if (formData.getChoices() != null) {
+            template.setListData(formData.getChoices());
+        }
+        return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
+    }
+
+    private String setFieldAsMandatory(boolean isRequired) {
+        return (isRequired ? " *" : "");
     }
 }

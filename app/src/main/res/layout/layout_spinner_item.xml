@@ -1,0 +1,13 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dropdown_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ellipsize="marquee"
+    android:paddingStart="@dimen/dimen_15dp"
+    android:paddingEnd="@dimen/dimen_15dp"
+    android:singleLine="true"
+    android:textAlignment="inherit"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:textColor="@color/black"
+    tools:ignore="PrivateResource" />

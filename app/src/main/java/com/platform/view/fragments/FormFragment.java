@@ -8,32 +8,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.forms.FormData;
+import com.platform.models.forms.Components;
+import com.platform.models.forms.Elements;
+import com.platform.models.forms.Form;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements PlatformTaskListener {
+public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
+
     private View viewFormFragment;
     private LinearLayout customFormView;
     private ProgressBar progressBar;
+
+    private Form formModel;
     private RelativeLayout progressBarLayout;
-    private ArrayList<FormData> formDataArrayList;
+    private List<Elements> formDataArrayList;
     private FormComponentCreator formComponentCreator;
 
     @Override
@@ -47,28 +51,20 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        String formData = getArguments().getString(Constants.PM.PROCESS_DETAILS);
+        formModel = new Gson().fromJson(formData, Form.class);
         initViews();
     }
 
     private void initViews() {
+        setActionbar(formModel.getData().get(0).getName());
         progressBarLayout = viewFormFragment.findViewById(R.id.gen_frag_progress_bar);
         progressBar = viewFormFragment.findViewById(R.id.pb_gen_form_fragment);
 
-        //TODO: Dummy data to test form generation
-        formDataArrayList = new ArrayList<>();
-        try {
-            JSONObject dummyData = new JSONObject("{\"pages\":[{\"name\":\"page1\",\"elements\":[{\"type\":\"text\",\"name\":\"Label-1\",\"isRequired\":true,\"maxLength\":25},{\"type\":\"text\",\"name\":\"Label-2\",\"inputType\":\"password\",\"maxLength\":10}]}]}");
-            JSONArray elements = dummyData.getJSONArray("pages").getJSONObject(0).getJSONArray("elements");
-            for (int i = 0; i < elements.length(); i++) {
-                JSONObject obj = elements.getJSONObject(i);
-                FormData fd = new FormData();
-                fd.setType(obj.getString("type"));
-                fd.setName(obj.getString("name"));
-                formDataArrayList.add(fd);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String formJson = formModel.getData().get(0).getJson();
+        Components components = new Gson().fromJson(formJson, Components.class);
+        formDataArrayList = components.getPages().get(0).getElements();
 
         if (formDataArrayList != null) {
             formComponentCreator = new FormComponentCreator(this);
@@ -76,10 +72,19 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
         }
     }
 
+    private void setActionbar(String Title) {
+        TextView toolbar_title = viewFormFragment.findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+
+        ImageView img_back = viewFormFragment.findViewById(R.id.toolbar_back_action);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+    }
+
     private void renderFormView() {
         customFormView = viewFormFragment.findViewById(R.id.ll_form_container);
 
-        for (FormData formData : formDataArrayList) {
+        for (Elements formData : formDataArrayList) {
             if (formData != null && !formData.getType().equals("")) {
 
                 String formDataType = formData.getType();
@@ -88,6 +93,12 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
                         Log.d(TAG, "TEXT_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.textInputTemplate(formData));
                         break;
+
+                        case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                            Log.d(TAG, "DROPDOWN_TEMPLATE");
+                            Object[] objects = formComponentCreator.dropDownTemplate(formData);
+                            addViewToMainContainer((View) objects[0]);
+                            break;
                 }
             }
         }
@@ -129,5 +140,13 @@ public class FormFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void showErrorMessage(String result) {
         Util.showToast(result, this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.toolbar_back_action:
+                break;
+        }
     }
 }

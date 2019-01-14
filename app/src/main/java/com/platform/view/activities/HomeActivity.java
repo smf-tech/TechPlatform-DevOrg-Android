@@ -32,7 +32,6 @@ import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 import com.platform.view.adapters.HomeAdapter;
-import com.platform.view.fragments.PMFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +151,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             case Constants.Home.Programme_Management:
                 homeModel.setModuleName(getString(R.string.programme_management));
                 homeModel.setModuleIcon(R.mipmap.ic_program_mangement);
-                homeModel.setDestination(PMFragment.class);
+                homeModel.setDestination(PMActivity.class);
                 break;
         }
 

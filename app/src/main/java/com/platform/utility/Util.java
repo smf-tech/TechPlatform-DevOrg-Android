@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -224,5 +226,20 @@ public class Util {
         }
 
         return result;
+    }
+
+    private static NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            return cm.getActiveNetworkInfo();
+        }
+
+        return null;
+    }
+
+    public static boolean isConnected(Context context) {
+        NetworkInfo activeNetwork = getNetworkInfo(context);
+        return activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
     }
 }

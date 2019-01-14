@@ -54,16 +54,26 @@ public class Constants {
         public static final String USER_M_NAME = "middleName";
         public static final String USER_L_NAME = "lastName";
         public static final String USER_BIRTH_DATE = "dob";
-        public static final String USER_EMAIL_ID = "email";
+        public static final String USER_EMAIL = "email";
         public static final String USER_GENDER = "gender";
+        public static final String USER_ROLE_ID = "role_id";
+        public static final String USER_ORG_ID = "org_id";
+        public static final String USER_PROJECTS = "projects";
     }
 
     public static class Home {
         public static final String Programme_Management = "Forms";
     }
 
+    public static class PM {
+        public static String PROCESS_NAME = "processName";
+        public static String PROCESS_ID = "processId";
+        public static String PROCESS_DETAILS = "processDetails";
+    }
+
     public static class FormsFactory {
         public static final String TEXT_TEMPLATE = "text";
+        public static final String DROPDOWN_TEMPLATE = "dropdown";
     }
 
     public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";

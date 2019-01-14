@@ -292,6 +292,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setUserBirthDate(String.valueOf(etUserBirthDate.getText()).trim());
             userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
+            userInfo.setUserRoleId("5c36ed50d503a3403f237f45");
+            userInfo.setUserOrgId("5c1b940ad503a31f360e1252");
+            userInfo.setUserProjectIds(new String[]{"5c372fdcf3542cb24061e07c"});
             userInfo.setUserGender(userGender);
 
             profilePresenter.submitProfile(userInfo);
@@ -525,7 +528,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 android.R.layout.simple_spinner_item, orgRoles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spRole.setAdapter(adapter);
-    }
+
+//        spR.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        }
 
     @Override
     public void showStates(List<State> states) {

@@ -2,13 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:focusable="true"
     android:focusableInTouchMode="true">
+
+    <include
+        android:id="@+id/gen_form_toolbar"
+        layout="@layout/app_toolbar" />
 
     <ScrollView
         android:id="@+id/sv_form_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/gen_form_toolbar"
         android:fillViewport="true">
 
         <LinearLayout

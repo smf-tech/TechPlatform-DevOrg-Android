@@ -49,6 +49,10 @@ public class UserInfo implements Parcelable {
     @Expose
     private String approveStatus;
 
+    private String userRoleId;
+    private String userOrgId;
+    private String[] userProjectIds;
+
     public UserInfo() {
 
     }
@@ -140,6 +144,30 @@ public class UserInfo implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public String getUserRoleId() {
+        return userRoleId;
+    }
+
+    public void setUserRoleId(String userRoleId) {
+        this.userRoleId = userRoleId;
+    }
+
+    public String getUserOrgId() {
+        return userOrgId;
+    }
+
+    public void setUserOrgId(String userOrgId) {
+        this.userOrgId = userOrgId;
+    }
+
+    public String[] getUserProjectIds() {
+        return userProjectIds;
+    }
+
+    public void setUserProjectIds(String[] userProjectIds) {
+        this.userProjectIds = userProjectIds;
     }
 
     @Override

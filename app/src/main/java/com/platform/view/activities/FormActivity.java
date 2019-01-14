@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.platform.R;
 import com.platform.presenter.FormActivityPresenter;
+import com.platform.utility.Constants;
 import com.platform.view.fragments.FormFragment;
 
 public class FormActivity extends BaseActivity {
@@ -25,7 +26,15 @@ public class FormActivity extends BaseActivity {
     }
 
     private void addFragment() {
+        Bundle bundle = new Bundle();
+
+        if (getIntent().getExtras() != null) {
+            String data = getIntent().getExtras().getString(Constants.PM.PROCESS_DETAILS);
+            bundle.putString(Constants.PM.PROCESS_DETAILS, data);
+        }
+
         fragment = new FormFragment();
+        fragment.setArguments(bundle);
 
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

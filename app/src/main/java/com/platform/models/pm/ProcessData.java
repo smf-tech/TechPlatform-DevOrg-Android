@@ -1,4 +1,4 @@
-package com.platform.models.forms;
+package com.platform.models.pm;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class FormData {
+public class ProcessData {
 
     @SerializedName("_id")
     @Expose
@@ -14,12 +14,6 @@ public class FormData {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("json")
-    @Expose
-    private String json;
-    @SerializedName("creator_id")
-    @Expose
-    private String creatorId;
     @SerializedName("active")
     @Expose
     private String active;
@@ -40,10 +34,7 @@ public class FormData {
     private String projectId;
     @SerializedName("microservice_id")
     @Expose
-    private String microServiceId;
-    @SerializedName("entity_id")
-    @Expose
-    private String entityId;
+    private String microserviceId;
 
     public String getId() {
         return id;
@@ -59,22 +50,6 @@ public class FormData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getJson() {
-        return json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
     }
 
     public String getActive() {
@@ -125,19 +100,11 @@ public class FormData {
         this.projectId = projectId;
     }
 
-    public String getMicroServiceId() {
-        return microServiceId;
+    public String getMicroserviceId() {
+        return microserviceId;
     }
 
-    public void setMicroServiceId(String microServiceId) {
-        this.microServiceId = microServiceId;
-    }
-
-    public String getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+    public void setMicroserviceId(String microserviceId) {
+        this.microserviceId = microserviceId;
     }
 }

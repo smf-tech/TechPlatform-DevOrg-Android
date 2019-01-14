@@ -10,4 +10,13 @@
         android:layout_height="0dp"
         android:layout_weight="2" />
 
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/pink"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_20" />
 </LinearLayout>

@@ -99,6 +99,10 @@
     <!--Home-->
     <string name="programme_management">Programme\nManagement</string>
 
+    <!--Program management-->
+    <string name="submit">Submit</string>
+    <string name="no_data_available">No data available</string>
+
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>
     <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>

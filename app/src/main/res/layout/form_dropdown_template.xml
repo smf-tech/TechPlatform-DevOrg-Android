@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_15dp"
+    android:paddingTop="@dimen/dimen_10dp"
+    android:paddingEnd="@dimen/dimen_15dp"
+    android:paddingBottom="@dimen/dimen_10dp"
+    tools:ignore="PrivateResource">
+
+    <TextView
+        android:id="@+id/dropdown_label"
+        style="@style/FormLabel" />
+
+    <Spinner
+        android:id="@+id/sp_single_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dropdown_label"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:dropDownHeight="@dimen/dimen_175dp"
+        android:background="@drawable/bg_form_spinner"
+        android:dropDownVerticalOffset="@dimen/dimen_35dp"
+        android:paddingStart="@dimen/dimen_05dp"
+        android:paddingEnd="@dimen/dimen_05dp"
+        android:paddingBottom="@dimen/dimen_05dp"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/tv_single_select_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sp_single_select"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_size_14"
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded" />
+</RelativeLayout>
