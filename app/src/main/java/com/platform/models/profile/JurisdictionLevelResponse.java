@@ -2,15 +2,13 @@ package com.platform.models.profile;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 public class JurisdictionLevelResponse {
     @SerializedName("status")
     private String status;
 
     @SerializedName("data")
-    private List<JurisdictionLevel> data;
+    private JurisdictionLevelData data;
 
     @SerializedName("message")
     private String message;
@@ -23,11 +21,11 @@ public class JurisdictionLevelResponse {
         this.status = status;
     }
 
-    public List<JurisdictionLevel> getData() {
+    public JurisdictionLevelData getData() {
         return data;
     }
 
-    public void setData(List<JurisdictionLevel> data) {
+    public void setData(JurisdictionLevelData data) {
         this.data = data;
     }
 

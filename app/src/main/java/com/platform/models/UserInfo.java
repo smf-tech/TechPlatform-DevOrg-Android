@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.profile.UserLocation;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class UserInfo implements Parcelable {
@@ -48,6 +51,54 @@ public class UserInfo implements Parcelable {
     @SerializedName("approve_status")
     @Expose
     private String approveStatus;
+    @SerializedName("org_id")
+    @Expose
+    private String orgId;
+    @SerializedName("role_id")
+    @Expose
+    private ArrayList<String> roleIds;
+    @SerializedName("location")
+    @Expose
+    private UserLocation userLocation;
+    @SerializedName("projects")
+    @Expose
+    private ArrayList<String> projectIds;
+
+    public static Creator<UserInfo> getCREATOR() {
+        return CREATOR;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public UserLocation getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(UserLocation userLocation) {
+        this.userLocation = userLocation;
+    }
+
+    public ArrayList<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(ArrayList<String> roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public ArrayList<String> getProjectIds() {
+        return projectIds;
+    }
+
+    public void setProjectIds(ArrayList<String> projectIds) {
+        this.projectIds = projectIds;
+    }
 
     public UserInfo() {
 

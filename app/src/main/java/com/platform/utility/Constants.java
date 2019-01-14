@@ -58,6 +58,13 @@ public class Constants {
         public static final String USER_GENDER = "gender";
     }
 
+    public static class JurisdictionLevelName {
+        public static final String DISTRICT_LEVEL = "District";
+        public static final String TALUKA_LEVEL = "Taluka";
+        public static final String CLUSTER_LEVEL = "Cluster";
+        public static final String VILLAGE_LEVEL = "Village";
+    }
+
     public static class Home {
         public static final String Programme_Management = "Forms";
     }
