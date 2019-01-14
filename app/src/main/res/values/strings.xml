@@ -45,6 +45,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
+    <string name="mandatory_organization">Organization *</string>
     <string name="organization">Organization</string>
     <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>

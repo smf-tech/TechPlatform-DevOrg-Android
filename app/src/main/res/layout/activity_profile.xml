@@ -206,7 +206,7 @@
             <!--Organization-->
             <TextView
                 style="@style/FormLabel"
-                android:text="@string/organization" />
+                android:text="@string/mandatory_organization" />
 
             <Spinner
                 android:id="@+id/sp_user_organization"
