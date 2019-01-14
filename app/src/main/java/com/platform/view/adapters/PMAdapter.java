@@ -12,6 +12,7 @@ import com.platform.models.pm.ProcessData;
 
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class PMAdapter extends RecyclerView.Adapter<PMAdapter.PMViewHolder> {
 
     private List<ProcessData> processDataList;

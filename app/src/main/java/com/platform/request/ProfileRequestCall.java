@@ -19,6 +19,8 @@ import com.platform.utility.Util;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class ProfileRequestCall {
 
     @SuppressWarnings("CanBeFinal")
@@ -195,6 +197,7 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.i(TAG, "API submit profile Response:" + res);
                     listener.onProfileUpdated(res);
                 }
             } catch (Exception e) {
@@ -232,11 +235,17 @@ public class ProfileRequestCall {
             body.addProperty(Constants.Login.USER_BIRTH_DATE, userInfo.getUserBirthDate());
             body.addProperty(Constants.Login.USER_EMAIL, userInfo.getUserEmailId());
             body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
-            body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getUserRoleId());
-            body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getUserOrgId());
+            body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getOrgId());
+
+            JsonArray roleIdArray = new JsonArray();
+            ArrayList<String> userRoleIds = userInfo.getRoleIds();
+            for (String roleId : userRoleIds) {
+                roleIdArray.add(roleId);
+            }
+            body.add(Constants.Login.USER_ROLE_ID, roleIdArray);
 
             JsonArray projectIdArray = new JsonArray();
-            String[] userProjectIds = userInfo.getUserProjectIds();
+            ArrayList<String> userProjectIds = userInfo.getProjectIds();
             for (String projectId : userProjectIds) {
                 projectIdArray.add(projectId);
             }

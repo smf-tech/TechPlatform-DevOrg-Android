@@ -9,7 +9,7 @@
     <string name="cancel">Cancel</string>
     <string name="no_thanks">No, thanks</string>
     <string name="update">Update</string>
-    
+
     <!--App Update-->
     <string name="title_new_version_available">New version available</string>
     <string name="msg_update_app">Please, update app to new version to continue.</string>
@@ -75,10 +75,8 @@
     <string name="msg_enter_name">Please enter name</string>
     <string name="msg_enter_mobile_number">Please enter mobile number</string>
     <string name="msg_enter_valid_mobile_no">Please enter 10 digit mobile number</string>
-    <string name="msg_enter_valid_email_id"
-        tools:keep="@string/msg_enter_valid_email_id">Please enter valid email address</string>
-    <string name="msg_select_project"
-        tools:keep="@string/msg_select_project">Please select project</string>
+    <string name="msg_enter_valid_email_id" tools:keep="@string/msg_enter_valid_email_id">Please enter valid email address</string>
+    <string name="msg_select_project" tools:keep="@string/msg_select_project">Please select project</string>
     <string name="msg_select_gender">Please select gender</string>
 
     <!--Home Menu Items-->

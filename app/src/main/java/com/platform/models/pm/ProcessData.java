@@ -34,7 +34,7 @@ public class ProcessData {
     private String projectId;
     @SerializedName("microservice_id")
     @Expose
-    private String microserviceId;
+    private String microServiceId;
 
     public String getId() {
         return id;
@@ -100,11 +100,11 @@ public class ProcessData {
         this.projectId = projectId;
     }
 
-    public String getMicroserviceId() {
-        return microserviceId;
+    public String getMicroServiceId() {
+        return microServiceId;
     }
 
-    public void setMicroserviceId(String microserviceId) {
-        this.microserviceId = microserviceId;
+    public void setMicroServiceId(String microServiceId) {
+        this.microServiceId = microServiceId;
     }
 }

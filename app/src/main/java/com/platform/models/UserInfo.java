@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.profile.UserLocation;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class UserInfo implements Parcelable {
@@ -48,10 +51,55 @@ public class UserInfo implements Parcelable {
     @SerializedName("approve_status")
     @Expose
     private String approveStatus;
+    @SerializedName("org_id")
+    @Expose
+    private String orgId;
+    @SerializedName("role_id")
+    @Expose
+    private ArrayList<String> roleIds;
+    @SerializedName("location")
+    @Expose
+    private UserLocation userLocation;
+    @SerializedName("projects")
+    @Expose
+    private ArrayList<String> projectIds;
 
-    private String userRoleId;
-    private String userOrgId;
-    private String[] userProjectIds;
+    @SuppressWarnings("SameReturnValue")
+    public static Creator<UserInfo> getCREATOR() {
+        return CREATOR;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public UserLocation getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(UserLocation userLocation) {
+        this.userLocation = userLocation;
+    }
+
+    public ArrayList<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(ArrayList<String> roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public ArrayList<String> getProjectIds() {
+        return projectIds;
+    }
+
+    public void setProjectIds(ArrayList<String> projectIds) {
+        this.projectIds = projectIds;
+    }
 
     public UserInfo() {
 
@@ -144,30 +192,6 @@ public class UserInfo implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public String getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(String userRoleId) {
-        this.userRoleId = userRoleId;
-    }
-
-    public String getUserOrgId() {
-        return userOrgId;
-    }
-
-    public void setUserOrgId(String userOrgId) {
-        this.userOrgId = userOrgId;
-    }
-
-    public String[] getUserProjectIds() {
-        return userProjectIds;
-    }
-
-    public void setUserProjectIds(String[] userProjectIds) {
-        this.userProjectIds = userProjectIds;
     }
 
     @Override

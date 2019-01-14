@@ -16,6 +16,9 @@ public class Jurisdiction {
     @SerializedName("level")
     private int level;
 
+    @SerializedName("levelName")
+    private String levelName;
+
     @SerializedName("updated_at")
     private String updatedAt;
 
@@ -68,5 +71,13 @@ public class Jurisdiction {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 }

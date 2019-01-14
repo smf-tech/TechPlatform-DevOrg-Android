@@ -59,6 +59,7 @@ public class ProcessListActivity extends BaseActivity implements PlatformTaskLis
         }
     }
 
+    @SuppressWarnings("EmptyMethod")
     private void getAllProcess() {
 
     }

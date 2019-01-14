@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,20 +39,30 @@ import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
 import com.platform.models.profile.State;
+import com.platform.models.profile.UserLocation;
 import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
+import com.platform.widgets.ClusterMultiSelectSpinner;
+import com.platform.widgets.DistrictMultiSelectSpinner;
+import com.platform.widgets.ProjectMultiSelectSpinner;
+import com.platform.widgets.RoleMultiSelectSpinner;
+import com.platform.widgets.TalukaMultiSelectSpinner;
+import com.platform.widgets.VillageMultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
-        View.OnClickListener, AdapterView.OnItemSelectedListener {
+        View.OnClickListener, AdapterView.OnItemSelectedListener,
+        ProjectMultiSelectSpinner.ProjectMultiSpinnerListener, RoleMultiSelectSpinner.RoleMultiSpinnerListener,
+        DistrictMultiSelectSpinner.DistrictMultiSpinnerListener, TalukaMultiSelectSpinner.TalukaMultiSpinnerListener,
+        ClusterMultiSelectSpinner.ClusterMultiSpinnerListener, VillageMultiSelectSpinner.VillageMultiSpinnerListener {
 
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
@@ -59,26 +70,37 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private EditText etUserBirthDate;
     private EditText etUserMobileNumber;
     private EditText etUserEmailId;
-    private EditText etUserProject;
 
     private Spinner spOrganization;
-    private Spinner spRole;
     private Spinner spState;
-    private Spinner spDistrict;
-    private Spinner spTaluka;
-    private Spinner spCluster;
-    private Spinner spVillage;
     private Spinner spStructure;
+
+    private ProjectMultiSelectSpinner spProject;
+    private RoleMultiSelectSpinner spRole;
+    private DistrictMultiSelectSpinner spDistrict;
+    private TalukaMultiSelectSpinner spTaluka;
+    private ClusterMultiSelectSpinner spCluster;
+    private VillageMultiSelectSpinner spVillage;
 
     private ImageView imgUserProfilePic;
     private ImageView backButton;
     private Button btnProfileSubmit;
 
     private String userGender = "Male";
-    private String selectedProjects = "";
-    private ArrayList<String> projectsList = new ArrayList<>();
 
-    private boolean[] projectSelection = null;
+    private ArrayList<OrganizationProject> projects = new ArrayList<>();
+    private ArrayList<OrganizationRole> roles = new ArrayList<>();
+    private ArrayList<JurisdictionLevel> districts = new ArrayList<>();
+    private ArrayList<JurisdictionLevel> talukas = new ArrayList<>();
+    private ArrayList<JurisdictionLevel> clusters = new ArrayList<>();
+    private ArrayList<JurisdictionLevel> villages = new ArrayList<>();
+
+    private ArrayList<String> projectIds = new ArrayList<>();
+    private ArrayList<String> roleIds = new ArrayList<>();
+    private ArrayList<String> districtIds = new ArrayList<>();
+    private ArrayList<String> talukaIds = new ArrayList<>();
+    private ArrayList<String> clusterIds = new ArrayList<>();
+    private ArrayList<String> villageIds = new ArrayList<>();
 
     private Uri outputUri;
     private Uri finalUri;
@@ -86,6 +108,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private List<Organization> organizations = new ArrayList<>();
     private List<State> states = new ArrayList<>();
+
+    private State selectedState;
+    private Organization selectedOrg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +133,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
         etUserEmailId = findViewById(R.id.et_user_email_id);
-        etUserProject = findViewById(R.id.et_user_project);
 
         RadioGroup radioGroup = findViewById(R.id.user_gender_group);
         radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
@@ -128,13 +152,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         });
 
         spOrganization = findViewById(R.id.sp_user_organization);
-        spRole = findViewById(R.id.sp_user_role);
         spState = findViewById(R.id.sp_user_state);
-        spDistrict = findViewById(R.id.sp_user_district);
-        spTaluka = findViewById(R.id.sp_user_taluka);
-        spCluster = findViewById(R.id.sp_user_cluster);
-        spVillage = findViewById(R.id.sp_user_village);
         spStructure = findViewById(R.id.sp_user_structure);
+
+        spProject = findViewById(R.id.sp_project);
+        spRole = findViewById(R.id.sp_role);
+        spDistrict = findViewById(R.id.sp_district);
+        spTaluka = findViewById(R.id.sp_taluka);
+        spCluster = findViewById(R.id.sp_cluster);
+        spVillage = findViewById(R.id.sp_village);
 
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
@@ -155,23 +181,14 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } else {
             etUserMobileNumber.setText(Util.getUserMobileFromPref());
         }
-
-        projectsList = new ArrayList<>();
-        projectsList.add(getString(R.string.label_select));
     }
 
     private void setListeners() {
         backButton.setOnClickListener(this);
         etUserBirthDate.setOnClickListener(this);
-        etUserProject.setOnClickListener(this);
 
         spOrganization.setOnItemSelectedListener(this);
-        spRole.setOnItemSelectedListener(this);
         spState.setOnItemSelectedListener(this);
-        spDistrict.setOnItemSelectedListener(this);
-        spTaluka.setOnItemSelectedListener(this);
-        spCluster.setOnItemSelectedListener(this);
-        spVillage.setOnItemSelectedListener(this);
         spStructure.setOnItemSelectedListener(this);
 
         imgUserProfilePic.setOnClickListener(this);
@@ -187,10 +204,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             case R.id.et_user_birth_date:
                 showDateDialog(ProfileActivity.this, findViewById(R.id.et_user_birth_date));
-                break;
-
-            case R.id.et_user_project:
-                showMultiSelectDialogProject(projectsList);
                 break;
 
             case R.id.user_profile_pic:
@@ -223,60 +236,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         dateDialog.show();
     }
 
-    @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
-    private void showMultiSelectDialogProject(ArrayList<String> projectList) {
-        if (projectList != null) {
-            projectList.remove(getString(R.string.label_select));
-
-            String[] items = projectList.toArray(new String[projectList.size()]);
-            projectSelection = new boolean[(items.length)];
-            Arrays.fill(projectSelection, false);
-
-            if (!selectedProjects.isEmpty()) {
-                String[] projects = selectedProjects.split(";");
-                for (String project : projects) {
-                    if (projectList.contains(project.trim())) {
-                        projectSelection[projectList.indexOf(project.trim())] = true;
-                    }
-                }
-            }
-
-            AlertDialog dialog = new AlertDialog.Builder(ProfileActivity.this)
-                    .setTitle(getString(R.string.title_select_project))
-                    .setMultiChoiceItems(items, projectSelection, (dialog1, which, isChecked) -> {
-                        if (projectSelection != null && which < projectSelection.length) {
-                            projectSelection[which] = isChecked;
-                            selectedProjects = buildStringArrayToString(items);
-                        } else {
-                            throw new IllegalArgumentException("Exception in showing projects");
-                        }
-                    })
-                    .setPositiveButton(ProfileActivity.this.getString(R.string.ok), (dialog12, id) -> etUserProject.setText(selectedProjects))
-                    .setNegativeButton(getString(R.string.cancel), (dialog13, id) -> {
-                    }).create();
-
-            dialog.show();
-        }
-    }
-
-    private String buildStringArrayToString(String[] items) {
-        StringBuilder sb = new StringBuilder();
-        boolean foundOne = false;
-
-        if (items != null) {
-            for (int i = 0; i < items.length; ++i) {
-                if (projectSelection[i]) {
-                    if (foundOne) {
-                        sb.append(";");
-                    }
-                    foundOne = true;
-                    sb.append(items[i]);
-                }
-            }
-        }
-        return sb.toString();
-    }
-
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
             showPictureDialog();
@@ -292,10 +251,19 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setUserBirthDate(String.valueOf(etUserBirthDate.getText()).trim());
             userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
-            userInfo.setUserRoleId("5c36ed50d503a3403f237f45");
-            userInfo.setUserOrgId("5c1b940ad503a31f360e1252");
-            userInfo.setUserProjectIds(new String[]{"5c372fdcf3542cb24061e07c"});
             userInfo.setUserGender(userGender);
+
+            userInfo.setOrgId(selectedOrg.getId());
+            userInfo.setProjectIds(projectIds);
+            userInfo.setRoleIds(roleIds);
+
+            UserLocation userLocation = new UserLocation();
+            userLocation.setStateId(selectedState.getId());
+            userLocation.setDistrictIds(districtIds);
+            userLocation.setTalukaIds(talukaIds);
+            userLocation.setClusterIds(clusterIds);
+            userLocation.setVillageIds(villageIds);
+            userInfo.setUserLocation(userLocation);
 
             profilePresenter.submitProfile(userInfo);
         }
@@ -315,8 +283,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
         } else if (TextUtils.isEmpty(userGender)) {
             msg = getString(R.string.msg_select_gender);
-        } else if (etUserProject.getText().toString().trim().equals("")) {
-            msg = getString(R.string.msg_select_project);
         }
 
         if (TextUtils.isEmpty(msg)) {
@@ -432,12 +398,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             case R.id.sp_user_organization:
                 if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
                         && !TextUtils.isEmpty(organizations.get(i).getId())) {
+                    this.selectedOrg = organizations.get(i);
                     profilePresenter.getOrganizationProjects(organizations.get(i).getId());
                     profilePresenter.getOrganizationRoles(organizations.get(i).getId());
                 }
-                break;
-
-            case R.id.sp_user_role:
                 break;
 
             case R.id.sp_user_state:
@@ -445,24 +409,16 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         && states.get(i).getJurisdictions() != null
                         && !states.get(i).getJurisdictions().isEmpty()
                         && states.get(i).getJurisdictions().size() > 0) {
-
+                    selectedState = states.get(i);
+                    spDistrict.setVisibility(View.GONE);
+                    spTaluka.setVisibility(View.GONE);
+                    spCluster.setVisibility(View.GONE);
+                    spVillage.setVisibility(View.GONE);
                     for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()) {
                         profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
                                 jurisdiction.getLevel());
                     }
                 }
-                break;
-
-            case R.id.sp_user_district:
-                break;
-
-            case R.id.sp_user_taluka:
-                break;
-
-            case R.id.sp_user_cluster:
-                break;
-
-            case R.id.sp_user_village:
                 break;
 
             case R.id.sp_user_structure:
@@ -510,28 +466,20 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     @Override
     public void showOrganizationProjects(List<OrganizationProject> organizationProjects) {
         if (organizationProjects != null && !organizationProjects.isEmpty()) {
-            for (OrganizationProject organizationProject :
-                    organizationProjects) {
-                projectsList.add(organizationProject.getOrgProjectName());
-            }
+            spProject.setItems(organizationProjects, getString(R.string.project), this);
+            this.projects.clear();
+            this.projects.addAll(organizationProjects);
         }
     }
 
     @Override
     public void showOrganizationRoles(List<OrganizationRole> organizationRoles) {
-        List<String> orgRoles = new ArrayList<>();
-        for (int i = 0; i < organizationRoles.size(); i++) {
-            orgRoles.add(organizationRoles.get(i).getDisplayName());
+        if (organizationRoles != null && !organizationRoles.isEmpty()) {
+            spRole.setItems(organizationRoles, getString(R.string.role), this);
+            this.roles.clear();
+            this.roles.addAll(organizationRoles);
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
-                android.R.layout.simple_spinner_item, orgRoles);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spRole.setAdapter(adapter);
-
-//        spR.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-        }
+    }
 
     @Override
     public void showStates(List<State> states) {
@@ -548,58 +496,45 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     @Override
-    public void showJurisdictionLevel(List<JurisdictionLevel> jurisdictionLevels, int level) {
-        switch (level) {
-            case 1:
-                List<String> districts = new ArrayList<>();
-                for (JurisdictionLevel jurisdictionLevel :
-                        jurisdictionLevels) {
-                    districts.add(jurisdictionLevel.getJurisdictionLevelName());
+    public void showJurisdictionLevel(List<JurisdictionLevel> jurisdictionLevels, int level, String levelName) {
+        switch (levelName) {
+            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    spDistrict.setItems(jurisdictionLevels, getString(R.string.district), this);
+                    this.districts.clear();
+                    this.districts.addAll(jurisdictionLevels);
+                    spDistrict.setVisibility(View.VISIBLE);
                 }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
-                        android.R.layout.simple_spinner_item, districts);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spDistrict.setAdapter(adapter);
                 break;
 
-            case 2:
-                List<String> talukaList = new ArrayList<>();
-                for (JurisdictionLevel jurisdictionLevel :
-                        jurisdictionLevels) {
-                    talukaList.add(jurisdictionLevel.getJurisdictionLevelName());
+            case Constants.JurisdictionLevelName.TALUKA_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    spTaluka.setItems(jurisdictionLevels, getString(R.string.taluka), this);
+                    this.talukas.clear();
+                    this.talukas.addAll(jurisdictionLevels);
+                    spTaluka.setVisibility(View.VISIBLE);
                 }
-
-                ArrayAdapter<String> talukaAdapter = new ArrayAdapter<>(ProfileActivity.this,
-                        android.R.layout.simple_spinner_item, talukaList);
-                talukaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spTaluka.setAdapter(talukaAdapter);
                 break;
 
-            case 3:
-                List<String> clusters = new ArrayList<>();
-                for (JurisdictionLevel jurisdictionLevel :
-                        jurisdictionLevels) {
-                    clusters.add(jurisdictionLevel.getJurisdictionLevelName());
+            case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    spCluster.setItems(jurisdictionLevels, getString(R.string.cluster), this);
+                    this.clusters.clear();
+                    this.clusters.addAll(jurisdictionLevels);
+                    spCluster.setVisibility(View.VISIBLE);
                 }
-
-                ArrayAdapter<String> clusterAdapter = new ArrayAdapter<>(ProfileActivity.this,
-                        android.R.layout.simple_spinner_item, clusters);
-                clusterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spCluster.setAdapter(clusterAdapter);
                 break;
 
-            case 4:
-                List<String> villages = new ArrayList<>();
-                for (JurisdictionLevel jurisdictionLevel :
-                        jurisdictionLevels) {
-                    villages.add(jurisdictionLevel.getJurisdictionLevelName());
+            case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    spVillage.setItems(jurisdictionLevels, getString(R.string.village), this);
+                    this.villages.clear();
+                    this.villages.addAll(jurisdictionLevels);
+                    spVillage.setVisibility(View.VISIBLE);
                 }
+                break;
 
-                ArrayAdapter<String> villageAdapter = new ArrayAdapter<>(ProfileActivity.this,
-                        android.R.layout.simple_spinner_item, villages);
-                villageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spVillage.setAdapter(villageAdapter);
+            default:
                 break;
         }
     }
@@ -617,6 +552,72 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             finish();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRolesSelected(boolean[] selected) {
+        roleIds.clear();
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                roleIds.add(roles.get(i).getId());
+                Log.d("TAG", "Selected role " + roles.get(i).getDisplayName());
+            }
+        }
+    }
+
+    @Override
+    public void onClustersSelected(boolean[] selected) {
+        clusterIds.clear();
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                clusterIds.add(clusters.get(i).getId());
+                Log.d("TAG", "Selected cluster " + clusters.get(i).getJurisdictionLevelName());
+            }
+        }
+    }
+
+    @Override
+    public void onDistrictsSelected(boolean[] selected) {
+        districtIds.clear();
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                districtIds.add(districts.get(i).getId());
+                Log.d("TAG", "Selected district " + districts.get(i).getJurisdictionLevelName());
+            }
+        }
+    }
+
+    @Override
+    public void onTalukasSelected(boolean[] selected) {
+        talukaIds.clear();
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                talukaIds.add(talukas.get(i).getId());
+                Log.d("TAG", "Selected taluka " + talukas.get(i).getJurisdictionLevelName());
+            }
+        }
+    }
+
+    @Override
+    public void onVillagesSelected(boolean[] selected) {
+        villageIds.clear();
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                villageIds.add(villages.get(i).getId());
+                Log.d("TAG", "Selected village " + villages.get(i).getJurisdictionLevelName());
+            }
+        }
+    }
+
+    @Override
+    public void onProjectsSelected(boolean[] selected) {
+        projectIds.clear();
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                projectIds.add(projects.get(i).getId());
+                Log.d("TAG", "Selected project " + projects.get(i).getOrgProjectName());
+            }
         }
     }
 }

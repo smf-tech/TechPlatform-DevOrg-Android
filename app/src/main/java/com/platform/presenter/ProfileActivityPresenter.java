@@ -107,9 +107,10 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
             JurisdictionLevelResponse jurisdictionLevelResponse
                     = new Gson().fromJson(response, JurisdictionLevelResponse.class);
             if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
-                    && !jurisdictionLevelResponse.getData().isEmpty()
-                    && jurisdictionLevelResponse.getData().size() > 0) {
-                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
+                    && jurisdictionLevelResponse.getData().getJurisdictionLevelList() != null
+                    && !jurisdictionLevelResponse.getData().getJurisdictionLevelList().isEmpty()
+                    && jurisdictionLevelResponse.getData().getJurisdictionLevelList().size() > 0) {
+                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData().getJurisdictionLevelList(), level, jurisdictionLevelResponse.getData().getLevelName());
             }
         }
     }

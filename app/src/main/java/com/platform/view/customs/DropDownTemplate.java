@@ -3,7 +3,6 @@ package com.platform.view.customs;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
@@ -20,6 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
