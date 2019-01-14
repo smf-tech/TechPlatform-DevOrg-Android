@@ -194,6 +194,7 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.i(TAG, "API submit profile Response:" + res);
                     listener.onProfileUpdated(res);
                 }
             } catch (Exception e) {

@@ -10,6 +10,9 @@ public class JurisdictionLevel {
     @SerializedName("state_id")
     private String stateId;
 
+    @SerializedName("district_id")
+    private String districtId;
+
     @SerializedName("Name")
     private String jurisdictionLevelName;
 
@@ -18,6 +21,14 @@ public class JurisdictionLevel {
 
     @SerializedName("created_at")
     private String createdAt;
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
 
     public String getJurisdictionLevelName() {
         return jurisdictionLevelName;
