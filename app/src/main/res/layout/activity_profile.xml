@@ -214,6 +214,10 @@
                 android:prompt="@string/organization" />
 
             <!--Project-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_project" />
+
             <com.platform.widgets.ProjectMultiSelectSpinner
                 android:id="@+id/sp_project"
                 style="@style/FormSpinner"
@@ -221,6 +225,10 @@
                 android:layout_height="@dimen/dimen_50dp" />
 
             <!--Role-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_role" />
+
             <com.platform.widgets.RoleMultiSelectSpinner
                 android:id="@+id/sp_role"
                 style="@style/FormSpinner"
@@ -238,6 +246,12 @@
                 android:prompt="@string/state" />
 
             <!--District-->
+            <TextView
+                android:id="@+id/txt_district"
+                style="@style/FormLabel"
+                android:text="@string/mandatory_district"
+                android:visibility="gone" />
+
             <com.platform.widgets.DistrictMultiSelectSpinner
                 android:id="@+id/sp_district"
                 style="@style/FormSpinner"
@@ -246,6 +260,12 @@
                 android:visibility="gone" />
 
             <!--Taluka-->
+            <TextView
+                android:id="@+id/txt_taluka"
+                style="@style/FormLabel"
+                android:text="@string/mandatory_taluka"
+                android:visibility="gone" />
+
             <com.platform.widgets.TalukaMultiSelectSpinner
                 android:id="@+id/sp_taluka"
                 style="@style/FormSpinner"
@@ -254,6 +274,12 @@
                 android:visibility="gone" />
 
             <!--Cluster-->
+            <TextView
+                android:id="@+id/txt_cluster"
+                style="@style/FormLabel"
+                android:text="@string/mandatory_cluster"
+                android:visibility="gone" />
+
             <com.platform.widgets.ClusterMultiSelectSpinner
                 android:id="@+id/sp_cluster"
                 style="@style/FormSpinner"
@@ -262,6 +288,12 @@
                 android:visibility="gone" />
 
             <!--Village-->
+            <TextView
+                android:id="@+id/txt_village"
+                style="@style/FormLabel"
+                android:text="@string/mandatory_village"
+                android:visibility="gone" />
+
             <com.platform.widgets.VillageMultiSelectSpinner
                 android:id="@+id/sp_village"
                 style="@style/FormSpinner"
