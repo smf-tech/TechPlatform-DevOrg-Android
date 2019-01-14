@@ -110,7 +110,10 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
                     && jurisdictionLevelResponse.getData().getJurisdictionLevelList() != null
                     && !jurisdictionLevelResponse.getData().getJurisdictionLevelList().isEmpty()
                     && jurisdictionLevelResponse.getData().getJurisdictionLevelList().size() > 0) {
-                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData().getJurisdictionLevelList(), level, jurisdictionLevelResponse.getData().getLevelName());
+
+                profileActivity.get().showJurisdictionLevel(
+                        jurisdictionLevelResponse.getData().getJurisdictionLevelList(),
+                        level, jurisdictionLevelResponse.getData().getLevelName());
             }
         }
     }

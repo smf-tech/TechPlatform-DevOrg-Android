@@ -255,7 +255,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             userInfo.setOrgId(selectedOrg.getId());
             userInfo.setProjectIds(projectIds);
-            userInfo.setRoleIds(roleIds);
+            userInfo.setRoleIds(roleIds.get(0));
 
             UserLocation userLocation = new UserLocation();
             userLocation.setStateId(selectedState.getId());
@@ -263,7 +263,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userLocation.setTalukaIds(talukaIds);
             userLocation.setClusterIds(clusterIds);
             userLocation.setVillageIds(villageIds);
+
             userInfo.setUserLocation(userLocation);
+            Util.saveUserLocationInPref(userLocation);
 
             profilePresenter.submitProfile(userInfo);
         }
@@ -334,8 +336,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this,
-                    getResources().getString(R.string.msg_error_in_photo_gallery),
+            Toast.makeText(this, getResources().getString(R.string.msg_error_in_photo_gallery),
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -356,8 +357,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
-            Toast.makeText(this,
-                    getResources().getString(R.string.msg_image_capture_not_support),
+            Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
                     Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
             Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
@@ -425,15 +425,19 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         && states.get(i).getJurisdictions() != null
                         && !states.get(i).getJurisdictions().isEmpty()
                         && states.get(i).getJurisdictions().size() > 0) {
+
                     selectedState = states.get(i);
+
                     spDistrict.setVisibility(View.GONE);
                     spTaluka.setVisibility(View.GONE);
                     spCluster.setVisibility(View.GONE);
                     spVillage.setVisibility(View.GONE);
+
                     findViewById(R.id.txt_district).setVisibility(View.GONE);
                     findViewById(R.id.txt_taluka).setVisibility(View.GONE);
                     findViewById(R.id.txt_cluster).setVisibility(View.GONE);
                     findViewById(R.id.txt_village).setVisibility(View.GONE);
+
                     for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()) {
                         profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
                                 jurisdiction.getLevel());

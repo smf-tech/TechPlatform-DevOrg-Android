@@ -16,10 +16,7 @@ public class FormData {
     private String name;
     @SerializedName("json")
     @Expose
-    private String json;
-    @SerializedName("creator_id")
-    @Expose
-    private String creatorId;
+    private Components components;
     @SerializedName("active")
     @Expose
     private String active;
@@ -32,18 +29,18 @@ public class FormData {
     @SerializedName("assigned_roles")
     @Expose
     private List<String> assignedRoles = null;
-    @SerializedName("category_id")
+    @SerializedName("microservice")
     @Expose
-    private String categoryId;
-    @SerializedName("project_id")
+    private Microservice microService;
+    @SerializedName("project")
     @Expose
-    private String projectId;
-    @SerializedName("microservice_id")
+    private Project project;
+    @SerializedName("category")
     @Expose
-    private String microServiceId;
-    @SerializedName("entity_id")
+    private Category category;
+    @SerializedName("entity")
     @Expose
-    private String entityId;
+    private Entity entity;
 
     public String getId() {
         return id;
@@ -61,20 +58,12 @@ public class FormData {
         this.name = name;
     }
 
-    public String getJson() {
-        return json;
+    public Components getComponents() {
+        return components;
     }
 
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
+    public void setComponents(Components components) {
+        this.components = components;
     }
 
     public String getActive() {
@@ -109,35 +98,35 @@ public class FormData {
         this.assignedRoles = assignedRoles;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getProjectId() {
-        return projectId;
+    public Project getProject() {
+        return project;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public String getMicroServiceId() {
-        return microServiceId;
+    public Microservice getMicroService() {
+        return microService;
     }
 
-    public void setMicroServiceId(String microServiceId) {
-        this.microServiceId = microServiceId;
+    public void setMicroService(Microservice microService) {
+        this.microService = microService;
     }
 
-    public String getEntityId() {
-        return entityId;
+    public Entity getEntity() {
+        return entity;
     }
 
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 }
