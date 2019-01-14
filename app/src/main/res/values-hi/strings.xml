@@ -46,6 +46,7 @@
     <string name="female">महिला</string>
     <string name="other">अन्य</string>
     <string name="organization">संगठन</string>
+    <string name="mandatory_project">परियोजना *</string>
     <string name="project">परियोजना</string>
     <string name="mandatory_role">भूमिका *</string>
     <string name="role">भूमिका</string>
@@ -78,6 +79,12 @@
     <string name="msg_enter_valid_email_id" tools:keep="@string/msg_enter_valid_email_id">कृपया मान्य ई-मेल पता दर्ज करें</string>
     <string name="msg_select_project" tools:keep="@string/msg_select_project">कृपया प्रोजेक्ट चुनें</string>
     <string name="msg_select_gender">कृपया लिंग चुनें</string>
+    <string name="msg_select_role">कृपयाभूमिका चुनें</string>
+    <string name="msg_select_state">कृपया राज्य का चयन करें</string>
+    <string name="msg_select_district">कृपया जिला चुनें</string>
+    <string name="msg_select_taluka">कृपया तहसील चुनें</string>
+    <string name="msg_select_cluster">कृपया तहसील चुनें</string>
+    <string name="msg_select_village">कृपया गांव का चयन करें</string>
 
     <!--Home Menu Items-->
     <string name="change_language">भाषा बदलो</string>

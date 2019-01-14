@@ -46,6 +46,7 @@
     <string name="female">Female</string>
     <string name="other">Other</string>
     <string name="organization">Organization</string>
+    <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
     <string name="role">Role</string>
@@ -78,6 +79,12 @@
     <string name="msg_enter_valid_email_id" tools:keep="@string/msg_enter_valid_email_id">Please enter valid email address</string>
     <string name="msg_select_project" tools:keep="@string/msg_select_project">Please select project</string>
     <string name="msg_select_gender">Please select gender</string>
+    <string name="msg_select_role">Please select Role</string>
+    <string name="msg_select_state">Please select State</string>
+    <string name="msg_select_district">Please select District</string>
+    <string name="msg_select_taluka">Please select Taluka</string>
+    <string name="msg_select_cluster">Please select Cluster</string>
+    <string name="msg_select_village">Please select Village</string>
 
     <!--Home Menu Items-->
     <string name="change_language">Change Language</string>

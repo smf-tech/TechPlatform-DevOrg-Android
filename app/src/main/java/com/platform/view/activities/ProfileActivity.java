@@ -278,11 +278,27 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
-        } else if (etUserEmailId.getText().toString().trim().length() == 0 &&
+        } else if (etUserEmailId.getText().toString().trim().length() != 0 &&
                 !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
         } else if (TextUtils.isEmpty(userGender)) {
             msg = getString(R.string.msg_select_gender);
+        } else if (selectedOrg == null || TextUtils.isEmpty(selectedOrg.getId())) {
+            msg = getString(R.string.msg_select_gender);
+        } else if (projectIds == null || projectIds.size() == 0) {
+            msg = getString(R.string.msg_select_project);
+        } else if (roleIds == null || roleIds.size() == 0) {
+            msg = getString(R.string.msg_select_role);
+        } else if (selectedState == null || TextUtils.isEmpty(selectedState.getId())) {
+            msg = getString(R.string.msg_select_state);
+        } else if ((spDistrict.getVisibility() == View.VISIBLE) && (districtIds == null || districtIds.size() == 0)) {
+            msg = getString(R.string.msg_select_district);
+        } else if ((spTaluka.getVisibility() == View.VISIBLE) && (talukaIds == null || talukaIds.size() == 0)) {
+            msg = getString(R.string.msg_select_taluka);
+        } else if ((spCluster.getVisibility() == View.VISIBLE) && (clusterIds == null || clusterIds.size() == 0)) {
+            msg = getString(R.string.msg_select_cluster);
+        } else if ((spVillage.getVisibility() == View.VISIBLE) && (villageIds == null || villageIds.size() == 0)) {
+            msg = getString(R.string.msg_select_village);
         }
 
         if (TextUtils.isEmpty(msg)) {
@@ -414,6 +430,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     spTaluka.setVisibility(View.GONE);
                     spCluster.setVisibility(View.GONE);
                     spVillage.setVisibility(View.GONE);
+                    findViewById(R.id.txt_district).setVisibility(View.GONE);
+                    findViewById(R.id.txt_taluka).setVisibility(View.GONE);
+                    findViewById(R.id.txt_cluster).setVisibility(View.GONE);
+                    findViewById(R.id.txt_village).setVisibility(View.GONE);
                     for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()) {
                         profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
                                 jurisdiction.getLevel());
@@ -503,6 +523,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     spDistrict.setItems(jurisdictionLevels, getString(R.string.district), this);
                     this.districts.clear();
                     this.districts.addAll(jurisdictionLevels);
+                    findViewById(R.id.txt_district).setVisibility(View.VISIBLE);
                     spDistrict.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -512,6 +533,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     spTaluka.setItems(jurisdictionLevels, getString(R.string.taluka), this);
                     this.talukas.clear();
                     this.talukas.addAll(jurisdictionLevels);
+                    findViewById(R.id.txt_taluka).setVisibility(View.VISIBLE);
                     spTaluka.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -521,6 +543,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     spCluster.setItems(jurisdictionLevels, getString(R.string.cluster), this);
                     this.clusters.clear();
                     this.clusters.addAll(jurisdictionLevels);
+                    findViewById(R.id.txt_cluster).setVisibility(View.VISIBLE);
                     spCluster.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -530,6 +553,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     spVillage.setItems(jurisdictionLevels, getString(R.string.village), this);
                     this.villages.clear();
                     this.villages.addAll(jurisdictionLevels);
+                    findViewById(R.id.txt_village).setVisibility(View.VISIBLE);
                     spVillage.setVisibility(View.VISIBLE);
                 }
                 break;
