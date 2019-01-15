@@ -59,6 +59,7 @@ public class Constants {
         public static final String USER_ROLE_ID = "role_id";
         public static final String USER_ORG_ID = "org_id";
         public static final String USER_PROJECTS = "projects";
+        public static final String USER_LOCATION = "location";
     }
 
     public static class JurisdictionLevelName {

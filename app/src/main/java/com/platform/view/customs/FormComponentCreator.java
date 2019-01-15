@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "CanBeFinal"})
 public class FormComponentCreator implements DropDownValueSelectListener {
 
     private final WeakReference<FormFragment> fragment;

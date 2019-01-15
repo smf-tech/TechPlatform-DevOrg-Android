@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.FormFragmentListener;
 import com.platform.listeners.PlatformTaskListener;

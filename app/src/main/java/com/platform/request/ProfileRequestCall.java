@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.UserInfo;
+import com.platform.models.profile.UserLocation;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -229,27 +230,73 @@ public class ProfileRequestCall {
     private JsonObject createBodyParams(UserInfo userInfo) {
         JsonObject body = new JsonObject();
         if (userInfo != null) {
-            body.addProperty(Constants.Login.USER_F_NAME, userInfo.getUserFirstName());
-            body.addProperty(Constants.Login.USER_M_NAME, userInfo.getUserMiddleName());
-            body.addProperty(Constants.Login.USER_L_NAME, userInfo.getUserLastName());
-            body.addProperty(Constants.Login.USER_BIRTH_DATE, userInfo.getUserBirthDate());
-            body.addProperty(Constants.Login.USER_EMAIL, userInfo.getUserEmailId());
-            body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
-            body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getOrgId());
+            try {
+                body.addProperty(Constants.Login.USER_F_NAME, userInfo.getUserFirstName());
+                body.addProperty(Constants.Login.USER_M_NAME, userInfo.getUserMiddleName());
+                body.addProperty(Constants.Login.USER_L_NAME, userInfo.getUserLastName());
+                body.addProperty(Constants.Login.USER_BIRTH_DATE, userInfo.getUserBirthDate());
+                body.addProperty(Constants.Login.USER_EMAIL, userInfo.getUserEmailId());
+                body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
+                body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getOrgId());
 
 //            JsonArray roleIdArray = new JsonArray();
 //            ArrayList<String> userRoleIds = userInfo.getRoleIds();
 //            for (String roleId : userRoleIds) {
 //                roleIdArray.add(roleId);
 //            }
-            body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getRoleIds());
+                body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getRoleIds());
 
-            JsonArray projectIdArray = new JsonArray();
-            ArrayList<String> userProjectIds = userInfo.getProjectIds();
-            for (String projectId : userProjectIds) {
-                projectIdArray.add(projectId);
+                // Add project Ids
+                JsonArray projectIdArray = new JsonArray();
+                ArrayList<String> userProjectIds = userInfo.getProjectIds();
+                for (String projectId : userProjectIds) {
+                    projectIdArray.add(projectId);
+                }
+                body.add(Constants.Login.USER_PROJECTS, projectIdArray);
+
+                // Add user location
+                UserLocation userLocation = userInfo.getUserLocation();
+                JsonObject locationObj = new JsonObject();
+                locationObj.addProperty("state", userLocation.getStateId());
+
+                JsonArray locationArray = new JsonArray();
+                if (userLocation.getDistrictIds() != null) {
+                    for (String districtId : userLocation.getDistrictIds()) {
+                        locationArray.add(districtId);
+                    }
+                    locationObj.add("district", locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getTalukaIds() != null) {
+                    for (String talukaId : userLocation.getTalukaIds()) {
+                        locationArray.add(talukaId);
+                    }
+                    locationObj.add("taluka", locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getVillageIds() != null) {
+                    for (String villageId : userLocation.getVillageIds()) {
+                        locationArray.add(villageId);
+                    }
+                    locationObj.add("village", locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getClusterIds() != null) {
+                    for (String clusterId : userLocation.getClusterIds()) {
+                        locationArray.add(clusterId);
+                    }
+                    locationObj.add("cluster", locationArray);
+                }
+
+                body.add(Constants.Login.USER_LOCATION, locationObj);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "BODY EXE");
             }
-            body.add(Constants.Login.USER_PROJECTS, projectIdArray);
         }
 
         Log.i(TAG, "BODY: " + body);

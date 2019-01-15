@@ -2,6 +2,7 @@ package com.platform.listeners;
 
 import java.util.HashMap;
 
+@SuppressWarnings("UnusedReturnValue")
 public interface FormFragmentListener {
-    public HashMap<String, String> getRequest();
+    HashMap<String, String> getRequest();
 }

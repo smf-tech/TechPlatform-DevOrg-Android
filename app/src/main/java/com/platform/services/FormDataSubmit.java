@@ -30,6 +30,7 @@ public class FormDataSubmit extends Thread {
         if (listener == null || listener.get() == null) {
             return;
         }
+
         listener.get().getRequest();
         Log.i(TAG, "Collect all form data");
     }
