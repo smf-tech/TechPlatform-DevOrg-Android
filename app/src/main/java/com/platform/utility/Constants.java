@@ -19,7 +19,7 @@ public class Constants {
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
-
+        static final String USER_LOC_OBJ = "userLocationObj";
         // public static final String SMF_MODE = "SMF";
         // public static final String PASSWORD = "password";
 
@@ -74,7 +74,6 @@ public class Constants {
 
     @SuppressWarnings("CanBeFinal")
     public static class PM {
-        @SuppressWarnings("CanBeFinal")
         public static String PROCESS_NAME = "processName";
         public static String PROCESS_ID = "processId";
         public static String PROCESS_DETAILS = "processDetails";

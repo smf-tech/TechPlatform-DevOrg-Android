@@ -56,7 +56,7 @@ public class UserInfo implements Parcelable {
     private String orgId;
     @SerializedName("role_id")
     @Expose
-    private ArrayList<String> roleIds;
+    private String roleIds;
     @SerializedName("location")
     @Expose
     private UserLocation userLocation;
@@ -85,11 +85,11 @@ public class UserInfo implements Parcelable {
         this.userLocation = userLocation;
     }
 
-    public ArrayList<String> getRoleIds() {
+    public String getRoleIds() {
         return roleIds;
     }
 
-    public void setRoleIds(ArrayList<String> roleIds) {
+    public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
     }
 

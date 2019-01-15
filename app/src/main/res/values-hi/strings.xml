@@ -6,7 +6,7 @@
     <string name="select_lang">भाषा चुनें</string>
 
     <string name="ok">ओके</string>
-    <string name="cancel">रद्द</string>
+    <!--<string name="cancel">रद्द</string>-->
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन करें</string>
 
@@ -64,8 +64,8 @@
     <string name="mandatory_school">संरचना का नाम  *</string>
     <string name="school">संरचना का नाम</string>
     <string name="profile_pic">प्रोफ़ाइल चित्र जोड़ें</string>
-    <string name="label_select">चुनें</string>
-    <string name="title_select_project">प्रोजेक्ट का चयन करें</string>
+    <!--<string name="label_select">चुनें</string>-->
+    <!--<string name="title_select_project">प्रोजेक्ट का चयन करें</string>-->
     <string name="approve_profile">आप अभी तक स्वीकृत नहीं हैं</string>
     <!--<string name="approve_profile2">आपको मंजूर होगा।</string>-->
 

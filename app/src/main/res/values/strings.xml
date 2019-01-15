@@ -6,7 +6,7 @@
     <string name="select_lang">Select Language</string>
 
     <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
+    <!--<string name="cancel">Cancel</string>-->
     <string name="no_thanks">No, thanks</string>
     <string name="update">Update</string>
 
@@ -64,8 +64,8 @@
     <string name="mandatory_school">Structure Name  *</string>
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
-    <string name="label_select">Select</string>
-    <string name="title_select_project">Select Project</string>
+    <!--<string name="label_select">Select</string>-->
+    <!--<string name="title_select_project">Select Project</string>-->
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
 

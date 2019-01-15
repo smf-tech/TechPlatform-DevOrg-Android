@@ -3,8 +3,6 @@ package com.platform.models.forms;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 public class Form {
     @SerializedName("status")
@@ -12,7 +10,7 @@ public class Form {
     private String status;
     @SerializedName("data")
     @Expose
-    private List<FormData> data = null;
+    private FormData data = null;
     @SerializedName("message")
     @Expose
     private String message;
@@ -25,11 +23,11 @@ public class Form {
         this.status = status;
     }
 
-    public List<FormData> getData() {
+    public FormData getData() {
         return data;
     }
 
-    public void setData(List<FormData> data) {
+    public void setData(FormData data) {
         this.data = data;
     }
 

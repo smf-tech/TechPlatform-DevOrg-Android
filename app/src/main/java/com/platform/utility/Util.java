@@ -22,6 +22,7 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.UserInfo;
 import com.platform.models.login.Login;
+import com.platform.models.profile.UserLocation;
 
 import java.io.File;
 import java.util.HashMap;
@@ -199,6 +200,26 @@ public class Util {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_OBJ, userData);
+        editor.apply();
+    }
+
+    @SuppressWarnings("unused")
+    public static UserLocation getUserLocationFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        String obj = preferences.getString(Constants.App.USER_LOC_OBJ, "{}");
+        return new Gson().fromJson(obj, UserLocation.class);
+    }
+
+    public static void saveUserLocationInPref(UserLocation location) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(location);
+        editor.putString(Constants.App.USER_LOC_OBJ, json);
         editor.apply();
     }
 
