@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.FormFragmentListener;
 import com.platform.listeners.PlatformTaskListener;
@@ -27,6 +28,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
 
+import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
@@ -101,11 +103,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                         addViewToMainContainer(formComponentCreator.textInputTemplate(formData));
                         break;
 
-                        case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                            Log.d(TAG, "DROPDOWN_TEMPLATE");
-                            Object[] objects = formComponentCreator.dropDownTemplate(formData);
-                            addViewToMainContainer((View) objects[0]);
-                            break;
+                    case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                        Log.d(TAG, "DROPDOWN_TEMPLATE");
+                        Object[] objects = formComponentCreator.dropDownTemplate(formData);
+                        addViewToMainContainer((View) objects[0]);
+                        break;
                 }
             }
         }
@@ -165,5 +167,10 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 formDataSubmit.start();
                 break;
         }
+    }
+
+    @Override
+    public HashMap<String, String> getRequest() {
+        return formComponentCreator.getRequestObject();
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.platform.Platform;
 import com.platform.R;
+import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Elements;
 import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
@@ -26,10 +27,13 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private Elements formData;
     private Spinner spinner;
     private WeakReference<FormFragment> context;
+    private List<String> valueList;
+    private DropDownValueSelectListener dropDownValueSelectListener;
 
-    DropDownTemplate(Elements formData, FormFragment context) {
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener dropDownValueSelectListener) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
+        this.dropDownValueSelectListener = dropDownValueSelectListener;
     }
 
     synchronized View init(String mandatory) {
@@ -66,6 +70,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     @SuppressWarnings("unchecked")
     void setListData(List<String> valueList) {
         if (valueList != null) {
+            this.valueList = valueList;
             ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinner.getAdapter();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
@@ -82,6 +87,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
                 tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
             }
         }
+        dropDownValueSelectListener.onDropdownValueSelected(formData.getName(), valueList.get(i));
     }
 
     @Override
