@@ -257,14 +257,14 @@ public class ProfileRequestCall {
                 // Add user location
                 UserLocation userLocation = userInfo.getUserLocation();
                 JsonObject locationObj = new JsonObject();
-                locationObj.addProperty("state", userLocation.getStateId());
+                locationObj.addProperty(Constants.Location.STATE, userLocation.getStateId());
 
                 JsonArray locationArray = new JsonArray();
                 if (userLocation.getDistrictIds() != null) {
                     for (String districtId : userLocation.getDistrictIds()) {
                         locationArray.add(districtId);
                     }
-                    locationObj.add("district", locationArray);
+                    locationObj.add(Constants.Location.DISTRICT, locationArray);
                 }
 
                 locationArray = new JsonArray();
@@ -272,7 +272,7 @@ public class ProfileRequestCall {
                     for (String talukaId : userLocation.getTalukaIds()) {
                         locationArray.add(talukaId);
                     }
-                    locationObj.add("taluka", locationArray);
+                    locationObj.add(Constants.Location.TALUKA, locationArray);
                 }
 
                 locationArray = new JsonArray();
@@ -280,7 +280,7 @@ public class ProfileRequestCall {
                     for (String villageId : userLocation.getVillageIds()) {
                         locationArray.add(villageId);
                     }
-                    locationObj.add("village", locationArray);
+                    locationObj.add(Constants.Location.VILLAGE, locationArray);
                 }
 
                 locationArray = new JsonArray();
@@ -288,7 +288,7 @@ public class ProfileRequestCall {
                     for (String clusterId : userLocation.getClusterIds()) {
                         locationArray.add(clusterId);
                     }
-                    locationObj.add("cluster", locationArray);
+                    locationObj.add(Constants.Location.CLUSTER, locationArray);
                 }
 
                 body.add(Constants.Login.USER_LOCATION, locationObj);

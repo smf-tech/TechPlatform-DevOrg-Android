@@ -20,8 +20,6 @@ public class Constants {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
-        // public static final String SMF_MODE = "SMF";
-        // public static final String PASSWORD = "password";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
@@ -46,8 +44,6 @@ public class Constants {
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
 
-        // public static final String USERNAME = "username";
-        // public static final String OTP = "otp";
         static final String AUTHORIZATION = "Authorization";
 
         public static final String USER_F_NAME = "firstName";
@@ -60,6 +56,14 @@ public class Constants {
         public static final String USER_ORG_ID = "org_id";
         public static final String USER_PROJECTS = "projects";
         public static final String USER_LOCATION = "location";
+    }
+
+    public static class Location {
+        public static final String STATE = "state";
+        public static final String DISTRICT = "district";
+        public static final String TALUKA = "taluka";
+        public static final String VILLAGE = "village";
+        public static final String CLUSTER = "cluster";
     }
 
     public static class JurisdictionLevelName {
