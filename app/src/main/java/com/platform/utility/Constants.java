@@ -77,6 +77,7 @@ public class Constants {
         public static String PROCESS_NAME = "processName";
         public static String PROCESS_ID = "processId";
         public static String PROCESS_DETAILS = "processDetails";
+        public static String RESPONSE = "response";
     }
 
     public static class FormsFactory {

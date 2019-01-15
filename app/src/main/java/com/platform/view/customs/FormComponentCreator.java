@@ -17,7 +17,6 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
 public class FormComponentCreator implements DropDownValueSelectListener {
@@ -91,12 +90,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     public HashMap<String, String> getRequestObject() {
-        for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            Log.d(TAG, "Request object key " + key + " value " + value);
+        if (requestObjectMap != null) {
+            return requestObjectMap;
         }
-        return requestObjectMap;
+        return null;
     }
 
     @Override
