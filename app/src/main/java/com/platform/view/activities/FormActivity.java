@@ -20,9 +20,15 @@ public class FormActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        formPresenter = new FormActivityPresenter(this);
         setContentView(R.layout.activity_gen_form);
         addFragment();
+    }
+
+    public FormActivityPresenter getFormPresenter() {
+        if (formPresenter == null) {
+            formPresenter = new FormActivityPresenter(this);
+        }
+        return formPresenter;
     }
 
     private void addFragment() {

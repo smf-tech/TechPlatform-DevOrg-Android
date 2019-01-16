@@ -17,22 +17,19 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.platform.R;
-import com.platform.listeners.FormFragmentListener;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
-import com.platform.services.FormDataSubmit;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.FormActivity;
 import com.platform.view.customs.FormComponentCreator;
 
-import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener,
-        FormFragmentListener {
+public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -43,7 +40,6 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private Form formModel;
     private RelativeLayout progressBarLayout;
     private List<Elements> formDataArrayList;
-    private FormDataSubmit formDataSubmit;
     private FormComponentCreator formComponentCreator;
 
     @Override
@@ -158,18 +154,8 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 break;
 
             case R.id.btn_submit:
-                if (formDataSubmit != null) {
-                    formDataSubmit = null;
-                }
-
-                formDataSubmit = new FormDataSubmit(this);
-                formDataSubmit.start();
+                ((FormActivity) getActivity()).getFormPresenter().createForm(formModel.getData().getId(), formComponentCreator.getRequestObject());
                 break;
         }
-    }
-
-    @Override
-    public HashMap<String, String> getRequest() {
-        return formComponentCreator.getRequestObject();
     }
 }
