@@ -2,6 +2,10 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.common.Category;
+import com.platform.models.common.Entity;
+import com.platform.models.common.Microservice;
+import com.platform.models.common.Project;
 
 import java.util.List;
 

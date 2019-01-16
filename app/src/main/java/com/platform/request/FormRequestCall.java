@@ -30,7 +30,6 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-
     public void createFormResponse(String formId, HashMap<String, String> requestObjectMap) {
 
         Response.Listener<JSONObject> createFormResponseListener = response -> {

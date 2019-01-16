@@ -1,62 +1,127 @@
 package com.platform.view.adapters;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
 
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-public class PMAdapter extends RecyclerView.Adapter<PMAdapter.PMViewHolder> {
+@SuppressLint("InflateParams")
+public class PMAdapter extends BaseExpandableListAdapter {
 
-    private List<ProcessData> processDataList;
+    private Context context;
+    private List<String> listDataHeader;
+    private Map<String, List<ProcessData>> listDataChild;
     private OnProcessListItemClickListener listener;
 
-    public PMAdapter(List<ProcessData> processList, OnProcessListItemClickListener listener) {
-        this.processDataList = processList;
+    public PMAdapter(Context context, List<String> headerList, Map<String,
+            List<ProcessData>> childDataList, OnProcessListItemClickListener listener) {
+
+        this.context = context;
+        this.listDataHeader = headerList;
+        this.listDataChild = childDataList;
         this.listener = listener;
     }
 
-    @NonNull
     @Override
-    public PMViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_each_process, parent, false);
-
-        return new PMViewHolder(itemView);
+    public int getGroupCount() {
+        return this.listDataHeader.size();
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PMViewHolder holder, int i) {
-        ProcessData processData = processDataList.get(i);
-        holder.processName.setText(processData.getName());
-
-        holder.processName.setOnClickListener(view ->
-                listener.onProcessListItemClickListener(holder.getAdapterPosition()));
+    public int getChildrenCount(int childPosition) {
+        return this.listDataChild.get(this.listDataHeader.get(childPosition)).size();
     }
 
     @Override
-    public int getItemCount() {
-        return processDataList.size();
+    public Object getGroup(int groupPosition) {
+        return this.listDataHeader.get(groupPosition);
     }
 
-    class PMViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosition);
+    }
 
-        TextView processName;
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
 
-        PMViewHolder(View view) {
-            super(view);
-            processName = view.findViewById(R.id.pm_process_name_text);
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            LayoutInflater layoutInflater =
+                    (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater != null ?
+                    layoutInflater.inflate(R.layout.layout_group_list,null) : null;
         }
+
+        if (convertView != null) {
+            ImageView arrowIndicator = convertView.findViewById(R.id.group_list_arrow);
+            if (isExpanded) {
+                arrowIndicator.setImageResource(R.drawable.ic_down_arrow_light_blue);
+            } else {
+                arrowIndicator.setImageResource(R.drawable.ic_right_arrow_light_blue);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView .findViewById(R.id.group_list_header);
+            txtName.setText(headerTitle);
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public View getChildView(final int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+
+        ProcessData process = (ProcessData) getChild(groupPosition, childPosition);
+
+        if (convertView == null) {
+            LayoutInflater layoutInflater =
+                    (LayoutInflater) this.context .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater != null ?
+                    layoutInflater.inflate(R.layout.layout_each_process, null) : null;
+        }
+
+        if (convertView != null) {
+            TextView processName = convertView.findViewById(R.id.pm_process_name_text);
+            processName.setText(process.getName());
+            processName.setOnClickListener(view ->
+                listener.onProcessListItemClickListener(process));
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
     }
 
     public interface OnProcessListItemClickListener {
-        void onProcessListItemClickListener(int position);
+        void onProcessListItemClickListener(ProcessData process);
     }
 }
