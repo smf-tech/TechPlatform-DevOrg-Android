@@ -6,14 +6,14 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.request.FormCreateRequestCall;
+import com.platform.listeners.FormRequestCallListener;
+import com.platform.request.FormRequestCall;
 import com.platform.view.activities.FormActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-public class FormActivityPresenter implements PlatformRequestCallListener {
+public class FormActivityPresenter implements FormRequestCallListener {
 
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Gson gson;
@@ -26,17 +26,10 @@ public class FormActivityPresenter implements PlatformRequestCallListener {
     }
 
     public void createForm(String formId, HashMap<String, String> requestObjectMap) {
-        FormCreateRequestCall formCreateRequestCall = new FormCreateRequestCall();
-        formCreateRequestCall.setListener(this);
+        FormRequestCall formRequestCall = new FormRequestCall();
+        formRequestCall.setListener(this);
 
-        formCreateRequestCall.createFormResponse(formId, requestObjectMap);
-    }
-
-    @Override
-    public void onSuccessListener(String response) {
-        if (!TextUtils.isEmpty(response)) {
-            Log.e("TAG", "Request succeed :" + response);
-        }
+        formRequestCall.createFormResponse(formId, requestObjectMap);
     }
 
     @Override
@@ -49,5 +42,10 @@ public class FormActivityPresenter implements PlatformRequestCallListener {
     @Override
     public void onErrorListener(VolleyError error) {
 
+    }
+
+    @Override
+    public void onFormCreated(String message) {
+        Log.e("TAG", "Request succeed " + message);
     }
 }

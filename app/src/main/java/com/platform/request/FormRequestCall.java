@@ -10,7 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.listeners.FormRequestCallListener;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -21,11 +21,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FormCreateRequestCall {
+public class FormRequestCall {
 
-    private PlatformRequestCallListener listener;
+    private FormRequestCallListener listener;
+    private final String TAG = FormRequestCall.class.getName();
 
-    public void setListener(PlatformRequestCallListener listener) {
+    public void setListener(FormRequestCallListener listener) {
         this.listener = listener;
     }
 
@@ -36,7 +37,7 @@ public class FormCreateRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onSuccessListener(res);
+                    listener.onFormCreated(res);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -71,7 +72,7 @@ public class FormCreateRequestCall {
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            Log.d("TAG", "Request object key " + key + " value " + value);
+            Log.d(TAG, "Request object key " + key + " value " + value);
             jsonObject.addProperty(key, value);
         }
 
@@ -79,6 +80,4 @@ public class FormCreateRequestCall {
         response.add(Constants.PM.RESPONSE, jsonObject);
         return response;
     }
-
-
 }
