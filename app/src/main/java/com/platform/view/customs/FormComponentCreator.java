@@ -18,7 +18,7 @@ import com.platform.view.fragments.FormFragment;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "CanBeFinal"})
 public class FormComponentCreator implements DropDownValueSelectListener {
 
     private final WeakReference<FormFragment> fragment;

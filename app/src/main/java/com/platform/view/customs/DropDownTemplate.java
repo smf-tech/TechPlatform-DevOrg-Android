@@ -30,10 +30,10 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private List<String> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener dropDownValueSelectListener) {
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
-        this.dropDownValueSelectListener = dropDownValueSelectListener;
+        this.dropDownValueSelectListener = listener;
     }
 
     synchronized View init(String mandatory) {
