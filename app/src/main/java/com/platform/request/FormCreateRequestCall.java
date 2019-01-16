@@ -29,7 +29,6 @@ public class FormCreateRequestCall {
         this.listener = listener;
     }
 
-
     public void createFormResponse(String formId, HashMap<String, String> requestObjectMap) {
 
         Response.Listener<JSONObject> createFormResponseListener = response -> {
@@ -79,6 +78,4 @@ public class FormCreateRequestCall {
         response.add(Constants.PM.RESPONSE, jsonObject);
         return response;
     }
-
-
 }

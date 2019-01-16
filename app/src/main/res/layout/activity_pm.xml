@@ -20,7 +20,7 @@
             android:layout_marginTop="@dimen/dimen_15dp"
             android:layout_marginEnd="@dimen/dimen_15dp"
             android:scrollbars="vertical"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/pm_swipe_refresh"
@@ -29,7 +29,7 @@
             android:layout_marginStart="@dimen/dimen_15dp"
             android:layout_marginTop="@dimen/dimen_15dp"
             android:layout_marginEnd="@dimen/dimen_15dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ExpandableListView
                 android:id="@+id/rv_process"

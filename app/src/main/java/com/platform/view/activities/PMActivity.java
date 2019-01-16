@@ -2,10 +2,10 @@ package com.platform.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,14 +18,20 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.PMAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class PMActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener,
         PMAdapter.OnProcessListItemClickListener {
 
     private final String TAG = PMActivity.class.getName();
     private PMActivityPresenter presenter;
-    private List<ProcessData> processAllList;
+
+    private int lastExpandedPosition = -1;
+    private ArrayList<String> processCategory = new ArrayList<>();
+    private HashMap<String, List<ProcessData>> childList = new HashMap<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,13 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
 
     private void init() {
         setActionbar(getString(R.string.programme_management));
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.pm_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (Util.isConnected(this)) {
+                presenter.getAllProcess();
+            }
+        });
 
         if (Util.isConnected(this)) {
             presenter.getAllProcess();
@@ -63,14 +76,35 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
 
     private void initViews(Processes process) {
         if (process != null) {
-            processAllList = process.getData();
+            processCategory.clear();
+            childList.clear();
 
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-            RecyclerView processList = findViewById(R.id.pm_forms_category_list);
-            processList.setLayoutManager(mLayoutManager);
+            for (ProcessData data : process.getData()) {
+                String categoryName = data.getCategory().getName();
+                if (childList.containsKey(categoryName)) {
+                    List<ProcessData> processData = childList.get(categoryName);
+                    processData.add(data);
+                    childList.put(categoryName, processData);
+                } else {
+                    List<ProcessData> processData = new ArrayList<>();
+                    processData.add(data);
+                    childList.put(categoryName, processData);
+                    processCategory.add(categoryName);
+                }
+            }
 
-            PMAdapter pmAdapter = new PMAdapter(processAllList, this);
-            processList.setAdapter(pmAdapter);
+            PMAdapter pmAdapter = new PMAdapter(this, processCategory, childList, this);
+            ExpandableListView expListView = findViewById(R.id.rv_process);
+            expListView.setAdapter(pmAdapter);
+
+            expListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> false);
+            expListView.setOnGroupExpandListener(groupPosition -> {
+                if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+                    expListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            });
+            expListView.setOnGroupCollapseListener(groupPosition -> {});
         }
     }
 
@@ -104,8 +138,7 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
     }
 
     @Override
-    public void onProcessListItemClickListener(int position) {
-        ProcessData processData = processAllList.get(position);
+    public void onProcessListItemClickListener(ProcessData processData) {
         if (processData != null) {
             try {
                 Intent intent = new Intent(this, ProcessListActivity.class);

@@ -2,8 +2,10 @@ package com.platform.models.pm;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import com.platform.models.common.Category;
+import com.platform.models.common.Entity;
+import com.platform.models.common.Microservice;
+import com.platform.models.common.Project;
 
 @SuppressWarnings("unused")
 public class ProcessData {
@@ -23,18 +25,18 @@ public class ProcessData {
     @SerializedName("multiple_entry")
     @Expose
     private String multipleEntry;
-    @SerializedName("assigned_roles")
+    @SerializedName("microservice")
     @Expose
-    private List<String> assignedRoles = null;
-    @SerializedName("category_id")
+    private Microservice microservice;
+    @SerializedName("project")
     @Expose
-    private String categoryId;
-    @SerializedName("project_id")
+    private Project project;
+    @SerializedName("category")
     @Expose
-    private String projectId;
-    @SerializedName("microservice_id")
+    private Category category;
+    @SerializedName("entity")
     @Expose
-    private String microServiceId;
+    private Entity entity;
 
     public String getId() {
         return id;
@@ -76,35 +78,35 @@ public class ProcessData {
         this.multipleEntry = multipleEntry;
     }
 
-    public List<String> getAssignedRoles() {
-        return assignedRoles;
+    public Microservice getMicroservice() {
+        return microservice;
     }
 
-    public void setAssignedRoles(List<String> assignedRoles) {
-        this.assignedRoles = assignedRoles;
+    public void setMicroservice(Microservice microservice) {
+        this.microservice = microservice;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public Project getProject() {
+        return project;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public String getProjectId() {
-        return projectId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getMicroServiceId() {
-        return microServiceId;
+    public Entity getEntity() {
+        return entity;
     }
 
-    public void setMicroServiceId(String microServiceId) {
-        this.microServiceId = microServiceId;
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 }

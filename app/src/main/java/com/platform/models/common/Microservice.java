@@ -1,4 +1,4 @@
-package com.platform.models.forms;
+package com.platform.models.common;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
