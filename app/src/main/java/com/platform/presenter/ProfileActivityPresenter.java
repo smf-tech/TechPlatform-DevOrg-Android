@@ -111,6 +111,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
                     && !jurisdictionLevelResponse.getData().getJurisdictionLevelList().isEmpty()
                     && jurisdictionLevelResponse.getData().getJurisdictionLevelList().size() > 0) {
 
+                if (Util.getUserLocationJurisdictionLevelFromPref() < level) {
+                    Util.saveUserLocationJurisdictionLevel(level);
+                    Util.saveJurisdictionLevelData(jurisdictionLevelResponse.getData());
+                }
+
                 profileActivity.get().showJurisdictionLevel(
                         jurisdictionLevelResponse.getData().getJurisdictionLevelList(),
                         level, jurisdictionLevelResponse.getData().getLevelName());

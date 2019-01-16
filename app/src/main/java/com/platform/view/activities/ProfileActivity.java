@@ -438,6 +438,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     findViewById(R.id.txt_cluster).setVisibility(View.GONE);
                     findViewById(R.id.txt_village).setVisibility(View.GONE);
 
+                    Util.saveUserLocationJurisdictionLevel(0);
+
                     for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()) {
                         profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
                                 jurisdiction.getLevel());

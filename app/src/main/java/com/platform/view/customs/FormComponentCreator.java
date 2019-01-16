@@ -12,11 +12,15 @@ import android.widget.RelativeLayout;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Elements;
+import com.platform.models.profile.JurisdictionLevel;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
 public class FormComponentCreator implements DropDownValueSelectListener {
@@ -79,7 +83,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
         View view = template.init(setFieldAsMandatory(formData.isRequired()));
 
-        if (formData.getChoices() != null) {
+        if (!TextUtils.isEmpty(formData.getTitle()) && formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {
+            if (Util.getJurisdictionLevelDataFromPref() != null) {
+                List<String> locationValues = new ArrayList<>();
+                for (JurisdictionLevel jurisdictionLevel :
+                        Util.getJurisdictionLevelDataFromPref().getJurisdictionLevelList()) {
+                    locationValues.add(jurisdictionLevel.getJurisdictionLevelName());
+                }
+                template.setListData(locationValues);
+            }
+        } else if (formData.getChoices() != null) {
             template.setListData(formData.getChoices());
         }
         return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};

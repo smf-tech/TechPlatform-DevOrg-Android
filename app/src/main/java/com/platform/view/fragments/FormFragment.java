@@ -17,19 +17,18 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.platform.R;
-import com.platform.listeners.PlatformTaskListener;
+import com.platform.listeners.FormTaskListener;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.utility.Constants;
-import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 import com.platform.view.customs.FormComponentCreator;
 
 import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
+public class FormFragment extends Fragment implements FormTaskListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -134,16 +133,6 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
-    }
-
-    @Override
-    public <T> void showNextScreen(T data) {
-
-    }
-
-    @Override
-    public void showErrorMessage(String result) {
-        Util.showToast(result, this);
     }
 
     @Override

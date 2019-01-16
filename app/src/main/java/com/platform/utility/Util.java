@@ -22,6 +22,7 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.UserInfo;
 import com.platform.models.login.Login;
+import com.platform.models.profile.JurisdictionLevelData;
 import com.platform.models.profile.UserLocation;
 
 import java.io.File;
@@ -220,6 +221,41 @@ public class Util {
         Gson gson = new Gson();
         String json = gson.toJson(location);
         editor.putString(Constants.App.USER_LOC_OBJ, json);
+        editor.apply();
+    }
+
+    public static int getUserLocationJurisdictionLevelFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        return preferences.getInt(Constants.App.JURISDICTION_LEVEL, 1);
+    }
+
+    public static void saveUserLocationJurisdictionLevel(int level) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(Constants.App.JURISDICTION_LEVEL, level);
+        editor.apply();
+    }
+
+    public static JurisdictionLevelData getJurisdictionLevelDataFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        String obj = preferences.getString(Constants.App.JURISDICTION_LEVEL_DATA, "{}");
+        return new Gson().fromJson(obj, JurisdictionLevelData.class);
+    }
+
+    public static void saveJurisdictionLevelData(JurisdictionLevelData jurisdictionLevel) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(jurisdictionLevel);
+        editor.putString(Constants.App.JURISDICTION_LEVEL_DATA, json);
         editor.apply();
     }
 
