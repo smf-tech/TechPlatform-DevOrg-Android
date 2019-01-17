@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.UserInfo;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -22,7 +23,7 @@ public class HomeRequestCall {
         this.listener = listener;
     }
 
-    public void getHomeModules() {
+    public void getHomeModules(UserInfo user) {
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
             try {
                 if (response != null) {
@@ -39,7 +40,7 @@ public class HomeRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getModulesUrl = Urls.BASE_URL
-                + String.format(Urls.Home.GET_MODULES, "5c1b940ad503a31f360e1252", "5c1b9523d503a31f9e6ffc23");
+                + String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

@@ -20,12 +20,13 @@
         android:layout_below="@id/dropdown_label"
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
-        android:dropDownHeight="@dimen/dimen_175dp"
         android:background="@drawable/bg_form_spinner"
+        android:dropDownHeight="@dimen/dimen_175dp"
         android:dropDownVerticalOffset="@dimen/dimen_35dp"
         android:paddingStart="@dimen/dimen_05dp"
         android:paddingEnd="@dimen/dimen_05dp"
         android:paddingBottom="@dimen/dimen_05dp"
+        android:spinnerMode="dropdown"
         tools:ignore="RtlHardcoded" />
 
     <TextView
