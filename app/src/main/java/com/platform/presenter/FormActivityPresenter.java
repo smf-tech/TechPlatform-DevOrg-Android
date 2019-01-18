@@ -13,11 +13,10 @@ import com.platform.view.activities.FormActivity;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
+@SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class FormActivityPresenter implements FormRequestCallListener {
 
-    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Gson gson;
-    @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
     private WeakReference<FormActivity> formActivity;
 
     public FormActivityPresenter(FormActivity activity) {
@@ -41,7 +40,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-
+        Log.e("TAG", "Request Error :" + error);
     }
 
     @Override

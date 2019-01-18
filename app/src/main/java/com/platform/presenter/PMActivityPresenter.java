@@ -11,11 +11,10 @@ import com.platform.view.activities.PMActivity;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("CanBeFinal")
 public class PMActivityPresenter implements PlatformRequestCallListener {
 
-    @SuppressWarnings("CanBeFinal")
     private final String TAG = ProfileActivityPresenter.class.getName();
-    @SuppressWarnings("CanBeFinal")
     private WeakReference<PMActivity> pmActivity;
 
     public PMActivityPresenter(PMActivity activity) {

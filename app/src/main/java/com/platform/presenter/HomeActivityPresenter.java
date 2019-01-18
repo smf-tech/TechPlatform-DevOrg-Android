@@ -5,29 +5,29 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.UserInfo;
 import com.platform.models.home.Home;
 import com.platform.request.HomeRequestCall;
 import com.platform.view.activities.HomeActivity;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("CanBeFinal")
 public class HomeActivityPresenter implements PlatformRequestCallListener {
 
-    @SuppressWarnings("CanBeFinal")
     private final String TAG = ProfileActivityPresenter.class.getName();
-    @SuppressWarnings("CanBeFinal")
     private WeakReference<HomeActivity> homeActivity;
 
     public HomeActivityPresenter(HomeActivity activity) {
         homeActivity = new WeakReference<>(activity);
     }
 
-    public void getModules() {
+    public void getModules(UserInfo user) {
         HomeRequestCall requestCall = new HomeRequestCall();
         requestCall.setListener(this);
 
         homeActivity.get().showProgressBar();
-        requestCall.getHomeModules();
+        requestCall.getHomeModules(user);
     }
 
     @Override

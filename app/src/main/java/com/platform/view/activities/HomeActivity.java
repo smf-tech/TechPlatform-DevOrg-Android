@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.UserInfo;
 import com.platform.models.home.Home;
 import com.platform.models.home.HomeModel;
 import com.platform.models.home.Modules;
@@ -59,7 +60,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         super.onResume();
 
         if (presenter != null) {
-            presenter.getModules();
+            UserInfo user = Util.getUserObjectFromPref();
+            presenter.getModules(user);
         }
     }
 

@@ -18,11 +18,10 @@ import com.platform.view.activities.ProfileActivity;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("CanBeFinal")
 public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
-    @SuppressWarnings("CanBeFinal")
     private final String TAG = ProfileActivityPresenter.class.getName();
-    @SuppressWarnings("CanBeFinal")
     private WeakReference<ProfileActivity> profileActivity;
 
     public ProfileActivityPresenter(ProfileActivity activity) {

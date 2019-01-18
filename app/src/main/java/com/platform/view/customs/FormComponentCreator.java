@@ -88,7 +88,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
         View view = template.init(setFieldAsMandatory(formData.isRequired()));
 
-        if (!TextUtils.isEmpty(formData.getTitle()) && formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {
+        if (!TextUtils.isEmpty(formData.getTitle()) &&
+                formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {
+
             if (Util.getJurisdictionLevelDataFromPref() != null) {
                 List<String> locationValues = new ArrayList<>();
                 for (JurisdictionLevel jurisdictionLevel :
@@ -100,6 +102,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         } else if (formData.getChoices() != null) {
             template.setListData(formData.getChoices());
         }
+
         return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
     }
 

@@ -9,11 +9,10 @@ import com.platform.view.activities.ProcessListActivity;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("CanBeFinal")
 public class ProcessListActivityPresenter implements PlatformRequestCallListener {
 
-    @SuppressWarnings("CanBeFinal")
     private final String TAG = ProcessListActivityPresenter.class.getName();
-    @SuppressWarnings("CanBeFinal")
     private WeakReference<ProcessListActivity> processListActivity;
 
     public ProcessListActivityPresenter(ProcessListActivity activity) {

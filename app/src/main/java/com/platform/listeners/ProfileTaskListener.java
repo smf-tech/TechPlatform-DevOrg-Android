@@ -20,5 +20,4 @@ public interface ProfileTaskListener extends PlatformTaskListener {
     void showStates(List<State> states);
 
     void showJurisdictionLevel(List<JurisdictionLevel> jurisdictionLevels, int level, String levelName);
-
 }
