@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 
+import com.platform.R;
 import com.platform.models.profile.JurisdictionLevel;
 
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getResources().getString(R.string.cluster));
         builder.setMultiChoiceItems(
                 clusterNames.toArray(new CharSequence[clusterNames.size()]), selectedValues, this);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());

@@ -22,7 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,6 +114,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private State selectedState;
     private Organization selectedOrg;
 
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +130,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private void initViews() {
         setActionbar(getString(R.string.registration_title));
+
+        progressBarLayout = findViewById(R.id.profile_act_progress_bar);
+        progressBar = findViewById(R.id.pb_profile_act);
 
         backButton = findViewById(R.id.toolbar_back_action);
         etUserFirstName = findViewById(R.id.et_user_first_name);
@@ -459,12 +467,22 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public void showProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

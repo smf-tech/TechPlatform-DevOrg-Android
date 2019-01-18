@@ -40,30 +40,40 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     public void getOrganizations() {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
         requestCall.getOrganizations();
     }
 
     public void getOrganizationProjects(String orgId) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
         requestCall.getOrganizationProjects(orgId);
     }
 
     public void getOrganizationRoles(String orgId) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);
     }
 
     public void getStates() {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
         requestCall.getStates();
     }
 
     public void getJurisdictionLevelData(String stateId, int level) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
         requestCall.getJurisdictionLevelData(stateId, level);
     }
 
@@ -80,6 +90,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onOrganizationsFetched(String response) {
+        profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             OrganizationResponse organizationResponse = new Gson().fromJson(response, OrganizationResponse.class);
             if (organizationResponse != null && organizationResponse.getData() != null
@@ -92,6 +103,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onStatesFetched(String response) {
+        profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             StateResponse stateResponse = new Gson().fromJson(response, StateResponse.class);
             if (stateResponse != null && stateResponse.getData() != null
@@ -103,6 +115,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onJurisdictionFetched(String response, int level) {
+        profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             JurisdictionLevelResponse jurisdictionLevelResponse
                     = new Gson().fromJson(response, JurisdictionLevelResponse.class);
@@ -125,6 +138,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onOrganizationProjectsFetched(String response) {
+        profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             OrganizationProjectsResponse organizationProjectsResponse
                     = new Gson().fromJson(response, OrganizationProjectsResponse.class);
@@ -138,6 +152,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onOrganizationRolesFetched(String response) {
+        profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             OrganizationRolesResponse organizationRolesResponse
                     = new Gson().fromJson(response, OrganizationRolesResponse.class);

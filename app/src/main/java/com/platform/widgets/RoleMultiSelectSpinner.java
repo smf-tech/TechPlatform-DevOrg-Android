@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 
+import com.platform.R;
 import com.platform.models.profile.OrganizationRole;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class RoleMultiSelectSpinner extends android.support.v7.widget.AppCompatS
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getResources().getString(R.string.role));
         builder.setMultiChoiceItems(
                 roleNames.toArray(new CharSequence[roleNames.size()]), selectedValues, this);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());

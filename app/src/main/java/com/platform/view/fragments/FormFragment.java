@@ -22,6 +22,7 @@ import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 import com.platform.view.customs.FormComponentCreator;
 
@@ -40,6 +41,8 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
     private RelativeLayout progressBarLayout;
     private List<Elements> formDataArrayList;
     private FormComponentCreator formComponentCreator;
+
+    public String errorMsg = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -143,7 +146,11 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
                 break;
 
             case R.id.btn_submit:
-                ((FormActivity) getActivity()).getFormPresenter().createForm(formModel.getData().getId(), formComponentCreator.getRequestObject());
+                if (formComponentCreator.isValid()) {
+                    ((FormActivity) getActivity()).getFormPresenter().createForm(formModel.getData().getId(), formComponentCreator.getRequestObject());
+                } else {
+                    Util.showToast(errorMsg, this);
+                }
                 break;
         }
     }
