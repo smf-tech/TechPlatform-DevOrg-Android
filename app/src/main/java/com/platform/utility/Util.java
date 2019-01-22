@@ -14,6 +14,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -259,6 +261,18 @@ public class Util {
         editor.apply();
     }
 
+    public static void clearAllUserData() {
+        try {
+            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static <T> void showToast(String msg, T context) {
         if (TextUtils.isEmpty(msg)) {
             msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
@@ -298,5 +312,15 @@ public class Util {
         NetworkInfo activeNetwork = getNetworkInfo(context);
         return activeNetwork != null
                 && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public static void hideKeyboard(View v) {
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                Platform.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

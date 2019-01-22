@@ -3,6 +3,7 @@ package com.platform.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.platform.utility.Util;
 public class ProcessListActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener {
 
+    private final String TAG = ProcessListActivity.class.getName();
     private String processId, processName;
     private ProcessListActivityPresenter presenter;
 
@@ -59,13 +61,18 @@ public class ProcessListActivity extends BaseActivity implements PlatformTaskLis
         }
     }
 
-    @SuppressWarnings("EmptyMethod")
     private void getAllProcess() {
-
+        presenter.getProcessList();
     }
 
     private void onAddClick() {
-        presenter.getProcessDetails(processId);
+        try {
+            Intent intent = new Intent(this, FormActivity.class);
+            intent.putExtra(Constants.PM.PROCESS_ID, processId);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -88,27 +95,21 @@ public class ProcessListActivity extends BaseActivity implements PlatformTaskLis
 
     @Override
     public void showProgressBar() {
-
+        Log.i(TAG, "Show progress bar...");
     }
 
     @Override
     public void hideProgressBar() {
-
+        Log.i(TAG, "Hide progress bar...");
     }
 
     @Override
     public <T> void showNextScreen(T data) {
-        try {
-            Intent intent = new Intent(this, FormActivity.class);
-            intent.putExtra(Constants.PM.PROCESS_DETAILS, (String) data);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Log.i(TAG, "Success : " + data);
     }
 
     @Override
     public void showErrorMessage(String result) {
-
+        Log.e(TAG, "Error Message " + result);
     }
 }

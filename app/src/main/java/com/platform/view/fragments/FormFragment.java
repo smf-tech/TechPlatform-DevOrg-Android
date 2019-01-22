@@ -17,19 +17,19 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.platform.R;
-import com.platform.listeners.FormTaskListener;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
+import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.activities.FormActivity;
 import com.platform.view.customs.FormComponentCreator;
 
 import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements FormTaskListener, View.OnClickListener {
+public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -41,6 +41,7 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
     private RelativeLayout progressBarLayout;
     private List<Elements> formDataArrayList;
     private FormComponentCreator formComponentCreator;
+    private FormActivityPresenter formPresenter;
 
     public String errorMsg = "";
 
@@ -56,9 +57,12 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String formData = getArguments().getString(Constants.PM.PROCESS_DETAILS);
-        formModel = new Gson().fromJson(formData, Form.class);
-        initViews();
+        formPresenter = new FormActivityPresenter(this);
+
+        if (getArguments() != null) {
+            String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+            formPresenter.getProcessDetails(processId);
+        }
     }
 
     private void initViews() {
@@ -139,6 +143,17 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
     }
 
     @Override
+    public <T> void showNextScreen(T data) {
+        formModel = new Gson().fromJson((String) data, Form.class);
+        initViews();
+    }
+
+    @Override
+    public void showErrorMessage(String result) {
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
@@ -147,7 +162,8 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
 
             case R.id.btn_submit:
                 if (formComponentCreator.isValid()) {
-                    ((FormActivity) getActivity()).getFormPresenter().createForm(formModel.getData().getId(), formComponentCreator.getRequestObject());
+                    formPresenter.createForm(formModel.getData().getId(),
+                            formComponentCreator.getRequestObject());
                 } else {
                     Util.showToast(errorMsg, this);
                 }

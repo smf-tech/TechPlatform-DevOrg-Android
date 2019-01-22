@@ -19,12 +19,11 @@ public class ProcessListActivityPresenter implements PlatformRequestCallListener
         processListActivity = new WeakReference<>(activity);
     }
 
-    public void getProcessDetails(String processId) {
+    public void getProcessList() {
         PMRequestCall requestCall = new PMRequestCall();
         requestCall.setListener(this);
 
         processListActivity.get().showProgressBar();
-        requestCall.getProcessDetails(processId);
     }
 
     @Override

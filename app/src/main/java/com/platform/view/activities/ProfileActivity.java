@@ -251,6 +251,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     private void submitProfileDetails() {
+        Util.hideKeyboard (btnProfileSubmit);
+
         if (isAllInputsValid()) {
             UserInfo userInfo = new UserInfo();
             userInfo.setUserFirstName(String.valueOf(etUserFirstName.getText()).trim());
