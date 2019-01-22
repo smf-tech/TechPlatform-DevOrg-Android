@@ -23,6 +23,7 @@ import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
 
 import java.util.List;
@@ -41,6 +42,8 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private List<Elements> formDataArrayList;
     private FormComponentCreator formComponentCreator;
     private FormActivityPresenter formPresenter;
+
+    public String errorMsg = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -158,8 +161,12 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 break;
 
             case R.id.btn_submit:
-                formPresenter.createForm(formModel.getData().getId(),
-                        formComponentCreator.getRequestObject());
+                if (formComponentCreator.isValid()) {
+                    formPresenter.createForm(formModel.getData().getId(),
+                            formComponentCreator.getRequestObject());
+                } else {
+                    Util.showToast(errorMsg, this);
+                }
                 break;
         }
     }
