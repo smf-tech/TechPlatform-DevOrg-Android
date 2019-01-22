@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.platform.R;
-import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.FormFragment;
 
@@ -14,7 +13,6 @@ public class FormActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private FormFragment fragment;
-    private FormActivityPresenter formPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,19 +22,12 @@ public class FormActivity extends BaseActivity {
         addFragment();
     }
 
-    public FormActivityPresenter getFormPresenter() {
-        if (formPresenter == null) {
-            formPresenter = new FormActivityPresenter(this);
-        }
-        return formPresenter;
-    }
-
     private void addFragment() {
         Bundle bundle = new Bundle();
 
         if (getIntent().getExtras() != null) {
-            String data = getIntent().getExtras().getString(Constants.PM.PROCESS_DETAILS);
-            bundle.putString(Constants.PM.PROCESS_DETAILS, data);
+            String processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
+            bundle.putString(Constants.PM.PROCESS_ID, processId);
         }
 
         fragment = new FormFragment();
@@ -44,7 +35,7 @@ public class FormActivity extends BaseActivity {
 
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.gen_form_container, fragment, "fragment");
+            fragmentTransaction.add(R.id.gen_form_container, fragment, "formFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
@@ -62,10 +53,6 @@ public class FormActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         fragment = null;
-
-        if (formPresenter != null) {
-            formPresenter = null;
-        }
         super.onDestroy();
     }
 }

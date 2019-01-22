@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:paddingEnd="5dp"
         android:paddingStart="@dimen/dimen_10dp"
+        android:paddingEnd="5dp"
         app:titleTextColor="@android:color/white">
 
         <LinearLayout
@@ -39,7 +39,8 @@
                 android:gravity="center"
                 android:lines="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_20"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/toolbar_more_action"
