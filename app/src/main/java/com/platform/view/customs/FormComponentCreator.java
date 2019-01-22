@@ -29,6 +29,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private final String TAG = this.getClass().getSimpleName();
     private HashMap<String, String> requestObjectMap = new HashMap<>();
 
+    private ArrayList<EditText> editTexts = new ArrayList<>();
+
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
     }
@@ -46,6 +48,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         EditText textInputField = textTemplateView.findViewById(R.id.edit_form_text_template);
         textInputField.setMaxLines(1);
         textInputField.setText("");
+        textInputField.setTag(formData.getTitle());
         textInputField.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -67,6 +70,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             }
         });
+
+        editTexts.add(textInputField);
 
         TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
         textInputLayout.setHint(formData.getTitle());
@@ -103,6 +108,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     private String setFieldAsMandatory(boolean isRequired) {
         return (isRequired ? " *" : "");
+    }
+
+    public boolean isValid() {
+        //For all edit texts
+        for (EditText inputText :
+                editTexts) {
+            if (inputText != null && TextUtils.isEmpty(inputText.getText().toString()) && !TextUtils.isEmpty(inputText.getTag().toString())) {
+                fragment.get().errorMsg = inputText.getTag() + " blank";
+                return false;
+            }
+        }
+        //For all radio buttons
+        //For all multi selects
+        return true;
     }
 
     public HashMap<String, String> getRequestObject() {
