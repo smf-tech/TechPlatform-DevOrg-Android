@@ -76,7 +76,8 @@ public class Constants {
     }
 
     public static class Home {
-        public static final String Programme_Management = "Forms";
+        public static final String PROGRAMME_MANAGEMENT = "Forms";
+        public static final String TEAM_MANAGEMENT = "Team Management";
     }
 
     @SuppressWarnings("CanBeFinal")

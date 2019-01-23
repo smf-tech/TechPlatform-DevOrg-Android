@@ -98,8 +98,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                     modelItemList.add(setClass(modules, false));
                 }
             } else {
-                List<Modules> defaultModules = data.getHomeData().getDefaultModules();
-                for (Modules modules : defaultModules) {
+                List<Modules> onApproveModules = data.getHomeData().getOnApproveModules();
+                for (Modules modules : onApproveModules) {
                     modelItemList.add(setClass(modules, true));
                 }
             }
@@ -150,10 +150,16 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         homeModel.setAccessible(isAccessible);
 
         switch (module.getName()) {
-            case Constants.Home.Programme_Management:
+            case Constants.Home.PROGRAMME_MANAGEMENT:
                 homeModel.setModuleName(getString(R.string.programme_management));
                 homeModel.setModuleIcon(R.drawable.ic_program_mangement);
                 homeModel.setDestination(PMActivity.class);
+                break;
+
+            case Constants.Home.TEAM_MANAGEMENT:
+                homeModel.setModuleName(getString(R.string.team_management));
+                homeModel.setModuleIcon(R.drawable.ic_team_management);
+                homeModel.setDestination(TMActivity.class);
                 break;
         }
 

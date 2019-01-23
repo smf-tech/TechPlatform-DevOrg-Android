@@ -105,10 +105,14 @@
 
     <!--Home-->
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
+    <string name="team_management">टीम\nप्रबंधक</string>
 
     <!--Program management-->
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
+
+    <!--Team Management-->
+    <string name="team_user_approval">उपयोगकर्ता स्वीकृति</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">कुछ गलत हो गया</string>
