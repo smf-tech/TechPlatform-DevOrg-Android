@@ -18,17 +18,28 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
     private final Gson gson;
     private WeakReference<FormActivity> formActivity;
+    private String formId;
+    private HashMap<String, String> requestedObject;
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
+    private HashMap<String, String> getRequestedObject() {
+        return requestedObject;
+    }
+
+    public void setRequestedObject(HashMap<String, String> requestedObject) {
+        this.requestedObject = requestedObject;
+    }
 
     public FormActivityPresenter(FormActivity activity) {
         this.formActivity = new WeakReference<>(activity);
         this.gson = new GsonBuilder().serializeNulls().create();
-    }
-
-    public void createForm(String formId, HashMap<String, String> requestObjectMap) {
-        FormRequestCall formRequestCall = new FormRequestCall();
-        formRequestCall.setListener(this);
-
-        formRequestCall.createFormResponse(formId, requestObjectMap);
     }
 
     @Override
@@ -46,5 +57,13 @@ public class FormActivityPresenter implements FormRequestCallListener {
     @Override
     public void onFormCreated(String message) {
         Log.e("TAG", "Request succeed " + message);
+    }
+
+    @Override
+    public void onSubmitClick() {
+        FormRequestCall formRequestCall = new FormRequestCall();
+        formRequestCall.setListener(this);
+
+        formRequestCall.createFormResponse(getFormId(), getRequestedObject());
     }
 }

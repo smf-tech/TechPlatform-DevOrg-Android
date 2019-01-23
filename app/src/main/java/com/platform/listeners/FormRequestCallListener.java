@@ -9,4 +9,6 @@ public interface FormRequestCallListener {
     void onErrorListener(VolleyError error);
 
     void onFormCreated(String message);
+
+    void onSubmitClick();
 }

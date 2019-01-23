@@ -147,7 +147,11 @@ public class FormFragment extends Fragment implements FormTaskListener, View.OnC
 
             case R.id.btn_submit:
                 if (formComponentCreator.isValid()) {
-                    ((FormActivity) getActivity()).getFormPresenter().createForm(formModel.getData().getId(), formComponentCreator.getRequestObject());
+                    ((FormActivity) getActivity()).getFormPresenter().setFormId(formModel.getData().getId());
+                    ((FormActivity) getActivity()).getFormPresenter().setRequestedObject(formComponentCreator.getRequestObject());
+                    ((FormActivity) getActivity()).getFormPresenter().onSubmitClick();
+
+                    //((FormActivity) getActivity()).getFormPresenter().createForm(formModel.getData().getId(), formComponentCreator.getRequestObject());
                 } else {
                     Util.showToast(errorMsg, this);
                 }
