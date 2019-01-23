@@ -1,0 +1,37 @@
+package com.platform.syncAdapter;
+
+import android.accounts.Account;
+import android.content.AbstractThreadedSyncAdapter;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.SyncResult;
+import android.os.Bundle;
+
+public class DevOrgSyncAdapter extends AbstractThreadedSyncAdapter {
+
+    ContentResolver mContentResolver;
+
+    public DevOrgSyncAdapter(Context context, boolean autoInitialize) {
+        super(context, autoInitialize);
+
+        mContentResolver = context.getContentResolver();
+    }
+
+    private DevOrgSyncAdapter(final Context context, final boolean autoInitialize,
+                              final boolean allowParallelSyncs,
+                              final ContentResolver contentResolver) {
+        super(context, autoInitialize, allowParallelSyncs);
+
+        mContentResolver = contentResolver;
+    }
+
+    @Override
+    public void onPerformSync(Account account, Bundle bundle, String s,
+                              ContentProviderClient contentProviderClient,
+                              SyncResult syncResult) {
+
+
+    }
+
+}
