@@ -241,6 +241,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_logout:
+                showLogoutPopUp();
                 break;
         }
 
@@ -308,5 +309,36 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 }).create();
 
         languageSelectionDialog.show();
+    }
+
+    private void showLogoutPopUp() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.msg_logout));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                (dialog, which) -> logOutUser());
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void logOutUser() {
+        Util.clearAllUserData();
+
+        try {
+            Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(startMain);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

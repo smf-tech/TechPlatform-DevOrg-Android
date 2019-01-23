@@ -1,6 +1,6 @@
 # TechPlatform-DevOrg-Android
 
-## Model View Presenter architecture
+## Model View Presenter architecture (https://www.journaldev.com/14886/android-mvp)
 
 - View
 It contains only the UI and it does not contain any logic or knowledge of the data displayed.

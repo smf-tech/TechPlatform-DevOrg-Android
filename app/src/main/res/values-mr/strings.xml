@@ -6,7 +6,7 @@
     <string name="select_lang">भाषा निवडा</string>
 
     <string name="ok">ठीक</string>
-    <!--<string name="cancel">रद्द</string>-->
+    <string name="cancel">रद्द</string>
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन</string>
 
@@ -29,6 +29,7 @@
     <string name="otp_timeout_text">वेळ संपला %1$s सेकंद</string>
     <string name="msg_otp_verification_timeout"> OTP सत्यापित करण्याची वेळ संपली, कृपया पुन्हा प्रयत्न करा</string>
     <string name="msg_waiting_for_otp_text">वर दिलेल्या तुमच्या नोंणदणीकृत मोबाइल क्रमांकावर पाठविलेल्या OTP प्रतिक्षा करत आहात</string>
+    <string name="msg_logout">आपण बाहेर पडू इच्छिता?</string>
 
     <!--Registration-->
     <string name="registration_title">नोंदणी</string>

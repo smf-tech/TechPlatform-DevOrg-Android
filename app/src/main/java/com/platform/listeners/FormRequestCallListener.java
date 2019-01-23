@@ -10,5 +10,5 @@ public interface FormRequestCallListener {
 
     void onFormCreated(String message);
 
-    void onSubmitClick();
+    void onSuccessListener(String response);
 }

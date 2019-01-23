@@ -83,7 +83,6 @@ public class Constants {
     public static class PM {
         public static String PROCESS_NAME = "processName";
         public static String PROCESS_ID = "processId";
-        public static String PROCESS_DETAILS = "processDetails";
         public static String RESPONSE = "response";
     }
 

@@ -1,7 +1,6 @@
 package com.platform.view.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -241,29 +239,16 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         }
     }
 
-    private void hideKeyboard(View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        if (inputMethodManager != null) {
-            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE) {
-
-            hideKeyboard (etUserMobileNumber);
+            Util.hideKeyboard (etUserMobileNumber);
 
             if (isAllInputsValid()) {
                 goToVerifyOtpScreen();
             }
-
             return true;
         }
-
         return false;
     }
 }
