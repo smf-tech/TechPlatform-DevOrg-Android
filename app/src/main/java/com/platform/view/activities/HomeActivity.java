@@ -58,6 +58,12 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     protected void onResume() {
         super.onResume();
 
+        if (Util.isConnected(HomeActivity.this)) {
+            getUserData();
+        }
+    }
+
+    private void getUserData() {
         if (presenter != null) {
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
@@ -249,6 +255,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_update_user_data:
+                showUpdateDataPopup();
                 break;
 
             case R.id.action_logout:
@@ -273,6 +280,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 return true;
 
             case R.id.action_update_user_data:
+                showUpdateDataPopup();
                 return true;
 
             case R.id.action_logout:
@@ -330,6 +338,29 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
+    private void showUpdateDataPopup() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.update_data_string));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                (dialog, which) -> {
+                    if (Util.isConnected(HomeActivity.this)) {
+                        getUserData();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
     private void showLogoutPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         // Setting Dialog Title
@@ -344,6 +375,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
                 (dialog, which) -> logOutUser());
+
         // Showing Alert Message
         alertDialog.show();
     }
