@@ -43,8 +43,8 @@ android {
             buildConfigField 'String', 'REPORTID', "\"a1G0k000000522K\""
             buildConfigField 'String', 'ISSUEID', "\"a1G0k000000522F\""
             buildConfigField 'String', 'PASSWORD', "\"Bjs@123\$\""
-            buildConfigField 'String', 'CLIENT_ID', "\"3MVG9Se4BnchkASmtngzNh_R0lT58JDLumJTVC3MhPonq2GNFu2vE30iMiCdJq4tO.XsvJgrXlwiFh5e7k2VB\""
-            buildConfigField 'String', 'CLIENT_SECRET', "\"4824877056977315137\""
+            buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
+            buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
             applicationId 'com.platform.debug'
         }
         Production {
@@ -54,8 +54,8 @@ android {
             buildConfigField 'String', 'REPORTID', "\"a1L7F000000YNK4\""
             buildConfigField 'String', 'ISSUEID', "\"a1L7F000000YNJz\""
             buildConfigField 'String', 'PASSWORD', "\"Bjs@123\$\""
-            buildConfigField 'String', 'CLIENT_ID', "\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
-            buildConfigField 'String', 'CLIENT_SECRET', "\"2027871201908212165\""
+            buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
+            buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
             applicationId 'com.platform'
         }
     }

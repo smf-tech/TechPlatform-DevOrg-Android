@@ -38,8 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements PlatformTaskListener,
-        View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
 
     private AlertDialog dialogNotApproved;
     private HomeActivityPresenter presenter;
@@ -167,6 +166,16 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.IS_ROLE_CHANGE && resultCode == RESULT_OK) {
+            if (dialogNotApproved != null && dialogNotApproved.isShowing()) {
+                dialogNotApproved.dismiss();
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_home_menu, menu);
@@ -181,11 +190,6 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         if (dialogNotApproved != null) {
             dialogNotApproved.dismiss();
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     @Override
@@ -241,6 +245,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_profile:
+                showProfileScreen();
                 break;
 
             case R.id.action_update_user_data:
@@ -264,12 +269,14 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 return true;
 
             case R.id.action_profile:
+                showProfileScreen();
                 return true;
 
             case R.id.action_update_user_data:
                 return true;
 
             case R.id.action_logout:
+                showLogoutPopUp();
                 return true;
 
             default:
@@ -315,6 +322,12 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 }).create();
 
         languageSelectionDialog.show();
+    }
+
+    private void showProfileScreen() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
     private void showLogoutPopUp() {

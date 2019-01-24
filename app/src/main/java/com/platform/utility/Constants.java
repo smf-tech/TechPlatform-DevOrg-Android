@@ -4,6 +4,7 @@ public class Constants {
 
     public static final int SMS_RECEIVE_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
+    public static final int IS_ROLE_CHANGE = 3;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
@@ -58,6 +59,9 @@ public class Constants {
         public static final String USER_ORG_ID = "org_id";
         public static final String USER_PROJECTS = "projects";
         public static final String USER_LOCATION = "location";
+
+        public static String ACTION = "action";
+        public static String ACTION_EDIT = "edit";
     }
 
     public static class Location {

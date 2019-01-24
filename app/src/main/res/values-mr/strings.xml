@@ -65,7 +65,7 @@
     <string name="mandatory_school">संरचना नाव  *</string>
     <string name="school">संरचना नाव</string>
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
-    <!--<string name="label_select">निवडा</string>-->
+    <string name="update_profile">प्रोफाइल अद्ययावत करा</string>
     <!--<string name="title_select_project">प्रकल्प निवडा</string>-->
     <string name="approve_profile">आपण अद्याप मंजूर नाही.</string>
     <!--<string name="approve_profile2">तुम्हाला मान्यता देईल.</string>-->
