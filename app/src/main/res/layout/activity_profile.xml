@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,7 +13,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_above="@+id/btn_profile_submit"
+        android:layout_below="@+id/profile_toolbar"
         android:fillViewport="true">
 
         <LinearLayout
@@ -357,9 +358,10 @@
         android:id="@+id/btn_profile_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dimen_10dp"
         android:background="@color/pink"
         android:text="@string/btn_submit"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_22" />
-</LinearLayout>
+</RelativeLayout>
