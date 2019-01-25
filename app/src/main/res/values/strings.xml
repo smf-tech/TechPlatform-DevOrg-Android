@@ -93,6 +93,7 @@
     <string name="my_profile">My Profile</string>
     <string name="add_location">Add Location</string>
     <string name="update_user_data">Update Data</string>
+    <string name="action_roles">Roles</string>
     <string name="notification">Notification</string>
     <string name="share_app">Share App</string>
     <string name="rate_us">Rate Us</string>
