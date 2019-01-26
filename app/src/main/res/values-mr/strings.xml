@@ -104,6 +104,8 @@
     <string name="locked">लॉक</string>
 
     <!--Home-->
+    <string name="tab_connect">कनेक्ट</string>
+    <string name="tab_stories">कथा</string>
     <string name="programme_management">कार्यक्रम\nव्यवस्थापन</string>
     <string name="team_management">संघ\nव्यवस्थापन</string>
 

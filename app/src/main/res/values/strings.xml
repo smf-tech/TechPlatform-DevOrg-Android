@@ -104,6 +104,8 @@
     <string name="locked">Locked</string>
 
     <!--Home-->
+    <string name="tab_connect">Connect</string>
+    <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="team_management">Team\nManagement</string>
 

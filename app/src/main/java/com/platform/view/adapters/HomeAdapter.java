@@ -17,7 +17,7 @@ import com.platform.models.home.HomeModel;
 
 import java.util.List;
 
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
 
     private Context context;

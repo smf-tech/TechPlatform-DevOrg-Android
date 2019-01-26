@@ -15,6 +15,8 @@
     <dimen name="dimen_130dp">130dp</dimen>
     <dimen name="dimen_175dp">175dp</dimen>
 
+    <dimen name="circle_size">64dp</dimen>
+
     <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_14">14sp</dimen>

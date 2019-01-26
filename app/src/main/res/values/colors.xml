@@ -4,8 +4,10 @@
     <color name="colorPrimary">#7EBE42</color>
     <color name="colorAccent">#009688</color>
 
+    <color name="light_grey">#C7C7C7</color>
     <color name="medium_grey">#757575</color>
     <color name="dark_grey">#616161</color>
+    <color name="dark_green">#198C19</color>
 
     <color name="pink">#FF4081</color>
     <color name="white">#FFFFFF</color>
@@ -13,6 +15,8 @@
     <color name="red">#FF0000</color>
     <color name="green">#8BC34A</color>
     <color name="purple">#800080</color>
+    <color name="orange">#FFB549</color>
+    <color name="brown">#C35F3E</color>
 
     <color name="dark_blue">#75194779</color>
 </resources>

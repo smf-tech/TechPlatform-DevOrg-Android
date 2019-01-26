@@ -60,8 +60,8 @@ public class Constants {
         public static final String USER_PROJECTS = "projects";
         public static final String USER_LOCATION = "location";
 
-        public static String ACTION = "action";
-        public static String ACTION_EDIT = "edit";
+        public static final String ACTION = "action";
+        public static final String ACTION_EDIT = "edit";
     }
 
     public static class Location {
@@ -80,6 +80,7 @@ public class Constants {
     }
 
     public static class Home {
+        public static final String HOME_DATA = "homeObj";
         public static final String PROGRAMME_MANAGEMENT = "Forms";
         public static final String TEAM_MANAGEMENT = "Team Management";
     }
