@@ -65,8 +65,8 @@
     <string name="mandatory_school">संरचना का नाम  *</string>
     <string name="school">संरचना का नाम</string>
     <string name="profile_pic">प्रोफ़ाइल चित्र जोड़ें</string>
-    <!--<string name="label_select">चुनें</string>-->
-    <!--<string name="title_select_project">प्रोजेक्ट का चयन करें</string>-->
+    <string name="update_profile">अपडेट प्रोफाइल</string>
+    <string name="update_data_string">क्या आप डेटा अपडेट करना चाहते हैं?</string>
     <string name="approve_profile">आप अभी तक स्वीकृत नहीं हैं</string>
     <!--<string name="approve_profile2">आपको मंजूर होगा।</string>-->
 
@@ -105,10 +105,14 @@
 
     <!--Home-->
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
+    <string name="team_management">टीम\nप्रबंधक</string>
 
     <!--Program management-->
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
+
+    <!--Team Management-->
+    <string name="team_user_approval">उपयोगकर्ता स्वीकृति</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">कुछ गलत हो गया</string>

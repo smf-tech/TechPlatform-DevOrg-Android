@@ -17,19 +17,31 @@ import java.util.HashMap;
 public class FormActivityPresenter implements FormRequestCallListener {
 
     private final String TAG = FormActivityPresenter.class.getName();
+
     private final Gson gson;
+    private String formId;
     private WeakReference<FormFragment> formFragment;
+    private HashMap<String, String> requestedObject;
+
+    private String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
+    private HashMap<String, String> getRequestedObject() {
+        return requestedObject;
+    }
+
+    public void setRequestedObject(HashMap<String, String> requestedObject) {
+        this.requestedObject = requestedObject;
+    }
 
     public FormActivityPresenter(FormFragment fragment) {
         this.formFragment = new WeakReference<>(fragment);
         this.gson = new GsonBuilder().serializeNulls().create();
-    }
-
-    public void createForm(String formId, HashMap<String, String> requestObjectMap) {
-        FormRequestCall formRequestCall = new FormRequestCall();
-        formRequestCall.setListener(this);
-
-        formRequestCall.createFormResponse(formId, requestObjectMap);
     }
 
     public void getProcessDetails(String processId) {
@@ -63,5 +75,13 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
         formFragment.get().hideProgressBar();
         formFragment.get().showNextScreen(response);
+    }
+
+    @Override
+    public void onSubmitClick() {
+        FormRequestCall formRequestCall = new FormRequestCall();
+        formRequestCall.setListener(this);
+
+        formRequestCall.createFormResponse(getFormId(), getRequestedObject());
     }
 }

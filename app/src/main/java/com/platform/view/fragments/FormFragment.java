@@ -162,8 +162,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
             case R.id.btn_submit:
                 if (formComponentCreator.isValid()) {
-                    formPresenter.createForm(formModel.getData().getId(),
-                            formComponentCreator.getRequestObject());
+                    formPresenter.setFormId(formModel.getData().getId());
+                    formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+                    formPresenter.onSubmitClick();
                 } else {
                     Util.showToast(errorMsg, this);
                 }

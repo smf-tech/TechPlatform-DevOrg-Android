@@ -58,8 +58,7 @@ import static com.platform.utility.Constants.SyncAdapter.PENDING;
 import static com.platform.utility.Constants.SyncAdapter.STARTED;
 
 public class HomeActivity extends BaseActivity implements PlatformTaskListener,
-        View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, OrgRolesRequestCallListener {
+        ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private AlertDialog dialogNotApproved;
@@ -84,6 +83,12 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     protected void onResume() {
         super.onResume();
 
+        if (Util.isConnected(HomeActivity.this)) {
+            getUserData();
+        }
+    }
+
+    private void getUserData() {
         if (presenter != null) {
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
@@ -192,8 +197,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                     modelItemList.add(setClass(modules, false));
                 }
             } else {
-                List<Modules> defaultModules = data.getHomeData().getDefaultModules();
-                for (Modules modules : defaultModules) {
+                List<Modules> onApproveModules = data.getHomeData().getOnApproveModules();
+                for (Modules modules : onApproveModules) {
                     modelItemList.add(setClass(modules, true));
                 }
             }
@@ -244,14 +249,30 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         homeModel.setAccessible(isAccessible);
 
         switch (module.getName()) {
-            case Constants.Home.Programme_Management:
+            case Constants.Home.PROGRAMME_MANAGEMENT:
                 homeModel.setModuleName(getString(R.string.programme_management));
                 homeModel.setModuleIcon(R.drawable.ic_program_mangement);
                 homeModel.setDestination(PMActivity.class);
                 break;
+
+            case Constants.Home.TEAM_MANAGEMENT:
+                homeModel.setModuleName(getString(R.string.team_management));
+                homeModel.setModuleIcon(R.drawable.ic_team_management);
+                homeModel.setDestination(TMActivity.class);
+                break;
         }
 
         return homeModel;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.IS_ROLE_CHANGE && resultCode == RESULT_OK) {
+            if (dialogNotApproved != null && dialogNotApproved.isShowing()) {
+                dialogNotApproved.dismiss();
+            }
+        }
     }
 
     @Override
@@ -272,19 +293,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     @Override
-    public void onClick(View view) {
-
-    }
-
-    @Override
     public void showProgressBar() {
-//        mDialog.setTitle("Sync in process...");
-//        mDialog.show();
+
     }
 
     @Override
     public void hideProgressBar() {
-//        mDialog.dismiss();
+
     }
 
     @Override
@@ -330,9 +345,11 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_profile:
+                showProfileScreen();
                 break;
 
             case R.id.action_update_user_data:
+                showUpdateDataPopup();
                 break;
 
             case R.id.action_roles:
@@ -364,12 +381,15 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 return true;
 
             case R.id.action_profile:
+                showProfileScreen();
                 return true;
 
             case R.id.action_update_user_data:
+                showUpdateDataPopup();
                 return true;
 
             case R.id.action_logout:
+                showLogoutPopUp();
                 return true;
 
             default:
@@ -417,6 +437,35 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         languageSelectionDialog.show();
     }
 
+    private void showProfileScreen() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+    }
+
+    private void showUpdateDataPopup() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.update_data_string));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                (dialog, which) -> {
+                    if (Util.isConnected(HomeActivity.this)) {
+                        getUserData();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
     private void showLogoutPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         // Setting Dialog Title
@@ -431,6 +480,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
                 (dialog, which) -> logOutUser());
+
         // Showing Alert Message
         alertDialog.show();
     }

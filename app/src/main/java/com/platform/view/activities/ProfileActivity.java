@@ -122,10 +122,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        initViews();
         profilePresenter = new ProfileActivityPresenter(this);
-        profilePresenter.getOrganizations();
-        profilePresenter.getStates();
+
+        if (getIntent().getStringExtra(Constants.Login.ACTION)
+                .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+            profilePresenter.getOrganizations();
+            profilePresenter.getStates();
+        }
+
+        initViews();
     }
 
     private void initViews() {
@@ -185,6 +190,33 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             LoginInfo loginInfo = bundle.getParcelable(Constants.Login.LOGIN_OTP_VERIFY_DATA);
             if (loginInfo != null) {
                 etUserMobileNumber.setText(loginInfo.getMobileNumber());
+            } else {
+                if (getIntent().getStringExtra(Constants.Login.ACTION)
+                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
+                    setActionbar(getString(R.string.update_profile));
+
+                    UserInfo userInfo = Util.getUserObjectFromPref();
+                    etUserFirstName.setText(userInfo.getUserFirstName());
+                    etUserMiddleName.setText(userInfo.getUserMiddleName());
+                    etUserLastName.setText(userInfo.getUserLastName());
+                    etUserBirthDate.setText(userInfo.getUserBirthDate());
+                    etUserMobileNumber.setText(userInfo.getUserMobileNumber());
+                    etUserEmailId.setText(userInfo.getUserEmailId());
+
+                    if (!TextUtils.isEmpty(userInfo.getUserGender())) {
+                        if (userInfo.getUserGender().equalsIgnoreCase(getResources().getString(R.string.male))) {
+                            radioGroup.check(R.id.gender_male);
+                            userGender = getResources().getString(R.string.male);
+                        } else if (userInfo.getUserGender().equalsIgnoreCase(getResources().getString(R.string.female))) {
+                            radioGroup.check(R.id.gender_female);
+                            userGender = getResources().getString(R.string.female);
+                        } else if (userInfo.getUserGender().equalsIgnoreCase(getResources().getString(R.string.other))) {
+                            radioGroup.check(R.id.gender_other);
+                            userGender = getResources().getString(R.string.other);
+                        }
+                    }
+                }
             }
         } else {
             etUserMobileNumber.setText(Util.getUserMobileFromPref());

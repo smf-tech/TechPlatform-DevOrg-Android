@@ -6,10 +6,13 @@
 
     <color name="medium_grey">#757575</color>
     <color name="dark_grey">#616161</color>
+
     <color name="pink">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
+    <color name="green">#8BC34A</color>
+    <color name="purple">#800080</color>
 
     <color name="dark_blue">#75194779</color>
 </resources>
