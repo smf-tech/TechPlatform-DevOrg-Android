@@ -135,8 +135,8 @@ public class Constants {
 
                 ContentResolver.setIsSyncable(account, AUTHORITY, 1);
                 ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
-                // FIXME: 24-01-2019 change sync frequency
-                ContentResolver.addPeriodicSync(account, AUTHORITY, new Bundle(), SYNC_FREQUENCY);
+                // TODO: 24-01-2019 Do we need this feature?
+//                ContentResolver.addPeriodicSync(account, AUTHORITY, new Bundle(), SYNC_FREQUENCY);
                 newAccount = true;
             }
 

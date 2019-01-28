@@ -34,11 +34,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
 
+        Log.i(TAG, "onPerformSync: \n");
         getRolesDetails();
     }
 
     private static void getRolesDetails() {
-        Log.e(TAG, "getRolesDetails: ");
+        Log.i(TAG, "getRolesDetails: \n");
         OrgRolesRequestCall orgRolesRequestCall = new OrgRolesRequestCall();
         orgRolesRequestCall.syncRoles();
     }

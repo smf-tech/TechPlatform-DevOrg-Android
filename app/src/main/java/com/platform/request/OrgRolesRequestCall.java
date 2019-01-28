@@ -1,8 +1,6 @@
 package com.platform.request;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -11,9 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
-import com.platform.listeners.FormRequestCallListener;
 import com.platform.listeners.OrgRolesRequestCallListener;
-import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -21,16 +17,13 @@ import com.platform.view.activities.HomeActivity;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.platform.utility.Constants.SyncAdapter.COMPLETE;
 import static com.platform.utility.Constants.SyncAdapter.ERROR;
 
 public class OrgRolesRequestCall {
 
     private OrgRolesRequestCallListener listener;
-    private final String TAG = OrgRolesRequestCall.class.getName();
+    private final String TAG = OrgRolesRequestCallListener.class.getName();
 
     public void setListener(OrgRolesRequestCallListener listener) {
         this.listener = listener;
@@ -73,24 +66,29 @@ public class OrgRolesRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    /**
+     * This method will be called by SyncAdapter Framework
+     * get roles by organization ID
+     */
     public void syncRoles() {
+        String TAG = "SyncAdapter";
         Response.Listener<JSONObject> rolesResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.e(TAG, "Roles synced\n" + res);
+                    Log.i(TAG, "Roles synced\n" + res);
                     HomeActivity.sHandler.obtainMessage(COMPLETE, res).sendToTarget();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e(TAG, "syncRoles#Error:", e);
+                Log.i(TAG, "syncRoles#Error:\n", e);
                 HomeActivity.sHandler.obtainMessage(ERROR, e).sendToTarget();
             }
         };
 
         Response.ErrorListener rolesErrorListener = error -> {
-            HomeActivity.sHandler.obtainMessage(ERROR, error).sendToTarget();
-            Log.e("Roles#Error", error.getMessage());
+            HomeActivity.sHandler.obtainMessage(ERROR, error + "").sendToTarget();
+            Log.i(TAG, "Roles#Error: \n" + error.getMessage());
         };
 
         String orgID = "5c1b940ad503a31f360e1252"; // FIXME: 25-01-2019 remove this hardcoded value
@@ -114,18 +112,4 @@ public class OrgRolesRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap) {
-        JsonObject jsonObject = new JsonObject();
-        for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            Log.d(TAG, "Request object key " + key + " value " + value);
-            jsonObject.addProperty(key, value);
-        }
-
-        JsonObject response = new JsonObject();
-        response.add(Constants.PM.RESPONSE, jsonObject);
-        return response;
-    }
 }

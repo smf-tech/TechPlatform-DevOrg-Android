@@ -61,11 +61,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, OrgRolesRequestCallListener {
 
+    private static final String TAG = HomeActivity.class.getSimpleName();
     private AlertDialog dialogNotApproved;
     private HomeActivityPresenter presenter;
     private Object mSyncObserverHandle;
     private Button mSyncNowButton;
     public static Handler sHandler;
+    private String mSyncStatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,43 +102,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
         title.setText(R.string.app_name_ss);
 
-        sHandler = new Handler(getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case STARTED:
-                        mSyncNowButton.setEnabled(false);
-                        break;
-
-                    case PENDING:
-                        break;
-
-                    case ERROR:
-                        if (msg.obj instanceof String) {
-                            String res = (String) msg.obj;
-                            ((TextView) findViewById(R.id.sync_status)).setText("Sync failed.");
-                            ((TextView) findViewById(R.id.roles_data)).setText(res);
-                        } else if (msg.obj instanceof Exception) {
-                            Exception e = (Exception) msg.obj;
-                            ((TextView) findViewById(R.id.sync_status)).setText("Sync failed.");
-                            ((TextView) findViewById(R.id.roles_data)).setText(e.getLocalizedMessage());
-                            Toast.makeText(HomeActivity.this, "Sync failed!",
-                                    Toast.LENGTH_SHORT).show();
-                            mSyncNowButton.setEnabled(true);
-                        }
-                        break;
-
-                    case COMPLETE:
-                        mSyncNowButton.setEnabled(true);
-                        if (msg.obj instanceof String) {
-                            String res = (String) msg.obj;
-                            ((TextView) findViewById(R.id.roles_data)).setText(res);
-                            ((TextView) findViewById(R.id.sync_status)).setText("Sync completed.");
-                        }
-                        break;
-                }
-            }
-        };
+        getHandler();
 
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -158,6 +124,59 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             HomeActivity.sHandler.obtainMessage(STARTED).sendToTarget();
             Constants.SyncAdapter.manualRefresh();
         });
+    }
+
+    private void getHandler() {
+        sHandler = new Handler(getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case STARTED:
+                        mSyncNowButton.setEnabled(false);
+                        mSyncNowButton.setClickable(false);
+                        mSyncStatus = "Sync started...";
+                        ((TextView) findViewById(R.id.sync_status)).setText(mSyncStatus);
+                        break;
+
+                    case PENDING:
+                        ((TextView) findViewById(R.id.sync_status)).setText(mSyncStatus);
+                        break;
+
+                    case ERROR:
+                        if (msg.obj instanceof String) {
+                            String res = (String) msg.obj;
+                            ((TextView) findViewById(R.id.roles_data)).setText(res);
+                        } else if (msg.obj instanceof Exception) {
+                            Exception e = (Exception) msg.obj;
+                            ((TextView) findViewById(R.id.roles_data)).setText(e.getLocalizedMessage());
+                            Toast.makeText(HomeActivity.this, "Sync failed!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        if (!mSyncStatus.isEmpty()) {
+                            mSyncStatus += "\nSync failed!";
+                        }
+                        ((TextView) findViewById(R.id.sync_status)).setText(mSyncStatus);
+                        mSyncStatus = "";
+                        mSyncNowButton.setEnabled(true);
+                        mSyncNowButton.setClickable(true);
+                        break;
+
+                    case COMPLETE:
+                        if (!mSyncStatus.isEmpty()) {
+                            mSyncStatus += "\nSync completed!";
+                        }
+                        mSyncNowButton.setEnabled(true);
+                        mSyncNowButton.setClickable(true);
+                        if (msg.obj instanceof String) {
+                            String res = (String) msg.obj;
+                            ((TextView) findViewById(R.id.roles_data)).setText(res);
+                            ((TextView) findViewById(R.id.sync_status)).setText(mSyncStatus);
+                        }
+                        mSyncStatus = "";
+                        break;
+                }
+            }
+        };
     }
 
     @SuppressWarnings("deprecation")
@@ -438,7 +457,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 account, Constants.SyncAdapter.AUTHORITY);
 
         if (!syncActive && !syncPending) {
-            mSyncNowButton.setEnabled(true);
+            runOnUiThread(() -> mSyncNowButton.setEnabled(true));
         }
     };
 
@@ -455,20 +474,20 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     public void onFailureListener(String message) {
         hideProgressBar();
         Toast.makeText(this, "Error occurred while fetched roles!", Toast.LENGTH_SHORT).show();
-        Log.e("Roles#Error", message);
+        Log.i(TAG, "Roles#Error: \n" + message);
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         hideProgressBar();
         Toast.makeText(this, "Error occurred while fetched roles!", Toast.LENGTH_SHORT).show();
-        Log.e("Roles#Error", error.getMessage());
+        Log.i(TAG, "Roles#Error: \n" + error.getMessage());
     }
 
     @Override
     public void onSuccessListener(String response) {
         hideProgressBar();
-        Log.e("Roles", response);
+        Log.i(TAG, "Roles#Success: \n" + response);
         Toast.makeText(this, "Roles fetched!!!", Toast.LENGTH_SHORT).show();
 
         ((TextView) findViewById(R.id.roles_data)).setText(response);
