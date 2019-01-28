@@ -58,7 +58,8 @@ import static com.platform.utility.Constants.SyncAdapter.PENDING;
 import static com.platform.utility.Constants.SyncAdapter.STARTED;
 
 public class HomeActivity extends BaseActivity implements PlatformTaskListener,
-        ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
+        ForceUpdateChecker.OnUpdateNeededListener,
+        NavigationView.OnNavigationItemSelectedListener, OrgRolesRequestCallListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private AlertDialog dialogNotApproved;
@@ -257,7 +258,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
             case Constants.Home.TEAM_MANAGEMENT:
                 homeModel.setModuleName(getString(R.string.team_management));
-                homeModel.setModuleIcon(R.drawable.ic_team_management);
+//                homeModel.setModuleIcon(R.drawable.ic_team_management);
                 homeModel.setDestination(TMActivity.class);
                 break;
         }

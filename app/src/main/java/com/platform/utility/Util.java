@@ -126,8 +126,10 @@ public class Util {
 
         if (isTokenPresent) {
             Login loginObj = getLoginObjectFromPref();
-            headers.put(Constants.Login.AUTHORIZATION,
-                    "Bearer " + loginObj.getLoginData().getAccessToken());
+            if (loginObj != null) {
+                headers.put(Constants.Login.AUTHORIZATION,
+                        "Bearer " + loginObj.getLoginData().getAccessToken());
+            }
         }
 
         return headers;
