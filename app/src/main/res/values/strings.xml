@@ -93,7 +93,7 @@
     <string name="my_profile">My Profile</string>
     <string name="add_location">Add Location</string>
     <string name="update_user_data">Update Data</string>
-    <string name="action_roles">Roles</string>
+    <string name="action_forms">Forms</string>
     <string name="notification">Notification</string>
     <string name="share_app">Share App</string>
     <string name="rate_us">Rate Us</string>
@@ -120,4 +120,7 @@
     <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
     <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

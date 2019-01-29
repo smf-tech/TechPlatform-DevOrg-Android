@@ -178,4 +178,10 @@ public class Constants {
                     b);                                             // Extras
         }
     }
+
+    public static class Form {
+        public static final String FORM_STATUS_ALL = "all";
+        public static final String FORM_STATUS_PENDING = "pending";
+        public static final String FORM_STATUS_COMPLETED = "completed";
+    }
 }

@@ -17,8 +17,8 @@
         android:id="@+id/action_update_user_data"
         android:title="@string/update_user_data" />
     <item
-        android:id="@+id/action_roles"
-        android:title="@string/action_roles" />
+        android:id="@+id/action_forms"
+        android:title="@string/action_forms" />
     <item
         android:id="@+id/action_notification"
         android:title="@string/notification"

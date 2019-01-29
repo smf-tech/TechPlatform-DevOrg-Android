@@ -258,7 +258,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
             case Constants.Home.TEAM_MANAGEMENT:
                 homeModel.setModuleName(getString(R.string.team_management));
-//                homeModel.setModuleIcon(R.drawable.ic_team_management);
+                homeModel.setModuleIcon(R.drawable.ic_team_management);
                 homeModel.setDestination(TMActivity.class);
                 break;
         }
@@ -353,8 +353,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 showUpdateDataPopup();
                 break;
 
-            case R.id.action_roles:
-                getRolesDetails();
+            case R.id.action_forms:
+                goToForms();
                 break;
 
             case R.id.action_logout:
@@ -367,11 +367,10 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         return true;
     }
 
-    public void getRolesDetails() {
-        OrgRolesRequestCall orgRolesRequestCall = new OrgRolesRequestCall();
-        orgRolesRequestCall.setListener(this);
-        showProgressBar();
-        orgRolesRequestCall.getRolesDetails();
+    public void goToForms() {
+        Intent intent = new Intent(this, FormActivity.class);
+        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
     @Override

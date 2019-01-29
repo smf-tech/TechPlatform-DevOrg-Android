@@ -15,4 +15,5 @@
     <color name="purple">#800080</color>
 
     <color name="dark_blue">#75194779</color>
+    <color name="card_gray_bg">#efefef</color>
 </resources>

@@ -21,4 +21,6 @@
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="form_status_indicator_width">22sp</dimen>
+
 </resources>
