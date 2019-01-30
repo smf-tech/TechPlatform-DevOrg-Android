@@ -46,6 +46,7 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:src="@android:drawable/sym_contact_card"
                 android:contentDescription="@string/todo" />
+            <!--android:src="@android:drawable/sym_contact_card"-->
 
             <TextView
                 android:id="@+id/form_title"
