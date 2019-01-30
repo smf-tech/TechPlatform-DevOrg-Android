@@ -8,12 +8,40 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/form_content_view"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-18dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:src="@android:drawable/ic_input_add"
+        app:fabSize="mini" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/sync_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/form_content_view"
+        android:layout_marginTop="-18dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_toStartOf="@+id/add_button"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:src="@android:drawable/stat_notify_sync"
+        app:fabSize="mini" />
+
     <android.support.v7.widget.CardView
+        android:id="@+id/form_content_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_marginTop="@dimen/text_size_22"
+        android:layout_marginStart="@dimen/dimen_05dp"
+        android:layout_marginEnd="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_05dp"
         app:cardBackgroundColor="@color/card_gray_bg"
-        app:cardCornerRadius="@dimen/form_status_indicator_width">
+        app:cardCornerRadius="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,16 +51,16 @@
 
             <TextView
                 android:id="@+id/form_title"
+                style="@style/FormLabel.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Category Title"
-                style="@style/FormLabel.Title"/>
+                android:text="@string/category_title" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/forms"
-                android:layout_marginTop="@dimen/dimen_15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15dp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

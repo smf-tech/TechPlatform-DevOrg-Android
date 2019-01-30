@@ -34,7 +34,7 @@ public class Platform extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FirebaseApp.initializeApp(this);
+//        FirebaseApp.initializeApp(this);
         initFireBase();
         mPlatformInstance = this;
         Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image");

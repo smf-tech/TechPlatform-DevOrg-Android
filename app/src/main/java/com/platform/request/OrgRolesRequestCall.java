@@ -77,17 +77,23 @@ public class OrgRolesRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.i(TAG, "Roles synced\n" + res);
-                    HomeActivity.sHandler.obtainMessage(COMPLETE, res).sendToTarget();
+                    if (HomeActivity.sHandler != null) {
+                        HomeActivity.sHandler.obtainMessage(COMPLETE, res).sendToTarget();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.i(TAG, "syncRoles#Error:\n", e);
-                HomeActivity.sHandler.obtainMessage(ERROR, e).sendToTarget();
+                if (HomeActivity.sHandler != null) {
+                    HomeActivity.sHandler.obtainMessage(ERROR, e).sendToTarget();
+                }
             }
         };
 
         Response.ErrorListener rolesErrorListener = error -> {
-            HomeActivity.sHandler.obtainMessage(ERROR, error + "").sendToTarget();
+            if (HomeActivity.sHandler != null) {
+                HomeActivity.sHandler.obtainMessage(ERROR, error + "").sendToTarget();
+            }
             Log.i(TAG, "Roles#Error: \n" + error.getMessage());
         };
 

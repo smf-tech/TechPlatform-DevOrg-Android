@@ -3,45 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragments.FormStatusFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/forms_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-<!--
-    <android.support.v7.widget.CardView
-        android:layout_marginTop="@dimen/dimen_30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_07dp"
-        android:layout_marginEnd="@dimen/dimen_07dp"
-        app:cardBackgroundColor="@color/card_gray_bg"
-        app:cardCornerRadius="@dimen/form_status_indicator_width">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen_10dp">
-
-            <TextView
-                android:id="@+id/form_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Category Title"
-                style="@style/FormLabel.Title"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/forms_list"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
--->
 
 </FrameLayout>

@@ -2,8 +2,11 @@
 <shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <corners
-        android:topLeftRadius="@dimen/dimen_40dp"
-        android:bottomLeftRadius="@dimen/dimen_40dp"/>
+        android:topLeftRadius="@dimen/dimen_30dp"
+        android:bottomLeftRadius="@dimen/dimen_30dp"/>
     <solid
         android:color="@android:color/holo_green_dark"/>
+    <size
+        android:width="@dimen/form_item_status_indicator_width"
+        android:height="@dimen/dimen_70dp"/>
 </shape>

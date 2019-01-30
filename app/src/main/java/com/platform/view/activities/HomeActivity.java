@@ -368,7 +368,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     public void goToForms() {
-        Intent intent = new Intent(this, FormActivity.class);
+        Intent intent = new Intent(this, FormsActivity.class);
         intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
