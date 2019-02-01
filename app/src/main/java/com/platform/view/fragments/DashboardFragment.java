@@ -75,11 +75,11 @@ public class DashboardFragment extends Fragment {
         for (Modules modules : tabNames) {
             switch (modules.getName()) {
                 case Constants.Home.PROGRAMME_MANAGEMENT:
-                    adapter.addFragment(new PMFragment(), "");
+                    adapter.addFragment(new PMFragment(), "Forms");
                     break;
 
                 case Constants.Home.TEAM_MANAGEMENT:
-                    adapter.addFragment(new PMFragment(), "");
+                    adapter.addFragment(new TMFragment(), "Teams");
                     break;
 
                 default:

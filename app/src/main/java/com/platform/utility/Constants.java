@@ -46,6 +46,7 @@ public class Constants {
         static final String USER_MOBILE_NO = "userMobile";
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
+        static final String FORM_OBJ = "formObj";
 
         static final String AUTHORIZATION = "Authorization";
 
