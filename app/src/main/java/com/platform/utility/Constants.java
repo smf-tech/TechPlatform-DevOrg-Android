@@ -86,11 +86,10 @@ public class Constants {
         public static final String TEAM_MANAGEMENT = "Team Management";
     }
 
-    @SuppressWarnings("CanBeFinal")
     public static class PM {
-        public static String PROCESS_NAME = "processName";
-        public static String PROCESS_ID = "processId";
-        public static String RESPONSE = "response";
+        public static final String PROCESS_NAME = "processName";
+        public static final String PROCESS_ID = "processId";
+        public static final String RESPONSE = "response";
     }
 
     public static class FormsFactory {

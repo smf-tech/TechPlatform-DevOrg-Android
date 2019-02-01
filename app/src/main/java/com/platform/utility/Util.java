@@ -206,6 +206,7 @@ public class Util {
         editor.apply();
     }
 
+    @SuppressWarnings("unused")
     public static UserInfo getFormObjectFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);

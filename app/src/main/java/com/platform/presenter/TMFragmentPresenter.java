@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.listeners.TMRequestCallListener;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMRequestCall;
@@ -51,9 +50,16 @@ public class TMFragmentPresenter implements TMRequestCallListener {
         fragmentWeakReference.get().hideProgressBar();
     }
 
+    @SuppressWarnings("ThrowableNotThrown")
     @Override
-    public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "Error: " + error);
+    public void onErrorListener(VolleyError volleyError) {
+
+        if (volleyError.networkResponse != null && volleyError.networkResponse.data != null) {
+            VolleyError error = new VolleyError(new String(volleyError.networkResponse.data));
+            String message = error.getMessage();
+            Log.i(TAG, "Error: " + message);
+        }
+
         fragmentWeakReference.get().hideProgressBar();
     }
 }

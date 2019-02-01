@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,6 @@ import com.platform.view.adapters.NewTMAdapter;
 import java.util.List;
 
 public class TMFragment extends Fragment implements View.OnClickListener, TMTaskListener {
-    private final String TAG = this.getClass().getSimpleName();
 
     private View tmFragmentView;
     private RecyclerView rvPendingRequests;
@@ -42,7 +43,10 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
     }
 
     private void init() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
+        rvPendingRequests.setLayoutManager(layoutManager);
+        rvPendingRequests.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override

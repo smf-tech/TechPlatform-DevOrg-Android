@@ -14,7 +14,7 @@ import com.platform.view.fragments.PMFragment;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-@SuppressWarnings({"ConstantConditions", "CanBeFinal"})
+@SuppressWarnings({"ConstantConditions", "CanBeFinal", "unused"})
 public class DashboardFormListCreator {
 
     private final WeakReference<PMFragment> fragment;
@@ -51,11 +51,8 @@ public class DashboardFormListCreator {
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName());
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageView imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
-                    imgCreateForm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    imgCreateForm.setOnClickListener(v -> {
 
-                        }
                     });
                 }
                 lnrInner.addView(formTypeView);
@@ -63,5 +60,4 @@ public class DashboardFormListCreator {
         }
         return lnrInner;
     }
-
 }
