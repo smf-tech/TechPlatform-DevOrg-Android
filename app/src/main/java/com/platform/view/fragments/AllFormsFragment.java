@@ -12,6 +12,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.platform.R;
+import com.platform.view.adapters.ExpandableAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,9 +46,8 @@ public class AllFormsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_all_forms, container, false);
     }
 
@@ -56,56 +56,8 @@ public class AllFormsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
-        mExpandableListView.setAdapter(new BaseExpandableListAdapter() {
-            @Override
-            public int getGroupCount() {
-                return 2;
-            }
 
-            @Override
-            public int getChildrenCount(final int groupPosition) {
-                return 2;
-            }
-
-            @Override
-            public Object getGroup(final int groupPosition) {
-                return null;
-            }
-
-            @Override
-            public Object getChild(final int groupPosition, final int childPosition) {
-                return null;
-            }
-
-            @Override
-            public long getGroupId(final int groupPosition) {
-                return 0;
-            }
-
-            @Override
-            public long getChildId(final int groupPosition, final int childPosition) {
-                return 0;
-            }
-
-            @Override
-            public boolean hasStableIds() {
-                return false;
-            }
-
-            @Override
-            public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-                return LayoutInflater.from(getContext()).inflate(R.layout.all_forms_item, parent, false);
-            }
-
-            @Override
-            public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
-                return LayoutInflater.from(getContext()).inflate(R.layout.all_form_sub_item, parent, false);
-            }
-
-            @Override
-            public boolean isChildSelectable(final int groupPosition, final int childPosition) {
-                return true;
-            }
-        });
+        ExpandableAdapter adapter = new ExpandableAdapter(getContext());
+        mExpandableListView.setAdapter(adapter);
     }
 }

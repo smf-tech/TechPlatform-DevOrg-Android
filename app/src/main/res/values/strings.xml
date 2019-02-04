@@ -125,4 +125,5 @@
     <string name="category_title">Category Title</string>
     <string name="todo">TODO</string>
     <string name="forms">Forms</string>
+    <string name="no_records_available">No records available!</string>
 </resources>

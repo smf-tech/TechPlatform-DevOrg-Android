@@ -13,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/dimen_20dp"
+        android:visibility="gone"
         android:backgroundTint="@android:color/white"
         android:src="@android:drawable/ic_secure"
         app:fabSize="mini"
@@ -21,7 +22,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70dp"
-        android:layout_marginTop="@dimen/dimen_25dp"
+        android:layout_marginTop="@dimen/dimen_07dp"
         android:layout_marginStart="@dimen/dimen_07dp"
         android:layout_marginEnd="@dimen/dimen_07dp"
         android:layout_marginBottom="@dimen/dimen_07dp"

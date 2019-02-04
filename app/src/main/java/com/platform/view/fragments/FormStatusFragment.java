@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.platform.R;
@@ -25,7 +25,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.platform.utility.Constants.Form.FORM_STATUS_ALL;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
@@ -39,6 +38,7 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
     private static final String TAG = FormStatusFragment.class.getSimpleName();
 
     private String mFormStatus;
+    private TextView mNoRecordsView;
     private RecyclerView mRecyclerView;
 
     public FormStatusFragment() {
@@ -79,11 +79,24 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = view.findViewById(R.id.forms_list);
+        mNoRecordsView = view.findViewById(R.id.no_records_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        if (mFormStatus.equals(FORM_STATUS_PENDING)) {
+            getPendingFormsFromDB();
+            return;
+        }
 
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
         String processId = "5c3789e1d503a3376335b271"; // FIXME: 01-02-2019 Replace this hardcoded value
         presenter.getProcessDetails(processId);
+    }
+
+    /**
+     * This method fetches all the pending forms from DB
+     */
+    private void getPendingFormsFromDB() {
+
     }
 
     private void setAdapter(final String categoryName) {
@@ -91,49 +104,48 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
         switch (mFormStatus) {
             case FORM_STATUS_COMPLETED:
                 adapter = new FormCategoryAdapter(getContext(), FORM_STATUS_COMPLETED, categoryName);
+                mRecyclerView.setAdapter(adapter);
+                mNoRecordsView.setVisibility(View.GONE);
                 break;
             case FORM_STATUS_PENDING:
-                adapter = new FormCategoryAdapter(getContext(), FORM_STATUS_PENDING, categoryName);
+                mNoRecordsView.setVisibility(View.VISIBLE);
+//                adapter = new FormCategoryAdapter(getContext(), FORM_STATUS_PENDING, categoryName);
                 break;
             default: // FORM_STATUS_ALL
-                adapter = new FormCategoryAdapter(getContext(), FORM_STATUS_ALL, categoryName);
+                mNoRecordsView.setVisibility(View.VISIBLE);
+//                adapter = new FormCategoryAdapter(getContext(), FORM_STATUS_ALL, categoryName);
                 break;
         }
 
-        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onFailureListener(String message) {
-        Log.i(TAG, "onFailureListener: " + message);
+        Log.e(TAG, "onFailureListener: " + message);
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "onErrorListener: " + error.getMessage());
+        Log.e(TAG, "onErrorListener: " + error.getMessage());
     }
 
     @Override
     public void onFormsLoaded(List<Form> formList) {
         Log.i(TAG, "onFormsLoaded: " + formList.toString());
-        Toast.makeText(getContext(), "Forms loaded!!!", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onFormsLoaded(String response) {
-//        Log.i(TAG, "onFormsLoaded: " + response);
-        Toast.makeText(getContext(), "Forms loaded!!!", Toast.LENGTH_SHORT).show();
-
         try {
             JSONObject object = new JSONObject(response);
             JSONObject category = object.getJSONObject("data").getJSONObject("category");
             String categoryName = category.getString("name");
 
             setAdapter(categoryName);
-            Log.e(TAG, "onFormsLoaded: " + category.toString());
+            Log.i(TAG, "onFormsLoaded: " + category.toString());
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e(TAG, "onFormsLoaded: ", e);
         }
 
     }

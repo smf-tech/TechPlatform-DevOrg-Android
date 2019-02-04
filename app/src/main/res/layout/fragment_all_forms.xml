@@ -9,8 +9,10 @@
         android:id="@+id/forms_expandable_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/dimen_07dp"
-        android:pointerIcon="none"
+        android:padding="@dimen/dimen_15dp"
+        android:dividerHeight="@dimen/dimen_10dp"
+        android:groupIndicator="@null"
+        android:transitionGroup="true"
         android:divider="@android:color/transparent"/>
 
 </FrameLayout>

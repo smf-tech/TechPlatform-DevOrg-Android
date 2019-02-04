@@ -8,11 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70dp"
-        android:layout_marginStart="@dimen/dimen_07dp"
-        android:layout_marginTop="@dimen/dimen_25dp"
-        android:layout_marginEnd="@dimen/dimen_07dp"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="@dimen/dimen_07dp"
         android:background="@color/card_gray_bg">
 
         <ImageView
