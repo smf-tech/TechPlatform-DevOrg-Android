@@ -12,26 +12,27 @@ import com.platform.models.tm.PendingRequest;
 
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.MyViewHolder> {
     private List<PendingRequest> pendingRequestList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView prTitle, prCreatedAt;
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView prTitle, prCreatedAt;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             prTitle = view.findViewById(R.id.txt_pending_request_title);
             prCreatedAt = view.findViewById(R.id.txt_pending_request_created_at);
         }
     }
 
-
     public NewTMAdapter(List<PendingRequest> pendingRequestList) {
         this.pendingRequestList = pendingRequestList;
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_pending_requests_card_view, parent, false);
 

@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -27,18 +25,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
-    private final String TAG = this.getClass().getSimpleName();
 
     private View pmFragmentView;
-    private ProgressBar progressBar;
     private ArrayList<String> processCategoryList = new ArrayList<>();
     private HashMap<String, List<ProcessData>> processMap = new HashMap<>();
-
-    private RecyclerView rvDashboardForms;
-
-    private PMFragmentPresenter pmFragmentPresenter;
-
     private LinearLayout lnrOuter;
 
     @Override
@@ -53,15 +45,14 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pmFragmentPresenter = new PMFragmentPresenter(this);
+        PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
         pmFragmentPresenter.getAllProcess();
 
         init();
     }
 
     private void init() {
-        rvDashboardForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
-
+        //RecyclerView rvDashboardForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
         lnrOuter = pmFragmentView.findViewById(R.id.lnr_dashboard_forms_category);
     }
 
@@ -110,13 +101,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName());
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageView imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
-                    imgCreateForm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), FormActivity.class);
-                            intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
-                            startActivity(intent);
-                        }
+                    imgCreateForm.setOnClickListener(v -> {
+                        Intent intent = new Intent(getActivity(), FormActivity.class);
+                        intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
+                        startActivity(intent);
                     });
                 }
                 lnrInner.addView(formTypeView);
