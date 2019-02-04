@@ -17,6 +17,9 @@ public class Constants {
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
+    public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
+    public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
+
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
@@ -46,7 +49,6 @@ public class Constants {
         static final String USER_MOBILE_NO = "userMobile";
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
-        static final String FORM_OBJ = "formObj";
 
         static final String AUTHORIZATION = "Authorization";
 

@@ -6,8 +6,11 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
+import com.platform.models.SavedForm;
 import com.platform.request.FormRequestCall;
+import com.platform.utility.Constants;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
@@ -20,8 +23,17 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
     private final Gson gson;
     private String formId;
+    private SavedForm savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
+
+    public SavedForm getSavedForm() {
+        return savedForm;
+    }
+
+    public void setSavedForm(SavedForm savedForm) {
+        this.savedForm = savedForm;
+    }
 
     private String getFormId() {
         return formId;
@@ -78,10 +90,18 @@ public class FormActivityPresenter implements FormRequestCallListener {
     }
 
     @Override
-    public void onSubmitClick() {
-        FormRequestCall formRequestCall = new FormRequestCall();
-        formRequestCall.setListener(this);
+    public void onSubmitClick(String submitType) {
+        switch (submitType) {
+            case Constants.ONLINE_SUBMIT_FORM_TYPE:
+                FormRequestCall formRequestCall = new FormRequestCall();
+                formRequestCall.setListener(this);
 
-        formRequestCall.createFormResponse(getFormId(), getRequestedObject());
+                formRequestCall.createFormResponse(getFormId(), getRequestedObject());
+                break;
+
+            case Constants.OFFLINE_SUBMIT_FORM_TYPE:
+                DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormObject(getSavedForm());
+                break;
+        }
     }
 }

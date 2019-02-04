@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +17,13 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.SavedForm;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +36,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private ArrayList<String> processCategoryList = new ArrayList<>();
     private HashMap<String, List<ProcessData>> processMap = new HashMap<>();
     private LinearLayout lnrOuter;
+    private RecyclerView rvPendingForms;
+    private PMFragmentPresenter pmFragmentPresenter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -45,15 +51,26 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-        pmFragmentPresenter.getAllProcess();
-
+        pmFragmentPresenter = new PMFragmentPresenter(this);
         init();
+
+        pmFragmentPresenter.getAllProcess();
     }
 
     private void init() {
-        //RecyclerView rvDashboardForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
+        rvPendingForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
         lnrOuter = pmFragmentView.findViewById(R.id.lnr_dashboard_forms_category);
+
+        setPendingForms();
+    }
+
+    private void setPendingForms() {
+        List<SavedForm> savedForms = pmFragmentPresenter.getAllSavedForms();
+        if (savedForms != null && !savedForms.isEmpty()) {
+            PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
+            rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvPendingForms.setAdapter(pendingFormsAdapter);
+        }
     }
 
     private void populateData(Processes process) {

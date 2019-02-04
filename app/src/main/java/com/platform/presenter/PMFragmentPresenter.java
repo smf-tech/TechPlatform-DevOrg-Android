@@ -4,12 +4,15 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.SavedForm;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
 import com.platform.view.fragments.PMFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
 public class PMFragmentPresenter implements PlatformRequestCallListener {
@@ -27,6 +30,10 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
 
         fragmentWeakReference.get().showProgressBar();
         requestCall.getAllProcess();
+    }
+
+    public List<SavedForm> getAllSavedForms() {
+        return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getPendingForms();
     }
 
     @Override

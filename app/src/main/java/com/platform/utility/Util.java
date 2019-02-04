@@ -197,24 +197,6 @@ public class Util {
         return new Gson().fromJson(obj, UserInfo.class);
     }
 
-    public static void saveFormObjectInPref(String formData) {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.Login.FORM_OBJ, formData);
-        editor.apply();
-    }
-
-    @SuppressWarnings("unused")
-    public static UserInfo getFormObjectFromPref() {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-        String obj = preferences.getString(Constants.Login.FORM_OBJ, "{}");
-
-        return new Gson().fromJson(obj, UserInfo.class);
-    }
-
     public static void saveUserObjectInPref(String userData) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);

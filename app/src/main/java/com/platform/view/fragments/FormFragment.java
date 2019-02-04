@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.SavedForm;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
@@ -165,9 +166,18 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setFormId(formModel.getData().getId());
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
-                        formPresenter.onSubmitClick();
+                        formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
                     } else {
-                        Util.saveFormObjectInPref("");
+                        //Save in local db
+                        SavedForm savedForm = new SavedForm();
+                        savedForm.setFormId(formModel.getData().getId());
+                        savedForm.setFormName(formModel.getData().getName());
+                        savedForm.setCreatedAt(formModel.getData().getEditable());
+
+                        formPresenter.setSavedForm(savedForm);
+                        formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+
+                        Log.d(TAG, "Form saved " + formModel.getData().getId());
                     }
                 } else {
                     Util.showToast(errorMsg, this);
