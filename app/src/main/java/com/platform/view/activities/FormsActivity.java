@@ -10,12 +10,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.utility.Constants;
+import com.platform.view.fragments.AllFormsFragment;
 import com.platform.view.fragments.FormFragment;
 import com.platform.view.fragments.FormStatusFragment;
 
@@ -36,14 +37,15 @@ public class FormsActivity extends BaseActivity {
 
         initToolbar();
         initTabView();
-        addFragment();
     }
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.forms);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.blue_theme_color));
+        toolbar.setTitleMarginStart(50);// Use 300 for center allocation
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setBackgroundColor(getResources().getColor(R.color.blue_theme_color));
         toolbar.setNavigationIcon(R.drawable.ic_menu);
     }
 
@@ -58,8 +60,7 @@ public class FormsActivity extends BaseActivity {
         for (int j = 0; j < tabs.getTabCount(); j++) {
             TabLayout.Tab tabAt = tabs.getTabAt(j);
             assert tabAt != null;
-            View CustomView = LayoutInflater.from(this).inflate(R.layout.form_tab_view, null);
-            tabAt.setCustomView(CustomView);
+            tabAt.setCustomView(R.layout.form_tab_view);
             View view = tabAt.getCustomView();
             assert view != null;
             if (j == 0) {
@@ -167,7 +168,7 @@ public class FormsActivity extends BaseActivity {
         public Fragment getItem(int position) {
             Fragment fragment = null;
             if (position == 0) {
-                fragment = FormStatusFragment.newInstance(FORM_STATUS_ALL);
+                fragment = AllFormsFragment.newInstance();
             } else if (position == 1) {
                 fragment = FormStatusFragment.newInstance(FORM_STATUS_PENDING);
             } else if (position == 2) {

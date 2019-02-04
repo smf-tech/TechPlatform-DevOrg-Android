@@ -46,7 +46,6 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:src="@android:drawable/sym_contact_card"
                 android:contentDescription="@string/todo" />
-            <!--android:src="@android:drawable/sym_contact_card"-->
 
             <TextView
                 android:id="@+id/form_title"
@@ -55,13 +54,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_20dp"
                 android:layout_toEndOf="@id/form_image"
-                android:text="Z.P. Pri school Khambora Juna"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Z.P. Pri school Khambora Juna asd asd asdasdadsdsads"
                 android:textAllCaps="true" />
 
             <TextView
                 style="@style/FormLabel.Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:layout_below="@id/form_title"
                 android:layout_marginTop="-3dp"
                 android:layout_toEndOf="@id/form_image"

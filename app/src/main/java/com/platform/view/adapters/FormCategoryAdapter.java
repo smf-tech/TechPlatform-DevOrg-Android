@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
@@ -21,10 +22,12 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
     private Context mContext;
     private String mStatus;
+    private String mCategoryName;
 
-    public FormCategoryAdapter(Context context, String mStatus) {
+    public FormCategoryAdapter(Context context, String mStatus, final String categoryName) {
         this.mContext = context;
         this.mStatus = mStatus;
+        mCategoryName = categoryName;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -33,6 +36,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         FloatingActionButton addButton;
         RecyclerView recyclerView;
         FormsAdapter adapter;
+        TextView categoryName;
 
         @SuppressLint("RestrictedApi")
         ViewHolder(@NonNull View itemView) {
@@ -40,6 +44,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
             syncButton = itemView.findViewById(R.id.sync_button);
             addButton = itemView.findViewById(R.id.add_button);
+            categoryName = itemView.findViewById(R.id.form_title);
             recyclerView = itemView.findViewById(R.id.forms);
 
         }
@@ -55,15 +60,15 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
     @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull FormCategoryAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.syncButton.setOnClickListener(v -> {
-            Toast.makeText(mContext, "Sync clicked!", Toast.LENGTH_SHORT).show();
-        });
+        viewHolder.syncButton.setOnClickListener(v ->
+                Toast.makeText(mContext, "Sync clicked!", Toast.LENGTH_SHORT).show());
         viewHolder.syncButton.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setRippleColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setImageDrawable(mContext.getResources().getDrawable(android.R.drawable.stat_notify_sync));
         viewHolder.addButton.setColorFilter(mContext.getResources().getColor(R.color.white));
 
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        viewHolder.categoryName.setText(mCategoryName);
 
         switch (mStatus) {
             case FORM_STATUS_COMPLETED:
@@ -86,6 +91,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
     @Override
     public int getItemCount() {
         // FIXME: 29-01-2019 Remove hardcoded count
-        return 3;
+        return 1;
     }
 }

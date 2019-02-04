@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.platform.R;
@@ -22,7 +21,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
     private Context mContext;
     private String status;
 
-    public FormsAdapter(Context context, String status) {
+    FormsAdapter(Context context, String status) {
         this.mContext = context;
         this.status = status;
     }
@@ -43,7 +42,8 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.form_sub_item, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.form_sub_item,
+                viewGroup, false);
         return new ViewHolder(v);
     }
 
@@ -53,9 +53,8 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         if (i != 0) {
             viewHolder.mPinButton.setVisibility(View.GONE);
         }
-        viewHolder.mPinButton.setOnClickListener(v -> {
-            Toast.makeText(mContext, "Pin clicked!", Toast.LENGTH_SHORT).show();
-        });
+        viewHolder.mPinButton.setOnClickListener(v ->
+                Toast.makeText(mContext, "Pin clicked!", Toast.LENGTH_SHORT).show());
 
         Drawable drawable;
         switch (status) {
@@ -76,6 +75,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

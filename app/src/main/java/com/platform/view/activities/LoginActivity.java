@@ -149,15 +149,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void onLoginClick() {
-        Intent intent = new Intent(this, FormsActivity.class);
-        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
-        finish();
-
-        if (true) return;
-
-        // FIXME: 29-01-2019 Remove above code
-
         if (isAllInputsValid()) {
             goToVerifyOtpScreen();
         }
