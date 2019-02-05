@@ -42,8 +42,8 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
         PendingRequest pendingRequest = pendingRequestList.get(position);
-        myViewHolder.prTitle.setText(pendingRequest.getRequesterName());
-        myViewHolder.prCreatedAt.setText(pendingRequest.getCreatedAt());
+        myViewHolder.prTitle.setText(pendingRequest.getRequesterFirstName() + " " + pendingRequest.getRequesterLastName());
+        myViewHolder.prCreatedAt.setText("On " + pendingRequest.getCreatedAt());
     }
 
     @Override

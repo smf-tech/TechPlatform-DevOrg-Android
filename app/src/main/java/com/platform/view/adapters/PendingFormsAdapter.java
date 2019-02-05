@@ -37,7 +37,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         SavedForm savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
-        holder.txtCreatedAt.setText(savedForm.getFormId() + " " + savedForm.getCreatedAt());
+        holder.txtCreatedAt.setText("on " + savedForm.getCreatedAt());
     }
 
     @Override

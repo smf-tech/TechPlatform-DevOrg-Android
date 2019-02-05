@@ -27,7 +27,10 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
@@ -172,11 +175,12 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                         SavedForm savedForm = new SavedForm();
                         savedForm.setFormId(formModel.getData().getId());
                         savedForm.setFormName(formModel.getData().getName());
-                        savedForm.setCreatedAt(formModel.getData().getEditable());
+                        SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
+                        savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
                         formPresenter.setSavedForm(savedForm);
                         formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
-
+                        Util.showToast("Form saved offline ", getActivity());
                         Log.d(TAG, "Form saved " + formModel.getData().getId());
                     }
                 } else {

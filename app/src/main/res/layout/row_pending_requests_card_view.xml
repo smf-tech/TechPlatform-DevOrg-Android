@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv_pending_requests"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dimen_60dp"
     android:layout_marginStart="@dimen/dimen_10dp"
+    android:layout_marginTop="@dimen/dimen_05dp"
     android:layout_marginEnd="@dimen/dimen_10dp"
-    android:layout_marginBottom="@dimen/dimen_05dp">
+    android:layout_marginBottom="@dimen/dimen_05dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="@dimen/form_item_status_indicator_width">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/form_status_indicator"
+            android:layout_width="@dimen/form_item_status_indicator_width"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_status_indicator_category" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_toStartOf="@+id/iv_approve_request">
 
             <TextView
@@ -23,7 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/first_name"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_14" />
 
             <TextView
                 android:id="@+id/txt_pending_request_created_at"
@@ -31,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_pending_request_title"
                 android:text="@string/first_name"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_12" />
         </RelativeLayout>
 
         <ImageView

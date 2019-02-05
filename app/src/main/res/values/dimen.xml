@@ -11,7 +11,9 @@
     <dimen name="dimen_40dp">40dp</dimen>
     <dimen name="dimen_45dp">45dp</dimen>
     <dimen name="dimen_50dp">50dp</dimen>
+    <dimen name="dimen_60dp">60dp</dimen>
     <dimen name="dimen_70dp">70dp</dimen>
+    <dimen name="dimen_80dp">80dp</dimen>
     <dimen name="dimen_120dp">120dp</dimen>
     <dimen name="dimen_130dp">130dp</dimen>
     <dimen name="dimen_175dp">175dp</dimen>
@@ -24,4 +26,5 @@
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="form_item_status_indicator_width">6dp</dimen>
 </resources>

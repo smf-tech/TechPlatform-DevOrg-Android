@@ -11,6 +11,7 @@ import com.platform.listeners.FormRequestCallListener;
 import com.platform.models.SavedForm;
 import com.platform.request.FormRequestCall;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
@@ -79,6 +80,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
     @Override
     public void onFormCreated(String message) {
         Log.e(TAG, "Request succeed " + message);
+        Util.showToast("Form submitted successfully", formFragment.get().getActivity());
     }
 
     @Override

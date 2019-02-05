@@ -12,6 +12,18 @@ public class PendingRequest {
     @SerializedName("name")
     private String requesterName;
 
+    @SerializedName("firstname")
+    private String requesterFirstName;
+
+    @SerializedName("middlename")
+    private String requesterMiddleName;
+
+    @SerializedName("lastname")
+    private String requesterLastName;
+
+    @SerializedName("profile_pic")
+    private String requesterProfilePic;
+
     @SerializedName("email")
     private String requesterEmail;
 
@@ -51,6 +63,38 @@ public class PendingRequest {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getRequesterFirstName() {
+        return requesterFirstName;
+    }
+
+    public void setRequesterFirstName(String requesterFirstName) {
+        this.requesterFirstName = requesterFirstName;
+    }
+
+    public String getRequesterMiddleName() {
+        return requesterMiddleName;
+    }
+
+    public void setRequesterMiddleName(String requesterMiddleName) {
+        this.requesterMiddleName = requesterMiddleName;
+    }
+
+    public String getRequesterLastName() {
+        return requesterLastName;
+    }
+
+    public void setRequesterLastName(String requesterLastName) {
+        this.requesterLastName = requesterLastName;
+    }
+
+    public String getRequesterProfilePic() {
+        return requesterProfilePic;
+    }
+
+    public void setRequesterProfilePic(String requesterProfilePic) {
+        this.requesterProfilePic = requesterProfilePic;
     }
 
     public String getRequesterName() {
