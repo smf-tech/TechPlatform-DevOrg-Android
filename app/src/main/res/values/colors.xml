@@ -19,4 +19,7 @@
     <color name="brown">#C35F3E</color>
 
     <color name="dark_blue">#75194779</color>
+    <color name="blue_theme_color">#1a305b</color>
+    <color name="card_gray_bg">#efefef</color>
+    <color name="form_tab_bg">#f0f0f0</color>
 </resources>

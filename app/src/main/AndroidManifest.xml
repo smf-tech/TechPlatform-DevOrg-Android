@@ -6,15 +6,19 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- Sync Adapter related permissions -->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
 
     <application
         android:name=".Platform"
@@ -25,6 +29,7 @@
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".view.activities.SplashActivity">
@@ -34,7 +39,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activities.LoginActivity"
             android:screenOrientation="portrait"
@@ -43,9 +47,7 @@
             android:name=".view.activities.ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-
         <activity
             android:name=".view.activities.OtpActivity"
             android:screenOrientation="portrait"
@@ -100,6 +102,33 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <provider
+            android:name=".syncAdapter.ContentProvider"
+            android:authorities="com.platform"
+            android:exported="false" />
+
+        <service
+            android:name=".syncAdapter.SyncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter" />
+        </service>
+        <service android:name=".syncAdapter.GenericAccountService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <activity android:name=".view.activities.FormsActivity" />
     </application>
 
 </manifest>

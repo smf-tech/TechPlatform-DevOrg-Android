@@ -122,4 +122,10 @@
     <string name="msg_error_in_photo_gallery">गॅलरीमधून फोटो घेण्यात समस्या, कृपया फोटो घेण्यासाठी कॅमेरा वापरा.</string>
     <string name="msg_image_capture_not_support">अरेरे - आपला डिव्हाइस प्रतिमा कॅप्चरिंगला समर्थन देत नाही!</string>
     <string name="msg_take_photo_error">अॅपला फोटो घेण्याची परवानगी नाही, कृपया त्यास अनुमती द्या.</string>
+
+    <string name="action_forms">फॉर्म</string>
+    <string name="category_title">श्रेणी शीर्षक</string>
+    <string name="todo">TODO</string>
+    <string name="forms">फॉर्म</string>
+    <string name="no_records_available">डेटा उपलब्ध नाही!</string>
 </resources>

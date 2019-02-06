@@ -1,8 +1,11 @@
 package com.platform.view.activities;
 
+import android.accounts.Account;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +29,8 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.UserInfo;
 import com.platform.models.home.Home;
 import com.platform.presenter.HomeActivityPresenter;
+import com.platform.syncAdapter.GenericAccountService;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
@@ -34,12 +39,17 @@ import com.platform.view.fragments.ConnectFragment;
 import com.platform.view.fragments.DashboardFragment;
 import com.platform.view.fragments.StoriesFragment;
 
+import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
+import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
+
 public class HomeActivity extends BaseActivity implements PlatformTaskListener,
-        ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
+        ForceUpdateChecker.OnUpdateNeededListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private Home homeData;
     private AlertDialog dialogNotApproved;
     private HomeActivityPresenter presenter;
+    private Object mSyncObserverHandle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +76,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
         }
+
+        mSyncStatusObserver.onStatusChanged(0);
+
+        // Watch for sync state changes
+        final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
+                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
+        mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
     }
 
     private void initMenuView() {
@@ -252,6 +269,10 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 showUpdateDataPopup();
                 break;
 
+            case R.id.action_forms:
+                goToForms();
+                break;
+
             case R.id.action_logout:
                 showLogoutPopUp();
                 break;
@@ -260,6 +281,12 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void goToForms() {
+        Intent intent = new Intent(this, FormsActivity.class);
+        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
     @Override
@@ -386,4 +413,24 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             e.printStackTrace();
         }
     }
+
+    SyncStatusObserver mSyncStatusObserver = which -> {
+        Account account = GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE);
+
+        boolean syncActive = ContentResolver.isSyncActive(
+                account, SyncAdapterUtils.AUTHORITY);
+        boolean syncPending = ContentResolver.isSyncPending(
+                account, SyncAdapterUtils.AUTHORITY);
+
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mSyncObserverHandle != null) {
+            ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+            mSyncObserverHandle = null;
+        }
+    }
+
 }
