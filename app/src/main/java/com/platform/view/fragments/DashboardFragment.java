@@ -71,7 +71,7 @@ public class DashboardFragment extends Fragment {
 
     @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
             switch (modules.getName()) {
                 case Constants.Home.PROGRAMME_MANAGEMENT:
