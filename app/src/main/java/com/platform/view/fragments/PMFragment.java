@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -38,6 +39,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private LinearLayout lnrOuter;
     private RecyclerView rvPendingForms;
     private PMFragmentPresenter pmFragmentPresenter;
+    private RelativeLayout rltPendingForms;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,6 +62,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private void init() {
         rvPendingForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
         lnrOuter = pmFragmentView.findViewById(R.id.lnr_dashboard_forms_category);
+        rltPendingForms = pmFragmentView.findViewById(R.id.rlt_pending_forms);
 
         setPendingForms();
     }
@@ -67,9 +70,12 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private void setPendingForms() {
         List<SavedForm> savedForms = pmFragmentPresenter.getAllSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
+            rltPendingForms.setVisibility(View.VISIBLE);
             PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
+        } else {
+            rltPendingForms.setVisibility(View.GONE);
         }
     }
 
