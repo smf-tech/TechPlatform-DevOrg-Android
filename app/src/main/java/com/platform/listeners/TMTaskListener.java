@@ -8,4 +8,6 @@ import java.util.List;
 public interface TMTaskListener extends PlatformTaskListener {
 
     void showPendingRequests(List<PendingRequest> pendingRequestList);
+
+    void updateRequestStatus(String response, PendingRequest pendingRequest);
 }

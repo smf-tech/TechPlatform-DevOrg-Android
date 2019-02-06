@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.TMRequestCallListener;
+import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMRequestCall;
 import com.platform.view.fragments.TMFragment;
@@ -30,8 +31,17 @@ public class TMFragmentPresenter implements TMRequestCallListener {
         requestCall.getAllPendingRequests();
     }
 
+    public void approveRejectRequest(String requestStatus, PendingRequest pendingRequest) {
+        TMRequestCall requestCall = new TMRequestCall();
+        requestCall.setListener(this);
+
+        fragmentWeakReference.get().showProgressBar();
+        requestCall.approveRejectRequest(requestStatus, pendingRequest);
+    }
+
     @Override
     public void onPendingRequestsFetched(String response) {
+        Log.d(TAG, "Pending requests list API response: " + response);
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             PendingRequestsResponse pendingRequestsResponse
@@ -41,6 +51,15 @@ public class TMFragmentPresenter implements TMRequestCallListener {
                     && pendingRequestsResponse.getData().size() > 0) {
                 fragmentWeakReference.get().showPendingRequests(pendingRequestsResponse.getData());
             }
+        }
+    }
+
+    @Override
+    public void onRequestStatusChanged(String response, PendingRequest pendingRequest) {
+        Log.d(TAG, "Status updated API response: " + response);
+        fragmentWeakReference.get().hideProgressBar();
+        if (!TextUtils.isEmpty(response)) {
+            fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
         }
     }
 

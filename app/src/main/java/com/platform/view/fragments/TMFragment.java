@@ -15,6 +15,7 @@ import com.platform.R;
 import com.platform.listeners.TMTaskListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.TMFragmentPresenter;
+import com.platform.utility.Util;
 import com.platform.view.adapters.NewTMAdapter;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
 
     private View tmFragmentView;
     private RecyclerView rvPendingRequests;
+    private TMFragmentPresenter tmFragmentPresenter;
+    private NewTMAdapter newTMAdapter;
+    private List<PendingRequest> pendingRequestList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -36,7 +40,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TMFragmentPresenter tmFragmentPresenter = new TMFragmentPresenter(this);
+        tmFragmentPresenter = new TMFragmentPresenter(this);
         tmFragmentPresenter.getAllPendingRequests();
 
         init();
@@ -77,8 +81,16 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
     @Override
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
-            NewTMAdapter newTMAdapter = new NewTMAdapter(pendingRequestList);
+            this.pendingRequestList = pendingRequestList;
+            newTMAdapter = new NewTMAdapter(this.pendingRequestList, tmFragmentPresenter);
             rvPendingRequests.setAdapter(newTMAdapter);
         }
+    }
+
+    @Override
+    public void updateRequestStatus(String response, PendingRequest pendingRequest) {
+        Util.showToast("Request status updated successfully", getActivity());
+        this.pendingRequestList.remove(pendingRequest);
+        newTMAdapter.notifyDataSetChanged();
     }
 }

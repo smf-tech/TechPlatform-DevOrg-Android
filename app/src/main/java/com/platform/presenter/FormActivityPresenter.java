@@ -75,6 +75,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "Request Error :" + error);
+        DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormObject(getSavedForm());
     }
 
     @Override

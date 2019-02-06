@@ -31,5 +31,6 @@ public class Urls {
 
     public class TM {
         public static final String GET_PENDING_REQUESTS = "api/users/approvals";
+        public static final String APPROVE_REJECT_REQUEST = "api/users/approval/%1$s";
     }
 }

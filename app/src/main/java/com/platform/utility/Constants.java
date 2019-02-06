@@ -96,6 +96,16 @@ public class Constants {
         public static final String RESPONSE = "response";
     }
 
+    public static class TM {
+        public static final String UPDATE_STATUS = "update_status";
+    }
+
+    public static class RequestStatus {
+        public static final String PENDING = "pending";
+        public static final String APPROVED = "approved";
+        public static final String REJECTED = "rejected";
+    }
+
     public static class FormsFactory {
         public static final String TEXT_TEMPLATE = "text";
         public static final String DROPDOWN_TEMPLATE = "dropdown";
