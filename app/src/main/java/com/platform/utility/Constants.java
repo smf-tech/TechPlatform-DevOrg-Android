@@ -26,6 +26,11 @@ public class Constants {
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
+    public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
+    public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
+
+    public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
+
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
@@ -98,6 +103,16 @@ public class Constants {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
         public static final String RESPONSE = "response";
+    }
+
+    public static class TM {
+        public static final String UPDATE_STATUS = "update_status";
+    }
+
+    public static class RequestStatus {
+        public static final String PENDING = "pending";
+        public static final String APPROVED = "approved";
+        public static final String REJECTED = "rejected";
     }
 
     public static class FormsFactory {

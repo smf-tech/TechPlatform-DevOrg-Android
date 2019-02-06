@@ -1,27 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/home_app_icon"
-        android:layout_width="@dimen/dimen_120dp"
-        android:layout_height="@dimen/dimen_120dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:contentDescription="@string/content_description"
-        android:src="@mipmap/app_logo" />
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/home_tiles_list_view"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/home_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary">
+
+                <TextView
+                    android:id="@+id/home_toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_20"
+                    android:textStyle="bold" />
+            </android.support.v7.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/home_bell_icon"
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/dimen_05dp"
+                android:src="@drawable/ic_bell" />
+
+            <TextView
+                android:id="@+id/unread_notification_count"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dimen_07dp"
+                android:layout_marginEnd="@dimen/dimen_07dp"
+                android:background="@drawable/bg_circle_red"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/home_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/brown"
+            app:tabIndicatorHeight="@dimen/dimen_05dp"
+            app:tabMode="fixed" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/home_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:clipToPadding="false"
-        android:padding="@dimen/dimen_10dp"
-        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

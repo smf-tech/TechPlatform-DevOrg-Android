@@ -104,10 +104,13 @@
     <string name="locked">लॉक</string>
 
     <!--Home-->
+    <string name="tab_connect">कनेक्ट</string>
+    <string name="tab_stories">कथा</string>
     <string name="programme_management">कार्यक्रम\nव्यवस्थापन</string>
     <string name="team_management">संघ\nव्यवस्थापन</string>
 
     <!--Program management-->
+    <string name="pending_forms">Pending Forms</string>
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
 
