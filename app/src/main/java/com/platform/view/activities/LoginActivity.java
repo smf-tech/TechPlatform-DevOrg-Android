@@ -22,6 +22,7 @@ import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.LoginActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
 
@@ -43,7 +44,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Constants.SyncAdapter.createSyncAccount(this);
+        SyncAdapterUtils.createSyncAccount(this);
 
         initViews();
 

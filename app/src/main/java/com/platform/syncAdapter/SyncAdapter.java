@@ -9,8 +9,6 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.platform.request.OrgRolesRequestCall;
-
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = SyncAdapter.class.getSimpleName();
@@ -35,13 +33,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               SyncResult syncResult) {
 
         Log.i(TAG, "onPerformSync: \n");
-        getRolesDetails();
-    }
 
-    private static void getRolesDetails() {
-        Log.i(TAG, "getRolesDetails: \n");
-        OrgRolesRequestCall orgRolesRequestCall = new OrgRolesRequestCall();
-        orgRolesRequestCall.syncRoles();
+        // TODO: 06-02-2019 Sync saved forms to server here
     }
 
 }

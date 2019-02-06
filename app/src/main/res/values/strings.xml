@@ -121,9 +121,8 @@
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
     <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="category_title">Category Title</string>
     <string name="todo">TODO</string>
     <string name="forms">Forms</string>
-    <string name="no_records_available">No records available!</string>
+    <string name="no_records_available">Data is not available!</string>
 </resources>

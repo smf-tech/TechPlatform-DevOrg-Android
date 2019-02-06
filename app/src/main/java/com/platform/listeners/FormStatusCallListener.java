@@ -11,8 +11,6 @@ public interface FormStatusCallListener {
 
     void onErrorListener(VolleyError error);
 
-    void onFormsLoaded(List<Form> formList);
-
     void onFormsLoaded(String response);
 
 }

@@ -30,8 +30,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:targetApi="m">
+        tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".view.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -128,7 +128,7 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:name=".view.activities.FormsActivity"></activity>
+        <activity android:name=".view.activities.FormsActivity" />
     </application>
 
 </manifest>

@@ -18,6 +18,21 @@ public class FormStatusFragmentPresenter {
         requestCall.getProcessDetails(processId);
     }
 
+    public void getAllProcesses() {
+        FormStatusRequestCall requestCall = new FormStatusRequestCall();
+        requestCall.setListener(listener);
+
+        requestCall.getAllProcesses();
+    }
+
+    public void getAllProcesses(String processId) {
+        FormStatusRequestCall requestCall = new FormStatusRequestCall();
+        requestCall.setListener(listener);
+
+        requestCall.getAllProcess(processId);
+
+    }
+
     public void setListener(FormStatusCallListener listener) {
         this.listener = listener;
     }

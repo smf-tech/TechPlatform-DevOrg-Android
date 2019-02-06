@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.models.pm.ProcessData;
+
+import java.util.HashMap;
+import java.util.List;
 
 import static com.platform.utility.Constants.Form.FORM_STATUS_ALL;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
@@ -22,12 +26,12 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
     private Context mContext;
     private String mStatus;
-    private String mCategoryName;
+    private HashMap<String, List<ProcessData>> mFormsData;
 
-    public FormCategoryAdapter(Context context, String mStatus, final String categoryName) {
+    public FormCategoryAdapter(Context context, String mStatus, final HashMap<String, List<ProcessData>> formsData) {
         this.mContext = context;
         this.mStatus = mStatus;
-        mCategoryName = categoryName;
+        mFormsData = formsData;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -68,19 +72,26 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         viewHolder.addButton.setColorFilter(mContext.getResources().getColor(R.color.white));
 
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        viewHolder.categoryName.setText(mCategoryName);
+
+        String[] objects1 = new String[mFormsData.keySet().size()];
+        objects1 = mFormsData.keySet().toArray(objects1);
+        String category = objects1[i];
+
+        List<ProcessData> processData = mFormsData.get(category);
+
+        viewHolder.categoryName.setText(category);
 
         switch (mStatus) {
             case FORM_STATUS_COMPLETED:
-                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED);
+                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, processData);
                 viewHolder.addButton.setVisibility(View.GONE);
                 viewHolder.syncButton.setVisibility(View.GONE);
                 break;
             case FORM_STATUS_PENDING:
-                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_PENDING);
+//                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_PENDING);
                 break;
             default:
-                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_ALL);
+//                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_ALL);
                 viewHolder.addButton.setVisibility(View.GONE);
                 viewHolder.syncButton.setVisibility(View.GONE);
                 break;
@@ -90,7 +101,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
     @Override
     public int getItemCount() {
-        // FIXME: 29-01-2019 Remove hardcoded count
-        return 1;
+        return mFormsData.size();
     }
 }

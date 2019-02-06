@@ -65,6 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
+                android:id="@+id/form_date"
                 android:layout_below="@id/form_title"
                 android:layout_marginTop="-3dp"
                 android:layout_toEndOf="@id/form_image"
