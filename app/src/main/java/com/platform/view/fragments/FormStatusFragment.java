@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllSavedForms;
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
@@ -37,6 +37,7 @@ import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
  * Use the {@link FormStatusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("CanBeFinal")
 public class FormStatusFragment extends Fragment implements FormStatusCallListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = FormStatusFragment.class.getSimpleName();
@@ -101,7 +102,7 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-        List<SavedForm> savedForms = getAllSavedForms();
+        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             List<SavedForm> forms = new ArrayList<>();
             for (final SavedForm form : savedForms) {
@@ -167,7 +168,9 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
             String categoryName = data.getCategory().getName();
             if (mChildList.containsKey(categoryName)) {
                 List<ProcessData> processData = mChildList.get(categoryName);
-                processData.add(data);
+                if (processData != null) {
+                    processData.add(data);
+                }
                 mChildList.put(categoryName, processData);
             } else {
                 List<ProcessData> processData = new ArrayList<>();

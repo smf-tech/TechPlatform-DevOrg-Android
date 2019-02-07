@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+@SuppressWarnings("unused")
 public class SyncAdapterUtils {
 
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
@@ -44,7 +45,7 @@ public class SyncAdapterUtils {
         if (newAccount || !setupComplete) {
             manualRefresh();
             PreferenceManager.getDefaultSharedPreferences(context).edit()
-                    .putBoolean(PREF_SETUP_COMPLETE, true).commit();
+                    .putBoolean(PREF_SETUP_COMPLETE, true).apply();
         }
 
     }

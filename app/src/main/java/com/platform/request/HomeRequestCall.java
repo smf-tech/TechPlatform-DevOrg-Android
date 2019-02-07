@@ -1,5 +1,7 @@
 package com.platform.request;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -8,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.models.UserInfo;
+import com.platform.models.user.UserInfo;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 public class HomeRequestCall {
 
     private PlatformRequestCallListener listener;
+    private final String TAG = HomeRequestCall.class.getName();
 
     public void setListener(PlatformRequestCallListener listener) {
         this.listener = listener;
@@ -32,6 +35,7 @@ public class HomeRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };

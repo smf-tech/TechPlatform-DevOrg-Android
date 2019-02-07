@@ -13,17 +13,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/dimen_20dp"
-        android:visibility="gone"
         android:backgroundTint="@android:color/white"
         android:src="@android:drawable/ic_secure"
+        android:visibility="gone"
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70dp"
-        android:layout_marginTop="@dimen/dimen_07dp"
         android:layout_marginStart="@dimen/dimen_07dp"
+        android:layout_marginTop="@dimen/dimen_07dp"
         android:layout_marginEnd="@dimen/dimen_07dp"
         android:layout_marginBottom="@dimen/dimen_07dp"
         app:cardBackgroundColor="@android:color/white"
@@ -45,8 +45,8 @@
                 android:layout_height="@dimen/dimen_30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dimen_20dp"
-                android:src="@android:drawable/sym_contact_card"
-                android:contentDescription="@string/todo" />
+                android:contentDescription="@string/content_description"
+                android:src="@android:drawable/sym_contact_card" />
 
             <TextView
                 android:id="@+id/form_title"
@@ -55,23 +55,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_20dp"
                 android:layout_toEndOf="@id/form_image"
-                android:maxLines="1"
                 android:ellipsize="end"
-                android:text="Z.P. Pri school Khambora Juna asd asd asdasdadsdsads"
+                android:maxLines="1"
                 android:textAllCaps="true" />
 
             <TextView
+                android:id="@+id/form_date"
                 style="@style/FormLabel.Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:id="@+id/form_date"
                 android:layout_below="@id/form_title"
                 android:layout_marginTop="-3dp"
                 android:layout_toEndOf="@id/form_image"
-                android:text="on 19 Dec 2018" />
-
+                android:maxLines="1" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 </RelativeLayout>

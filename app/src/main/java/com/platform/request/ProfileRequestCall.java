@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.Platform;
 import com.platform.listeners.ProfileRequestCallListener;
-import com.platform.models.UserInfo;
+import com.platform.models.user.UserInfo;
 import com.platform.models.profile.UserLocation;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;

@@ -40,7 +40,12 @@ public class PMAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int childPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(childPosition)).size();
+        List<ProcessData> processData = this.listDataChild.get(this.listDataHeader.get(childPosition));
+        if (processData != null) {
+            return processData.size();
+        }
+
+        return 0;
     }
 
     @Override
@@ -50,7 +55,12 @@ public class PMAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosition);
+        List<ProcessData> processData = this.listDataChild.get(this.listDataHeader.get(groupPosition));
+        if (processData != null) {
+            return processData.get(childPosition);
+        }
+
+        return null;
     }
 
     @Override

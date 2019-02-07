@@ -22,10 +22,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.models.UserInfo;
 import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLevelData;
 import com.platform.models.profile.UserLocation;
+import com.platform.models.user.User;
 
 import java.io.File;
 import java.util.HashMap;
@@ -192,12 +192,12 @@ public class Util {
         editor.apply();
     }
 
-    public static UserInfo getUserObjectFromPref() {
+    public static User getUserObjectFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.USER_OBJ, "{}");
 
-        return new Gson().fromJson(obj, UserInfo.class);
+        return new Gson().fromJson(obj, User.class);
     }
 
     public static void saveUserObjectInPref(String userData) {

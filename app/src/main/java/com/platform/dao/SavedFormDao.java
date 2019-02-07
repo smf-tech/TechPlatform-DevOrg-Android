@@ -11,10 +11,11 @@ import com.platform.models.SavedForm;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Dao
 public interface SavedFormDao {
-    @Query("SELECT * FROM savedform")
-    List<SavedForm> getAll();
+    @Query("SELECT * FROM savedform WHERE is_synced = 0")
+    List<SavedForm> getAllNonSyncedForms();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(SavedForm... savedForms);
@@ -24,5 +25,4 @@ public interface SavedFormDao {
 
     @Delete
     void delete(SavedForm savedForm);
-
 }

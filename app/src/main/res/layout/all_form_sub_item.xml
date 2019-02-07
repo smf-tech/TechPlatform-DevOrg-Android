@@ -42,19 +42,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/form_title"
                 android:layout_marginStart="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_07dp"
-                android:text="Target Date: N/A" />
+                android:layout_marginTop="@dimen/dimen_07dp" />
 
             <TextView
                 android:id="@+id/total_count_label"
                 style="@style/FormLabel.Description"
-                android:layout_below="@id/form_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/target_date_label"
+                android:layout_below="@id/form_title"
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_07dp"
-                android:text="Total Count: 0" />
+                android:layout_toEndOf="@id/target_date_label" />
 
             <TextView
                 android:id="@+id/submitted_count_label"
@@ -62,18 +60,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/target_date_label"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:text="Submitted Count: 0" />
+                android:layout_marginStart="@dimen/dimen_20dp" />
 
             <TextView
                 android:id="@+id/expected_count_label"
                 style="@style/FormLabel.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/target_date_label"
                 android:layout_below="@id/target_date_label"
                 android:layout_marginStart="@dimen/dimen_20dp"
-                android:text="Expected Count: 0" />
+                android:layout_toEndOf="@id/target_date_label" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/pin_button"
@@ -87,8 +83,6 @@
                 android:tint="@android:color/white"
                 app:fabSize="mini"
                 tools:ignore="RelativeOverlap" />
-
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 </RelativeLayout>

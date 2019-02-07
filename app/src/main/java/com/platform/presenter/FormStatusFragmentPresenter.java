@@ -3,6 +3,7 @@ package com.platform.presenter;
 import com.platform.listeners.FormStatusCallListener;
 import com.platform.request.FormStatusRequestCall;
 
+@SuppressWarnings("unused")
 public class FormStatusFragmentPresenter {
 
     private FormStatusCallListener listener;

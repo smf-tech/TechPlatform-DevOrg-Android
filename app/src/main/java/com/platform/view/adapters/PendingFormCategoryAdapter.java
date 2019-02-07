@@ -23,6 +23,7 @@ import java.util.List;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 import static com.platform.utility.Util.saveFormCategoryForSync;
 
+@SuppressWarnings("CanBeFinal")
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
@@ -67,6 +68,7 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         return new PendingFormCategoryAdapter.ViewHolder(v);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull PendingFormCategoryAdapter.ViewHolder viewHolder, int i) {

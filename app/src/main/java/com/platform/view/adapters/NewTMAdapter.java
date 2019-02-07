@@ -50,22 +50,15 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
     @Override
     public void onBindViewHolder(@NonNull PendingRequestViewHolder pendingRequestViewHolder, int position) {
         PendingRequest pendingRequest = pendingRequestList.get(position);
-        pendingRequestViewHolder.txtRequestTitle.setText(pendingRequest.getRequesterFirstName() + " " + pendingRequest.getRequesterLastName());
-        pendingRequestViewHolder.txtRequestCreatedAt.setText("On " + pendingRequest.getCreatedAt());
+        pendingRequestViewHolder.txtRequestTitle.setText(String.format("%s %s",
+                pendingRequest.getRequesterFirstName(), pendingRequest.getRequesterLastName()));
+        pendingRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedAt()));
 
-        pendingRequestViewHolder.ivApprove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tmFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest);
-            }
-        });
+        pendingRequestViewHolder.ivApprove.setOnClickListener(
+                v -> tmFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
 
-        pendingRequestViewHolder.ivReject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tmFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
-            }
-        });
+        pendingRequestViewHolder.ivReject.setOnClickListener(
+                v -> tmFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
     }
 
     @Override
