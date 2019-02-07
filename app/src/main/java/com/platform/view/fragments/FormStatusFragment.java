@@ -23,7 +23,6 @@ import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.view.adapters.FormCategoryAdapter;
 import com.platform.view.adapters.PendingFormCategoryAdapter;
-import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +102,23 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
      */
     private void getPendingFormsFromDB() {
         List<SavedForm> savedForms = getAllSavedForms();
-        setAdapter(savedForms);
+        if (savedForms != null && !savedForms.isEmpty()) {
+            List<SavedForm> forms = new ArrayList<>();
+            for (final SavedForm form : savedForms) {
+                if (!form.isSynced()) {
+                    forms.add(form);
+                }
+            }
+
+            if (!forms.isEmpty()) {
+                setAdapter(forms);
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mNoRecordsView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setAdapter(final HashMap<String, List<ProcessData>> data) {
@@ -127,13 +142,9 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
     }
 
     private void setAdapter(final List<SavedForm> data) {
-        if (data != null && !data.isEmpty()) {
-            final PendingFormCategoryAdapter adapter = new PendingFormCategoryAdapter(getContext(), data);
-            mRecyclerView.setAdapter(adapter);
-            mNoRecordsView.setVisibility(View.GONE);
-        } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
-        }
+        final PendingFormCategoryAdapter adapter =
+                new PendingFormCategoryAdapter(getContext(), data);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override

@@ -14,11 +14,6 @@ public class SyncAdapterUtils {
     public static final String AUTHORITY = "com.platform";
     public static final String ACCOUNT_TYPE = "com.platform.account";
 
-    public static final int COMPLETE = 1;
-    public static final int PENDING = 2;
-    public static final int ERROR = 3;
-    public static final int STARTED = 0;
-
     /**
      * This method creates sync account
      *

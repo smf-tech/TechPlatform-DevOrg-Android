@@ -28,6 +28,11 @@ public class DatabaseManager {
         savedFormDao.insertAll(savedForms);
     }
 
+    public void updateFormObject(SavedForm savedForms) {
+        SavedFormDao savedFormDao = appDatabase.formDao();
+        savedFormDao.update(savedForms);
+    }
+
     public List<SavedForm> getPendingForms() {
         SavedFormDao savedFormDao = appDatabase.formDao();
         return savedFormDao.getAll();

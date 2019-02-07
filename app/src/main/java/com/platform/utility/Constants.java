@@ -47,6 +47,8 @@ public class Constants {
         static final String FIRST_TIME_KEY = "FirstTimeKey";
         static final String FIRST_TIME_CODE = "FirstTimeCode";
 
+        public static final String SYNC_FORM_CATEGORY = "formCategory";
+
         static final String LANGUAGE_LOCALE = "LanguageLocale";
         static final String LANGUAGE_CODE = "languageCode";
 
@@ -61,7 +63,7 @@ public class Constants {
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
 
-        static final String AUTHORIZATION = "Authorization";
+        public static final String AUTHORIZATION = "Authorization";
 
         public static final String USER_F_NAME = "firstName";
         public static final String USER_M_NAME = "middleName";
