@@ -8,6 +8,7 @@ import android.widget.BaseExpandableListAdapter;
 
 import com.platform.R;
 
+@SuppressWarnings("CanBeFinal")
 public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;

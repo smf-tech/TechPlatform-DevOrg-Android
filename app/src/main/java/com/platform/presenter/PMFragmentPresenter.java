@@ -32,8 +32,11 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
         requestCall.getAllProcess();
     }
 
-    public static List<SavedForm> getAllSavedForms() {
-        return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getPendingForms();
+    public static List<SavedForm> getAllNonSyncedSavedForms() {
+        if (fragmentWeakReference == null || fragmentWeakReference.get() == null ||
+                fragmentWeakReference.get().getActivity() == null)
+            return null;
+        return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getNonSyncedPendingForms();
     }
 
     @Override

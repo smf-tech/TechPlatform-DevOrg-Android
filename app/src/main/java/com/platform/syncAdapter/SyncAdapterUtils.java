@@ -7,17 +7,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+@SuppressWarnings("unused")
 public class SyncAdapterUtils {
 
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
     public static final String ACCOUNT = "TechPlatform-DevOrg";
     public static final String AUTHORITY = "com.platform";
     public static final String ACCOUNT_TYPE = "com.platform.account";
-
-    public static final int COMPLETE = 1;
-    public static final int PENDING = 2;
-    public static final int ERROR = 3;
-    public static final int STARTED = 0;
 
     /**
      * This method creates sync account
@@ -49,7 +45,7 @@ public class SyncAdapterUtils {
         if (newAccount || !setupComplete) {
             manualRefresh();
             PreferenceManager.getDefaultSharedPreferences(context).edit()
-                    .putBoolean(PREF_SETUP_COMPLETE, true).commit();
+                    .putBoolean(PREF_SETUP_COMPLETE, true).apply();
         }
 
     }

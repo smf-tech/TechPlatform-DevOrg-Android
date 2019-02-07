@@ -33,7 +33,7 @@ import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
-import com.platform.models.UserInfo;
+import com.platform.models.user.UserInfo;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.profile.Jurisdiction;
 import com.platform.models.profile.JurisdictionLevel;

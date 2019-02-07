@@ -125,7 +125,6 @@
 
         <string name="action_forms">प्रपत्र</string>
     <string name="category_title">श्रेणी शीर्षक</string>
-    <string name="todo">TODO</string>
     <string name="forms">प्रपत्र</string>
     <string name="no_records_available">डेटा उपलब्ध नहीं है!</string>
 </resources>

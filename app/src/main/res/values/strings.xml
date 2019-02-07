@@ -125,7 +125,6 @@
     <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
 
     <string name="category_title">Category Title</string>
-    <string name="todo">TODO</string>
     <string name="forms">Forms</string>
     <string name="no_records_available">Data is not available!</string>
 </resources>

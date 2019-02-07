@@ -109,7 +109,8 @@
 
         <service
             android:name=".syncAdapter.SyncService"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -118,7 +119,9 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
-        <service android:name=".syncAdapter.GenericAccountService">
+        <service
+            android:name=".syncAdapter.GenericAccountService"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -130,5 +133,4 @@
 
         <activity android:name=".view.activities.FormsActivity" />
     </application>
-
 </manifest>

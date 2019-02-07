@@ -22,10 +22,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.models.UserInfo;
 import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLevelData;
 import com.platform.models.profile.UserLocation;
+import com.platform.models.user.User;
+import com.platform.models.user.UserInfo;
 
 import java.io.File;
 import java.util.HashMap;
@@ -261,6 +262,22 @@ public class Util {
         Gson gson = new Gson();
         String json = gson.toJson(jurisdictionLevel);
         editor.putString(Constants.App.JURISDICTION_LEVEL_DATA, json);
+        editor.apply();
+    }
+
+    public static String getFormCategoryForSyncFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        return preferences.getString(Constants.App.SYNC_FORM_CATEGORY, "");
+    }
+
+    public static void saveFormCategoryForSync(String category) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
         editor.apply();
     }
 

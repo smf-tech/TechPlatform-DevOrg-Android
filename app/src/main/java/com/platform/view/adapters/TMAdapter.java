@@ -37,6 +37,7 @@ public class TMAdapter extends RecyclerView.Adapter<TMAdapter.TMViewHolder> {
         return new TMViewHolder(itemView);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         Template template = templateList.get(position);

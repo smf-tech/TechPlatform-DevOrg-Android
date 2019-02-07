@@ -83,7 +83,9 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
                 String categoryName = data.getCategory().getName();
                 if (childList.containsKey(categoryName)) {
                     List<ProcessData> processData = childList.get(categoryName);
-                    processData.add(data);
+                    if (processData != null) {
+                        processData.add(data);
+                    }
                     childList.put(categoryName, processData);
                 } else {
                     List<ProcessData> processData = new ArrayList<>();

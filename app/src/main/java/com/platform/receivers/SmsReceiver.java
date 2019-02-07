@@ -12,6 +12,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
     private OtpSmsReceiverListener listener;
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && intent.getAction() != null && intent.getAction().contentEquals(

@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.platform.R;
@@ -19,9 +18,8 @@ import com.platform.view.adapters.ExpandableAdapter;
  * Use the {@link AllFormsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("EmptyMethod")
 public class AllFormsFragment extends Fragment {
-
-    ExpandableListView mExpandableListView;
 
     public AllFormsFragment() {
         // Required empty public constructor
@@ -55,9 +53,8 @@ public class AllFormsFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mExpandableListView = view.findViewById(R.id.forms_expandable_list);
-
         ExpandableAdapter adapter = new ExpandableAdapter(getContext());
-        mExpandableListView.setAdapter(adapter);
+        ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
+        expandableListView.setAdapter(adapter);
     }
 }

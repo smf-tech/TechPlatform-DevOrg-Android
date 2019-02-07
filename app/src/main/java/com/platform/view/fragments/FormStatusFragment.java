@@ -23,13 +23,12 @@ import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.view.adapters.FormCategoryAdapter;
 import com.platform.view.adapters.PendingFormCategoryAdapter;
-import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllSavedForms;
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
@@ -38,6 +37,7 @@ import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
  * Use the {@link FormStatusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("CanBeFinal")
 public class FormStatusFragment extends Fragment implements FormStatusCallListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = FormStatusFragment.class.getSimpleName();
@@ -102,8 +102,24 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-        List<SavedForm> savedForms = getAllSavedForms();
-        setAdapter(savedForms);
+        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
+        if (savedForms != null && !savedForms.isEmpty()) {
+            List<SavedForm> forms = new ArrayList<>();
+            for (final SavedForm form : savedForms) {
+                if (!form.isSynced()) {
+                    forms.add(form);
+                }
+            }
+
+            if (!forms.isEmpty()) {
+                setAdapter(forms);
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mNoRecordsView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setAdapter(final HashMap<String, List<ProcessData>> data) {
@@ -127,13 +143,9 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
     }
 
     private void setAdapter(final List<SavedForm> data) {
-        if (data != null && !data.isEmpty()) {
-            final PendingFormCategoryAdapter adapter = new PendingFormCategoryAdapter(getContext(), data);
-            mRecyclerView.setAdapter(adapter);
-            mNoRecordsView.setVisibility(View.GONE);
-        } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
-        }
+        final PendingFormCategoryAdapter adapter =
+                new PendingFormCategoryAdapter(getContext(), data);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -156,7 +168,9 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
             String categoryName = data.getCategory().getName();
             if (mChildList.containsKey(categoryName)) {
                 List<ProcessData> processData = mChildList.get(categoryName);
-                processData.add(data);
+                if (processData != null) {
+                    processData.add(data);
+                }
                 mChildList.put(categoryName, processData);
             } else {
                 List<ProcessData> processData = new ArrayList<>();

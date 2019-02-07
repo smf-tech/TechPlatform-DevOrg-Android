@@ -39,9 +39,7 @@ public class FormStatusRequestCall {
             }
         };
 
-        Response.ErrorListener processDetailsErrorListener = error -> {
-            listener.onErrorListener(error);
-        };
+        Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getProcessUrl = Urls.BASE_URL + String.format(Urls.PM.GET_PROCESS_DETAILS, processId);
@@ -77,9 +75,7 @@ public class FormStatusRequestCall {
             }
         };
 
-        Response.ErrorListener processDetailsErrorListener = error -> {
-            listener.onErrorListener(error);
-        };
+        Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getProcessUrl = Urls.BASE_URL + Urls.PM.GET_PROCESS;

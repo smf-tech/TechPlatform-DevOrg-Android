@@ -13,19 +13,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
+import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
+import static com.platform.utility.Util.saveFormCategoryForSync;
+
+@SuppressWarnings("CanBeFinal")
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
     private List<SavedForm> mData;
+    private ArrayList<String> mCategoryList;
 
     public PendingFormCategoryAdapter(final Context context, final List<SavedForm> data) {
         this.mContext = context;
         mData = data;
+
+        mCategoryList = new ArrayList<>();
+        for (final SavedForm form : mData) {
+            if (!mCategoryList.contains(form.getFormCategory())) {
+                mCategoryList.add(form.getFormCategory());
+            }
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -54,12 +68,20 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         return new PendingFormCategoryAdapter.ViewHolder(v);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull PendingFormCategoryAdapter.ViewHolder viewHolder, int i) {
 
-        viewHolder.syncButton.setOnClickListener(v ->
-                Toast.makeText(mContext, "Sync clicked!", Toast.LENGTH_SHORT).show());
+        viewHolder.syncButton.setOnClickListener(v -> {
+            if (Util.isConnected(mContext)) {
+                Toast.makeText(mContext, "Sync started...", Toast.LENGTH_SHORT).show();
+                saveFormCategoryForSync(mCategoryList.get(i));
+                SyncAdapterUtils.manualRefresh();
+            } else {
+                Toast.makeText(mContext, "Internet is not available!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         viewHolder.syncButton.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setRippleColor(mContext.getResources().getColor(R.color.red));
@@ -67,28 +89,22 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         viewHolder.addButton.setColorFilter(mContext.getResources().getColor(R.color.white));
 
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        viewHolder.categoryName.setText(mCategoryList.get(i));
 
-        /*String[] objects1 = new String[mFormsData.keySet().size()];
-        objects1 = mFormsData.keySet().toArray(objects1);
-        String category = objects1[i];
+        List<SavedForm> list = new ArrayList<>();
+        for (final SavedForm form : mData) {
+            if (form.getFormCategory().equals(mCategoryList.get(i))) {
+                list.add(form);
+            }
+        }
 
-        List<ProcessData> processData = mFormsData.get(category);
-
-        viewHolder.categoryName.setText(category);
-
-        viewHolder.adapter = new FormsAdapter(mContext, mData);
-        viewHolder.addButton.setVisibility(View.GONE);
-        viewHolder.recyclerView.setAdapter(viewHolder.adapter);*/
-
-        viewHolder.categoryName.setText("BJS Forms");
-
-        FormsAdapter adapter = new FormsAdapter(mContext, mData);
+        FormsAdapter adapter = new FormsAdapter(mContext, list, FORM_STATUS_PENDING);
         viewHolder.recyclerView.setAdapter(adapter);
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mCategoryList.size();
     }
 
 }
