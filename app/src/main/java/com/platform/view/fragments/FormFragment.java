@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -172,16 +173,23 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                         formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
                     } else {
                         //Save in local db
-                        SavedForm savedForm = new SavedForm();
-                        savedForm.setFormId(formModel.getData().getId());
-                        savedForm.setFormName(formModel.getData().getName());
-                        SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-                        savedForm.setCreatedAt(createdDateFormat.format(new Date()));
+                        if (formModel.getData() != null) {
+                            SavedForm savedForm = new SavedForm();
+                            savedForm.setFormId(formModel.getData().getId());
+                            savedForm.setFormName(formModel.getData().getName());
+                            savedForm.setSynced(false);
+                            if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
+                                savedForm.setFormCategory(formModel.getData().getCategory().getName());
+                            }
+                            savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+                            SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
+                            savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
-                        formPresenter.setSavedForm(savedForm);
-                        formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
-                        Util.showToast("Form saved offline ", getActivity());
-                        Log.d(TAG, "Form saved " + formModel.getData().getId());
+                            formPresenter.setSavedForm(savedForm);
+                            formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                            Util.showToast("Form saved offline ", getActivity());
+                            Log.d(TAG, "Form saved " + formModel.getData().getId());
+                        }
                     }
                 } else {
                     Util.showToast(errorMsg, this);

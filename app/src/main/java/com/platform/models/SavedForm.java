@@ -19,8 +19,41 @@ public class SavedForm {
     @ColumnInfo(name = "form_name")
     private String formName;
 
+    @ColumnInfo(name = "is_synced")
+    private boolean isSynced;
+
+    @ColumnInfo(name = "form_category")
+    private String formCategory;
+
+    @ColumnInfo(name = "request_object")
+    private String requestObject;
+
     @ColumnInfo(name = "created_at")
     private String createdAt;
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
+    }
+
+    public String getFormCategory() {
+        return formCategory;
+    }
+
+    public void setFormCategory(String formCategory) {
+        this.formCategory = formCategory;
+    }
+
+    public String getRequestObject() {
+        return requestObject;
+    }
+
+    public void setRequestObject(String requestObject) {
+        this.requestObject = requestObject;
+    }
 
     public String getFormId() {
         return formId;
