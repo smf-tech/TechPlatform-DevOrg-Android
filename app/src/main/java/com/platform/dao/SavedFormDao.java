@@ -13,8 +13,8 @@ import java.util.List;
 
 @Dao
 public interface SavedFormDao {
-    @Query("SELECT * FROM savedform")
-    List<SavedForm> getAll();
+    @Query("SELECT * FROM savedform WHERE is_synced = 0")
+    List<SavedForm> getAllNonSyncedForms();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(SavedForm... savedForms);

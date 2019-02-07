@@ -68,7 +68,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void setPendingForms() {
-        List<SavedForm> savedForms = pmFragmentPresenter.getAllSavedForms();
+        List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
             PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);

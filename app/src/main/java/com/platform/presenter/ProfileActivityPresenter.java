@@ -7,6 +7,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.UserInfo;
+import com.platform.models.UserInfoResponse;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
@@ -78,13 +79,15 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onProfileUpdated(String response) {
-        UserInfo userInfo = new Gson().fromJson(response, UserInfo.class);
+        UserInfoResponse userInfoResponse = new Gson().fromJson(response, UserInfoResponse.class);
 
         // Save response
-        Util.saveUserObjectInPref(response);
+        if (response != null && userInfoResponse.getData() != null) {
+            Util.saveUserObjectInPref(new Gson().toJson(userInfoResponse.getData()));
+        }
 
         profileActivity.get().hideProgressBar();
-        profileActivity.get().showNextScreen(userInfo);
+        profileActivity.get().showNextScreen(userInfoResponse);
     }
 
     @Override

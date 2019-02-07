@@ -33,8 +33,8 @@ public class DatabaseManager {
         savedFormDao.update(savedForms);
     }
 
-    public List<SavedForm> getPendingForms() {
+    public List<SavedForm> getNonSyncedPendingForms() {
         SavedFormDao savedFormDao = appDatabase.formDao();
-        return savedFormDao.getAll();
+        return savedFormDao.getAllNonSyncedForms();
     }
 }

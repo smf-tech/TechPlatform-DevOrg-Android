@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllSavedForms;
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
@@ -101,7 +101,7 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-        List<SavedForm> savedForms = getAllSavedForms();
+        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             List<SavedForm> forms = new ArrayList<>();
             for (final SavedForm form : savedForms) {

@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllSavedForms;
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Util.getFormCategoryForSyncFromPref;
 import static com.platform.utility.Util.getLoginObjectFromPref;
 
@@ -61,7 +61,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncSavedForms() {
         String formSyncCategory = getFormCategoryForSyncFromPref();
 
-        List<SavedForm> savedForms = getAllSavedForms();
+        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
         assert savedForms != null;
         for (final SavedForm form : savedForms) {
             if (!form.isSynced() && form.getFormCategory().equals(formSyncCategory)) {
