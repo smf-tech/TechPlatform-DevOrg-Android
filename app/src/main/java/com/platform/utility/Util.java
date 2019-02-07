@@ -264,6 +264,22 @@ public class Util {
         editor.apply();
     }
 
+    public static String getFormCategoryForSyncFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        return preferences.getString(Constants.App.SYNC_FORM_CATEGORY, "");
+    }
+
+    public static void saveFormCategoryForSync(String category) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
+        editor.commit();
+    }
+
     public static void clearAllUserData() {
         try {
             SharedPreferences preferences = Platform.getInstance().getSharedPreferences

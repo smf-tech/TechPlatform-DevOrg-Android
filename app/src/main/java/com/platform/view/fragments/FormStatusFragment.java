@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
@@ -101,9 +102,24 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-//        List<SavedForm> savedForms = getAllSavedForms();
-        List<SavedForm> savedForms = new ArrayList<>();
-        setAdapter(savedForms);
+        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
+        if (savedForms != null && !savedForms.isEmpty()) {
+            List<SavedForm> forms = new ArrayList<>();
+            for (final SavedForm form : savedForms) {
+                if (!form.isSynced()) {
+                    forms.add(form);
+                }
+            }
+
+            if (!forms.isEmpty()) {
+                setAdapter(forms);
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mNoRecordsView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setAdapter(final HashMap<String, List<ProcessData>> data) {
@@ -127,13 +143,9 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
     }
 
     private void setAdapter(final List<SavedForm> data) {
-        if (data != null && !data.isEmpty()) {
-            final PendingFormCategoryAdapter adapter = new PendingFormCategoryAdapter(getContext(), data);
-            mRecyclerView.setAdapter(adapter);
-            mNoRecordsView.setVisibility(View.GONE);
-        } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
-        }
+        final PendingFormCategoryAdapter adapter =
+                new PendingFormCategoryAdapter(getContext(), data);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override

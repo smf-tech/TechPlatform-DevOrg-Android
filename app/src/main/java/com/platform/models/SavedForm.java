@@ -17,7 +17,7 @@ public class SavedForm {
     private String formName;
 
     @ColumnInfo(name = "is_synced")
-    private boolean isSynced;
+    private Boolean isSynced;
 
     @ColumnInfo(name = "form_category")
     private String formCategory;
@@ -28,11 +28,11 @@ public class SavedForm {
     @ColumnInfo(name = "created_at")
     private String createdAt;
 
-    public boolean isSynced() {
+    public Boolean isSynced() {
         return isSynced;
     }
 
-    public void setSynced(boolean synced) {
+    public void setSynced(Boolean synced) {
         isSynced = synced;
     }
 
