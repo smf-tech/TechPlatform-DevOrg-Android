@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             Intent intent;
             // Check user profile available or not
-            if (TextUtils.isEmpty(Util.getUserObjectFromPref().getUserInfo().getId())) {
+            if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
 
                 // Check user has registered mobile number or not
                 if (Util.getLoginObjectFromPref().getLoginData() == null ||

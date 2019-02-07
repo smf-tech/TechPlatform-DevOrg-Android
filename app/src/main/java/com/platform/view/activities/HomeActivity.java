@@ -73,7 +73,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
     private void getUserData() {
         if (presenter != null) {
-            UserInfo user = Util.getUserObjectFromPref().getUserInfo();
+            UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
         }
 

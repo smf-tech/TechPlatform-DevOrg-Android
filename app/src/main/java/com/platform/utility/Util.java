@@ -26,6 +26,7 @@ import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLevelData;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.User;
+import com.platform.models.user.UserInfo;
 
 import java.io.File;
 import java.util.HashMap;
@@ -192,12 +193,12 @@ public class Util {
         editor.apply();
     }
 
-    public static User getUserObjectFromPref() {
+    public static UserInfo getUserObjectFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.USER_OBJ, "{}");
 
-        return new Gson().fromJson(obj, User.class);
+        return new Gson().fromJson(obj, UserInfo.class);
     }
 
     public static void saveUserObjectInPref(String userData) {
@@ -277,7 +278,7 @@ public class Util {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
-        editor.commit();
+        editor.apply();
     }
 
     public static void clearAllUserData() {
