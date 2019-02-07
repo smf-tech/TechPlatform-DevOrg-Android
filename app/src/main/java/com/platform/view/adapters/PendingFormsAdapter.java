@@ -1,6 +1,6 @@
 package com.platform.view.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,10 +16,10 @@ import java.util.List;
 @SuppressWarnings("CanBeFinal")
 public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapter.TMViewHolder> {
 
-    private Activity context;
+    private Context context;
     private List<SavedForm> savedFormList;
 
-    public PendingFormsAdapter(Activity context, List<SavedForm> savedFormList) {
+    public PendingFormsAdapter(Context context, List<SavedForm> savedFormList) {
         this.context = context;
         this.savedFormList = savedFormList;
     }

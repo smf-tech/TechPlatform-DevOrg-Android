@@ -18,7 +18,7 @@ import java.util.List;
 public class PMFragmentPresenter implements PlatformRequestCallListener {
 
     private final String TAG = this.getClass().getName();
-    private WeakReference<PMFragment> fragmentWeakReference;
+    private static WeakReference<PMFragment> fragmentWeakReference;
 
     public PMFragmentPresenter(PMFragment pmFragment) {
         fragmentWeakReference = new WeakReference<>(pmFragment);
@@ -32,7 +32,7 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
         requestCall.getAllProcess();
     }
 
-    public List<SavedForm> getAllSavedForms() {
+    public static List<SavedForm> getAllSavedForms() {
         return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getPendingForms();
     }
 

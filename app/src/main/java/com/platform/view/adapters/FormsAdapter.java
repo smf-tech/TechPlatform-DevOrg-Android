@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.models.SavedForm;
 import com.platform.models.pm.ProcessData;
 
 import java.util.List;
@@ -23,6 +23,7 @@ import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     private Context mContext;
+    private List<SavedForm> mSavedForms;
     private String status;
     private List<ProcessData> mProcessData;
 
@@ -30,6 +31,11 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         this.mContext = context;
         this.status = status;
         mProcessData = processData;
+    }
+
+    FormsAdapter(final Context context, final List<SavedForm> savedForms) {
+        this.mContext = context;
+        mSavedForms = savedForms;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -60,29 +66,40 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
     @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.mName.setText(mProcessData.get(i).getName());
-        viewHolder.mDate.setText(mProcessData.get(i).getMicroservice().getUpdatedAt());
 
+        if (mSavedForms == null) {
+            viewHolder.mName.setText(mProcessData.get(i).getName());
+            viewHolder.mDate.setText(mProcessData.get(i).getMicroservice().getUpdatedAt());
 
-        Drawable drawable;
-        switch (status) {
-            case FORM_STATUS_COMPLETED:
-                drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
-                break;
-            case FORM_STATUS_PENDING:
-                viewHolder.mPinButton.setVisibility(View.GONE);
-                drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending);
-                break;
-            default:
-                viewHolder.mPinButton.setVisibility(View.GONE);
-                drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
-                break;
+            Drawable drawable;
+            switch (status) {
+                case FORM_STATUS_COMPLETED:
+                    drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
+                    break;
+                case FORM_STATUS_PENDING:
+                    viewHolder.mPinButton.setVisibility(View.GONE);
+                    drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending);
+                    break;
+                default:
+                    viewHolder.mPinButton.setVisibility(View.GONE);
+                    drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
+                    break;
+            }
+            viewHolder.indicatorView.setBackground(drawable);
+        } else {
+            if (!mSavedForms.isEmpty()) {
+                SavedForm savedForm = mSavedForms.get(i);
+                viewHolder.mName.setText(savedForm.getFormName());
+                viewHolder.mDate.setText(String.format("%s %s", savedForm.getFormId(), savedForm.getCreatedAt()));
+            }
+
         }
-        viewHolder.indicatorView.setBackground(drawable);
     }
 
     @Override
     public int getItemCount() {
+        if (mSavedForms != null && !mSavedForms.isEmpty() )
+            return mSavedForms.size();
         return mProcessData.size();
     }
 }

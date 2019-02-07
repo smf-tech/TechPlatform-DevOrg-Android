@@ -17,19 +17,19 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.FormStatusCallListener;
-import com.platform.models.forms.Form;
+import com.platform.models.SavedForm;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.view.adapters.FormCategoryAdapter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.platform.view.adapters.PendingFormCategoryAdapter;
+import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.platform.presenter.PMFragmentPresenter.getAllSavedForms;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
@@ -102,7 +102,8 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-
+        List<SavedForm> savedForms = getAllSavedForms();
+        setAdapter(savedForms);
     }
 
     private void setAdapter(final HashMap<String, List<ProcessData>> data) {
@@ -123,6 +124,16 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
                 break;
         }
 
+    }
+
+    private void setAdapter(final List<SavedForm> data) {
+        if (data != null && !data.isEmpty()) {
+            final PendingFormCategoryAdapter adapter = new PendingFormCategoryAdapter(getContext(), data);
+            mRecyclerView.setAdapter(adapter);
+            mNoRecordsView.setVisibility(View.GONE);
+        } else {
+            mNoRecordsView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -7,7 +7,11 @@ import android.support.annotation.NonNull;
 
 @Entity
 public class SavedForm {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id")
+    public int id;
+
     @NonNull
     @ColumnInfo(name = "form_id")
     private String formId;
