@@ -3,8 +3,10 @@ package com.platform.models.home;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public class Home {
+public class Home implements Serializable {
 
     @SerializedName("status")
     @Expose

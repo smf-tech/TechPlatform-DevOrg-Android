@@ -1,5 +1,14 @@
 package com.platform.utility;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import com.platform.syncAdapter.GenericAccountService;
+
 public class Constants {
 
     public static final int SMS_RECEIVE_REQUEST = 1;
@@ -16,6 +25,11 @@ public class Constants {
 
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
+
+    public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
+    public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
+
+    public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
 
     public static class App {
         static final String APP_DATA = "AppData";
@@ -60,8 +74,8 @@ public class Constants {
         public static final String USER_PROJECTS = "projects";
         public static final String USER_LOCATION = "location";
 
-        public static String ACTION = "action";
-        public static String ACTION_EDIT = "edit";
+        public static final String ACTION = "action";
+        public static final String ACTION_EDIT = "edit";
     }
 
     public static class Location {
@@ -80,15 +94,25 @@ public class Constants {
     }
 
     public static class Home {
+        public static final String HOME_DATA = "homeObj";
         public static final String PROGRAMME_MANAGEMENT = "Forms";
         public static final String TEAM_MANAGEMENT = "Team Management";
     }
 
-    @SuppressWarnings("CanBeFinal")
     public static class PM {
-        public static String PROCESS_NAME = "processName";
-        public static String PROCESS_ID = "processId";
-        public static String RESPONSE = "response";
+        public static final String PROCESS_NAME = "processName";
+        public static final String PROCESS_ID = "processId";
+        public static final String RESPONSE = "response";
+    }
+
+    public static class TM {
+        public static final String UPDATE_STATUS = "update_status";
+    }
+
+    public static class RequestStatus {
+        public static final String PENDING = "pending";
+        public static final String APPROVED = "approved";
+        public static final String REJECTED = "rejected";
     }
 
     public static class FormsFactory {
@@ -96,5 +120,12 @@ public class Constants {
         public static final String DROPDOWN_TEMPLATE = "dropdown";
     }
 
-    public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
+    public static final String playStoreLink = "https://play.google.com/store/apps/details?" +
+            "id=com.bjs.ss&hl=en";
+
+    public static class Form {
+        public static final String FORM_STATUS_ALL = "all";
+        public static final String FORM_STATUS_PENDING = "pending";
+        public static final String FORM_STATUS_COMPLETED = "completed";
+    }
 }

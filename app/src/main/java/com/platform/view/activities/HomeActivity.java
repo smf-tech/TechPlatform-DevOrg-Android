@@ -1,18 +1,20 @@
 package com.platform.view.activities;
 
+import android.accounts.Account;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -26,22 +28,28 @@ import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.UserInfo;
 import com.platform.models.home.Home;
-import com.platform.models.home.HomeModel;
-import com.platform.models.home.Modules;
 import com.platform.presenter.HomeActivityPresenter;
+import com.platform.syncAdapter.GenericAccountService;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
-import com.platform.view.adapters.HomeAdapter;
+import com.platform.view.adapters.ViewPagerAdapter;
+import com.platform.view.fragments.ConnectFragment;
+import com.platform.view.fragments.DashboardFragment;
+import com.platform.view.fragments.StoriesFragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
+import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
 
 public class HomeActivity extends BaseActivity implements PlatformTaskListener,
-        ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
+        ForceUpdateChecker.OnUpdateNeededListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
+    private Home homeData;
     private AlertDialog dialogNotApproved;
     private HomeActivityPresenter presenter;
+    private Object mSyncObserverHandle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
         }
+
+        mSyncStatusObserver.onStatusChanged(0);
+
+        // Watch for sync state changes
+        final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
+                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
+        mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
     }
 
     private void initMenuView() {
@@ -93,36 +108,32 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     @SuppressWarnings("deprecation")
     private void initViews(Home data) {
         if (data != null) {
-            ArrayList<HomeModel> modelItemList = new ArrayList<>();
-
-            if (data.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING)) {
+            homeData = data;
+            if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING)) {
                 showApprovedDialog();
-
-                List<Modules> defaultModules = data.getHomeData().getDefaultModules();
-                for (Modules modules : defaultModules) {
-                    modelItemList.add(setClass(modules, false));
-                }
-            } else {
-                List<Modules> onApproveModules = data.getHomeData().getOnApproveModules();
-                for (Modules modules : onApproveModules) {
-                    modelItemList.add(setClass(modules, true));
-                }
             }
 
-            RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-            itemAnimator.setAddDuration(1000);
-            itemAnimator.setRemoveDuration(1000);
+            ViewPager viewPager = findViewById(R.id.home_view_pager);
+            setupViewPager(viewPager);
 
-            RecyclerView recyclerView = findViewById(R.id.home_tiles_list_view);
-            recyclerView.setItemAnimator(itemAnimator);
-
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
-            gridLayoutManager.setAutoMeasureEnabled(true);
-            recyclerView.setLayoutManager(gridLayoutManager);
-
-            HomeAdapter homeAdapter = new HomeAdapter(modelItemList, HomeActivity.this);
-            recyclerView.setAdapter(homeAdapter);
+            TabLayout tabLayout = findViewById(R.id.home_tabs);
+            tabLayout.setupWithViewPager(viewPager);
         }
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        DashboardFragment dashboardFragment = new DashboardFragment();
+        if (homeData != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.Home.HOME_DATA, homeData);
+            dashboardFragment.setArguments(bundle);
+        }
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(dashboardFragment, "Dashboard");
+        adapter.addFragment(new StoriesFragment(), "Stories");
+        adapter.addFragment(new ConnectFragment(), "Connect");
+        viewPager.setAdapter(adapter);
     }
 
     private void showApprovedDialog() {
@@ -149,27 +160,27 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         }
     }
 
-    private HomeModel setClass(Modules module, Boolean isAccessible) {
-        HomeModel homeModel = new HomeModel();
-        homeModel.setModuleId(module.getId());
-        homeModel.setAccessible(isAccessible);
-
-        switch (module.getName()) {
-            case Constants.Home.PROGRAMME_MANAGEMENT:
-                homeModel.setModuleName(getString(R.string.programme_management));
-                homeModel.setModuleIcon(R.drawable.ic_program_mangement);
-                homeModel.setDestination(PMActivity.class);
-                break;
-
-            case Constants.Home.TEAM_MANAGEMENT:
-                homeModel.setModuleName(getString(R.string.team_management));
-                homeModel.setModuleIcon(R.drawable.ic_team_management);
-                homeModel.setDestination(TMActivity.class);
-                break;
-        }
-
-        return homeModel;
-    }
+//    private HomeModel setClass(Modules module, Boolean isAccessible) {
+//        HomeModel homeModel = new HomeModel();
+//        homeModel.setModuleId(module.getId());
+//        homeModel.setAccessible(isAccessible);
+//
+//        switch (module.getName()) {
+//            case Constants.Home.PROGRAMME_MANAGEMENT:
+//                homeModel.setModuleName(getString(R.string.programme_management));
+//                homeModel.setModuleIcon(R.drawable.ic_program_management);
+//                homeModel.setDestination(PMActivity.class);
+//                break;
+//
+//            case Constants.Home.TEAM_MANAGEMENT:
+//                homeModel.setModuleName(getString(R.string.team_management));
+//                homeModel.setModuleIcon(R.drawable.ic_team_management);
+//                homeModel.setDestination(TMActivity.class);
+//                break;
+//        }
+//
+//        return homeModel;
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -258,6 +269,10 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 showUpdateDataPopup();
                 break;
 
+            case R.id.action_forms:
+                goToForms();
+                break;
+
             case R.id.action_logout:
                 showLogoutPopUp();
                 break;
@@ -266,6 +281,12 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void goToForms() {
+        Intent intent = new Intent(this, FormsActivity.class);
+        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
     @Override
@@ -392,4 +413,24 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             e.printStackTrace();
         }
     }
+
+    SyncStatusObserver mSyncStatusObserver = which -> {
+        Account account = GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE);
+
+        boolean syncActive = ContentResolver.isSyncActive(
+                account, SyncAdapterUtils.AUTHORITY);
+        boolean syncPending = ContentResolver.isSyncPending(
+                account, SyncAdapterUtils.AUTHORITY);
+
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mSyncObserverHandle != null) {
+            ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+            mSyncObserverHandle = null;
+        }
+    }
+
 }

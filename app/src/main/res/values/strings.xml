@@ -93,6 +93,7 @@
     <string name="my_profile">My Profile</string>
     <string name="add_location">Add Location</string>
     <string name="update_user_data">Update Data</string>
+    <string name="action_forms">Forms</string>
     <string name="notification">Notification</string>
     <string name="share_app">Share App</string>
     <string name="rate_us">Rate Us</string>
@@ -104,10 +105,13 @@
     <string name="locked">Locked</string>
 
     <!--Home-->
+    <string name="tab_connect">Connect</string>
+    <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="team_management">Team\nManagement</string>
 
     <!--Program management-->
+    <string name="pending_forms">Pending Forms</string>
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
 
@@ -119,4 +123,9 @@
     <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
     <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
+
+    <string name="category_title">Category Title</string>
+    <string name="todo">TODO</string>
+    <string name="forms">Forms</string>
+    <string name="no_records_available">Data is not available!</string>
 </resources>

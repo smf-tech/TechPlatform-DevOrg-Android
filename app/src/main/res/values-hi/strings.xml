@@ -104,10 +104,13 @@
     <string name="locked">बंद</string>
 
     <!--Home-->
+    <string name="tab_connect">जुडिये</string>
+    <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="team_management">टीम\nप्रबंधक</string>
 
     <!--Program management-->
+    <string name="pending_forms">Pending Forms</string>
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
 
@@ -119,4 +122,10 @@
     <string name="msg_error_in_photo_gallery">गैलरी से फ़ोटो लेने में समस्या, फ़ोटो लेने के लिए कृपया कैमरे का उपयोग करें।</string>
     <string name="msg_image_capture_not_support">वूप्स - आपका डिवाइस छवि कैप्चरिंग का समर्थन नहीं करता है!</string>
     <string name="msg_take_photo_error">ऐप में फोटो लेने की अनुमति नहीं है, कृपया इसकी अनुमति दें।</string>
+
+        <string name="action_forms">प्रपत्र</string>
+    <string name="category_title">श्रेणी शीर्षक</string>
+    <string name="todo">TODO</string>
+    <string name="forms">प्रपत्र</string>
+    <string name="no_records_available">डेटा उपलब्ध नहीं है!</string>
 </resources>

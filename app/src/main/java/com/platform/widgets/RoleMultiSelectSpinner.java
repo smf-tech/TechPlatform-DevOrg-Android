@@ -77,6 +77,9 @@ public class RoleMultiSelectSpinner extends android.support.v7.widget.AppCompatS
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
+        if (roleNames == null) {
+            return false;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getResources().getString(R.string.role));
         builder.setMultiChoiceItems(

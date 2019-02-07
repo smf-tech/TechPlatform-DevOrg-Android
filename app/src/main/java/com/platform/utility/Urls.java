@@ -23,9 +23,19 @@ public class Urls {
         public static final String GET_MODULES = "api/modules/%1$s/%2$s";
     }
 
+    public class Roles {
+        public static final String GET_ROLES = "api/roles/%1$s";
+    }
+
     public class PM {
         public static final String GET_PROCESS = "api/forms/schema";
         public static final String GET_PROCESS_DETAILS = "api/forms/schema/%1$s";
         public static final String CREATE_FORM = "api/forms/result/%1$s";
+        public static final String GET_FORM = "api/forms/result/%1$s";
+    }
+
+    public class TM {
+        public static final String GET_PENDING_REQUESTS = "api/users/approvals";
+        public static final String APPROVE_REJECT_REQUEST = "api/users/approval/%1$s";
     }
 }

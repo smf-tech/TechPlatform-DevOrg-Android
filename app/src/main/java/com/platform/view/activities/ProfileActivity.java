@@ -124,8 +124,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
         profilePresenter = new ProfileActivityPresenter(this);
 
-        if (getIntent().getStringExtra(Constants.Login.ACTION)
-                .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+        if (getIntent().getStringExtra(Constants.Login.ACTION) == null ||
+                !getIntent().getStringExtra(Constants.Login.ACTION)
+                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
             profilePresenter.getOrganizations();
             profilePresenter.getStates();
         }

@@ -12,5 +12,5 @@ public interface FormRequestCallListener {
 
     void onSuccessListener(String response);
 
-    void onSubmitClick();
+    void onSubmitClick(String submitType);
 }
