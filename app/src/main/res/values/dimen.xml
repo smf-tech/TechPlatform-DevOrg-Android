@@ -28,5 +28,4 @@
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
     <dimen name="form_item_status_indicator_width">6dp</dimen>
-    <dimen name="image_dimen_38dp">54dp</dimen>
 </resources>

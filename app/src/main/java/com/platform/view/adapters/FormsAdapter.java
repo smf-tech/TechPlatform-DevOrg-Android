@@ -20,6 +20,7 @@ import java.util.List;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
+@SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     private Context mContext;

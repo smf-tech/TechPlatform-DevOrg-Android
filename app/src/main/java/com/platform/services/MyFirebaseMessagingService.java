@@ -22,28 +22,20 @@ import com.platform.view.activities.SplashActivity;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private String remoteMessageId = "";
-    private PreferenceHelper preferenceHelper;
     private final String TAG = MyFirebaseMessagingService.class.getName();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
             try {
-                preferenceHelper = new PreferenceHelper(getApplicationContext());
                 remoteMessageId = remoteMessage.getData().get("Id");
 
-                if (preferenceHelper != null) {
-                    // notify for new notification.
-                    Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-                } else {
-                    sendNotification(remoteMessage.getData().get("Title"),
-                            remoteMessage.getData().get("Description"));
+                sendNotification(remoteMessage.getData().get("Title"),
+                        remoteMessage.getData().get("Description"));
 
-                    // notify for new notification.
-                    Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-                }
+                // notify for new notification.
+                Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } catch (Exception e) {
                 e.printStackTrace();
             }

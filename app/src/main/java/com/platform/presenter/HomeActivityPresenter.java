@@ -5,7 +5,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.models.UserInfo;
+import com.platform.models.user.UserInfo;
 import com.platform.models.home.Home;
 import com.platform.request.HomeRequestCall;
 import com.platform.view.activities.HomeActivity;

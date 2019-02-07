@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.UserInfo;
+import com.platform.models.user.UserInfo;
 import com.platform.models.home.Home;
 import com.platform.presenter.HomeActivityPresenter;
 import com.platform.syncAdapter.GenericAccountService;
@@ -73,7 +73,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
     private void getUserData() {
         if (presenter != null) {
-            UserInfo user = Util.getUserObjectFromPref();
+            UserInfo user = Util.getUserObjectFromPref().getUserInfo();
             presenter.getModules(user);
         }
 
@@ -85,6 +85,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
     }
 
+    @SuppressWarnings("deprecation")
     private void initMenuView() {
         Toolbar toolbar = findViewById(R.id.home_toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
@@ -283,7 +284,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         return true;
     }
 
-    public void goToForms() {
+    private void goToForms() {
         Intent intent = new Intent(this, FormsActivity.class);
         intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
@@ -414,14 +415,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         }
     }
 
+    @SuppressWarnings("CanBeFinal")
+    private
     SyncStatusObserver mSyncStatusObserver = which -> {
         Account account = GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE);
 
-        boolean syncActive = ContentResolver.isSyncActive(
-                account, SyncAdapterUtils.AUTHORITY);
-        boolean syncPending = ContentResolver.isSyncPending(
-                account, SyncAdapterUtils.AUTHORITY);
-
+        ContentResolver.isSyncActive(account, SyncAdapterUtils.AUTHORITY);
+        ContentResolver.isSyncPending(account, SyncAdapterUtils.AUTHORITY);
     };
 
     @Override
@@ -432,5 +432,4 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             mSyncObserverHandle = null;
         }
     }
-
 }

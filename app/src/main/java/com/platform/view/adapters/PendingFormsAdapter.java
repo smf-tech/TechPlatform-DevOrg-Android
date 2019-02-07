@@ -13,9 +13,10 @@ import com.platform.models.SavedForm;
 
 import java.util.List;
 
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapter.TMViewHolder> {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private Context context;
     private List<SavedForm> savedFormList;
 
@@ -37,7 +38,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         SavedForm savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
-        holder.txtCreatedAt.setText("on " + savedForm.getCreatedAt());
+        holder.txtCreatedAt.setText(String.format("on %s", savedForm.getCreatedAt()));
     }
 
     @Override

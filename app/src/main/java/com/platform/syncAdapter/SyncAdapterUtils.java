@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+@SuppressWarnings("unused")
 public class SyncAdapterUtils {
 
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
@@ -49,7 +50,7 @@ public class SyncAdapterUtils {
         if (newAccount || !setupComplete) {
             manualRefresh();
             PreferenceManager.getDefaultSharedPreferences(context).edit()
-                    .putBoolean(PREF_SETUP_COMPLETE, true).commit();
+                    .putBoolean(PREF_SETUP_COMPLETE, true).apply();
         }
 
     }
@@ -65,7 +66,7 @@ public class SyncAdapterUtils {
      * but the user is not actively waiting for that data, you should omit this flag; this will give
      * the OS additional freedom in scheduling your sync request.
      */
-    public static void manualRefresh() {
+    private static void manualRefresh() {
         Bundle b = new Bundle();
         // Disable sync backoff and ignore sync preferences. In other words...perform sync NOW!
         b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);

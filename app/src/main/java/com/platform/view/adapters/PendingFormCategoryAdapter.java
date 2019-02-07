@@ -13,11 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
 
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
@@ -54,6 +54,7 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         return new PendingFormCategoryAdapter.ViewHolder(v);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull PendingFormCategoryAdapter.ViewHolder viewHolder, int i) {
@@ -80,7 +81,7 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         viewHolder.addButton.setVisibility(View.GONE);
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);*/
 
-        viewHolder.categoryName.setText("BJS Forms");
+        viewHolder.categoryName.setText("");
 
         FormsAdapter adapter = new FormsAdapter(mContext, mData);
         viewHolder.recyclerView.setAdapter(adapter);

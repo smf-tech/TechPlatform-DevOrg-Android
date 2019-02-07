@@ -38,7 +38,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private HashMap<String, List<ProcessData>> processMap = new HashMap<>();
     private LinearLayout lnrOuter;
     private RecyclerView rvPendingForms;
-    private PMFragmentPresenter pmFragmentPresenter;
     private RelativeLayout rltPendingForms;
 
     @Override
@@ -53,9 +52,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pmFragmentPresenter = new PMFragmentPresenter(this);
         init();
 
+        PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
         pmFragmentPresenter.getAllProcess();
     }
 
@@ -68,9 +67,11 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void setPendingForms() {
-        List<SavedForm> savedForms = pmFragmentPresenter.getAllSavedForms();
-        if (savedForms != null && !savedForms.isEmpty()) {
+        // List<SavedForm> savedForms = PMFragmentPresenter.getAllSavedForms();
+        List<SavedForm> savedForms = new ArrayList<>();
+        if (!savedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
+
             PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
@@ -105,8 +106,13 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             }
 
             for (int index = 0; index < processMap.size(); index++) {
-                if (processMap != null && !TextUtils.isEmpty(processCategoryList.get(index)) && processMap.get(processCategoryList.get(index)) != null) {
-                    createCategoryLayout(processCategoryList.get(index), processMap.get(processCategoryList.get(index)));
+                if (processMap != null && !TextUtils.isEmpty(processCategoryList.get(index)) &&
+                        processMap.get(processCategoryList.get(index)) != null) {
+
+                    List<ProcessData> processData = processMap.get(processCategoryList.get(index));
+                    if (processData != null) {
+                        createCategoryLayout(processCategoryList.get(index), processData);
+                    }
                 }
             }
         }

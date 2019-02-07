@@ -3,16 +3,13 @@ package com.platform.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 @Entity
 public class SavedForm {
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "id")
     public int id;
 
-    @NonNull
     @ColumnInfo(name = "form_id")
     private String formId;
 

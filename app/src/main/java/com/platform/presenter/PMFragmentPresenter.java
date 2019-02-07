@@ -32,6 +32,7 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
         requestCall.getAllProcess();
     }
 
+    @SuppressWarnings("unused")
     public static List<SavedForm> getAllSavedForms() {
         return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getPendingForms();
     }

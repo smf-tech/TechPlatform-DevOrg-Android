@@ -23,6 +23,7 @@ public class Urls {
         public static final String GET_MODULES = "api/modules/%1$s/%2$s";
     }
 
+    @SuppressWarnings({"unused", "WeakerAccess"})
     public class Roles {
         public static final String GET_ROLES = "api/roles/%1$s";
     }

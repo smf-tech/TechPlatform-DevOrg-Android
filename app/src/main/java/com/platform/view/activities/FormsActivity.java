@@ -19,6 +19,7 @@ import com.platform.view.fragments.FormStatusFragment;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
+@SuppressWarnings("EmptyMethod")
 public class FormsActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
@@ -33,6 +34,7 @@ public class FormsActivity extends BaseActivity {
         initTabView();
     }
 
+    @SuppressWarnings("deprecation")
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.forms);
@@ -43,6 +45,7 @@ public class FormsActivity extends BaseActivity {
         toolbar.setNavigationIcon(R.drawable.ic_menu);
     }
 
+    @SuppressWarnings("deprecation")
     private void initTabView() {
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(new FormsActivity.ViewPagerAdapter(getSupportFragmentManager()));
@@ -56,6 +59,7 @@ public class FormsActivity extends BaseActivity {
             assert tabAt != null;
             tabAt.setCustomView(R.layout.form_tab_view);
             View view = tabAt.getCustomView();
+
             assert view != null;
             if (j == 0) {
                 view.findViewById(R.id.indicator_view)
@@ -63,7 +67,8 @@ public class FormsActivity extends BaseActivity {
             } else {
                 view.findViewById(R.id.indicator_view).setBackgroundColor(0);
             }
-            ((TextView)view.findViewById(R.id.category_name)).setText(getPageTitle(j));
+
+            ((TextView) view.findViewById(R.id.category_name)).setText(getPageTitle(j));
         }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -78,6 +83,7 @@ public class FormsActivity extends BaseActivity {
                     TabLayout.Tab tabAt = tabs.getTabAt(j);
                     assert tabAt != null;
                     View view = tabAt.getCustomView();
+
                     assert view != null;
                     view.findViewById(R.id.indicator_view).setBackgroundColor(0);
                     tabAt.setCustomView(view);
@@ -89,10 +95,9 @@ public class FormsActivity extends BaseActivity {
                     customView = tabAt.getCustomView();
                     customView.findViewById(R.id.indicator_view)
                             .setBackgroundColor(getResources().getColor(R.color.dark_blue));
-                    ((TextView)customView.findViewById(R.id.category_name)).setText(getPageTitle(i));
+                    ((TextView) customView.findViewById(R.id.category_name)).setText(getPageTitle(i));
                     tabAt.setCustomView(customView);
                 }
-
             }
 
             @Override
@@ -102,15 +107,17 @@ public class FormsActivity extends BaseActivity {
         });
     }
 
-    public String getPageTitle(int position) {
+    private String getPageTitle(int position) {
         String title = "";
         switch (position) {
             case 0:
                 title = "All";
                 break;
+
             case 1:
                 title = "Pending";
                 break;
+
             case 2:
                 title = "Completed";
                 break;
@@ -129,7 +136,7 @@ public class FormsActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
+    class ViewPagerAdapter extends FragmentPagerAdapter {
 
         ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -138,13 +145,20 @@ public class FormsActivity extends BaseActivity {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            if (position == 0) {
-                fragment = AllFormsFragment.newInstance();
-            } else if (position == 1) {
-                fragment = FormStatusFragment.newInstance(FORM_STATUS_PENDING);
-            } else if (position == 2) {
-                fragment = FormStatusFragment.newInstance(FORM_STATUS_COMPLETED);
+            switch (position) {
+                case 0:
+                    fragment = AllFormsFragment.newInstance();
+                    break;
+
+                case 1:
+                    fragment = FormStatusFragment.newInstance(FORM_STATUS_PENDING);
+                    break;
+
+                case 2:
+                    fragment = FormStatusFragment.newInstance(FORM_STATUS_COMPLETED);
+                    break;
             }
+
             return fragment;
         }
 
@@ -160,13 +174,16 @@ public class FormsActivity extends BaseActivity {
                 case 0:
                     title = "All";
                     break;
+
                 case 1:
                     title = "Pending";
                     break;
+
                 case 2:
                     title = "Completed";
                     break;
             }
+
             return title.toUpperCase();
         }
     }
