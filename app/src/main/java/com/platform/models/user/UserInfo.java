@@ -1,4 +1,4 @@
-package com.platform.models;
+package com.platform.models.user;
 
 import android.os.Parcel;
 import android.os.Parcelable;

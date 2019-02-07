@@ -11,6 +11,7 @@ import com.platform.models.SavedForm;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Dao
 public interface SavedFormDao {
     @Query("SELECT * FROM savedform WHERE is_synced = 0")
@@ -24,5 +25,4 @@ public interface SavedFormDao {
 
     @Delete
     void delete(SavedForm savedForm);
-
 }

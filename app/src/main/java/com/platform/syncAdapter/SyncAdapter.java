@@ -34,6 +34,7 @@ import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedFor
 import static com.platform.utility.Util.getFormCategoryForSyncFromPref;
 import static com.platform.utility.Util.getLoginObjectFromPref;
 
+@SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = SyncAdapter.class.getSimpleName();

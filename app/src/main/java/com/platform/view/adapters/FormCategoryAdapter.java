@@ -18,10 +18,10 @@ import com.platform.models.pm.ProcessData;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.platform.utility.Constants.Form.FORM_STATUS_ALL;
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
+@SuppressWarnings("CanBeFinal")
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
@@ -61,6 +61,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         return new FormCategoryAdapter.ViewHolder(v);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull FormCategoryAdapter.ViewHolder viewHolder, int i) {

@@ -12,5 +12,6 @@ public interface FormRequestCallListener {
 
     void onSuccessListener(String response);
 
+    @SuppressWarnings("unused")
     void onSubmitClick(String submitType);
 }

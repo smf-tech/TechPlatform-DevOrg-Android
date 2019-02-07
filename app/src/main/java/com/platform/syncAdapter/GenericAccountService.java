@@ -20,11 +20,11 @@ public class GenericAccountService extends Service {
      *
      * <p>It is important that the accountType specified here matches the value in your sync adapter
      * configuration XML file for android.accounts.AccountAuthenticator (often saved in
-     * res/xml/syncadapter.xml). If this is not set correctly, you'll receive an error indicating
-     * that "caller uid XXXXX is different than the authenticator's uid".
+     * res/xml/sync-adapter.xml). If this is not set correctly, you'll receive an error indicating
+     * that "caller uid X is different than the authenticator's uid".
      *
      * @param accountType AccountType defined in the configuration XML file for
-     *                    android.accounts.AccountAuthenticator (e.g. res/xml/syncadapter.xml).
+     *                    android.accounts.AccountAuthenticator (e.g. res/xml/sync adapter.xml).
      * @return Handle to application's account (not guaranteed to resolve unless CreateSyncAccount()
      *         has been called)
      */
@@ -54,8 +54,9 @@ public class GenericAccountService extends Service {
         return mAuthenticator.getIBinder();
     }
 
+    @SuppressWarnings({"RedundantThrows", "WeakerAccess"})
     public class Authenticator extends AbstractAccountAuthenticator {
-        public Authenticator(Context context) {
+        Authenticator(Context context) {
             super(context);
         }
 

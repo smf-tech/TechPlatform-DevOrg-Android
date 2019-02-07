@@ -37,6 +37,7 @@ import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
  * Use the {@link FormStatusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("CanBeFinal")
 public class FormStatusFragment extends Fragment implements FormStatusCallListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = FormStatusFragment.class.getSimpleName();
@@ -167,7 +168,9 @@ public class FormStatusFragment extends Fragment implements FormStatusCallListen
             String categoryName = data.getCategory().getName();
             if (mChildList.containsKey(categoryName)) {
                 List<ProcessData> processData = mChildList.get(categoryName);
-                processData.add(data);
+                if (processData != null) {
+                    processData.add(data);
+                }
                 mChildList.put(categoryName, processData);
             } else {
                 List<ProcessData> processData = new ArrayList<>();

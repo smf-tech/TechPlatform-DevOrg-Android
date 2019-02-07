@@ -1,14 +1,5 @@
 package com.platform.utility;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-
-import com.platform.syncAdapter.GenericAccountService;
-
 public class Constants {
 
     public static final int SMS_RECEIVE_REQUEST = 1;
@@ -111,6 +102,7 @@ public class Constants {
         public static final String UPDATE_STATUS = "update_status";
     }
 
+    @SuppressWarnings("unused")
     public static class RequestStatus {
         public static final String PENDING = "pending";
         public static final String APPROVED = "approved";
@@ -125,6 +117,7 @@ public class Constants {
     public static final String playStoreLink = "https://play.google.com/store/apps/details?" +
             "id=com.bjs.ss&hl=en";
 
+    @SuppressWarnings("unused")
     public static class Form {
         public static final String FORM_STATUS_ALL = "all";
         public static final String FORM_STATUS_PENDING = "pending";

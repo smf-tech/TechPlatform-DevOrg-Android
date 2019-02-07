@@ -33,7 +33,7 @@ import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
-import com.platform.models.UserInfo;
+import com.platform.models.user.UserInfo;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.profile.Jurisdiction;
 import com.platform.models.profile.JurisdictionLevel;
@@ -198,7 +198,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     setActionbar(getString(R.string.update_profile));
 
-                    UserInfo userInfo = Util.getUserObjectFromPref();
+                    UserInfo userInfo = Util.getUserObjectFromPref().getUserInfo();
                     etUserFirstName.setText(userInfo.getUserFirstName());
                     etUserMiddleName.setText(userInfo.getUserMiddleName());
                     etUserLastName.setText(userInfo.getUserLastName());
