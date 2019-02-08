@@ -167,11 +167,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
             case R.id.btn_submit:
                 if (formComponentCreator.isValid()) {
-                    if (Util.isConnected(getActivity())) {
-                        formPresenter.setFormId(formModel.getData().getId());
-                        formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
-                        formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
-                    } else {
+//                    if (Util.isConnected(getActivity())) {
+//                        formPresenter.setFormId(formModel.getData().getId());
+//                        formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+//                        formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+//                    } else {
                         //Save in local db
                         if (formModel.getData() != null) {
                             SavedForm savedForm = new SavedForm();
@@ -190,7 +190,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                             Util.showToast("Form saved offline ", getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                         }
-                    }
+//                    }
                 } else {
                     Util.showToast(errorMsg, this);
                 }
