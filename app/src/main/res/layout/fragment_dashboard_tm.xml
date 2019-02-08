@@ -8,6 +8,16 @@
     android:focusableInTouchMode="true"
     tools:ignore="Overdraw">
 
+    <TextView
+        android:id="@+id/txt_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="@string/no_records_available"
+        android:textColor="@android:color/black" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_dashboard_tm"
         android:layout_width="match_parent"
