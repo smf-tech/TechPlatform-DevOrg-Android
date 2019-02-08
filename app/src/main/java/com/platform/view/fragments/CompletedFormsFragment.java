@@ -25,8 +25,7 @@ import com.platform.view.adapters.FormCategoryAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +39,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     private TextView mNoRecordsView;
     private RecyclerView mRecyclerView;
-    private HashMap<String, List<ProcessData>> mChildList = new HashMap<>();
+    private Map<String, List<ProcessData>> mChildList = new HashMap<>();
 
     public CompletedFormsFragment() {
         // Required empty public constructor
@@ -62,11 +61,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_form_status, container, false);
@@ -84,8 +78,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         presenter.getAllProcesses();
     }
 
-    private void setAdapter(final HashMap<String, List<ProcessData>> data) {
-        final FormCategoryAdapter adapter = new FormCategoryAdapter(getContext(), FORM_STATUS_COMPLETED, data);
+    private void setAdapter(final Map<String, List<ProcessData>> data) {
+        final FormCategoryAdapter adapter = new FormCategoryAdapter(getContext(), data);
         mRecyclerView.setAdapter(adapter);
         mNoRecordsView.setVisibility(View.GONE);
     }
