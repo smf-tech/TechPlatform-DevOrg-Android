@@ -8,6 +8,7 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.platform.BuildConfig;
 import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
 import com.platform.models.login.Login;
@@ -76,7 +77,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void submitForm(final SavedForm form) throws MalformedURLException {
-        URL url = new URL(Urls.BASE_URL + String.format(Urls.PM.CREATE_FORM,
+        URL url = new URL(BuildConfig.BASE_URL + String.format(Urls.PM.CREATE_FORM,
                 form.getFormId()));
 
         try {

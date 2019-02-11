@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.TMRequestCallListener;
 import com.platform.models.tm.PendingRequest;
@@ -42,7 +43,7 @@ public class TMRequestCall {
         Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getPendingRequestsUrl = Urls.BASE_URL + Urls.TM.GET_PENDING_REQUESTS;
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_PENDING_REQUESTS;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -76,7 +77,8 @@ public class TMRequestCall {
         Response.ErrorListener approveRejectRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String approveRejectUrl = Urls.BASE_URL + String.format(Urls.TM.APPROVE_REJECT_REQUEST, pendingRequest.getRequesterPhone());
+        final String approveRejectUrl = BuildConfig.BASE_URL + String.format(Urls.TM.APPROVE_REJECT_REQUEST,
+                pendingRequest.getRequesterPhone());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,

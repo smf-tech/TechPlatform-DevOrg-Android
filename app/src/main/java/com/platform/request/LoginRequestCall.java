@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.login.LoginInfo;
@@ -39,7 +40,7 @@ public class LoginRequestCall {
         Response.ErrorListener generateOTPErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String generateOtpUrl = Urls.BASE_URL
+        final String generateOtpUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Login.GENERATE_OTP, loginInfo.getMobileNumber());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
@@ -77,7 +78,7 @@ public class LoginRequestCall {
         Response.ErrorListener resendOTPErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String resendOtpUrl = Urls.BASE_URL
+        final String resendOtpUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Login.GENERATE_OTP, loginInfo.getMobileNumber());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(Request.Method.GET,
@@ -111,7 +112,7 @@ public class LoginRequestCall {
         Response.ErrorListener loginErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getTokenUrl = Urls.BASE_URL + String.format(Urls.Login.GENERATE_TOKEN,
+        final String getTokenUrl = BuildConfig.BASE_URL + String.format(Urls.Login.GENERATE_TOKEN,
                 loginInfo.getMobileNumber(), loginInfo.getOneTimePassword());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(

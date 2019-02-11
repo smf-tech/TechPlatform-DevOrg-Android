@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.utility.GsonRequestFactory;
@@ -38,7 +39,7 @@ public class PMRequestCall {
         Response.ErrorListener processErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getProcessUrl = Urls.BASE_URL + Urls.PM.GET_PROCESS;
+        final String getProcessUrl = BuildConfig.BASE_URL + Urls.PM.GET_PROCESS;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

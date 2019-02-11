@@ -167,13 +167,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 //        homeModel.setAccessible(isAccessible);
 //
 //        switch (module.getName()) {
-//            case Constants.Home.PROGRAMME_MANAGEMENT:
+//            case Constants.Home.FORMS:
 //                homeModel.setModuleName(getString(R.string.programme_management));
 //                homeModel.setModuleIcon(R.drawable.ic_program_management);
 //                homeModel.setDestination(PMActivity.class);
 //                break;
 //
-//            case Constants.Home.TEAM_MANAGEMENT:
+//            case Constants.Home.APPROVALS:
 //                homeModel.setModuleName(getString(R.string.team_management));
 //                homeModel.setModuleIcon(R.drawable.ic_team_management);
 //                homeModel.setDestination(TMActivity.class);

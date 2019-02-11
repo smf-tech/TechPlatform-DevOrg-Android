@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.user.UserInfo;
@@ -52,7 +53,7 @@ public class ProfileRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
 
-        final String getOrgUrl = Urls.BASE_URL + Urls.Profile.GET_ORGANIZATION;
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Profile.GET_ORGANIZATION;
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getOrgUrl,
@@ -82,7 +83,7 @@ public class ProfileRequestCall {
 
         Response.ErrorListener orgProjectsErrorListener = error -> listener.onErrorListener(error);
 
-        final String getOrgProjectUrl = Urls.BASE_URL
+        final String getOrgProjectUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_ORGANIZATION_PROJECTS, orgId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
@@ -114,7 +115,7 @@ public class ProfileRequestCall {
 
         Response.ErrorListener orgRolesErrorListener = error -> listener.onErrorListener(error);
 
-        final String getOrgProjectUrl = Urls.BASE_URL
+        final String getOrgProjectUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
@@ -146,7 +147,7 @@ public class ProfileRequestCall {
 
         Response.ErrorListener stateErrorListener = error -> listener.onErrorListener(error);
 
-        final String getStateUrl = Urls.BASE_URL + Urls.Profile.GET_STATES;
+        final String getStateUrl = BuildConfig.BASE_URL + Urls.Profile.GET_STATES;
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getStateUrl,
@@ -176,7 +177,7 @@ public class ProfileRequestCall {
 
         Response.ErrorListener jurisdictionErrorListener = error -> listener.onErrorListener(error);
 
-        final String getStateUrl = Urls.BASE_URL
+        final String getStateUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, stateId, level);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
@@ -209,7 +210,7 @@ public class ProfileRequestCall {
 
         Response.ErrorListener profileErrorListener = error -> listener.onErrorListener(error);
 
-        final String submitProfileUrl = Urls.BASE_URL
+        final String submitProfileUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(

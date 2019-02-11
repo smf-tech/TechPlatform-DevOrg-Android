@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/brown" />
+            <solid android:color="@color/yellow" />
             <size
                 android:width="@dimen/circle_size"
                 android:height="@dimen/circle_size" />
@@ -11,6 +11,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_team_management" />
+            android:src="@drawable/ic_approvals" />
     </item>
 </layer-list>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:ignore="Overdraw">
+
+    <ExpandableListView
+        android:id="@+id/elv_dashboard_reports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:dividerHeight="@dimen/dimen_01dp"
+        android:groupIndicator="@null" />
+
+    <TextView
+        android:id="@+id/reports_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/text_size_16"
+        android:visibility="gone" />
+</RelativeLayout>
