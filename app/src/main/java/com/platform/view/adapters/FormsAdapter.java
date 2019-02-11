@@ -76,7 +76,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
                 break;
             case FORM_STATUS_PENDING:
                 viewHolder.mPinButton.setVisibility(View.GONE);
-                drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending);
+                drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
                 break;
             default:
                 viewHolder.mPinButton.setVisibility(View.GONE);

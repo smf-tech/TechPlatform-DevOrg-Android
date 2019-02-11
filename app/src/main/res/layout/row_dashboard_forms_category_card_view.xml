@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_dashboard_form"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_60dp"
-    android:layout_marginStart="@dimen/dimen_10dp"
-    android:layout_marginEnd="@dimen/dimen_10dp"
-    android:layout_marginBottom="@dimen/dimen_05dp"
+    android:layout_height="@dimen/dimen_46dp"
+    android:layout_marginTop="@dimen/dimen_16dp"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="@dimen/form_item_status_indicator_width">
+    app:cardCornerRadius="@dimen/form_item_status_indicator_width"
+    tools:keep="@layout/row_dashboard_forms_category_card_view">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,15 +32,13 @@
 
         <TextView
             android:id="@+id/txt_dashboard_form_title"
+            style="@style/roboto_medium_dark_grey_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_marginStart="@dimen/dimen_12dp"
             android:layout_toStartOf="@+id/iv_create_form"
-            android:layout_toEndOf="@+id/iv_dashboard_form"
-            android:text="@string/first_name"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_16" />
+            android:layout_toEndOf="@+id/iv_dashboard_form" />
 
         <ImageView
             android:id="@+id/iv_create_form"

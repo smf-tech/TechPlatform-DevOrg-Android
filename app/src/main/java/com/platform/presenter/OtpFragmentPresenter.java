@@ -8,16 +8,17 @@ import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.fragments.OtpFragment;
+import com.platform.view.fragments.NewOtpFragment;
 
 import java.lang.ref.WeakReference;
 
 public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
     @SuppressWarnings("CanBeFinal")
-    private WeakReference<OtpFragment> otpFragment;
+//    private WeakReference<OtpFragment> otpFragment;
+    private WeakReference<NewOtpFragment> otpFragment;
 
-    public OtpFragmentPresenter(OtpFragment otpFragment) {
+    public OtpFragmentPresenter(NewOtpFragment otpFragment) {
         this.otpFragment = new WeakReference<>(otpFragment);
     }
 
@@ -53,7 +54,7 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
         Login login = new Gson().fromJson(response, Login.class);
         if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
-            otpFragment.get().startOtpTimer();
+//            otpFragment.get().startOtpTimer();
             Util.saveLoginObjectInPref(response);
         } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
             otpFragment.get().deRegisterOtpSmsReceiver();

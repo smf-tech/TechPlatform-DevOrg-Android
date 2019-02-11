@@ -6,14 +6,16 @@
 
     <!-- START Styleguide colors -->
     <color name="pink">#F00A6B</color>
+    <color name="yellow">#FFCD00</color>
     <color name="dark_grey">#3E3E3E</color>
     <color name="light_grey">#909090</color>
+    <color name="lighter_grey">#EBEBEB</color>
     <color name="lightest_grey">#EDEDED</color>
+    <color name="medium_grey">#676767</color>
+    <color name="light_black">#313131</color>
     <!-- END -->
 
-    <color name="medium_grey">#757575</color>
     <color name="dark_green">#198C19</color>
-
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
