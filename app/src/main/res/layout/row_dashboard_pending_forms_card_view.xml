@@ -21,7 +21,7 @@
             android:id="@+id/form_status_indicator"
             android:layout_width="@dimen/form_item_status_indicator_width"
             android:layout_height="wrap_content"
-            android:background="@drawable/form_status_indicator_pending" />
+            android:background="@drawable/form_status_indicator_pending_forms" />
 
         <ImageView
             android:id="@+id/iv_dashboard_pending_form"
