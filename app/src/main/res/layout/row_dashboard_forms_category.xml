@@ -2,23 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lnr_inner"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/dimen_10dp"
-    android:layout_marginTop="@dimen/dimen_05dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_12dp"
+    android:layout_marginTop="@dimen/dimen_16dp"
     android:layout_marginEnd="@dimen/dimen_10dp"
-    android:background="@color/light_grey"
+    android:layout_marginBottom="@dimen/dimen_10dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_dashboard_form_category_name"
+        style="@style/roboto_medium_light_grey_14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_05dp"
         android:gravity="start" />
 
 </LinearLayout>

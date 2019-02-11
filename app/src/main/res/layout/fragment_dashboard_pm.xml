@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:ignore="Overdraw">
@@ -23,18 +23,19 @@
                 android:id="@+id/rlt_pending_forms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_25dp"
                 android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:background="@color/light_grey"
+                android:layout_marginEnd="@dimen/dimen_20dp"
+                android:background="@drawable/bg_lightest_grey"
                 android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txt_pending_forms"
+                    style="@style/roboto_medium_light_grey_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginStart="@dimen/dimen_12dp"
+                    android:layout_marginTop="@dimen/dimen_28dp"
                     android:layout_marginBottom="@dimen/dimen_05dp"
                     android:text="@string/pending_forms" />
 
@@ -42,20 +43,25 @@
                     android:id="@+id/rv_dashboard_pending_forms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_pending_forms"
-                    android:background="@color/light_grey" />
+                    android:layout_below="@+id/txt_pending_forms" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_01dp"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_marginStart="@dimen/dimen_25dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginEnd="@dimen/dimen_20dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:background="@color/lighter_grey" />
 
             <LinearLayout
                 android:id="@+id/lnr_dashboard_forms_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_25dp"
+                android:layout_marginEnd="@dimen/dimen_20dp"
+                android:background="@drawable/bg_lightest_grey"
                 android:orientation="vertical" />
 
         </LinearLayout>
