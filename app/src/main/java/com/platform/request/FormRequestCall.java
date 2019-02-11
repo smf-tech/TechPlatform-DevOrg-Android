@@ -42,7 +42,7 @@ public class FormRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener("");
-                Log.e(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -78,7 +78,7 @@ public class FormRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener("");
-                Log.e(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage());
             }
         };
 

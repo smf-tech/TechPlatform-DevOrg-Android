@@ -37,7 +37,7 @@ public class FormStatusRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener(e.getMessage());
-                Log.e(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -74,7 +74,7 @@ public class FormStatusRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener(e.getMessage());
-                Log.e(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -110,7 +110,7 @@ public class FormStatusRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener("");
-                Log.e(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -135,5 +135,4 @@ public class FormStatusRequestCall {
 
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
-
 }

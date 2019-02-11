@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener {
 
     private Context context;

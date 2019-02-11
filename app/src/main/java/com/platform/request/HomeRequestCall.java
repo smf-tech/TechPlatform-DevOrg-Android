@@ -36,7 +36,7 @@ public class HomeRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };

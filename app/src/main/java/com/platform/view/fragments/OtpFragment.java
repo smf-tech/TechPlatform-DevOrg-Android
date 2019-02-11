@@ -30,6 +30,7 @@ import com.platform.utility.Util;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
 
+@SuppressWarnings("unused")
 public class OtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
         SmsReceiver.OtpSmsReceiverListener {
 
@@ -197,7 +198,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
         currentSec = 0;
     }
 
-    public void startOtpTimer() {
+    private void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
             tvOtpTimer.setText("");
@@ -249,7 +250,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
         }
     }
 
-    public void deRegisterOtpSmsReceiver() {
+    private void deRegisterOtpSmsReceiver() {
         if (getActivity() != null && smsReceiver != null && isSmsReceiverRegistered) {
             try {
                 getActivity().unregisterReceiver(smsReceiver);

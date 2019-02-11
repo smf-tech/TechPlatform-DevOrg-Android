@@ -128,4 +128,7 @@
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">फॉर्म</string>
     <string name="no_records_available">डेटा उपलब्ध नाही!</string>
+    <string name="verification_code">पडताळणी कोड</string>
+    <string name="verify">सत्यापित करा</string>
+    <string name="please_type_the_verification_code_n_sent_to">कृपया सत्यापन कोड\nसारखा टाइप करा+</string>
 </resources>

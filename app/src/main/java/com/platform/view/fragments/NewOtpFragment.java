@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.platform.view.activities.ProfileActivity;
  * Use the {@link NewOtpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
         SmsReceiver.OtpSmsReceiverListener {
 
@@ -50,7 +52,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private Button mBtnVerify;
     private TextView tvOtpTimer;
     private TextView tvOtpMessage;
-    private EditText mOtp1, mOtp2, mOtp3, mOtp4;
+    private EditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
 
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
@@ -61,12 +63,19 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        smsReceiver = new SmsReceiver();
+        smsReceiver.setListener(this);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment NewOtpFragment.
-     * @param loginInfo
+     * @param loginInfo : login info object
      */
     public static NewOtpFragment newInstance(final LoginInfo loginInfo) {
         sLoginInfo = loginInfo;
@@ -90,6 +99,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp2 = view.findViewById(R.id.otp_2);
         mOtp3 = view.findViewById(R.id.otp_3);
         mOtp4 = view.findViewById(R.id.otp_4);
+        mOtp5 = view.findViewById(R.id.otp_5);
+        mOtp6 = view.findViewById(R.id.otp_6);
 
         TextView tvResendOtp = view.findViewById(R.id.tv_resend_otp);
         tvResendOtp.setVisibility(View.VISIBLE);
@@ -114,13 +125,15 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             if (!sLoginInfo.getOneTimePassword().isEmpty()) {
                 mOTP = sLoginInfo.getOneTimePassword();
                 Log.e(TAG, "onViewCreated: " + mOTP);
+
                 char[] chars = mOTP.toCharArray();
-//                String[] otp = oneTimePassword.split("");
                 if (chars.length >= 4) {
                     mOtp1.setText(String.valueOf(chars[0]));
                     mOtp2.setText(String.valueOf(chars[1]));
                     mOtp3.setText(String.valueOf(chars[2]));
                     mOtp4.setText(String.valueOf(chars[3]));
+                    mOtp5.setText(String.valueOf(chars[4]));
+                    mOtp6.setText(String.valueOf(chars[5]));
                 }
                 tvOtpTimer.setVisibility(View.GONE);
             } else {
@@ -148,23 +161,11 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     private String getOtp() {
-//        return mOtp1.getText().toString() +
-//                mOtp2.getText().toString() +
-//                mOtp3.getText().toString() +
-//                mOtp4.getText().toString() +
-//                mOtp5.getText().toString() +
-//                mOtp6.getText().toString();
-
         return mOTP;
     }
 
     public boolean isAllFieldsValid() {
-//        if (String.valueOf(etOtp.getText()).trim().length() != 6) {
-//            Util.setError(etOtp, getResources().getString(R.string.check_otp));
-//            return false;
-//        }
-
-        return true;
+        return String.valueOf(mOTP).trim().length() == 6;
     }
 
     @Override
@@ -172,7 +173,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     }
 
-    public void startOtpTimer() {
+    private void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
             tvOtpTimer.setText("");
@@ -214,7 +215,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
-//                startOtpTimer();
+                startOtpTimer();
                 getActivity().registerReceiver(smsReceiver,
                         new IntentFilter(Constants.SMS_RECEIVE_IDENTIFIER));
                 isSmsReceiverRegistered = true;

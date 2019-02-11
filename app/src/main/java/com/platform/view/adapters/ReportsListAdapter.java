@@ -24,6 +24,7 @@ import com.platform.models.reports.ReportData;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("CanBeFinal")
 public class ReportsListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;

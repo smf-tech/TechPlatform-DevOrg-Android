@@ -48,6 +48,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -78,6 +79,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -110,6 +112,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -142,6 +145,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -172,6 +176,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -205,6 +210,7 @@ public class ProfileRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener("");
+                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -296,7 +302,7 @@ public class ProfileRequestCall {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e(TAG, "BODY EXE");
+                Log.d(TAG, "BODY EXE");
             }
         }
 

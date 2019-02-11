@@ -9,7 +9,6 @@ import com.platform.R;
 import com.platform.models.login.LoginInfo;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.NewOtpFragment;
-import com.platform.view.fragments.OtpFragment;
 
 public class OtpActivity extends BaseActivity implements View.OnClickListener {
 

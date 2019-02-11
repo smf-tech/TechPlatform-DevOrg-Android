@@ -1,5 +1,7 @@
 package com.platform.request;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 public class PMRequestCall {
 
     private PlatformRequestCallListener listener;
+    private final String TAG = PMRequestCall.class.getName();
 
     public void setListener(PlatformRequestCallListener listener) {
         this.listener = listener;
@@ -33,6 +36,7 @@ public class PMRequestCall {
             } catch (Exception e) {
                 e.printStackTrace();
                 listener.onFailureListener("");
+                Log.d(TAG, e.getMessage());
             }
         };
 
