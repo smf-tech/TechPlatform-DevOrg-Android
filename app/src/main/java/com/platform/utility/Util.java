@@ -25,7 +25,6 @@ import com.platform.R;
 import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLevelData;
 import com.platform.models.profile.UserLocation;
-import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 
 import java.io.File;

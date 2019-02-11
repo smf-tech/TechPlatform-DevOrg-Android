@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.view.fragments.AllFormsFragment;
-import com.platform.view.fragments.FormStatusFragment;
+import com.platform.view.fragments.CompletedFormsFragment;
+import com.platform.view.fragments.PendingFormsFragment;
 
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
-import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
 @SuppressWarnings("EmptyMethod")
 public class FormsActivity extends BaseActivity {
@@ -151,11 +151,11 @@ public class FormsActivity extends BaseActivity {
                     break;
 
                 case 1:
-                    fragment = FormStatusFragment.newInstance(FORM_STATUS_PENDING);
+                    fragment = PendingFormsFragment.newInstance();
                     break;
 
                 case 2:
-                    fragment = FormStatusFragment.newInstance(FORM_STATUS_COMPLETED);
+                    fragment = CompletedFormsFragment.newInstance(FORM_STATUS_COMPLETED);
                     break;
             }
 

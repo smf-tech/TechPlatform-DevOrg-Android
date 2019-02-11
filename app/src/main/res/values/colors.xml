@@ -4,12 +4,16 @@
     <color name="colorPrimary">#7EBE42</color>
     <color name="colorAccent">#009688</color>
 
-    <color name="light_grey">#C7C7C7</color>
+    <!-- START Styleguide colors -->
+    <color name="pink">#F00A6B</color>
+    <color name="dark_grey">#3E3E3E</color>
+    <color name="light_grey">#909090</color>
+    <color name="lightest_grey">#EDEDED</color>
+    <!-- END -->
+
     <color name="medium_grey">#757575</color>
-    <color name="dark_grey">#616161</color>
     <color name="dark_green">#198C19</color>
 
-    <color name="pink">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>

@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="roboto_medium_dark_grey_14">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="roboto_medium_light_grey_14">
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="roboto_regular_light_grey_11">
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textSize">@dimen/text_size_11</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+</resources>
