@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
     private PlatformEditTextView etUserMobileNumber;
+//    private EditText etUserMobileNumber;
 
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;

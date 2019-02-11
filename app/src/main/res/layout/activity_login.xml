@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dimen_20dp"
+        android:paddingEnd="@dimen/dimen_20dp">
 
         <LinearLayout
             android:id="@+id/layout_main"
@@ -32,6 +34,7 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:text="@string/app_name_ss"
                 android:textColor="@color/dark_grey"
+                android:visibility="gone"
                 android:textSize="@dimen/text_size_20" />
 
             <LinearLayout
@@ -40,14 +43,14 @@
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/dimen_20dp">
+                android:layout_marginTop="@dimen/dimen_40dp">
 
                 <TextView
                     android:id="@+id/enter_mobile_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:text="@string/msg_enter_mobile"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/text_size_16" />
@@ -58,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.platform.widgets.PlatformEditTextView
+                   <!-- <com.platform.widgets.PlatformEditTextView
                         android:id="@+id/edt_mobile_number"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/dimen_40dp"
@@ -76,13 +79,37 @@
                         android:singleLine="true"
                         android:textColor="@color/dark_grey"
                         android:textColorHint="@color/dark_grey"
-                        android:textSize="@dimen/text_size_16" />
+                        android:textSize="@dimen/text_size_16" />-->
+
+                    <com.platform.widgets.PlatformEditTextView
+                        android:id="@+id/edt_mobile_number"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/dimen_40dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:background="@drawable/bg_transparent_grey_box"
+                        android:digits="0123456789"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:gravity="center_vertical"
+                        android:hint="@string/label_mobile_no"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:textColor="@color/dark_grey"
+                        android:textColorHint="@color/dark_grey"
+                        android:textSize="@dimen/text_size_16"
+                        android:importantForAutofill="no"
+                        tools:ignore="UnusedAttribute" />
 
                     <com.platform.widgets.PlatformEditTextView
                         android:id="@+id/edt_otp"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/dimen_40dp"
-                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         android:background="@drawable/bg_transparent_grey_box"
                         android:digits="0123456789"
                         android:drawablePadding="@dimen/dimen_10dp"
@@ -92,8 +119,6 @@
                         android:inputType="phone"
                         android:letterSpacing="0.4"
                         android:maxLength="6"
-                        android:paddingEnd="@dimen/dimen_10dp"
-                        android:paddingStart="@dimen/dimen_10dp"
                         android:singleLine="true"
                         android:textColor="@color/dark_grey"
                         android:textColorHint="@color/dark_grey"
@@ -117,15 +142,14 @@
                 <Button
                     android:id="@+id/btn_login"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_marginEnd="@dimen/dimen_30dp"
-                    android:layout_marginStart="@dimen/dimen_30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_20dp"
-                    android:background="@color/pink"
+                    android:background="@color/blue_theme_color"
                     android:gravity="center_horizontal|center_vertical"
                     android:singleLine="true"
                     android:text="@string/label_login"
-                    android:textAllCaps="false"
+                    android:textAllCaps="true"
+
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_20" />
 
