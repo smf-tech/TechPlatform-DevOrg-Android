@@ -128,6 +128,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void updateForm(final SavedForm form) {
         form.setSynced(true);
         DatabaseManager.getDBInstance(getContext()).updateFormObject(form);
+
+        /*Intent intent = new Intent(SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+        intent.putExtra("SyncStatus", 1);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);*/
     }
 
     private String readStream(final InputStream stream) throws IOException {

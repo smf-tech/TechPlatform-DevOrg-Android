@@ -15,22 +15,19 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
-import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
 @SuppressWarnings("CanBeFinal")
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
-    private String mStatus;
-    private HashMap<String, List<ProcessData>> mFormsData;
+    private Map<String, List<ProcessData>> mFormsData;
 
-    public FormCategoryAdapter(Context context, String mStatus, final HashMap<String, List<ProcessData>> formsData) {
+    public FormCategoryAdapter(Context context, final Map<String, List<ProcessData>> formsData) {
         this.mContext = context;
-        this.mStatus = mStatus;
         mFormsData = formsData;
     }
 
@@ -82,21 +79,9 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
         viewHolder.categoryName.setText(category);
 
-        switch (mStatus) {
-            case FORM_STATUS_COMPLETED:
-                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, processData);
-                viewHolder.addButton.setVisibility(View.GONE);
-                viewHolder.syncButton.setVisibility(View.GONE);
-                break;
-            case FORM_STATUS_PENDING:
-//                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_PENDING);
-                break;
-            default:
-//                viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_ALL);
-                viewHolder.addButton.setVisibility(View.GONE);
-                viewHolder.syncButton.setVisibility(View.GONE);
-                break;
-        }
+        viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, processData);
+        viewHolder.addButton.setVisibility(View.GONE);
+        viewHolder.syncButton.setVisibility(View.GONE);
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);
     }
 

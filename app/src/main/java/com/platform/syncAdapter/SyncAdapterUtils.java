@@ -14,6 +14,7 @@ public class SyncAdapterUtils {
     public static final String ACCOUNT = "TechPlatform-DevOrg";
     public static final String AUTHORITY = "com.platform";
     public static final String ACCOUNT_TYPE = "com.platform.account";
+    public static final String EVENT_SYNC_COMPLETED = "SyncCompleted";
 
     /**
      * This method creates sync account

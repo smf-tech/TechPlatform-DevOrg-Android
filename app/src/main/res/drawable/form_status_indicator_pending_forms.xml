@@ -4,7 +4,7 @@
     <corners
         android:bottomLeftRadius="@dimen/dimen_30dp"
         android:topLeftRadius="@dimen/dimen_30dp" />
-    <solid android:color="@color/medium_grey" />
+    <solid android:color="@color/pink" />
     <size
         android:width="@dimen/form_item_status_indicator_width"
         android:height="@dimen/dimen_80dp" />

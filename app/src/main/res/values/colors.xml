@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#7EBE42</color>
-    <color name="colorPrimary">#7EBE42</color>
+    <color name="colorPrimaryDark">#1A305B</color>
+    <color name="colorPrimary">#1A305B</color>
     <color name="colorAccent">#009688</color>
 
-    <color name="light_grey">#C7C7C7</color>
-    <color name="medium_grey">#757575</color>
-    <color name="dark_grey">#616161</color>
-    <color name="dark_green">#398E4C</color>
+    <color name="dark_grey">#3E3E3E</color>
+    <color name="light_grey">#909090</color>
+    <color name="lighter_grey">#EBEBEB</color>
+    <color name="lightest_grey">#EDEDED</color>
+    <color name="medium_grey">#676767</color>
 
-    <color name="pink">#F00A6B</color>
+    <color name="light_black">#313131</color>
+    <color name="dark_green">#198C19</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
@@ -17,10 +20,12 @@
     <color name="purple">#800080</color>
     <color name="orange">#F75C4B</color>
     <color name="brown">#C35F3E</color>
-    <color name="yellow">#FBC02D</color>
+    <color name="pink">#F00A6B</color>
+    <color name="yellow">#FFCD00</color>
 
     <color name="dark_blue">#75194779</color>
     <color name="blue_theme_color">#1a305b</color>
     <color name="card_gray_bg">#efefef</color>
     <color name="form_tab_bg">#f0f0f0</color>
+    <color name="tab_selector">#1A4B98</color>
 </resources>
