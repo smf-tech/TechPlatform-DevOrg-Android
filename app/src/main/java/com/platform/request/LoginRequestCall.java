@@ -35,9 +35,8 @@ public class LoginRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
-                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -74,9 +73,8 @@ public class LoginRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
-                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -109,9 +107,8 @@ public class LoginRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
-                Log.d(TAG, e.getMessage());
             }
         };
 

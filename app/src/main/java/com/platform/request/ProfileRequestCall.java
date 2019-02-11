@@ -47,8 +47,7 @@ public class ProfileRequestCall {
                     listener.onOrganizationsFetched(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         };
 
@@ -78,8 +77,7 @@ public class ProfileRequestCall {
                     listener.onOrganizationProjectsFetched(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         };
 
@@ -111,8 +109,7 @@ public class ProfileRequestCall {
                     listener.onOrganizationRolesFetched(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         };
 
@@ -144,8 +141,7 @@ public class ProfileRequestCall {
                     listener.onStatesFetched(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         };
 
@@ -175,8 +171,7 @@ public class ProfileRequestCall {
                     listener.onJurisdictionFetched(res, level);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         };
 
@@ -208,9 +203,8 @@ public class ProfileRequestCall {
                     listener.onProfileUpdated(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
-                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -301,8 +295,7 @@ public class ProfileRequestCall {
                 body.add(Constants.Login.USER_LOCATION, locationObj);
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, "BODY EXE");
+                Log.e(TAG, e.getMessage());
             }
         }
 

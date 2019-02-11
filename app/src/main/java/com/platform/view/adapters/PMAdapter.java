@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-@SuppressLint("InflateParams")
 public class PMAdapter extends BaseExpandableListAdapter {
 
     private Context context;
@@ -84,7 +82,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater =
                     (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater != null ?
-                    layoutInflater.inflate(R.layout.layout_group_list,null) : null;
+                    layoutInflater.inflate(R.layout.layout_group_list, parent, false) : null;
         }
 
         if (convertView != null) {
@@ -113,7 +111,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater =
                     (LayoutInflater) this.context .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater != null ?
-                    layoutInflater.inflate(R.layout.layout_each_process, null) : null;
+                    layoutInflater.inflate(R.layout.layout_each_process, parent, false) : null;
         }
 
         if (convertView != null) {

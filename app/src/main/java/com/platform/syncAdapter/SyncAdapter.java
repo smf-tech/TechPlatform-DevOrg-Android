@@ -69,7 +69,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     try {
                         submitForm(form);
                     } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                     }
                 }
             }
@@ -121,7 +121,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.i(TAG, "Form Synced");
             }
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

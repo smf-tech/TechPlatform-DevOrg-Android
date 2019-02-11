@@ -1,6 +1,7 @@
 package com.platform.request;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -22,6 +23,7 @@ import org.json.JSONObject;
 public class TMRequestCall {
 
     private TMRequestCallListener listener;
+    private final String TAG = TMRequestCall.class.getName();
 
     public void setListener(TMRequestCallListener listener) {
         this.listener = listener;
@@ -35,7 +37,7 @@ public class TMRequestCall {
                     listener.onPendingRequestsFetched(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };
@@ -69,7 +71,7 @@ public class TMRequestCall {
                     listener.onRequestStatusChanged(res, pendingRequest);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };

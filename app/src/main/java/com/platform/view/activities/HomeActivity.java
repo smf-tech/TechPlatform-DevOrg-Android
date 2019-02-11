@@ -50,6 +50,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     private AlertDialog dialogNotApproved;
     private HomeActivityPresenter presenter;
     private Object mSyncObserverHandle;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,7 +252,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -411,7 +412,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startMain);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

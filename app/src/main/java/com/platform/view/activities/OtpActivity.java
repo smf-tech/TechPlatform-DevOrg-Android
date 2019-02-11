@@ -39,7 +39,6 @@ public class OtpActivity extends BaseActivity implements View.OnClickListener {
                     .add(R.id.otp_form_container, otpFragment).commit();
         } catch (Exception e) {
             Log.e(TAG, "Exception :: OtpActivity : initView");
-            e.printStackTrace();
         }
     }
 

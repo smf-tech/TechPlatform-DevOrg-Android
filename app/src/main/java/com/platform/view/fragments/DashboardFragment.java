@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -95,11 +94,10 @@ public class DashboardFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
-    @SuppressLint({"InflateParams", "SetTextI18n"})
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
             TextView tabOne = (TextView) LayoutInflater.from(getActivity())
-                    .inflate(R.layout.layout_custom_tab, null);
+                    .inflate(R.layout.layout_custom_tab, tabLayout);
             tabOne.setText(tabNames.get(i).getName());
             tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
 

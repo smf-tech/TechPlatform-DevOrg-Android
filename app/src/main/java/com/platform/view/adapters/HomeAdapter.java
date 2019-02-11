@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     private Context context;
     private List<HomeModel> menuItemList;
+    private final String TAG = HomeAdapter.class.getName();
 
     public HomeAdapter(List<HomeModel> menuList, Context context) {
         this.menuItemList = menuList;
@@ -83,7 +85,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
                             context.startActivity(openClass);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                     }
                     break;
             }

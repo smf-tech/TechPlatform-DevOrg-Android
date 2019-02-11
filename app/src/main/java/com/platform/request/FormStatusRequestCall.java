@@ -35,9 +35,8 @@ public class FormStatusRequestCall {
                     listener.onFormsLoaded(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
-                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -72,9 +71,8 @@ public class FormStatusRequestCall {
                     listener.onFormsLoaded(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
-                Log.d(TAG, e.getMessage());
             }
         };
 
@@ -108,9 +106,8 @@ public class FormStatusRequestCall {
                     listener.onFormsLoaded(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
-                Log.d(TAG, e.getMessage());
             }
         };
 

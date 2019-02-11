@@ -246,7 +246,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
                 isSmsReceiverRegistered = true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -256,7 +256,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
                 getActivity().unregisterReceiver(smsReceiver);
                 isSmsReceiverRegistered = false;
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
     }
@@ -314,7 +314,6 @@ public class OtpFragment extends Fragment implements View.OnClickListener, Platf
                     activity.finish();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 Log.e(TAG, "Exception :: OtpFragment : showNextScreen");
             }
         }

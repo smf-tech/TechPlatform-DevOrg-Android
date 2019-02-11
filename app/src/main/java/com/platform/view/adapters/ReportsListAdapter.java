@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -104,7 +103,6 @@ public class ReportsListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    @SuppressLint("InflateParams")
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
@@ -112,7 +110,7 @@ public class ReportsListAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater =
                     (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater != null ? layoutInflater.inflate(R.layout.layout_list_group,
-                    null) : null;
+                    parent, false) : null;
         }
 
         if (convertView != null) {
@@ -131,7 +129,6 @@ public class ReportsListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    @SuppressLint("InflateParams")
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
@@ -140,7 +137,7 @@ public class ReportsListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflaterLayout = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflaterLayout != null ? inflaterLayout.inflate(R.layout.layout_report_item,
-                    null) : null;
+                    parent, false) : null;
         }
 
         if (convertView != null) {
