@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.platform.view.activities.ProfileActivity;
  * Use the {@link NewOtpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
         SmsReceiver.OtpSmsReceiverListener {
 
@@ -60,12 +62,19 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        smsReceiver = new SmsReceiver();
+        smsReceiver.setListener(this);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment NewOtpFragment.
-     * @param loginInfo-
+     * @param loginInfo : login info object
      */
     public static NewOtpFragment newInstance(final LoginInfo loginInfo) {
         sLoginInfo = loginInfo;
@@ -185,12 +194,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     public boolean isAllFieldsValid() {
-//        if (String.valueOf(etOtp.getText()).trim().length() != 6) {
-//            Util.setError(etOtp, getResources().getString(R.string.check_otp));
-//            return false;
-//        }
-
-        return true;
+        return String.valueOf(mOTP).trim().length() == 6;
     }
 
     @Override
@@ -198,7 +202,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     }
 
-    public void startOtpTimer() {
+    private void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
             tvOtpTimer.setText("");
@@ -240,13 +244,13 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
-//                startOtpTimer();
+                startOtpTimer();
                 getActivity().registerReceiver(smsReceiver,
                         new IntentFilter(Constants.SMS_RECEIVE_IDENTIFIER));
                 isSmsReceiverRegistered = true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -256,7 +260,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 getActivity().unregisterReceiver(smsReceiver);
                 isSmsReceiverRegistered = false;
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
     }
@@ -305,7 +309,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                     activity.finish();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");
             }
         }

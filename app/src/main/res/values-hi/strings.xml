@@ -107,6 +107,7 @@
     <string name="tab_connect">जुडिये</string>
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
+    <string name="meetings">बैठक</string>
     <string name="team_management">टीम\nप्रबंधक</string>
 
     <!--Program management-->
@@ -123,11 +124,12 @@
     <string name="msg_image_capture_not_support">वूप्स - आपका डिवाइस छवि कैप्चरिंग का समर्थन नहीं करता है!</string>
     <string name="msg_take_photo_error">ऐप में फोटो लेने की अनुमति नहीं है, कृपया इसकी अनुमति दें।</string>
 
-        <string name="action_forms">प्रपत्र</string>
+    <string name="action_forms">प्रपत्र</string>
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">प्रपत्र</string>
     <string name="no_records_available">डेटा उपलब्ध नहीं है!</string>
-    <string name="verification_code">Verification Code</string>
-    <string name="verify">Verify</string>
+  
+    <string name="verification_code">पुष्टि संख्या</string>
+    <string name="verify">सत्यापित करें</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s पर भेजा गया सत्यापन कोड टाइप करें</string>
 </resources>

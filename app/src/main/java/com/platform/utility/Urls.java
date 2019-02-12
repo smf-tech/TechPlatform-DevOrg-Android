@@ -2,8 +2,6 @@ package com.platform.utility;
 
 public class Urls {
 
-    public static final String BASE_URL = "http://10.53.17.35/";
-
     public class Login {
         public static final String GENERATE_OTP = "api/message/otp?phone=%1$s";
         public static final String GENERATE_TOKEN = "api/token?phone=%1$s&otp=%2$s";
@@ -38,5 +36,9 @@ public class Urls {
     public class TM {
         public static final String GET_PENDING_REQUESTS = "api/users/approvals";
         public static final String APPROVE_REJECT_REQUEST = "api/users/approval/%1$s";
+    }
+
+    public class Report {
+        public static final String GET_ALL_REPORTS = "api/reports";
     }
 }

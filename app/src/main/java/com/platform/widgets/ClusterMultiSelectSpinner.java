@@ -1,6 +1,5 @@
 package com.platform.widgets;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -74,10 +73,11 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
         listener.onClustersSelected(selectedValues);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
+        super.performClick();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getResources().getString(R.string.cluster));
         builder.setMultiChoiceItems(

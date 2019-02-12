@@ -1,5 +1,7 @@
 package com.platform.utility;
 
+import android.util.Log;
+
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.platform.Platform;
@@ -14,6 +16,7 @@ public class TokenRetryPolicy implements RetryPolicy {
     private int timeout;
     private int maxNumRetries;
     private int currentRetryCount;
+    private final String TAG = TokenRetryPolicy.class.getSimpleName();
 
     TokenRetryPolicy(GsonRequestFactory gsonRequestFactory) {
         this.gsonFactory = gsonRequestFactory;
@@ -31,7 +34,7 @@ public class TokenRetryPolicy implements RetryPolicy {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

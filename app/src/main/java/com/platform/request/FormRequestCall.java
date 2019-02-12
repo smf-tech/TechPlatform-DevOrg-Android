@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.utility.Constants;
@@ -39,16 +40,15 @@ public class FormRequestCall {
                     listener.onFormCreated(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                listener.onFailureListener("");
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener("");
             }
         };
 
         Response.ErrorListener createFormErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String createFormUrl = Urls.BASE_URL
+        final String createFormUrl = BuildConfig.BASE_URL
                 + String.format(Urls.PM.CREATE_FORM, formId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(Request.Method.POST,
@@ -75,16 +75,15 @@ public class FormRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                listener.onFailureListener("");
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener("");
             }
         };
 
         Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getProcessUrl = Urls.BASE_URL + String.format(Urls.PM.GET_PROCESS_DETAILS, processId);
+        final String getProcessUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_PROCESS_DETAILS, processId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

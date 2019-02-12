@@ -40,7 +40,6 @@ public class FormActivity extends BaseActivity {
             fragmentTransaction.commit();
         } catch (Exception e) {
             Log.e(TAG, "Exception :: FormActivity : addFragment");
-            e.printStackTrace();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.platform.request;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -8,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.TMRequestCallListener;
 import com.platform.models.tm.PendingRequest;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 public class TMRequestCall {
 
     private TMRequestCallListener listener;
+    private final String TAG = TMRequestCall.class.getName();
 
     public void setListener(TMRequestCallListener listener) {
         this.listener = listener;
@@ -34,7 +37,7 @@ public class TMRequestCall {
                     listener.onPendingRequestsFetched(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };
@@ -42,7 +45,7 @@ public class TMRequestCall {
         Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getPendingRequestsUrl = Urls.BASE_URL + Urls.TM.GET_PENDING_REQUESTS;
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_PENDING_REQUESTS;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -68,7 +71,7 @@ public class TMRequestCall {
                     listener.onRequestStatusChanged(res, pendingRequest);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };
@@ -76,7 +79,8 @@ public class TMRequestCall {
         Response.ErrorListener approveRejectRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String approveRejectUrl = Urls.BASE_URL + String.format(Urls.TM.APPROVE_REJECT_REQUEST, pendingRequest.getRequesterPhone());
+        final String approveRejectUrl = BuildConfig.BASE_URL + String.format(Urls.TM.APPROVE_REJECT_REQUEST,
+                pendingRequest.getRequesterPhone());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,

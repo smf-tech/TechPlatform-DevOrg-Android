@@ -57,7 +57,7 @@ public class RefreshToken implements PlatformRequestCallListener {
         try {
             JsonObjectRequest gsonRequest = new JsonObjectRequest(
                     Request.Method.POST,
-                    Urls.BASE_URL + Urls.Login.REFRESH_TOKEN,
+                    BuildConfig.BASE_URL + Urls.Login.REFRESH_TOKEN,
                     null,
                     refreshTokenSuccessListener,
                     refreshTokenErrorListener) {
@@ -86,7 +86,7 @@ public class RefreshToken implements PlatformRequestCallListener {
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                 Request.Method.POST,
-                Urls.BASE_URL + Urls.Login.REFRESH_TOKEN,
+                BuildConfig.BASE_URL + Urls.Login.REFRESH_TOKEN,
                 null,
                 refreshTokenSuccessListener,
                 refreshTokenErrorListener) {

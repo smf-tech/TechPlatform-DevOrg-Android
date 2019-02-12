@@ -115,7 +115,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         for (EditText inputText :
                 editTexts) {
             if (inputText != null && TextUtils.isEmpty(inputText.getText().toString()) && !TextUtils.isEmpty(inputText.getTag().toString())) {
-                fragment.get().errorMsg = inputText.getTag() + " blank";
+                fragment.get().setErrorMsg(inputText.getTag() + " blank");
                 return false;
             }
         }

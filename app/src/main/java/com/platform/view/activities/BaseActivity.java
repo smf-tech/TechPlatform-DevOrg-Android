@@ -1,6 +1,5 @@
 package com.platform.view.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import com.platform.utility.Util;
 
 import java.util.Locale;
 
-@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     private final String TAG = BaseActivity.class.getSimpleName();

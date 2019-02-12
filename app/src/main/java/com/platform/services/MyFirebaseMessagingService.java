@@ -37,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
     }

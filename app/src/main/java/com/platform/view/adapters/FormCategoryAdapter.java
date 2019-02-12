@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -39,7 +38,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         FormsAdapter adapter;
         TextView categoryName;
 
-        @SuppressLint("RestrictedApi")
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -59,7 +57,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull FormCategoryAdapter.ViewHolder viewHolder, int i) {
         viewHolder.syncButton.setOnClickListener(v ->
@@ -80,8 +77,8 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         viewHolder.categoryName.setText(category);
 
         viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, processData);
-        viewHolder.addButton.setVisibility(View.GONE);
-        viewHolder.syncButton.setVisibility(View.GONE);
+        viewHolder.addButton.hide();
+        viewHolder.syncButton.hide();
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);
     }
 

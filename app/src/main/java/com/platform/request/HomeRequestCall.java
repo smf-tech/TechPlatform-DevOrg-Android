@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.user.UserInfo;
@@ -34,7 +35,6 @@ public class HomeRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
@@ -43,7 +43,7 @@ public class HomeRequestCall {
         Response.ErrorListener getModulesErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getModulesUrl = Urls.BASE_URL
+        final String getModulesUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
