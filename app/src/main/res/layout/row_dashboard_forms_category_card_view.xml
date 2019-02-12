@@ -22,13 +22,13 @@
 
         <ImageView
             android:id="@+id/iv_dashboard_form"
-            android:layout_width="@dimen/dimen_30dp"
-            android:layout_height="@dimen/dimen_30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:contentDescription="@string/content_description"
-            android:src="@android:drawable/sym_contact_card" />
+            android:src="@drawable/ic_form_category" />
 
         <TextView
             android:id="@+id/txt_dashboard_form_title"

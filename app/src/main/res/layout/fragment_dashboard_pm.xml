@@ -11,7 +11,9 @@
     <ScrollView
         android:id="@+id/sv_dashboard_form_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txt_view_all_forms"
+        android:layout_alignParentTop="true"
         android:fillViewport="true">
 
         <LinearLayout
@@ -66,6 +68,17 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/txt_view_all_forms"
+        style="@style/roboto_medium_pink_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:text="@string/view_all_forms"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:textAllCaps="true" />
 
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"

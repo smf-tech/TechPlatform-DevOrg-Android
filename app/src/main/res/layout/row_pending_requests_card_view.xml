@@ -48,9 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimen_05dp"
             android:layout_toStartOf="@+id/iv_reject_request"
             android:contentDescription="@string/content_description"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@drawable/ic_approve" />
 
         <ImageView
             android:id="@+id/iv_reject_request"
@@ -58,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimen_05dp"
             android:contentDescription="@string/content_description"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@drawable/ic_reject" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
