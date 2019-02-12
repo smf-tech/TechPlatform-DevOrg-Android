@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
+import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
 import com.platform.models.profile.JurisdictionLevel;
 import com.platform.utility.Constants;
@@ -100,7 +101,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 template.setListData(locationValues);
             }
         } else if (formData.getChoices() != null) {
-            template.setListData(formData.getChoices());
+            List<String> choiceValues = new ArrayList<>();
+            for (Choice choice :
+                    formData.getChoices()) {
+                choiceValues.add(choice.getText());
+            }
+            template.setListData(choiceValues);
         }
 
         return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};

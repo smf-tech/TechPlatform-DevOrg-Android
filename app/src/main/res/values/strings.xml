@@ -131,6 +131,7 @@
 
     <!--Program management-->
     <string name="pending_forms">Pending Forms</string>
+    <string name="view_all_forms">View All Forms</string>
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
 
