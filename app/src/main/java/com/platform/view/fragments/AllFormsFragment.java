@@ -50,10 +50,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
      * @return A new instance of fragment AllFormsFragment.
      */
     public static AllFormsFragment newInstance() {
-        AllFormsFragment fragment = new AllFormsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new AllFormsFragment();
     }
 
     @Override

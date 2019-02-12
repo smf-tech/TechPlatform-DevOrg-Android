@@ -34,7 +34,6 @@ import java.util.Map;
  */
 @SuppressWarnings("CanBeFinal")
 public class CompletedFormsFragment extends Fragment implements FormStatusCallListener {
-    private static final String ARG_PARAM1 = "param1";
     private static final String TAG = CompletedFormsFragment.class.getSimpleName();
 
     private TextView mNoRecordsView;
@@ -49,15 +48,10 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @return A new instance of fragment CompletedFormsFragment.
      */
-    public static CompletedFormsFragment newInstance(String param1) {
-        CompletedFormsFragment fragment = new CompletedFormsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
+    public static CompletedFormsFragment newInstance() {
+        return new CompletedFormsFragment();
     }
 
     @Override

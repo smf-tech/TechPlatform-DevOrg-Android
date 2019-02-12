@@ -110,7 +110,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (sLoginInfo != null && !sLoginInfo.getMobileNumber().contentEquals("")) {
             mMobileNumber = sLoginInfo.getMobileNumber();
 
-            tvOtpMessage.append(mMobileNumber);
+            tvOtpMessage.setText(getString(R.string.please_type_the_verification_code_n_sent_to, mMobileNumber));
 
             if (!sLoginInfo.getOneTimePassword().isEmpty()) {
                 final String OTP = sLoginInfo.getOneTimePassword();
