@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 
 import com.platform.R;
@@ -76,8 +77,6 @@ public class DistrictMultiSelectSpinner extends android.support.v7.widget.AppCom
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        super.performClick();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getResources().getString(R.string.district));
         builder.setMultiChoiceItems(

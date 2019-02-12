@@ -97,7 +97,7 @@ public class DashboardFragment extends Fragment {
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
             TextView tabOne = (TextView) LayoutInflater.from(getActivity())
-                    .inflate(R.layout.layout_custom_tab, tabLayout);
+                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
             tabOne.setText(tabNames.get(i).getName());
             tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
 
