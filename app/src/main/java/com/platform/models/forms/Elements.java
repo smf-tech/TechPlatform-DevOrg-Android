@@ -22,7 +22,7 @@ public class Elements {
     private Boolean isRequired;
     @SerializedName("choices")
     @Expose
-    private List<String> choices = null;
+    private List<Choice> choices = null;
 
     public String getType() {
         return type;
@@ -56,11 +56,11 @@ public class Elements {
         this.isRequired = isRequired;
     }
 
-    public List<String> getChoices() {
+    public List<Choice> getChoices() {
         return choices;
     }
 
-    public void setChoices(List<String> choices) {
+    public void setChoices(List<Choice> choices) {
         this.choices = choices;
     }
 }
