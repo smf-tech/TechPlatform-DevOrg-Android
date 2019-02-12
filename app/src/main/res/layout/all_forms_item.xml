@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/form_image"
-        android:layout_width="@dimen/dimen_30dp"
-        android:layout_height="@dimen/dimen_30dp"
+        android:layout_width="@dimen/dimen_15dp"
+        android:layout_height="@dimen/dimen_15dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
         android:layout_marginStart="@dimen/dimen_20dp"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_right_arrow_grey" />
@@ -27,6 +28,7 @@
         android:textColor="@color/pink" />
 
     <TextView
+        android:id="@+id/form_count"
         style="@style/FormLabel.Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
