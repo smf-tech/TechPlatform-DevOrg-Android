@@ -60,26 +60,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- <com.platform.widgets.PlatformEditTextView
-                         android:id="@+id/edt_mobile_number"
-                         android:layout_width="fill_parent"
-                         android:layout_height="@dimen/dimen_40dp"
-                         android:layout_margin="@dimen/dimen_10dp"
-                         android:background="@drawable/bg_transparent_grey_box"
-                         android:digits="0123456789"
-                         android:drawablePadding="@dimen/dimen_10dp"
-                         android:drawableStart="@drawable/ic_call"
-                         android:gravity="center_vertical"
-                         android:hint="@string/label_mobile_no"
-                         android:inputType="phone"
-                         android:maxLength="10"
-                         android:paddingEnd="@dimen/dimen_10dp"
-                         android:paddingStart="@dimen/dimen_10dp"
-                         android:singleLine="true"
-                         android:textColor="@color/dark_grey"
-                         android:textColorHint="@color/dark_grey"
-                         android:textSize="@dimen/text_size_16" />-->
-
                     <com.platform.widgets.PlatformEditTextView
                         android:id="@+id/edt_mobile_number"
                         android:layout_width="fill_parent"

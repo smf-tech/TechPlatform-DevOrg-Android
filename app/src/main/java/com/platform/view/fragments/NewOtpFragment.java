@@ -38,7 +38,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         SmsReceiver.OtpSmsReceiverListener {
 
     private static LoginInfo sLoginInfo;
-    private String mobileNumber;
     private long currentSec = 0;
 
     private boolean isSmsReceiverRegistered;
@@ -50,12 +49,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private Button mBtnVerify;
     private TextView tvOtpTimer;
     private TextView tvOtpMessage;
-    private EditText mOtp1, mOtp2, mOtp3, mOtp4;
+    private EditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
 
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
     private final String TAG = NewOtpFragment.class.getSimpleName();
-    private String mOTP;
+    private String mMobileNumber;
 
     public NewOtpFragment() {
         // Required empty public constructor
@@ -66,7 +65,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment NewOtpFragment.
-     * @param loginInfo
+     * @param loginInfo-
      */
     public static NewOtpFragment newInstance(final LoginInfo loginInfo) {
         sLoginInfo = loginInfo;
@@ -90,6 +89,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp2 = view.findViewById(R.id.otp_2);
         mOtp3 = view.findViewById(R.id.otp_3);
         mOtp4 = view.findViewById(R.id.otp_4);
+        mOtp5 = view.findViewById(R.id.otp_5);
+        mOtp6 = view.findViewById(R.id.otp_6);
 
         TextView tvResendOtp = view.findViewById(R.id.tv_resend_otp);
         tvResendOtp.setVisibility(View.VISIBLE);
@@ -107,20 +108,21 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         otpPresenter = new OtpFragmentPresenter(this);
 
         if (sLoginInfo != null && !sLoginInfo.getMobileNumber().contentEquals("")) {
-            mobileNumber = sLoginInfo.getMobileNumber();
+            mMobileNumber = sLoginInfo.getMobileNumber();
 
-            tvOtpMessage.append(mobileNumber);
+            tvOtpMessage.append(mMobileNumber);
 
             if (!sLoginInfo.getOneTimePassword().isEmpty()) {
-                mOTP = sLoginInfo.getOneTimePassword();
-                Log.e(TAG, "onViewCreated: " + mOTP);
-                char[] chars = mOTP.toCharArray();
-//                String[] otp = oneTimePassword.split("");
-                if (chars.length >= 4) {
+                final String OTP = sLoginInfo.getOneTimePassword();
+                Log.e(TAG, "onViewCreated: " + OTP);
+                char[] chars = OTP.toCharArray();
+                if (chars.length == 6) {
                     mOtp1.setText(String.valueOf(chars[0]));
                     mOtp2.setText(String.valueOf(chars[1]));
                     mOtp3.setText(String.valueOf(chars[2]));
                     mOtp4.setText(String.valueOf(chars[3]));
+                    mOtp5.setText(String.valueOf(chars[4]));
+                    mOtp6.setText(String.valueOf(chars[5]));
                 }
                 tvOtpTimer.setVisibility(View.GONE);
             } else {
@@ -144,18 +146,42 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 otpPresenter.getLoginToken(sLoginInfo, otp);
                 break;
 
+            case R.id.tv_resend_otp:
+                clearOtp();
+
+                if (timer != null) {
+                    timer.cancel();
+                }
+
+                if (!isSmsReceiverRegistered) {
+                    registerOtpSmsReceiver();
+                }
+
+                if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
+                    sLoginInfo.setOneTimePassword("");
+                    otpPresenter.resendOtp(sLoginInfo);
+                }
+                break;
+
         }
     }
 
-    private String getOtp() {
-//        return mOtp1.getText().toString() +
-//                mOtp2.getText().toString() +
-//                mOtp3.getText().toString() +
-//                mOtp4.getText().toString() +
-//                mOtp5.getText().toString() +
-//                mOtp6.getText().toString();
+    private void clearOtp() {
+        mOtp1.setText("");
+        mOtp2.setText("");
+        mOtp3.setText("");
+        mOtp4.setText("");
+        mOtp5.setText("");
+        mOtp6.setText("");
+    }
 
-        return mOTP;
+    private String getOtp() {
+        return mOtp1.getText().toString() +
+                mOtp2.getText().toString() +
+                mOtp3.getText().toString() +
+                mOtp4.getText().toString() +
+                mOtp5.getText().toString() +
+                mOtp6.getText().toString();
     }
 
     public boolean isAllFieldsValid() {
