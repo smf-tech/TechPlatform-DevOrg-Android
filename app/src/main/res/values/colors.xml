@@ -22,7 +22,11 @@
     <color name="pink">#F00A6B</color>
     <color name="yellow">#FFCD00</color>
 
+    <color name="lightest_blue">#EFF3FC</color>
+    <color name="light_blue">#C3D0E6</color>
+    <color name="medium_blue">#75A2CE</color>
     <color name="dark_blue">#75194779</color>
+    <color name="darkest_blue">#4271CB</color>
     <color name="blue_theme_color">#1a305b</color>
     <color name="card_gray_bg">#efefef</color>
     <color name="form_tab_bg">#f0f0f0</color>
