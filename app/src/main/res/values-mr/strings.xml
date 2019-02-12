@@ -89,15 +89,32 @@
     <string name="msg_select_village">कृपया गाव निवडा</string>
 
     <!--Home Menu Items-->
+    <string name="menu_home">होम</string>
+    <string name="menu_community">माझा समुदाय</string>
+    <string name="menu_forms">फॉर्म</string>
+    <string name="menu_teams">टीम्स</string>
+    <string name="menu_calendar">माझे कॅलेंडर</string>
+    <string name="menu_assets">मालमत्ता</string>
+    <string name="menu_reports">अहवाल</string>
+
+    <string name="menu_connect">कनेक्ट</string>
+    <string name="menu_ho_support">एचओ सहाय्य</string>
+    <string name="menu_notice_board">सूचना फलक</string>
+
+    <string name="menu_account">खाते</string>
+    <string name="menu_leaves_attendance">रजा आणि उपस्थिती</string>
+
+    <string name="menu_rate_us">रेट करा</string>
+    <string name="menu_call_us">कॉल करा</string>
+    <string name="menu_settings">सेटिंग्ज</string>
+    <string name="menu_logout">बाहेर पडा</string>
+
     <string name="change_language">भाषा बदला</string>
     <string name="my_profile">माझी प्रोफाईल</string>
     <string name="add_location">स्थान जोडा</string>
     <string name="update_user_data">डेटा अद्ययावत करा</string>
     <string name="notification">सूचना</string>
     <string name="share_app">शेयर अॅप</string>
-    <string name="rate_us">रेट करा</string>
-    <string name="call_us">कॉल करा</string>
-    <string name="logout">बाहेर पडा</string>
     <string name="drawer_open">ड्रॉवर उघडा</string>
     <string name="drawer_close">ड्रॉवर बंद करा</string>
     <string name="app_version">अॅप आवृत्ती</string>

@@ -3,39 +3,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/action_lang"
-        android:title="@string/change_language" />
-    <item
-        android:id="@+id/action_profile"
-        android:title="@string/my_profile" />
-    <item
-        android:id="@+id/action_add_school"
-        android:title="@string/add_location"
-        android:visible="false" />
-    <item
-        android:id="@+id/action_update_user_data"
-        android:title="@string/update_user_data" />
-    <item
-        android:id="@+id/action_forms"
-        android:title="@string/action_forms" />
-    <item
-        android:id="@+id/action_notification"
-        android:title="@string/notification"
-        android:visible="false" />
-    <item
-        android:id="@+id/action_share"
-        android:title="@string/share_app"
-        android:visible="false" />
-    <item
-        android:id="@+id/action_rate"
-        android:title="@string/rate_us"
-        android:visible="false" />
-    <item
-        android:id="@+id/action_callus"
-        android:title="@string/call_us"
-        android:visible="false" />
-    <item
-        android:id="@+id/action_logout"
-        android:title="@string/logout" />
+    <group android:id="@+id/menu_group_1">
+        <item
+            android:id="@+id/action_menu_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/action_menu_community"
+            android:icon="@drawable/ic_menu_community"
+            android:title="@string/menu_community" />
+        <item
+            android:id="@+id/action_menu_forms"
+            android:icon="@drawable/ic_menu_forms"
+            android:title="@string/menu_forms" />
+        <item
+            android:id="@+id/action_menu_teams"
+            android:icon="@drawable/ic_menu_teams"
+            android:title="@string/menu_teams" />
+        <item
+            android:id="@+id/action_menu_calendar"
+            android:icon="@drawable/ic_menu_calendar"
+            android:title="@string/menu_calendar" />
+        <item
+            android:id="@+id/action_menu_assets"
+            android:icon="@drawable/ic_menu_assets"
+            android:title="@string/menu_assets" />
+        <item
+            android:id="@+id/action_menu_reports"
+            android:icon="@drawable/ic_menu_reports"
+            android:title="@string/menu_reports" />
+    </group>
+
+    <group android:id="@+id/menu_group_2">
+        <item
+            android:id="@+id/action_menu_connect"
+            android:icon="@drawable/ic_menu_connect"
+            android:title="@string/menu_connect" />
+        <item
+            android:id="@+id/action_menu_ho_support"
+            android:icon="@drawable/ic_menu_ho_support"
+            android:title="@string/menu_ho_support" />
+        <item
+            android:id="@+id/action_menu_notice_board"
+            android:icon="@drawable/ic_menu_notice"
+            android:title="@string/menu_notice_board" />
+    </group>
+
+    <group android:id="@+id/menu_group_3">
+        <item
+            android:id="@+id/action_menu_account"
+            android:icon="@drawable/ic_menu_account"
+            android:title="@string/menu_account" />
+        <item
+            android:id="@+id/action_menu_leaves_attendance"
+            android:icon="@drawable/ic_menu_attendance"
+            android:title="@string/menu_leaves_attendance" />
+    </group>
+
+    <group android:id="@+id/menu_group_4">
+        <item
+            android:id="@+id/action_menu_rate_us"
+            android:icon="@drawable/ic_menu_rate_us"
+            android:title="@string/menu_rate_us" />
+        <item
+            android:id="@+id/action_menu_call_us"
+            android:icon="@drawable/ic_menu_call"
+            android:title="@string/menu_call_us" />
+        <item
+            android:id="@+id/action_menu_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/action_menu_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="@string/menu_logout" />
+    </group>
 </menu>
