@@ -17,8 +17,6 @@ import com.platform.view.fragments.AllFormsFragment;
 import com.platform.view.fragments.CompletedFormsFragment;
 import com.platform.view.fragments.PendingFormsFragment;
 
-import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
-
 @SuppressWarnings("EmptyMethod")
 public class FormsActivity extends BaseActivity {
 

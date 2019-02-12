@@ -123,7 +123,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
             if (!sLoginInfo.getOneTimePassword().isEmpty()) {
                 final String OTP = sLoginInfo.getOneTimePassword();
-                Log.e(TAG, "onViewCreated: " + OTP);
                 char[] chars = OTP.toCharArray();
                 if (chars.length == 6) {
                     mOtp1.setText(String.valueOf(chars[0]));
@@ -194,7 +193,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     public boolean isAllFieldsValid() {
-        return String.valueOf(mOTP).trim().length() == 6;
+        return String.valueOf(getOtp()).trim().length() == 6;
     }
 
     @Override
