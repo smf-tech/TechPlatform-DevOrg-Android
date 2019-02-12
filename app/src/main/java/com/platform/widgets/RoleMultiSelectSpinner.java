@@ -75,8 +75,6 @@ public class RoleMultiSelectSpinner extends android.support.v7.widget.AppCompatS
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        super.performClick();
-
         if (roleNames == null) {
             return false;
         }

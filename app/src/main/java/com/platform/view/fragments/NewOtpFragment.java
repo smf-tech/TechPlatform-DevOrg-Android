@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -73,8 +72,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment NewOtpFragment.
      * @param loginInfo : login info object
+     * @return A new instance of fragment NewOtpFragment.
      */
     public static NewOtpFragment newInstance(final LoginInfo loginInfo) {
         sLoginInfo = loginInfo;
@@ -85,7 +84,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.otp_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_otp, container, false);
     }
 
     @Override
@@ -170,7 +169,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                     otpPresenter.resendOtp(sLoginInfo);
                 }
                 break;
-
         }
     }
 

@@ -70,7 +70,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.all_forms_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item, parent, false);
 
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);
@@ -93,7 +93,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.all_form_sub_item, parent, false);
+                .inflate(R.layout.layout_all_form_sub_item, parent, false);
 
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);

@@ -76,8 +76,6 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        super.performClick();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getResources().getString(R.string.cluster));
         builder.setMultiChoiceItems(
