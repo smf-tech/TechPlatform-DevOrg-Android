@@ -13,7 +13,7 @@
         tools:openDrawer="start">
 
         <include
-            layout="@layout/home_main_content"
+            layout="@layout/layout_home_main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -25,7 +25,7 @@
             android:background="@color/colorPrimary"
             android:fitsSystemWindows="true"
             android:theme="@style/NavigationView"
-            app:headerLayout="@layout/menu_header_view"
+            app:headerLayout="@layout/layout_menu_header"
             app:itemHorizontalPadding="@dimen/dimen_45dp"
             app:itemIconTint="@color/white"
             app:itemTextColor="@color/white"
