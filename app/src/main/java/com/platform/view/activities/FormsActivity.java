@@ -155,7 +155,7 @@ public class FormsActivity extends BaseActivity {
                     break;
 
                 case 2:
-                    fragment = CompletedFormsFragment.newInstance(FORM_STATUS_COMPLETED);
+                    fragment = CompletedFormsFragment.newInstance();
                     break;
             }
 
