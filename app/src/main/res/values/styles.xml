@@ -121,4 +121,10 @@
         <item name="android:textColorHint">@color/dark_grey</item>
         <item name="android:textSize">@dimen/text_size_22</item>
     </style>
+
+    <style name="NavigationView" >
+        <item name="android:listDivider">@color/tab_selector</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
 </resources>
