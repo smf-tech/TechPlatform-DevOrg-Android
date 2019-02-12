@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -47,7 +46,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         View indicatorView;
         FloatingActionButton mPinButton;
 
-        @SuppressLint("RestrictedApi")
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             mName = itemView.findViewById(R.id.form_title);
@@ -65,7 +63,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         return new ViewHolder(v);
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
@@ -74,12 +71,14 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
             case FORM_STATUS_COMPLETED:
                 drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
                 break;
+
             case FORM_STATUS_PENDING:
-                viewHolder.mPinButton.setVisibility(View.GONE);
+                viewHolder.mPinButton.hide();
                 drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
                 break;
+
             default:
-                viewHolder.mPinButton.setVisibility(View.GONE);
+                viewHolder.mPinButton.hide();
                 drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
                 break;
         }

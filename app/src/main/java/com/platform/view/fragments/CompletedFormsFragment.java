@@ -100,8 +100,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 List<ProcessData> processData = mChildList.get(categoryName);
                 if (processData != null) {
                     processData.add(data);
+                    mChildList.put(categoryName, processData);
                 }
-                mChildList.put(categoryName, processData);
             } else {
                 List<ProcessData> processData = new ArrayList<>();
                 processData.add(data);

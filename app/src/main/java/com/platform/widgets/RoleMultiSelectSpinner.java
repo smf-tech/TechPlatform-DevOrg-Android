@@ -1,6 +1,5 @@
 package com.platform.widgets;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -73,10 +72,11 @@ public class RoleMultiSelectSpinner extends android.support.v7.widget.AppCompatS
         listener.onRolesSelected(selectedValues);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
+        super.performClick();
+
         if (roleNames == null) {
             return false;
         }

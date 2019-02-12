@@ -1,6 +1,5 @@
 package com.platform.widgets;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -65,10 +64,11 @@ public class VillageMultiSelectSpinner extends android.support.v7.widget.AppComp
         listener.onVillagesSelected(selectedValues);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
+        super.performClick();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getResources().getString(R.string.village));
         builder.setMultiChoiceItems(

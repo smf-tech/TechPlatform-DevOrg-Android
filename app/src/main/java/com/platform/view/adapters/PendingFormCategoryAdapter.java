@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -49,7 +48,6 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         RecyclerView recyclerView;
         TextView categoryName;
 
-        @SuppressLint("RestrictedApi")
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -69,7 +67,6 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull PendingFormCategoryAdapter.ViewHolder viewHolder, int i) {
 

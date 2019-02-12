@@ -116,6 +116,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    private final String TAG = ProfileActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,7 +420,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).asSquare().start(this);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             if (data != null) {
@@ -429,7 +430,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     finalUri = Util.getUri(imageFilePath);
                     Crop.of(outputUri, finalUri).asSquare().start(this);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                 }
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
@@ -635,7 +636,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             setResult(RESULT_CANCELED);
             finish();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

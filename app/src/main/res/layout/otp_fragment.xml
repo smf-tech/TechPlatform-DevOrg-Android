@@ -48,106 +48,39 @@
 
                 <EditText
                     android:id="@+id/otp_1"
-                    android:layout_width="40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_07dp"
-                    android:background="@drawable/bg_transparent_grey_box"
-                    android:digits="0123456789"
-                    android:gravity="center"
-                    android:inputType="phone"
-                    android:maxLength="1"
-                    android:nextFocusRight="@id/otp_2"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/text_size_22"
-                    tools:ignore="UnusedAttribute" />
+                    style="@style/OtpEditBox"
+                    android:nextFocusRight="@+id/otp_2"
+                    tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
                 <EditText
                     android:id="@+id/otp_2"
-                    android:layout_width="40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_07dp"
-                    android:background="@drawable/bg_transparent_grey_box"
-                    android:digits="0123456789"
-                    android:gravity="center"
-                    android:inputType="phone"
-                    android:maxLength="1"
-                    android:nextFocusRight="@id/otp_3"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/text_size_22"
-                    tools:ignore="UnusedAttribute" />
+                    style="@style/OtpEditBox"
+                    android:nextFocusRight="@+id/otp_3"
+                    tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
                 <EditText
                     android:id="@+id/otp_3"
-                    android:layout_width="40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_07dp"
-                    android:background="@drawable/bg_transparent_grey_box"
-                    android:digits="0123456789"
-                    android:gravity="center"
-                    android:inputType="phone"
-                    android:nextFocusRight="@id/otp_4"
-                    android:maxLength="1"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/text_size_22"
-                    tools:ignore="UnusedAttribute" />
+                    style="@style/OtpEditBox"
+                    android:nextFocusRight="@+id/otp_4"
+                    tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
                 <EditText
                     android:id="@+id/otp_4"
-                    android:layout_width="40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_07dp"
-                    android:background="@drawable/bg_transparent_grey_box"
-                    android:digits="0123456789"
-                    android:gravity="center"
+                    style="@style/OtpEditBox"
                     android:nextFocusRight="@id/btn_verify"
-                    android:inputType="phone"
-                    android:maxLength="1"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/text_size_22"
-                    tools:ignore="UnusedAttribute" />
+                    tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
                 <EditText
                     android:id="@+id/otp_5"
-                    android:layout_width="40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_07dp"
-                    android:background="@drawable/bg_transparent_grey_box"
-                    android:digits="0123456789"
-                    android:gravity="center"
-                    android:inputType="phone"
+                    style="@style/OtpEditBox"
                     android:nextFocusRight="@id/otp_4"
-                    android:maxLength="1"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/text_size_22"
-                    tools:ignore="UnusedAttribute" />
+                    tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
                 <EditText
                     android:id="@+id/otp_6"
-                    android:layout_width="40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_07dp"
-                    android:background="@drawable/bg_transparent_grey_box"
-                    android:digits="0123456789"
-                    android:gravity="center"
+                    style="@style/OtpEditBox"
                     android:nextFocusRight="@id/btn_verify"
-                    android:inputType="phone"
-                    android:maxLength="1"
-                    android:singleLine="true"
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/text_size_22"
-                    tools:ignore="UnusedAttribute" />
-
+                    tools:ignore="Autofill,LabelFor,UnusedAttribute" />
             </LinearLayout>
 
             <Button

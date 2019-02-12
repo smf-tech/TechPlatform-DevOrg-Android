@@ -288,7 +288,7 @@ public class Util {
             editor.clear();
             editor.apply();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

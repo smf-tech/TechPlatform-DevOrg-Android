@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,8 +26,8 @@ public class DashboardFragment extends Fragment {
     private TabLayout tabLayout;
     private final int[] tabIcons = {
             R.drawable.bg_circle_pink,
-            R.drawable.bg_circle_brown,
             R.drawable.bg_circle_orange,
+            R.drawable.bg_circle_yellow,
             R.drawable.bg_circle_green
     };
     private List<Modules> tabNames = new ArrayList<>();
@@ -74,16 +73,20 @@ public class DashboardFragment extends Fragment {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
             switch (modules.getName()) {
-                case Constants.Home.PROGRAMME_MANAGEMENT:
+                case Constants.Home.FORMS:
                     adapter.addFragment(new PMFragment(), "Forms");
                     break;
 
-                case Constants.Home.TEAM_MANAGEMENT:
+                case Constants.Home.MEETINGS:
+                    adapter.addFragment(new MeetingsFragment(), "Meetings");
+                    break;
+
+                case Constants.Home.APPROVALS:
                     adapter.addFragment(new TMFragment(), "Teams");
                     break;
 
-                default:
-                    adapter.addFragment(new PMFragment(), "");
+                case Constants.Home.REPORTS:
+                    adapter.addFragment(new ReportsFragment(), "Reports");
                     break;
             }
         }
@@ -91,11 +94,10 @@ public class DashboardFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
-    @SuppressLint({"InflateParams", "SetTextI18n"})
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
             TextView tabOne = (TextView) LayoutInflater.from(getActivity())
-                    .inflate(R.layout.layout_custom_tab, null);
+                    .inflate(R.layout.layout_custom_tab, tabLayout);
             tabOne.setText(tabNames.get(i).getName());
             tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
 

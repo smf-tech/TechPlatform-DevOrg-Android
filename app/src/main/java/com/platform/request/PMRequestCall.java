@@ -1,11 +1,14 @@
 package com.platform.request;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.utility.GsonRequestFactory;
@@ -17,6 +20,7 @@ import org.json.JSONObject;
 public class PMRequestCall {
 
     private PlatformRequestCallListener listener;
+    private final String TAG = PMRequestCall.class.getName();
 
     public void setListener(PlatformRequestCallListener listener) {
         this.listener = listener;
@@ -30,7 +34,7 @@ public class PMRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 listener.onFailureListener("");
             }
         };
@@ -38,7 +42,7 @@ public class PMRequestCall {
         Response.ErrorListener processErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getProcessUrl = Urls.BASE_URL + Urls.PM.GET_PROCESS;
+        final String getProcessUrl = BuildConfig.BASE_URL + Urls.PM.GET_PROCESS;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

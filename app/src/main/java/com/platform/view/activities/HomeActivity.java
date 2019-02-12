@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.user.UserInfo;
 import com.platform.models.home.Home;
+import com.platform.models.user.UserInfo;
 import com.platform.presenter.HomeActivityPresenter;
 import com.platform.syncAdapter.GenericAccountService;
 import com.platform.syncAdapter.SyncAdapterUtils;
@@ -50,6 +50,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     private AlertDialog dialogNotApproved;
     private HomeActivityPresenter presenter;
     private Object mSyncObserverHandle;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerLayout = navigationView.getHeaderView(0);
-        TextView versionName = headerLayout.findViewById(R.id.menu_version_name);
+        TextView userName = headerLayout.findViewById(R.id.menu_user_name);
+        UserInfo user = Util.getUserObjectFromPref();
+        if (user != null) {
+            userName.setText(String.format("%s %s", user.getUserFirstName(), user.getUserLastName()));
+        }
+
+        TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
     }
 
@@ -160,28 +167,6 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             Log.e("Error in showing dialog", e.getMessage());
         }
     }
-
-//    private HomeModel setClass(Modules module, Boolean isAccessible) {
-//        HomeModel homeModel = new HomeModel();
-//        homeModel.setModuleId(module.getId());
-//        homeModel.setAccessible(isAccessible);
-//
-//        switch (module.getName()) {
-//            case Constants.Home.PROGRAMME_MANAGEMENT:
-//                homeModel.setModuleName(getString(R.string.programme_management));
-//                homeModel.setModuleIcon(R.drawable.ic_program_management);
-//                homeModel.setDestination(PMActivity.class);
-//                break;
-//
-//            case Constants.Home.TEAM_MANAGEMENT:
-//                homeModel.setModuleName(getString(R.string.team_management));
-//                homeModel.setModuleIcon(R.drawable.ic_team_management);
-//                homeModel.setDestination(TMActivity.class);
-//                break;
-//        }
-//
-//        return homeModel;
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -251,33 +236,68 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    private void handleMenuItems(int menuId) {
+        switch (menuId) {
+            case R.id.action_menu_home:
+                showLanguageChangeDialog();
+                break;
+
+            case R.id.action_menu_community:
+                showProfileScreen();
+                break;
+
+            case R.id.action_menu_forms:
+                break;
+
+            case R.id.action_menu_teams:
+                break;
+
+            case R.id.action_menu_calendar:
+                break;
+
+            case R.id.action_menu_assets:
+                break;
+
+            case R.id.action_menu_reports:
+                break;
+
+            case R.id.action_menu_connect:
+                break;
+
+            case R.id.action_menu_ho_support:
+                break;
+
+            case R.id.action_menu_notice_board:
+                break;
+
+            case R.id.action_menu_account:
+                break;
+
+            case R.id.action_menu_leaves_attendance:
+                break;
+
+            case R.id.action_menu_rate_us:
+                break;
+
+            case R.id.action_menu_call_us:
+                break;
+
+            case R.id.action_menu_settings:
+                break;
+
+            case R.id.action_menu_logout:
+                showLogoutPopUp();
+                break;
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.action_lang:
-                showLanguageChangeDialog();
-                break;
-
-            case R.id.action_profile:
-                showProfileScreen();
-                break;
-
-            case R.id.action_update_user_data:
-                showUpdateDataPopup();
-                break;
-
-            case R.id.action_forms:
-                goToForms();
-                break;
-
-            case R.id.action_logout:
-                showLogoutPopUp();
-                break;
-        }
+        handleMenuItems(menuItem.getItemId());
 
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -292,26 +312,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_lang:
-                showLanguageChangeDialog();
-                return true;
-
-            case R.id.action_profile:
-                showProfileScreen();
-                return true;
-
-            case R.id.action_update_user_data:
-                showUpdateDataPopup();
-                return true;
-
-            case R.id.action_logout:
-                showLogoutPopUp();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        handleMenuItems(item.getItemId());
+        return super.onOptionsItemSelected(item);
     }
 
     private void showLanguageChangeDialog() {
@@ -411,7 +413,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startMain);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

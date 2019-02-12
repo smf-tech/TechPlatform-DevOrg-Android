@@ -104,7 +104,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                 System.exit(0);
             } catch (Exception e) {
                 Log.e(TAG, "Exception :: LoginActivity : onBackPressed");
-                e.printStackTrace();
             }
 
             finish();
@@ -199,7 +198,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                 startActivity(intent);
             } catch (Exception e) {
                 Log.e(TAG, "Exception :: LoginActivity : showNextScreen");
-                e.printStackTrace();
             }
         }
     }

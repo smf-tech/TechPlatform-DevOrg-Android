@@ -48,7 +48,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private FormComponentCreator formComponentCreator;
     private FormActivityPresenter formPresenter;
 
-    public String errorMsg = "";
+    private String errorMsg = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -196,5 +196,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 }
                 break;
         }
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }

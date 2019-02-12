@@ -91,7 +91,7 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
                 errorListener.onErrorResponse(error);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
             errorListener.onErrorResponse(new ParseError(e));
         }
     }
@@ -114,7 +114,7 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
             return Response.error(new ParseError(e));
         }
     }
@@ -123,7 +123,7 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
         try {
             return Class.forName(type.toString().split(" ")[1]);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         return null;
     }

@@ -38,7 +38,7 @@ public class Constants {
         static final String FIRST_TIME_KEY = "FirstTimeKey";
         static final String FIRST_TIME_CODE = "FirstTimeCode";
 
-        public static final String SYNC_FORM_CATEGORY = "formCategory";
+        static final String SYNC_FORM_CATEGORY = "formCategory";
 
         static final String LANGUAGE_LOCALE = "LanguageLocale";
         static final String LANGUAGE_CODE = "languageCode";
@@ -88,8 +88,10 @@ public class Constants {
 
     public static class Home {
         public static final String HOME_DATA = "homeObj";
-        public static final String PROGRAMME_MANAGEMENT = "Forms";
-        public static final String TEAM_MANAGEMENT = "Team Management";
+        public static final String FORMS = "Forms";
+        public static final String MEETINGS = "Meetings";
+        public static final String APPROVALS = "Approvals";
+        public static final String REPORTS = "Reports";
     }
 
     public static class PM {

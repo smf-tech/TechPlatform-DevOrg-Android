@@ -1,6 +1,5 @@
 package com.platform.utility;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -11,17 +10,15 @@ public class PreferenceHelper {
     public static final String TOKEN = "Token";
 
     private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
 
-    @SuppressLint("CommitPrefEdits")
     public PreferenceHelper(Context context) {
         pref = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
-        editor = pref.edit();
     }
 
     public void insertString(String key, String value) {
+        SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public String getString(String key) {

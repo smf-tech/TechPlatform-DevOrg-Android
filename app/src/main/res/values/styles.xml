@@ -106,4 +106,25 @@
         <item name="android:paddingTop">@dimen/dimen_10dp</item>
         <item name="android:spinnerMode">dialog</item>
     </style>
+
+    <style name="OtpEditBox">
+        <item name="android:layout_width">@dimen/dimen_40dp</item>
+        <item name="android:layout_height">@dimen/dimen_40dp</item>
+        <item name="android:layout_margin">@dimen/dimen_07dp</item>
+        <item name="android:background">@drawable/bg_transparent_grey_box</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">phone</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textColorHint">@color/dark_grey</item>
+        <item name="android:textSize">@dimen/text_size_22</item>
+    </style>
+
+    <style name="NavigationView" >
+        <item name="android:listDivider">@color/tab_selector</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
 </resources>

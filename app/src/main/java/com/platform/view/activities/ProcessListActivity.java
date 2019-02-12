@@ -71,7 +71,7 @@ public class ProcessListActivity extends BaseActivity implements PlatformTaskLis
             intent.putExtra(Constants.PM.PROCESS_ID, processId);
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

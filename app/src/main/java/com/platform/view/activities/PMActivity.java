@@ -148,7 +148,7 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
                 intent.putExtra(Constants.PM.PROCESS_NAME, processData.getName());
                 startActivity(intent);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
     }
