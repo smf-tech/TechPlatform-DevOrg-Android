@@ -104,7 +104,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         }
 
         viewHolder.mRootView.setOnClickListener(v -> {
-            // TODO: 12-02-2019 launch FormFragment here
             Intent intent = new Intent(mContext, FormActivity.class);
             intent.putExtra(Constants.PM.PROCESS_ID, mProcessData.get(i).getId());
             mContext.startActivity(intent);

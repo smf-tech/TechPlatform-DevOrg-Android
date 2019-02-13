@@ -14,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
-        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_right_arrow_grey" />
 
@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
         android:text="@string/category_title"
         android:textColor="@color/pink" />
 
@@ -32,6 +33,7 @@
         style="@style/FormLabel.Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_below="@id/form_title"
         android:layout_marginTop="0dp" />
 </RelativeLayout>

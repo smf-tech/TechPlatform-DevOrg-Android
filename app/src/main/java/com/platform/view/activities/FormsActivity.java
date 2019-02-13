@@ -9,8 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.view.fragments.AllFormsFragment;
@@ -50,77 +48,6 @@ public class FormsActivity extends BaseActivity {
 
         TabLayout tabs = findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
-        tabs.setSelectedTabIndicator(null);
-
-        for (int j = 0; j < tabs.getTabCount(); j++) {
-            TabLayout.Tab tabAt = tabs.getTabAt(j);
-            assert tabAt != null;
-            tabAt.setCustomView(R.layout.form_tab_view);
-            View view = tabAt.getCustomView();
-
-            assert view != null;
-            if (j == 0) {
-                view.findViewById(R.id.indicator_view)
-                        .setBackgroundColor(getResources().getColor(R.color.dark_blue));
-            } else {
-                view.findViewById(R.id.indicator_view).setBackgroundColor(0);
-            }
-
-            ((TextView) view.findViewById(R.id.category_name)).setText(getPageTitle(j));
-        }
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                for (int j = 0; j < tabs.getTabCount(); j++) {
-                    TabLayout.Tab tabAt = tabs.getTabAt(j);
-                    assert tabAt != null;
-                    View view = tabAt.getCustomView();
-
-                    assert view != null;
-                    view.findViewById(R.id.indicator_view).setBackgroundColor(0);
-                    tabAt.setCustomView(view);
-                }
-
-                TabLayout.Tab tabAt = tabs.getTabAt(i);
-                View customView;
-                if (tabAt != null && tabAt.getCustomView() != null) {
-                    customView = tabAt.getCustomView();
-                    customView.findViewById(R.id.indicator_view)
-                            .setBackgroundColor(getResources().getColor(R.color.dark_blue));
-                    ((TextView) customView.findViewById(R.id.category_name)).setText(getPageTitle(i));
-                    tabAt.setCustomView(customView);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-    }
-
-    private String getPageTitle(int position) {
-        String title = "";
-        switch (position) {
-            case 0:
-                title = "All";
-                break;
-
-            case 1:
-                title = "Pending";
-                break;
-
-            case 2:
-                title = "Completed";
-                break;
-        }
-        return title.toUpperCase();
     }
 
     @Override

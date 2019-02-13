@@ -103,7 +103,6 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         ((TextView) view.findViewById(R.id.form_title)).setText(data.getName());
 
         view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
-            // TODO: 12-02-2019 launch FormFragment here
             Intent intent = new Intent(mContext, FormActivity.class);
             intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
             mContext.startActivity(intent);
