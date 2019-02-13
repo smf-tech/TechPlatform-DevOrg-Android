@@ -28,7 +28,7 @@
                 android:layout_marginStart="@dimen/dimen_25dp"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginEnd="@dimen/dimen_20dp"
-                android:background="@drawable/bg_lightest_grey"
+                android:background="@drawable/bg_rounded_rect_gray"
                 android:visibility="gone">
 
                 <TextView
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_25dp"
                 android:layout_marginEnd="@dimen/dimen_20dp"
-                android:background="@drawable/bg_lightest_grey"
+                android:background="@drawable/bg_rounded_rect_gray"
                 android:orientation="vertical" />
 
         </LinearLayout>

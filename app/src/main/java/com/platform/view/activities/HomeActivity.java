@@ -138,9 +138,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         }
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        if (!dashboardFragment.isAdded()) {
-            adapter.addFragment(dashboardFragment, "Dashboard");
-        }
+        adapter.addFragment(dashboardFragment, "Dashboard");
         adapter.addFragment(new StoriesFragment(), "Stories");
         adapter.addFragment(new ConnectFragment(), "Connect");
         viewPager.setAdapter(adapter);
