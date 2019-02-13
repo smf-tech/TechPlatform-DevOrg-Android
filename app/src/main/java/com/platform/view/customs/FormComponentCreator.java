@@ -59,10 +59,22 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
                 radioButtonForm.setText(formData.getChoices().get(index).getText());
+                radioButtonForm.setId(index);
+                radioGroupForm.addView(radioButtonForm);
+
+                radioGroupForm.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
+                    if (!TextUtils.isEmpty(formData.getName()) &&
+                            !TextUtils.isEmpty(((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText())) {
+                        requestObjectMap.put(formData.getName(), ((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText().toString());
+                    } else {
+                        requestObjectMap.remove(formData.getName());
+                    }
+
+                });
+
                 if (index == 0) {
                     radioButtonForm.setChecked(true);
                 }
-                radioGroupForm.addView(radioButtonForm);
             }
         }
 
