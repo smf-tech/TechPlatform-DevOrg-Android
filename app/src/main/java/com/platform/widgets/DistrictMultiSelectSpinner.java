@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.platform.R;
@@ -21,6 +21,7 @@ public class DistrictMultiSelectSpinner extends android.support.v7.widget.AppCom
     private boolean[] selectedValues;
     private String defaultText;
     private DistrictMultiSpinnerListener listener;
+    private final String TAG = DistrictMultiSelectSpinner.class.getName();
 
     public DistrictMultiSelectSpinner(Context context) {
         super(context);
@@ -77,14 +78,22 @@ public class DistrictMultiSelectSpinner extends android.support.v7.widget.AppCom
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getResources().getString(R.string.district));
-        builder.setMultiChoiceItems(
-                districtNames.toArray(new CharSequence[districtNames.size()]), selectedValues, this);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        builder.setOnCancelListener(this);
-        builder.setCancelable(false);
-        builder.show();
+        if (districtNames == null) {
+            return false;
+        }
+
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getResources().getString(R.string.district));
+            builder.setMultiChoiceItems(
+                    districtNames.toArray(new CharSequence[districtNames.size()]), selectedValues, this);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.setOnCancelListener(this);
+            builder.setCancelable(false);
+            builder.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         return true;
     }
 

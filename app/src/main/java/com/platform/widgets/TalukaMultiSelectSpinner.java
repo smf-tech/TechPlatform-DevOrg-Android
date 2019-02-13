@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.platform.R;
@@ -19,6 +20,7 @@ public class TalukaMultiSelectSpinner extends android.support.v7.widget.AppCompa
     private boolean[] selectedValues;
     private String defaultText;
     private TalukaMultiSpinnerListener listener;
+    private final String TAG = TalukaMultiSelectSpinner.class.getName();
 
     public TalukaMultiSelectSpinner(Context context) {
         super(context);
@@ -66,14 +68,21 @@ public class TalukaMultiSelectSpinner extends android.support.v7.widget.AppCompa
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getResources().getString(R.string.taluka));
-        builder.setMultiChoiceItems(
-                talukaNames.toArray(new CharSequence[talukaNames.size()]), selectedValues, this);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        builder.setOnCancelListener(this);
-        builder.setCancelable(false);
-        builder.show();
+        if (talukaNames == null) {
+            return false;
+        }
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getResources().getString(R.string.taluka));
+            builder.setMultiChoiceItems(
+                    talukaNames.toArray(new CharSequence[talukaNames.size()]), selectedValues, this);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.setOnCancelListener(this);
+            builder.setCancelable(false);
+            builder.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         return true;
     }
 

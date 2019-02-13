@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.platform.R;
@@ -20,6 +21,7 @@ public class RoleMultiSelectSpinner extends android.support.v7.widget.AppCompatS
     private boolean[] selectedValues;
     private String defaultText;
     private RoleMultiSpinnerListener listener;
+    private final String TAG = RoleMultiSelectSpinner.class.getName();
 
     public RoleMultiSelectSpinner(Context context) {
         super(context);
@@ -78,14 +80,19 @@ public class RoleMultiSelectSpinner extends android.support.v7.widget.AppCompatS
         if (roleNames == null) {
             return false;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getResources().getString(R.string.role));
-        builder.setMultiChoiceItems(
-                roleNames.toArray(new CharSequence[roleNames.size()]), selectedValues, this);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        builder.setOnCancelListener(this);
-        builder.setCancelable(false);
-        builder.show();
+
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getResources().getString(R.string.role));
+            builder.setMultiChoiceItems(
+                    roleNames.toArray(new CharSequence[roleNames.size()]), selectedValues, this);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.setOnCancelListener(this);
+            builder.setCancelable(false);
+            builder.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         return true;
     }
 
