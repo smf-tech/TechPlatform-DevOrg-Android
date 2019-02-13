@@ -138,9 +138,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         }
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        if (!dashboardFragment.isAdded()) {
-            adapter.addFragment(dashboardFragment, "Dashboard");
-        }
+        adapter.addFragment(dashboardFragment, "Dashboard");
         adapter.addFragment(new StoriesFragment(), "Stories");
         adapter.addFragment(new ConnectFragment(), "Connect");
         viewPager.setAdapter(adapter);
@@ -253,6 +251,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_menu_forms:
+                goToForms();
                 break;
 
             case R.id.action_menu_teams:
@@ -307,9 +306,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void goToForms() {
-        Intent intent = new Intent(this, FormsActivity.class);
-        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+        try {
+            Intent intent = new Intent(this, FormsActivity.class);
+            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+            startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override

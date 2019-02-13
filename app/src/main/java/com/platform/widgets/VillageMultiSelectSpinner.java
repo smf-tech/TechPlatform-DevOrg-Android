@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.platform.R;
@@ -19,6 +20,7 @@ public class VillageMultiSelectSpinner extends android.support.v7.widget.AppComp
     private List<String> villageNames;
     private boolean[] selectedValues;
     private VillageMultiSpinnerListener listener;
+    private final String TAG = VillageMultiSelectSpinner.class.getName();
 
     public VillageMultiSelectSpinner(Context context) {
         super(context);
@@ -67,14 +69,21 @@ public class VillageMultiSelectSpinner extends android.support.v7.widget.AppComp
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getResources().getString(R.string.village));
-        builder.setMultiChoiceItems(
-                villageNames.toArray(new CharSequence[villageNames.size()]), selectedValues, this);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        builder.setOnCancelListener(this);
-        builder.setCancelable(false);
-        builder.show();
+        if (villageNames == null) {
+            return false;
+        }
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getResources().getString(R.string.village));
+            builder.setMultiChoiceItems(
+                    villageNames.toArray(new CharSequence[villageNames.size()]), selectedValues, this);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.setOnCancelListener(this);
+            builder.setCancelable(false);
+            builder.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         return true;
     }
 

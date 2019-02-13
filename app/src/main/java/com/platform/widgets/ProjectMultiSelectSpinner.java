@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 
 import com.platform.R;
@@ -20,6 +22,7 @@ public class ProjectMultiSelectSpinner extends android.support.v7.widget.AppComp
     private boolean[] selectedValues;
     private String defaultText;
     private ProjectMultiSpinnerListener listener;
+    private final String TAG = ProjectMultiSelectSpinner.class.getName();
 
     public ProjectMultiSelectSpinner(Context context) {
         super(context);
@@ -76,14 +79,22 @@ public class ProjectMultiSelectSpinner extends android.support.v7.widget.AppComp
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getResources().getString(R.string.project));
-        builder.setMultiChoiceItems(
-                projectNames.toArray(new CharSequence[projectNames.size()]), selectedValues, this);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        builder.setOnCancelListener(this);
-        builder.setCancelable(false);
-        builder.show();
+        if (projectNames == null) {
+            return false;
+        }
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getResources().getString(R.string.project));
+            builder.setMultiChoiceItems(
+                    projectNames.toArray(new CharSequence[projectNames.size()]), selectedValues, this);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.setOnCancelListener(this);
+            builder.setCancelable(false);
+            builder.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
         return true;
     }
 

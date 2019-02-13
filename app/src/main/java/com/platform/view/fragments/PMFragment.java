@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private LinearLayout lnrOuter;
     private RecyclerView rvPendingForms;
     private RelativeLayout rltPendingForms;
-    private TextView txtViewAllForms;
+    private final String TAG = PMFragment.class.getName();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -61,7 +62,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void init() {
-        txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
+        TextView txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
         rvPendingForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
         lnrOuter = pmFragmentView.findViewById(R.id.lnr_dashboard_forms_category);
         rltPendingForms = pmFragmentView.findViewById(R.id.rlt_pending_forms);
@@ -127,11 +128,11 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
-        for (ProcessData data :
-                childList) {
+        for (ProcessData data : childList) {
             if (!TextUtils.isEmpty(data.getName())) {
                 View formTypeView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName());
+
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageView imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
                     imgCreateForm.setOnClickListener(v -> {
@@ -150,9 +151,13 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_forms:
-                Intent intent = new Intent(getActivity(), FormsActivity.class);
-                intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-                startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+                try {
+                    Intent intent = new Intent(getActivity(), FormsActivity.class);
+                    intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+                    startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
                 break;
         }
     }
