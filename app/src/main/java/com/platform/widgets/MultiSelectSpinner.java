@@ -6,38 +6,36 @@ import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 
-import com.platform.R;
-import com.platform.models.profile.JurisdictionLevel;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppCompatSpinner implements
+public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinner implements
         DialogInterface.OnMultiChoiceClickListener, DialogInterface.OnCancelListener {
 
-    private List<String> clusterNames;
+    private List<String> stringList;
     private boolean[] selectedValues;
     private String defaultText;
-    private ClusterMultiSpinnerListener listener;
+    private MultiSpinnerListener listener;
+    public String spinnerName;
 
-    public ClusterMultiSelectSpinner(Context context) {
+    public MultiSelectSpinner(Context context) {
         super(context);
     }
 
-    public ClusterMultiSelectSpinner(Context context, int mode) {
+    public MultiSelectSpinner(Context context, int mode) {
         super(context, mode);
     }
 
-    public ClusterMultiSelectSpinner(Context context, AttributeSet attrs) {
+    public MultiSelectSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ClusterMultiSelectSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MultiSelectSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public ClusterMultiSelectSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
+    public MultiSelectSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
         super(context, attrs, defStyleAttr, mode);
     }
 
@@ -50,9 +48,9 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
     public void onCancel(DialogInterface dialog) {
         // refresh text on spinner
         StringBuilder spinnerSelectedText = new StringBuilder();
-        for (int i = 0; i < clusterNames.size(); i++) {
+        for (int i = 0; i < stringList.size(); i++) {
             if (selectedValues[i]) {
-                spinnerSelectedText.append(clusterNames.get(i));
+                spinnerSelectedText.append(stringList.get(i));
                 spinnerSelectedText.append(", ");
             }
         }
@@ -70,16 +68,16 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, new String[]{spinnerText});
         setAdapter(adapter);
-        listener.onClustersSelected(selectedValues);
+        listener.onValuesSelected(selectedValues, spinnerName);
     }
 
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getResources().getString(R.string.cluster));
+        builder.setTitle(spinnerName);
         builder.setMultiChoiceItems(
-                clusterNames.toArray(new CharSequence[clusterNames.size()]), selectedValues, this);
+                stringList.toArray(new CharSequence[stringList.size()]), selectedValues, this);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
         builder.setOnCancelListener(this);
         builder.setCancelable(false);
@@ -87,13 +85,11 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
         return true;
     }
 
-    public void setItems(List<JurisdictionLevel> items, String allText,
-                         ClusterMultiSpinnerListener listener) {
+    public void setItems(List<String> items, String allText,
+                         MultiSpinnerListener listener) {
 
-        this.clusterNames = new ArrayList<>();
-        for (JurisdictionLevel jurisdictionLevel : items) {
-            this.clusterNames.add(jurisdictionLevel.getJurisdictionLevelName());
-        }
+        this.stringList = new ArrayList<>();
+        this.stringList.addAll(items);
 
         this.defaultText = allText;
         this.listener = listener;
@@ -110,7 +106,7 @@ public class ClusterMultiSelectSpinner extends android.support.v7.widget.AppComp
         setAdapter(adapter);
     }
 
-    public interface ClusterMultiSpinnerListener {
-        void onClustersSelected(boolean[] selected);
+    public interface MultiSpinnerListener {
+        void onValuesSelected(boolean[] selected, String spinnerName);
     }
 }

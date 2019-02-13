@@ -219,7 +219,7 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_project" />
 
-            <com.platform.widgets.ProjectMultiSelectSpinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_project"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -230,7 +230,7 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_role" />
 
-            <com.platform.widgets.RoleMultiSelectSpinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_role"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -253,7 +253,7 @@
                 android:text="@string/mandatory_district"
                 android:visibility="gone" />
 
-            <com.platform.widgets.DistrictMultiSelectSpinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_district"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -267,7 +267,7 @@
                 android:text="@string/mandatory_taluka"
                 android:visibility="gone" />
 
-            <com.platform.widgets.TalukaMultiSelectSpinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_taluka"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -281,7 +281,7 @@
                 android:text="@string/mandatory_cluster"
                 android:visibility="gone" />
 
-            <com.platform.widgets.ClusterMultiSelectSpinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_cluster"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -295,7 +295,7 @@
                 android:text="@string/mandatory_village"
                 android:visibility="gone" />
 
-            <com.platform.widgets.VillageMultiSelectSpinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_village"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"

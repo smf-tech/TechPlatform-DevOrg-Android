@@ -126,4 +126,13 @@ public class Constants {
         public static final String FORM_STATUS_PENDING = "pending";
         public static final String FORM_STATUS_COMPLETED = "completed";
     }
+
+    public class MultiSelectSpinnerType {
+        public static final String SPINNER_PROJECT = "Project";
+        public static final String SPINNER_ROLE = "Role";
+        public static final String SPINNER_DISTRICT = "District";
+        public static final String SPINNER_TALUKA = "Taluka";
+        public static final String SPINNER_CLUSTER = "Cluster";
+        public static final String SPINNER_VILLAGE = "Village";
+    }
 }

@@ -3,9 +3,36 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_70dp"
     android:layout_centerInParent="true"
-    android:background="@color/card_gray_bg"
+    android:background="@drawable/bg_rounded_rect_gray"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/form_image"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/form_title"
+            style="@style/FormLabel.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/category_title"
+            android:textColor="@color/pink" />
+
+        <TextView
+            android:id="@+id/form_count"
+            style="@style/FormLabel.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:text="@string/content_description" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/form_image"
@@ -13,27 +40,10 @@
         android:layout_height="@dimen/dimen_15dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:scaleType="fitCenter"
+        android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/ic_right_arrow_grey" />
-
-    <TextView
-        android:id="@+id/form_title"
-        style="@style/FormLabel.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:layout_marginStart="@dimen/dimen_20dp"
-        android:text="@string/category_title"
-        android:textColor="@color/pink" />
-
-    <TextView
-        android:id="@+id/form_count"
-        style="@style/FormLabel.Description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_20dp"
-        android:layout_below="@id/form_title"
-        android:layout_marginTop="0dp" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_right_arrow_grey"
+        android:tint="@color/black" />
 </RelativeLayout>
