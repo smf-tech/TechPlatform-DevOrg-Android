@@ -253,6 +253,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_menu_forms:
+                goToForms();
                 break;
 
             case R.id.action_menu_teams:
@@ -307,9 +308,13 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void goToForms() {
-        Intent intent = new Intent(this, FormsActivity.class);
-        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-        startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+        try {
+            Intent intent = new Intent(this, FormsActivity.class);
+            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+            startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
