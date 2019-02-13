@@ -5,17 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
 import com.platform.presenter.ReportsFragmentPresenter;
-import com.platform.view.adapters.ReportsListAdapter;
+import com.platform.view.adapters.ReportCategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,11 +28,10 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener {
 
     private Context context;
     private View reportFragmentView;
-    private ReportsListAdapter adapter;
+    private ReportCategoryAdapter adapter;
     private List<String> reportsHeaderList = new ArrayList<>();
     private Map<String, List<ReportData>> reportsList = new HashMap<>();
 
-    private int lastExpandedPosition = -1;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -53,18 +53,10 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener {
     }
 
     private void init() {
-        adapter = new ReportsListAdapter(context, reportsHeaderList, reportsList);
-
-        ExpandableListView reportsList = reportFragmentView.findViewById(R.id.elv_dashboard_reports);
-        reportsList.setAdapter(adapter);
-        reportsList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> false);
-        reportsList.setOnGroupExpandListener(groupPosition -> {
-            if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
-                reportsList.collapseGroup(lastExpandedPosition);
-            }
-            lastExpandedPosition = groupPosition;
-        });
-        reportsList.setOnGroupCollapseListener(groupPosition -> {});
+        RecyclerView recyclerView = reportFragmentView.findViewById(R.id.rv_dashboard_reports);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        adapter = new ReportCategoryAdapter(context, reportsHeaderList, reportsList);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

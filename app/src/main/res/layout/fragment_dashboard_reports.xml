@@ -8,8 +8,16 @@
     android:focusableInTouchMode="true"
     tools:ignore="Overdraw">
 
-    <ExpandableListView
-        android:id="@+id/elv_dashboard_reports"
+    <!--<ExpandableListView-->
+        <!--android:id="@+id/elv_dashboard_reports"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="@dimen/dimen_05dp"-->
+        <!--android:dividerHeight="@dimen/dimen_01dp"-->
+        <!--android:groupIndicator="@null" />-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_dashboard_reports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
