@@ -7,7 +7,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
@@ -34,6 +37,68 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
+    }
+
+    public View radioGroupTemplate(final Elements formData) {
+
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "View returned null");
+            return null;
+        }
+
+        RelativeLayout radioTemplateView = (RelativeLayout) View.inflate(
+                fragment.get().getContext(), R.layout.form_radio_template, null);
+
+        RadioGroup radioGroupForm = radioTemplateView.findViewById(R.id.rg_form_template);
+        TextView txtRadioGroupName = radioTemplateView.findViewById(R.id.txt_form_radio_group_name);
+        if (!TextUtils.isEmpty(formData.getTitle())) {
+            txtRadioGroupName.setText(formData.getTitle());
+        }
+
+        if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
+            for (int index = 0; index < formData.getChoices().size(); index++) {
+                RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
+                radioButtonForm.setText(formData.getChoices().get(index).getText());
+                if (index == 0) {
+                    radioButtonForm.setChecked(true);
+                }
+                radioGroupForm.addView(radioButtonForm);
+            }
+        }
+
+        return radioTemplateView;
+    }
+
+    public synchronized Object[] dropDownTemplate(Elements formData) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "dropDownTemplate returned null");
+            return null;
+        }
+
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
+        View view = template.init(setFieldAsMandatory(formData.isRequired()));
+
+        if (!TextUtils.isEmpty(formData.getTitle()) &&
+                formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {
+
+            if (Util.getJurisdictionLevelDataFromPref() != null) {
+                List<String> locationValues = new ArrayList<>();
+                for (JurisdictionLevel jurisdictionLevel :
+                        Util.getJurisdictionLevelDataFromPref().getJurisdictionLevelList()) {
+                    locationValues.add(jurisdictionLevel.getJurisdictionLevelName());
+                }
+                template.setListData(locationValues);
+            }
+        } else if (formData.getChoices() != null) {
+            List<String> choiceValues = new ArrayList<>();
+            for (Choice choice :
+                    formData.getChoices()) {
+                choiceValues.add(choice.getText());
+            }
+            template.setListData(choiceValues);
+        }
+
+        return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
     }
 
     public View textInputTemplate(final Elements formData) {
@@ -78,38 +143,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         textInputLayout.setHint(formData.getTitle());
 
         return textTemplateView;
-    }
-
-    public synchronized Object[] dropDownTemplate(Elements formData) {
-        if (fragment == null || fragment.get() == null) {
-            Log.e(TAG, "dropDownTemplate returned null");
-            return null;
-        }
-
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
-        View view = template.init(setFieldAsMandatory(formData.isRequired()));
-
-        if (!TextUtils.isEmpty(formData.getTitle()) &&
-                formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {
-
-            if (Util.getJurisdictionLevelDataFromPref() != null) {
-                List<String> locationValues = new ArrayList<>();
-                for (JurisdictionLevel jurisdictionLevel :
-                        Util.getJurisdictionLevelDataFromPref().getJurisdictionLevelList()) {
-                    locationValues.add(jurisdictionLevel.getJurisdictionLevelName());
-                }
-                template.setListData(locationValues);
-            }
-        } else if (formData.getChoices() != null) {
-            List<String> choiceValues = new ArrayList<>();
-            for (Choice choice :
-                    formData.getChoices()) {
-                choiceValues.add(choice.getText());
-            }
-            template.setListData(choiceValues);
-        }
-
-        return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
     }
 
     private String setFieldAsMandatory(boolean isRequired) {

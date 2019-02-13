@@ -114,6 +114,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                         Object[] objects = formComponentCreator.dropDownTemplate(formData);
                         addViewToMainContainer((View) objects[0]);
                         break;
+
+                    case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                        Log.d(TAG, "RADIO_GROUP_TEMPLATE");
+                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(formData));
+                        break;
                 }
             }
         }
