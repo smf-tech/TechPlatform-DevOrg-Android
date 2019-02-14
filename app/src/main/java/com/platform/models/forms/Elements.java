@@ -17,12 +17,23 @@ public class Elements {
     @SerializedName("title")
     @Expose
     private String title;
+    @SerializedName("inputType")
+    @Expose
+    private String inputType;
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
+    }
 
     public String getType() {
         return type;

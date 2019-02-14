@@ -115,6 +115,7 @@ public class Constants {
         public static final String TEXT_TEMPLATE = "text";
         public static final String DROPDOWN_TEMPLATE = "dropdown";
         public static final String RADIO_GROUP_TEMPLATE = "radiogroup";
+        public static final String FILE_TEMPLATE = "file";
     }
 
     public static final String playStoreLink = "https://play.google.com/store/apps/details?" +
@@ -134,5 +135,10 @@ public class Constants {
         public static final String SPINNER_TALUKA = "Taluka";
         public static final String SPINNER_CLUSTER = "Cluster";
         public static final String SPINNER_VILLAGE = "Village";
+    }
+
+    public class FormInputType {
+        public static final String INPUT_TYPE_DATE = "date";
+        public static final String INPUT_TYPE_NUMBER = "number";
     }
 }
