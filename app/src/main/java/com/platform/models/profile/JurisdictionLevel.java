@@ -7,6 +7,9 @@ public class JurisdictionLevel {
     @SerializedName("_id")
     private String id;
 
+    @SerializedName("levelName")
+    private String levelName;
+
     @SerializedName("state_id")
     private String stateId;
 
@@ -68,5 +71,13 @@ public class JurisdictionLevel {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 }

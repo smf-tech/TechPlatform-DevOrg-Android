@@ -123,7 +123,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
             profilePresenter.getOrganizations();
-            profilePresenter.getStates();
         }
 
         initViews();

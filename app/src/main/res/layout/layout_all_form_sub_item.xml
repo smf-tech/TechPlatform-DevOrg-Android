@@ -3,96 +3,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    tools:ignore="PrivateResource">
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:padding="@dimen/dimen_02dp"
-        android:layout_marginEnd="@dimen/dimen_02dp"
-        android:layout_marginStart="@dimen/dimen_02dp"
-        app:cardBackgroundColor="@android:color/white"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/form_item_status_indicator_width">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <View
-                android:id="@+id/form_status_indicator"
-                android:layout_width="@dimen/form_item_status_indicator_width"
-                android:layout_height="wrap_content"
-                android:background="@drawable/form_status_indicator_all" />
-
-            <TextView
-                android:id="@+id/form_title"
-                style="@style/FormLabel.Title"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:layout_marginEnd="@dimen/dimen_45dp"
-                android:text="@string/category_title"
-                android:textColor="@color/pink" />
+                android:layout_toStartOf="@+id/pin_button">
 
-            <TextView
-                android:id="@+id/target_date_label"
-                style="@style/FormLabel.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/form_title"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_07dp"
-                android:text="Target Date: N/A"
-                tools:ignore="HardcodedText" />
+                <View
+                    android:id="@+id/form_status_indicator"
+                    android:layout_width="@dimen/form_item_status_indicator_width"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/form_status_indicator_all"
+                    android:minHeight="@dimen/dimen_45dp" />
 
-            <TextView
-                android:id="@+id/total_count_label"
-                style="@style/FormLabel.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/form_title"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_07dp"
-                android:layout_toEndOf="@id/target_date_label"
-                android:text="Total Count: 0"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/form_title"
+                    style="@style/FormLabel.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/category_title"
+                    android:textColor="@color/pink" />
 
-            <TextView
-                android:id="@+id/submitted_count_label"
-                style="@style/FormLabel.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/target_date_label"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:text="Submitted Count: 0"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/target_date_label"
+                    style="@style/FormLabel.Description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/form_title"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_07dp"
+                    android:text="Target Date: N/A"
+                    tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/expected_count_label"
-                style="@style/FormLabel.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/target_date_label"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:layout_toEndOf="@id/target_date_label"
-                android:text="Expected Count: 0"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/total_count_label"
+                    style="@style/FormLabel.Description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/form_title"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_07dp"
+                    android:layout_toEndOf="@id/target_date_label"
+                    android:text="Total Count: 0"
+                    tools:ignore="HardcodedText" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/add_form_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/submitted_count_label"
+                    style="@style/FormLabel.Description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/target_date_label"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:text="Submitted Count: 0"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/expected_count_label"
+                    style="@style/FormLabel.Description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/target_date_label"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_toEndOf="@id/target_date_label"
+                    android:text="Expected Count: 0"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/pin_button"
+                android:layout_width="@dimen/dimen_28dp"
+                android:layout_height="@dimen/dimen_28dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dimen_05dp"
-                android:backgroundTint="@color/pink"
-                android:src="@android:drawable/ic_input_add"
-                android:tint="@android:color/white"
-                app:fabSize="mini"
-                tools:ignore="RelativeOverlap" />
-
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:background="@drawable/bg_circle_profile"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_plus" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 </RelativeLayout>
