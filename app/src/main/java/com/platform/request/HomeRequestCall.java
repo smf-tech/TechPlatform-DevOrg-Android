@@ -44,7 +44,7 @@ public class HomeRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getModulesUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
+                + String.format(Urls.Home.GET_MODULES/*, user.getOrgId(), user.getRoleIds()*/);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
