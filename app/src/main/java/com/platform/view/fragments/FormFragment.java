@@ -30,6 +30,7 @@ import com.platform.view.customs.FormComponentCreator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,6 +68,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
             formPresenter.getProcessDetails(processId);
+
+            boolean isReadOnly = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
+            if (isReadOnly) {
+                formPresenter.getFormResults(processId);
+            }
         }
     }
 
@@ -118,6 +124,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Log.d(TAG, "RADIO_GROUP_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.radioGroupTemplate(formData));
+                        break;
+
+                    case Constants.FormsFactory.FILE_TEMPLATE:
+                        Log.d(TAG, "FILE_TEMPLATE");
+                        addViewToMainContainer(formComponentCreator.fileTemplate(formData));
                         break;
                 }
             }
@@ -171,39 +182,49 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 break;
 
             case R.id.btn_submit:
-                if (formComponentCreator.isValid()) {
+                /*if (!formComponentCreator.isValid()) {
+                    Util.showToast(errorMsg, this);
+                } else {*/
+                    save();
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setFormId(formModel.getData().getId());
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
                         formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
                     } else {
-                        //Save in local db
                         if (formModel.getData() != null) {
-                            SavedForm savedForm = new SavedForm();
-                            savedForm.setFormId(formModel.getData().getId());
-                            savedForm.setFormName(formModel.getData().getName());
-                            savedForm.setSynced(false);
-                            if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
-                                savedForm.setFormCategory(formModel.getData().getCategory().getName());
-                            }
-                            savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-                            SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-                            savedForm.setCreatedAt(createdDateFormat.format(new Date()));
-
-                            formPresenter.setSavedForm(savedForm);
                             formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
                             Util.showToast("Form saved offline ", getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                         }
                     }
-                } else {
-                    Util.showToast(errorMsg, this);
-                }
+//                }
                 break;
         }
     }
 
+    private void save() {
+        SavedForm savedForm = new SavedForm();
+        savedForm.setFormId(formModel.getData().getId());
+        savedForm.setFormName(formModel.getData().getName());
+        savedForm.setSynced(false);
+        if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
+            savedForm.setFormCategory(formModel.getData().getCategory().getName());
+        }
+        savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+        SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
+        savedForm.setCreatedAt(createdDateFormat.format(new Date()));
+
+        formPresenter.setSavedForm(savedForm);
+    }
+
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public void setFormReadOnlyMode(final String response) {
+        formModel = new Gson().fromJson(response, Form.class);
+
+        HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
+        Log.e(TAG, "setFormReadOnlyMode: \n" + requestObject.toString());
     }
 }

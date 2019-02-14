@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +24,9 @@ import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
-    private Map<String, List<ProcessData>> mFormsData;
+    private Map<String, List<String>> mFormsData;
 
-    public FormCategoryAdapter(Context context, final Map<String, List<ProcessData>> formsData) {
+    public FormCategoryAdapter(final Context context, final Map<String, List<String>> formsData) {
         this.mContext = context;
         mFormsData = formsData;
     }
@@ -60,13 +61,13 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
     @Override
     public void onBindViewHolder(@NonNull FormCategoryAdapter.ViewHolder viewHolder, int i) {
 
-
-
         viewHolder.syncButton.setOnClickListener(v ->
                 Toast.makeText(mContext, "Sync clicked!", Toast.LENGTH_SHORT).show());
+
         viewHolder.syncButton.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setRippleColor(mContext.getResources().getColor(R.color.red));
-        viewHolder.syncButton.setImageDrawable(mContext.getResources().getDrawable(android.R.drawable.stat_notify_sync));
+        viewHolder.syncButton.setImageDrawable(mContext.getResources().getDrawable(
+                android.R.drawable.stat_notify_sync));
         viewHolder.addButton.setColorFilter(mContext.getResources().getColor(R.color.white));
 
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -75,11 +76,20 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         objects1 = mFormsData.keySet().toArray(objects1);
         String category = objects1[i];
 
-        List<ProcessData> processData = mFormsData.get(category);
+        List<String> list = mFormsData.get(category);
+        ArrayList<ProcessData> dataList = new ArrayList<>();
+
+        if (list == null) return;
+
+        for (String object: list) {
+            ProcessData data = new ProcessData();
+            data.setName(object);
+//            data.setId(object.id);
+            dataList.add(data);
+        }
 
         viewHolder.categoryName.setText(category);
-
-        viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, processData);
+        viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, dataList);
         viewHolder.addButton.hide();
         viewHolder.syncButton.hide();
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);

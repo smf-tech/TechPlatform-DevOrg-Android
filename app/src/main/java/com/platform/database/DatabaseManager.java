@@ -3,8 +3,10 @@ package com.platform.database;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.platform.dao.FormDataDao;
 import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
+import com.platform.models.forms.FormData;
 
 import java.util.List;
 
@@ -36,5 +38,15 @@ public class DatabaseManager {
     public List<SavedForm> getNonSyncedPendingForms() {
         SavedFormDao savedFormDao = appDatabase.formDao();
         return savedFormDao.getAllNonSyncedForms();
+    }
+
+    public void insertFormSchema(FormData... formData) {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        formDataDao.insertAll(formData);
+    }
+
+    public List<FormData> getFormSchema() {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        return formDataDao.getFormSchema();
     }
 }

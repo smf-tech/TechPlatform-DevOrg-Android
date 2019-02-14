@@ -2,11 +2,13 @@ package com.platform.view.customs;
 
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -135,6 +137,17 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         textInputField.setMaxLines(1);
         textInputField.setText("");
         textInputField.setTag(formData.getTitle());
+        if (!TextUtils.isEmpty(formData.getInputType())) {
+            switch (formData.getInputType()) {
+                case Constants.FormInputType.INPUT_TYPE_DATE:
+                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+            }
+        }
         textInputField.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -163,6 +176,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         textInputLayout.setHint(formData.getTitle());
 
         return textTemplateView;
+    }
+
+    public View fileTemplate(final Elements formData) {
+
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "View returned null");
+            return null;
+        }
+
+        ImageView imageView = new ImageView(fragment.get().getContext());
+
+        imageView.setImageDrawable(fragment.get().getResources().getDrawable(R.drawable.add_img, null));
+
+        return imageView;
     }
 
     private String setFieldAsMandatory(boolean isRequired) {

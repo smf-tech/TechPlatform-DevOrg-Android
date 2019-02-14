@@ -66,7 +66,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         mNoRecordsView = view.findViewById(R.id.no_records_view);
 
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-        presenter.getAllProcesses();
+        presenter.getAllFormMasters();
 
         expandableListView = view.findViewById(R.id.forms_expandable_list);
 
@@ -109,6 +109,11 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         } else {
             mNoRecordsView.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    @Override
+    public void onMastersFormsLoaded(final String response) {
 
     }
 

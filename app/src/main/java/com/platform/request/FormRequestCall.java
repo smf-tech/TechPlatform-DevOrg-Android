@@ -66,6 +66,39 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void getChoicesByUrl(String choicesUrl) {
+        Response.Listener<JSONObject> choicesResponseListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.i(TAG, "getChoicesByUrl - Resp: " + res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener("");
+            }
+        };
+
+        Response.ErrorListener choicesErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                choicesUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                choicesResponseListener,
+                choicesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void getProcessDetails(String processId) {
         Response.Listener<JSONObject> processDetailsResponseListener = response -> {
             try {
