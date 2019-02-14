@@ -3,11 +3,11 @@ package com.platform.view.adapters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -44,7 +44,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         TextView mName;
         TextView mDate;
         View indicatorView;
-        FloatingActionButton mPinButton;
+        ImageButton mPinButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,12 +73,12 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
                 break;
 
             case FORM_STATUS_PENDING:
-                viewHolder.mPinButton.hide();
+                viewHolder.mPinButton.setVisibility(View.GONE);
                 drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
                 break;
 
             default:
-                viewHolder.mPinButton.hide();
+                viewHolder.mPinButton.setVisibility(View.GONE);
                 drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
                 break;
         }

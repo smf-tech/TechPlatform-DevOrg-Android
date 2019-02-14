@@ -7,5 +7,5 @@
     android:drawablePadding="@dimen/dimen_10dp"
     android:gravity="center_horizontal"
     android:textColor="@color/selector_tab_text"
-    android:textSize="@dimen/text_size_16"
+    android:textSize="@dimen/text_size_14"
     android:textStyle="bold" />

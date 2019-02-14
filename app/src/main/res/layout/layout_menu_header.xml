@@ -14,13 +14,19 @@
         android:orientation="horizontal"
         android:padding="@dimen/dimen_15dp">
 
-        <ImageView
-            android:id="@+id/menu_user_profile_photo"
+        <RelativeLayout
             android:layout_width="@dimen/dimen_70dp"
             android:layout_height="@dimen/dimen_70dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/content_description"
-            android:src="@drawable/bg_circle_red" />
+            android:background="@drawable/bg_circle_profile">
+
+            <ImageView
+                android:id="@+id/menu_user_profile_photo"
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_profile" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
