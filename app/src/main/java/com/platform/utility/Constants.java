@@ -98,6 +98,7 @@ public class Constants {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
         public static final String RESPONSE = "response";
+        public static final String EDIT_MODE = "EditMode";
     }
 
     public static class TM {
