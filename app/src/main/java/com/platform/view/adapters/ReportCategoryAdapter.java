@@ -23,7 +23,8 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
     private List<String> mReportsHeaderList;
     private Map<String, List<ReportData>> mReports;
 
-    public ReportCategoryAdapter(Context context, final List<String> reportsHeaderList, final Map<String, List<ReportData>> reports) {
+    public ReportCategoryAdapter(Context context, final List<String> reportsHeaderList,
+                                 final Map<String, List<ReportData>> reports) {
         this.mContext = context;
         mReportsHeaderList = reportsHeaderList;
         mReports = reports;
@@ -44,14 +45,14 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
             addButton = itemView.findViewById(R.id.add_button);
             categoryName = itemView.findViewById(R.id.form_title);
             recyclerView = itemView.findViewById(R.id.forms);
-
         }
     }
 
     @NonNull
     @Override
     public ReportCategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.form_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.form_item,
+                viewGroup, false);
         return new ReportCategoryAdapter.ViewHolder(v);
     }
 
@@ -62,12 +63,11 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         String category = mReportsHeaderList.get(i);
-
-        List<ReportData> reportData = mReports.get(category);
-
         viewHolder.categoryName.setText(category);
 
-        viewHolder.adapter = new ReportsAdapter(reportData);
+        List<ReportData> reportData = mReports.get(category);
+        viewHolder.adapter = new ReportsAdapter(mContext, reportData);
+
         viewHolder.addButton.hide();
         viewHolder.syncButton.hide();
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);
