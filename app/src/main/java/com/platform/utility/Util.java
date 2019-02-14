@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.login.Login;
-import com.platform.models.profile.JurisdictionLevelData;
+import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 
@@ -229,38 +229,36 @@ public class Util {
         editor.apply();
     }
 
-    public static int getUserLocationJurisdictionLevelFromPref() {
+    public static String getUserLocationJurisdictionLevelFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
-        return preferences.getInt(Constants.App.JURISDICTION_LEVEL, 1);
+        return preferences.getString(Constants.App.JURISDICTION_LEVEL, "State");
     }
 
-    public static void saveUserLocationJurisdictionLevel(int level) {
+    public static void saveUserLocationJurisdictionLevel(String level) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(Constants.App.JURISDICTION_LEVEL, level);
+        editor.putString(Constants.App.JURISDICTION_LEVEL, level);
         editor.apply();
     }
 
-    public static JurisdictionLevelData getJurisdictionLevelDataFromPref() {
+    public static JurisdictionLevelResponse getJurisdictionLevelDataFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
         String obj = preferences.getString(Constants.App.JURISDICTION_LEVEL_DATA, "{}");
-        return new Gson().fromJson(obj, JurisdictionLevelData.class);
+        return new Gson().fromJson(obj, JurisdictionLevelResponse.class);
     }
 
-    public static void saveJurisdictionLevelData(JurisdictionLevelData jurisdictionLevel) {
+    public static void saveJurisdictionLevelData(String jurisdictionLevel) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(jurisdictionLevel);
-        editor.putString(Constants.App.JURISDICTION_LEVEL_DATA, json);
+        editor.putString(Constants.App.JURISDICTION_LEVEL_DATA, jurisdictionLevel);
         editor.apply();
     }
 

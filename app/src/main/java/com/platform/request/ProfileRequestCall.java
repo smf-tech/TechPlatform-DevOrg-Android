@@ -162,13 +162,13 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getJurisdictionLevelData(String stateId, final int level) {
+    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
         Response.Listener<JSONObject> jurisdictionSuccessListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.i(TAG, "API Jurisdiction Response:" + res);
-                    listener.onJurisdictionFetched(res, level);
+                    listener.onJurisdictionFetched(res, levelName);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -178,7 +178,7 @@ public class ProfileRequestCall {
         Response.ErrorListener jurisdictionErrorListener = error -> listener.onErrorListener(error);
 
         final String getStateUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, stateId, level);
+                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

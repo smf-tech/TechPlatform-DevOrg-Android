@@ -26,8 +26,8 @@ import com.platform.receivers.SmsReceiver;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
-import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
+import com.platform.view.activities.ProfileActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -296,7 +296,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (data != null) {
             try {
                 Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
-                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
 

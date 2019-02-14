@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
     private String defaultText;
     private MultiSpinnerListener listener;
     public String spinnerName;
+    private final String TAG = MultiSelectSpinner.class.getName();
 
     public MultiSelectSpinner(Context context) {
         super(context);
@@ -74,14 +76,24 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(spinnerName);
-        builder.setMultiChoiceItems(
-                stringList.toArray(new CharSequence[stringList.size()]), selectedValues, this);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
-        builder.setOnCancelListener(this);
-        builder.setCancelable(false);
-        builder.show();
+        if (stringList == null) {
+            super.performClick();
+            return false;
+        }
+
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(spinnerName);
+            builder.setMultiChoiceItems(
+                    stringList.toArray(new CharSequence[stringList.size()]), selectedValues, this);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.setOnCancelListener(this);
+            builder.setCancelable(false);
+            builder.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
         return true;
     }
 

@@ -35,7 +35,7 @@ import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.profile.Jurisdiction;
-import com.platform.models.profile.JurisdictionLevel;
+import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
@@ -68,10 +68,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private Spinner spOrganization;
     private Spinner spState;
+    private Spinner spRole;
     private Spinner spStructure;
 
     private MultiSelectSpinner spProject;
-    private MultiSelectSpinner spRole;
     private MultiSelectSpinner spDistrict;
     private MultiSelectSpinner spTaluka;
     private MultiSelectSpinner spCluster;
@@ -83,28 +83,29 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private String userGender = "Male";
 
-    private ArrayList<OrganizationProject> projects = new ArrayList<>();
-    private ArrayList<OrganizationRole> roles = new ArrayList<>();
-    private ArrayList<JurisdictionLevel> districts = new ArrayList<>();
-    private ArrayList<JurisdictionLevel> talukas = new ArrayList<>();
-    private ArrayList<JurisdictionLevel> clusters = new ArrayList<>();
-    private ArrayList<JurisdictionLevel> villages = new ArrayList<>();
+    private List<OrganizationProject> projects = new ArrayList<>();
+    private List<OrganizationRole> roles = new ArrayList<>();
+    private List<String> districts = new ArrayList<>();
+    private List<String> talukas = new ArrayList<>();
+    private List<String> clusters = new ArrayList<>();
+    private List<String> villages = new ArrayList<>();
 
-    private ArrayList<String> projectIds = new ArrayList<>();
-    private ArrayList<String> roleIds = new ArrayList<>();
-    private ArrayList<String> districtIds = new ArrayList<>();
-    private ArrayList<String> talukaIds = new ArrayList<>();
-    private ArrayList<String> clusterIds = new ArrayList<>();
-    private ArrayList<String> villageIds = new ArrayList<>();
+    private ArrayList<String> selectedProjects = new ArrayList<>();
+    private ArrayList<String> selectedRoles = new ArrayList<>();
+    private ArrayList<String> selectedDistricts = new ArrayList<>();
+    private ArrayList<String> selectedTalukas = new ArrayList<>();
+    private ArrayList<String> selectedClusters = new ArrayList<>();
+    private ArrayList<String> selectedVillages = new ArrayList<>();
 
     private Uri outputUri;
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
 
     private List<Organization> organizations = new ArrayList<>();
-    private List<State> states = new ArrayList<>();
+    private List<Location> states = new ArrayList<>();
 
-    private State selectedState;
+    private String selectedState;
+    private OrganizationRole selectedRole;
     private Organization selectedOrg;
 
     private ProgressBar progressBar;
@@ -160,25 +161,31 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         });
 
         spOrganization = findViewById(R.id.sp_user_organization);
-        spState = findViewById(R.id.sp_user_state);
-        spStructure = findViewById(R.id.sp_user_structure);
 
         spProject = findViewById(R.id.sp_project);
         spProject.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_PROJECT;
+
         spRole = findViewById(R.id.sp_role);
-        spRole.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_ROLE;
+        spState = findViewById(R.id.sp_user_state);
+
         spDistrict = findViewById(R.id.sp_district);
         spDistrict.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_DISTRICT;
+
         spTaluka = findViewById(R.id.sp_taluka);
         spTaluka.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_TALUKA;
+
         spCluster = findViewById(R.id.sp_cluster);
         spCluster.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_CLUSTER;
+
+        spStructure = findViewById(R.id.sp_user_structure);
+
         spVillage = findViewById(R.id.sp_village);
         spVillage.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_VILLAGE;
 
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
 
+        hideJurisdictionLevel();
         setListeners();
 
         if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
@@ -230,6 +237,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
         spOrganization.setOnItemSelectedListener(this);
         spState.setOnItemSelectedListener(this);
+        spRole.setOnItemSelectedListener(this);
         spStructure.setOnItemSelectedListener(this);
 
         imgUserProfilePic.setOnClickListener(this);
@@ -297,15 +305,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setUserGender(userGender);
 
             userInfo.setOrgId(selectedOrg.getId());
-            userInfo.setProjectIds(projectIds);
-            userInfo.setRoleIds(roleIds.get(0));
+            userInfo.setProjectIds(selectedProjects);
+            userInfo.setRoleIds(selectedRoles.get(0));
 
             UserLocation userLocation = new UserLocation();
-            userLocation.setStateId(selectedState.getId());
-            userLocation.setDistrictIds(districtIds);
-            userLocation.setTalukaIds(talukaIds);
-            userLocation.setClusterIds(clusterIds);
-            userLocation.setVillageIds(villageIds);
+            userLocation.setStateId(selectedState);
+            userLocation.setDistrictIds(selectedDistricts);
+            userLocation.setTalukaIds(selectedTalukas);
+            userLocation.setClusterIds(selectedClusters);
+            userLocation.setVillageIds(selectedVillages);
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);
@@ -330,19 +338,19 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             msg = getString(R.string.msg_select_gender);
         } else if (selectedOrg == null || TextUtils.isEmpty(selectedOrg.getId())) {
             msg = getString(R.string.msg_select_gender);
-        } else if (projectIds == null || projectIds.size() == 0) {
+        } else if (selectedProjects == null || selectedProjects.size() == 0) {
             msg = getString(R.string.msg_select_project);
-        } else if (roleIds == null || roleIds.size() == 0) {
+        } else if (selectedRoles == null || selectedRoles.size() == 0) {
             msg = getString(R.string.msg_select_role);
-        } else if (selectedState == null || TextUtils.isEmpty(selectedState.getId())) {
+        } else if (selectedState == null || TextUtils.isEmpty(selectedState)) {
             msg = getString(R.string.msg_select_state);
-        } else if ((spDistrict.getVisibility() == View.VISIBLE) && (districtIds == null || districtIds.size() == 0)) {
+        } else if ((spDistrict.getVisibility() == View.VISIBLE) && (selectedDistricts == null || selectedDistricts.size() == 0)) {
             msg = getString(R.string.msg_select_district);
-        } else if ((spTaluka.getVisibility() == View.VISIBLE) && (talukaIds == null || talukaIds.size() == 0)) {
+        } else if ((spTaluka.getVisibility() == View.VISIBLE) && (selectedTalukas == null || selectedTalukas.size() == 0)) {
             msg = getString(R.string.msg_select_taluka);
-        } else if ((spCluster.getVisibility() == View.VISIBLE) && (clusterIds == null || clusterIds.size() == 0)) {
+        } else if ((spCluster.getVisibility() == View.VISIBLE) && (selectedClusters == null || selectedClusters.size() == 0)) {
             msg = getString(R.string.msg_select_cluster);
-        } else if ((spVillage.getVisibility() == View.VISIBLE) && (villageIds == null || villageIds.size() == 0)) {
+        } else if ((spVillage.getVisibility() == View.VISIBLE) && (selectedVillages == null || selectedVillages.size() == 0)) {
             msg = getString(R.string.msg_select_village);
         }
 
@@ -451,6 +459,23 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         }
     }
 
+    private void hideJurisdictionLevel() {
+        spState.setVisibility(View.GONE);
+        findViewById(R.id.txt_state).setVisibility(View.GONE);
+
+        spDistrict.setVisibility(View.GONE);
+        findViewById(R.id.txt_district).setVisibility(View.GONE);
+
+        spTaluka.setVisibility(View.GONE);
+        findViewById(R.id.txt_taluka).setVisibility(View.GONE);
+
+        spCluster.setVisibility(View.GONE);
+        findViewById(R.id.txt_cluster).setVisibility(View.GONE);
+
+        spVillage.setVisibility(View.GONE);
+        findViewById(R.id.txt_village).setVisibility(View.GONE);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
@@ -463,30 +488,54 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 }
                 break;
 
+            case R.id.sp_role:
+                if (roles != null && !roles.isEmpty() && roles.get(i) != null) {
+
+                    selectedRoles.clear();
+                    selectedRole = roles.get(i);
+                    selectedRoles.add(selectedRole.getDisplayName());
+
+                    List<Jurisdiction> jurisdictions = selectedRole.getProject().getJurisdictions();
+                    if (jurisdictions != null && jurisdictions.size() > 0) {
+                        hideJurisdictionLevel();
+                        for (Jurisdiction j : jurisdictions) {
+                            switch (j.getLevelName()) {
+                                case Constants.JurisdictionLevelName.STATE_LEVEL:
+                                    spState.setVisibility(View.VISIBLE);
+                                    findViewById(R.id.txt_state).setVisibility(View.VISIBLE);
+                                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                                            selectedRole.getProject().getJurisdictionTypeId(), j.getLevelName());
+                                    break;
+
+                                case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+                                    spDistrict.setVisibility(View.VISIBLE);
+                                    findViewById(R.id.txt_district).setVisibility(View.VISIBLE);
+                                    break;
+
+                                case Constants.JurisdictionLevelName.TALUKA_LEVEL:
+                                    spTaluka.setVisibility(View.VISIBLE);
+                                    findViewById(R.id.txt_taluka).setVisibility(View.VISIBLE);
+                                    break;
+
+                                case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
+                                    spVillage.setVisibility(View.VISIBLE);
+                                    findViewById(R.id.txt_village).setVisibility(View.VISIBLE);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                break;
+
             case R.id.sp_user_state:
                 if (states != null && !states.isEmpty() && states.get(i) != null
-                        && states.get(i).getJurisdictions() != null
-                        && !states.get(i).getJurisdictions().isEmpty()
-                        && states.get(i).getJurisdictions().size() > 0) {
+                        && states.get(i).getState() != null) {
 
-                    selectedState = states.get(i);
-
-                    spDistrict.setVisibility(View.GONE);
-                    spTaluka.setVisibility(View.GONE);
-                    spCluster.setVisibility(View.GONE);
-                    spVillage.setVisibility(View.GONE);
-
-                    findViewById(R.id.txt_district).setVisibility(View.GONE);
-                    findViewById(R.id.txt_taluka).setVisibility(View.GONE);
-                    findViewById(R.id.txt_cluster).setVisibility(View.GONE);
-                    findViewById(R.id.txt_village).setVisibility(View.GONE);
-
-                    Util.saveUserLocationJurisdictionLevel(0);
-
-                    for (Jurisdiction jurisdiction : states.get(i).getJurisdictions()) {
-                        profilePresenter.getJurisdictionLevelData(jurisdiction.getStateId(),
-                                jurisdiction.getLevel());
-                    }
+                    selectedState = states.get(i).getState();
+                    Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
+                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            selectedRole.getProject().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 }
                 break;
 
@@ -562,15 +611,20 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             for (OrganizationRole organizationRole : organizationRoles) {
                 roles.add(organizationRole.getDisplayName());
             }
-            spRole.setItems(roles, getString(R.string.role), this);
+
             this.roles.clear();
             this.roles.addAll(organizationRoles);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                    android.R.layout.simple_spinner_item, roles);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spRole.setAdapter(adapter);
         }
     }
 
     @Override
     public void showStates(List<State> states) {
-        this.states = states;
+        //this.states = states;
         List<String> stateNames = new ArrayList<>();
         for (int i = 0; i < states.size(); i++) {
             stateNames.add(states.get(i).getOrgName());
@@ -583,61 +637,78 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     @Override
-    public void showJurisdictionLevel(List<JurisdictionLevel> jurisdictionLevels, int level, String levelName) {
+    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
         switch (levelName) {
+            case Constants.JurisdictionLevelName.STATE_LEVEL:
+                this.states = jurisdictionLevels;
+                List<String> stateNames = new ArrayList<>();
+                for (int i = 0; i < states.size(); i++) {
+                    stateNames.add(states.get(i).getState());
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                        android.R.layout.simple_spinner_item, stateNames);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spState.setAdapter(adapter);
+                break;
+
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> districts = new ArrayList<>();
-                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
-                        districts.add(jurisdictionLevel.getJurisdictionLevelName());
+                    for (Location location : jurisdictionLevels) {
+                        if (location.getState().equalsIgnoreCase(selectedState)) {
+                            districts.add(location.getDistrict());
+                        }
                     }
+
                     spDistrict.setItems(districts, getString(R.string.district), this);
                     this.districts.clear();
-                    this.districts.addAll(jurisdictionLevels);
-                    findViewById(R.id.txt_district).setVisibility(View.VISIBLE);
-                    spDistrict.setVisibility(View.VISIBLE);
+                    this.districts.addAll(districts);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> talukas = new ArrayList<>();
-                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
-                        talukas.add(jurisdictionLevel.getJurisdictionLevelName());
+                    for (Location location : jurisdictionLevels) {
+                        if (location.getState().equalsIgnoreCase(selectedState) &&
+                                selectedDistricts.contains(location.getDistrict())) {
+                            talukas.add(location.getTaluka());
+                        }
                     }
+
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
                     this.talukas.clear();
-                    this.talukas.addAll(jurisdictionLevels);
-                    findViewById(R.id.txt_taluka).setVisibility(View.VISIBLE);
-                    spTaluka.setVisibility(View.VISIBLE);
+                    this.talukas.addAll(talukas);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> clusters = new ArrayList<>();
-                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
-                        clusters.add(jurisdictionLevel.getJurisdictionLevelName());
+                    for (Location location : jurisdictionLevels) {
+                        clusters.add(location.getCluster());
                     }
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
                     this.clusters.clear();
-                    this.clusters.addAll(jurisdictionLevels);
-                    findViewById(R.id.txt_cluster).setVisibility(View.VISIBLE);
-                    spCluster.setVisibility(View.VISIBLE);
+                    this.clusters.addAll(clusters);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> villages = new ArrayList<>();
-                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
-                        villages.add(jurisdictionLevel.getJurisdictionLevelName());
+                    for (Location location : jurisdictionLevels) {
+                        if (location.getState().equalsIgnoreCase(selectedState) &&
+                                selectedDistricts.contains(location.getDistrict()) &&
+                                selectedTalukas.contains(location.getTaluka())) {
+                            villages.add(location.getVillage());
+                        }
                     }
+
                     spVillage.setItems(villages, getString(R.string.village), this);
                     this.villages.clear();
-                    this.villages.addAll(jurisdictionLevels);
-                    findViewById(R.id.txt_village).setVisibility(View.VISIBLE);
-                    spVillage.setVisibility(View.VISIBLE);
+                    this.villages.addAll(villages);
                 }
                 break;
 
@@ -666,64 +737,73 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public void onValuesSelected(boolean[] selected, String spinnerName) {
         switch (spinnerName) {
             case Constants.MultiSelectSpinnerType.SPINNER_PROJECT:
-                projectIds.clear();
+                selectedProjects.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        projectIds.add(projects.get(i).getId());
+                        selectedProjects.add(projects.get(i).getId());
                         Log.d("TAG", "Selected project " + projects.get(i).getOrgProjectName());
                     }
                 }
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_ROLE:
-                roleIds.clear();
+                selectedRoles.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        roleIds.add(roles.get(i).getId());
+                        selectedRoles.add(roles.get(i).getId());
                         Log.d("TAG", "Selected role " + roles.get(i).getDisplayName());
                     }
                 }
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_DISTRICT:
-                districtIds.clear();
+                selectedDistricts.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        districtIds.add(districts.get(i).getId());
-                        Log.d("TAG", "Selected district " + districts.get(i).getJurisdictionLevelName());
+                        selectedDistricts.add(districts.get(i));
+                        Log.d("TAG", "Selected district " + districts.get(i));
                     }
                 }
+
+                profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                        selectedRole.getProject().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 break;
+
             case Constants.MultiSelectSpinnerType.SPINNER_TALUKA:
-                talukaIds.clear();
+                selectedTalukas.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        talukaIds.add(talukas.get(i).getId());
-                        Log.d("TAG", "Selected taluka " + talukas.get(i).getJurisdictionLevelName());
+                        selectedTalukas.add(talukas.get(i));
+                        Log.d("TAG", "Selected taluka " + talukas.get(i));
                     }
                 }
+
+                profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                        selectedRole.getProject().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_CLUSTER:
-                clusterIds.clear();
+                selectedClusters.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        clusterIds.add(clusters.get(i).getId());
-                        Log.d("TAG", "Selected cluster " + clusters.get(i).getJurisdictionLevelName());
+                        selectedClusters.add(clusters.get(i));
+                        Log.d("TAG", "Selected cluster " + clusters.get(i));
                     }
                 }
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_VILLAGE:
-                villageIds.clear();
+                selectedVillages.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        villageIds.add(villages.get(i).getId());
-                        Log.d("TAG", "Selected village " + villages.get(i).getJurisdictionLevelName());
+                        selectedVillages.add(villages.get(i));
+                        Log.d("TAG", "Selected village " + villages.get(i)
+                        );
                     }
                 }
                 break;
-
         }
     }
 }

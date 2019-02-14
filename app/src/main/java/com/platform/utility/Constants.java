@@ -80,6 +80,7 @@ public class Constants {
     }
 
     public static class JurisdictionLevelName {
+        public static final String STATE_LEVEL = "State";
         public static final String DISTRICT_LEVEL = "District";
         public static final String TALUKA_LEVEL = "Taluka";
         public static final String CLUSTER_LEVEL = "Cluster";

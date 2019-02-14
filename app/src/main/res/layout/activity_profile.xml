@@ -230,7 +230,7 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_role" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <Spinner
                 android:id="@+id/sp_role"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -238,6 +238,7 @@
 
             <!--State-->
             <TextView
+                android:id="@+id/txt_state"
                 style="@style/FormLabel"
                 android:text="@string/mandatory_state" />
 

@@ -6,13 +6,13 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.ProfileRequestCallListener;
-import com.platform.models.user.User;
-import com.platform.models.user.UserInfo;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.StateResponse;
+import com.platform.models.user.User;
+import com.platform.models.user.UserInfo;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
 import com.platform.view.activities.ProfileActivity;
@@ -61,20 +61,20 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
         requestCall.getOrganizationRoles(orgId);
     }
 
-    public void getStates() {
+//    public void getStates() {
+//        ProfileRequestCall requestCall = new ProfileRequestCall();
+//        requestCall.setListener(this);
+//
+//        profileActivity.get().showProgressBar();
+//        requestCall.getStates();
+//    }
+
+    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
         profileActivity.get().showProgressBar();
-        requestCall.getStates();
-    }
-
-    public void getJurisdictionLevelData(String stateId, int level) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.getJurisdictionLevelData(stateId, level);
+        requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
     }
 
     @Override
@@ -116,24 +116,21 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     }
 
     @Override
-    public void onJurisdictionFetched(String response, int level) {
+    public void onJurisdictionFetched(String response, String level) {
         profileActivity.get().hideProgressBar();
+
         if (!TextUtils.isEmpty(response)) {
             JurisdictionLevelResponse jurisdictionLevelResponse
                     = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+
             if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
-                    && jurisdictionLevelResponse.getData().getJurisdictionLevelList() != null
-                    && !jurisdictionLevelResponse.getData().getJurisdictionLevelList().isEmpty()
-                    && jurisdictionLevelResponse.getData().getJurisdictionLevelList().size() > 0) {
+                    && jurisdictionLevelResponse.getData() != null
+                    && !jurisdictionLevelResponse.getData().isEmpty()
+                    && jurisdictionLevelResponse.getData().size() > 0) {
 
-                if (Util.getUserLocationJurisdictionLevelFromPref() < level) {
-                    Util.saveUserLocationJurisdictionLevel(level);
-                    Util.saveJurisdictionLevelData(jurisdictionLevelResponse.getData());
-                }
-
-                profileActivity.get().showJurisdictionLevel(
-                        jurisdictionLevelResponse.getData().getJurisdictionLevelList(),
-                        level, jurisdictionLevelResponse.getData().getLevelName());
+                Util.saveUserLocationJurisdictionLevel(level);
+                Util.saveJurisdictionLevelData(response);
+                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
             }
         }
     }
