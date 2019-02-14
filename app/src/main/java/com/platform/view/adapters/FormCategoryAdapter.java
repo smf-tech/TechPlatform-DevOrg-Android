@@ -59,6 +59,9 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
     @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull FormCategoryAdapter.ViewHolder viewHolder, int i) {
+
+
+
         viewHolder.syncButton.setOnClickListener(v ->
                 Toast.makeText(mContext, "Sync clicked!", Toast.LENGTH_SHORT).show());
         viewHolder.syncButton.setBackgroundColor(mContext.getResources().getColor(R.color.red));

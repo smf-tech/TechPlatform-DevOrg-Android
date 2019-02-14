@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/menu_group_1">
+        <item
+            android:id="@+id/action_menu_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/action_menu_community"
+            android:icon="@drawable/ic_menu_community"
+            android:title="@string/menu_community" />
+        <item
+            android:id="@+id/action_menu_teams"
+            android:icon="@drawable/ic_menu_teams"
+            android:title="@string/menu_teams" />
+        <item
+            android:id="@+id/action_menu_calendar"
+            android:icon="@drawable/ic_menu_calendar"
+            android:title="@string/menu_calendar" />
+        <item
+            android:id="@+id/action_menu_assets"
+            android:icon="@drawable/ic_menu_assets"
+            android:title="@string/menu_assets" />
+        <item
+            android:id="@+id/action_menu_reports"
+            android:icon="@drawable/ic_menu_reports"
+            android:title="@string/menu_reports" />
+    </group>
+
+    <group android:id="@+id/menu_group_2">
+        <item
+            android:id="@+id/action_menu_connect"
+            android:icon="@drawable/ic_menu_connect"
+            android:title="@string/menu_connect" />
+        <item
+            android:id="@+id/action_menu_ho_support"
+            android:icon="@drawable/ic_menu_ho_support"
+            android:title="@string/menu_ho_support" />
+        <item
+            android:id="@+id/action_menu_notice_board"
+            android:icon="@drawable/ic_menu_notice"
+            android:title="@string/menu_notice_board" />
+    </group>
+
+    <group android:id="@+id/menu_group_3">
+        <item
+            android:id="@+id/action_menu_account"
+            android:icon="@drawable/ic_menu_account"
+            android:title="@string/menu_account" />
+        <item
+            android:id="@+id/action_menu_leaves_attendance"
+            android:icon="@drawable/ic_menu_attendance"
+            android:title="@string/menu_leaves_attendance" />
+    </group>
+
+    <group android:id="@+id/menu_group_4">
+        <item
+            android:id="@+id/action_menu_rate_us"
+            android:icon="@drawable/ic_menu_rate_us"
+            android:title="@string/menu_rate_us" />
+        <item
+            android:id="@+id/action_menu_call_us"
+            android:icon="@drawable/ic_menu_call"
+            android:title="@string/menu_call_us" />
+        <item
+            android:id="@+id/action_menu_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/action_menu_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="@string/menu_logout" />
+    </group>
+</menu>

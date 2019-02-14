@@ -34,8 +34,8 @@ import java.util.Map;
 @SuppressWarnings("EmptyMethod")
 public class AllFormsFragment extends Fragment implements FormStatusCallListener {
 
-    public static final String TAG = AllFormsFragment.class.getSimpleName();
-    private Map<String, List<ProcessData>> mChildList = new HashMap<>();
+    private static final String TAG = AllFormsFragment.class.getSimpleName();
+    private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
     private TextView mNoRecordsView;
     private ExpandableListView expandableListView;
 

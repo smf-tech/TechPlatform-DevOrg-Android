@@ -28,7 +28,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
 
-    public SavedForm getSavedForm() {
+    private SavedForm getSavedForm() {
         return savedForm;
     }
 
@@ -63,6 +63,14 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
         formFragment.get().showProgressBar();
         requestCall.getProcessDetails(processId);
+    }
+
+    public void getFormResults(String processId) {
+        FormRequestCall requestCall = new FormRequestCall();
+        requestCall.setListener(this);
+
+        formFragment.get().showProgressBar();
+        requestCall.getFormResults(processId);
     }
 
     @Override
@@ -109,5 +117,13 @@ public class FormActivityPresenter implements FormRequestCallListener {
                 DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormObject(getSavedForm());
                 break;
         }
+    }
+
+    @Override
+    public void onFormDetailsLoadedListener(final String response) {
+        Log.e(TAG, "Form Details\n" + response);
+
+        formFragment.get().hideProgressBar();
+        formFragment.get().setFormReadOnlyMode(response);
     }
 }
