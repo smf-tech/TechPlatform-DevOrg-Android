@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -25,7 +26,9 @@ import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 import com.platform.view.activities.FormsActivity;
 import com.platform.view.adapters.PendingFormsAdapter;
@@ -33,6 +36,8 @@ import com.platform.view.adapters.PendingFormsAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.platform.utility.Util.saveFormCategoryForSync;
 
 @SuppressWarnings("CanBeFinal")
 public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
@@ -70,14 +75,22 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         rltPendingForms = pmFragmentView.findViewById(R.id.rlt_pending_forms);
 
         txtViewAllForms.setOnClickListener(this);
-
-        setPendingForms();
     }
 
     private void setPendingForms() {
         List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
+            pmFragmentView.findViewById(R.id.sync_button).setOnClickListener(v -> {
+                if (Util.isConnected(getContext())) {
+                    Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
+                    // TODO: 14-02-2019 Category is not known for syncing
+                    saveFormCategoryForSync("");
+                    SyncAdapterUtils.manualRefresh();
+                } else {
+                    Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -150,6 +163,13 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             }
         }
         lnrOuter.addView(lnrInner);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setPendingForms();
     }
 
     @Override

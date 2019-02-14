@@ -65,7 +65,6 @@
                 android:layout_height="@dimen/dimen_30dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:tint="@color/green"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
                 android:src="@android:drawable/btn_star" />
