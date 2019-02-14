@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.SavedForm;
+import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
@@ -96,6 +98,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         } else {
             rltPendingForms.setVisibility(View.GONE);
         }
+
+        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema();
+        Log.e(TAG, "Form schema fetched from database.");
     }
 
     private void populateData(Processes process) {

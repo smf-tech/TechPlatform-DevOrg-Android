@@ -22,6 +22,10 @@ import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.view.adapters.FormCategoryAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +41,9 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private static final String TAG = CompletedFormsFragment.class.getSimpleName();
 
     private TextView mNoRecordsView;
-    private RecyclerView mRecyclerView;
-    private Map<String, List<ProcessData>> mChildList = new HashMap<>();
+    private Map<String, List<String>> mFormsList = new HashMap<>();
+    FormCategoryAdapter adapter;
+    Map<String, String> categoryMap = new HashMap<>();
 
     public CompletedFormsFragment() {
         // Required empty public constructor
@@ -64,18 +69,15 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = view.findViewById(R.id.forms_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.forms_list);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-        presenter.getAllProcesses();
-    }
+        presenter.getAllFormMasters();
 
-    private void setAdapter(final Map<String, List<ProcessData>> data) {
-        final FormCategoryAdapter adapter = new FormCategoryAdapter(getContext(), data);
-        mRecyclerView.setAdapter(adapter);
-        mNoRecordsView.setVisibility(View.GONE);
+        adapter = new FormCategoryAdapter(getContext(), mFormsList);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -90,31 +92,92 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onFormsLoaded(String response) {
+        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
 
-        mChildList.clear();
+//        mChildList.clear();
+        mFormsList.clear();
 
         Processes json = new Gson().fromJson(response, Processes.class);
         for (ProcessData data : json.getData()) {
-            String categoryName = data.getCategory().getName();
-            if (mChildList.containsKey(categoryName)) {
-                List<ProcessData> processData = mChildList.get(categoryName);
-                if (processData != null) {
-                    processData.add(data);
-                    mChildList.put(categoryName, processData);
-                }
-            } else {
-                List<ProcessData> processData = new ArrayList<>();
-                processData.add(data);
-                mChildList.put(categoryName, processData);
-            }
+//            String categoryName = data.getCategory().getName();
+//            if (mChildList.containsKey(categoryName)) {
+//                List<ProcessData> processData = mChildList.get(categoryName);
+//                if (processData != null) {
+//                    processData.add(data);
+//                    mChildList.put(categoryName, processData);
+//                }
+//            } else {
+//                List<ProcessData> processData = new ArrayList<>();
+//                processData.add(data);
+//                mChildList.put(categoryName, processData);
+//            }
+
+            String id = data.getId();
+
+            mFormsList.put(data.getName(), null);
+            categoryMap.put(data.getName(), data.getId());
+
+            presenter.getSubmittedFormsOfMaster(id);
         }
 
-        if (!mChildList.isEmpty()) {
+      /*  if (!mChildList.isEmpty()) {
             setAdapter(mChildList);
             mNoRecordsView.setVisibility(View.GONE);
         } else {
             mNoRecordsView.setVisibility(View.VISIBLE);
-        }
+        }*/
 
+    }
+
+    @Override
+    public void onMastersFormsLoaded(final String response) {
+        ArrayList<String> list = new ArrayList<>();
+        String formID = "";
+
+        try {
+            if (new JSONObject(response).has("values")) {
+                JSONArray values = new JSONObject(response).getJSONArray("values");
+                for (int i = 0; i < values.length(); i++) {
+                    JSONObject object = new JSONObject(String.valueOf(values.get(i)));
+                    formID = object.getString("form_id");
+                    JSONObject id = object.getJSONObject("_id");
+                    String oid = id.getString("$oid");
+                    list.add(oid);
+                }
+            } else {
+                list.add("No Forms available");
+            }
+
+            for (final String s : mFormsList.keySet()) {
+                String id = categoryMap.get(s);
+                if (id.equals(formID)) {
+                    mFormsList.put(s, list);
+                } else {
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    arrayList.add("No Forms available");
+                    mFormsList.put(s, arrayList);
+                }
+            }
+
+            if (!mFormsList.isEmpty()) {
+                adapter.notifyDataSetChanged();
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static class ProcessDemoObject {
+        public String name;
+        public String id;
+
+        private ProcessDemoObject(final String name, final String id) {
+            this.name = name;
+            this.id = id;
+        }
     }
 }

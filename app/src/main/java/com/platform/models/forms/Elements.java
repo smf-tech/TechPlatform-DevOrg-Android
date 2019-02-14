@@ -17,12 +17,29 @@ public class Elements {
     @SerializedName("title")
     @Expose
     private String title;
+    @SerializedName("inputType")
+    @Expose
+    private String inputType;
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
+    @SerializedName("choicesByUrl")
+    @Expose
+    private ChoicesByUrl choicesByUrl;
+    @SerializedName("validators")
+    @Expose
+    private List<Validator> validators = null;
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
+    }
 
     public String getType() {
         return type;
@@ -62,5 +79,21 @@ public class Elements {
 
     public void setChoices(List<Choice> choices) {
         this.choices = choices;
+    }
+
+    public ChoicesByUrl getChoicesByUrl() {
+        return choicesByUrl;
+    }
+
+    public void setChoicesByUrl(ChoicesByUrl choicesByUrl) {
+        this.choicesByUrl = choicesByUrl;
+    }
+
+    public List<Validator> getValidators() {
+        return validators;
+    }
+
+    public void setValidators(List<Validator> validators) {
+        this.validators = validators;
     }
 }

@@ -9,6 +9,9 @@ import com.google.gson.GsonBuilder;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.models.SavedForm;
+import com.platform.models.forms.Elements;
+import com.platform.models.forms.Form;
+import com.platform.models.forms.Page;
 import com.platform.request.FormRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -65,12 +68,20 @@ public class FormActivityPresenter implements FormRequestCallListener {
         requestCall.getProcessDetails(processId);
     }
 
+    private void getChoicesByUrl(String choicesUrl) {
+        FormRequestCall requestCall = new FormRequestCall();
+        requestCall.setListener(this);
+
+        formFragment.get().showProgressBar();
+        requestCall.getChoicesByUrl(choicesUrl);
+    }
+
     public void getFormResults(String processId) {
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getFormResults(processId);
+        //requestCall.getFormResults(processId);
     }
 
     @Override
@@ -97,7 +108,32 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
     @Override
     public void onSuccessListener(String response) {
-        Log.e(TAG, "Process Details " + response);
+        if (!TextUtils.isEmpty(response)) {
+            Log.e(TAG, "Process Details " + response);
+            Form form = new Gson().fromJson(response, Form.class);
+            if (form != null && form.getData() != null) {
+                DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
+                Log.e(TAG, "Form schema saved in database.");
+
+                //Call choices by url
+                if (form.getData().getComponents() != null &&
+                        form.getData().getComponents().getPages() != null &&
+                        !form.getData().getComponents().getPages().isEmpty()) {
+                    for (Page page :
+                            form.getData().getComponents().getPages()) {
+                        if (page.getElements() != null && !page.getElements().isEmpty()) {
+                            for (Elements elements :
+                                    page.getElements()) {
+                                if (elements != null && elements.getChoicesByUrl() != null &&
+                                        !TextUtils.isEmpty(elements.getChoicesByUrl().getUrl())) {
+                                    getChoicesByUrl(elements.getChoicesByUrl().getUrl());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         formFragment.get().hideProgressBar();
         formFragment.get().showNextScreen(response);
@@ -119,11 +155,11 @@ public class FormActivityPresenter implements FormRequestCallListener {
         }
     }
 
-    @Override
+    //@Override
     public void onFormDetailsLoadedListener(final String response) {
         Log.e(TAG, "Form Details\n" + response);
 
         formFragment.get().hideProgressBar();
-        formFragment.get().setFormReadOnlyMode(response);
+        //formFragment.get().setFormReadOnlyMode(response);
     }
 }

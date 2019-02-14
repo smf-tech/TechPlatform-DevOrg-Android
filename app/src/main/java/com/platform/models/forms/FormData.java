@@ -1,7 +1,14 @@
 package com.platform.models.forms;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
@@ -10,38 +17,62 @@ import com.platform.models.common.Project;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@android.arch.persistence.room.Entity
 public class FormData {
-
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
     @SerializedName("_id")
     @Expose
     private String id;
+
+    @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
     private String name;
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "components")
     @SerializedName("json")
     @Expose
     private Components components;
+
+    @ColumnInfo(name = "is_active")
     @SerializedName("active")
     @Expose
     private String active;
+
+    @ColumnInfo(name = "is_editable")
     @SerializedName("editable")
     @Expose
     private String editable;
+
+    @ColumnInfo(name = "multiple_entry")
     @SerializedName("multiple_entry")
     @Expose
     private String multipleEntry;
+
+    @Ignore
     @SerializedName("assigned_roles")
     @Expose
     private List<String> assignedRoles = null;
+
+    @Ignore
     @SerializedName("microservice")
     @Expose
     private Microservice microService;
+
+    @Ignore
     @SerializedName("project")
     @Expose
     private Project project;
+
+    @Ignore
     @SerializedName("category")
     @Expose
     private Category category;
+
+    @Ignore
     @SerializedName("entity")
     @Expose
     private Entity entity;

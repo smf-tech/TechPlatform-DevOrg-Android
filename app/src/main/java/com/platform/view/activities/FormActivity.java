@@ -28,6 +28,10 @@ public class FormActivity extends BaseActivity {
         if (getIntent().getExtras() != null) {
             String processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
             bundle.putString(Constants.PM.PROCESS_ID, processId);
+
+            boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
+            if (readOnly)
+                bundle.putBoolean(Constants.PM.EDIT_MODE, true);
         }
 
         fragment = new FormFragment();
