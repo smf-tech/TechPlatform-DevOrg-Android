@@ -39,8 +39,13 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     public int getChildrenCount(final int groupPosition) {
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);
+
         List<ProcessData> processData = mFormsData.get(cat);
-        return processData.size();
+        if (processData != null) {
+            return processData.size();
+        }
+
+        return 0;
     }
 
     @Override
@@ -69,13 +74,19 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
+    public View getGroupView(final int groupPosition, final boolean isExpanded,
+                             final View convertView, final ViewGroup parent) {
+
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item, parent, false);
 
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);
+
         List<ProcessData> processData = mFormsData.get(cat);
-        int size = processData.size();
+        int size = 0;
+        if (processData != null) {
+            size = processData.size();
+        }
 
         ((TextView) view.findViewById(R.id.form_title)).setText(cat);
         ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
@@ -91,22 +102,26 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition,
+                             final boolean isLastChild, final View convertView, final ViewGroup parent) {
+
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.layout_all_form_sub_item, parent, false);
 
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);
         List<ProcessData> processData = mFormsData.get(cat);
-        ProcessData data = processData.get(childPosition);
 
-        ((TextView) view.findViewById(R.id.form_title)).setText(data.getName());
+        if (processData != null) {
+            ProcessData data = processData.get(childPosition);
+            ((TextView) view.findViewById(R.id.form_title)).setText(data.getName());
 
-        view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, FormActivity.class);
-            intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
-            mContext.startActivity(intent);
-        });
+            view.findViewById(R.id.pin_button).setOnClickListener(v -> {
+                Intent intent = new Intent(mContext, FormActivity.class);
+                intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
+                mContext.startActivity(intent);
+            });
+        }
 
         return view;
     }

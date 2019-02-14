@@ -16,7 +16,7 @@ import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
-import com.platform.models.profile.JurisdictionLevel;
+import com.platform.models.profile.Location;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
@@ -95,9 +95,17 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             if (Util.getJurisdictionLevelDataFromPref() != null) {
                 List<String> locationValues = new ArrayList<>();
-                for (JurisdictionLevel jurisdictionLevel :
-                        Util.getJurisdictionLevelDataFromPref().getJurisdictionLevelList()) {
-                    locationValues.add(jurisdictionLevel.getJurisdictionLevelName());
+                String jurisdictionLevel = Util.getUserLocationJurisdictionLevelFromPref();
+                for (Location location : Util.getJurisdictionLevelDataFromPref().getData()) {
+                    if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+                        locationValues.add(location.getState());
+                    } else if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+                        locationValues.add(location.getDistrict());
+                    } else if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+                        locationValues.add(location.getTaluka());
+                    } else if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+                        locationValues.add(location.getVillage());
+                    }
                 }
                 template.setListData(locationValues);
             }

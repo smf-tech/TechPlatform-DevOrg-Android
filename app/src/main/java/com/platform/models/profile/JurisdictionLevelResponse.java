@@ -1,16 +1,20 @@
 package com.platform.models.profile;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class JurisdictionLevelResponse {
     @SerializedName("status")
+    @Expose
     private String status;
-
     @SerializedName("data")
-    private JurisdictionLevelData data;
-
+    @Expose
+    private List<Location> data = null;
     @SerializedName("message")
+    @Expose
     private String message;
 
     public String getStatus() {
@@ -21,11 +25,11 @@ public class JurisdictionLevelResponse {
         this.status = status;
     }
 
-    public JurisdictionLevelData getData() {
+    public List<Location> getData() {
         return data;
     }
 
-    public void setData(JurisdictionLevelData data) {
+    public void setData(List<Location> data) {
         this.data = data;
     }
 
