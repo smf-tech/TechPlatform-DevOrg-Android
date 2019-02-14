@@ -25,8 +25,8 @@
                     android:id="@+id/form_status_indicator"
                     android:layout_width="@dimen/form_item_status_indicator_width"
                     android:layout_height="match_parent"
-                    android:minHeight="@dimen/dimen_45dp"
-                    android:background="@drawable/form_status_indicator_all" />
+                    android:background="@drawable/form_status_indicator_all"
+                    android:minHeight="@dimen/dimen_45dp" />
 
                 <TextView
                     android:id="@+id/form_title"

@@ -65,13 +65,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (savedForms != null) {
             String formSyncCategory = getFormCategoryForSyncFromPref();
             for (final SavedForm form : savedForms) {
-                if (!form.isSynced() && form.getFormCategory().equals(formSyncCategory)) {
-                    try {
-                        submitForm(form);
-                    } catch (MalformedURLException e) {
-                        Log.e(TAG, e.getMessage());
+                if (!form.isSynced())
+                    if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
+                        try {
+                            submitForm(form);
+                        } catch (MalformedURLException e) {
+                            Log.e(TAG, e.getMessage());
+                        }
                     }
-                }
             }
         }
     }

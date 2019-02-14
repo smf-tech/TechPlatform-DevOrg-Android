@@ -33,7 +33,6 @@ import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
-import com.platform.models.user.UserInfo;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.profile.Jurisdiction;
 import com.platform.models.profile.JurisdictionLevel;
@@ -42,16 +41,12 @@ import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
 import com.platform.models.profile.State;
 import com.platform.models.profile.UserLocation;
+import com.platform.models.user.UserInfo;
 import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
-import com.platform.widgets.ClusterMultiSelectSpinner;
-import com.platform.widgets.DistrictMultiSelectSpinner;
-import com.platform.widgets.ProjectMultiSelectSpinner;
-import com.platform.widgets.RoleMultiSelectSpinner;
-import com.platform.widgets.TalukaMultiSelectSpinner;
-import com.platform.widgets.VillageMultiSelectSpinner;
+import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
@@ -62,9 +57,7 @@ import java.util.List;
 @SuppressWarnings("CanBeFinal")
 public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener,
-        ProjectMultiSelectSpinner.ProjectMultiSpinnerListener, RoleMultiSelectSpinner.RoleMultiSpinnerListener,
-        DistrictMultiSelectSpinner.DistrictMultiSpinnerListener, TalukaMultiSelectSpinner.TalukaMultiSpinnerListener,
-        ClusterMultiSelectSpinner.ClusterMultiSpinnerListener, VillageMultiSelectSpinner.VillageMultiSpinnerListener {
+        MultiSelectSpinner.MultiSpinnerListener {
 
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
@@ -77,12 +70,12 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private Spinner spState;
     private Spinner spStructure;
 
-    private ProjectMultiSelectSpinner spProject;
-    private RoleMultiSelectSpinner spRole;
-    private DistrictMultiSelectSpinner spDistrict;
-    private TalukaMultiSelectSpinner spTaluka;
-    private ClusterMultiSelectSpinner spCluster;
-    private VillageMultiSelectSpinner spVillage;
+    private MultiSelectSpinner spProject;
+    private MultiSelectSpinner spRole;
+    private MultiSelectSpinner spDistrict;
+    private MultiSelectSpinner spTaluka;
+    private MultiSelectSpinner spCluster;
+    private MultiSelectSpinner spVillage;
 
     private ImageView imgUserProfilePic;
     private ImageView backButton;
@@ -171,11 +164,17 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         spStructure = findViewById(R.id.sp_user_structure);
 
         spProject = findViewById(R.id.sp_project);
+        spProject.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_PROJECT;
         spRole = findViewById(R.id.sp_role);
+        spRole.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_ROLE;
         spDistrict = findViewById(R.id.sp_district);
+        spDistrict.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_DISTRICT;
         spTaluka = findViewById(R.id.sp_taluka);
+        spTaluka.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_TALUKA;
         spCluster = findViewById(R.id.sp_cluster);
+        spCluster.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_CLUSTER;
         spVillage = findViewById(R.id.sp_village);
+        spVillage.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_VILLAGE;
 
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
@@ -285,7 +284,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     private void submitProfileDetails() {
-        Util.hideKeyboard (btnProfileSubmit);
+        Util.hideKeyboard(btnProfileSubmit);
 
         if (isAllInputsValid()) {
             UserInfo userInfo = new UserInfo();
@@ -546,7 +545,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     @Override
     public void showOrganizationProjects(List<OrganizationProject> organizationProjects) {
         if (organizationProjects != null && !organizationProjects.isEmpty()) {
-            spProject.setItems(organizationProjects, getString(R.string.project), this);
+            List<String> projects = new ArrayList<>();
+            for (OrganizationProject organizationProject : organizationProjects) {
+                projects.add(organizationProject.getOrgProjectName());
+            }
+            spProject.setItems(projects, getString(R.string.project), this);
             this.projects.clear();
             this.projects.addAll(organizationProjects);
         }
@@ -555,7 +558,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     @Override
     public void showOrganizationRoles(List<OrganizationRole> organizationRoles) {
         if (organizationRoles != null && !organizationRoles.isEmpty()) {
-            spRole.setItems(organizationRoles, getString(R.string.role), this);
+            List<String> roles = new ArrayList<>();
+            for (OrganizationRole organizationRole : organizationRoles) {
+                roles.add(organizationRole.getDisplayName());
+            }
+            spRole.setItems(roles, getString(R.string.role), this);
             this.roles.clear();
             this.roles.addAll(organizationRoles);
         }
@@ -580,7 +587,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         switch (levelName) {
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    spDistrict.setItems(jurisdictionLevels, getString(R.string.district), this);
+                    List<String> districts = new ArrayList<>();
+                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
+                        districts.add(jurisdictionLevel.getJurisdictionLevelName());
+                    }
+                    spDistrict.setItems(districts, getString(R.string.district), this);
                     this.districts.clear();
                     this.districts.addAll(jurisdictionLevels);
                     findViewById(R.id.txt_district).setVisibility(View.VISIBLE);
@@ -590,7 +601,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    spTaluka.setItems(jurisdictionLevels, getString(R.string.taluka), this);
+                    List<String> talukas = new ArrayList<>();
+                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
+                        talukas.add(jurisdictionLevel.getJurisdictionLevelName());
+                    }
+                    spTaluka.setItems(talukas, getString(R.string.taluka), this);
                     this.talukas.clear();
                     this.talukas.addAll(jurisdictionLevels);
                     findViewById(R.id.txt_taluka).setVisibility(View.VISIBLE);
@@ -600,7 +615,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    spCluster.setItems(jurisdictionLevels, getString(R.string.cluster), this);
+                    List<String> clusters = new ArrayList<>();
+                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
+                        clusters.add(jurisdictionLevel.getJurisdictionLevelName());
+                    }
+                    spCluster.setItems(clusters, getString(R.string.cluster), this);
                     this.clusters.clear();
                     this.clusters.addAll(jurisdictionLevels);
                     findViewById(R.id.txt_cluster).setVisibility(View.VISIBLE);
@@ -610,7 +629,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    spVillage.setItems(jurisdictionLevels, getString(R.string.village), this);
+                    List<String> villages = new ArrayList<>();
+                    for (JurisdictionLevel jurisdictionLevel : jurisdictionLevels) {
+                        villages.add(jurisdictionLevel.getJurisdictionLevelName());
+                    }
+                    spVillage.setItems(villages, getString(R.string.village), this);
                     this.villages.clear();
                     this.villages.addAll(jurisdictionLevels);
                     findViewById(R.id.txt_village).setVisibility(View.VISIBLE);
@@ -640,68 +663,67 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     @Override
-    public void onRolesSelected(boolean[] selected) {
-        roleIds.clear();
-        for (int i = 0; i < selected.length; i++) {
-            if (selected[i]) {
-                roleIds.add(roles.get(i).getId());
-                Log.d("TAG", "Selected role " + roles.get(i).getDisplayName());
-            }
-        }
-    }
+    public void onValuesSelected(boolean[] selected, String spinnerName) {
+        switch (spinnerName) {
+            case Constants.MultiSelectSpinnerType.SPINNER_PROJECT:
+                projectIds.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        projectIds.add(projects.get(i).getId());
+                        Log.d("TAG", "Selected project " + projects.get(i).getOrgProjectName());
+                    }
+                }
+                break;
 
-    @Override
-    public void onClustersSelected(boolean[] selected) {
-        clusterIds.clear();
-        for (int i = 0; i < selected.length; i++) {
-            if (selected[i]) {
-                clusterIds.add(clusters.get(i).getId());
-                Log.d("TAG", "Selected cluster " + clusters.get(i).getJurisdictionLevelName());
-            }
-        }
-    }
+            case Constants.MultiSelectSpinnerType.SPINNER_ROLE:
+                roleIds.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        roleIds.add(roles.get(i).getId());
+                        Log.d("TAG", "Selected role " + roles.get(i).getDisplayName());
+                    }
+                }
+                break;
 
-    @Override
-    public void onDistrictsSelected(boolean[] selected) {
-        districtIds.clear();
-        for (int i = 0; i < selected.length; i++) {
-            if (selected[i]) {
-                districtIds.add(districts.get(i).getId());
-                Log.d("TAG", "Selected district " + districts.get(i).getJurisdictionLevelName());
-            }
-        }
-    }
+            case Constants.MultiSelectSpinnerType.SPINNER_DISTRICT:
+                districtIds.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        districtIds.add(districts.get(i).getId());
+                        Log.d("TAG", "Selected district " + districts.get(i).getJurisdictionLevelName());
+                    }
+                }
+                break;
+            case Constants.MultiSelectSpinnerType.SPINNER_TALUKA:
+                talukaIds.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        talukaIds.add(talukas.get(i).getId());
+                        Log.d("TAG", "Selected taluka " + talukas.get(i).getJurisdictionLevelName());
+                    }
+                }
+                break;
 
-    @Override
-    public void onTalukasSelected(boolean[] selected) {
-        talukaIds.clear();
-        for (int i = 0; i < selected.length; i++) {
-            if (selected[i]) {
-                talukaIds.add(talukas.get(i).getId());
-                Log.d("TAG", "Selected taluka " + talukas.get(i).getJurisdictionLevelName());
-            }
-        }
-    }
+            case Constants.MultiSelectSpinnerType.SPINNER_CLUSTER:
+                clusterIds.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        clusterIds.add(clusters.get(i).getId());
+                        Log.d("TAG", "Selected cluster " + clusters.get(i).getJurisdictionLevelName());
+                    }
+                }
+                break;
 
-    @Override
-    public void onVillagesSelected(boolean[] selected) {
-        villageIds.clear();
-        for (int i = 0; i < selected.length; i++) {
-            if (selected[i]) {
-                villageIds.add(villages.get(i).getId());
-                Log.d("TAG", "Selected village " + villages.get(i).getJurisdictionLevelName());
-            }
-        }
-    }
+            case Constants.MultiSelectSpinnerType.SPINNER_VILLAGE:
+                villageIds.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        villageIds.add(villages.get(i).getId());
+                        Log.d("TAG", "Selected village " + villages.get(i).getJurisdictionLevelName());
+                    }
+                }
+                break;
 
-    @Override
-    public void onProjectsSelected(boolean[] selected) {
-        projectIds.clear();
-        for (int i = 0; i < selected.length; i++) {
-            if (selected[i]) {
-                projectIds.add(projects.get(i).getId());
-                Log.d("TAG", "Selected project " + projects.get(i).getOrgProjectName());
-            }
         }
     }
 }

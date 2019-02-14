@@ -1,6 +1,7 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
+import com.platform.utility.Constants;
+import com.platform.view.activities.FormActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +101,12 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         ProcessData data = processData.get(childPosition);
 
         ((TextView) view.findViewById(R.id.form_title)).setText(data.getName());
+
+        view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, FormActivity.class);
+            intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
+            mContext.startActivity(intent);
+        });
 
         return view;
     }
