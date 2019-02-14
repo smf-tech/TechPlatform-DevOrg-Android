@@ -125,6 +125,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                         Log.d(TAG, "RADIO_GROUP_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.radioGroupTemplate(formData));
                         break;
+
+                    case Constants.FormsFactory.FILE_TEMPLATE:
+                        Log.d(TAG, "FILE_TEMPLATE");
+                        addViewToMainContainer(formComponentCreator.fileTemplate(formData));
+                        break;
                 }
             }
         }
