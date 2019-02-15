@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_menu_community"
             android:title="@string/menu_community" />
         <item
+            android:id="@+id/action_menu_forms"
+            android:icon="@drawable/ic_menu_forms"
+            android:title="@string/menu_forms" />
+        <item
             android:id="@+id/action_menu_teams"
             android:icon="@drawable/ic_menu_teams"
             android:title="@string/menu_teams" />

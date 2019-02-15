@@ -19,6 +19,8 @@ public class Constants {
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
+    public static final String ONLINE_UPDATE_FORM_TYPE = "OnlineUpdate";
+    public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
     public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
 
@@ -98,8 +100,9 @@ public class Constants {
     public static class PM {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
+        public static final String FORM_ID = "formId";
         public static final String RESPONSE = "response";
-        public static final String EDIT_MODE = "EditMode";
+        public static final String EDIT_MODE = "editMode";
     }
 
     public static class TM {

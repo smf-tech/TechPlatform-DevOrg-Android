@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
+import com.platform.view.fragments.CompletedFormsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +25,14 @@ import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
-    private Map<String, List<String>> mFormsData;
+    private Map<String, List<CompletedFormsFragment.ProcessDemoObject>> mFormData;
 
-    public FormCategoryAdapter(final Context context, final Map<String, List<String>> formsData) {
+    public FormCategoryAdapter(final Context context, final Map<String, List<CompletedFormsFragment.ProcessDemoObject>> formsData) {
         this.mContext = context;
-        mFormsData = formsData;
+        mFormData = formsData;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         FloatingActionButton syncButton;
         FloatingActionButton addButton;
@@ -72,19 +73,19 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
-        String[] objects1 = new String[mFormsData.keySet().size()];
-        objects1 = mFormsData.keySet().toArray(objects1);
+        String[] objects1 = new String[mFormData.keySet().size()];
+        objects1 = mFormData.keySet().toArray(objects1);
         String category = objects1[i];
 
-        List<String> list = mFormsData.get(category);
+        List<CompletedFormsFragment.ProcessDemoObject> list = mFormData.get(category);
         ArrayList<ProcessData> dataList = new ArrayList<>();
 
         if (list == null) return;
 
-        for (String object: list) {
+        for (CompletedFormsFragment.ProcessDemoObject object : list) {
             ProcessData data = new ProcessData();
-            data.setName(object);
-//            data.setId(object.id);
+            data.setName(object.name);
+            data.setId(object.id);
             dataList.add(data);
         }
 
@@ -97,6 +98,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
     @Override
     public int getItemCount() {
-        return mFormsData.size();
+        return mFormData.size();
     }
 }

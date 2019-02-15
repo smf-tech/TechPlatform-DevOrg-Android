@@ -137,6 +137,9 @@ public class FormsActivity extends BaseActivity implements
             case R.id.action_menu_teams:
                 break;
 
+            case R.id.action_menu_forms:
+                break;
+
             case R.id.action_menu_calendar:
                 break;
 
