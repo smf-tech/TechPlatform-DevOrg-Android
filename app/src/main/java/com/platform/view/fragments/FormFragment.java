@@ -49,8 +49,6 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private FormComponentCreator formComponentCreator;
     private FormActivityPresenter formPresenter;
 
-    private String errorMsg = "";
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -218,7 +216,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     }
 
     public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+        Log.d(TAG, errorMsg);
     }
 
     public void setFormReadOnlyMode(final String response) {

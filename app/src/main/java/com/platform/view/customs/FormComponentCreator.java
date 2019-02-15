@@ -1,5 +1,7 @@
 package com.platform.view.customs;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputType;
@@ -25,6 +27,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,7 +70,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 radioGroupForm.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
                     if (!TextUtils.isEmpty(formData.getName()) &&
                             !TextUtils.isEmpty(((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText())) {
-                        requestObjectMap.put(formData.getName(), ((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText().toString());
+                        requestObjectMap.put(formData.getName(),
+                                ((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText().toString());
                     } else {
                         requestObjectMap.remove(formData.getName());
                     }
@@ -137,10 +141,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         textInputField.setMaxLines(1);
         textInputField.setText("");
         textInputField.setTag(formData.getTitle());
+
         if (!TextUtils.isEmpty(formData.getInputType())) {
             switch (formData.getInputType()) {
                 case Constants.FormInputType.INPUT_TYPE_DATE:
+                    textInputField.setFocusable(false);
+                    textInputField.setClickable(false);
                     textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                    textInputField.setOnClickListener(view -> showDateDialog(fragment.get().getContext(), textInputField));
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
@@ -148,6 +156,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     break;
             }
         }
+
         textInputField.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -181,7 +190,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     public View fileTemplate(final Elements formData) {
 
         if (fragment == null || fragment.get() == null) {
-            Log.e(TAG, "View returned null");
+            Log.e(TAG, "View returned null" + formData);
             return null;
         }
 
@@ -198,14 +207,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     public boolean isValid() {
         //For all edit texts
-        for (EditText inputText :
-                editTexts) {
-            if (inputText != null && TextUtils.isEmpty(inputText.getText().toString()) && !TextUtils.isEmpty(inputText.getTag().toString())) {
+        for (EditText inputText : editTexts) {
+            if (inputText != null && TextUtils.isEmpty(inputText.getText().toString()) &&
+                    !TextUtils.isEmpty(inputText.getTag().toString())) {
                 fragment.get().setErrorMsg(inputText.getTag() + " blank");
                 return false;
             }
         }
+
         //For all radio buttons
+
         //For all multi selects
         return true;
     }
@@ -222,5 +233,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(value)) {
             requestObjectMap.put(name, value);
         }
+    }
+
+    private void showDateDialog(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+            String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateDialog.show();
     }
 }

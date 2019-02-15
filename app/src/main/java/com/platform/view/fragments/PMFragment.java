@@ -12,17 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.SavedForm;
-import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
@@ -99,7 +97,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             rltPendingForms.setVisibility(View.GONE);
         }
 
-        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema();
+        //List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema();
         Log.e(TAG, "Form schema fetched from database.");
     }
 
@@ -152,7 +150,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName());
 
                 if (!TextUtils.isEmpty(data.getId())) {
-                    ImageView imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
+                    ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
                     imgCreateForm.setOnClickListener(v -> {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
                         intent.putExtra(Constants.PM.PROCESS_ID, data.getId());

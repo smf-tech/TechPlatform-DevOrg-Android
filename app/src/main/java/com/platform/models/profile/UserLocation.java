@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class UserLocation {
 
     @SerializedName("state")
-    private String stateId;
+    private ArrayList<String> stateId;
 
     @SerializedName("district")
     private ArrayList<String> districtIds;
@@ -22,11 +22,11 @@ public class UserLocation {
     @SerializedName("village")
     private ArrayList<String> villageIds;
 
-    public String getStateId() {
+    public ArrayList<String> getStateId() {
         return stateId;
     }
 
-    public void setStateId(String stateId) {
+    public void setStateId(ArrayList<String> stateId) {
         this.stateId = stateId;
     }
 

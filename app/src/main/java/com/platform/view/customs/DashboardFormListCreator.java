@@ -3,7 +3,7 @@ package com.platform.view.customs;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,7 +50,7 @@ public class DashboardFormListCreator {
 
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName());
                 if (!TextUtils.isEmpty(data.getId())) {
-                    ImageView imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
+                    ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
                     imgCreateForm.setOnClickListener(v -> {
 
                     });

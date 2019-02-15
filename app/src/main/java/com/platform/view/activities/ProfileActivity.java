@@ -92,6 +92,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private ArrayList<String> selectedProjects = new ArrayList<>();
     private ArrayList<String> selectedRoles = new ArrayList<>();
+    private ArrayList<String> selectedStates = new ArrayList<>();
     private ArrayList<String> selectedDistricts = new ArrayList<>();
     private ArrayList<String> selectedTalukas = new ArrayList<>();
     private ArrayList<String> selectedClusters = new ArrayList<>();
@@ -104,7 +105,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private List<Organization> organizations = new ArrayList<>();
     private List<Location> states = new ArrayList<>();
 
-    private String selectedState;
+    //    private String selectedState;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
 
@@ -229,6 +230,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } else {
             etUserMobileNumber.setText(Util.getUserMobileFromPref());
         }
+
+        etUserMobileNumber.setEnabled(false);
+        etUserMobileNumber.setFocusable(false);
+        etUserMobileNumber.setClickable(false);
     }
 
     private void setListeners() {
@@ -306,10 +311,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             userInfo.setOrgId(selectedOrg.getId());
             userInfo.setProjectIds(selectedProjects);
-            userInfo.setRoleIds(selectedRoles.get(0));
+            userInfo.setRoleIds(selectedRole.getId());
 
             UserLocation userLocation = new UserLocation();
-            userLocation.setStateId(selectedState);
+            userLocation.setStateId(selectedStates);
             userLocation.setDistrictIds(selectedDistricts);
             userLocation.setTalukaIds(selectedTalukas);
             userLocation.setClusterIds(selectedClusters);
@@ -342,7 +347,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             msg = getString(R.string.msg_select_project);
         } else if (selectedRoles == null || selectedRoles.size() == 0) {
             msg = getString(R.string.msg_select_role);
-        } else if (selectedState == null || TextUtils.isEmpty(selectedState)) {
+        } else if (selectedStates == null || selectedStates.size() == 0) {
             msg = getString(R.string.msg_select_state);
         } else if ((spDistrict.getVisibility() == View.VISIBLE) && (selectedDistricts == null || selectedDistricts.size() == 0)) {
             msg = getString(R.string.msg_select_district);
@@ -531,7 +536,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (states != null && !states.isEmpty() && states.get(i) != null
                         && states.get(i).getState() != null) {
 
-                    selectedState = states.get(i).getState();
+                    selectedStates.clear();
+                    selectedStates.add(states.get(i).getState());
                     Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
                     profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
                             selectedRole.getProject().getJurisdictionTypeId(),
@@ -656,7 +662,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> districts = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        if (location.getState().equalsIgnoreCase(selectedState)) {
+                        if (selectedStates.contains(location.getState())) {
                             districts.add(location.getDistrict());
                         }
                     }
@@ -671,7 +677,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> talukas = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        if (location.getState().equalsIgnoreCase(selectedState) &&
+                        if (selectedStates.contains(location.getState()) &&
                                 selectedDistricts.contains(location.getDistrict())) {
                             talukas.add(location.getTaluka());
                         }
@@ -699,7 +705,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> villages = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        if (location.getState().equalsIgnoreCase(selectedState) &&
+                        if (selectedStates.contains(location.getState()) &&
                                 selectedDistricts.contains(location.getDistrict()) &&
                                 selectedTalukas.contains(location.getTaluka())) {
                             villages.add(location.getVillage());
