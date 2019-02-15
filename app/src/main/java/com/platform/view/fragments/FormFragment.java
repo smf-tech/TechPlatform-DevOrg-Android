@@ -49,6 +49,8 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private FormComponentCreator formComponentCreator;
     private FormActivityPresenter formPresenter;
 
+    private String errorMsg = "";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -180,9 +182,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 break;
 
             case R.id.btn_submit:
-                /*if (!formComponentCreator.isValid()) {
+                if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
-                } else {*/
+                } else {
                     save();
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setFormId(formModel.getData().getId());
@@ -195,7 +197,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                         }
                     }
-//                }
+                }
                 break;
         }
     }
@@ -205,17 +207,22 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
         savedForm.setFormId(formModel.getData().getId());
         savedForm.setFormName(formModel.getData().getName());
         savedForm.setSynced(false);
-        if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
+
+        if (formModel.getData().getCategory() != null &&
+                !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
             savedForm.setFormCategory(formModel.getData().getCategory().getName());
         }
+
         savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
+        SimpleDateFormat createdDateFormat =
+                new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
         formPresenter.setSavedForm(savedForm);
     }
 
     public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
         Log.d(TAG, errorMsg);
     }
 
