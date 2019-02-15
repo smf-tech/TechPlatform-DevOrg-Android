@@ -310,6 +310,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setUserGender(userGender);
 
             userInfo.setOrgId(selectedOrg.getId());
+            userInfo.setType(selectedOrg.getType());
             userInfo.setProjectIds(selectedProjects);
             userInfo.setRoleIds(selectedRole.getId());
 

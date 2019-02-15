@@ -50,6 +50,10 @@ public class Constants {
         public static final String LANGUAGE_HINDI = "hi";
     }
 
+    public static class AssociatesType {
+        public static final String ORG = "organisation";
+    }
+
     public static class Login {
         public static final String LOGIN_OTP_VERIFY_DATA = "loginOtpData";
         static final String USER_MOBILE_NO = "userMobile";
@@ -66,6 +70,7 @@ public class Constants {
         public static final String USER_GENDER = "gender";
         public static final String USER_ROLE_ID = "role_id";
         public static final String USER_ORG_ID = "org_id";
+        public static final String USER_ASSOCIATE_TYPE = "type";
         public static final String USER_PROJECTS = "projects";
         public static final String USER_LOCATION = "location";
 

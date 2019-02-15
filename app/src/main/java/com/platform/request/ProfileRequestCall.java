@@ -209,12 +209,7 @@ public class ProfileRequestCall {
                 body.addProperty(Constants.Login.USER_EMAIL, userInfo.getUserEmailId());
                 body.addProperty(Constants.Login.USER_GENDER, userInfo.getUserGender());
                 body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getOrgId());
-
-//            JsonArray roleIdArray = new JsonArray();
-//            ArrayList<String> userRoleIds = userInfo.getRoleIds();
-//            for (String roleId : userRoleIds) {
-//                roleIdArray.add(roleId);
-//            }
+                body.addProperty(Constants.Login.USER_ASSOCIATE_TYPE, userInfo.getType());
                 body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getRoleIds());
 
                 // Add project Ids
