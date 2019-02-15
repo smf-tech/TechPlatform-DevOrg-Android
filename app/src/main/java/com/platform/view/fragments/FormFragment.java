@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
-import com.platform.listeners.PlatformTaskListener;
+import com.platform.listeners.FormDataTaskListener;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
+public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -231,6 +231,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     }
 
     @Override
+    public void showChoicesByUrl(String result) {
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
@@ -253,9 +258,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
-                            } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE);
+                            } else {
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
                             }
                             Util.showToast("Form saved offline ", getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());

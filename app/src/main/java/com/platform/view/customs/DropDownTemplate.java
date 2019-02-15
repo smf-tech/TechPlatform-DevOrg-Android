@@ -60,7 +60,9 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        if (!formData.isRequired()) {
+        if (formData.isRequired() != null) {
+            spinner.setEnabled(formData.isRequired());
+        } else {
             spinner.setEnabled(false);
         }
 
