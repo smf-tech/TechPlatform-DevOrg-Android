@@ -1,6 +1,7 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.models.SavedForm;
 import com.platform.models.pm.ProcessData;
+import com.platform.utility.Constants;
+import com.platform.view.activities.FormActivity;
 
 import java.util.List;
 
@@ -39,7 +42,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         mSavedForms = savedForms;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         View mRootView;
         TextView mName;
@@ -89,7 +92,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         if (mSavedForms == null) {
             ProcessData processData = mProcessData.get(i);
             viewHolder.mName.setText(processData.getName());
-//            viewHolder.mDate.setText(processData.getMicroservice().getUpdatedAt());
 
         } else {
             if (!mSavedForms.isEmpty()) {
@@ -101,18 +103,19 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         }
 
         viewHolder.mRootView.setOnClickListener(v -> {
-            /*if (mProcessData.get(i).getId().equals("0")) return;
+            if (i >= mProcessData.size() || mProcessData.get(i).getId().equals("0")) return;
 
             Intent intent = new Intent(mContext, FormActivity.class);
             intent.putExtra(Constants.PM.PROCESS_ID, mProcessData.get(i).getId());
+            intent.putExtra(Constants.PM.FORM_ID, mProcessData.get(i).getName());
             intent.putExtra(Constants.PM.EDIT_MODE, true);
-            mContext.startActivity(intent);*/
+            mContext.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        if (mSavedForms != null && !mSavedForms.isEmpty() )
+        if (mSavedForms != null && !mSavedForms.isEmpty())
             return mSavedForms.size();
         return mProcessData.size();
     }

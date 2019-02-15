@@ -27,7 +27,9 @@ public class FormActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null) {
             String processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
+            String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
             bundle.putString(Constants.PM.PROCESS_ID, processId);
+            bundle.putString(Constants.PM.FORM_ID, formId);
 
             boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
             if (readOnly)

@@ -8,6 +8,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Elements {
 
+    private String mAnswer;
     @SerializedName("type")
     @Expose
     private String type;
@@ -96,4 +97,15 @@ public class Elements {
     public void setValidators(List<Validator> validators) {
         this.validators = validators;
     }
+
+    public String getAnswer() {
+        return mAnswer;
+    }
+
+    public void setAnswer(final String answer) {
+        this.mAnswer = answer;
+    }
+
 }
+
+

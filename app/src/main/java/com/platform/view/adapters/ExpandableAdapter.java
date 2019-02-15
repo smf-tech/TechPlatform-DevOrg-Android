@@ -116,7 +116,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             ProcessData data = processData.get(childPosition);
             ((TextView) view.findViewById(R.id.form_title)).setText(data.getName());
 
-            view.findViewById(R.id.pin_button).setOnClickListener(v -> {
+            view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, FormActivity.class);
                 intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
                 mContext.startActivity(intent);

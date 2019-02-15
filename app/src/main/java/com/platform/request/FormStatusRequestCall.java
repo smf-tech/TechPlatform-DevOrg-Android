@@ -26,42 +26,6 @@ public class FormStatusRequestCall {
         this.listener = listener;
     }
 
-    public void getProcessDetails(String processId) {
-        Response.Listener<JSONObject> processDetailsResponseListener = response -> {
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    Log.i(TAG, "getProcessDetails - Resp: " + res);
-                    listener.onFormsLoaded(res);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                listener.onFailureListener(e.getMessage());
-            }
-        };
-
-        Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
-
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getProcessUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_PROCESS_DETAILS, processId);
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
-                getProcessUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                processDetailsResponseListener,
-                processDetailsErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(new JsonObject());
-        gsonRequest.setShouldCache(false);
-
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-    }
-
     public void getSubmittedFormsOfMaster(String formID) {
         Response.Listener<JSONObject> processDetailsResponseListener = response -> {
             try {

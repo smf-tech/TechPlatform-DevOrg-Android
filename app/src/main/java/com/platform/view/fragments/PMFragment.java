@@ -81,6 +81,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
+            pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.sync_button).setOnClickListener(v -> {
                 if (Util.isConnected(getContext())) {
                     Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
@@ -96,11 +97,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
         } else {
+            pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.GONE);
             rltPendingForms.setVisibility(View.GONE);
         }
 
-        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema();
-        Log.e(TAG, "Form schema fetched from database.");
     }
 
     private void populateData(Processes process) {

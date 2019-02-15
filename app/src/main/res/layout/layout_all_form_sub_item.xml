@@ -18,8 +18,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/pin_button">
+                android:layout_height="wrap_content">
 
                 <View
                     android:id="@+id/form_status_indicator"
