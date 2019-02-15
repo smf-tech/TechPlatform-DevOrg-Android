@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -184,12 +185,17 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             Log.e(TAG, "View returned null");
             return null;
         }
+        LinearLayout fileTemplateView = (LinearLayout) View.inflate(
+                fragment.get().getContext(), R.layout.row_file_type, null);
+        ImageView imgFile = fileTemplateView.findViewById(R.id.iv_file);
+        TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
+        if (!TextUtils.isEmpty(formData.getTitle())) {
+            txtFileName.setText(formData.getTitle());
+        }
 
-        ImageView imageView = new ImageView(fragment.get().getContext());
+        imgFile.setImageDrawable(fragment.get().getResources().getDrawable(R.drawable.add_img, null));
 
-        imageView.setImageDrawable(fragment.get().getResources().getDrawable(R.drawable.add_img, null));
-
-        return imageView;
+        return fileTemplateView;
     }
 
     private String setFieldAsMandatory(boolean isRequired) {
