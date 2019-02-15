@@ -66,6 +66,42 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void updateFormResponse(String formId, HashMap<String, String> requestObjectMap) {
+
+        Response.Listener<JSONObject> createFormResponseListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    listener.onFormCreated(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener("");
+            }
+        };
+
+        Response.ErrorListener createFormErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String createFormUrl = BuildConfig.BASE_URL
+                + String.format(Urls.PM.CREATE_FORM, formId);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.PUT,
+                createFormUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                createFormResponseListener,
+                createFormErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(getFormRequest(requestObjectMap));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void getChoicesByUrl(String choicesUrl) {
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {

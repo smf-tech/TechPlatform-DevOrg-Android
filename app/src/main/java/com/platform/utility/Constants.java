@@ -19,6 +19,8 @@ public class Constants {
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
+    public static final String ONLINE_UPDATE_FORM_TYPE = "OnlineUpdate";
+    public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
     public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
 

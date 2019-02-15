@@ -141,16 +141,25 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
     @Override
     public void onSubmitClick(String submitType) {
+        FormRequestCall formRequestCall = new FormRequestCall();
+        formRequestCall.setListener(this);
+
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                FormRequestCall formRequestCall = new FormRequestCall();
-                formRequestCall.setListener(this);
-
                 formRequestCall.createFormResponse(getFormId(), getRequestedObject());
                 break;
 
+            case Constants.ONLINE_UPDATE_FORM_TYPE:
+                formRequestCall.updateFormResponse(getFormId(), getRequestedObject());
+                break;
+
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
-                DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormObject(getSavedForm());
+                DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                        .insertFormObject(getSavedForm());
+                break;
+            case Constants.OFFLINE_UPDATE_FORM_TYPE:
+                DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                        .updateFormObject(getSavedForm());
                 break;
         }
     }

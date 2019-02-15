@@ -57,6 +57,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private String errorMsg = "";
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
+    boolean mIsInEditMode;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -84,8 +85,8 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 initViews();
             }
 
-            boolean isReadOnly = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
-            if (isReadOnly) {
+            mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
+            if (mIsInEditMode) {
                 formPresenter.getFormResults(processId);
             }
         }
@@ -244,10 +245,18 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setFormId(formModel.getData().getId());
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
-                        formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                        if (mIsInEditMode) {
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE);
+                        } else {
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                        }
                     } else {
                         if (formModel.getData() != null) {
-                            formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                            if (mIsInEditMode) {
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                            } else {
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE);
+                            }
                             Util.showToast("Form saved offline ", getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                         }
