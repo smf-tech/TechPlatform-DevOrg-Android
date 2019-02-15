@@ -140,6 +140,13 @@ public class FormActivityPresenter implements FormRequestCallListener {
     }
 
     @Override
+    public void onChoicesPopulated(String response) {
+        if (!TextUtils.isEmpty(response)) {
+            formFragment.get().showChoicesByUrl(response);
+        }
+    }
+
+    @Override
     public void onSubmitClick(String submitType) {
         FormRequestCall formRequestCall = new FormRequestCall();
         formRequestCall.setListener(this);
