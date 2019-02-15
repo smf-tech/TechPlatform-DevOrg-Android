@@ -14,8 +14,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Dao
 public interface FormDataDao {
-    @Query("SELECT * FROM formdata")
-    List<FormData> getFormSchema();
+    @Query("SELECT * FROM formdata where id = :formId")
+    List<FormData> getFormSchema(String formId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormData... formData);

@@ -42,6 +42,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     private TextView mNoRecordsView;
     private Map<String, List<String>> mFormsList = new HashMap<>();
+    private Map<String, List<ProcessDemoObject>> mFormList = new HashMap<>();
     FormCategoryAdapter adapter;
     Map<String, String> categoryMap = new HashMap<>();
 
@@ -76,7 +77,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
         presenter.getAllFormMasters();
 
-        adapter = new FormCategoryAdapter(getContext(), mFormsList);
+        adapter = new FormCategoryAdapter(getContext(), mFormList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -94,23 +95,10 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     public void onFormsLoaded(String response) {
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
 
-//        mChildList.clear();
         mFormsList.clear();
 
         Processes json = new Gson().fromJson(response, Processes.class);
         for (ProcessData data : json.getData()) {
-//            String categoryName = data.getCategory().getName();
-//            if (mChildList.containsKey(categoryName)) {
-//                List<ProcessData> processData = mChildList.get(categoryName);
-//                if (processData != null) {
-//                    processData.add(data);
-//                    mChildList.put(categoryName, processData);
-//                }
-//            } else {
-//                List<ProcessData> processData = new ArrayList<>();
-//                processData.add(data);
-//                mChildList.put(categoryName, processData);
-//            }
 
             String id = data.getId();
 
@@ -119,19 +107,11 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
             presenter.getSubmittedFormsOfMaster(id);
         }
-
-      /*  if (!mChildList.isEmpty()) {
-            setAdapter(mChildList);
-            mNoRecordsView.setVisibility(View.GONE);
-        } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
-        }*/
-
     }
 
     @Override
     public void onMastersFormsLoaded(final String response) {
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<ProcessDemoObject> list = new ArrayList<>();
         String formID = "";
 
         try {
@@ -142,20 +122,20 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     formID = object.getString("form_id");
                     JSONObject id = object.getJSONObject("_id");
                     String oid = id.getString("$oid");
-                    list.add(oid);
+                    list.add(new ProcessDemoObject(oid, formID));
                 }
             } else {
-                list.add("No Forms available");
+                list.add(new ProcessDemoObject("No Forms available", "0"));
             }
 
             for (final String s : mFormsList.keySet()) {
                 String id = categoryMap.get(s);
                 if (id.equals(formID)) {
-                    mFormsList.put(s, list);
+                    mFormList.put(s, list);
                 } else {
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    arrayList.add("No Forms available");
-                    mFormsList.put(s, arrayList);
+                    ArrayList<ProcessDemoObject> arrayList = new ArrayList<>();
+                    arrayList.add(new ProcessDemoObject("No Forms available", "0"));
+                    mFormList.put(s, arrayList);
                 }
             }
 

@@ -98,8 +98,9 @@ public class Constants {
     public static class PM {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
+        public static final String FORM_ID = "formId";
         public static final String RESPONSE = "response";
-        public static final String EDIT_MODE = "EditMode";
+        public static final String EDIT_MODE = "editMode";
     }
 
     public static class TM {

@@ -18,19 +18,24 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
+import com.platform.models.forms.FormData;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +55,8 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     private FormActivityPresenter formPresenter;
 
     private String errorMsg = "";
+    private JSONObject mFormJSONObject = null;
+    private List<Elements> mElementsListFromDB;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -104,6 +111,43 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
     private void renderFormView() {
         customFormView = formFragmentView.findViewById(R.id.ll_form_container);
+
+        getActivity().runOnUiThread(() -> customFormView.removeAllViews());
+
+        for (Elements formData : formDataArrayList) {
+            if (formData != null && !formData.getType().equals("")) {
+
+                String formDataType = formData.getType();
+                switch (formDataType) {
+                    case Constants.FormsFactory.TEXT_TEMPLATE:
+                        Log.d(TAG, "TEXT_TEMPLATE");
+                        addViewToMainContainer(formComponentCreator.textInputTemplate(formData));
+                        break;
+
+                    case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                        Log.d(TAG, "DROPDOWN_TEMPLATE");
+                        Object[] objects = formComponentCreator.dropDownTemplate(formData);
+                        addViewToMainContainer((View) objects[0]);
+                        break;
+
+                    case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                        Log.d(TAG, "RADIO_GROUP_TEMPLATE");
+                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(formData));
+                        break;
+
+                    case Constants.FormsFactory.FILE_TEMPLATE:
+                        Log.d(TAG, "FILE_TEMPLATE");
+                        addViewToMainContainer(formComponentCreator.fileTemplate(formData));
+                        break;
+                }
+            }
+        }
+    }
+
+    private void renderFilledFormView(final List<Elements> formDataArrayList) {
+        customFormView = formFragmentView.findViewById(R.id.ll_form_container);
+
+        getActivity().runOnUiThread(() -> customFormView.removeAllViews());
 
         for (Elements formData : formDataArrayList) {
             if (formData != null && !formData.getType().equals("")) {
@@ -167,6 +211,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
     public <T> void showNextScreen(T data) {
         formModel = new Gson().fromJson((String) data, Form.class);
         initViews();
+
+        if (mFormJSONObject != null && mElementsListFromDB != null)
+            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
 
     @Override
@@ -185,18 +232,18 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 /*if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
                 } else {*/
-                    save();
-                    if (Util.isConnected(getActivity())) {
-                        formPresenter.setFormId(formModel.getData().getId());
-                        formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
-                        formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
-                    } else {
-                        if (formModel.getData() != null) {
-                            formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
-                            Util.showToast("Form saved offline ", getActivity());
-                            Log.d(TAG, "Form saved " + formModel.getData().getId());
-                        }
+                save();
+                if (Util.isConnected(getActivity())) {
+                    formPresenter.setFormId(formModel.getData().getId());
+                    formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+                    formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                } else {
+                    if (formModel.getData() != null) {
+                        formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                        Util.showToast("Form saved offline ", getActivity());
+                        Log.d(TAG, "Form saved " + formModel.getData().getId());
                     }
+                }
 //                }
                 break;
         }
@@ -221,10 +268,59 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
         this.errorMsg = errorMsg;
     }
 
-    public void setFormReadOnlyMode(final String response) {
-        formModel = new Gson().fromJson(response, Form.class);
+    public void getFormDataAndParse(final String response) {
 
-        HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
-        Log.e(TAG, "setFormReadOnlyMode: \n" + requestObject.toString());
+        String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+        String formId = getArguments().getString(Constants.PM.FORM_ID);
+        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+        mElementsListFromDB = formDataList.get(0).getComponents().getPages().get(0).getElements();
+        Log.e(TAG, "Form schema fetched from database.");
+
+        try {
+            JSONObject object = new JSONObject(response);
+            JSONArray values = object.getJSONArray("values");
+            for (int i = 0; i < values.length(); i++) {
+                mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
+                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (id.equals(formId)) {
+                    Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (formComponentCreator != null)
+            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
+    }
+
+    private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
+        if (object == null || elements == null || elements.size() == 0) return;
+
+        for (final Elements element : elements) {
+            if (object.has(element.getName())) {
+                try {
+                    String type = element.getType();
+                    switch (type) {
+                        case Constants.FormsFactory.TEXT_TEMPLATE:
+                            element.setAnswer(object.getString(element.getName()));
+                            break;
+
+                        case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+
+                            break;
+
+                        case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                            element.setAnswer(object.getString(element.getName()));
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        renderFilledFormView(elements);
     }
 }

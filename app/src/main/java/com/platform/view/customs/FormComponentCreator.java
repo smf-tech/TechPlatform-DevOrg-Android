@@ -60,7 +60,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
-                radioButtonForm.setText(formData.getChoices().get(index).getText());
+//                radioButtonForm.setText(formData.getChoices().get(index).getText());
+                radioButtonForm.setText(formData.getAnswer());
                 radioButtonForm.setId(index);
                 radioGroupForm.addView(radioButtonForm);
 
@@ -135,7 +136,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         EditText textInputField = textTemplateView.findViewById(R.id.edit_form_text_template);
         textInputField.setMaxLines(1);
-        textInputField.setText("");
+        textInputField.setText(formData.getAnswer());
         textInputField.setTag(formData.getTitle());
         if (!TextUtils.isEmpty(formData.getInputType())) {
             switch (formData.getInputType()) {

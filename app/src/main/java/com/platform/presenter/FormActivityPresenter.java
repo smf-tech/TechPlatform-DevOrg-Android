@@ -81,7 +81,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        //requestCall.getFormResults(processId);
+        requestCall.getFormResults(processId);
     }
 
     @Override
@@ -155,11 +155,11 @@ public class FormActivityPresenter implements FormRequestCallListener {
         }
     }
 
-    //@Override
+    @Override
     public void onFormDetailsLoadedListener(final String response) {
         Log.e(TAG, "Form Details\n" + response);
 
         formFragment.get().hideProgressBar();
-        //formFragment.get().setFormReadOnlyMode(response);
+        formFragment.get().getFormDataAndParse(response);
     }
 }
