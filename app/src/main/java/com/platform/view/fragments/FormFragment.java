@@ -271,11 +271,15 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
         savedForm.setFormId(formModel.getData().getId());
         savedForm.setFormName(formModel.getData().getName());
         savedForm.setSynced(false);
-        if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
+
+        if (formModel.getData().getCategory() != null &&
+                !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
             savedForm.setFormCategory(formModel.getData().getCategory().getName());
         }
+
         savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        SimpleDateFormat createdDateFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
+        SimpleDateFormat createdDateFormat =
+                new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
         formPresenter.setSavedForm(savedForm);
@@ -283,6 +287,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+        Log.d(TAG, errorMsg);
     }
 
     public void getFormDataAndParse(final String response) {

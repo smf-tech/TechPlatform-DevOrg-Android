@@ -132,36 +132,6 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getStates() {
-        Response.Listener<JSONObject> stateSuccessListener = response -> {
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    Log.i(TAG, "API State Response:" + res);
-                    listener.onStatesFetched(res);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        };
-
-        Response.ErrorListener stateErrorListener = error -> listener.onErrorListener(error);
-
-        final String getStateUrl = BuildConfig.BASE_URL + Urls.Profile.GET_STATES;
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
-                getStateUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                stateSuccessListener,
-                stateErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-    }
-
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
         Response.Listener<JSONObject> jurisdictionSuccessListener = response -> {
             try {
@@ -258,9 +228,16 @@ public class ProfileRequestCall {
                 // Add user location
                 UserLocation userLocation = userInfo.getUserLocation();
                 JsonObject locationObj = new JsonObject();
-                locationObj.addProperty(Constants.Location.STATE, userLocation.getStateId());
 
                 JsonArray locationArray = new JsonArray();
+                if (userLocation.getStateId() != null) {
+                    for (String stateId : userLocation.getStateId()) {
+                        locationArray.add(stateId);
+                    }
+                    locationObj.add(Constants.Location.STATE, locationArray);
+                }
+
+                locationArray = new JsonArray();
                 if (userLocation.getDistrictIds() != null) {
                     for (String districtId : userLocation.getDistrictIds()) {
                         locationArray.add(districtId);

@@ -1,5 +1,7 @@
 package com.platform.view.customs;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -27,6 +29,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,11 +38,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
+
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
-
     private ArrayList<EditText> editTexts = new ArrayList<>();
-    private String errorMsg;
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -64,19 +66,21 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
-//                radioButtonForm.setText(formData.getChoices().get(index).getText());
                 radioButtonForm.setText(formData.getAnswer());
                 radioButtonForm.setId(index);
                 radioGroupForm.addView(radioButtonForm);
 
                 radioGroupForm.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
                     if (!TextUtils.isEmpty(formData.getName()) &&
-                            !TextUtils.isEmpty(((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText())) {
-                        requestObjectMap.put(formData.getName(), ((RadioButton) radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId())).getText().toString());
+                            !TextUtils.isEmpty(((RadioButton) radioGroupForm.findViewById(
+                                    radioGroup1.getCheckedRadioButtonId())).getText())) {
+
+                        requestObjectMap.put(formData.getName(),
+                                ((RadioButton) radioGroupForm.findViewById(
+                                        radioGroup1.getCheckedRadioButtonId())).getText().toString());
                     } else {
                         requestObjectMap.remove(formData.getName());
                     }
-
                 });
 
                 if (index == 0) {
@@ -102,26 +106,37 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             if (Util.getJurisdictionLevelDataFromPref() != null) {
                 List<String> locationValues = new ArrayList<>();
+
                 String jurisdictionLevel = Util.getUserLocationJurisdictionLevelFromPref();
                 for (Location location : Util.getJurisdictionLevelDataFromPref().getData()) {
-                    if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
-                        locationValues.add(location.getState());
-                    } else if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
-                        locationValues.add(location.getDistrict());
-                    } else if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-                        locationValues.add(location.getTaluka());
-                    } else if (jurisdictionLevel.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
-                        locationValues.add(location.getVillage());
+
+                    switch (jurisdictionLevel) {
+                        case Constants.JurisdictionLevelName.STATE_LEVEL:
+                            locationValues.add(location.getState());
+                            break;
+
+                        case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+                            locationValues.add(location.getDistrict());
+                            break;
+
+                        case Constants.JurisdictionLevelName.TALUKA_LEVEL:
+                            locationValues.add(location.getTaluka());
+                            break;
+
+                        case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
+                            locationValues.add(location.getVillage());
+                            break;
                     }
                 }
                 template.setListData(locationValues);
             }
         } else if (formData.getChoices() != null) {
             List<String> choiceValues = new ArrayList<>();
-            for (Choice choice :
-                    formData.getChoices()) {
+
+            for (Choice choice : formData.getChoices()) {
                 choiceValues.add(choice.getText());
             }
+
             template.setListData(choiceValues);
         }
 
@@ -145,16 +160,22 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             //set max length allowed
             if (formData.getValidators().get(0).getMaxLength() != null) {
-                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(formData.getValidators().get(0).getMaxLength())});
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                        formData.getValidators().get(0).getMaxLength())});
+
             } else if (formData.getValidators().get(0).getMaxValue() != null) {
-                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(formData.getValidators().get(0).getMaxValue())});
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                        formData.getValidators().get(0).getMaxValue())});
             }
         }
+
         textInputField.setMaxLines(1);
         textInputField.setText(formData.getAnswer());
         textInputField.setTag(formData.getTitle());
+
         //set input type
         setInputType(formData.getInputType(), textInputField);
+
         textInputField.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -190,7 +211,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (!TextUtils.isEmpty(type)) {
             switch (type) {
                 case Constants.FormInputType.INPUT_TYPE_DATE:
+                    textInputField.setFocusable(false);
+                    textInputField.setClickable(false);
                     textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                    textInputField.setOnClickListener(view -> showDateDialog(fragment.get().getContext(), textInputField));
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
@@ -207,11 +231,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     public View fileTemplate(final Elements formData) {
 
         if (fragment == null || fragment.get() == null) {
-            Log.e(TAG, "View returned null");
+            Log.e(TAG, "View returned null" + formData);
             return null;
         }
+
         LinearLayout fileTemplateView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_file_type, null);
+
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
             txtFileName.setText(formData.getTitle());
@@ -226,20 +252,26 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     public boolean isValid() {
         fragment.get().setErrorMsg("");
-        errorMsg = "";
+        String errorMsg = "";
+
         //For all edit texts
-        for (EditText editText :
-                editTexts) {
+        for (EditText editText : editTexts) {
             Elements formData = editTextElementsHashMap.get(editText);
             if (formData.isRequired() != null) {
-                errorMsg = Validation.editTextRequiredValidation(editText.getTag().toString(), editText.getText().toString(), formData.isRequired());
+
+                errorMsg = Validation.editTextRequiredValidation(editText.getTag().toString(),
+                        editText.getText().toString(), formData.isRequired());
+
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
                     break;
                 }
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
-                    errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(), editText.getText().toString(), formData.getValidators().get(0));
+
+                    errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getValidators().get(0));
+
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
                         break;
@@ -248,11 +280,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
         }
 
-        if (TextUtils.isEmpty(errorMsg)) {
-            return true;
-        } else {
-            return false;
-        }
+        return TextUtils.isEmpty(errorMsg);
     }
 
     public HashMap<String, String> getRequestObject() {
@@ -267,5 +295,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(value)) {
             requestObjectMap.put(name, value);
         }
+    }
+
+    private void showDateDialog(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+            String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateDialog.show();
     }
 }
