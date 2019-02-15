@@ -229,9 +229,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         for (EditText editText :
                 editTexts) {
             Elements formData = editTextElementsHashMap.get(editText);
-            if (formData.isRequired() != null && formData.getValidators() != null &&
-                    !formData.getValidators().isEmpty()) {
-                errorMsg = Validation.editTextValidation(editText.getTag().toString(), editText.getText().toString(), formData.isRequired(), formData.getValidators().get(0));
+            if (formData.isRequired() != null) {
+                errorMsg = Validation.editTextRequiredValidation(editText.getTag().toString(), editText.getText().toString(), formData.isRequired());
+                if (!TextUtils.isEmpty(errorMsg)) {
+                    break;
+                }
+            } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(), editText.getText().toString(), formData.getValidators().get(0));
                 if (!TextUtils.isEmpty(errorMsg)) {
                     break;
                 }
