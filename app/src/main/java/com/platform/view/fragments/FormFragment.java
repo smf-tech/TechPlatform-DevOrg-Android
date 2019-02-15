@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
-import com.platform.listeners.PlatformTaskListener;
+import com.platform.listeners.FormDataTaskListener;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
+public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -227,6 +227,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
     @Override
     public void showErrorMessage(String result) {
+
+    }
+
+    @Override
+    public void showChoicesByUrl(String result) {
 
     }
 

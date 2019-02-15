@@ -108,6 +108,7 @@ public class FormRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.i(TAG, "getChoicesByUrl - Resp: " + res);
+                    listener.onChoicesPopulated(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
