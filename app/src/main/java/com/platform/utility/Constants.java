@@ -143,5 +143,6 @@ public class Constants {
     public class FormInputType {
         public static final String INPUT_TYPE_DATE = "date";
         public static final String INPUT_TYPE_NUMBER = "number";
+        public static final String INPUT_TYPE_NUMERIC = "numeric";
     }
 }
