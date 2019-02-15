@@ -37,16 +37,19 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dimen_12dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_toStartOf="@+id/iv_create_form"
             android:layout_toEndOf="@+id/iv_dashboard_form" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_create_form"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_28dp"
+            android:layout_height="@dimen/dimen_28dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:background="@drawable/bg_circle_profile"
             android:contentDescription="@string/content_description"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@drawable/ic_plus" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
