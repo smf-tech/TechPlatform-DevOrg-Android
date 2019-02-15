@@ -74,7 +74,15 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            formPresenter.getProcessDetails(processId);
+            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+
+            if (formDataList == null || formDataList.isEmpty()) {
+                formPresenter.getProcessDetails(processId);
+            } else {
+                formModel = new Form();
+                formModel.setData(formDataList.get(0));
+                initViews();
+            }
 
             boolean isReadOnly = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
             if (isReadOnly) {
@@ -229,27 +237,27 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 break;
 
             case R.id.btn_submit:
-                /*if (!formComponentCreator.isValid()) {
+                if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
-                } else {*/
-                save();
-                if (Util.isConnected(getActivity())) {
-                    formPresenter.setFormId(formModel.getData().getId());
-                    formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
-                    formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
                 } else {
-                    if (formModel.getData() != null) {
-                        formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
-                        Util.showToast("Form saved offline ", getActivity());
-                        Log.d(TAG, "Form saved " + formModel.getData().getId());
+                    saveFormToLocalDatabase();
+                    if (Util.isConnected(getActivity())) {
+                        formPresenter.setFormId(formModel.getData().getId());
+                        formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+                        formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                    } else {
+                        if (formModel.getData() != null) {
+                            formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                            Util.showToast("Form saved offline ", getActivity());
+                            Log.d(TAG, "Form saved " + formModel.getData().getId());
+                        }
                     }
                 }
-//                }
                 break;
         }
     }
 
-    private void save() {
+    private void saveFormToLocalDatabase() {
         SavedForm savedForm = new SavedForm();
         savedForm.setFormId(formModel.getData().getId());
         savedForm.setFormName(formModel.getData().getName());
@@ -273,6 +281,11 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
         List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+        if (formDataList == null || formDataList.isEmpty()) {
+            formPresenter.getProcessDetails(processId);
+            return;
+        }
+
         mElementsListFromDB = formDataList.get(0).getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
@@ -323,4 +336,5 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
 
         renderFilledFormView(elements);
     }
+
 }
