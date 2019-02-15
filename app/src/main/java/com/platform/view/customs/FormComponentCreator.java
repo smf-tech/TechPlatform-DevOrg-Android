@@ -225,6 +225,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     public boolean isValid() {
+        fragment.get().setErrorMsg("");
+        errorMsg = "";
         //For all edit texts
         for (EditText editText :
                 editTexts) {
@@ -232,12 +234,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.isRequired() != null) {
                 errorMsg = Validation.editTextRequiredValidation(editText.getTag().toString(), editText.getText().toString(), formData.isRequired());
                 if (!TextUtils.isEmpty(errorMsg)) {
+                    fragment.get().setErrorMsg(errorMsg);
                     break;
                 }
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(), editText.getText().toString(), formData.getValidators().get(0));
-                if (!TextUtils.isEmpty(errorMsg)) {
-                    break;
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                    errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(), editText.getText().toString(), formData.getValidators().get(0));
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        break;
+                    }
                 }
             }
         }
@@ -245,7 +251,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (TextUtils.isEmpty(errorMsg)) {
             return true;
         } else {
-            fragment.get().setErrorMsg(errorMsg);
             return false;
         }
     }
