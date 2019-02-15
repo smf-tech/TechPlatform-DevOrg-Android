@@ -306,7 +306,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
             userInfo.setOrgId(selectedOrg.getId());
             userInfo.setProjectIds(selectedProjects);
-            userInfo.setRoleIds(selectedRoles.get(0));
+            userInfo.setRoleIds(selectedRole.getId());
 
             UserLocation userLocation = new UserLocation();
             userLocation.setStateId(selectedState);

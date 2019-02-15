@@ -13,16 +13,16 @@ public class Validator {
     private String text;
     @SerializedName("minLength")
     @Expose
-    private int minLength;
+    private Integer minLength;
     @SerializedName("maxLength")
     @Expose
-    private int maxLength;
+    private Integer maxLength;
     @SerializedName("minValue")
     @Expose
-    private int minValue;
+    private Integer minValue;
     @SerializedName("maxValue")
     @Expose
-    private int maxValue;
+    private Integer maxValue;
     @SerializedName("allowDigits")
     @Expose
     private Boolean isDigitAllowed;
@@ -43,19 +43,19 @@ public class Validator {
         this.text = text;
     }
 
-    public int getMinLength() {
+    public Integer getMinLength() {
         return minLength;
     }
 
-    public void setMinLength(int minLength) {
+    public void setMinLength(Integer minLength) {
         this.minLength = minLength;
     }
 
-    public int getMaxLength() {
+    public Integer getMaxLength() {
         return maxLength;
     }
 
-    public void setMaxLength(int maxLength) {
+    public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
     }
 
@@ -67,19 +67,19 @@ public class Validator {
         isDigitAllowed = digitAllowed;
     }
 
-    public int getMinValue() {
+    public Integer getMinValue() {
         return minValue;
     }
 
-    public void setMinValue(int minValue) {
+    public void setMinValue(Integer minValue) {
         this.minValue = minValue;
     }
 
-    public int getMaxValue() {
+    public Integer getMaxValue() {
         return maxValue;
     }
 
-    public void setMaxValue(int maxValue) {
+    public void setMaxValue(Integer maxValue) {
         this.maxValue = maxValue;
     }
 }
