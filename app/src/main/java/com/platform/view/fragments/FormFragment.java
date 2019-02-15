@@ -182,9 +182,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                 break;
 
             case R.id.btn_submit:
-                /*if (!formComponentCreator.isValid()) {
+                if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
-                } else {*/
+                } else {
                     save();
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setFormId(formModel.getData().getId());
@@ -197,7 +197,7 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                         }
                     }
-//                }
+                }
                 break;
         }
     }

@@ -2,13 +2,13 @@ package com.platform.view.customs;
 
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,6 +22,7 @@ import com.platform.models.forms.Elements;
 import com.platform.models.profile.Location;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.utility.Validation;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
@@ -35,8 +36,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
     private HashMap<String, String> requestObjectMap = new HashMap<>();
+    private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
+    private String errorMsg;
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -135,20 +138,22 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 fragment.get().getContext(), R.layout.form_text_template, null);
 
         EditText textInputField = textTemplateView.findViewById(R.id.edit_form_text_template);
+        if (formData != null && formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+            //set input type
+            setInputType(formData.getValidators().get(0).getType(), textInputField);
+
+            //set max length allowed
+            if (formData.getValidators().get(0).getMaxLength() != null) {
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(formData.getValidators().get(0).getMaxLength())});
+            } else if (formData.getValidators().get(0).getMaxValue() != null) {
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(formData.getValidators().get(0).getMaxValue())});
+            }
+        }
         textInputField.setMaxLines(1);
         textInputField.setText("");
         textInputField.setTag(formData.getTitle());
-        if (!TextUtils.isEmpty(formData.getInputType())) {
-            switch (formData.getInputType()) {
-                case Constants.FormInputType.INPUT_TYPE_DATE:
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_NUMBER:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-            }
-        }
+        //set input type
+        setInputType(formData.getInputType(), textInputField);
         textInputField.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -172,11 +177,30 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         });
 
         editTexts.add(textInputField);
+        editTextElementsHashMap.put(textInputField, formData);
 
         TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
         textInputLayout.setHint(formData.getTitle());
 
         return textTemplateView;
+    }
+
+    private void setInputType(String type, EditText textInputField) {
+        if (!TextUtils.isEmpty(type)) {
+            switch (type) {
+                case Constants.FormInputType.INPUT_TYPE_DATE:
+                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+            }
+        }
     }
 
     public View fileTemplate(final Elements formData) {
@@ -187,13 +211,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
         LinearLayout fileTemplateView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_file_type, null);
-        ImageView imgFile = fileTemplateView.findViewById(R.id.iv_file);
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
             txtFileName.setText(formData.getTitle());
         }
-
-        imgFile.setImageDrawable(fragment.get().getResources().getDrawable(R.drawable.add_img, null));
 
         return fileTemplateView;
     }
@@ -204,16 +225,24 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     public boolean isValid() {
         //For all edit texts
-        for (EditText inputText :
+        for (EditText editText :
                 editTexts) {
-            if (inputText != null && TextUtils.isEmpty(inputText.getText().toString()) && !TextUtils.isEmpty(inputText.getTag().toString())) {
-                fragment.get().setErrorMsg(inputText.getTag() + " blank");
-                return false;
+            Elements formData = editTextElementsHashMap.get(editText);
+            if (formData.isRequired() != null && formData.getValidators() != null &&
+                    !formData.getValidators().isEmpty()) {
+                errorMsg = Validation.editTextValidation(editText.getTag().toString(), editText.getText().toString(), formData.isRequired(), formData.getValidators().get(0));
+                if (!TextUtils.isEmpty(errorMsg)) {
+                    break;
+                }
             }
         }
-        //For all radio buttons
-        //For all multi selects
-        return true;
+
+        if (TextUtils.isEmpty(errorMsg)) {
+            return true;
+        } else {
+            fragment.get().setErrorMsg(errorMsg);
+            return false;
+        }
     }
 
     public HashMap<String, String> getRequestObject() {
