@@ -95,7 +95,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
 
         DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
-        View view = template.init(setFieldAsMandatory(formData.isRequired()));
+        View view;
+        if (formData.isRequired() != null) {
+            view = template.init(setFieldAsMandatory(formData.isRequired()));
+        } else {
+            view = template.init(setFieldAsMandatory(false));
+        }
 
         if (!TextUtils.isEmpty(formData.getTitle()) &&
                 formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {

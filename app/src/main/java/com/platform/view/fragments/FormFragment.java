@@ -253,9 +253,9 @@ public class FormFragment extends Fragment implements PlatformTaskListener, View
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
-                            } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE);
+                            } else {
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
                             }
                             Util.showToast("Form saved offline ", getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
