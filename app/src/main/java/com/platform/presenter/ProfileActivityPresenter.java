@@ -10,7 +10,6 @@ import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
-import com.platform.models.profile.StateResponse;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.ProfileRequestCall;
@@ -99,18 +98,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
                     && !organizationResponse.getData().isEmpty()
                     && organizationResponse.getData().size() > 0) {
                 profileActivity.get().showOrganizations(organizationResponse.getData());
-            }
-        }
-    }
-
-    @Override
-    public void onStatesFetched(String response) {
-        profileActivity.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            StateResponse stateResponse = new Gson().fromJson(response, StateResponse.class);
-            if (stateResponse != null && stateResponse.getData() != null
-                    && !stateResponse.getData().isEmpty() && stateResponse.getData().size() > 0) {
-                profileActivity.get().showStates(stateResponse.getData());
             }
         }
     }

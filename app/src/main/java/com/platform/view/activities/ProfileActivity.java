@@ -538,8 +538,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         && states.get(i).getState() != null) {
 
                     selectedStates.clear();
-                    selectedStates.add(states.get(i).getState());
+                    selectedStates.add(states.get(i).getState().getName());
+
                     Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
+
                     profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
                             selectedRole.getProject().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
@@ -650,7 +652,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 this.states = jurisdictionLevels;
                 List<String> stateNames = new ArrayList<>();
                 for (int i = 0; i < states.size(); i++) {
-                    stateNames.add(states.get(i).getState());
+                    stateNames.add(states.get(i).getState().getName());
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
@@ -663,8 +665,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> districts = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        if (selectedStates.contains(location.getState())) {
-                            districts.add(location.getDistrict());
+                        if (selectedStates.contains(location.getState().getName())) {
+                            districts.add(location.getDistrict().getName());
                         }
                     }
 
@@ -678,9 +680,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> talukas = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        if (selectedStates.contains(location.getState()) &&
-                                selectedDistricts.contains(location.getDistrict())) {
-                            talukas.add(location.getTaluka());
+                        if (selectedStates.contains(location.getState().getName()) &&
+                                selectedDistricts.contains(location.getDistrict().getName())) {
+                            talukas.add(location.getTaluka().getName());
                         }
                     }
 
@@ -694,7 +696,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> clusters = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        clusters.add(location.getCluster());
+                        clusters.add(location.getCluster().getName());
                     }
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
                     this.clusters.clear();
@@ -706,10 +708,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> villages = new ArrayList<>();
                     for (Location location : jurisdictionLevels) {
-                        if (selectedStates.contains(location.getState()) &&
-                                selectedDistricts.contains(location.getDistrict()) &&
-                                selectedTalukas.contains(location.getTaluka())) {
-                            villages.add(location.getVillage());
+                        if (selectedStates.contains(location.getState().getName()) &&
+                                selectedDistricts.contains(location.getDistrict().getName()) &&
+                                selectedTalukas.contains(location.getTaluka().getName())) {
+                            villages.add(location.getVillage().getName());
                         }
                     }
 

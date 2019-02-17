@@ -3,62 +3,117 @@ package com.platform.models.profile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class Location {
 
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("state_id")
+    @Expose
+    private String stateId;
+    @SerializedName("district_id")
+    @Expose
+    private String districtId;
+    @SerializedName("taluka_id")
+    @Expose
+    private String talukaId;
+    @SerializedName("village_id")
+    @Expose
+    private String villageId;
     @SerializedName("state")
     @Expose
-    private String state;
+    private JurisdictionType state;
     @SerializedName("district")
     @Expose
-    private String district;
+    private JurisdictionType district;
     @SerializedName("taluka")
     @Expose
-    private String taluka;
+    private JurisdictionType taluka;
     @SerializedName("village")
     @Expose
-    private String village;
+    private JurisdictionType village;
     @SerializedName("cluster")
     @Expose
-    private String cluster;
+    private JurisdictionType cluster;
 
+    public String getId() {
+        return id;
+    }
 
-    public String getState() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(String talukaId) {
+        this.talukaId = talukaId;
+    }
+
+    public String getVillageId() {
+        return villageId;
+    }
+
+    public void setVillageId(String villageId) {
+        this.villageId = villageId;
+    }
+
+    public JurisdictionType getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(JurisdictionType state) {
         this.state = state;
     }
 
-    public String getDistrict() {
+    public JurisdictionType getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public void setDistrict(JurisdictionType district) {
         this.district = district;
     }
 
-    public String getTaluka() {
+    public JurisdictionType getTaluka() {
         return taluka;
     }
 
-    public void setTaluka(String taluka) {
+    public void setTaluka(JurisdictionType taluka) {
         this.taluka = taluka;
     }
 
-    public String getVillage() {
+    public JurisdictionType getVillage() {
         return village;
     }
 
-    public void setVillage(String village) {
+    public void setVillage(JurisdictionType village) {
         this.village = village;
     }
 
-    public String getCluster() {
+    public JurisdictionType getCluster() {
         return cluster;
     }
 
-    public void setCluster(String cluster) {
+    public void setCluster(JurisdictionType cluster) {
         this.cluster = cluster;
     }
 }
