@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
@@ -24,14 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-public class ReportsFragment extends Fragment implements PlatformTaskListener {
+public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
     private Context context;
     private View reportFragmentView;
     private ReportCategoryAdapter adapter;
     private List<String> reportsHeaderList = new ArrayList<>();
     private Map<String, List<ReportData>> reportsList = new HashMap<>();
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -57,6 +57,9 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new ReportCategoryAdapter(context, reportsHeaderList, reportsList);
         recyclerView.setAdapter(adapter);
+
+        TextView txtViewAllForms = reportFragmentView.findViewById(R.id.txt_view_all_reports);
+        txtViewAllForms.setOnClickListener(this);
     }
 
     @Override
@@ -104,5 +107,13 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void showErrorMessage(String result) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.txt_view_all_reports:
+                break;
+        }
     }
 }

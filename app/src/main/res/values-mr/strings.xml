@@ -128,10 +128,11 @@
     <string name="team_management">संघ\nव्यवस्थापन</string>
 
     <!--Program management-->
-    <string name="pending_forms">Pending Forms</string>
-    <string name="view_all_forms">View All Forms</string>
-    <string name="submit">Submit</string>
-    <string name="no_data_available">No data available</string>
+    <string name="pending_forms">प्रलंबित फॉर्म</string>
+    <string name="view_all_forms">सर्व फॉर्म पहा</string>
+    <string name="view_all_reports">सर्व अहवाल पहा</string>
+    <string name="submit">सबमिट</string>
+    <string name="no_data_available">माहिती उपलब्ध नाही</string>
 
     <!--Team Management-->
     <string name="team_user_approval">वापरकर्ता मंजूरी</string>

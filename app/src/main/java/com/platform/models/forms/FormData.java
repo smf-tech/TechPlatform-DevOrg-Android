@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -21,8 +22,9 @@ public class FormData {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("_id")
+    @NonNull
     @Expose
-    private String id;
+    private String id = "";
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
@@ -75,11 +77,12 @@ public class FormData {
     @Expose
     private Entity entity;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
