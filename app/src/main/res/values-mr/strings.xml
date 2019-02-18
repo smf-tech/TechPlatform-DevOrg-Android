@@ -151,5 +151,6 @@
     <string name="verify">सत्यापित करा</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s वर पाठविलेले सत्यापन कोड टाइप करा +</string>
     <string name="forms_are_not_available">फॉर्म उपलब्ध नाहीत</string>
+    <string name="reports">Reports</string>
 
 </resources>

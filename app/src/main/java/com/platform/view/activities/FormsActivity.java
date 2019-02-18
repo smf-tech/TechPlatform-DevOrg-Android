@@ -113,7 +113,7 @@ public class FormsActivity extends BaseActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_forms_menu, menu);
+        inflater.inflate(R.menu.activity_home_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -147,6 +147,7 @@ public class FormsActivity extends BaseActivity implements
                 break;
 
             case R.id.action_menu_reports:
+                goToReports();
                 break;
 
             case R.id.action_menu_connect:
@@ -257,6 +258,14 @@ public class FormsActivity extends BaseActivity implements
         }
     }
 
+    private void goToReports() {
+        try {
+            Intent intent = new Intent(this, ReportsActivity.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
