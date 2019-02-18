@@ -18,7 +18,7 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
     private boolean[] selectedValues;
     private String defaultText;
     private MultiSpinnerListener listener;
-    public String spinnerName;
+    private String spinnerName;
     private final String TAG = MultiSelectSpinner.class.getName();
 
     public MultiSelectSpinner(Context context) {
@@ -120,5 +120,9 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
 
     public interface MultiSpinnerListener {
         void onValuesSelected(boolean[] selected, String spinnerName);
+    }
+
+    public void setSpinnerName(String spinnerName) {
+        this.spinnerName = spinnerName;
     }
 }
