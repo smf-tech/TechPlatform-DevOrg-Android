@@ -127,7 +127,8 @@ public class FormsActivity extends BaseActivity implements
     private void handleMenuItems(int menuId) {
         switch (menuId) {
             case R.id.action_menu_home:
-                showLanguageChangeDialog();
+                Util.start(this, HomeActivity.class, Bundle.EMPTY);
+                finish();
                 break;
 
             case R.id.action_menu_community:
@@ -135,6 +136,8 @@ public class FormsActivity extends BaseActivity implements
                 break;
 
             case R.id.action_menu_teams:
+                Util.start(this, TeamManagementActivity.class, Bundle.EMPTY);
+                finish();
                 break;
 
             case R.id.action_menu_forms:
@@ -148,6 +151,7 @@ public class FormsActivity extends BaseActivity implements
 
             case R.id.action_menu_reports:
                 Util.start(this, ReportsActivity.class, Bundle.EMPTY);
+                finish();
                 break;
 
             case R.id.action_menu_connect:

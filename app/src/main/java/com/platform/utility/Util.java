@@ -351,9 +351,13 @@ public class Util {
     }
 
     public static void start(Context context, Class activity, Bundle bundle) {
-        Intent starter = new Intent(context, activity);
-        if (!bundle.isEmpty())
-            starter.putExtra("bundle", bundle);
-        context.startActivity(starter);
+        try {
+            Intent starter = new Intent(context, activity);
+            if (!bundle.isEmpty())
+                starter.putExtra("bundle", bundle);
+            context.startActivity(starter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

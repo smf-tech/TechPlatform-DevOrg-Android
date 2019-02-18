@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
@@ -51,6 +53,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     private HomeActivityPresenter presenter;
     private Object mSyncObserverHandle;
     private final String TAG = this.getClass().getSimpleName();
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,6 +258,8 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_menu_teams:
+                Util.start(this, TeamManagementActivity.class, Bundle.EMPTY);
+                finish();
                 break;
 
             case R.id.action_menu_calendar:
@@ -265,6 +270,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
             case R.id.action_menu_reports:
                 Util.start(this, ReportsActivity.class, Bundle.EMPTY);
+                finish();
                 break;
 
             case R.id.action_menu_connect:
@@ -311,6 +317,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             Intent intent = new Intent(this, FormsActivity.class);
             intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
             startActivity(intent);
+            finish();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -439,5 +446,29 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
             mSyncObserverHandle = null;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+
+            try {
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(startMain);
+                System.exit(0);
+            } catch (Exception e) {
+                Log.e(TAG, "Exception :: LoginActivity : onBackPressed");
+            }
+
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }
