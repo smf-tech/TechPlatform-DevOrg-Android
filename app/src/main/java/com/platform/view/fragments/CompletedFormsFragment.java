@@ -130,12 +130,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
             for (final String s : mFormsList.keySet()) {
                 String id = categoryMap.get(s);
-                if (id.equals(formID)) {
-                    mFormList.put(s, list);
-                } else {
-                    ArrayList<ProcessDemoObject> arrayList = new ArrayList<>();
-                    arrayList.add(new ProcessDemoObject("No Forms available", "0"));
-                    mFormList.put(s, arrayList);
+                if (id != null) {
+                    if (id.equals(formID)) {
+                        mFormList.put(s, list);
+                    } else {
+                        ArrayList<ProcessDemoObject> arrayList = new ArrayList<>();
+                        arrayList.add(new ProcessDemoObject("No Forms available", "0"));
+                        mFormList.put(s, arrayList);
+                    }
                 }
             }
 

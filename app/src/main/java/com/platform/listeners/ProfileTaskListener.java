@@ -1,6 +1,5 @@
 package com.platform.listeners;
 
-import com.platform.models.profile.JurisdictionLevel;
 import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;

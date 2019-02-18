@@ -20,11 +20,11 @@ import java.util.List;
 @android.arch.persistence.room.Entity
 public class FormData {
     @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "id")
     @SerializedName("_id")
+    @NonNull
     @Expose
-    private String id;
+    private String id = "";
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
@@ -77,11 +77,12 @@ public class FormData {
     @Expose
     private Entity entity;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 

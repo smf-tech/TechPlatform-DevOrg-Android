@@ -1,6 +1,7 @@
 package com.platform.models.profile;
 
 import com.google.gson.annotations.SerializedName;
+import com.platform.utility.Constants;
 
 @SuppressWarnings("unused")
 public class Organization {
@@ -19,8 +20,18 @@ public class Organization {
     @SerializedName("created_at")
     private String createdAt;
 
+    @SerializedName("type")
+    private String type;
+
+    @SerializedName("associateOrgId")
+    private String associateOrgId;
+
     public String getId() {
-        return id;
+        if (type.equalsIgnoreCase(Constants.AssociatesType.ORG)) {
+            return id;
+        } else {
+            return getAssociateOrgId();
+        }
     }
 
     public void setId(String id) {
@@ -57,5 +68,21 @@ public class Organization {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAssociateOrgId() {
+        return associateOrgId;
+    }
+
+    public void setAssociateOrgId(String associateOrgId) {
+        this.associateOrgId = associateOrgId;
     }
 }

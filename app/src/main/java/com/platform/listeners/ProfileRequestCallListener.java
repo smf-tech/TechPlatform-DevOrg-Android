@@ -8,8 +8,6 @@ public interface ProfileRequestCallListener {
 
     void onOrganizationsFetched(String response);
 
-    void onStatesFetched(String response);
-
     void onJurisdictionFetched(String response, String level);
 
     void onOrganizationProjectsFetched(String response);

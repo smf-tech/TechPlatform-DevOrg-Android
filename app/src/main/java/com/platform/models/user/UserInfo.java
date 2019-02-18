@@ -54,6 +54,9 @@ public class UserInfo implements Parcelable {
     @SerializedName("org_id")
     @Expose
     private String orgId;
+    @SerializedName("type")
+    @Expose
+    private String type;
     @SerializedName("role_id")
     @Expose
     private String roleIds;
@@ -75,6 +78,14 @@ public class UserInfo implements Parcelable {
 
     public void setOrgId(String orgId) {
         this.orgId = orgId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public UserLocation getUserLocation() {

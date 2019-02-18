@@ -67,11 +67,11 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void init() {
-        TextView txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
         rvPendingForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
         lnrOuter = pmFragmentView.findViewById(R.id.lnr_dashboard_forms_category);
         rltPendingForms = pmFragmentView.findViewById(R.id.rlt_pending_forms);
 
+        TextView txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
         txtViewAllForms.setOnClickListener(this);
     }
 

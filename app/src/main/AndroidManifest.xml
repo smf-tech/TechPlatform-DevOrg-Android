@@ -81,6 +81,10 @@
             android:name=".view.activities.FormsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name=".view.activities.ReportsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

@@ -117,19 +117,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                     switch (jurisdictionLevel) {
                         case Constants.JurisdictionLevelName.STATE_LEVEL:
-                            locationValues.add(location.getState());
+                            locationValues.add(location.getState().getName());
                             break;
 
                         case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
-                            locationValues.add(location.getDistrict());
+                            locationValues.add(location.getDistrict().getName());
                             break;
 
                         case Constants.JurisdictionLevelName.TALUKA_LEVEL:
-                            locationValues.add(location.getTaluka());
+                            locationValues.add(location.getTaluka().getName());
                             break;
 
                         case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
-                            locationValues.add(location.getVillage());
+                            locationValues.add(location.getVillage().getName());
                             break;
                     }
                 }

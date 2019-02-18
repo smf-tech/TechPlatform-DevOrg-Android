@@ -18,7 +18,7 @@ public class Urls {
     }
 
     public class Home {
-        public static final String GET_MODULES = "api/modules/5c1b940ad503a31f360e1252/5c36ed50d503a3403f237f45";
+        public static final String GET_MODULES = "api/modules/%1$s/%2$s";
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
