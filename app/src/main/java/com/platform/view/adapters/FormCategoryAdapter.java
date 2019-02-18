@@ -84,8 +84,8 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
         for (CompletedFormsFragment.ProcessDemoObject object : list) {
             ProcessData data = new ProcessData();
-            data.setName(object.name);
-            data.setId(object.id);
+            data.setName(object.getName());
+            data.setId(object.getId());
             dataList.add(data);
         }
 
