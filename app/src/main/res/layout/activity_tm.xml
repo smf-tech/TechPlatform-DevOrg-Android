@@ -14,9 +14,11 @@
 
         <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:showIn="@layout/activity_reports">
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
@@ -31,6 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:layout_scrollFlags="scroll|enterAlways">
+
                         <TextView
                             android:id="@+id/home_toolbar_title"
                             android:layout_width="wrap_content"
@@ -42,28 +45,13 @@
                     </android.support.v7.widget.Toolbar>
                 </RelativeLayout>
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/form_tab_bg"
-                    app:tabGravity="fill"
-                    app:tabIndicatorColor="@color/tab_selector"
-                    app:tabIndicatorHeight="@dimen/dimen_05dp"
-                    app:tabMode="fixed"
-                    app:tabTextColor="@color/black" />
             </android.support.design.widget.AppBarLayout>
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <FrameLayout
                 android:id="@+id/gen_form_container"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
                 android:layout_weight="2" />
         </android.support.design.widget.CoordinatorLayout>
 

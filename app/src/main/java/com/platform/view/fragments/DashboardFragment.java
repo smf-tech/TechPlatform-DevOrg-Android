@@ -82,11 +82,11 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(new TMFragment(), "Teams");
+                    adapter.addFragment(TMFragment.newInstance(true), "Teams");
                     break;
 
                 case Constants.Home.REPORTS:
-                    adapter.addFragment(new ReportsFragment(), "Reports");
+                    adapter.addFragment(ReportsFragment.newInstance(true), "Reports");
                     break;
             }
         }

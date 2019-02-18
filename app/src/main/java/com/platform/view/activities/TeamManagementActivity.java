@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,11 +24,10 @@ import com.platform.R;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.adapters.ViewPagerAdapter;
-import com.platform.view.fragments.ReportsFragment;
+import com.platform.view.fragments.TMFragment;
 
-public class ReportsActivity extends BaseActivity implements
-    NavigationView.OnNavigationItemSelectedListener {
+public class TeamManagementActivity extends BaseActivity implements
+        NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -47,7 +45,7 @@ public class ReportsActivity extends BaseActivity implements
     private void initMenuView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
-        title.setText(R.string.reports);
+        title.setText(R.string.team_management);
 
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -73,7 +71,7 @@ public class ReportsActivity extends BaseActivity implements
     private void addFragment() {
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.gen_form_container, ReportsFragment.newInstance(false), "reportFragment");
+            fragmentTransaction.add(R.id.gen_form_container, TMFragment.newInstance(false), "tmFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
@@ -121,8 +119,6 @@ public class ReportsActivity extends BaseActivity implements
                 break;
 
             case R.id.action_menu_teams:
-                Util.start(this, TeamManagementActivity.class, Bundle.EMPTY);
-                finish();
                 break;
 
             case R.id.action_menu_forms:
@@ -136,6 +132,8 @@ public class ReportsActivity extends BaseActivity implements
                 break;
 
             case R.id.action_menu_reports:
+                Util.start(this, ReportsActivity.class, Bundle.EMPTY);
+                finish();
                 break;
 
             case R.id.action_menu_connect:

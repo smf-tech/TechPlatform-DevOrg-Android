@@ -17,10 +17,13 @@ import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
 import com.platform.view.activities.FormActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
+import static com.platform.utility.Util.getFormattedDate;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
@@ -92,6 +95,15 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         if (mSavedForms == null) {
             ProcessData processData = mProcessData.get(i);
             viewHolder.mName.setText(processData.getName());
+
+            if (!processData.getName().equals(mContext.getString(R.string.forms_are_not_available))) {
+                SimpleDateFormat createdDateFormat = getFormattedDate();
+                // TODO: 18-02-2019 Replace new Date() with processData.getMicroservice().getCreatedAt()
+                String formattedDate = createdDateFormat.format(new Date());
+                viewHolder.mDate.setText(String.format("on %s", formattedDate));
+            } else {
+                viewHolder.mDate.setVisibility(View.GONE);
+            }
 
         } else {
             if (!mSavedForms.isEmpty()) {

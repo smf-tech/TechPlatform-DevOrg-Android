@@ -42,6 +42,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     private TextView mNoRecordsView;
     private Map<String, List<String>> mFormsList = new HashMap<>();
+    private List<ProcessData> mDataList = new ArrayList<>();
     private Map<String, List<ProcessDemoObject>> mFormList = new HashMap<>();
     FormCategoryAdapter adapter;
     Map<String, String> categoryMap = new HashMap<>();
@@ -101,7 +102,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         for (ProcessData data : json.getData()) {
 
             String id = data.getId();
-
+            mDataList.add(data);
             mFormsList.put(data.getName(), null);
             categoryMap.put(data.getName(), data.getId());
 
@@ -135,7 +136,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                         mFormList.put(s, list);
                     } else {
                         ArrayList<ProcessDemoObject> arrayList = new ArrayList<>();
-                        arrayList.add(new ProcessDemoObject("No Forms available", "0"));
+                        arrayList.add(new ProcessDemoObject(getString(R.string.forms_are_not_available), "0"));
                         mFormList.put(s, arrayList);
                     }
                 }

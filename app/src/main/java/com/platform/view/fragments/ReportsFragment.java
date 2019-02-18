@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
 import com.platform.presenter.ReportsFragmentPresenter;
+import com.platform.view.activities.ReportsActivity;
 import com.platform.view.adapters.ReportCategoryAdapter;
 
 import java.util.ArrayList;
@@ -27,11 +29,32 @@ import java.util.Map;
 @SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
+    private boolean mShowAllReportsText;
     private Context context;
     private View reportFragmentView;
     private ReportCategoryAdapter adapter;
     private List<String> reportsHeaderList = new ArrayList<>();
     private Map<String, List<ReportData>> reportsList = new HashMap<>();
+
+    public ReportsFragment() {
+    }
+
+    public static ReportsFragment newInstance(boolean showAllReportsText) {
+        Bundle args = new Bundle();
+        args.putBoolean("showAllReportsText", showAllReportsText);
+        ReportsFragment fragment = new ReportsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mShowAllReportsText = getArguments().getBoolean("showAllReportsText", true);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,7 +81,19 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
         adapter = new ReportCategoryAdapter(context, reportsHeaderList, reportsList);
         recyclerView.setAdapter(adapter);
 
+        if (reportsList == null || reportsList.isEmpty()) {
+            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
+        } else {
+            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
+        }
+
         TextView txtViewAllForms = reportFragmentView.findViewById(R.id.txt_view_all_reports);
+        if (!mShowAllReportsText) {
+            txtViewAllForms.setVisibility(View.GONE);
+        } else {
+            txtViewAllForms.setVisibility(View.VISIBLE);
+        }
+
         txtViewAllForms.setOnClickListener(this);
     }
 
@@ -101,6 +136,12 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
             }
 
             adapter.notifyDataSetChanged();
+
+            if (reportsList == null || reportsList.isEmpty()) {
+                reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
+            } else {
+                reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
+            }
         }
     }
 
@@ -113,6 +154,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
+                startActivity(new Intent(context, ReportsActivity.class));
                 break;
         }
     }

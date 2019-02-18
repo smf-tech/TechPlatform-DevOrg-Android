@@ -151,4 +151,8 @@
     <string name="verification_code">पुष्टि संख्या</string>
     <string name="verify">सत्यापित करें</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s पर भेजा गया सत्यापन कोड टाइप करें</string>
+    <string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>
+    <string name="reports">रिपोर्ट</string>
+    <string name="view_all_approvals">सभी अनुमोदन देखें</string>
+
 </resources>
