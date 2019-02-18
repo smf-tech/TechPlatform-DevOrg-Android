@@ -111,7 +111,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
                     = new Gson().fromJson(response, JurisdictionLevelResponse.class);
 
             if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
-                    && jurisdictionLevelResponse.getData() != null
                     && !jurisdictionLevelResponse.getData().isEmpty()
                     && jurisdictionLevelResponse.getData().size() > 0) {
 
