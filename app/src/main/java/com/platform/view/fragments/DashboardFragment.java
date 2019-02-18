@@ -86,7 +86,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.REPORTS:
-                    adapter.addFragment(new ReportsFragment(), "Reports");
+                    adapter.addFragment(ReportsFragment.newInstance(true), "Reports");
                     break;
             }
         }

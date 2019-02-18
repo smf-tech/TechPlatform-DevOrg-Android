@@ -135,7 +135,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                         mFormList.put(s, list);
                     } else {
                         ArrayList<ProcessDemoObject> arrayList = new ArrayList<>();
-                        arrayList.add(new ProcessDemoObject("No Forms available", "0"));
+                        arrayList.add(new ProcessDemoObject(getString(R.string.forms_are_not_available), "0"));
                         mFormList.put(s, arrayList);
                     }
                 }

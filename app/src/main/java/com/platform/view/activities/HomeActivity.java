@@ -264,6 +264,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_menu_reports:
+                goToReports();
                 break;
 
             case R.id.action_menu_connect:
@@ -303,6 +304,15 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void goToReports() {
+        try {
+            Intent intent = new Intent(this, ReportsActivity.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     private void goToForms() {

@@ -79,6 +79,6 @@
             app:itemHorizontalPadding="@dimen/dimen_45dp"
             app:itemIconTint="@color/white"
             app:itemTextColor="@color/white"
-            app:menu="@menu/activity_forms_menu" />
+            app:menu="@menu/activity_home_menu" />
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>
