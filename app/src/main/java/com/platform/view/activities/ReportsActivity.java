@@ -74,7 +74,7 @@ public class ReportsActivity extends BaseActivity implements
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.gen_form_container, ReportsFragment.newInstance(false), "reportFragment");
-//            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
             Log.e(TAG, "Exception :: FormActivity : addFragment");

@@ -2,12 +2,14 @@ package com.platform.utility;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -346,5 +348,12 @@ public class Util {
     @NonNull
     public static SimpleDateFormat getFormattedDate() {
         return new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
+    }
+
+    public static void start(Context context, Class activity, Bundle bundle) {
+        Intent starter = new Intent(context, activity);
+        if (!bundle.isEmpty())
+            starter.putExtra("bundle", bundle);
+        context.startActivity(starter);
     }
 }

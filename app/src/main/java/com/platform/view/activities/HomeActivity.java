@@ -264,7 +264,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_menu_reports:
-                goToReports();
+                Util.start(this, ReportsActivity.class, Bundle.EMPTY);
                 break;
 
             case R.id.action_menu_connect:
@@ -306,20 +306,11 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         return true;
     }
 
-    private void goToReports() {
-        try {
-            Intent intent = new Intent(this, ReportsActivity.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
     private void goToForms() {
         try {
             Intent intent = new Intent(this, FormsActivity.class);
             intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-            startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+            startActivity(intent);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }

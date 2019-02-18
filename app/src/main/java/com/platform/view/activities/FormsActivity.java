@@ -147,7 +147,7 @@ public class FormsActivity extends BaseActivity implements
                 break;
 
             case R.id.action_menu_reports:
-                goToReports();
+                Util.start(this, ReportsActivity.class, Bundle.EMPTY);
                 break;
 
             case R.id.action_menu_connect:
@@ -253,15 +253,6 @@ public class FormsActivity extends BaseActivity implements
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startMain);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    private void goToReports() {
-        try {
-            Intent intent = new Intent(this, ReportsActivity.class);
-            startActivity(intent);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
