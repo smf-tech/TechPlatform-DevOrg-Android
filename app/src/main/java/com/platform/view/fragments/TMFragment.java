@@ -23,12 +23,31 @@ import java.util.List;
 
 public class TMFragment extends Fragment implements View.OnClickListener, TMTaskListener {
 
+    private boolean mShowAllApprovalsText;
     private View tmFragmentView;
     private RecyclerView rvPendingRequests;
     private TMFragmentPresenter tmFragmentPresenter;
     private NewTMAdapter newTMAdapter;
     private List<PendingRequest> pendingRequestList;
     private TextView txtNoData;
+
+    public static TMFragment newInstance(boolean showAllApprovalsText) {
+        Bundle args = new Bundle();
+        args.putBoolean("showAllApprovalsText", showAllApprovalsText);
+        TMFragment fragment = new TMFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mShowAllApprovalsText = getArguments()
+                    .getBoolean("showAllApprovalsText", true);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -54,6 +73,13 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
         rvPendingRequests.setLayoutManager(layoutManager);
         rvPendingRequests.setItemAnimator(new DefaultItemAnimator());
+
+        final TextView viewAllApprovals = tmFragmentView.findViewById(R.id.txt_view_all_approvals);
+        if (!mShowAllApprovalsText) {
+            viewAllApprovals.setVisibility(View.GONE);
+        } else {
+            viewAllApprovals.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

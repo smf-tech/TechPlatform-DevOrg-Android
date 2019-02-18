@@ -31,7 +31,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-
         <activity android:name=".view.activities.BaseActivity" />
         <activity android:name=".view.activities.SplashActivity">
             <intent-filter>
@@ -77,7 +76,7 @@
             android:name=".view.activities.TMUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity 
+        <activity
             android:name=".view.activities.FormsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
@@ -139,5 +138,8 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <activity android:name=".view.activities.TeamManagementActivity"></activity>
     </application>
+
 </manifest>

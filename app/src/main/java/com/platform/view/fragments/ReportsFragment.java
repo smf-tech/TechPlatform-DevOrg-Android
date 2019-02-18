@@ -29,7 +29,7 @@ import java.util.Map;
 @SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
-    private static boolean sShowAllReportsText = true;
+    private boolean mShowAllReportsText;
     private Context context;
     private View reportFragmentView;
     private ReportCategoryAdapter adapter;
@@ -40,7 +40,6 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     }
 
     public static ReportsFragment newInstance(boolean showAllReportsText) {
-        sShowAllReportsText = showAllReportsText;
         Bundle args = new Bundle();
         args.putBoolean("showAllReportsText", showAllReportsText);
         ReportsFragment fragment = new ReportsFragment();
@@ -53,7 +52,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            sShowAllReportsText = getArguments().getBoolean("showAllReportsText");
+            mShowAllReportsText = getArguments().getBoolean("showAllReportsText", true);
         }
     }
 
@@ -89,7 +88,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
         }
 
         TextView txtViewAllForms = reportFragmentView.findViewById(R.id.txt_view_all_reports);
-        if (!sShowAllReportsText) {
+        if (!mShowAllReportsText) {
             txtViewAllForms.setVisibility(View.GONE);
         } else {
             txtViewAllForms.setVisibility(View.VISIBLE);

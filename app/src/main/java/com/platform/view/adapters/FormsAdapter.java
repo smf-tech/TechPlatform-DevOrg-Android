@@ -98,6 +98,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
             if (!processData.getName().equals(mContext.getString(R.string.forms_are_not_available))) {
                 SimpleDateFormat createdDateFormat = getFormattedDate();
+                // TODO: 18-02-2019 Replace new Date() with processData.getMicroservice().getCreatedAt()
                 String formattedDate = createdDateFormat.format(new Date());
                 viewHolder.mDate.setText(String.format("on %s", formattedDate));
             } else {
