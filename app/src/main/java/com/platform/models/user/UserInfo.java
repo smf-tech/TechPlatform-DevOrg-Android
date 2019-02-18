@@ -36,6 +36,9 @@ public class UserInfo implements Parcelable {
     @SerializedName("lastname")
     @Expose
     private String userLastName;
+    @SerializedName("name")
+    @Expose
+    private String userName;
     @SerializedName("dob")
     @Expose
     private String userBirthDate;
@@ -121,6 +124,7 @@ public class UserInfo implements Parcelable {
         userFirstName = in.readString();
         userMiddleName = in.readString();
         userLastName = in.readString();
+        userName = in.readString();
         userBirthDate = in.readString();
         userMobileNumber = in.readString();
         userEmailId = in.readString();
@@ -158,6 +162,14 @@ public class UserInfo implements Parcelable {
 
     public void setUserLastName(String userLastName) {
         this.userLastName = userLastName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserBirthDate() {
@@ -211,6 +223,7 @@ public class UserInfo implements Parcelable {
         parcel.writeString(userFirstName);
         parcel.writeString(userMiddleName);
         parcel.writeString(userLastName);
+        parcel.writeString(userName);
         parcel.writeString(userBirthDate);
         parcel.writeString(userMobileNumber);
         parcel.writeString(userEmailId);

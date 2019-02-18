@@ -311,6 +311,20 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);
 
+            StringBuilder userName = new StringBuilder();
+            if (!TextUtils.isEmpty(String.valueOf(etUserFirstName.getText()).trim())) {
+                userName.append(String.valueOf(etUserFirstName.getText()).trim());
+            }
+
+            if (!TextUtils.isEmpty(String.valueOf(etUserMiddleName.getText()).trim())) {
+                userName.append(String.format(" %s", String.valueOf(etUserMiddleName.getText()).trim()));
+            }
+
+            if (!TextUtils.isEmpty(String.valueOf(etUserLastName.getText()).trim())) {
+                userName.append(String.format(" %s", String.valueOf(etUserLastName.getText()).trim()));
+            }
+            userInfo.setUserName(userName.toString());
+
             userInfo.setOrgId(selectedOrg.getId());
             userInfo.setType(selectedOrg.getType());
             userInfo.setProjectIds(selectedProjects);
