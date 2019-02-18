@@ -68,12 +68,12 @@ public class FormActivityPresenter implements FormRequestCallListener {
         requestCall.getProcessDetails(processId);
     }
 
-    private void getChoicesByUrl(String choicesUrl) {
+    private void getChoicesByUrl(Elements formData) {
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getChoicesByUrl(choicesUrl);
+        requestCall.getChoicesByUrl(formData);
     }
 
     public void getFormResults(String processId) {
@@ -125,8 +125,9 @@ public class FormActivityPresenter implements FormRequestCallListener {
                             for (Elements elements :
                                     page.getElements()) {
                                 if (elements != null && elements.getChoicesByUrl() != null &&
-                                        !TextUtils.isEmpty(elements.getChoicesByUrl().getUrl())) {
-                                    getChoicesByUrl(elements.getChoicesByUrl().getUrl());
+                                        !TextUtils.isEmpty(elements.getChoicesByUrl().getUrl()) &&
+                                        !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
+                                    getChoicesByUrl(elements);
                                 }
                             }
                         }
@@ -140,9 +141,9 @@ public class FormActivityPresenter implements FormRequestCallListener {
     }
 
     @Override
-    public void onChoicesPopulated(String response) {
-        if (!TextUtils.isEmpty(response)) {
-            formFragment.get().showChoicesByUrl(response);
+    public void onChoicesPopulated(String response, Elements formData) {
+        if (!TextUtils.isEmpty(response) && formData != null) {
+            formFragment.get().showChoicesByUrl(response, formData);
         }
     }
 

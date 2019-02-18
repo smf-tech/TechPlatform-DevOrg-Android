@@ -152,4 +152,13 @@ public class Constants {
         public static final String INPUT_TYPE_NUMBER = "number";
         public static final String INPUT_TYPE_NUMERIC = "numeric";
     }
+
+    public class ChoicesType {
+        public static final String CHOICE_STRUCTURE_CODE = "structure_code";
+        public static final String CHOICE_MACHINE_CODE = "machine_code";
+        public static final String CHOICE_LOCATION_DISTRICT = "district";
+        public static final String CHOICE_LOCATION_TALUKA = "taluka";
+        public static final String CHOICE_LOCATION_CLUSTER = "cluster";
+        public static final String CHOICE_LOCATION_VILLAGE = "village";
+    }
 }

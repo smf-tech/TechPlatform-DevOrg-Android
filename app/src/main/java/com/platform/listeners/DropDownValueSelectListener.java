@@ -1,5 +1,7 @@
 package com.platform.listeners;
 
+import com.platform.models.forms.Elements;
+
 public interface DropDownValueSelectListener {
-    void onDropdownValueSelected(String name, String value);
+    void onDropdownValueSelected(Elements formData, String value);
 }

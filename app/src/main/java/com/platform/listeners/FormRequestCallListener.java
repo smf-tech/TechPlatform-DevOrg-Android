@@ -1,6 +1,7 @@
 package com.platform.listeners;
 
 import com.android.volley.VolleyError;
+import com.platform.models.forms.Elements;
 
 public interface FormRequestCallListener {
 
@@ -12,7 +13,7 @@ public interface FormRequestCallListener {
 
     void onSuccessListener(String response);
 
-    void onChoicesPopulated(String response);
+    void onChoicesPopulated(String response, Elements formData);
 
     @SuppressWarnings("unused")
     void onSubmitClick(String submitType);

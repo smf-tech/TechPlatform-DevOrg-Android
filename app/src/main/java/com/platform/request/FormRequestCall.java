@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.FormRequestCallListener;
+import com.platform.models.forms.Elements;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -102,13 +103,13 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getChoicesByUrl(String choicesUrl) {
+    public void getChoicesByUrl(final Elements formData) {
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.i(TAG, "getChoicesByUrl - Resp: " + res);
-                    listener.onChoicesPopulated(res);
+                    listener.onChoicesPopulated(res, formData);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -122,7 +123,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
-                choicesUrl,
+                formData.getChoicesByUrl().getUrl(),
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,

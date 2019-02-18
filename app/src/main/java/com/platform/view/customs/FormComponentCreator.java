@@ -20,7 +20,11 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.ChoicesByUrlMCResponse;
+import com.platform.models.forms.ChoicesByUrlSCResponse;
 import com.platform.models.forms.Elements;
+import com.platform.models.forms.MachineCode;
+import com.platform.models.forms.StructureCode;
 import com.platform.models.profile.Location;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -42,6 +46,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
+    private ChoicesByUrlSCResponse choicesByUrlSCResponse;
+    private ChoicesByUrlMCResponse choicesByUrlMCResponse;
+
+    public void setChoicesByUrlSCResponse(ChoicesByUrlSCResponse choicesByUrlSCResponse) {
+        this.choicesByUrlSCResponse = choicesByUrlSCResponse;
+    }
+
+    public void setChoicesByUrlMCResponse(ChoicesByUrlMCResponse choicesByUrlMCResponse) {
+        this.choicesByUrlMCResponse = choicesByUrlMCResponse;
+    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -135,6 +149,24 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
                 template.setListData(locationValues);
             }
+        } else if (formData.getChoicesByUrl() != null && choicesByUrlSCResponse != null
+                && choicesByUrlSCResponse.getData() != null && !choicesByUrlSCResponse.getData().isEmpty()) {
+            List<String> choiceValues = new ArrayList<>();
+
+            for (StructureCode structureCode : choicesByUrlSCResponse.getData()) {
+                choiceValues.add(structureCode.getStructureCode());
+            }
+
+            template.setListData(choiceValues);
+        } else if (formData.getChoicesByUrl() != null && choicesByUrlMCResponse != null
+                && choicesByUrlMCResponse.getData() != null && !choicesByUrlMCResponse.getData().isEmpty()) {
+            List<String> choiceValues = new ArrayList<>();
+
+            for (MachineCode machineCode : choicesByUrlMCResponse.getData()) {
+                choiceValues.add(machineCode.getMachineCode());
+            }
+
+            template.setListData(choiceValues);
         } else if (formData.getChoices() != null) {
             List<String> choiceValues = new ArrayList<>();
 
@@ -296,9 +328,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     @Override
-    public void onDropdownValueSelected(String name, String value) {
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(value)) {
-            requestObjectMap.put(name, value);
+    public void onDropdownValueSelected(Elements formData, String value) {
+        if (formData != null && !TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(value)) {
+            requestObjectMap.put(formData.getName(), value);
+            if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
+                fragment.get().showMachineCodes(formData, value);
+            }
         }
     }
 

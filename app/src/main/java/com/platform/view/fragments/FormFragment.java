@@ -21,10 +21,13 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
 import com.platform.models.SavedForm;
+import com.platform.models.forms.ChoicesByUrlMCResponse;
+import com.platform.models.forms.ChoicesByUrlSCResponse;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.StructureCode;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -75,7 +78,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+            List<FormData> formDataList = null; /*DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);*/
 
             if (formDataList == null || formDataList.isEmpty()) {
                 formPresenter.getProcessDetails(processId);
@@ -134,9 +137,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        Log.d(TAG, "DROPDOWN_TEMPLATE");
-                        Object[] objects = formComponentCreator.dropDownTemplate(formData);
-                        addViewToMainContainer((View) objects[0]);
+                        if (formData.getChoicesByUrl() == null) {
+                            Log.d(TAG, "DROPDOWN_TEMPLATE");
+                            formComponentCreator.setChoicesByUrlSCResponse(null);
+                            Object[] objects = formComponentCreator.dropDownTemplate(formData);
+                            addViewToMainContainer((View) objects[0]);
+                        }
                         break;
 
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
@@ -169,9 +175,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        Log.d(TAG, "DROPDOWN_TEMPLATE");
-                        Object[] objects = formComponentCreator.dropDownTemplate(formData);
-                        addViewToMainContainer((View) objects[0]);
+                        if (formData.getChoicesByUrl() == null) {
+                            Log.d(TAG, "DROPDOWN_TEMPLATE");
+                            formComponentCreator.setChoicesByUrlSCResponse(null);
+                            Object[] objects = formComponentCreator.dropDownTemplate(formData);
+                            addViewToMainContainer((View) objects[0]);
+                        }
                         break;
 
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
@@ -231,8 +240,38 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     @Override
-    public void showChoicesByUrl(String result) {
+    public void showChoicesByUrl(String result, Elements formData) {
+        Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
+        switch (formData.getName()) {
+            case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
+                ChoicesByUrlSCResponse choicesByUrlSCResponse = new Gson().fromJson(result, ChoicesByUrlSCResponse.class);
+                if (choicesByUrlSCResponse != null && choicesByUrlSCResponse.getData() != null &&
+                        !choicesByUrlSCResponse.getData().isEmpty()) {
+                    List<StructureCode> structureCodeList = choicesByUrlSCResponse.getData();
 
+                    if (structureCodeList != null && !structureCodeList.isEmpty()) {
+                        formComponentCreator.setChoicesByUrlSCResponse(choicesByUrlSCResponse);
+                        Object[] objects = formComponentCreator.dropDownTemplate(formData);
+                        addViewToMainContainer((View) objects[0]);
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_MACHINE_CODE:
+                ChoicesByUrlMCResponse choicesByUrlMCResponse = new Gson().fromJson(result, ChoicesByUrlMCResponse.class);
+                if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
+                        !choicesByUrlMCResponse.getData().isEmpty()) {
+                    formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    public void showMachineCodes(Elements formData, String response) {
+        Object[] objects = formComponentCreator.dropDownTemplate(formData);
+        addViewToMainContainer((View) objects[0]);
     }
 
     @Override
