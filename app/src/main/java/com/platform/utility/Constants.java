@@ -156,9 +156,11 @@ public class Constants {
     public class ChoicesType {
         public static final String CHOICE_STRUCTURE_CODE = "structure_code";
         public static final String CHOICE_MACHINE_CODE = "machine_code";
+        public static final String CHOICE_LOCATION_STATE = "state";
         public static final String CHOICE_LOCATION_DISTRICT = "district";
         public static final String CHOICE_LOCATION_TALUKA = "taluka";
         public static final String CHOICE_LOCATION_CLUSTER = "cluster";
         public static final String CHOICE_LOCATION_VILLAGE = "village";
+        public static final String CHOICE_DEFAULT = "default";
     }
 }

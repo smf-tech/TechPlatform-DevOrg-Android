@@ -114,8 +114,8 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
                     && !jurisdictionLevelResponse.getData().isEmpty()
                     && jurisdictionLevelResponse.getData().size() > 0) {
 
-                Util.saveUserLocationJurisdictionLevel(level);
-                Util.saveJurisdictionLevelData(response);
+//                Util.saveUserLocationJurisdictionLevel(level);
+//                Util.saveJurisdictionLevelData(response);
                 profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
             }
         }

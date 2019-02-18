@@ -565,7 +565,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     selectedStates.clear();
                     selectedStates.add(states.get(i));
 
-                    Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
+//                    Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
 
                     profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
                             selectedRole.getProject().getJurisdictionTypeId(),

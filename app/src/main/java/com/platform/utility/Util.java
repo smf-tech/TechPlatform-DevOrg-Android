@@ -231,7 +231,7 @@ public class Util {
         editor.apply();
     }
 
-    public static String getUserLocationJurisdictionLevelFromPref() {
+    /*public static String getUserLocationJurisdictionLevelFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
@@ -245,9 +245,9 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.App.JURISDICTION_LEVEL, level);
         editor.apply();
-    }
+    }*/
 
-    public static JurisdictionLevelResponse getJurisdictionLevelDataFromPref() {
+    /*public static JurisdictionLevelResponse getJurisdictionLevelDataFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
@@ -262,7 +262,7 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.App.JURISDICTION_LEVEL_DATA, jurisdictionLevel);
         editor.apply();
-    }
+    }*/
 
     public static String getFormCategoryForSyncFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
