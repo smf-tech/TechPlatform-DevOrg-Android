@@ -159,27 +159,37 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 fragment.get().getContext(), R.layout.form_text_template, null);
 
         EditText textInputField = textTemplateView.findViewById(R.id.edit_form_text_template);
-        if (formData != null && formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-            //set input type
-            setInputType(formData.getValidators().get(0).getType(), textInputField);
+        if (formData != null) {
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                //set input type
+                setInputType(formData.getValidators().get(0).getType(), textInputField);
 
-            //set max length allowed
-            if (formData.getValidators().get(0).getMaxLength() != null) {
-                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                        formData.getValidators().get(0).getMaxLength())});
+                //set max length allowed
+                if (formData.getValidators().get(0).getMaxLength() != null) {
+                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                            formData.getValidators().get(0).getMaxLength())});
 
-            } else if (formData.getValidators().get(0).getMaxValue() != null) {
-                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                        formData.getValidators().get(0).getMaxValue())});
+                } else if (formData.getValidators().get(0).getMaxValue() != null) {
+                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                            formData.getValidators().get(0).getMaxValue())});
+                }
+            }
+
+            if (!TextUtils.isEmpty(formData.getAnswer())) {
+                textInputField.setText(formData.getAnswer());
+            }
+
+            if (!TextUtils.isEmpty(formData.getTitle())) {
+                textInputField.setTag(formData.getTitle());
+            }
+
+            if (!TextUtils.isEmpty(formData.getInputType())) {
+                //set input type
+                setInputType(formData.getInputType(), textInputField);
             }
         }
 
         textInputField.setMaxLines(1);
-        textInputField.setText(formData.getAnswer());
-        textInputField.setTag(formData.getTitle());
-
-        //set input type
-        setInputType(formData.getInputType(), textInputField);
 
         textInputField.addTextChangedListener(new TextWatcher() {
 

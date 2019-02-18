@@ -166,24 +166,24 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         spOrganization = findViewById(R.id.sp_user_organization);
 
         spProject = findViewById(R.id.sp_project);
-        spProject.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_PROJECT;
+        spProject.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_PROJECT);
 
         spRole = findViewById(R.id.sp_role);
         spState = findViewById(R.id.sp_user_state);
 
         spDistrict = findViewById(R.id.sp_district);
-        spDistrict.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_DISTRICT;
+        spDistrict.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_DISTRICT);
 
         spTaluka = findViewById(R.id.sp_taluka);
-        spTaluka.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_TALUKA;
+        spTaluka.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_TALUKA);
 
         spCluster = findViewById(R.id.sp_cluster);
-        spCluster.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_CLUSTER;
+        spCluster.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_CLUSTER);
 
         spStructure = findViewById(R.id.sp_user_structure);
 
         spVillage = findViewById(R.id.sp_village);
-        spVillage.spinnerName = Constants.MultiSelectSpinnerType.SPINNER_VILLAGE;
+        spVillage.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_VILLAGE);
 
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
