@@ -49,24 +49,28 @@
                 android:src="@drawable/ic_menu_forms"
                 android:tint="@android:color/darker_gray" />
 
-            <TextView
-                android:id="@+id/form_title"
-                style="@style/FormLabel.Title"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/form_image"
-                android:textAllCaps="true" />
+                android:layout_toEndOf="@id/form_image">
 
-            <TextView
-                android:id="@+id/form_date"
-                style="@style/FormLabel.Description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/form_title"
-                android:layout_marginTop="-3dp"
-                android:layout_toEndOf="@id/form_image"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/form_title"
+                    style="@style/FormLabel.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:textAllCaps="true" />
+
+                <TextView
+                    android:id="@+id/form_date"
+                    style="@style/FormLabel.Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/form_title"
+                    android:layout_marginTop="0dp" />
+            </RelativeLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

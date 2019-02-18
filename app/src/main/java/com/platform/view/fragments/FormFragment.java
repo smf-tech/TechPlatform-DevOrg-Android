@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.platform.utility.Util.getFormattedDate;
+
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
@@ -283,8 +285,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
 
         savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        SimpleDateFormat createdDateFormat =
-                new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat createdDateFormat = getFormattedDate();
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
         formPresenter.setSavedForm(savedForm);

@@ -151,4 +151,5 @@
     <string name="verification_code">Verification Code</string>
     <string name="verify">Verify</string>
     <string name="please_type_the_verification_code_n_sent_to">Please type the verification code\nsent to %1$s</string>
+    <string name="forms_are_not_available">Forms are not available</string>फॉर्म उपलब्ध नाहीत
 </resources>
