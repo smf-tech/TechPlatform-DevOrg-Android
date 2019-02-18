@@ -62,6 +62,7 @@ public class Constants {
 
         public static final String AUTHORIZATION = "Authorization";
 
+        public static final String USER_NAME = "name";
         public static final String USER_F_NAME = "firstName";
         public static final String USER_M_NAME = "middleName";
         public static final String USER_L_NAME = "lastName";

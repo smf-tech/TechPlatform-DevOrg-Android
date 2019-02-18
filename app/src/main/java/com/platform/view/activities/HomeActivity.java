@@ -106,7 +106,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
         UserInfo user = Util.getUserObjectFromPref();
         if (user != null) {
-            userName.setText(String.format("%s %s", user.getUserFirstName(), user.getUserLastName()));
+            userName.setText(String.format("%s", user.getUserName()));
         }
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);

@@ -202,6 +202,7 @@ public class ProfileRequestCall {
         JsonObject body = new JsonObject();
         if (userInfo != null) {
             try {
+                body.addProperty(Constants.Login.USER_NAME, userInfo.getUserName());
                 body.addProperty(Constants.Login.USER_F_NAME, userInfo.getUserFirstName());
                 body.addProperty(Constants.Login.USER_M_NAME, userInfo.getUserMiddleName());
                 body.addProperty(Constants.Login.USER_L_NAME, userInfo.getUserLastName());
