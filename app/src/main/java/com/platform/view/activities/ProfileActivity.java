@@ -35,6 +35,7 @@ import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.profile.Jurisdiction;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
@@ -83,27 +84,28 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     private String userGender = "Male";
 
+    private List<Organization> organizations = new ArrayList<>();
     private List<OrganizationProject> projects = new ArrayList<>();
     private List<OrganizationRole> roles = new ArrayList<>();
-    private List<String> districts = new ArrayList<>();
-    private List<String> talukas = new ArrayList<>();
-    private List<String> clusters = new ArrayList<>();
-    private List<String> villages = new ArrayList<>();
+
+    private List<JurisdictionType> states = new ArrayList<>();
+    private List<JurisdictionType> districts = new ArrayList<>();
+    private List<JurisdictionType> talukas = new ArrayList<>();
+    private List<JurisdictionType> clusters = new ArrayList<>();
+    private List<JurisdictionType> villages = new ArrayList<>();
 
     private ArrayList<String> selectedProjects = new ArrayList<>();
     private ArrayList<String> selectedRoles = new ArrayList<>();
-    private ArrayList<String> selectedStates = new ArrayList<>();
-    private ArrayList<String> selectedDistricts = new ArrayList<>();
-    private ArrayList<String> selectedTalukas = new ArrayList<>();
-    private ArrayList<String> selectedClusters = new ArrayList<>();
-    private ArrayList<String> selectedVillages = new ArrayList<>();
+
+    private ArrayList<JurisdictionType> selectedStates = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedDistricts = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedTalukas = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedClusters = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedVillages = new ArrayList<>();
 
     private Uri outputUri;
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
-
-    private List<Organization> organizations = new ArrayList<>();
-    private List<Location> states = new ArrayList<>();
 
     //    private String selectedState;
     private OrganizationRole selectedRole;
@@ -315,11 +317,35 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setRoleIds(selectedRole.getId());
 
             UserLocation userLocation = new UserLocation();
-            userLocation.setStateId(selectedStates);
-            userLocation.setDistrictIds(selectedDistricts);
-            userLocation.setTalukaIds(selectedTalukas);
-            userLocation.setClusterIds(selectedClusters);
-            userLocation.setVillageIds(selectedVillages);
+            ArrayList<String> s = new ArrayList<>();
+            for (JurisdictionType state : selectedStates) {
+                s.add(state.getId());
+                userLocation.setStateId(s);
+            }
+
+            s = new ArrayList<>();
+            for (JurisdictionType district : selectedDistricts) {
+                s.add(district.getId());
+                userLocation.setDistrictIds(s);
+            }
+
+            s = new ArrayList<>();
+            for (JurisdictionType taluka : selectedTalukas) {
+                s.add(taluka.getId());
+                userLocation.setTalukaIds(s);
+            }
+
+            s = new ArrayList<>();
+            for (JurisdictionType cluster : selectedClusters) {
+                s.add(cluster.getId());
+                userLocation.setClusterIds(s);
+            }
+
+            s = new ArrayList<>();
+            for (JurisdictionType village : selectedVillages) {
+                s.add(village.getId());
+                userLocation.setVillageIds(s);
+            }
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);
@@ -534,11 +560,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 break;
 
             case R.id.sp_user_state:
-                if (states != null && !states.isEmpty() && states.get(i) != null
-                        && states.get(i).getState() != null) {
+                if (states != null && !states.isEmpty() && states.get(i) != null) {
 
                     selectedStates.clear();
-                    selectedStates.add(states.get(i).getState().getName());
+                    selectedStates.add(states.get(i));
 
                     Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
 
@@ -649,75 +674,111 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.STATE_LEVEL:
-                this.states = jurisdictionLevels;
-                List<String> stateNames = new ArrayList<>();
-                for (int i = 0; i < states.size(); i++) {
-                    stateNames.add(states.get(i).getState().getName());
-                }
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    this.states.clear();
+                    List<String> stateNames = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        stateNames.add(location.getState().getName());
+                        this.states.add(location.getState());
+                    }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
-                        android.R.layout.simple_spinner_item, stateNames);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spState.setAdapter(adapter);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
+                            android.R.layout.simple_spinner_item, stateNames);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spState.setAdapter(adapter);
+                }
                 break;
 
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    this.districts.clear();
                     List<String> districts = new ArrayList<>();
-                    for (Location location : jurisdictionLevels) {
-                        if (selectedStates.contains(location.getState().getName())) {
-                            districts.add(location.getDistrict().getName());
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        for (JurisdictionType state : selectedStates) {
+                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+                                districts.add(location.getDistrict().getName());
+                                this.districts.add(location.getDistrict());
+                            }
                         }
                     }
 
                     spDistrict.setItems(districts, getString(R.string.district), this);
-                    this.districts.clear();
-                    this.districts.addAll(districts);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    this.talukas.clear();
                     List<String> talukas = new ArrayList<>();
-                    for (Location location : jurisdictionLevels) {
-                        if (selectedStates.contains(location.getState().getName()) &&
-                                selectedDistricts.contains(location.getDistrict().getName())) {
-                            talukas.add(location.getTaluka().getName());
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        for (JurisdictionType state : selectedStates) {
+                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+                                for (JurisdictionType district : selectedDistricts) {
+                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+                                        talukas.add(location.getTaluka().getName());
+                                        this.talukas.add(location.getTaluka());
+                                    }
+                                }
+                            }
                         }
                     }
 
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
-                    this.talukas.clear();
-                    this.talukas.addAll(talukas);
-                }
-                break;
-
-            case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
-                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    List<String> clusters = new ArrayList<>();
-                    for (Location location : jurisdictionLevels) {
-                        clusters.add(location.getCluster().getName());
-                    }
-                    spCluster.setItems(clusters, getString(R.string.cluster), this);
-                    this.clusters.clear();
-                    this.clusters.addAll(clusters);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    this.villages.clear();
                     List<String> villages = new ArrayList<>();
-                    for (Location location : jurisdictionLevels) {
-                        if (selectedStates.contains(location.getState().getName()) &&
-                                selectedDistricts.contains(location.getDistrict().getName()) &&
-                                selectedTalukas.contains(location.getTaluka().getName())) {
-                            villages.add(location.getVillage().getName());
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        for (JurisdictionType state : selectedStates) {
+                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+                                for (JurisdictionType district : selectedDistricts) {
+                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+                                        for (JurisdictionType taluka : selectedTalukas) {
+                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
+                                                villages.add(location.getVillage().getName());
+                                                this.villages.add(location.getVillage());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
                     spVillage.setItems(villages, getString(R.string.village), this);
-                    this.villages.clear();
-                    this.villages.addAll(villages);
+                }
+                break;
+
+            case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    this.clusters.clear();
+                    List<String> clusters = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        for (JurisdictionType state : selectedStates) {
+                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+                                for (JurisdictionType district : selectedDistricts) {
+                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+                                        for (JurisdictionType taluka : selectedTalukas) {
+                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
+                                                clusters.add(location.getCluster().getName());
+                                                this.clusters.add(location.getCluster());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    spCluster.setItems(clusters, getString(R.string.cluster), this);
                 }
                 break;
 
