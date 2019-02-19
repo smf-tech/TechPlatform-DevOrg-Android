@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -30,6 +31,9 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_yellow,
             R.drawable.bg_circle_green
     };
+    private final int[] disableTabIcons = {
+            R.drawable.bg_circle_lock
+    };
     private List<Modules> tabNames = new ArrayList<>();
 
     @Override
@@ -48,10 +52,23 @@ public class DashboardFragment extends Fragment {
         if (arguments != null) {
             Home homeData = (Home) arguments.getSerializable(Constants.Home.HOME_DATA);
             if (homeData != null) {
-                if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING)) {
-                    tabNames = homeData.getHomeData().getDefaultModules();
+                tabNames = homeData.getHomeData().getOnApproveModules();
+
+                if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
+                        homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
+
+                    List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
+                    for (int i = 0; i < tabNames.size(); i++) {
+                        for (Modules module : defaultModules) {
+                            if (tabNames.get(i).getName().equalsIgnoreCase(module.getName())) {
+                                tabNames.get(i).setActive(true);
+                            }
+                        }
+                    }
                 } else {
-                    tabNames = homeData.getHomeData().getOnApproveModules();
+                    for (int i = 0; i < tabNames.size(); i++) {
+                        tabNames.get(i).setActive(true);
+                    }
                 }
             }
         }
@@ -99,12 +116,23 @@ public class DashboardFragment extends Fragment {
             TextView tabOne = (TextView) LayoutInflater.from(getActivity())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
             tabOne.setText(tabNames.get(i).getName());
-            tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+
+            if (!tabNames.get(i).isActive()) {
+                tabOne.setEnabled(false);
+                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+            } else {
+                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+            }
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
                 tab.setCustomView(tabOne);
             }
+        }
+
+        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            tabStrip.getChildAt(i).setOnTouchListener((v, event) -> v.isEnabled());
         }
     }
 }

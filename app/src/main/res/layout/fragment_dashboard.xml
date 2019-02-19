@@ -9,6 +9,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_120dp"
+        android:background="@color/white"
         android:paddingTop="@dimen/dimen_15dp"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/white"

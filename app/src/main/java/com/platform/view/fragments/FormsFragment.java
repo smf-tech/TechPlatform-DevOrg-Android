@@ -32,8 +32,7 @@ public class FormsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getActivity()!=null) {
-            ((HomeActivity) getActivity()).setActionBarTitle(
-                    getActivity().getResources().getString(R.string.forms));
+            ((HomeActivity) getActivity()).setActionBarTitle(getActivity().getResources().getString(R.string.forms));
         }
 
         initTabView();

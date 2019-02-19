@@ -581,9 +581,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
 //                    Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
 
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                            selectedRole.getProject().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    if (spDistrict.getVisibility() == View.VISIBLE) {
+                        profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                                selectedRole.getProject().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    }
                 }
                 break;
 
@@ -849,9 +851,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     }
                 }
 
-                profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                        selectedRole.getProject().getJurisdictionTypeId(),
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                if (spTaluka.getVisibility() == View.VISIBLE) {
+                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            selectedRole.getProject().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                }
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_TALUKA:
@@ -863,9 +867,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     }
                 }
 
-                profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                        selectedRole.getProject().getJurisdictionTypeId(),
-                        Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                if (spVillage.getVisibility() == View.VISIBLE) {
+                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            selectedRole.getProject().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                }
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_CLUSTER:

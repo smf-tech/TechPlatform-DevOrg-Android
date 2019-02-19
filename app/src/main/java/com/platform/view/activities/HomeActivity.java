@@ -400,9 +400,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             switch (position) {
                 case 0:
-                    //TODO: add Hangout link
                     try {
-                        Uri uri = Uri.parse("");
+                        Uri uri = Uri.parse(Constants.hangoutLink);
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
                     } catch (Exception e) {
@@ -411,11 +410,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     break;
 
                 case 1:
-                    //TODO: add contact number
                     try {
                         Intent dial = new Intent();
                         dial.setAction("android.intent.action.DIAL");
-                        dial.setData(Uri.parse("tel:" + ""));
+                        dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
                         startActivity(dial);
                     } catch (Exception e) {
                         Log.e("Calling Phone", "" + e.getMessage());

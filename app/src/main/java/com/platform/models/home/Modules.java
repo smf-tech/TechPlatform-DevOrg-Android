@@ -15,6 +15,8 @@ public class Modules implements Serializable {
     @Expose
     private String name;
 
+    private boolean isActive;
+
     public String getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class Modules implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

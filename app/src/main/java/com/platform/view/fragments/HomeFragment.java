@@ -117,7 +117,8 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         if (data != null) {
             homeData = (Home) data;
 
-            if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING)) {
+            if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
+                    homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
                 showApprovedDialog();
             }
 

@@ -32,4 +32,6 @@
     <color name="card_gray_bg">#efefef</color>
     <color name="form_tab_bg">#f0f0f0</color>
     <color name="tab_selector">#1A4B98</color>
+    <color name="tab_disable">#DDDDDD</color>
+    <color name="tab_disable_bg">#E3E3E3</color>
 </resources>
