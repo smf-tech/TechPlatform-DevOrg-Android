@@ -159,7 +159,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
                         && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
                     for (Location location : jurisdictionLevelResponse.getData()) {
-                        choiceValues.add(location.getDistrict().getName());
+                        if (!choiceValues.contains(location.getDistrict().getName())) {
+                            choiceValues.add(location.getDistrict().getName());
+                        }
                     }
                 }
                 break;
@@ -168,7 +170,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
                         && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
                     for (Location location : jurisdictionLevelResponse.getData()) {
-                        choiceValues.add(location.getTaluka().getName());
+                        if (!choiceValues.contains(location.getTaluka().getName())) {
+                            choiceValues.add(location.getTaluka().getName());
+                        }
                     }
                 }
                 break;
@@ -177,7 +181,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
                         && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
                     for (Location location : jurisdictionLevelResponse.getData()) {
-                        choiceValues.add(location.getCluster().getName());
+                        if (!choiceValues.contains(location.getCluster().getName())) {
+                            choiceValues.add(location.getCluster().getName());
+                        }
                     }
                 }
                 break;
@@ -186,7 +192,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
                         && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
                     for (Location location : jurisdictionLevelResponse.getData()) {
-                        choiceValues.add(location.getVillage().getName());
+                        if (!choiceValues.contains(location.getVillage().getName())) {
+                            choiceValues.add(location.getVillage().getName());
+                        }
                     }
                 }
                 break;
