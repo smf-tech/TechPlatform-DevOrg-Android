@@ -9,6 +9,9 @@ public class Location {
     @SerializedName("_id")
     @Expose
     private String id;
+    @SerializedName("jurisdiction_type_id")
+    @Expose
+    private String jurisdictionTypeId;
     @SerializedName("state_id")
     @Expose
     private String stateId;
@@ -36,6 +39,47 @@ public class Location {
     @SerializedName("cluster")
     @Expose
     private JurisdictionType cluster;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+
+    public String getJurisdictionTypeId() {
+        return jurisdictionTypeId;
+    }
+
+    public void setJurisdictionTypeId(String jurisdictionTypeId) {
+        this.jurisdictionTypeId = jurisdictionTypeId;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public String getId() {
         return id;
