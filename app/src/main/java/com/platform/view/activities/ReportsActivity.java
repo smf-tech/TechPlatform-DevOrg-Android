@@ -247,14 +247,14 @@ public class ReportsActivity extends BaseActivity implements
     }
 
     private void goToForms() {
-        try {
-            Intent intent = new Intent(this, FormsActivity.class);
-            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+//        try {
+//            Intent intent = new Intent(this, FormsActivity.class);
+//            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+//            startActivity(intent);
+//            finish();
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
     }
 
 }

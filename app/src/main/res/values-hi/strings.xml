@@ -104,12 +104,12 @@
     <string name="menu_account">लेखा</string>
     <string name="menu_leaves_attendance">छुटींया और उपस्थिति</string>
 
+    <string name="menu_change_language">भाषा बदलो</string>
     <string name="menu_rate_us">रेटिंग दें</string>
     <string name="menu_call_us">कॉल करें</string>
     <string name="menu_settings">सेटिंग्स</string>
     <string name="menu_logout">लोगआउट</string>
 
-    <string name="change_language">भाषा बदलो</string>
     <string name="my_profile">मेरी प्रोफाइल</string>
     <string name="add_location">स्थान जोड़ना</string>
     <string name="update_user_data">डेटा को अद्यतन करें</string>

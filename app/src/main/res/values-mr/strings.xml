@@ -104,12 +104,12 @@
     <string name="menu_account">खाते</string>
     <string name="menu_leaves_attendance">रजा आणि उपस्थिती</string>
 
+    <string name="menu_change_language">भाषा बदला</string>
     <string name="menu_rate_us">रेट करा</string>
     <string name="menu_call_us">कॉल करा</string>
     <string name="menu_settings">सेटिंग्ज</string>
     <string name="menu_logout">बाहेर पडा</string>
 
-    <string name="change_language">भाषा बदला</string>
     <string name="my_profile">माझी प्रोफाईल</string>
     <string name="add_location">स्थान जोडा</string>
     <string name="update_user_data">डेटा अद्ययावत करा</string>
