@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.login.Login;
-import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 
