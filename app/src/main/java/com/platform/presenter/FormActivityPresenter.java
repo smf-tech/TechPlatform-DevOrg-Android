@@ -19,6 +19,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Objects;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class FormActivityPresenter implements FormRequestCallListener {
@@ -104,6 +105,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
     public void onFormCreated(String message) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast("Form submitted successfully", formFragment.get().getActivity());
+        Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
     }
 
     @Override
