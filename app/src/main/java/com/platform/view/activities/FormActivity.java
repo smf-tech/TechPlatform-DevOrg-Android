@@ -60,4 +60,9 @@ public class FormActivity extends BaseActivity {
         fragment = null;
         super.onDestroy();
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

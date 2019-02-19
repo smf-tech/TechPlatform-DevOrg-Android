@@ -21,6 +21,9 @@ import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.view.adapters.ExpandableAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +41,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
     private TextView mNoRecordsView;
     private ExpandableListView expandableListView;
+    private List<String> mCountList;
+    private ExpandableAdapter adapter;
 
     public AllFormsFragment() {
         // Required empty public constructor
@@ -64,12 +69,14 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         super.onViewCreated(view, savedInstanceState);
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
+        mCountList = new ArrayList<>();
 
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
         presenter.getAllFormMasters();
 
         expandableListView = view.findViewById(R.id.forms_expandable_list);
-
+        adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
+        expandableListView.setAdapter(adapter);
     }
 
     @Override
@@ -85,7 +92,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     @Override
     public void onFormsLoaded(String response) {
 
+        mCountList.clear();
         mChildList.clear();
+
+        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
 
         Processes json = new Gson().fromJson(response, Processes.class);
         for (ProcessData data : json.getData()) {
@@ -101,6 +111,22 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 processData.add(data);
                 mChildList.put(categoryName, processData);
             }
+            presenter.getSubmittedFormsOfMaster(data.getId());
+        }
+
+    }
+
+    @Override
+    public void onMastersFormsLoaded(final String response) {
+        try {
+            String count;
+            if (new JSONObject(response).has("values")) {
+                JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
+                count = metadata.getJSONObject("form").getString("submit_count");
+                mCountList.add(count);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         if (!mChildList.isEmpty()) {
@@ -109,18 +135,11 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         } else {
             mNoRecordsView.setVisibility(View.VISIBLE);
         }
-
-    }
-
-    @Override
-    public void onMastersFormsLoaded(final String response) {
-
     }
 
     private void setAdapter(final Map<String, List<ProcessData>> data) {
         if (data != null && !data.isEmpty()) {
-            ExpandableAdapter adapter = new ExpandableAdapter(getContext(), data);
-            expandableListView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
             mNoRecordsView.setVisibility(View.GONE);
         }
     }
