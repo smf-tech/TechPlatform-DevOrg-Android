@@ -16,6 +16,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
 import com.platform.presenter.ReportsFragmentPresenter;
+import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ReportCategoryAdapter;
 
@@ -154,6 +155,20 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
+                Util.launchFragment(ReportsFragment.newInstance(true), getContext(), "reportsFragment");
+
+/*
+                try {
+                    FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
+                            .requireNonNull(getContext()))
+                            .getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.home_page_container, ReportsFragment.newInstance(false), "reportsFragment");
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+*/
                 break;
         }
     }

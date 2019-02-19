@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,6 +29,8 @@ import com.platform.R;
 import com.platform.models.login.Login;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
+import com.platform.view.activities.HomeActivity;
+import com.platform.view.fragments.ReportsFragment;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -36,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class Util {
 
@@ -372,6 +376,19 @@ public class Util {
             context.startActivity(starter);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void launchFragment(Fragment fragment, Context context, String name) {
+        try {
+            FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
+                    .requireNonNull(context))
+                    .getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.home_page_container, fragment, name);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 }
