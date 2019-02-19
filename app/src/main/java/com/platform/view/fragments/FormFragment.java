@@ -43,8 +43,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static com.platform.utility.Util.getFormattedDate;
+import java.util.Locale;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
@@ -83,7 +82,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            List<FormData> formDataList = null; /*DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);*/
+            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
 
             if (formDataList == null || formDataList.isEmpty()) {
                 formPresenter.getProcessDetails(processId);
@@ -168,6 +167,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         customFormView = formFragmentView.findViewById(R.id.ll_form_container);
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
+        formComponentCreator.clearOldComponents();
 
         for (Elements formData : formDataArrayList) {
             if (formData != null && !formData.getType().equals("")) {
@@ -374,7 +374,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
 
         savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        SimpleDateFormat createdDateFormat = getFormattedDate();
+        SimpleDateFormat createdDateFormat =
+                new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
         formPresenter.setSavedForm(savedForm);

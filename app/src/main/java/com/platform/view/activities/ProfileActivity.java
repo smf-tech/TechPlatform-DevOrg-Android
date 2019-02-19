@@ -208,9 +208,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     setActionbar(getString(R.string.update_profile));
 
                     UserInfo userInfo = Util.getUserObjectFromPref();
-                    etUserFirstName.setText(userInfo.getUserFirstName());
+                    String userName = userInfo.getUserName().trim();
+                    if (userName.split(" ").length == 2) {
+                        etUserFirstName.setText(userName.split(" ")[0]);
+                        etUserLastName.setText(userName.split(" ")[1]);
+                    } else if (userName.split(" ").length == 1) {
+                        etUserFirstName.setText(userName);
+                    }
                     etUserMiddleName.setText(userInfo.getUserMiddleName());
-                    etUserLastName.setText(userInfo.getUserLastName());
+//                    etUserLastName.setText(userInfo.getUserLastName());
                     etUserBirthDate.setText(userInfo.getUserBirthDate());
                     etUserMobileNumber.setText(userInfo.getUserMobileNumber());
                     etUserEmailId.setText(userInfo.getUserEmailId());
