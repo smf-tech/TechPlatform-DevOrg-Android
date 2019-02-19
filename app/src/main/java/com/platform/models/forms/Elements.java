@@ -1,5 +1,7 @@
 package com.platform.models.forms;
 
+import android.arch.persistence.room.ColumnInfo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,6 +9,8 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class Elements {
+    @ColumnInfo(name = "choices_by_url_response")
+    private String choicesByUrlResponse;
 
     private String mAnswer;
     @SerializedName("type")
@@ -33,6 +37,14 @@ public class Elements {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
+
+    public String getChoicesByUrlResponse() {
+        return choicesByUrlResponse;
+    }
+
+    public void setChoicesByUrlResponse(String choicesByUrlResponse) {
+        this.choicesByUrlResponse = choicesByUrlResponse;
+    }
 
     public String getInputType() {
         return inputType;
