@@ -104,12 +104,12 @@
     <string name="menu_account">लेखा</string>
     <string name="menu_leaves_attendance">छुटींया और उपस्थिति</string>
 
+    <string name="menu_change_language">भाषा बदलो</string>
     <string name="menu_rate_us">रेटिंग दें</string>
     <string name="menu_call_us">कॉल करें</string>
     <string name="menu_settings">सेटिंग्स</string>
     <string name="menu_logout">लोगआउट</string>
 
-    <string name="change_language">भाषा बदलो</string>
     <string name="my_profile">मेरी प्रोफाइल</string>
     <string name="add_location">स्थान जोड़ना</string>
     <string name="update_user_data">डेटा को अद्यतन करें</string>
@@ -120,12 +120,15 @@
     <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="locked">बंद</string>
 
+    <string name="call_on_hangout">Hangout पर कॉल करें</string>
+    <string name="call_on_phone">फोन पर कॉल करें (10AM से 6PM)</string>
+
     <!--Home-->
     <string name="tab_connect">जुडिये</string>
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="meetings">बैठक</string>
-    <string name="team_management">टीम\nप्रबंधक</string>
+    <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
     <string name="pending_forms">लंबित प्रपत्र</string>

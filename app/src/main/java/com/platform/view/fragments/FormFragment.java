@@ -27,6 +27,7 @@ import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.MachineCode;
 import com.platform.models.forms.StructureCode;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.Location;
@@ -64,7 +65,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
     boolean mIsInEditMode;
-    private ChoicesByUrlMCResponse choicesByUrlMCResponse;
+    //private ChoicesByUrlMCResponse choicesByUrlMCResponse;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -264,7 +265,19 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 break;
 
             case Constants.ChoicesType.CHOICE_MACHINE_CODE:
-                this.choicesByUrlMCResponse = new Gson().fromJson(result, ChoicesByUrlMCResponse.class);
+                ChoicesByUrlMCResponse choicesByUrlMCResponse = new Gson().fromJson(result, ChoicesByUrlMCResponse.class);
+                if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
+                        !choicesByUrlMCResponse.getData().isEmpty()) {
+                    List<MachineCode> machineCodeList = choicesByUrlMCResponse.getData();
+
+                    if (machineCodeList != null && !machineCodeList.isEmpty()) {
+                        formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
+                        formComponentCreator.setJurisdictionLevelResponse(null);
+                        formComponentCreator.setChoicesByUrlSCResponse(null);
+                        Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_MACHINE_CODE);
+                        addViewToMainContainer((View) objects[0]);
+                    }
+                }
                 break;
 
             case Constants.ChoicesType.CHOICE_LOCATION_STATE:
@@ -304,13 +317,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public void showMachineCodes(Elements formData, String response) {
-        if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
-                !choicesByUrlMCResponse.getData().isEmpty()) {
-            formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
-            formComponentCreator.setJurisdictionLevelResponse(null);
+//        if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
+//                !choicesByUrlMCResponse.getData().isEmpty()) {
+//            formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
+//            formComponentCreator.setJurisdictionLevelResponse(null);
 //            Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_MACHINE_CODE);
 //            addViewToMainContainer((View) objects[0]);
-        }
+//        }
     }
 
     @Override

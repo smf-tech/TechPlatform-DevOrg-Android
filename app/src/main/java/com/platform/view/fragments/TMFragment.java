@@ -17,6 +17,7 @@ import com.platform.listeners.TMTaskListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.TMFragmentPresenter;
 import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.NewTMAdapter;
 
 import java.util.List;
@@ -63,6 +64,11 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
 
         tmFragmentPresenter = new TMFragmentPresenter(this);
         tmFragmentPresenter.getAllPendingRequests();
+
+        if (getActivity()!=null) {
+            ((HomeActivity) getActivity()).setActionBarTitle(
+                    getActivity().getResources().getString(R.string.team_management));
+        }
 
         init();
     }

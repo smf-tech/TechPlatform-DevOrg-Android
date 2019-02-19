@@ -11,7 +11,8 @@
         <item
             android:id="@+id/action_menu_community"
             android:icon="@drawable/ic_menu_community"
-            android:title="@string/menu_community" />
+            android:title="@string/menu_community"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_forms"
             android:icon="@drawable/ic_menu_forms"
@@ -23,18 +24,22 @@
         <item
             android:id="@+id/action_menu_calendar"
             android:icon="@drawable/ic_menu_calendar"
-            android:title="@string/menu_calendar" />
+            android:title="@string/menu_calendar"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_assets"
             android:icon="@drawable/ic_menu_assets"
-            android:title="@string/menu_assets" />
+            android:title="@string/menu_assets"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_reports"
             android:icon="@drawable/ic_menu_reports"
             android:title="@string/menu_reports" />
     </group>
 
-    <group android:id="@+id/menu_group_2">
+    <group
+        android:id="@+id/menu_group_2"
+        android:visible="false">
         <item
             android:id="@+id/action_menu_connect"
             android:icon="@drawable/ic_menu_connect"
@@ -49,7 +54,9 @@
             android:title="@string/menu_notice_board" />
     </group>
 
-    <group android:id="@+id/menu_group_3">
+    <group
+        android:id="@+id/menu_group_3"
+        android:visible="false">
         <item
             android:id="@+id/action_menu_account"
             android:icon="@drawable/ic_menu_account"
@@ -62,6 +69,10 @@
 
     <group android:id="@+id/menu_group_4">
         <item
+            android:id="@+id/action_menu_change_language"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_change_language" />
+        <item
             android:id="@+id/action_menu_rate_us"
             android:icon="@drawable/ic_menu_rate_us"
             android:title="@string/menu_rate_us" />
@@ -72,7 +83,8 @@
         <item
             android:id="@+id/action_menu_settings"
             android:icon="@drawable/ic_menu_settings"
-            android:title="@string/menu_settings" />
+            android:title="@string/menu_settings"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_logout"
             android:icon="@drawable/ic_menu_logout"

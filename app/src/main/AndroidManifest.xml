@@ -76,14 +76,6 @@
             android:name=".view.activities.TMUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity
-            android:name=".view.activities.FormsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity
-            android:name=".view.activities.ReportsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <receiver
             android:name=".receivers.SmsReceiver"
@@ -110,6 +102,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <provider
             android:name=".syncAdapter.ContentProvider"
             android:authorities="com.platform"
@@ -127,6 +120,7 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
+
         <service
             android:name=".syncAdapter.GenericAccountService"
             tools:ignore="ExportedService">
@@ -138,8 +132,5 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
-        <activity android:name=".view.activities.TeamManagementActivity"></activity>
     </application>
-
 </manifest>
