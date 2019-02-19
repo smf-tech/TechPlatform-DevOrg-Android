@@ -132,10 +132,12 @@
 
     <!--Program management-->
     <string name="pending_forms">लंबित प्रपत्र</string>
-    <string name="view_all_forms">सभी प्रपत्र देखें</string>
-    <string name="view_all_reports">सभी रिपोर्ट देखें</string>
     <string name="submit">जमा करें</string>
     <string name="no_data_available">डेटा उपलब्ध नहीं है</string>
+
+    <string name="view_all_forms">सभी प्रपत्र देखें</string>
+    <string name="view_all_approvals">सभी अनुमोदन देखें</string>
+    <string name="view_all_reports">सभी रिपोर्ट देखें</string>
 
     <!--Team Management-->
     <string name="team_user_approval">उपयोगकर्ता स्वीकृति</string>
@@ -156,6 +158,6 @@
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s पर भेजा गया सत्यापन कोड टाइप करें</string>
     <string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>
     <string name="reports">रिपोर्ट</string>
-    <string name="view_all_approvals">सभी अनुमोदन देखें</string>
 
+    <string name="coming_soon">Coming Soon&#8230;</string>
 </resources>

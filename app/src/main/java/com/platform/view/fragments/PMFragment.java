@@ -176,20 +176,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         switch (v.getId()) {
             case R.id.txt_view_all_forms:
                 Util.launchFragment(new FormsFragment(), getContext(), "formsFragment");
-/*
-
-                try {
-                    FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
-                            .requireNonNull(getContext()))
-                            .getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.home_page_container, new FormsFragment(), "formsFragment");
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }
-*/
-
                 break;
         }
     }

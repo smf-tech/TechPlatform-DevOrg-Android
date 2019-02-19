@@ -90,7 +90,8 @@
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:gravity="center_horizontal"
         android:text="@string/view_all_forms"
-        android:textAllCaps="true" />
+        android:textAllCaps="true"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"

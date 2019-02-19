@@ -9,6 +9,7 @@ public class Constants {
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
     public static final String PENDING = "pending";
+    public static final String REJECTED = "rejected";
     public static final String RESULT_CODE = "ResultCode";
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
@@ -129,6 +130,8 @@ public class Constants {
         public static final String FILE_TEMPLATE = "file";
     }
 
+    public static final String callUsNumber = "+9120-660-50226";
+    public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
     public static final String playStoreLink = "https://play.google.com/store/apps/details?" +
             "id=com.bjs.ss&hl=en";
 
