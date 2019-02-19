@@ -394,4 +394,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
     }
+
+    public void clearOldComponents() {
+        editTexts.clear();
+        editTexts = new ArrayList<>();
+
+        editTextElementsHashMap.clear();
+        editTextElementsHashMap = new HashMap<>();
+    }
 }

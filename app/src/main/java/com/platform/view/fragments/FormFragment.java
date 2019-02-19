@@ -82,7 +82,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            List<FormData> formDataList = null; /*DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);*/
+            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
 
             if (formDataList == null || formDataList.isEmpty()) {
                 formPresenter.getProcessDetails(processId);
@@ -167,6 +167,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         customFormView = formFragmentView.findViewById(R.id.ll_form_container);
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
+        formComponentCreator.clearOldComponents();
 
         for (Elements formData : formDataArrayList) {
             if (formData != null && !formData.getType().equals("")) {
