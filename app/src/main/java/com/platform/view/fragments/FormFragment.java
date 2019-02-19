@@ -130,33 +130,35 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
 
-        for (Elements formData : formDataArrayList) {
-            if (formData != null && !formData.getType().equals("")) {
+        for (Elements elements : formDataArrayList) {
+            if (elements != null && !elements.getType().equals("")) {
 
-                String formDataType = formData.getType();
+                String formDataType = elements.getType();
                 switch (formDataType) {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Log.d(TAG, "TEXT_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.textInputTemplate(formData));
+                        addViewToMainContainer(formComponentCreator.textInputTemplate(elements));
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        if (formData.getChoicesByUrl() == null) {
+                        if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_TEMPLATE");
                             formComponentCreator.setChoicesByUrlSCResponse(null);
-                            Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_DEFAULT);
+                            Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT);
                             addViewToMainContainer((View) objects[0]);
+                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
+                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
                         break;
 
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Log.d(TAG, "RADIO_GROUP_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(formData));
+                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(elements));
                         break;
 
                     case Constants.FormsFactory.FILE_TEMPLATE:
                         Log.d(TAG, "FILE_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.fileTemplate(formData));
+                        addViewToMainContainer(formComponentCreator.fileTemplate(elements));
                         break;
                 }
             }
@@ -169,33 +171,35 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
         formComponentCreator.clearOldComponents();
 
-        for (Elements formData : formDataArrayList) {
-            if (formData != null && !formData.getType().equals("")) {
+        for (Elements elements : formDataArrayList) {
+            if (elements != null && !elements.getType().equals("")) {
 
-                String formDataType = formData.getType();
+                String formDataType = elements.getType();
                 switch (formDataType) {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Log.d(TAG, "TEXT_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.textInputTemplate(formData));
+                        addViewToMainContainer(formComponentCreator.textInputTemplate(elements));
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        if (formData.getChoicesByUrl() == null) {
+                        if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_TEMPLATE");
                             formComponentCreator.setChoicesByUrlSCResponse(null);
-                            Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_DEFAULT);
+                            Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT);
                             addViewToMainContainer((View) objects[0]);
+                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
+                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
                         break;
 
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Log.d(TAG, "RADIO_GROUP_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(formData));
+                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(elements));
                         break;
 
                     case Constants.FormsFactory.FILE_TEMPLATE:
                         Log.d(TAG, "FILE_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.fileTemplate(formData));
+                        addViewToMainContainer(formComponentCreator.fileTemplate(elements));
                         break;
                 }
             }
@@ -245,9 +249,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     @Override
-    public void showChoicesByUrl(String result, Elements formData) {
+    public void showChoicesByUrl(String result, Elements elements) {
         Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-        switch (formData.getName()) {
+        switch (elements.getName()) {
             case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
                 ChoicesByUrlSCResponse choicesByUrlSCResponse = new Gson().fromJson(result, ChoicesByUrlSCResponse.class);
                 if (choicesByUrlSCResponse != null && choicesByUrlSCResponse.getData() != null &&
@@ -258,7 +262,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         formComponentCreator.setChoicesByUrlSCResponse(choicesByUrlSCResponse);
                         formComponentCreator.setJurisdictionLevelResponse(null);
                         formComponentCreator.setChoicesByUrlMCResponse(null);
-                        Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_STRUCTURE_CODE);
+                        Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_STRUCTURE_CODE);
                         addViewToMainContainer((View) objects[0]);
                     }
                 }
@@ -274,26 +278,26 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
                         formComponentCreator.setJurisdictionLevelResponse(null);
                         formComponentCreator.setChoicesByUrlSCResponse(null);
-                        Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_MACHINE_CODE);
+                        Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_MACHINE_CODE);
                         addViewToMainContainer((View) objects[0]);
                     }
                 }
                 break;
 
             case Constants.ChoicesType.CHOICE_LOCATION_STATE:
-                setLevelData(result, formData, Constants.ChoicesType.CHOICE_LOCATION_STATE);
+                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_STATE);
                 break;
             case Constants.ChoicesType.CHOICE_LOCATION_DISTRICT:
-                setLevelData(result, formData, Constants.ChoicesType.CHOICE_LOCATION_DISTRICT);
+                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_DISTRICT);
                 break;
             case Constants.ChoicesType.CHOICE_LOCATION_TALUKA:
-                setLevelData(result, formData, Constants.ChoicesType.CHOICE_LOCATION_TALUKA);
+                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_TALUKA);
                 break;
             case Constants.ChoicesType.CHOICE_LOCATION_CLUSTER:
-                setLevelData(result, formData, Constants.ChoicesType.CHOICE_LOCATION_CLUSTER);
+                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_CLUSTER);
                 break;
             case Constants.ChoicesType.CHOICE_LOCATION_VILLAGE:
-                setLevelData(result, formData, Constants.ChoicesType.CHOICE_LOCATION_VILLAGE);
+                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_VILLAGE);
                 break;
         }
 

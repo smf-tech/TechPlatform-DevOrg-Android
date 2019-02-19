@@ -11,7 +11,7 @@ import com.platform.listeners.FormRequestCallListener;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
-import com.platform.models.forms.Page;
+import com.platform.models.forms.FormData;
 import com.platform.request.FormRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -69,12 +69,12 @@ public class FormActivityPresenter implements FormRequestCallListener {
         requestCall.getProcessDetails(processId);
     }
 
-    private void getChoicesByUrl(Elements formData) {
+    private void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex, FormData formData) {
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getChoicesByUrl(formData);
+        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, formData);
     }
 
     public void getFormResults(String processId) {
@@ -121,15 +121,15 @@ public class FormActivityPresenter implements FormRequestCallListener {
                 if (form.getData().getComponents() != null &&
                         form.getData().getComponents().getPages() != null &&
                         !form.getData().getComponents().getPages().isEmpty()) {
-                    for (Page page :
-                            form.getData().getComponents().getPages()) {
-                        if (page.getElements() != null && !page.getElements().isEmpty()) {
-                            for (Elements elements :
-                                    page.getElements()) {
-                                if (elements != null && elements.getChoicesByUrl() != null &&
-                                        !TextUtils.isEmpty(elements.getChoicesByUrl().getUrl()) &&
-                                        !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
-                                    getChoicesByUrl(elements);
+                    for (int pageIndex = 0; pageIndex < form.getData().getComponents().getPages().size(); pageIndex++) {
+                        if (form.getData().getComponents().getPages().get(pageIndex).getElements() != null &&
+                                !form.getData().getComponents().getPages().get(pageIndex).getElements().isEmpty()) {
+                            for (int elementIndex = 0; elementIndex < form.getData().getComponents().getPages().get(pageIndex).getElements().size(); elementIndex++) {
+                                if (form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex) != null
+                                        && form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl() != null &&
+                                        !TextUtils.isEmpty(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl()) &&
+                                        !TextUtils.isEmpty(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
+                                    getChoicesByUrl(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex), pageIndex, elementIndex, form.getData());
                                 }
                             }
                         }
@@ -143,9 +143,11 @@ public class FormActivityPresenter implements FormRequestCallListener {
     }
 
     @Override
-    public void onChoicesPopulated(String response, Elements formData) {
+    public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData) {
         if (!TextUtils.isEmpty(response) && formData != null) {
-            formFragment.get().showChoicesByUrl(response, formData);
+            formData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponse(response);
+            DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(formData);
+            formFragment.get().showChoicesByUrl(response, elements);
         }
     }
 

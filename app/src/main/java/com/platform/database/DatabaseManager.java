@@ -45,6 +45,11 @@ public class DatabaseManager {
         formDataDao.insertAll(formData);
     }
 
+    public void updateFormSchema(FormData formData) {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        formDataDao.update(formData);
+    }
+
     public List<FormData> getFormSchema(final String processId) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         return formDataDao.getFormSchema(processId);
