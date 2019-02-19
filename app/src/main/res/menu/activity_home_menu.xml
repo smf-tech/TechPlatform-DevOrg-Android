@@ -11,8 +11,8 @@
         <item
             android:id="@+id/action_menu_community"
             android:icon="@drawable/ic_menu_community"
-            android:visible="false"
-            android:title="@string/menu_community" />
+            android:title="@string/menu_community"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_forms"
             android:icon="@drawable/ic_menu_forms"
@@ -24,20 +24,22 @@
         <item
             android:id="@+id/action_menu_calendar"
             android:icon="@drawable/ic_menu_calendar"
-            android:visible="false"
-            android:title="@string/menu_calendar" />
+            android:title="@string/menu_calendar"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_assets"
             android:icon="@drawable/ic_menu_assets"
-            android:visible="false"
-            android:title="@string/menu_assets" />
+            android:title="@string/menu_assets"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_reports"
             android:icon="@drawable/ic_menu_reports"
             android:title="@string/menu_reports" />
     </group>
 
-    <group android:id="@+id/menu_group_2" android:visible="false">
+    <group
+        android:id="@+id/menu_group_2"
+        android:visible="false">
         <item
             android:id="@+id/action_menu_connect"
             android:icon="@drawable/ic_menu_connect"
@@ -52,7 +54,9 @@
             android:title="@string/menu_notice_board" />
     </group>
 
-    <group android:id="@+id/menu_group_3" android:visible="false">
+    <group
+        android:id="@+id/menu_group_3"
+        android:visible="false">
         <item
             android:id="@+id/action_menu_account"
             android:icon="@drawable/ic_menu_account"
@@ -79,7 +83,8 @@
         <item
             android:id="@+id/action_menu_settings"
             android:icon="@drawable/ic_menu_settings"
-            android:title="@string/menu_settings" />
+            android:title="@string/menu_settings"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_logout"
             android:icon="@drawable/ic_menu_logout"

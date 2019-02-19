@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kobakei.ratethisapp.RateThisApp;
 import com.platform.R;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
@@ -233,9 +234,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_rate_us:
+                RateThisApp.showRateDialog(HomeActivity.this,
+                        R.style.Theme_AppCompat_Light_Dialog_Alert);
                 break;
 
             case R.id.action_menu_call_us:
+                callUsDialog();
                 break;
 
             case R.id.action_menu_settings:
@@ -385,5 +389,41 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+    }
+
+    void callUsDialog() {
+        final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
+
+        dialog.setItems(items, (dialogInterface, position) -> {
+            dialogInterface.dismiss();
+
+            switch (position) {
+                case 0:
+                    //TODO: add Hangout link
+                    try {
+                        Uri uri = Uri.parse("");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Log.e("Calling Hangout", "" + e.getMessage());
+                    }
+                    break;
+
+                case 1:
+                    //TODO: add contact number
+                    try {
+                        Intent dial = new Intent();
+                        dial.setAction("android.intent.action.DIAL");
+                        dial.setData(Uri.parse("tel:" + ""));
+                        startActivity(dial);
+                    } catch (Exception e) {
+                        Log.e("Calling Phone", "" + e.getMessage());
+                    }
+                    break;
+            }
+        });
+
+        dialog.show();
     }
 }

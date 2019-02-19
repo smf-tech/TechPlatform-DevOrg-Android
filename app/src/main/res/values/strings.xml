@@ -122,6 +122,9 @@
     <string name="app_version">App Version</string>
     <string name="locked">Locked</string>
 
+    <string name="call_on_hangout">Call on Hangout</string>
+    <string name="call_on_phone">Call on Phone (10AM to 6PM)</string>
+
     <!--Home-->
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>

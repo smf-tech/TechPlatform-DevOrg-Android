@@ -120,6 +120,9 @@
     <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="locked">बंद</string>
 
+    <string name="call_on_hangout">Hangout पर कॉल करें</string>
+    <string name="call_on_phone">फोन पर कॉल करें (10AM से 6PM)</string>
+
     <!--Home-->
     <string name="tab_connect">जुडिये</string>
     <string name="tab_stories">कहानियों</string>
