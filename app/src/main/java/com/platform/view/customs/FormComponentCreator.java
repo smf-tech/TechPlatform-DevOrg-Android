@@ -366,9 +366,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     public void onDropdownValueSelected(Elements formData, String value) {
         if (formData != null && !TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(value)) {
             requestObjectMap.put(formData.getName(), value);
-            if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
+            /*if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
                 fragment.get().showMachineCodes(formData, value);
-            }
+            }*/
         }
     }
 
