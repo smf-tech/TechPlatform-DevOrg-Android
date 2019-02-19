@@ -30,7 +30,6 @@ import com.platform.models.login.Login;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
-import com.platform.view.fragments.ReportsFragment;
 
 import java.io.File;
 import java.text.DateFormat;
