@@ -24,10 +24,12 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private Map<String, List<ProcessData>> mFormsData;
+    private List<String> mCountList;
 
-    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData) {
+    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData, final List<String> countList) {
         this.mContext = context;
         mFormsData = formsData;
+        mCountList = countList;
     }
 
     @Override
@@ -112,9 +114,13 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         String cat = list.get(groupPosition);
         List<ProcessData> processData = mFormsData.get(cat);
 
+        String count = mCountList.get(groupPosition);
+
         if (processData != null) {
             ProcessData data = processData.get(childPosition);
             ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().trim());
+            ((TextView) view.findViewById(R.id.submitted_count_label))
+                    .setText(String.format("Submitted Count: %s", count));
 
             view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, FormActivity.class);

@@ -26,12 +26,13 @@ import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.login.Login;
-import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -346,8 +347,21 @@ public class Util {
     }
 
     @NonNull
-    public static SimpleDateFormat getFormattedDate() {
-        return new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
+    public static String getFormattedDate(String date) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
+
+        try {
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.US);
+
+            Date date1 = inputFormat.parse(date);
+            return outputFormat.format(date1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public static void start(Context context, Class activity, Bundle bundle) {
