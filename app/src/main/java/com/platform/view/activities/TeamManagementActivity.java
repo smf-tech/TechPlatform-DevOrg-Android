@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -245,14 +244,14 @@ public class TeamManagementActivity extends BaseActivity implements
     }
 
     private void goToForms() {
-        try {
-            Intent intent = new Intent(this, FormsActivity.class);
-            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+//        try {
+//            Intent intent = new Intent(this, FormsActivity.class);
+//            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+//            startActivity(intent);
+//            finish();
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
     }
 
 }

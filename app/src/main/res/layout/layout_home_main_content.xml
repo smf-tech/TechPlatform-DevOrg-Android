@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -53,22 +53,11 @@
                 android:textSize="@dimen/text_size_10"
                 android:visibility="gone" />
         </RelativeLayout>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/home_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/form_tab_bg"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/tab_selector"
-            app:tabIndicatorHeight="@dimen/dimen_05dp"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/black" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/home_view_pager"
+    <FrameLayout
+        android:id="@+id/home_page_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-</android.support.design.widget.CoordinatorLayout>
+        android:layout_below="@id/app_bar_layout" />
+</RelativeLayout>

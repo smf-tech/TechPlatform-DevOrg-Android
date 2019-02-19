@@ -28,7 +28,6 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
-import com.platform.view.activities.FormsActivity;
 import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
@@ -176,13 +175,13 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_forms:
-                try {
-                    Intent intent = new Intent(getActivity(), FormsActivity.class);
-                    intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-                    startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }
+//                try {
+//                    Intent intent = new Intent(getActivity(), FormsActivity.class);
+//                    intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
+//                    startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
+//                } catch (Exception e) {
+//                    Log.e(TAG, e.getMessage());
+//                }
                 break;
         }
     }

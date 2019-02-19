@@ -1,19 +1,14 @@
 package com.platform.view.activities;
 
-import android.accounts.Account;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SyncStatusObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -27,32 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.home.Home;
 import com.platform.models.user.UserInfo;
-import com.platform.presenter.HomeActivityPresenter;
-import com.platform.syncAdapter.GenericAccountService;
-import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
-import com.platform.view.adapters.ViewPagerAdapter;
-import com.platform.view.fragments.ConnectFragment;
-import com.platform.view.fragments.DashboardFragment;
-import com.platform.view.fragments.StoriesFragment;
+import com.platform.view.fragments.FormsFragment;
+import com.platform.view.fragments.HomeFragment;
 
-import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
-import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
-
-public class HomeActivity extends BaseActivity implements PlatformTaskListener,
-        ForceUpdateChecker.OnUpdateNeededListener,
+public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private Home homeData;
-    private AlertDialog dialogNotApproved;
-    private HomeActivityPresenter presenter;
-    private Object mSyncObserverHandle;
     private final String TAG = this.getClass().getSimpleName();
+    private Toolbar toolbar;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -60,40 +41,35 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        presenter = new HomeActivityPresenter(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
-        dialogNotApproved = new AlertDialog.Builder(this).create();
+
         initMenuView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (Util.isConnected(HomeActivity.this)) {
-            getUserData();
-        }
     }
 
-    private void getUserData() {
-        if (presenter != null) {
-            UserInfo user = Util.getUserObjectFromPref();
-            presenter.getModules(user);
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
-        mSyncStatusObserver.onStatusChanged(0);
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
-        // Watch for sync state changes
-        final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
-                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
-        mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+    public void setActionBarTitle(String name) {
+        toolbar = findViewById(R.id.home_toolbar);
+        TextView title = toolbar.findViewById(R.id.home_toolbar_title);
+        title.setText(name);
     }
 
     @SuppressWarnings("deprecation")
     private void initMenuView() {
-        Toolbar toolbar = findViewById(R.id.home_toolbar);
-        TextView title = toolbar.findViewById(R.id.home_toolbar_title);
-        title.setText(R.string.app_name_ss);
+        setActionBarTitle(getResources().getString(R.string.app_name_ss));
 
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -114,71 +90,40 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
+
+        loadHomePage();
     }
 
-    @SuppressWarnings("deprecation")
-    private void initViews(Home data) {
-        if (data != null) {
-            homeData = data;
-            if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING)) {
-                showApprovedDialog();
-            }
-
-            ViewPager viewPager = findViewById(R.id.home_view_pager);
-            setupViewPager(viewPager);
-
-            TabLayout tabLayout = findViewById(R.id.home_tabs);
-            tabLayout.setupWithViewPager(viewPager);
-        }
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        DashboardFragment dashboardFragment = new DashboardFragment();
-        if (homeData != null) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.Home.HOME_DATA, homeData);
-            dashboardFragment.setArguments(bundle);
-        }
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(dashboardFragment, "Dashboard");
-        adapter.addFragment(new StoriesFragment(), "Stories");
-        adapter.addFragment(new ConnectFragment(), "Connect");
-        viewPager.setAdapter(adapter);
-    }
-
-    private void showApprovedDialog() {
-        if (dialogNotApproved.isShowing()) {
-            dialogNotApproved.dismiss();
-        }
-
-        dialogNotApproved.setTitle(getString(R.string.app_name_ss));
-        String message = getString(R.string.approve_profile);
-        dialogNotApproved.setMessage(message);
-
-        // Setting Icon to Dialog
-        dialogNotApproved.setIcon(R.mipmap.app_logo);
-
-        // Setting OK Button
-        dialogNotApproved.setButton(Dialog.BUTTON_POSITIVE, getString(android.R.string.ok),
-                (dialog, which) -> dialogNotApproved.dismiss());
-
+    private void loadHomePage() {
         try {
-            // Showing Alert Message
-            dialogNotApproved.show();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.home_page_container, new HomeFragment(), "formFragment");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
         } catch (Exception e) {
-            Log.e("Error in showing dialog", e.getMessage());
+            Log.e(TAG, "Exception :: FormActivity : addFragment");
+        }
+    }
+
+    private void loadFormsPage() {
+        try {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.home_page_container, new FormsFragment(), "formFragment");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.IS_ROLE_CHANGE && resultCode == RESULT_OK) {
-            if (dialogNotApproved != null && dialogNotApproved.isShowing()) {
-                dialogNotApproved.dismiss();
-            }
-        }
+//        if (requestCode == Constants.IS_ROLE_CHANGE && resultCode == RESULT_OK) {
+//            if (dialogNotApproved != null && dialogNotApproved.isShowing()) {
+//                dialogNotApproved.dismiss();
+//            }
+//        }
     }
 
     @Override
@@ -187,35 +132,6 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         inflater.inflate(R.menu.activity_home_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (dialogNotApproved != null) {
-            dialogNotApproved.dismiss();
-        }
-    }
-
-    @Override
-    public void showProgressBar() {
-
-    }
-
-    @Override
-    public void hideProgressBar() {
-
-    }
-
-    @Override
-    public <T> void showNextScreen(T data) {
-        initViews((Home) data);
-    }
-
-    @Override
-    public void showErrorMessage(String result) {
-        Util.showToast(result, this);
     }
 
     @Override
@@ -246,7 +162,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
     private void handleMenuItems(int menuId) {
         switch (menuId) {
             case R.id.action_menu_home:
-                showLanguageChangeDialog();
+                loadHomePage();
                 break;
 
             case R.id.action_menu_community:
@@ -254,7 +170,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
                 break;
 
             case R.id.action_menu_forms:
-                goToForms();
+                loadFormsPage();
                 break;
 
             case R.id.action_menu_teams:
@@ -288,6 +204,10 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             case R.id.action_menu_leaves_attendance:
                 break;
 
+            case R.id.action_menu_change_language:
+                showLanguageChangeDialog();
+                break;
+
             case R.id.action_menu_rate_us:
                 break;
 
@@ -310,17 +230,6 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void goToForms() {
-        try {
-            Intent intent = new Intent(this, FormsActivity.class);
-            intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
     }
 
     @Override
@@ -390,7 +299,7 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
                 (dialog, which) -> {
                     if (Util.isConnected(HomeActivity.this)) {
-                        getUserData();
+                        //getUserData();
                     }
                 });
 
@@ -427,24 +336,6 @@ public class HomeActivity extends BaseActivity implements PlatformTaskListener,
             startActivity(startMain);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        }
-    }
-
-    @SuppressWarnings("CanBeFinal")
-    private
-    SyncStatusObserver mSyncStatusObserver = which -> {
-        Account account = GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE);
-
-        ContentResolver.isSyncActive(account, SyncAdapterUtils.AUTHORITY);
-        ContentResolver.isSyncPending(account, SyncAdapterUtils.AUTHORITY);
-    };
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mSyncObserverHandle != null) {
-            ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
-            mSyncObserverHandle = null;
         }
     }
 
