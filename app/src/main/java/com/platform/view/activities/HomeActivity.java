@@ -28,6 +28,8 @@ import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
+import com.platform.view.fragments.ReportsFragment;
+import com.platform.view.fragments.TMFragment;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener {
@@ -97,7 +99,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void loadHomePage() {
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container, new HomeFragment(), "formFragment");
+            fragmentTransaction.replace(R.id.home_page_container, new HomeFragment(), "homeFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
@@ -108,7 +110,31 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void loadFormsPage() {
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container, new FormsFragment(), "formFragment");
+            fragmentTransaction.replace(R.id.home_page_container, new FormsFragment(), "formsFragment");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    private void loadTeamsPage() {
+        try {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.home_page_container,
+                    TMFragment.newInstance(false), "teamFragment");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    private void loadReportsPage() {
+        try {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.home_page_container,
+                    ReportsFragment.newInstance(false), "reportFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
@@ -174,8 +200,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_teams:
-                Util.start(this, TeamManagementActivity.class, Bundle.EMPTY);
-                finish();
+                loadTeamsPage();
                 break;
 
             case R.id.action_menu_calendar:
@@ -185,8 +210,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_reports:
-                Util.start(this, ReportsActivity.class, Bundle.EMPTY);
-                finish();
+                loadReportsPage();
                 break;
 
             case R.id.action_menu_connect:

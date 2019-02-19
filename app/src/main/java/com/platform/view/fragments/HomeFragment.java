@@ -25,6 +25,7 @@ import com.platform.syncAdapter.GenericAccountService;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
@@ -55,6 +56,10 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getActivity()!=null) {
+            ((HomeActivity) getActivity()).setActionBarTitle(
+                    getActivity().getResources().getString(R.string.app_name_ss));
+        }
         dialogNotApproved = new AlertDialog.Builder(getActivity()).create();
     }
 

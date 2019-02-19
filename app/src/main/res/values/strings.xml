@@ -127,7 +127,7 @@
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="meetings">Meetings</string>
-    <string name="team_management">Team\nManagement</string>
+    <string name="team_management">Team Management</string>
 
     <!--Program management-->
     <string name="pending_forms">Pending Forms</string>

@@ -1,7 +1,5 @@
 package com.platform.view.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +16,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
 import com.platform.presenter.ReportsFragmentPresenter;
-import com.platform.view.activities.ReportsActivity;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ReportCategoryAdapter;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.Map;
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
     private boolean mShowAllReportsText;
-    private Context context;
     private View reportFragmentView;
     private ReportCategoryAdapter adapter;
     private List<String> reportsHeaderList = new ArrayList<>();
@@ -68,7 +65,10 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        context = getActivity();
+        if (getActivity() != null) {
+            ((HomeActivity) getActivity()).setActionBarTitle(
+                    getActivity().getResources().getString(R.string.reports));
+        }
 
         init();
         ReportsFragmentPresenter presenter = new ReportsFragmentPresenter(this);
@@ -77,8 +77,8 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
 
     private void init() {
         RecyclerView recyclerView = reportFragmentView.findViewById(R.id.rv_dashboard_reports);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new ReportCategoryAdapter(context, reportsHeaderList, reportsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new ReportCategoryAdapter(getActivity(), reportsHeaderList, reportsList);
         recyclerView.setAdapter(adapter);
 
         if (reportsList == null || reportsList.isEmpty()) {
@@ -154,7 +154,6 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
-                startActivity(new Intent(context, ReportsActivity.class));
                 break;
         }
     }
