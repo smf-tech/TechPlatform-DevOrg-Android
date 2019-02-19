@@ -81,6 +81,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
         rvPendingRequests.setItemAnimator(new DefaultItemAnimator());
 
         final TextView viewAllApprovals = tmFragmentView.findViewById(R.id.txt_view_all_approvals);
+        viewAllApprovals.setOnClickListener(this);
         if (!mShowAllApprovalsText) {
             viewAllApprovals.setVisibility(View.GONE);
         } else {
@@ -90,7 +91,22 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.txt_view_all_approvals:
+                Util.launchFragment(TMFragment.newInstance(false), getContext(), "teamsFragment");
+/*                try {
+                    FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
+                            .requireNonNull(getContext()))
+                            .getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.home_page_container, TMFragment.newInstance(true), "teamsFragment");
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }*/
 
+                break;
+        }
     }
 
     @Override

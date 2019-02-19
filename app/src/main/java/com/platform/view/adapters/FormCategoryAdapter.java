@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
 import com.platform.view.fragments.CompletedFormsFragment;
 
@@ -86,11 +87,15 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
             ProcessData data = new ProcessData();
             data.setName(object.getName());
             data.setId(object.getId());
+            Microservice microservice = new Microservice();
+            microservice.setUpdatedAt(object.getDate());
+            data.setMicroservice(microservice);
             dataList.add(data);
         }
 
         viewHolder.categoryName.setText(category);
         viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, dataList);
+//        viewHolder.adapter = new FormsAdapter(mContext, mFormData);
         viewHolder.addButton.hide();
         viewHolder.syncButton.hide();
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);

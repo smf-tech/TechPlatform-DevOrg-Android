@@ -33,6 +33,7 @@
                 android:id="@+id/target_date_label"
                 style="@style/FormLabel.Description"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/form_title"
                 android:layout_marginStart="@dimen/dimen_20dp"
@@ -48,6 +49,7 @@
                 android:layout_below="@id/form_title"
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_07dp"
+                android:visibility="gone"
                 android:layout_toEndOf="@id/target_date_label"
                 android:text="Total Count: 0"
                 tools:ignore="HardcodedText" />
@@ -70,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/target_date_label"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.pm.ProcessData;
@@ -41,11 +42,9 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private static final String TAG = CompletedFormsFragment.class.getSimpleName();
 
     private TextView mNoRecordsView;
-    private Map<String, List<String>> mFormsList = new HashMap<>();
     private List<ProcessData> mDataList = new ArrayList<>();
     private Map<String, List<ProcessDemoObject>> mFormList = new HashMap<>();
     FormCategoryAdapter adapter;
-    Map<String, String> categoryMap = new HashMap<>();
 
     public CompletedFormsFragment() {
         // Required empty public constructor
@@ -96,15 +95,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     public void onFormsLoaded(String response) {
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
 
-        mFormsList.clear();
+        mFormList.clear();
 
         Processes json = new Gson().fromJson(response, Processes.class);
         for (ProcessData data : json.getData()) {
 
             String id = data.getId();
             mDataList.add(data);
-            mFormsList.put(data.getName(), null);
-            categoryMap.put(data.getName(), data.getId());
 
             presenter.getSubmittedFormsOfMaster(id);
         }
@@ -119,30 +116,27 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             if (new JSONObject(response).has("values")) {
                 JSONArray values = new JSONObject(response).getJSONArray("values");
                 for (int i = 0; i < values.length(); i++) {
-                    JSONObject object = new JSONObject(String.valueOf(values.get(i)));
-                    formID = object.getString("form_id");
-                    JSONObject id = object.getJSONObject("_id");
-                    String oid = id.getString("$oid");
-                    list.add(new ProcessDemoObject(oid, formID));
+                    FormResult formResult = new Gson()
+                            .fromJson(String.valueOf(values.get(i)), FormResult.class);
+                    formID = formResult.formID;
+                    list.add(new ProcessDemoObject(formResult.mID.oid,
+                            formID, formResult.updatedAt));
+                }
+                if (formID == null) {
+                    JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
+                    formID = metadata.getJSONObject("form").getString("form_id");
                 }
             } else {
-                list.add(new ProcessDemoObject("No Forms available", "0"));
+                list.add(new ProcessDemoObject("No Forms available", "0", ""));
             }
 
-            for (final String s : mFormsList.keySet()) {
-                String id = categoryMap.get(s);
-                if (id != null) {
-                    if (id.equals(formID)) {
-                        mFormList.put(s, list);
-                    } else {
-                        ArrayList<ProcessDemoObject> arrayList = new ArrayList<>();
-                        arrayList.add(new ProcessDemoObject(getString(R.string.forms_are_not_available), "0"));
-                        mFormList.put(s, arrayList);
-                    }
+            for (final ProcessData data : mDataList) {
+                if (data.getId().equals(formID)) {
+                    mFormList.put(data.getName(), list);
                 }
             }
 
-            if (!mFormsList.isEmpty()) {
+            if (!mFormList.isEmpty()) {
                 adapter.notifyDataSetChanged();
                 mNoRecordsView.setVisibility(View.GONE);
             } else {
@@ -158,9 +152,20 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String name;
         String id;
 
-        private ProcessDemoObject(String name, String id) {
+        String date;
+
+        private ProcessDemoObject(String name, String id, final String date) {
             this.name = name;
             this.id = id;
+            this.date = date;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(final String date) {
+            this.date = date;
         }
 
         public String getName() {
@@ -178,5 +183,22 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         public void setId(String id) {
             this.id = id;
         }
+    }
+
+    static class FormResult {
+
+        @SerializedName("form_id")
+        String formID;
+
+        @SerializedName("updated_at")
+        public String updatedAt;
+
+        @SerializedName("_id")
+        _ID mID;
+    }
+
+    static class _ID {
+        @SerializedName("$oid")
+        String oid;
     }
 }

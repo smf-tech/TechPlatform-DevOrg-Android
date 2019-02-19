@@ -52,7 +52,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<String> {
 
     @Override
     public boolean isEnabled(int position) {
-        return position != 0;
+        return true;
     }
 
     @Nullable
