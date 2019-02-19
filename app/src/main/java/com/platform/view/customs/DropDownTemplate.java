@@ -89,7 +89,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
                 tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
             }
         }
-        dropDownValueSelectListener.onDropdownValueSelected(formData.getName(), valueList.get(i));
+        dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i));
     }
 
     @Override

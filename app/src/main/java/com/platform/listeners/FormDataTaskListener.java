@@ -1,5 +1,7 @@
 package com.platform.listeners;
 
+import com.platform.models.forms.Elements;
+
 @SuppressWarnings("unused")
 public interface FormDataTaskListener {
 
@@ -11,5 +13,7 @@ public interface FormDataTaskListener {
 
     void showErrorMessage(String result);
 
-    void showChoicesByUrl(String result);
+    void showChoicesByUrl(String result, Elements formData);
+
+    void showMachineCodes(Elements formData, String response);
 }

@@ -20,7 +20,12 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.ChoicesByUrlMCResponse;
+import com.platform.models.forms.ChoicesByUrlSCResponse;
 import com.platform.models.forms.Elements;
+import com.platform.models.forms.MachineCode;
+import com.platform.models.forms.StructureCode;
+import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.Location;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -42,6 +47,21 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
+    private ChoicesByUrlSCResponse choicesByUrlSCResponse;
+    private ChoicesByUrlMCResponse choicesByUrlMCResponse;
+    private JurisdictionLevelResponse jurisdictionLevelResponse;
+
+    public void setChoicesByUrlSCResponse(ChoicesByUrlSCResponse choicesByUrlSCResponse) {
+        this.choicesByUrlSCResponse = choicesByUrlSCResponse;
+    }
+
+    public void setJurisdictionLevelResponse(JurisdictionLevelResponse jurisdictionLevelResponse) {
+        this.jurisdictionLevelResponse = jurisdictionLevelResponse;
+    }
+
+    public void setChoicesByUrlMCResponse(ChoicesByUrlMCResponse choicesByUrlMCResponse) {
+        this.choicesByUrlMCResponse = choicesByUrlMCResponse;
+    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -66,7 +86,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
-                radioButtonForm.setText(formData.getAnswer());
+                radioButtonForm.setText(formData.getChoices().get(index).getText());
                 radioButtonForm.setId(index);
                 radioGroupForm.addView(radioButtonForm);
 
@@ -92,7 +112,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized Object[] dropDownTemplate(Elements formData) {
+    public synchronized Object[] dropDownTemplate(Elements formData, String type) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
@@ -106,44 +126,81 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             view = template.init(setFieldAsMandatory(false));
         }
 
-        if (!TextUtils.isEmpty(formData.getTitle()) &&
-                formData.getTitle().equalsIgnoreCase(Constants.Login.USER_LOCATION)) {
-
-            if (Util.getJurisdictionLevelDataFromPref() != null) {
-                List<String> locationValues = new ArrayList<>();
-
-                String jurisdictionLevel = Util.getUserLocationJurisdictionLevelFromPref();
-                for (Location location : Util.getJurisdictionLevelDataFromPref().getData()) {
-
-                    switch (jurisdictionLevel) {
-                        case Constants.JurisdictionLevelName.STATE_LEVEL:
-                            locationValues.add(location.getState().getName());
-                            break;
-
-                        case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
-                            locationValues.add(location.getDistrict().getName());
-                            break;
-
-                        case Constants.JurisdictionLevelName.TALUKA_LEVEL:
-                            locationValues.add(location.getTaluka().getName());
-                            break;
-
-                        case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
-                            locationValues.add(location.getVillage().getName());
-                            break;
+        List<String> choiceValues = new ArrayList<>();
+        switch (type) {
+            case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
+                if (formData.getChoicesByUrl() != null && choicesByUrlSCResponse != null
+                        && choicesByUrlSCResponse.getData() != null && !choicesByUrlSCResponse.getData().isEmpty()) {
+                    for (StructureCode structureCode : choicesByUrlSCResponse.getData()) {
+                        choiceValues.add(structureCode.getStructureCode());
                     }
                 }
-                template.setListData(locationValues);
-            }
-        } else if (formData.getChoices() != null) {
-            List<String> choiceValues = new ArrayList<>();
+                break;
 
-            for (Choice choice : formData.getChoices()) {
-                choiceValues.add(choice.getText());
-            }
+            case Constants.ChoicesType.CHOICE_MACHINE_CODE:
+                if (formData.getChoicesByUrl() != null && choicesByUrlMCResponse != null
+                        && choicesByUrlMCResponse.getData() != null && !choicesByUrlMCResponse.getData().isEmpty()) {
+                    for (MachineCode machineCode : choicesByUrlMCResponse.getData()) {
+                        choiceValues.add(machineCode.getMachineCode());
+                    }
+                }
+                break;
 
-            template.setListData(choiceValues);
+            case Constants.ChoicesType.CHOICE_LOCATION_STATE:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+                    for (Location location : jurisdictionLevelResponse.getData()) {
+                        choiceValues.add(location.getState().getName());
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_DISTRICT:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+                    for (Location location : jurisdictionLevelResponse.getData()) {
+                        choiceValues.add(location.getDistrict().getName());
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_TALUKA:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+                    for (Location location : jurisdictionLevelResponse.getData()) {
+                        choiceValues.add(location.getTaluka().getName());
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_CLUSTER:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+                    for (Location location : jurisdictionLevelResponse.getData()) {
+                        choiceValues.add(location.getCluster().getName());
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_VILLAGE:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+                    for (Location location : jurisdictionLevelResponse.getData()) {
+                        choiceValues.add(location.getVillage().getName());
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_DEFAULT:
+                if (formData.getChoices() != null) {
+                    for (Choice choice : formData.getChoices()) {
+                        choiceValues.add(choice.getText());
+                    }
+                }
+                break;
+
         }
+        template.setListData(choiceValues);
 
         return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
     }
@@ -306,9 +363,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     @Override
-    public void onDropdownValueSelected(String name, String value) {
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(value)) {
-            requestObjectMap.put(name, value);
+    public void onDropdownValueSelected(Elements formData, String value) {
+        if (formData != null && !TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(value)) {
+            requestObjectMap.put(formData.getName(), value);
+            if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
+                fragment.get().showMachineCodes(formData, value);
+            }
         }
     }
 
