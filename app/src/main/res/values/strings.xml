@@ -158,4 +158,6 @@
     <string name="please_type_the_verification_code_n_sent_to">Please type the verification code\nsent to %1$s</string>
     <string name="forms_are_not_available">Forms are not available</string>
     <string name="reports">Reports</string>
+
+    <string name="coming_soon">Coming Soon&#8230;</string>
 </resources>

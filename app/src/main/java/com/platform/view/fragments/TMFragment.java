@@ -65,7 +65,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
         tmFragmentPresenter = new TMFragmentPresenter(this);
         tmFragmentPresenter.getAllPendingRequests();
 
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             ((HomeActivity) getActivity()).setActionBarTitle(
                     getActivity().getResources().getString(R.string.team_management));
         }
@@ -94,17 +94,6 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
                 Util.launchFragment(TMFragment.newInstance(false), getContext(), "teamsFragment");
-/*                try {
-                    FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
-                            .requireNonNull(getContext()))
-                            .getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.home_page_container, TMFragment.newInstance(true), "teamsFragment");
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }*/
-
                 break;
         }
     }

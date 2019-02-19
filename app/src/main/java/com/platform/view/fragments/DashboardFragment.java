@@ -130,9 +130,9 @@ public class DashboardFragment extends Fragment {
             }
         }
 
-        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-        for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setOnTouchListener((v, event) -> v.isEnabled());
-        }
+//        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+//        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+//            tabStrip.getChildAt(i).setOnTouchListener((v, event) -> v.isEnabled());
+//        }
     }
 }
