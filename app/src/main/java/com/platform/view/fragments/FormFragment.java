@@ -431,13 +431,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     String type = element.getType();
                     switch (type) {
                         case Constants.FormsFactory.TEXT_TEMPLATE:
-                            element.setAnswer(object.getString(element.getName()));
-                            break;
-
                         case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-
-                            break;
-
                         case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                             element.setAnswer(object.getString(element.getName()));
                             break;

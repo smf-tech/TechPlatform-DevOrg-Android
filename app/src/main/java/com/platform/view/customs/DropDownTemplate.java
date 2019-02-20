@@ -79,6 +79,12 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         }
     }
 
+    void setSelectedItem(int position) {
+        if (spinner != null) {
+            spinner.setSelection(position);
+        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         TextView tv = (TextView) adapterView.getSelectedView();

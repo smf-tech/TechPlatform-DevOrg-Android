@@ -5,7 +5,10 @@
     android:id="@+id/cv_dashboard_form"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_46dp"
-    android:layout_marginTop="@dimen/dimen_16dp"
+    android:layout_marginStart="@dimen/dimen_12dp"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:layout_marginEnd="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_10dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="@dimen/form_item_status_indicator_width"
     tools:keep="@layout/row_dashboard_forms_category_card_view">
