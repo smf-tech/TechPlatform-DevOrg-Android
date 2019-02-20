@@ -95,23 +95,22 @@ public class FormActivityPresenter implements FormRequestCallListener {
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "Request Error :" + error);
-        /*if (formFragment != null && formFragment.get() != null &&
-                formFragment.get().getActivity() != null) {
-            DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormObject(getSavedForm());
-        }*/
     }
 
     @Override
     public void onFormCreated(String message) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast("Form submitted successfully", formFragment.get().getActivity());
+        if (getSavedForm() != null) {
+            getSavedForm().setSynced(true);
+            DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormObject(getSavedForm());
+        }
         Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
     }
 
     @Override
     public void onSuccessListener(String response) {
         if (!TextUtils.isEmpty(response)) {
-            Log.e(TAG, "Process Details " + response);
             Form form = new Gson().fromJson(response, Form.class);
             if (form != null && form.getData() != null) {
                 DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
