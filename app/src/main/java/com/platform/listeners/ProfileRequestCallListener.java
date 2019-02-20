@@ -18,4 +18,6 @@ public interface ProfileRequestCallListener {
 
     void onErrorListener(VolleyError error);
 
+    void onImageUploadedListener(String response);
+
 }

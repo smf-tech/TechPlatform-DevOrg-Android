@@ -7,11 +7,16 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +35,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
@@ -51,6 +60,8 @@ import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -114,6 +125,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = ProfileActivity.class.getName();
+    private File mImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -494,7 +506,90 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             Glide.with(this)
                     .load(finalUri)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
+                            Util.showToast("Filed to load selected image!", ProfileActivity.this);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(final Drawable drawable, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+
+                            if (uploadImageHere(drawable)) return true;
+
+                            return true;
+                        }
+                    })
                     .into(imgUserProfilePic);
+        }
+    }
+
+    private boolean uploadImageHere(final Drawable drawable) {
+        mImageFile = new File(Environment.getExternalStorageDirectory() + File.separator + "drawable");
+        Bitmap bitmap;
+
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+
+            profilePresenter.uploadProfileImage(bitmap);
+            return true;
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        saveBitmapToFile(mImageFile, "profile_image.png", bitmap, Bitmap.CompressFormat.PNG, 100);
+
+        profilePresenter.uploadProfileImage(bitmap);
+        return false;
+    }
+
+
+    boolean saveBitmapToFile(File dir, String fileName, Bitmap bm,
+                             Bitmap.CompressFormat format, int quality) {
+
+        File imageFile = new File(dir, fileName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(imageFile);
+
+            bm.compress(format, quality, fos);
+
+            fos.close();
+
+            return true;
+        } catch (IOException e) {
+            Log.e("app", e.getMessage());
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+    private void bitmapToFile(final Bitmap bitmap) {
+        FileOutputStream fos;
+        try {
+            mImageFile = File.createTempFile("profile_image", ".jpg", getFilesDir());
+            fos = new FileOutputStream(mImageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

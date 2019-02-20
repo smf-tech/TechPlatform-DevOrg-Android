@@ -1,5 +1,6 @@
 package com.platform.presenter;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -74,6 +75,14 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
         profileActivity.get().showProgressBar();
         requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
+    }
+
+    public void uploadProfileImage(Bitmap bitmap) {
+        ProfileRequestCall requestCall = new ProfileRequestCall();
+        requestCall.setListener(this);
+
+//        profileActivity.get().showProgressBar();
+        requestCall.uploadBitmap(bitmap);
     }
 
     @Override
@@ -158,11 +167,17 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "Error" + error);
+        Log.i(TAG, "Error: " + error);
         profileActivity.get().hideProgressBar();
 
         if (error != null) {
             profileActivity.get().showErrorMessage(error.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void onImageUploadedListener(final String response) {
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+        Util.showToast("Image uploaded", profileActivity.get());
     }
 }

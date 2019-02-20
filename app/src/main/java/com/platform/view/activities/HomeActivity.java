@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
+        ImageView bellImage = findViewById(R.id.home_bell_icon);
+        bellImage.setOnClickListener(v -> {
+            Util.start(this, ProfileActivity.class, Bundle.EMPTY);
+        });
         title.setText(name);
     }
 

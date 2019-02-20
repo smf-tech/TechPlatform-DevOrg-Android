@@ -45,7 +45,8 @@ android {
         }
         Production {
             dimension "server"
-            buildConfigField 'String', 'BASE_URL', "\"http://10.53.17.35/\""
+            buildConfigField 'String', 'BASE_URL', "\"http://52.66.207.154/\""
+//            buildConfigField 'String', 'BASE_URL', "\"http://10.53.17.35/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
             applicationId 'com.platform'

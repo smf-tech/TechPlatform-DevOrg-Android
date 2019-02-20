@@ -15,6 +15,7 @@ public class Urls {
         public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s";
         public static final String GET_STATES = "api/states";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
+        public static final String UPLOAD_IMAGE = "api/upload-image";
     }
 
     public class Home {
