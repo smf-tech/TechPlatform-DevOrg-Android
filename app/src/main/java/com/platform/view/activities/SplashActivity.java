@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
                 // Check user has registered mobile number or not
                 if (Util.getLoginObjectFromPref() == null ||
                         Util.getLoginObjectFromPref().getLoginData() == null ||
-                        Util.getLoginObjectFromPref().getLoginData().getAccessToken().isEmpty()) {
+                        TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
                 } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
                     intent = new Intent(SplashActivity.this, ProfileActivity.class);

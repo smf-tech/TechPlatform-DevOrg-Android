@@ -43,6 +43,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private static LoginInfo sLoginInfo;
     private long currentSec = 0;
 
+    private boolean isResendOtpRequest;
     private boolean isSmsReceiverRegistered;
     private boolean isSmSPermissionNotDenied;
 
@@ -168,6 +169,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
                 if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
                     sLoginInfo.setOneTimePassword("");
+                    isResendOtpRequest = true;
                     otpPresenter.resendOtp(sLoginInfo);
                 }
                 break;
@@ -295,6 +297,11 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     @Override
     public <T> void showNextScreen(T data) {
+        if (isResendOtpRequest) {
+            isResendOtpRequest = false;
+            return;
+        }
+
         if (data != null) {
             try {
                 Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
