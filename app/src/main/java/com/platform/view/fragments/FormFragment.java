@@ -144,8 +144,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_TEMPLATE");
                             formComponentCreator.setChoicesByUrlSCResponse(null);
-                            Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT);
-                            addViewToMainContainer((View) objects[0]);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT));
                         } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
                             showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
@@ -185,8 +184,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_TEMPLATE");
                             formComponentCreator.setChoicesByUrlSCResponse(null);
-                            Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT);
-                            addViewToMainContainer((View) objects[0]);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT));
                         } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
                             showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
@@ -262,8 +260,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         formComponentCreator.setChoicesByUrlSCResponse(choicesByUrlSCResponse);
                         formComponentCreator.setJurisdictionLevelResponse(null);
                         formComponentCreator.setChoicesByUrlMCResponse(null);
-                        Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_STRUCTURE_CODE);
-                        addViewToMainContainer((View) objects[0]);
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_STRUCTURE_CODE));
                     }
                 }
                 break;
@@ -278,8 +275,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
                         formComponentCreator.setJurisdictionLevelResponse(null);
                         formComponentCreator.setChoicesByUrlSCResponse(null);
-                        Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_MACHINE_CODE);
-                        addViewToMainContainer((View) objects[0]);
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_MACHINE_CODE));
                     }
                 }
                 break;
@@ -313,8 +309,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 formComponentCreator.setChoicesByUrlSCResponse(null);
                 formComponentCreator.setChoicesByUrlMCResponse(null);
                 formComponentCreator.setJurisdictionLevelResponse(jurisdictionLevelResponse);
-                Object[] objects = formComponentCreator.dropDownTemplate(formData, type);
-                addViewToMainContainer((View) objects[0]);
+                addViewToMainContainer(formComponentCreator.dropDownTemplate(formData, type));
             }
         }
     }

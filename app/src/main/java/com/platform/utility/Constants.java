@@ -75,6 +75,7 @@ public class Constants {
         public static final String USER_ASSOCIATE_TYPE = "type";
         public static final String USER_PROJECTS = "projects";
         public static final String USER_LOCATION = "location";
+        public static final String USER_FIREBASE_ID = "firebase_id";
 
         public static final String ACTION = "action";
         public static final String ACTION_EDIT = "edit";

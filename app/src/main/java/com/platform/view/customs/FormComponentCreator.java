@@ -112,18 +112,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized Object[] dropDownTemplate(Elements formData, String type) {
+    public synchronized View dropDownTemplate(Elements formData, String type) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
-        }
-
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
-        View view;
-        if (formData.isRequired() != null) {
-            view = template.init(setFieldAsMandatory(formData.isRequired()));
-        } else {
-            view = template.init(setFieldAsMandatory(false));
         }
 
         List<String> choiceValues = new ArrayList<>();
@@ -208,9 +200,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 break;
 
         }
-        template.setListData(choiceValues);
 
-        return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, choiceValues);
+        View view;
+        if (formData.isRequired() != null) {
+            view = template.init(setFieldAsMandatory(formData.isRequired()));
+        } else {
+            view = template.init(setFieldAsMandatory(false));
+        }
+
+        return view;
     }
 
     public View textInputTemplate(final Elements formData) {

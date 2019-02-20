@@ -123,16 +123,16 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             tvOtpMessage.setText(getString(R.string.please_type_the_verification_code_n_sent_to, mMobileNumber));
 
             if (!sLoginInfo.getOneTimePassword().isEmpty()) {
-                final String OTP = sLoginInfo.getOneTimePassword();
-                char[] chars = OTP.toCharArray();
-                if (chars.length == 6) {
-                    mOtp1.setText(String.valueOf(chars[0]));
-                    mOtp2.setText(String.valueOf(chars[1]));
-                    mOtp3.setText(String.valueOf(chars[2]));
-                    mOtp4.setText(String.valueOf(chars[3]));
-                    mOtp5.setText(String.valueOf(chars[4]));
-                    mOtp6.setText(String.valueOf(chars[5]));
-                }
+                //final String OTP = sLoginInfo.getOneTimePassword();
+                //char[] chars = OTP.toCharArray();
+                //if (chars.length == 6) {
+                    //mOtp1.setText(String.valueOf(chars[0]));
+                    //mOtp2.setText(String.valueOf(chars[1]));
+                    //mOtp3.setText(String.valueOf(chars[2]));
+                    //mOtp4.setText(String.valueOf(chars[3]));
+                    //mOtp5.setText(String.valueOf(chars[4]));
+                    //mOtp6.setText(String.valueOf(chars[5]));
+                //}
                 tvOtpTimer.setVisibility(View.GONE);
             } else {
                 checkSmsPermission();

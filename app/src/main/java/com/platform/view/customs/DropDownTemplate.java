@@ -17,7 +17,6 @@ import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
@@ -30,10 +29,13 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private List<String> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener,
+                     List<String> choiceValues) {
+
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
+        this.valueList = choiceValues;
     }
 
     synchronized View init(String mandatory) {
@@ -56,15 +58,15 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
 
         FormSpinnerAdapter adapter = new FormSpinnerAdapter(context.get().getContext(),
-                R.layout.layout_spinner_item, R.id.dropdown_list_item, new ArrayList<>());
+                R.layout.layout_spinner_item, R.id.dropdown_list_item, valueList);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        if (formData.isRequired() != null) {
-            spinner.setEnabled(formData.isRequired());
-        } else {
-            spinner.setEnabled(false);
-        }
+//        if (formData.isRequired() != null) {
+//            spinner.setEnabled(formData.isRequired());
+//        } else {
+//            spinner.setEnabled(false);
+//        }
 
         return baseLayout;
     }
@@ -83,11 +85,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         TextView tv = (TextView) adapterView.getSelectedView();
         if (tv != null) {
-            if (i == 0) {
-                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.dark_blue));
-            } else {
-                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
-            }
+            tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
         }
         dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i));
     }
