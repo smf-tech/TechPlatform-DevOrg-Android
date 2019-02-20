@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.platform.receivers.SmsReceiver;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
 
@@ -296,7 +298,13 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (data != null) {
             try {
                 Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+
+                Intent intent;
+                if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
+                    intent = new Intent(getActivity(), ProfileActivity.class);
+                } else {
+                    intent = new Intent(getActivity(), HomeActivity.class);
+                }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
 
