@@ -155,7 +155,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
-                Util.launchFragment(ReportsFragment.newInstance(true), getContext(), "reportsFragment");
+                Util.launchFragment(ReportsFragment.newInstance(false), getContext(), "reportsFragment");
                 break;
         }
     }

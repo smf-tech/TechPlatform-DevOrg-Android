@@ -135,7 +135,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_page_container,
-                    ReportsFragment.newInstance(false), "reportFragment");
+                    ReportsFragment.newInstance(true), "reportFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
