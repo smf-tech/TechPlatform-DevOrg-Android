@@ -17,6 +17,7 @@ import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
@@ -29,13 +30,10 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private List<String> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener,
-                     List<String> choiceValues) {
-
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
-        this.valueList = choiceValues;
     }
 
     synchronized View init(String mandatory) {
@@ -58,7 +56,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
 
         FormSpinnerAdapter adapter = new FormSpinnerAdapter(context.get().getContext(),
-                R.layout.layout_spinner_item, R.id.dropdown_list_item, valueList);
+                R.layout.layout_spinner_item, R.id.dropdown_list_item, new ArrayList<>());
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
@@ -78,6 +76,12 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
             ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinner.getAdapter();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    void setSelectedItem(int position) {
+        if (spinner != null) {
+            spinner.setSelection(position);
         }
     }
 

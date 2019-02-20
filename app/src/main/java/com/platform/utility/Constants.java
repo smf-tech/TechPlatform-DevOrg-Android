@@ -29,8 +29,6 @@ public class Constants {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
-        static final String JURISDICTION_LEVEL = "jurisdictionLevel";
-        static final String JURISDICTION_LEVEL_DATA = "jurisdictionLevelData";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
