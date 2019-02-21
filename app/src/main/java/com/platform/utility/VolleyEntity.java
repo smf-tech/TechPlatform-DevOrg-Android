@@ -1,6 +1,9 @@
 package com.platform.utility;
 
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -9,9 +12,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
-import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -24,7 +30,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
 
     private final String twoHyphens = "--";
     private final String lineEnd = "\r\n";
-    private final String boundary = "apiclient-" + System.currentTimeMillis();
+    private final String boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
 
     private Response.Listener<NetworkResponse> mListener;
     private Response.ErrorListener mErrorListener;
@@ -32,8 +38,8 @@ public class VolleyEntity extends Request<NetworkResponse> {
 
 
     public VolleyEntity(int method, String url,
-                                  Response.Listener<NetworkResponse> listener,
-                                  Response.ErrorListener errorListener) {
+                        Response.Listener<NetworkResponse> listener,
+                        Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         this.mListener = listener;
         this.mErrorListener = errorListener;
@@ -44,22 +50,27 @@ public class VolleyEntity extends Request<NetworkResponse> {
         return (mHeaders != null) ? mHeaders : super.getHeaders();
     }
 
+    public void setHeaderParams(Map<String, String> headerParams) {
+        mHeaders = headerParams;
+    }
+
     @Override
     public String getBodyContentType() {
         return "multipart/form-data;boundary=" + boundary;
     }
 
     @Override
-    public byte[] getBody() throws AuthFailureError {
+    public byte[] getBody() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
 
         try {
+
             // populate text payload
-            Map<String, String> params = getParams();
+            /*Map<String, String> params = getParams();
             if (params != null && params.size() > 0) {
                 textParse(dos, params, getParamsEncoding());
-            }
+            }*/
 
             // populate data byte payload
             Map<String, DataPart> data = getByteData();
@@ -81,9 +92,8 @@ public class VolleyEntity extends Request<NetworkResponse> {
      * Custom method handle data payload.
      *
      * @return Map data part label with data byte
-     * @throws AuthFailureError
      */
-    protected Map<String, DataPart> getByteData() throws AuthFailureError {
+    protected Map<String, DataPart> getByteData() {
         return null;
     }
 
@@ -139,14 +149,6 @@ public class VolleyEntity extends Request<NetworkResponse> {
         }
     }
 
-    /**
-     * Write string data into header and data output stream.
-     *
-     * @param dataOutputStream data output stream handle string parsing
-     * @param parameterName    name of input
-     * @param parameterValue   value of input
-     * @throws IOException
-     */
     private void buildTextPart(DataOutputStream dataOutputStream, String parameterName, String parameterValue) throws IOException {
         dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
         dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + parameterName + "\"" + lineEnd);
@@ -154,27 +156,21 @@ public class VolleyEntity extends Request<NetworkResponse> {
         dataOutputStream.writeBytes(parameterValue + lineEnd);
     }
 
-    /**
-     * Write data file into header and data output stream.
-     *
-     * @param dataOutputStream data output stream handle data parsing
-     * @param dataFile         data byte as DataPart from collection
-     * @param inputName        name of data input
-     * @throws IOException
-     */
     private void buildDataPart(DataOutputStream dataOutputStream, DataPart dataFile, String inputName) throws IOException {
         dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
-        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" +
-                inputName + "\"; filename=\"" + dataFile.getFileName() + "\"" + lineEnd);
-        if (dataFile.getType() != null && !dataFile.getType().trim().isEmpty()) {
-            dataOutputStream.writeBytes("Content-Type: " + dataFile.getType() + lineEnd);
-        }
+        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"type\"" + lineEnd);
+        dataOutputStream.writeBytes(lineEnd);
+        dataOutputStream.writeBytes("profile");
+        dataOutputStream.writeBytes(lineEnd);
+        dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
+        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\"" + dataFile.getContent().getName() + "\"" + lineEnd);
         dataOutputStream.writeBytes(lineEnd);
 
-        ByteArrayInputStream fileInputStream = new ByteArrayInputStream(dataFile.getContent());
+        FileInputStream fileInputStream = new FileInputStream(dataFile.getContent());
+
         int bytesAvailable = fileInputStream.available();
 
-        int maxBufferSize = 1024 * 1024;
+        int maxBufferSize = 1024;
         int bufferSize = Math.min(bytesAvailable, maxBufferSize);
         byte[] buffer = new byte[bufferSize];
 
@@ -186,28 +182,76 @@ public class VolleyEntity extends Request<NetworkResponse> {
             bufferSize = Math.min(bytesAvailable, maxBufferSize);
             bytesRead = fileInputStream.read(buffer, 0, bufferSize);
         }
+        dataOutputStream.writeBytes(lineEnd);
+        dataOutputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+    }
+
+    private void buildDataPart1(DataOutputStream dataOutputStream, DataPart dataFile, String inputName) throws IOException {
+        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" +
+                inputName + "\"; filename=\"" + dataFile.getFileName() + "\"" + lineEnd);
+        if (dataFile.getType() != null && !dataFile.getType().trim().isEmpty()) {
+            dataOutputStream.writeBytes("Content-Type: " + dataFile.getType() + lineEnd);
+        }
+        dataOutputStream.writeBytes(lineEnd);
+
+        File file = new File(dataFile.getContent().getPath());
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        ByteArrayInputStream fileInputStream = new ByteArrayInputStream(dataFile.getContent());
+        FileInputStream fileInputStream = new FileInputStream(dataFile.getContent());
+        int bytesAvailable = (int) dataFile.getContent().length();
+
+        int maxBufferSize = 1024 * 1024;
+        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+
+        int bytesRead = fileInputStream.read(bytes, 0, bufferSize);
+        dataOutputStream.writeBytes(twoHyphens + twoHyphens + boundary + twoHyphens + lineEnd);
+
+        while (bytesRead > 0) {
+            dataOutputStream.write(bytes, 0, bufferSize);
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            bytesRead = fileInputStream.read(bytes, 0, bufferSize);
+        }
 
         dataOutputStream.writeBytes(lineEnd);
     }
 
     public class DataPart {
         private String fileName;
-        private byte[] content;
+        private File content;
+        private byte[] bytes;
         private String type;
 
         public DataPart() {
         }
 
-        public DataPart(String name, byte[] data) {
+        public DataPart(String name, File data, String type) {
             fileName = name;
             content = data;
+//            this.type = type;
+        }
+
+        public DataPart(String name, byte[] data, String type) {
+            fileName = name;
+            bytes = data;
+//            this.type = type;
         }
 
         String getFileName() {
             return fileName;
         }
 
-        byte[] getContent() {
+        File getContent() {
             return content;
         }
 
@@ -216,4 +260,32 @@ public class VolleyEntity extends Request<NetworkResponse> {
         }
 
     }
+
+    File saveBitmapToFile(File dir, String fileName, Bitmap bm,
+                          Bitmap.CompressFormat format, int quality) {
+
+        File imageFile = new File(dir, fileName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(imageFile);
+
+            bm.compress(format, quality, fos);
+
+            fos.close();
+
+            return imageFile;
+        } catch (IOException e) {
+            Log.e("app", e.getMessage());
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return imageFile;
+    }
+
 }

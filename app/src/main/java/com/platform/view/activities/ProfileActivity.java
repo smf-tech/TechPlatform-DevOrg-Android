@@ -126,6 +126,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private RelativeLayout progressBarLayout;
     private final String TAG = ProfileActivity.class.getName();
     private File mImageFile;
+    private boolean mImageUploaded;
+    private String mUploadedImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -348,6 +350,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setProjectIds(selectedProjects);
             userInfo.setRoleIds(selectedRole.getId());
 
+            if (mImageUploaded && !TextUtils.isEmpty(mUploadedImageUrl))
+                userInfo.setProfilePic(mUploadedImageUrl);
+
             UserLocation userLocation = new UserLocation();
             ArrayList<String> s = new ArrayList<>();
             for (JurisdictionType state : selectedStates) {
@@ -515,10 +520,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                         @Override
                         public boolean onResourceReady(final Drawable drawable, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+                            imgUserProfilePic.setImageURI(finalUri);
+                            return uploadImageHere(drawable);
 
-                            if (uploadImageHere(drawable)) return true;
-
-                            return true;
                         }
                     })
                     .into(imgUserProfilePic);
@@ -526,14 +530,22 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     private boolean uploadImageHere(final Drawable drawable) {
-        mImageFile = new File(Environment.getExternalStorageDirectory() + File.separator + "drawable");
+        String imageName = "picture.jpg";
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/MV/Image/profile");
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Util.showToast("Failed to create directory...", this);
+            }
+        }
         Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
             bitmap = ((BitmapDrawable) drawable).getBitmap();
+            mImageFile = saveBitmapToFile(dir, imageName, bitmap);
 
-
-            profilePresenter.uploadProfileImage(bitmap);
+            if (mImageFile != null)
+                profilePresenter.uploadProfileImage(mImageFile);
             return true;
         }
 
@@ -547,27 +559,30 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
 
-        saveBitmapToFile(mImageFile, "profile_image.png", bitmap, Bitmap.CompressFormat.PNG, 100);
+        mImageFile = saveBitmapToFile(dir, imageName, bitmap);
+        profilePresenter.uploadProfileImage(mImageFile);
 
-        profilePresenter.uploadProfileImage(bitmap);
         return false;
     }
 
-
-    boolean saveBitmapToFile(File dir, String fileName, Bitmap bm,
-                             Bitmap.CompressFormat format, int quality) {
+    File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
 
         File imageFile = new File(dir, fileName);
-
+        if (!imageFile.exists()) {
+            try {
+                if (!imageFile.createNewFile()) {
+                    Log.e("app", "Failed to create new file");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(imageFile);
-
-            bm.compress(format, quality, fos);
-
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.close();
-
-            return true;
+            return imageFile;
         } catch (IOException e) {
             Log.e("app", e.getMessage());
             if (fos != null) {
@@ -578,7 +593,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 }
             }
         }
-        return false;
+        return null;
     }
 
     private void bitmapToFile(final Bitmap bitmap) {
@@ -591,6 +606,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onImageUploaded(String uploadedImageUrl) {
+        mImageUploaded = true;
+        mUploadedImageUrl = uploadedImageUrl;
     }
 
     @Override

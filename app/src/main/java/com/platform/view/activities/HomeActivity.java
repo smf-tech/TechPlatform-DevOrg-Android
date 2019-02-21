@@ -2,10 +2,13 @@ package com.platform.view.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +25,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.platform.R;
 import com.platform.models.user.UserInfo;
@@ -32,6 +43,8 @@ import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMFragment;
+
+import java.io.File;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener {
@@ -91,6 +104,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         View headerLayout = navigationView.getHeaderView(0);
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
+        ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
+        loadProfileImage(userPic);
+
         UserInfo user = Util.getUserObjectFromPref();
         if (user != null) {
             userName.setText(String.format("%s", user.getUserName()));
@@ -100,6 +116,41 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
         loadHomePage();
+    }
+
+    private void loadProfileImage(final ImageView userPic) {
+        String profileUrl = "https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture.jpg";
+        Glide.with(this)
+                .load(profileUrl)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
+                        Log.e(TAG, "onLoadFailed: ");
+
+                        return !loadFromSDCard(userPic);
+                    }
+
+                    @Override
+                    public boolean onResourceReady(final Drawable resource, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(userPic);
+    }
+
+    private boolean loadFromSDCard(final ImageView userPic) {
+        String imageName = "picture.jpg";
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/MV/Image/profile");
+        if (!dir.exists()) {
+            Log.e(TAG, "Failed to load image from SD card");
+            return true;
+        }
+
+        Uri uri = Uri.fromFile(new File(dir.getPath() + "/" + imageName));
+
+        runOnUiThread(() -> userPic.setImageURI(uri));
+        return false;
     }
 
     private void loadHomePage() {

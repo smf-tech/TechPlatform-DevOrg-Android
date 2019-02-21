@@ -1,14 +1,10 @@
 package com.platform.request;
 
 import android.graphics.Bitmap;
-import android.util.Base64;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -30,7 +26,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +45,6 @@ public class ProfileRequestCall {
     private Gson gson;
     private ProfileRequestCallListener listener;
     private final String TAG = ProfileRequestCall.class.getName();
-    String baseImage;
     private File mImageFile;
 
     public ProfileRequestCall() {
@@ -214,66 +215,22 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void uploadProfileImage1(File bitmap) {
-        mImageFile = bitmap;
-        Response.Listener<JSONObject> profileSuccessListener = response -> {
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    Log.i(TAG, "Profile Image Response:" + res);
-                    listener.onImageUploadedListener(res);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
-            }
-        };
-
-        Response.ErrorListener profileErrorListener = error -> {
-            listener.onErrorListener(error);
-        };
-
-        final String submitProfileUrl = BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE;
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.POST,
-                submitProfileUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                profileSuccessListener,
-                profileErrorListener
-        );
-
-        gsonRequest.setHeaderParams(getHeaders());
-        gsonRequest.setBodyParams(getParams());
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-    }
-
     public void uploadBitmap(final Bitmap bitmap) {
-
-        //our custom volley request
         VolleyEntity volleyMultipartRequest = new VolleyEntity(Request.Method.POST, BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE,
-                new Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        try {
-                            JSONObject obj = new JSONObject(new String(response.data));
-                            Log.e(TAG, "onResponse: " + obj.getString("message"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                response -> {
+                    try {
+                        JSONObject obj = new JSONObject(new String(response.data));
+                        Log.e(TAG, "onResponse: " + obj.getString("message"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "onResponse#error: " + error.getMessage());
-                    }
+                error -> {
+                    Log.e(TAG, "onResponse#error: " + error.getMessage());
                 }) {
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("Content-Type", "multipart/form-data");
 
@@ -286,53 +243,109 @@ public class ProfileRequestCall {
                 return params;
             }
 
-            /*
-             * If you want to add more parameters with the image
-             * you can do it here
-             * here we have only one parameter with the image
-             * which is tags
-             * */
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("type", "profile");
-//                params.put("Content-Type", "multipart/form-data");
-//
-//                Login loginObj = getLoginObjectFromPref();
-//                if (loginObj != null && loginObj.getLoginData() != null &&
-//                        loginObj.getLoginData().getAccessToken() != null) {
-//                    params.put(Constants.Login.AUTHORIZATION,
-//                            "Bearer " + loginObj.getLoginData().getAccessToken());
-//                }
                 return params;
             }
 
-            /*
-             * Here we are passing image by renaming it with a unique name
-             * */
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                params.put("image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap), "multipart/form-data"));
                 return params;
             }
         };
+        volleyMultipartRequest.setHeaderParams(getHeaders());
 
         Platform.getInstance().getVolleyRequestQueue().add(volleyMultipartRequest);
+    }
+
+    public void uploadImageUsingHttpURLEncoded(File file) throws IOException {
+        final String twoHyphens = "--";
+        final String lineEnd = "\r\n";
+        final String boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
+        String response;
+
+        FileInputStream fileInputStream = new FileInputStream(file);
+        URL connectURL = new URL(BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE);
+        HttpURLConnection conn = (HttpURLConnection) connectURL.openConnection();
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+        conn.setUseCaches(false);
+        conn.setRequestMethod("POST");
+
+        Login loginObj = getLoginObjectFromPref();
+        if (loginObj != null && loginObj.getLoginData() != null &&
+                loginObj.getLoginData().getAccessToken() != null) {
+            conn.setRequestProperty(Constants.Login.AUTHORIZATION,
+                    "Bearer " + loginObj.getLoginData().getAccessToken());
+        }
+        conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+        DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+        dos.writeBytes("Content-Disposition: form-data; name=\"type\"" + lineEnd);
+        dos.writeBytes(lineEnd);
+        dos.writeBytes("profile");
+        dos.writeBytes(lineEnd);
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+        dos.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\"" + file.getName() + "\"" + lineEnd);
+        dos.writeBytes(lineEnd);
+
+        int bytesAvailable = fileInputStream.available();
+
+        int maxBufferSize = 1024;
+        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+        byte[] buffer = new byte[bufferSize];
+
+        int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+        while (bytesRead > 0) {
+            dos.write(buffer, 0, bufferSize);
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+        }
+        dos.writeBytes(lineEnd);
+        dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+        fileInputStream.close();
+        dos.flush();
+
+        int ch;
+        InputStream errorStream = conn.getErrorStream();
+        if (errorStream != null) {
+            StringBuilder b = new StringBuilder();
+            while ((ch = errorStream.read()) != -1) {
+                b.append((char) ch);
+            }
+
+            response = b.toString();
+            listener.onFailureListener(response);
+            Log.i("Error#Response", response);
+            return;
+        }
+
+        InputStream is = conn.getInputStream();
+
+        StringBuilder b = new StringBuilder();
+        while ((ch = is.read()) != -1) {
+            b.append((char) ch);
+        }
+        response = b.toString();
+        Log.i("Success#Response", response);
+
+        listener.onImageUploadedListener(response);
+
+        dos.close();
     }
 
     private byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
-    }
-
-    private static String get64BaseImage(Bitmap bmp) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
     private JsonObject createBodyParams(UserInfo userInfo) {
@@ -349,6 +362,7 @@ public class ProfileRequestCall {
                 body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getOrgId());
                 body.addProperty(Constants.Login.USER_ASSOCIATE_TYPE, userInfo.getType());
                 body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getRoleIds());
+                body.addProperty(Constants.Login.USER_PROFILE_PIC, userInfo.getProfilePic());
 
                 // Add project Ids
                 JsonArray projectIdArray = new JsonArray();
@@ -413,9 +427,15 @@ public class ProfileRequestCall {
         return body;
     }
 
-    private Map<String, String> getHeaders() {
+    private Map<String, Object> getParams() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("image", mImageFile);
+        parameters.put("type", "profile");
+        return parameters;
+    }
+
+    private static Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
-//        headers.put("Accept", "application/json, text/plain, */*");
         headers.put("Content-Type", "multipart/form-data");
 
         Login loginObj = getLoginObjectFromPref();
@@ -427,12 +447,4 @@ public class ProfileRequestCall {
 
         return headers;
     }
-
-    private Map<String, Object> getParams() {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("image", mImageFile);
-        parameters.put("type", "profile");
-        return parameters;
-    }
-
 }

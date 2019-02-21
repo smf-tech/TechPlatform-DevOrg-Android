@@ -1,6 +1,8 @@
 package com.platform.presenter;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,6 +19,10 @@ import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
 import com.platform.view.activities.ProfileActivity;
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
@@ -77,11 +83,32 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
         requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
     }
 
+    @SuppressLint("StaticFieldLeak")
+    public void uploadProfileImage(File file) {
+        ProfileRequestCall requestCall = new ProfileRequestCall();
+        requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                try {
+                    requestCall.uploadImageUsingHttpURLEncoded(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
+    }
+
     public void uploadProfileImage(Bitmap bitmap) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
-//        profileActivity.get().showProgressBar();
+        profileActivity.get().showProgressBar();
         requestCall.uploadBitmap(bitmap);
     }
 
@@ -178,6 +205,26 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onImageUploadedListener(final String response) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
-        Util.showToast("Image uploaded", profileActivity.get());
+
+        profileActivity.get().runOnUiThread(() -> {
+            Util.showToast("Image uploaded", profileActivity.get());
+        });
+
+        profileActivity.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+
+                profileActivity.get().onImageUploaded(url);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
