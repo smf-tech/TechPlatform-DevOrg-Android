@@ -98,7 +98,7 @@ public class FormActivityPresenter implements FormRequestCallListener {
     }
 
     @Override
-    public void onFormCreated(String message) {
+    public void onFormCreatedUpdated(String message) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast("Form submitted successfully", formFragment.get().getActivity());
         if (getSavedForm() != null) {
