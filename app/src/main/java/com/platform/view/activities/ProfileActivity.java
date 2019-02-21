@@ -209,14 +209,17 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     String userName = userInfo.getUserName().trim();
-                    if (userName.split(" ").length == 2) {
+                    if (userName.split(" ").length == 3) {
+                        etUserFirstName.setText(userName.split(" ")[0]);
+                        etUserMiddleName.setText(userName.split(" ")[1]);
+                        etUserLastName.setText(userName.split(" ")[2]);
+                    } else if (userName.split(" ").length == 2) {
                         etUserFirstName.setText(userName.split(" ")[0]);
                         etUserLastName.setText(userName.split(" ")[1]);
                     } else if (userName.split(" ").length == 1) {
                         etUserFirstName.setText(userName);
                     }
-                    etUserMiddleName.setText(userInfo.getUserMiddleName());
-//                    etUserLastName.setText(userInfo.getUserLastName());
+
                     etUserBirthDate.setText(userInfo.getUserBirthDate());
                     etUserMobileNumber.setText(userInfo.getUserMobileNumber());
                     etUserEmailId.setText(userInfo.getUserEmailId());
@@ -233,6 +236,36 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             userGender = getResources().getString(R.string.other);
                         }
                     }
+
+                    int id = 0;
+                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
+                    showOrganizations(orgData);
+                    for (int i = 0; i < orgData.size(); i++) {
+                        if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
+                            id = i;
+                        }
+                    }
+                    spOrganization.setSelection(id);
+
+                    id = 0;
+                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref().getData();
+                    showOrganizationProjects(projectData);
+                    for (int i = 0; i < projectData.size(); i++) {
+                        if (userInfo.getProjectIds().contains(projectData.get(i).getId())) {
+                            id = i;
+                        }
+                    }
+                    spProject.setSelection(id);
+
+                    id = 0;
+                    List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
+                    showOrganizationRoles(roleData);
+                    for (int i = 0; i < roleData.size(); i++) {
+                        if (userInfo.getRoleIds().equals(roleData.get(i).getId())) {
+                            id = i;
+                        }
+                    }
+                    spRole.setSelection(id);
                 }
             }
         } else {

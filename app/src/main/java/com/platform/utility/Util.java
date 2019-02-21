@@ -27,6 +27,9 @@ import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.login.Login;
+import com.platform.models.profile.OrganizationProjectsResponse;
+import com.platform.models.profile.OrganizationResponse;
+import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
@@ -214,6 +217,57 @@ public class Util {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_OBJ, userData);
+        editor.apply();
+    }
+
+    public static OrganizationResponse getUserOrgFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_ORG, "{}");
+
+        return new Gson().fromJson(obj, OrganizationResponse.class);
+    }
+
+    public static void saveUserOrgInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_ORG, userData);
+        editor.apply();
+    }
+
+    public static OrganizationRolesResponse getUserRoleFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_ROLE, "{}");
+
+        return new Gson().fromJson(obj, OrganizationRolesResponse.class);
+    }
+
+    public static void saveUserRoleInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_ROLE, userData);
+        editor.apply();
+    }
+
+    public static OrganizationProjectsResponse getUserProjectsFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_PROJECT, "{}");
+
+        return new Gson().fromJson(obj, OrganizationProjectsResponse.class);
+    }
+
+    public static void saveUserProjectsInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_PROJECT, userData);
         editor.apply();
     }
 

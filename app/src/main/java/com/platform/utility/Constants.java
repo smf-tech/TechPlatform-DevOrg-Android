@@ -58,6 +58,9 @@ public class Constants {
         static final String USER_MOBILE_NO = "userMobile";
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
+        static final String USER_ORG = "userOrgObj";
+        static final String USER_ROLE = "userRoleObj";
+        static final String USER_PROJECT = "userProjectsObj";
 
         public static final String AUTHORIZATION = "Authorization";
 
@@ -71,7 +74,7 @@ public class Constants {
         public static final String USER_ROLE_ID = "role_id";
         public static final String USER_ORG_ID = "org_id";
         public static final String USER_ASSOCIATE_TYPE = "type";
-        public static final String USER_PROJECTS = "projects";
+        public static final String USER_PROJECTS = "project_id";
         public static final String USER_LOCATION = "location";
         public static final String USER_FIREBASE_ID = "firebase_id";
 
