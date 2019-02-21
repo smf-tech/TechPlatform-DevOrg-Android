@@ -139,8 +139,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            Object[] objects = formComponentCreator.dropDownTemplate(elements, elements.getChoices());
-                            addViewToMainContainer((View) objects[0]);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
                         } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
                             showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
@@ -179,8 +178,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            Object[] objects = formComponentCreator.dropDownTemplate(elements, elements.getChoices());
-                            addViewToMainContainer((View) objects[0]);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
                         } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
                             showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
@@ -274,8 +272,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 choiceValues.add(choice);
             }
 
-            Object[] objects = formComponentCreator.dropDownTemplate(elements, choiceValues);
-            addViewToMainContainer((View) objects[0]);
+            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));
         } catch (JSONException e) {
             e.printStackTrace();
         }
