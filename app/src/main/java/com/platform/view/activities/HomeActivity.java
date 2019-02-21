@@ -33,7 +33,7 @@ import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMFragment;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
@@ -90,6 +90,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         if (user != null) {
             userName.setText(String.format("%s", user.getUserName()));
         }
+        userName.setOnClickListener(this);
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
@@ -193,7 +194,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_community:
-                showProfileScreen();
                 break;
 
             case R.id.action_menu_forms:
@@ -423,5 +423,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         });
 
         dialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.menu_user_name:
+                showProfileScreen();
+                break;
+        }
     }
 }
