@@ -11,6 +11,8 @@ public class Constants {
     public static final String PENDING = "pending";
     public static final String REJECTED = "rejected";
     public static final String RESULT_CODE = "ResultCode";
+    public static final String RESPONSE_DATA = "data";
+    public static final String KEY_SEPARATOR = ".";
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
@@ -157,16 +159,5 @@ public class Constants {
         public static final String INPUT_TYPE_DATE = "date";
         public static final String INPUT_TYPE_NUMBER = "number";
         public static final String INPUT_TYPE_NUMERIC = "numeric";
-    }
-
-    public class ChoicesType {
-        public static final String CHOICE_STRUCTURE_CODE = "structure_code";
-        public static final String CHOICE_MACHINE_CODE = "machine_code";
-        public static final String CHOICE_LOCATION_STATE = "state";
-        public static final String CHOICE_LOCATION_DISTRICT = "district";
-        public static final String CHOICE_LOCATION_TALUKA = "taluka";
-        public static final String CHOICE_LOCATION_CLUSTER = "cluster";
-        public static final String CHOICE_LOCATION_VILLAGE = "village";
-        public static final String CHOICE_DEFAULT = "default";
     }
 }

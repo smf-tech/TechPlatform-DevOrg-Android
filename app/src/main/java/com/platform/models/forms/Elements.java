@@ -28,6 +28,12 @@ public class Elements {
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
+    @SerializedName("enableIf")
+    @Expose
+    private String enableIf;
+    @SerializedName("visibleIf")
+    @Expose
+    private String visibleIf;
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
@@ -44,6 +50,22 @@ public class Elements {
 
     public void setChoicesByUrlResponse(String choicesByUrlResponse) {
         this.choicesByUrlResponse = choicesByUrlResponse;
+    }
+
+    public String getEnableIf() {
+        return enableIf;
+    }
+
+    public void setEnableIf(String enableIf) {
+        this.enableIf = enableIf;
+    }
+
+    public String getVisibleIf() {
+        return visibleIf;
+    }
+
+    public void setVisibleIf(String visibleIf) {
+        this.visibleIf = visibleIf;
     }
 
     public String getInputType() {

@@ -21,16 +21,11 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
 import com.platform.models.SavedForm;
-import com.platform.models.forms.ChoicesByUrlMCResponse;
-import com.platform.models.forms.ChoicesByUrlSCResponse;
+import com.platform.models.forms.Choice;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
-import com.platform.models.forms.MachineCode;
-import com.platform.models.forms.StructureCode;
-import com.platform.models.profile.JurisdictionLevelResponse;
-import com.platform.models.profile.Location;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -41,9 +36,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
@@ -64,7 +61,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
     boolean mIsInEditMode;
-    //private ChoicesByUrlMCResponse choicesByUrlMCResponse;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -142,9 +138,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
-                            Log.d(TAG, "DROPDOWN_TEMPLATE");
-                            formComponentCreator.setChoicesByUrlSCResponse(null);
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT));
+                            Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
                         } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
                             showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
@@ -182,9 +177,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
-                            Log.d(TAG, "DROPDOWN_TEMPLATE");
-                            formComponentCreator.setChoicesByUrlSCResponse(null);
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT));
+                            Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
                         } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
                             showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
                         }
@@ -248,81 +242,40 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public void showChoicesByUrl(String result, Elements elements) {
-        Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-        switch (elements.getName()) {
-            case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
-                ChoicesByUrlSCResponse choicesByUrlSCResponse = new Gson().fromJson(result, ChoicesByUrlSCResponse.class);
-                if (choicesByUrlSCResponse != null && choicesByUrlSCResponse.getData() != null &&
-                        !choicesByUrlSCResponse.getData().isEmpty()) {
-                    List<StructureCode> structureCodeList = choicesByUrlSCResponse.getData();
-
-                    if (structureCodeList != null && !structureCodeList.isEmpty()) {
-                        formComponentCreator.setChoicesByUrlSCResponse(choicesByUrlSCResponse);
-                        formComponentCreator.setJurisdictionLevelResponse(null);
-                        formComponentCreator.setChoicesByUrlMCResponse(null);
-                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_STRUCTURE_CODE));
+        Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
+        try {
+            List<Choice> choiceValues = new ArrayList<>();
+            String text = "";
+            String value = "";
+            JSONObject outerObj = new JSONObject(result);
+            JSONArray dataArray = outerObj.getJSONArray(Constants.RESPONSE_DATA);
+            for (int index = 0; index < dataArray.length(); index++) {
+                JSONObject innerObj = dataArray.getJSONObject(index);
+                if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
+                    if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                        StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        JSONObject obj = innerObj.getJSONObject(titleTokenizer.nextToken());
+                        text = obj.getString(titleTokenizer.nextToken());
+                        //Ignore first value of valueToken
+                        valueTokenizer.nextToken();
+                        value = obj.getString(valueTokenizer.nextToken());
+                    } else {
+                        text = innerObj.getString(elements.getChoicesByUrl().getTitleName());
+                        value = innerObj.getString(elements.getChoicesByUrl().getValueName());
                     }
                 }
-                break;
 
-            case Constants.ChoicesType.CHOICE_MACHINE_CODE:
-                ChoicesByUrlMCResponse choicesByUrlMCResponse = new Gson().fromJson(result, ChoicesByUrlMCResponse.class);
-                if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
-                        !choicesByUrlMCResponse.getData().isEmpty()) {
-                    List<MachineCode> machineCodeList = choicesByUrlMCResponse.getData();
-
-                    if (machineCodeList != null && !machineCodeList.isEmpty()) {
-                        formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
-                        formComponentCreator.setJurisdictionLevelResponse(null);
-                        formComponentCreator.setChoicesByUrlSCResponse(null);
-                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_MACHINE_CODE));
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_STATE:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_STATE);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_DISTRICT:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_DISTRICT);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_TALUKA:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_TALUKA);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_CLUSTER:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_CLUSTER);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_VILLAGE:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_VILLAGE);
-                break;
-        }
-
-    }
-
-    private void setLevelData(String result, Elements formData, String type) {
-        JurisdictionLevelResponse jurisdictionLevelResponse = new Gson().fromJson(result, JurisdictionLevelResponse.class);
-        if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null &&
-                !jurisdictionLevelResponse.getData().isEmpty()) {
-            List<Location> locationList = jurisdictionLevelResponse.getData();
-
-            if (locationList != null && !locationList.isEmpty()) {
-                formComponentCreator.setChoicesByUrlSCResponse(null);
-                formComponentCreator.setChoicesByUrlMCResponse(null);
-                formComponentCreator.setJurisdictionLevelResponse(jurisdictionLevelResponse);
-                addViewToMainContainer(formComponentCreator.dropDownTemplate(formData, type));
+                Choice choice = new Choice();
+                choice.setText(text);
+                choice.setValue(value);
+                choiceValues.add(choice);
             }
-        }
-    }
 
-    @Override
-    public void showMachineCodes(Elements formData, String response) {
-//        if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
-//                !choicesByUrlMCResponse.getData().isEmpty()) {
-//            formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
-//            formComponentCreator.setJurisdictionLevelResponse(null);
-//            Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_MACHINE_CODE);
-//            addViewToMainContainer((View) objects[0]);
-//        }
+            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
