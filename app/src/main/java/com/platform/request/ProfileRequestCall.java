@@ -16,6 +16,7 @@ import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
@@ -267,6 +268,10 @@ public class ProfileRequestCall {
 
                 body.add(Constants.Login.USER_LOCATION, locationObj);
 
+                PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+                String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
+                body.addProperty(Constants.Login.USER_FIREBASE_ID, token);
+                
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }

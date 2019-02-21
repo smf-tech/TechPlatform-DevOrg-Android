@@ -355,7 +355,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void logOutUser() {
-        Util.clearAllUserData();
+        Util.saveLoginObjectInPref("");
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);

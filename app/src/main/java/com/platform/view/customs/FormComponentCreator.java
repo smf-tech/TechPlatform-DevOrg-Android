@@ -19,8 +19,10 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
-import com.platform.models.forms.Choice;
+import com.platform.models.forms.ChoicesByUrlMCResponse;
+import com.platform.models.forms.ChoicesByUrlSCResponse;
 import com.platform.models.forms.Elements;
+import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.utility.Validation;
@@ -41,6 +43,21 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
+    private ChoicesByUrlSCResponse choicesByUrlSCResponse;
+    private ChoicesByUrlMCResponse choicesByUrlMCResponse;
+    private JurisdictionLevelResponse jurisdictionLevelResponse;
+
+    public void setChoicesByUrlSCResponse(ChoicesByUrlSCResponse choicesByUrlSCResponse) {
+        this.choicesByUrlSCResponse = choicesByUrlSCResponse;
+    }
+
+    public void setJurisdictionLevelResponse(JurisdictionLevelResponse jurisdictionLevelResponse) {
+        this.jurisdictionLevelResponse = jurisdictionLevelResponse;
+    }
+
+    public void setChoicesByUrlMCResponse(ChoicesByUrlMCResponse choicesByUrlMCResponse) {
+        this.choicesByUrlMCResponse = choicesByUrlMCResponse;
+    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -95,19 +112,158 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized Object[] dropDownTemplate(Elements formData, List<Choice> choiceValues) {
+    public synchronized View dropDownTemplate(Elements formData, String type) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
 
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, choiceValues);
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
         View view;
         if (formData.isRequired() != null) {
             view = template.init(setFieldAsMandatory(formData.isRequired()));
         } else {
             view = template.init(setFieldAsMandatory(false));
         }
+
+        List<String> choiceValues = new ArrayList<>();
+        int position = 0;
+        switch (type) {
+            case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
+                if (formData.getChoicesByUrl() != null && choicesByUrlSCResponse != null
+                        && choicesByUrlSCResponse.getData() != null && !choicesByUrlSCResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < choicesByUrlSCResponse.getData().size(); index++) {
+                        choiceValues.add(choicesByUrlSCResponse.getData().get(index).getStructureCode());
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                !TextUtils.isEmpty(choicesByUrlSCResponse.getData().get(index).getStructureCode()) &&
+                                formData.getAnswer().equals(choicesByUrlSCResponse.getData().get(index).getStructureCode())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_MACHINE_CODE:
+                if (formData.getChoicesByUrl() != null && choicesByUrlMCResponse != null
+                        && choicesByUrlMCResponse.getData() != null && !choicesByUrlMCResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < choicesByUrlMCResponse.getData().size(); index++) {
+                        choiceValues.add(choicesByUrlMCResponse.getData().get(index).getMachineCode());
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                !TextUtils.isEmpty(choicesByUrlMCResponse.getData().get(index).getMachineCode()) &&
+                                formData.getAnswer().equals(choicesByUrlMCResponse.getData().get(index).getMachineCode())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_STATE:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < jurisdictionLevelResponse.getData().size(); index++) {
+                        choiceValues.add(jurisdictionLevelResponse.getData().get(index).getState().getName());
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                jurisdictionLevelResponse.getData().get(index).getState() != null &&
+                                !TextUtils.isEmpty(jurisdictionLevelResponse.getData().get(index).getState().getName()) &&
+                                formData.getAnswer().equals(jurisdictionLevelResponse.getData().get(index).getState().getName())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_DISTRICT:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < jurisdictionLevelResponse.getData().size(); index++) {
+                        if (!choiceValues.contains(jurisdictionLevelResponse.getData().get(index).getDistrict().getName())) {
+                            choiceValues.add(jurisdictionLevelResponse.getData().get(index).getDistrict().getName());
+                        }
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                jurisdictionLevelResponse.getData().get(index).getDistrict() != null &&
+                                !TextUtils.isEmpty(jurisdictionLevelResponse.getData().get(index).getDistrict().getName()) &&
+                                formData.getAnswer().equals(jurisdictionLevelResponse.getData().get(index).getDistrict().getName())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_TALUKA:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < jurisdictionLevelResponse.getData().size(); index++) {
+                        if (!choiceValues.contains(jurisdictionLevelResponse.getData().get(index).getTaluka().getName())) {
+                            choiceValues.add(jurisdictionLevelResponse.getData().get(index).getTaluka().getName());
+                        }
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                jurisdictionLevelResponse.getData().get(index).getTaluka() != null &&
+                                !TextUtils.isEmpty(jurisdictionLevelResponse.getData().get(index).getTaluka().getName()) &&
+                                formData.getAnswer().equals(jurisdictionLevelResponse.getData().get(index).getTaluka().getName())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_CLUSTER:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < jurisdictionLevelResponse.getData().size(); index++) {
+                        if (!choiceValues.contains(jurisdictionLevelResponse.getData().get(index).getCluster().getName())) {
+                            choiceValues.add(jurisdictionLevelResponse.getData().get(index).getCluster().getName());
+                        }
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                jurisdictionLevelResponse.getData().get(index).getCluster() != null &&
+                                !TextUtils.isEmpty(jurisdictionLevelResponse.getData().get(index).getCluster().getName()) &&
+                                formData.getAnswer().equals(jurisdictionLevelResponse.getData().get(index).getCluster().getName())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_LOCATION_VILLAGE:
+                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
+                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
+
+                    for (int index = 0; index < jurisdictionLevelResponse.getData().size(); index++) {
+                        if (!choiceValues.contains(jurisdictionLevelResponse.getData().get(index).getVillage().getName())) {
+                            choiceValues.add(jurisdictionLevelResponse.getData().get(index).getVillage().getName());
+                        }
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                jurisdictionLevelResponse.getData().get(index).getVillage() != null &&
+                                !TextUtils.isEmpty(jurisdictionLevelResponse.getData().get(index).getVillage().getName()) &&
+                                formData.getAnswer().equals(jurisdictionLevelResponse.getData().get(index).getVillage().getName())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+            case Constants.ChoicesType.CHOICE_DEFAULT:
+                if (formData.getChoices() != null) {
+
+                    for (int index = 0; index < formData.getChoices().size(); index++) {
+                        choiceValues.add(formData.getChoices().get(index).getText());
+                        if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                                !TextUtils.isEmpty(formData.getChoices().get(index).getText()) &&
+                                formData.getAnswer().equals(formData.getChoices().get(index).getText())) {
+                            position = index;
+                        }
+                    }
+                }
+                break;
+
+        }
+        template.setListData(choiceValues);
+        template.setSelectedItem(position);
 
         return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
     }
@@ -273,6 +429,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     public void onDropdownValueSelected(Elements formData, String value) {
         if (formData != null && !TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(value)) {
             requestObjectMap.put(formData.getName(), value);
+            /*if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
+                fragment.get().showMachineCodes(formData, value);
+            }*/
         }
     }
 

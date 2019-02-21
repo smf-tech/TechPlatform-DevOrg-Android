@@ -57,7 +57,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://52.66.207.154/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.bjs.ss.debug'
+            applicationId 'com.platform.debug'
             signingConfig signingConfigs.config
         }
         Production {
@@ -65,7 +65,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.233.220.137/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.bjs.ss'
+            applicationId 'com.platform'
             signingConfig signingConfigs.config
         }
     }

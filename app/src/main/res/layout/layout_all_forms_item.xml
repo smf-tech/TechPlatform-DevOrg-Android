@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_05dp"
-            android:text="@string/content_description" />
+            android:text="@string/content_description"
+            android:visibility="gone" />
     </LinearLayout>
 
     <ImageView

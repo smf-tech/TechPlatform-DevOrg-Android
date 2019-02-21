@@ -69,7 +69,6 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    // Login loginData = new Gson().fromJson(res, Login.class);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
