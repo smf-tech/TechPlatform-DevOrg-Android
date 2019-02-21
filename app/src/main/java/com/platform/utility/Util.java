@@ -30,7 +30,6 @@ import com.platform.models.login.Login;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
-import com.platform.view.fragments.ReportsFragment;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -237,39 +236,6 @@ public class Util {
         editor.putString(Constants.App.USER_LOC_OBJ, json);
         editor.apply();
     }
-
-    /*public static String getUserLocationJurisdictionLevelFromPref() {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        return preferences.getString(Constants.App.JURISDICTION_LEVEL, "State");
-    }
-
-    public static void saveUserLocationJurisdictionLevel(String level) {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.JURISDICTION_LEVEL, level);
-        editor.apply();
-    }*/
-
-    /*public static JurisdictionLevelResponse getJurisdictionLevelDataFromPref() {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        String obj = preferences.getString(Constants.App.JURISDICTION_LEVEL_DATA, "{}");
-        return new Gson().fromJson(obj, JurisdictionLevelResponse.class);
-    }
-
-    public static void saveJurisdictionLevelData(String jurisdictionLevel) {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.JURISDICTION_LEVEL_DATA, jurisdictionLevel);
-        editor.apply();
-    }*/
 
     public static String getFormCategoryForSyncFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences

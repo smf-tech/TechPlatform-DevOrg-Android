@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/dimen_12dp"
-    android:layout_marginTop="@dimen/dimen_16dp"
+    android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
+    android:background="@drawable/bg_rounded_rect_gray"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -16,6 +17,8 @@
         style="@style/roboto_medium_light_grey_14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_12dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
         android:gravity="start" />
 
 </LinearLayout>

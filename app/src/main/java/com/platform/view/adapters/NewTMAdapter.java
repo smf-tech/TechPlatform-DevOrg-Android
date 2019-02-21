@@ -50,8 +50,7 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
     @Override
     public void onBindViewHolder(@NonNull PendingRequestViewHolder pendingRequestViewHolder, int position) {
         PendingRequest pendingRequest = pendingRequestList.get(position);
-        pendingRequestViewHolder.txtRequestTitle.setText(String.format("%s %s",
-                pendingRequest.getRequesterFirstName(), pendingRequest.getRequesterLastName()));
+        pendingRequestViewHolder.txtRequestTitle.setText(String.format("%s", pendingRequest.getRequesterName()));
         pendingRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedAt()));
 
         pendingRequestViewHolder.ivApprove.setOnClickListener(

@@ -16,6 +16,14 @@ repositories {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'SujalamSufalamKey'
+            keyPassword 'ss@123'
+            storeFile file('/Users/kkarmalkar/Projects/SMF/TechPlatform-DevOrg-Android/app/ss_certificates')
+            storePassword 'ss@123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 23
@@ -23,6 +31,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId 'com.platform'
     }
     buildTypes {
         release {
@@ -43,15 +52,23 @@ android {
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
             applicationId 'com.platform.debug'
         }
-        Production {
+        Staging {
             dimension "server"
-            buildConfigField 'String', 'BASE_URL', "\"http://10.53.17.35/\""
+            buildConfigField 'String', 'BASE_URL', "\"http://52.66.207.154/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.platform'
+            applicationId 'com.bjs.ss.debug'
+            signingConfig signingConfigs.config
+        }
+        Production {
+            dimension "server"
+            buildConfigField 'String', 'BASE_URL', "\"http://13.233.220.137/\""
+            buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
+            buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
+            applicationId 'com.bjs.ss'
+            signingConfig signingConfigs.config
         }
     }
-
     lintOptions {
         checkReleaseBuilds true
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -83,7 +100,7 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.8@aar') {
         transitive = true
     }
-    implementation "android.arch.persistence.room:runtime:1.1.1"
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
