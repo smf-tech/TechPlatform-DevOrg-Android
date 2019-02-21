@@ -41,6 +41,10 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         return dropDownView(mandatory);
     }
 
+    public Elements getFormData() {
+        return formData;
+    }
+
     @SuppressWarnings("ConstantConditions")
     private synchronized View dropDownView(String mandatory) {
         if (context == null || context.get() == null) {
@@ -75,6 +79,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         if (valueList != null) {
             this.valueList = valueList;
             ArrayAdapter<Choice> adapter = (ArrayAdapter<Choice>) spinner.getAdapter();
+            adapter.clear();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
         }

@@ -26,11 +26,16 @@ import com.platform.utility.Util;
 import com.platform.utility.Validation;
 import com.platform.view.fragments.FormFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
 public class FormComponentCreator implements DropDownValueSelectListener {
@@ -40,6 +45,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
+    private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
 
     public FormComponentCreator(FormFragment fragment) {
@@ -109,6 +115,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             view = template.init(setFieldAsMandatory(false));
         }
 
+        view.setTag(formData.getName());
+
+        if (!TextUtils.isEmpty(formData.getEnableIf())) {
+            dependencyMap.put(formData.getEnableIf(), template);
+        }
         return view;
     }
 
@@ -270,12 +281,63 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     @Override
-    public void onDropdownValueSelected(Elements formData, String value) {
-        if (formData != null && !TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(value)) {
-            requestObjectMap.put(formData.getName(), value);
-            /*if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
-                fragment.get().showMachineCodes(formData, value);
-            }*/
+    public void onDropdownValueSelected(Elements parentElement/*Structure code*/, String value) {
+        //It means dependency is there
+        String key = "{" + parentElement.getName() + "} notempty";
+        if (dependencyMap.get(key) != null) {
+            DropDownTemplate dropDownTemplate = dependencyMap.get(key);
+            Elements dependentElement = dropDownTemplate.getFormData();
+            List<Choice> choiceValues = new ArrayList<>();
+
+            String parentResponse = parentElement.getChoicesByUrlResponse();
+            String dependentResponse = dependentElement.getChoicesByUrlResponse();
+            try {
+                JSONObject dependentOuterObj = new JSONObject(dependentResponse);
+                JSONObject parentOuterObj = new JSONObject(parentResponse);
+                JSONArray dependentDataArray = dependentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+                JSONArray parentDataArray = parentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+                for (int parentArrayIndex = 0; parentArrayIndex < parentDataArray.length(); parentArrayIndex++) {
+                    JSONObject parentInnerObj = parentDataArray.getJSONObject(parentArrayIndex);
+                    for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.length(); dependentArrayIndex++) {
+                        JSONObject dependentInnerObj = dependentDataArray.getJSONObject(dependentArrayIndex);
+                        if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElement.getName())) &&
+                                !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
+                                dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
+                            Log.i(TAG, "Test");
+
+                            String choiceText = "";
+                            String choiceValue = "";
+                            if (dependentElement.getChoicesByUrl() != null && !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
+                                if (dependentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                                    StringTokenizer titleTokenizer = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                                    StringTokenizer valueTokenizer = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                                    JSONObject obj = dependentInnerObj.getJSONObject(titleTokenizer.nextToken());
+                                    choiceText = obj.getString(titleTokenizer.nextToken());
+                                    //Ignore first value of valueToken
+                                    valueTokenizer.nextToken();
+                                    choiceValue = obj.getString(valueTokenizer.nextToken());
+                                } else {
+                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                    choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
+                                }
+                            }
+
+                            Choice choice = new Choice();
+                            choice.setText(choiceText);
+                            choice.setValue(choiceValue);
+                            choiceValues.add(choice);
+                        }
+                    }
+                }
+
+                dropDownTemplate.setListData(choiceValues);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (parentElement != null && !TextUtils.isEmpty(parentElement.getName()) && !TextUtils.isEmpty(value)) {
+            requestObjectMap.put(parentElement.getName(), value);
         }
     }
 
