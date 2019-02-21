@@ -117,6 +117,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         view.setTag(formData.getName());
 
+        if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
+            for (int index = 0; index < formData.getChoices().size(); index++) {
+                if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                        !TextUtils.isEmpty(choiceValues.get(index).getText()) &&
+                        formData.getAnswer().equals(choiceValues.get(index).getText())) {
+                    template.setSelectedItem(index);
+                }
+            }
+        }
+
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
             dependencyMap.put(formData.getEnableIf(), template);
         }
