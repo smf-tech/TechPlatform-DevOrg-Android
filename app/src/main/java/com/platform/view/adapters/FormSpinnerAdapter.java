@@ -28,6 +28,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
         this.objects = objects;
     }
 
+    @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;

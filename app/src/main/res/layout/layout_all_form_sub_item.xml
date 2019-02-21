@@ -27,7 +27,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@string/category_title"
-                android:textColor="@color/pink" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/target_date_label"

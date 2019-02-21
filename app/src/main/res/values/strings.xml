@@ -51,7 +51,6 @@
     <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
-    <string name="role">Role</string>
     <string name="mandatory_state">State *</string>
     <string name="state">State </string>
     <string name="mandatory_district">District *</string>
@@ -66,7 +65,7 @@
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
-    <string name="update_data_string">Do you want to Update Data?</string>
+    <!--<string name="update_data_string">Do you want to Update Data?</string>-->
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
 
@@ -110,12 +109,9 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_logout">Logout</string>
 
-    <string name="my_profile">My Profile</string>
-    <string name="add_location">Add Location</string>
-    <string name="update_user_data">Update Data</string>
-    <string name="action_forms">Forms</string>
-    <string name="notification">Notification</string>
-    <string name="share_app">Share App</string>
+    <!--<string name="add_location">Add Location</string>-->
+    <!--<string name="update_user_data">Update Data</string>-->
+    <!--<string name="share_app">Share App</string>-->
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>

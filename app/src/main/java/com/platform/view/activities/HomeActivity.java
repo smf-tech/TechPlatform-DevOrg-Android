@@ -49,21 +49,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         initMenuView();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
@@ -142,16 +127,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == Constants.IS_ROLE_CHANGE && resultCode == RESULT_OK) {
-//            if (dialogNotApproved != null && dialogNotApproved.isShowing()) {
-//                dialogNotApproved.dismiss();
-//            }
-//        }
     }
 
     @Override
@@ -312,28 +287,28 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
-    private void showUpdateDataPopup() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name_ss));
-        // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.update_data_string));
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
-        // Setting CANCEL Button
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-                (dialog, which) -> alertDialog.dismiss());
-        // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> {
-                    if (Util.isConnected(HomeActivity.this)) {
-                        //getUserData();
-                    }
-                });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
+//    private void showUpdateDataPopup() {
+//        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+//        // Setting Dialog Title
+//        alertDialog.setTitle(getString(R.string.app_name_ss));
+//        // Setting Dialog Message
+//        alertDialog.setMessage(getString(R.string.update_data_string));
+//        // Setting Icon to Dialog
+//        alertDialog.setIcon(R.mipmap.app_logo);
+//        // Setting CANCEL Button
+//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+//                (dialog, which) -> alertDialog.dismiss());
+//        // Setting OK Button
+//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+//                (dialog, which) -> {
+//                    if (Util.isConnected(HomeActivity.this)) {
+//                        //getUserData();
+//                    }
+//                });
+//
+//        // Showing Alert Message
+//        alertDialog.show();
+//    }
 
     private void showLogoutPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -391,7 +366,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    void callUsDialog() {
+    private void callUsDialog() {
         final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
 

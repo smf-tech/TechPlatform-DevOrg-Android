@@ -8,7 +8,9 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +104,108 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp4 = view.findViewById(R.id.otp_4);
         mOtp5 = view.findViewById(R.id.otp_5);
         mOtp6 = view.findViewById(R.id.otp_6);
+
+        final StringBuilder sb = new StringBuilder();
+
+        mOtp1.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 0 & mOtp1.length() == 1) {
+                    sb.append(s);
+                    mOtp1.clearFocus();
+                    mOtp2.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 0) {
+                    mOtp1.requestFocus();
+                }
+            }
+        });
+
+        mOtp2.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 1 & mOtp2.length() == 1) {
+                    sb.append(s);
+                    mOtp2.clearFocus();
+                    mOtp3.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 1) {
+                    mOtp2.requestFocus();
+                }
+            }
+        });
+
+        mOtp3.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 2 & mOtp3.length() == 1) {
+                    sb.append(s);
+                    mOtp3.clearFocus();
+                    mOtp4.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 2) {
+                    mOtp3.requestFocus();
+                }
+            }
+        });
+
+        mOtp4.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 3 & mOtp4.length() == 1) {
+                    sb.append(s);
+                    mOtp4.clearFocus();
+                    mOtp5.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 3) {
+                    mOtp4.requestFocus();
+                }
+            }
+        });
+
+        mOtp5.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 4 & mOtp5.length() == 1) {
+                    sb.append(s);
+                    mOtp5.clearFocus();
+                    mOtp6.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 4) {
+                    mOtp5.requestFocus();
+                }
+            }
+        });
 
         TextView tvResendOtp = view.findViewById(R.id.tv_resend_otp);
         tvResendOtp.setVisibility(View.VISIBLE);

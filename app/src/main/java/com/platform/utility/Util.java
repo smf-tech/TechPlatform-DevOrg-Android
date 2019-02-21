@@ -2,14 +2,12 @@ package com.platform.utility;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -307,17 +305,17 @@ public class Util {
         editor.apply();
     }
 
-    public static void clearAllUserData() {
-        try {
-            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
+//    public static void clearAllUserData() {
+//        try {
+//            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+//                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.clear();
+//            editor.apply();
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
+//    }
 
     public static <T> void showToast(String msg, T context) {
         if (TextUtils.isEmpty(msg)) {
@@ -386,17 +384,6 @@ public class Util {
             e.printStackTrace();
         }
         return date;
-    }
-
-    public static void start(Context context, Class activity, Bundle bundle) {
-        try {
-            Intent starter = new Intent(context, activity);
-            if (!bundle.isEmpty())
-                starter.putExtra("bundle", bundle);
-            context.startActivity(starter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void launchFragment(Fragment fragment, Context context, String name) {

@@ -4,7 +4,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private Elements formData;
-    private Spinner spinner;
     private WeakReference<FormFragment> context;
     private List<Choice> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
@@ -51,7 +49,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         RelativeLayout baseLayout = (RelativeLayout) View.inflate(context.get().getContext(),
                 R.layout.form_dropdown_template, null);
 
-        spinner = baseLayout.findViewById(R.id.sp_single_select);
+        Spinner spinner = baseLayout.findViewById(R.id.sp_single_select);
 
         String label = formData.getTitle() + mandatory;
         ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
@@ -70,21 +68,20 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         return baseLayout;
     }
 
-    @SuppressWarnings("unchecked")
-    void setListData(List<Choice> valueList) {
-        if (valueList != null) {
-            this.valueList = valueList;
-            ArrayAdapter<Choice> adapter = (ArrayAdapter<Choice>) spinner.getAdapter();
-            adapter.addAll(valueList);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    void setSelectedItem(int position) {
-        if (spinner != null) {
-            spinner.setSelection(position);
-        }
-    }
+//    void setListData(List<Choice> valueList) {
+//        if (valueList != null) {
+//            this.valueList = valueList;
+//            ArrayAdapter<Choice> adapter = (ArrayAdapter<Choice>) spinner.getAdapter();
+//            adapter.addAll(valueList);
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
+//
+//    void setSelectedItem(int position) {
+//        if (spinner != null) {
+//            spinner.setSelection(position);
+//        }
+//    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

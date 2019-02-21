@@ -31,6 +31,7 @@ public class RefreshToken implements PlatformRequestCallListener {
 
         Response.Listener<JSONObject> refreshTokenSuccessListener = response -> {
             try {
+                Log.e(TAG, "REFRESH_TOKEN_RESP: " + response);
                 if (response.getString(Constants.RESULT_CODE).equalsIgnoreCase(Constants.SUCCESS)) {
                     tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS);
                 } else if (response.getString(Constants.RESULT_CODE).equalsIgnoreCase(Constants.FAILURE)) {

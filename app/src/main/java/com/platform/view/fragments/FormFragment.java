@@ -60,7 +60,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private String errorMsg = "";
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
-    boolean mIsInEditMode;
+    private boolean mIsInEditMode;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -93,6 +93,29 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 formPresenter.getFormResults(processId);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (formDataArrayList != null) {
+            formDataArrayList.clear();
+            formDataArrayList = null;
+        }
+
+        if (mElementsListFromDB != null) {
+            mElementsListFromDB.clear();
+            mElementsListFromDB = null;
+        }
+
+        if (formPresenter != null) {
+            formPresenter = null;
+        }
+
+        if (formComponentCreator != null) {
+            formComponentCreator = null;
+        }
+
+        super.onDestroy();
     }
 
     private void initViews() {
@@ -237,7 +260,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public void showErrorMessage(String result) {
-
+        Log.d(TAG, "FORM_FRAGMENT_ERROR:" + result);
     }
 
     @Override
