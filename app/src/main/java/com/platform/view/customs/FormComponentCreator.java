@@ -218,8 +218,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMERIC:
                     textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
