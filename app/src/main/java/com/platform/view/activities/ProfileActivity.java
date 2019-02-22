@@ -72,6 +72,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public static final String IMAGE_PREFIX = "picture_";
     public static final String IMAGE_SUFFIX = ".jpg";
     public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+    public static final String IMAGE_TYPE_PROFILE = "profile";
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
     private EditText etUserLastName;
@@ -554,7 +555,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
-                    profilePresenter.uploadProfileImage(mImageFile);
+                    profilePresenter.uploadProfileImage(mImageFile, IMAGE_TYPE_PROFILE);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
@@ -592,7 +593,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     private String getImageName() {
-        // TODO: 22-02-2019 Replace this time logic with random no
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + IMAGE_STORAGE_DIRECTORY);
@@ -603,42 +603,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             }
         }
         return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
-    }
-
-    private boolean uploadImageHere(final Drawable drawable) {
-        String imageName = "picture.jpg";
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/MV/Image/profile");
-        if (!dir.exists()) {
-            if (!dir.mkdir()) {
-                Util.showToast("Failed to create directory...", this);
-            }
-        }
-        Bitmap bitmap;
-
-        if (drawable instanceof BitmapDrawable) {
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            mImageFile = saveBitmapToFile(dir, imageName, bitmap);
-
-            if (mImageFile != null)
-                profilePresenter.uploadProfileImage(mImageFile);
-            return true;
-        }
-
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-
-        mImageFile = saveBitmapToFile(dir, imageName, bitmap);
-        profilePresenter.uploadProfileImage(mImageFile);
-
-        return false;
     }
 
     File saveBitmapToFile(File dir, String fileName, Bitmap bm) {

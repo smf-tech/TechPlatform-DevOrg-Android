@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
@@ -15,6 +16,7 @@ import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
+import com.platform.request.ImageRequestCall;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
 import com.platform.view.activities.ProfileActivity;
@@ -22,11 +24,11 @@ import com.platform.view.activities.ProfileActivity;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class ProfileActivityPresenter implements ProfileRequestCallListener {
+public class ProfileActivityPresenter implements ProfileRequestCallListener,
+        ImageRequestCallListener {
 
     private final String TAG = ProfileActivityPresenter.class.getName();
     private WeakReference<ProfileActivity> profileActivity;
@@ -84,8 +86,8 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void uploadProfileImage(File file) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
+    public void uploadProfileImage(File file, String type) {
+        ImageRequestCall requestCall = new ImageRequestCall();
         requestCall.setListener(this);
 
         profileActivity.get().showProgressBar();
@@ -93,7 +95,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(file);
+                requestCall.uploadImageUsingHttpURLEncoded(file, type);
                 return null;
             }
         }.execute();

@@ -77,6 +77,11 @@ public class FormData {
     @Expose
     private Entity entity;
 
+    @Ignore
+    @SerializedName("form_keys")
+    @Expose
+    private List<String> formKeys;
+
     @NonNull
     public String getId() {
         return id;
@@ -164,5 +169,13 @@ public class FormData {
 
     public void setEntity(Entity entity) {
         this.entity = entity;
+    }
+
+    private List<String> getFormKeys() {
+        return formKeys;
+    }
+
+    private void setFormKeys(final List<String> formKeys) {
+        this.formKeys = formKeys;
     }
 }

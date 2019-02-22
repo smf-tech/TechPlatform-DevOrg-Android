@@ -1,9 +1,16 @@
 package com.platform.view.fragments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,24 +34,32 @@ import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.presenter.FormActivityPresenter;
+import com.platform.request.ImageRequestCall;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
+import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.StringTokenizer;
+
+import static android.app.Activity.RESULT_OK;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
+    public static final String IMAGE_TYPE_FILE = "file";
     private final String TAG = this.getClass().getSimpleName();
 
     private View formFragmentView;
@@ -62,6 +77,19 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private List<Elements> mElementsListFromDB;
     boolean mIsInEditMode;
 
+    private Uri outputUri;
+    private Uri finalUri;
+    public static final String FILE_SEP = "/";
+    public static final String IMAGE_PREFIX = "picture_";
+    public static final String IMAGE_SUFFIX = ".jpg";
+    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+    private File mImageFile;
+    private boolean mImageUploaded;
+    private String mUploadedImageUrl;
+    private ImageView imgUserProfilePic;
+    private ImageRequestCall uploadProfileImageCall;
+    private ImageView mFileImageView;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -75,6 +103,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         super.onViewCreated(view, savedInstanceState);
 
         formPresenter = new FormActivityPresenter(this);
+//        profilePresenter = new ProfileActivityPresenter(this);
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
@@ -84,7 +113,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 formPresenter.getProcessDetails(processId);
             } else {
                 formModel = new Form();
-                formModel.setData(formDataList.get(0));
+                FormData data = formDataList.get(0);
+
+                /* Deleting form having empty category */
+                if (data.getCategory() == null || data.getCategory().getName() == null) {
+                    DatabaseManager.getDBInstance(getActivity()).deleteForm(data);
+                    formPresenter.getProcessDetails(processId);
+                    return;
+                }
+                formModel.setData(data);
                 initViews();
             }
 
@@ -305,8 +342,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
                             }
+
+                            Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
+                            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
                             Util.showToast("Form saved offline ", getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
+                            Objects.requireNonNull(getActivity()).onBackPressed();
                         }
                     }
                 }
@@ -320,9 +362,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         savedForm.setFormName(formModel.getData().getName());
         savedForm.setSynced(false);
 
-        if (formModel.getData().getCategory() != null &&
-                !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
-            savedForm.setFormCategory(formModel.getData().getCategory().getName());
+        if (formModel.getData().getCategory() != null) {
+            String category = formModel.getData().getCategory().getName();
+            if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(category)) {
+                savedForm.setFormCategory(category);
+            }
         }
 
         savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
@@ -391,6 +435,106 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
 
         renderFilledFormView(elements);
+    }
+
+    public void choosePhotoFromGallery(final View view) {
+        mFileImageView = (ImageView) view;
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_error_in_photo_gallery), this);
+        }
+    }
+
+    public void takePhotoFromCamera(final View view) {
+        mFileImageView = (ImageView) view;
+        try {
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/MV/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_image_capture_not_support), this);
+        } catch (SecurityException e) {
+            Util.showToast(getString(R.string.msg_take_photo_error), this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) return;
+
+                finalUri = Util.getUri(imageFilePath);
+                // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
+                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) return;
+
+                    outputUri = data.getData();
+                    finalUri = Util.getUri(imageFilePath);
+                    // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
+                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            try {
+                LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
+                ImageView view = fileTemplateView.findViewWithTag(mFileImageView.getTag());
+                mFileImageView.setImageURI(finalUri);
+                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+
+                if (Util.isConnected(getContext())) {
+                    FormActivityPresenter presenter = new FormActivityPresenter(this);
+                    presenter.uploadProfileImage(mImageFile, IMAGE_TYPE_FILE);
+                } else {
+                    Util.showToast("Internet is not available!", this);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public void onImageUploaded(String uploadedImageUrl) {
+        mImageUploaded = true;
+        mUploadedImageUrl = uploadedImageUrl;
+    }
+
+    private String getImageName() {
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
     }
 
 }
