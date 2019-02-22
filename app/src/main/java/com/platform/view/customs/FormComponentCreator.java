@@ -219,9 +219,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
-
                 case Constants.FormInputType.INPUT_TYPE_NUMERIC:
                     textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_DECIMAL:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
+                            InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_ALPHABETS:
+                case Constants.FormInputType.INPUT_TYPE_TEXT:
+                    textInputField.setMaxLines(3);
+                    textInputField.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
             }
         }
@@ -264,6 +274,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
                     break;
+                } else {
+                    if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                        if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                            errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(),
+                                    editText.getText().toString(), formData.getValidators().get(0));
+
+                            if (!TextUtils.isEmpty(errorMsg)) {
+                                fragment.get().setErrorMsg(errorMsg);
+                                break;
+                            }
+                        }
+                    }
                 }
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
