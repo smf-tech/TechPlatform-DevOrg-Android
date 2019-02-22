@@ -157,5 +157,5 @@
 
     <string name="coming_soon">Coming Soon&#8230;</string>
 
-    <string name="submitted_form_count">Total count of submitted forms %1$s</string>
+    <string name="submitted_form_count">Total count of submitted forms: %1$s</string>
 </resources>
