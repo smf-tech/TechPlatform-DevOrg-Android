@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.platform.Platform;
+import com.platform.models.login.Login;
 import com.platform.request.RefreshToken;
 
 import java.net.HttpURLConnection;
@@ -25,12 +27,17 @@ public class TokenRetryPolicy implements RetryPolicy {
     }
 
     @SuppressWarnings("unchecked")
-    public void onRefreshTokenUpdate(String token) {
+    public void onRefreshTokenUpdate(String status, String response) {
         try {
-            if (token.equalsIgnoreCase(Constants.SUCCESS)) {
+            if (status.equalsIgnoreCase(Constants.SUCCESS)) {
                 if (gsonFactory != null && gsonFactory.getHeaders() != null) {
-                    gsonFactory.getHeaders().put(Constants.Login.AUTHORIZATION, "Bearer " + token);
-                    Platform.getInstance().getVolleyRequestQueue().add(gsonFactory);
+                    Login login = new Gson().fromJson(response, Login.class);
+                    if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
+                        Util.saveLoginObjectInPref(response);
+                        gsonFactory.getHeaders().put(Constants.Login.AUTHORIZATION,
+                                "Bearer " + login.getLoginData().getAccessToken());
+                        Platform.getInstance().getVolleyRequestQueue().add(gsonFactory);
+                    }
                 }
             }
         } catch (Exception e) {

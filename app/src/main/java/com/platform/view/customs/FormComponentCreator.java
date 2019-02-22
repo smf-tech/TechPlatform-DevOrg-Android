@@ -108,6 +108,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
 
         DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, choiceValues);
+
         View view;
         if (formData.isRequired() != null) {
             view = template.init(setFieldAsMandatory(formData.isRequired()));
@@ -130,6 +131,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
             dependencyMap.put(formData.getEnableIf(), template);
         }
+
         return view;
     }
 
@@ -172,38 +174,37 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 //set input type
                 setInputType(formData.getInputType(), textInputField);
             }
-        }
 
-        textInputField.setMaxLines(1);
+            textInputField.setMaxLines(1);
 
-        textInputField.addTextChangedListener(new TextWatcher() {
+            textInputField.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
-                    requestObjectMap.put(formData.getName(), charSequence.toString());
-                } else {
-                    requestObjectMap.remove(formData.getName());
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (!TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
+                        requestObjectMap.put(formData.getName(), charSequence.toString());
+                    } else {
+                        requestObjectMap.remove(formData.getName());
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable editable) {
 
-        editTexts.add(textInputField);
-        editTextElementsHashMap.put(textInputField, formData);
+                }
+            });
 
-        TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
-        textInputLayout.setHint(formData.getTitle());
+            editTexts.add(textInputField);
+            editTextElementsHashMap.put(textInputField, formData);
 
+            TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
+            textInputLayout.setHint(formData.getTitle());
+        }
         return textTemplateView;
     }
 
@@ -306,23 +307,32 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 JSONObject parentOuterObj = new JSONObject(parentResponse);
                 JSONArray dependentDataArray = dependentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
                 JSONArray parentDataArray = parentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+
                 for (int parentArrayIndex = 0; parentArrayIndex < parentDataArray.length(); parentArrayIndex++) {
                     JSONObject parentInnerObj = parentDataArray.getJSONObject(parentArrayIndex);
                     for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.length(); dependentArrayIndex++) {
                         JSONObject dependentInnerObj = dependentDataArray.getJSONObject(dependentArrayIndex);
+
                         if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElement.getName())) &&
                                 !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
                                 dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
-                            Log.i(TAG, "Test");
 
+                            Log.i(TAG, "Test");
                             String choiceText = "";
                             String choiceValue = "";
-                            if (dependentElement.getChoicesByUrl() != null && !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
+
+                            if (dependentElement.getChoicesByUrl() != null &&
+                                    !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
+
                                 if (dependentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
-                                    StringTokenizer titleTokenizer = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                                    StringTokenizer valueTokenizer = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                                    StringTokenizer titleTokenizer
+                                            = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                                    StringTokenizer valueTokenizer
+                                            = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+
                                     JSONObject obj = dependentInnerObj.getJSONObject(titleTokenizer.nextToken());
                                     choiceText = obj.getString(titleTokenizer.nextToken());
+
                                     //Ignore first value of valueToken
                                     valueTokenizer.nextToken();
                                     choiceValue = obj.getString(valueTokenizer.nextToken());
@@ -373,6 +383,4 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         editTextElementsHashMap.clear();
         editTextElementsHashMap = new HashMap<>();
     }
-
-
 }
