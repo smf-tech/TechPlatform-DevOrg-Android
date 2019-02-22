@@ -60,6 +60,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
     private final String TAG = NewOtpFragment.class.getSimpleName();
+
+    private StringBuilder sb;
     private String mMobileNumber;
 
     public NewOtpFragment() {
@@ -105,8 +107,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp5 = view.findViewById(R.id.otp_5);
         mOtp6 = view.findViewById(R.id.otp_6);
 
-        final StringBuilder sb = new StringBuilder();
-
+        sb = new StringBuilder();
         mOtp1.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -287,6 +288,11 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp4.setText("");
         mOtp5.setText("");
         mOtp6.setText("");
+
+        mOtp1.requestFocus();
+        if (sb != null) {
+            sb = new StringBuilder();
+        }
     }
 
     private String getOtp() {
