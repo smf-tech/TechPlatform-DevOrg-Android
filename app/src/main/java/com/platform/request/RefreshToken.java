@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.Platform;
@@ -33,12 +34,12 @@ public class RefreshToken implements PlatformRequestCallListener {
             try {
                 Log.e(TAG, "REFRESH_TOKEN_RESP: " + response);
                 if (response.getString(Constants.RESULT_CODE).equalsIgnoreCase(Constants.SUCCESS)) {
-                    tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS);
+                    tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS, new Gson().toJson(response));
                 } else if (response.getString(Constants.RESULT_CODE).equalsIgnoreCase(Constants.FAILURE)) {
                     Log.e(TAG, "Failure login again");
                 }
             } catch (Exception e) {
-                tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE);
+                tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE, "");
             }
         };
 
@@ -50,7 +51,7 @@ public class RefreshToken implements PlatformRequestCallListener {
                     retryCounter++;
                     retryRefreshToken(refreshTokenSuccessListener, this);
                 } else {
-                    tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE);
+                    tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE, "");
                 }
             }
         };
@@ -78,7 +79,7 @@ public class RefreshToken implements PlatformRequestCallListener {
             Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
         } catch (Exception e) {
             Log.e(TAG, "Error in refresh token request");
-            tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE);
+            tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE, "");
         }
     }
 
@@ -126,21 +127,21 @@ public class RefreshToken implements PlatformRequestCallListener {
     @Override
     public void onSuccessListener(String response) {
         if (tokenRetryPolicy != null) {
-            tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS);
+            tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS, response);
         }
     }
 
     @Override
     public void onFailureListener(String message) {
         if (tokenRetryPolicy != null) {
-            tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE);
+            tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE, "");
         }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         if (tokenRetryPolicy != null) {
-            tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE);
+            tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE, "");
         }
     }
 }

@@ -381,7 +381,7 @@ public class Util {
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         return date;
     }

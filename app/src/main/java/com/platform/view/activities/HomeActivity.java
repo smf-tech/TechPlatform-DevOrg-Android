@@ -1,6 +1,7 @@
 package com.platform.view.activities;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kobakei.ratethisapp.RateThisApp;
 import com.platform.R;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
@@ -209,8 +209,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_rate_us:
-                RateThisApp.showRateDialog(HomeActivity.this,
-                        R.style.Theme_AppCompat_Light_Dialog_Alert);
+                rateTheApp();
                 break;
 
             case R.id.action_menu_call_us:
@@ -398,6 +397,19 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         });
 
         dialog.show();
+    }
+
+    private void rateTheApp() {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
     }
 
     @Override
