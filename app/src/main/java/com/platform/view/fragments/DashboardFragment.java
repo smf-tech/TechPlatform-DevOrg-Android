@@ -118,7 +118,6 @@ public class DashboardFragment extends Fragment {
             tabOne.setText(tabNames.get(i).getName());
 
             if (!tabNames.get(i).isActive()) {
-                tabOne.setEnabled(false);
                 tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
             } else {
                 tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
@@ -130,9 +129,9 @@ public class DashboardFragment extends Fragment {
             }
         }
 
-//        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-//        for (int i = 0; i < tabStrip.getChildCount(); i++) {
-//            tabStrip.getChildAt(i).setOnTouchListener((v, event) -> v.isEnabled());
-//        }
+        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+            tabStrip.getChildAt(i).setEnabled(tabNames.get(i).isActive());
+        }
     }
 }

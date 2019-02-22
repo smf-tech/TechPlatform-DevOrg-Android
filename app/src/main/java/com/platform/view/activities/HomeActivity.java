@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,7 +48,7 @@ import com.platform.view.fragments.TMFragment;
 import java.io.File;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
@@ -105,12 +106,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         View headerLayout = navigationView.getHeaderView(0);
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
         ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
-        loadProfileImage(userPic);
 
         UserInfo user = Util.getUserObjectFromPref();
         if (user != null) {
+            loadProfileImage(userPic, user.getProfilePic());
             userName.setText(String.format("%s", user.getUserName()));
         }
+        userName.setOnClickListener(this);
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
@@ -118,16 +120,19 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         loadHomePage();
     }
 
-    private void loadProfileImage(final ImageView userPic) {
-        String profileUrl = "https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture.jpg";
+    private void loadProfileImage(final ImageView userPic, final String profileUrl) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
+        loadFromSDCard(userPic, profileUrl);
         Glide.with(this)
                 .load(profileUrl)
+                .apply(requestOptions)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
                         Log.e(TAG, "onLoadFailed: ");
 
-                        return !loadFromSDCard(userPic);
+//                        return !loadFromSDCard(userPic);
+                        return false;
                     }
 
                     @Override
@@ -138,8 +143,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 .into(userPic);
     }
 
-    private boolean loadFromSDCard(final ImageView userPic) {
-        String imageName = "picture.jpg";
+    private boolean loadFromSDCard(final ImageView userPic, final String profileUrl) {
+        if (TextUtils.isEmpty(profileUrl)) return false;
+
+        String[] split = profileUrl.split("/");
+        String url = split[split.length - 1];
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/MV/Image/profile");
         if (!dir.exists()) {
@@ -147,7 +155,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             return true;
         }
 
-        Uri uri = Uri.fromFile(new File(dir.getPath() + "/" + imageName));
+        Uri uri = Uri.fromFile(new File(dir.getPath() + "/" + url));
 
         runOnUiThread(() -> userPic.setImageURI(uri));
         return false;
@@ -249,7 +257,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_community:
-                showProfileScreen();
                 break;
 
             case R.id.action_menu_forms:
@@ -411,7 +418,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void logOutUser() {
-        Util.clearAllUserData();
+        Util.saveLoginObjectInPref("");
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
@@ -479,5 +486,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         });
 
         dialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.menu_user_name:
+                showProfileScreen();
+                break;
+        }
     }
 }

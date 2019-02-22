@@ -66,7 +66,7 @@ public class UserInfo implements Parcelable {
     @SerializedName("location")
     @Expose
     private UserLocation userLocation;
-    @SerializedName("projects")
+    @SerializedName("project_id")
     @Expose
     private ArrayList<String> projectIds;
     @SerializedName("profile_pic")

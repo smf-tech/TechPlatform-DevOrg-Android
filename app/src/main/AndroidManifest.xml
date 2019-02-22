@@ -32,7 +32,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".view.activities.BaseActivity" />
-        <activity android:name=".view.activities.SplashActivity">
+        <activity
+            android:name=".view.activities.SplashActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +50,10 @@
             android:name=".view.activities.ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
             android:name=".view.activities.OtpActivity"
             android:screenOrientation="portrait"
@@ -102,7 +108,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
         <provider
             android:name=".syncAdapter.ContentProvider"
             android:authorities="com.platform"
@@ -120,7 +125,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
-
         <service
             android:name=".syncAdapter.GenericAccountService"
             tools:ignore="ExportedService">
@@ -132,5 +136,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
     </application>
+
 </manifest>

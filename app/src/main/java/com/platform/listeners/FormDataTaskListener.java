@@ -14,6 +14,4 @@ public interface FormDataTaskListener {
     void showErrorMessage(String result);
 
     void showChoicesByUrl(String result, Elements elements);
-
-    void showMachineCodes(Elements formData, String response);
 }

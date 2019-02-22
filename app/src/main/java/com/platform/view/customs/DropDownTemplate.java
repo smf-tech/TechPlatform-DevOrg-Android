@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
+import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
 import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
@@ -27,17 +27,22 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private Elements formData;
     private Spinner spinner;
     private WeakReference<FormFragment> context;
-    private List<String> valueList;
+    private List<Choice> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener, List<Choice> valueList) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
+        this.valueList = valueList;
     }
 
     synchronized View init(String mandatory) {
         return dropDownView(mandatory);
+    }
+
+    public Elements getFormData() {
+        return formData;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -56,26 +61,33 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
 
         FormSpinnerAdapter adapter = new FormSpinnerAdapter(context.get().getContext(),
-                R.layout.layout_spinner_item, R.id.dropdown_list_item, new ArrayList<>());
+                R.layout.layout_spinner_item, valueList);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        if (formData.isRequired() != null) {
-            spinner.setEnabled(formData.isRequired());
-        } else {
-            spinner.setEnabled(false);
-        }
+//        if (formData.isRequired() != null) {
+//            spinner.setEnabled(formData.isRequired());
+//        } else {
+//            spinner.setEnabled(false);
+//        }
 
         return baseLayout;
     }
 
     @SuppressWarnings("unchecked")
-    void setListData(List<String> valueList) {
+    void setListData(List<Choice> valueList) {
         if (valueList != null) {
             this.valueList = valueList;
-            ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinner.getAdapter();
+            ArrayAdapter<Choice> adapter = (ArrayAdapter<Choice>) spinner.getAdapter();
+            adapter.clear();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    void setSelectedItem(int position) {
+        if (spinner != null) {
+            spinner.setSelection(position);
         }
     }
 
@@ -83,13 +95,9 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         TextView tv = (TextView) adapterView.getSelectedView();
         if (tv != null) {
-            if (i == 0) {
-                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.dark_blue));
-            } else {
-                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
-            }
+            tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
         }
-        dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i));
+        dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue());
     }
 
     @Override

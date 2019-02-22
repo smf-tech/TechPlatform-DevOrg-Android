@@ -8,6 +8,9 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import com.platform.receivers.SmsReceiver;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
 
@@ -41,6 +45,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private static LoginInfo sLoginInfo;
     private long currentSec = 0;
 
+    private boolean isResendOtpRequest;
     private boolean isSmsReceiverRegistered;
     private boolean isSmSPermissionNotDenied;
 
@@ -121,16 +126,16 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             tvOtpMessage.setText(getString(R.string.please_type_the_verification_code_n_sent_to, mMobileNumber));
 
             if (!sLoginInfo.getOneTimePassword().isEmpty()) {
-                final String OTP = sLoginInfo.getOneTimePassword();
-                char[] chars = OTP.toCharArray();
-                if (chars.length == 6) {
-                    mOtp1.setText(String.valueOf(chars[0]));
-                    mOtp2.setText(String.valueOf(chars[1]));
-                    mOtp3.setText(String.valueOf(chars[2]));
-                    mOtp4.setText(String.valueOf(chars[3]));
-                    mOtp5.setText(String.valueOf(chars[4]));
-                    mOtp6.setText(String.valueOf(chars[5]));
-                }
+                //final String OTP = sLoginInfo.getOneTimePassword();
+                //char[] chars = OTP.toCharArray();
+                //if (chars.length == 6) {
+                    //mOtp1.setText(String.valueOf(chars[0]));
+                    //mOtp2.setText(String.valueOf(chars[1]));
+                    //mOtp3.setText(String.valueOf(chars[2]));
+                    //mOtp4.setText(String.valueOf(chars[3]));
+                    //mOtp5.setText(String.valueOf(chars[4]));
+                    //mOtp6.setText(String.valueOf(chars[5]));
+                //}
                 tvOtpTimer.setVisibility(View.GONE);
             } else {
                 checkSmsPermission();
@@ -166,6 +171,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
                 if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
                     sLoginInfo.setOneTimePassword("");
+                    isResendOtpRequest = true;
                     otpPresenter.resendOtp(sLoginInfo);
                 }
                 break;
@@ -293,10 +299,21 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     @Override
     public <T> void showNextScreen(T data) {
+        if (isResendOtpRequest) {
+            isResendOtpRequest = false;
+            return;
+        }
+
         if (data != null) {
             try {
                 Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+
+                Intent intent;
+                if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
+                    intent = new Intent(getActivity(), ProfileActivity.class);
+                } else {
+                    intent = new Intent(getActivity(), HomeActivity.class);
+                }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
 

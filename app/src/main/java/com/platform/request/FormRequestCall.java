@@ -39,7 +39,7 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onFormCreated(res);
+                    listener.onFormCreatedUpdated(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -74,7 +74,7 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onFormCreated(res);
+                    listener.onFormCreatedUpdated(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

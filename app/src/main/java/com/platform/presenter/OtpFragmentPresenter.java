@@ -54,7 +54,6 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
         Login login = new Gson().fromJson(response, Login.class);
         if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
-//            otpFragment.get().startOtpTimer();
             Util.saveLoginObjectInPref(response);
         } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
             otpFragment.get().deRegisterOtpSmsReceiver();

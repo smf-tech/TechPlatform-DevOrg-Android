@@ -11,6 +11,8 @@ public class Constants {
     public static final String PENDING = "pending";
     public static final String REJECTED = "rejected";
     public static final String RESULT_CODE = "ResultCode";
+    public static final String RESPONSE_DATA = "data";
+    public static final String KEY_SEPARATOR = ".";
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
@@ -29,8 +31,6 @@ public class Constants {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
-        static final String JURISDICTION_LEVEL = "jurisdictionLevel";
-        static final String JURISDICTION_LEVEL_DATA = "jurisdictionLevelData";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
@@ -60,6 +60,9 @@ public class Constants {
         static final String USER_MOBILE_NO = "userMobile";
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
+        static final String USER_ORG = "userOrgObj";
+        static final String USER_ROLE = "userRoleObj";
+        static final String USER_PROJECT = "userProjectsObj";
 
         public static final String AUTHORIZATION = "Authorization";
 
@@ -73,8 +76,9 @@ public class Constants {
         public static final String USER_ROLE_ID = "role_id";
         public static final String USER_ORG_ID = "org_id";
         public static final String USER_ASSOCIATE_TYPE = "type";
-        public static final String USER_PROJECTS = "projects";
+        public static final String USER_PROJECTS = "project_id";
         public static final String USER_LOCATION = "location";
+        public static final String USER_FIREBASE_ID = "firebase_id";
         public static final String USER_PROFILE_PIC = "profile_pic";
 
         public static final String ACTION = "action";
@@ -138,6 +142,7 @@ public class Constants {
 
     @SuppressWarnings("unused")
     public static class Form {
+        public static final String EXTRA_FORM_ID = "form_id";
         public static final String FORM_STATUS_ALL = "all";
         public static final String FORM_STATUS_PENDING = "pending";
         public static final String FORM_STATUS_COMPLETED = "completed";
@@ -156,16 +161,5 @@ public class Constants {
         public static final String INPUT_TYPE_DATE = "date";
         public static final String INPUT_TYPE_NUMBER = "number";
         public static final String INPUT_TYPE_NUMERIC = "numeric";
-    }
-
-    public class ChoicesType {
-        public static final String CHOICE_STRUCTURE_CODE = "structure_code";
-        public static final String CHOICE_MACHINE_CODE = "machine_code";
-        public static final String CHOICE_LOCATION_STATE = "state";
-        public static final String CHOICE_LOCATION_DISTRICT = "district";
-        public static final String CHOICE_LOCATION_TALUKA = "taluka";
-        public static final String CHOICE_LOCATION_CLUSTER = "cluster";
-        public static final String CHOICE_LOCATION_VILLAGE = "village";
-        public static final String CHOICE_DEFAULT = "default";
     }
 }

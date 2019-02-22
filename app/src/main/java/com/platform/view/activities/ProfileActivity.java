@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,11 +33,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
@@ -59,18 +53,25 @@ import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
 public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener,
         MultiSelectSpinner.MultiSpinnerListener {
 
+    public static final String FILE_SEP = "/";
+    public static final String IMAGE_PREFIX = "picture_";
+    public static final String IMAGE_SUFFIX = ".jpg";
+    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
     private EditText etUserLastName;
@@ -223,14 +224,17 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     String userName = userInfo.getUserName().trim();
-                    if (userName.split(" ").length == 2) {
+                    if (userName.split(" ").length == 3) {
+                        etUserFirstName.setText(userName.split(" ")[0]);
+                        etUserMiddleName.setText(userName.split(" ")[1]);
+                        etUserLastName.setText(userName.split(" ")[2]);
+                    } else if (userName.split(" ").length == 2) {
                         etUserFirstName.setText(userName.split(" ")[0]);
                         etUserLastName.setText(userName.split(" ")[1]);
                     } else if (userName.split(" ").length == 1) {
                         etUserFirstName.setText(userName);
                     }
-                    etUserMiddleName.setText(userInfo.getUserMiddleName());
-//                    etUserLastName.setText(userInfo.getUserLastName());
+
                     etUserBirthDate.setText(userInfo.getUserBirthDate());
                     etUserMobileNumber.setText(userInfo.getUserMobileNumber());
                     etUserEmailId.setText(userInfo.getUserEmailId());
@@ -247,6 +251,36 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             userGender = getResources().getString(R.string.other);
                         }
                     }
+
+                    int id = 0;
+                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
+                    showOrganizations(orgData);
+                    for (int i = 0; i < orgData.size(); i++) {
+                        if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
+                            id = i;
+                        }
+                    }
+                    spOrganization.setSelection(id);
+
+                    id = 0;
+                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref().getData();
+                    showOrganizationProjects(projectData);
+                    for (int i = 0; i < projectData.size(); i++) {
+                        if (userInfo.getProjectIds().contains(projectData.get(i).getId())) {
+                            id = i;
+                        }
+                    }
+                    spProject.setSelection(id);
+
+                    id = 0;
+                    List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
+                    showOrganizationRoles(roleData);
+                    for (int i = 0; i < roleData.size(); i++) {
+                        if (userInfo.getRoleIds().equals(roleData.get(i).getId())) {
+                            id = i;
+                        }
+                    }
+                    spRole.setSelection(id);
                 }
             }
         } else {
@@ -491,8 +525,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
-                String imageFilePath = "/MV/Image/picture_crop.jpg";
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) return;
+
                 finalUri = Util.getUri(imageFilePath);
+                // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
                 Crop.of(outputUri, finalUri).asSquare().start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -500,33 +537,72 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = "/MV/Image/picture_crop.jpg";
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) return;
+
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
+                    // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
                     Crop.of(outputUri, finalUri).asSquare().start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            Glide.with(this)
-                    .load(finalUri)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
-                            Util.showToast("Filed to load selected image!", ProfileActivity.this);
-                            return false;
-                        }
+            try {
+                imgUserProfilePic.setImageURI(finalUri);
+                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
-                        @Override
-                        public boolean onResourceReady(final Drawable drawable, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
-                            imgUserProfilePic.setImageURI(finalUri);
-                            return uploadImageHere(drawable);
+                if (Util.isConnected(this)) {
+                    profilePresenter.uploadProfileImage(mImageFile);
+                } else {
+                    Util.showToast("Internet is not available!", this);
+                }
 
-                        }
-                    })
-                    .into(imgUserProfilePic);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            Glide.with(this)
+//                    .load(finalUri)
+//                    .listener(new RequestListener<Drawable>() {
+//                        @Override
+//                        public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
+//                            Util.showToast("Filed to load selected image!", ProfileActivity.this);
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onResourceReady(final Drawable drawable, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+//                            imgUserProfilePic.setImageURI(finalUri);
+//
+//                            try {
+//                                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+//                                profilePresenter.uploadProfileImage(mImageFile);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            return uploadImageHere(drawable);
+//
+//                        }
+//                    })
+//                    .into(imgUserProfilePic);
         }
+    }
+
+    private String getImageName() {
+        // TODO: 22-02-2019 Replace this time logic with random no
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
     }
 
     private boolean uploadImageHere(final Drawable drawable) {
@@ -926,7 +1002,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public void showErrorMessage(String result) {
-        Util.showToast(result, this);
+        runOnUiThread(() -> Util.showToast(result, this));
     }
 
     @Override

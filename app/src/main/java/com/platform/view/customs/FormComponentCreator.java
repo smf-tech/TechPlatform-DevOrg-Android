@@ -20,23 +20,22 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
-import com.platform.models.forms.ChoicesByUrlMCResponse;
-import com.platform.models.forms.ChoicesByUrlSCResponse;
 import com.platform.models.forms.Elements;
-import com.platform.models.forms.MachineCode;
-import com.platform.models.forms.StructureCode;
-import com.platform.models.profile.JurisdictionLevelResponse;
-import com.platform.models.profile.Location;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.utility.Validation;
 import com.platform.view.fragments.FormFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
 public class FormComponentCreator implements DropDownValueSelectListener {
@@ -46,22 +45,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
+    private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
-    private ChoicesByUrlSCResponse choicesByUrlSCResponse;
-    private ChoicesByUrlMCResponse choicesByUrlMCResponse;
-    private JurisdictionLevelResponse jurisdictionLevelResponse;
-
-    public void setChoicesByUrlSCResponse(ChoicesByUrlSCResponse choicesByUrlSCResponse) {
-        this.choicesByUrlSCResponse = choicesByUrlSCResponse;
-    }
-
-    public void setJurisdictionLevelResponse(JurisdictionLevelResponse jurisdictionLevelResponse) {
-        this.jurisdictionLevelResponse = jurisdictionLevelResponse;
-    }
-
-    public void setChoicesByUrlMCResponse(ChoicesByUrlMCResponse choicesByUrlMCResponse) {
-        this.choicesByUrlMCResponse = choicesByUrlMCResponse;
-    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -103,7 +88,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     }
                 });
 
-                if (index == 0) {
+                if (!TextUtils.isEmpty(formData.getAnswer()) && !TextUtils.isEmpty(radioButtonForm.getText())) {
+                    if (radioButtonForm.getText().equals(formData.getAnswer())) {
+                        radioButtonForm.setChecked(true);
+                    }
+                } else if (index == 0) {
                     radioButtonForm.setChecked(true);
                 }
             }
@@ -112,13 +101,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized Object[] dropDownTemplate(Elements formData, String type) {
+    public synchronized View dropDownTemplate(Elements formData, List<Choice> choiceValues) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
 
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, choiceValues);
         View view;
         if (formData.isRequired() != null) {
             view = template.init(setFieldAsMandatory(formData.isRequired()));
@@ -126,91 +115,22 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             view = template.init(setFieldAsMandatory(false));
         }
 
-        List<String> choiceValues = new ArrayList<>();
-        switch (type) {
-            case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
-                if (formData.getChoicesByUrl() != null && choicesByUrlSCResponse != null
-                        && choicesByUrlSCResponse.getData() != null && !choicesByUrlSCResponse.getData().isEmpty()) {
-                    for (StructureCode structureCode : choicesByUrlSCResponse.getData()) {
-                        choiceValues.add(structureCode.getStructureCode());
-                    }
-                }
-                break;
+        view.setTag(formData.getName());
 
-            case Constants.ChoicesType.CHOICE_MACHINE_CODE:
-                if (formData.getChoicesByUrl() != null && choicesByUrlMCResponse != null
-                        && choicesByUrlMCResponse.getData() != null && !choicesByUrlMCResponse.getData().isEmpty()) {
-                    for (MachineCode machineCode : choicesByUrlMCResponse.getData()) {
-                        choiceValues.add(machineCode.getMachineCode());
-                    }
+        if (choiceValues != null && !choiceValues.isEmpty()) {
+            for (int index = 0; index < choiceValues.size(); index++) {
+                if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                        !TextUtils.isEmpty(choiceValues.get(index).getText()) &&
+                        formData.getAnswer().equals(choiceValues.get(index).getValue())) {
+                    template.setSelectedItem(index);
                 }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_STATE:
-                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
-                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
-                    for (Location location : jurisdictionLevelResponse.getData()) {
-                        choiceValues.add(location.getState().getName());
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_DISTRICT:
-                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
-                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
-                    for (Location location : jurisdictionLevelResponse.getData()) {
-                        if (!choiceValues.contains(location.getDistrict().getName())) {
-                            choiceValues.add(location.getDistrict().getName());
-                        }
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_TALUKA:
-                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
-                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
-                    for (Location location : jurisdictionLevelResponse.getData()) {
-                        if (!choiceValues.contains(location.getTaluka().getName())) {
-                            choiceValues.add(location.getTaluka().getName());
-                        }
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_CLUSTER:
-                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
-                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
-                    for (Location location : jurisdictionLevelResponse.getData()) {
-                        if (!choiceValues.contains(location.getCluster().getName())) {
-                            choiceValues.add(location.getCluster().getName());
-                        }
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_VILLAGE:
-                if (formData.getChoicesByUrl() != null && jurisdictionLevelResponse != null
-                        && jurisdictionLevelResponse.getData() != null && !jurisdictionLevelResponse.getData().isEmpty()) {
-                    for (Location location : jurisdictionLevelResponse.getData()) {
-                        if (!choiceValues.contains(location.getVillage().getName())) {
-                            choiceValues.add(location.getVillage().getName());
-                        }
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_DEFAULT:
-                if (formData.getChoices() != null) {
-                    for (Choice choice : formData.getChoices()) {
-                        choiceValues.add(choice.getText());
-                    }
-                }
-                break;
-
+            }
         }
-        template.setListData(choiceValues);
 
-        return new Object[]{view, formData, Constants.FormsFactory.DROPDOWN_TEMPLATE, template};
+        if (!TextUtils.isEmpty(formData.getEnableIf())) {
+            dependencyMap.put(formData.getEnableIf(), template);
+        }
+        return view;
     }
 
     public View textInputTemplate(final Elements formData) {
@@ -371,12 +291,63 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     @Override
-    public void onDropdownValueSelected(Elements formData, String value) {
-        if (formData != null && !TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(value)) {
-            requestObjectMap.put(formData.getName(), value);
-            /*if (formData.getName().equals(Constants.ChoicesType.CHOICE_STRUCTURE_CODE)) {
-                fragment.get().showMachineCodes(formData, value);
-            }*/
+    public void onDropdownValueSelected(Elements parentElement/*Structure code*/, String value) {
+        //It means dependency is there
+        String key = "{" + parentElement.getName() + "} notempty";
+        if (dependencyMap.get(key) != null) {
+            DropDownTemplate dropDownTemplate = dependencyMap.get(key);
+            Elements dependentElement = dropDownTemplate.getFormData();
+            List<Choice> choiceValues = new ArrayList<>();
+
+            String parentResponse = parentElement.getChoicesByUrlResponse();
+            String dependentResponse = dependentElement.getChoicesByUrlResponse();
+            try {
+                JSONObject dependentOuterObj = new JSONObject(dependentResponse);
+                JSONObject parentOuterObj = new JSONObject(parentResponse);
+                JSONArray dependentDataArray = dependentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+                JSONArray parentDataArray = parentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+                for (int parentArrayIndex = 0; parentArrayIndex < parentDataArray.length(); parentArrayIndex++) {
+                    JSONObject parentInnerObj = parentDataArray.getJSONObject(parentArrayIndex);
+                    for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.length(); dependentArrayIndex++) {
+                        JSONObject dependentInnerObj = dependentDataArray.getJSONObject(dependentArrayIndex);
+                        if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElement.getName())) &&
+                                !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
+                                dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
+                            Log.i(TAG, "Test");
+
+                            String choiceText = "";
+                            String choiceValue = "";
+                            if (dependentElement.getChoicesByUrl() != null && !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
+                                if (dependentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                                    StringTokenizer titleTokenizer = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                                    StringTokenizer valueTokenizer = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                                    JSONObject obj = dependentInnerObj.getJSONObject(titleTokenizer.nextToken());
+                                    choiceText = obj.getString(titleTokenizer.nextToken());
+                                    //Ignore first value of valueToken
+                                    valueTokenizer.nextToken();
+                                    choiceValue = obj.getString(valueTokenizer.nextToken());
+                                } else {
+                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                    choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
+                                }
+                            }
+
+                            Choice choice = new Choice();
+                            choice.setText(choiceText);
+                            choice.setValue(choiceValue);
+                            choiceValues.add(choice);
+                        }
+                    }
+                }
+
+                dropDownTemplate.setListData(choiceValues);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (parentElement != null && !TextUtils.isEmpty(parentElement.getName()) && !TextUtils.isEmpty(value)) {
+            requestObjectMap.put(parentElement.getName(), value);
         }
     }
 

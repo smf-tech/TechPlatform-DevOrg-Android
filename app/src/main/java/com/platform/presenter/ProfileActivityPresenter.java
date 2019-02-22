@@ -93,11 +93,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                try {
-                    requestCall.uploadImageUsingHttpURLEncoded(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                requestCall.uploadImageUsingHttpURLEncoded(file);
                 return null;
             }
         }.execute();
@@ -129,11 +125,12 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     public void onOrganizationsFetched(String response) {
         profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            OrganizationResponse organizationResponse = new Gson().fromJson(response, OrganizationResponse.class);
-            if (organizationResponse != null && organizationResponse.getData() != null
-                    && !organizationResponse.getData().isEmpty()
-                    && organizationResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizations(organizationResponse.getData());
+            Util.saveUserOrgInPref(response);
+            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
+            if (orgResponse != null && orgResponse.getData() != null
+                    && !orgResponse.getData().isEmpty()
+                    && orgResponse.getData().size() > 0) {
+                profileActivity.get().showOrganizations(orgResponse.getData());
             }
         }
     }
@@ -160,13 +157,15 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onOrganizationProjectsFetched(String response) {
         profileActivity.get().hideProgressBar();
+
         if (!TextUtils.isEmpty(response)) {
-            OrganizationProjectsResponse organizationProjectsResponse
+            Util.saveUserProjectsInPref(response);
+            OrganizationProjectsResponse projectsResponse
                     = new Gson().fromJson(response, OrganizationProjectsResponse.class);
-            if (organizationProjectsResponse != null && organizationProjectsResponse.getData() != null
-                    && !organizationProjectsResponse.getData().isEmpty()
-                    && organizationProjectsResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizationProjects(organizationProjectsResponse.getData());
+
+            if (projectsResponse != null && projectsResponse.getData() != null
+                    && !projectsResponse.getData().isEmpty() && projectsResponse.getData().size() > 0) {
+                profileActivity.get().showOrganizationProjects(projectsResponse.getData());
             }
         }
     }
@@ -174,13 +173,15 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onOrganizationRolesFetched(String response) {
         profileActivity.get().hideProgressBar();
+
         if (!TextUtils.isEmpty(response)) {
-            OrganizationRolesResponse organizationRolesResponse
+            Util.saveUserRoleInPref(response);
+            OrganizationRolesResponse orgRolesResponse
                     = new Gson().fromJson(response, OrganizationRolesResponse.class);
-            if (organizationRolesResponse != null && organizationRolesResponse.getData() != null
-                    && !organizationRolesResponse.getData().isEmpty()
-                    && organizationRolesResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizationRoles(organizationRolesResponse.getData());
+
+            if (orgRolesResponse != null && orgRolesResponse.getData() != null &&
+                    !orgRolesResponse.getData().isEmpty() && orgRolesResponse.getData().size() > 0) {
+                profileActivity.get().showOrganizationRoles(orgRolesResponse.getData());
             }
         }
     }

@@ -8,7 +8,7 @@ import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
 
-@Database(entities = {SavedForm.class, FormData.class}, version = 1)
+@Database(entities = {SavedForm.class, FormData.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract SavedFormDao formDao();
 
