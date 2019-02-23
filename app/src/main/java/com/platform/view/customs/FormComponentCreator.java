@@ -45,8 +45,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
+    private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
+    private ArrayList<DropDownTemplate> dropdowns = new ArrayList<>();
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -127,6 +129,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
         }
+
+        dropdowns.add(template);
+        dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
             dependencyMap.put(formData.getEnableIf(), template);
@@ -219,11 +224,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
                     textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
 
-                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                case Constants.FormInputType.INPUT_TYPE_DECIMAL:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
+                            InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_ALPHABETS:
+                case Constants.FormInputType.INPUT_TYPE_TEXT:
+                    textInputField.setMaxLines(3);
+                    textInputField.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
             }
         }
@@ -260,12 +273,25 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             Elements formData = editTextElementsHashMap.get(editText);
             if (formData.isRequired() != null) {
 
-                errorMsg = Validation.editTextRequiredValidation(editText.getTag().toString(),
+                errorMsg = Validation.requiredValidation(editText.getTag().toString(),
                         editText.getText().toString(), formData.isRequired());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
-                    break;
+                    return false;
+                } else {
+                    if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                        if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                            errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(),
+                                    editText.getText().toString(), formData.getValidators().get(0));
+
+                            if (!TextUtils.isEmpty(errorMsg)) {
+                                fragment.get().setErrorMsg(errorMsg);
+                                return false;
+                            }
+                        }
+                    }
                 }
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
@@ -275,7 +301,25 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
-                        break;
+                        return false;
+                    }
+                }
+            }
+
+        }
+
+        //For all edit texts
+        for (DropDownTemplate dropDownTemplate : dropdowns) {
+            Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
+            if (formData.isRequired() != null) {
+
+                if (dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) {
+                    errorMsg = Validation.requiredValidation(formData.getTitle(),
+                            "", formData.isRequired());
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
                     }
                 }
             }
@@ -292,7 +336,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     @Override
-    public void onDropdownValueSelected(Elements parentElement/*Structure code*/, String value) {
+    public void onDropdownValueSelected(Elements parentElement, String value) {
         //It means dependency is there
         String key = "{" + parentElement.getName() + "} notempty";
         if (dependencyMap.get(key) != null) {
@@ -345,7 +389,21 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                             Choice choice = new Choice();
                             choice.setText(choiceText);
                             choice.setValue(choiceValue);
-                            choiceValues.add(choice);
+
+                            if (choiceValues.size() == 0) {
+                                choiceValues.add(choice);
+                            } else {
+                                boolean isFound = false;
+                                for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                                    if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                                        isFound = true;
+                                        break;
+                                    }
+                                }
+                                if (!isFound) {
+                                    choiceValues.add(choice);
+                                }
+                            }
                         }
                     }
                 }
