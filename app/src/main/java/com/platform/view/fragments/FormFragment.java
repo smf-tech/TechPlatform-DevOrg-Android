@@ -292,7 +292,21 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 Choice choice = new Choice();
                 choice.setText(text);
                 choice.setValue(value);
-                choiceValues.add(choice);
+
+                if (choiceValues.size() == 0) {
+                    choiceValues.add(choice);
+                } else {
+                    boolean isFound = false;
+                    for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                        if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        choiceValues.add(choice);
+                    }
+                }
             }
 
             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));

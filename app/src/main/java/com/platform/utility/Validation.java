@@ -15,7 +15,7 @@ public class Validation {
         return "";
     }
 
-    public static String editTextRequiredValidation(String fieldName, String fieldValue, boolean isRequired) {
+    public static String requiredValidation(String fieldName, String fieldValue, boolean isRequired) {
         if (isRequired && TextUtils.isEmpty(fieldValue)) {
             return fieldName + " can't be empty";
         }

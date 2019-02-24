@@ -37,6 +37,10 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         this.valueList = valueList;
     }
 
+    public List<Choice> getValueList() {
+        return valueList;
+    }
+
     synchronized View init(String mandatory) {
         return dropDownView(mandatory);
     }
