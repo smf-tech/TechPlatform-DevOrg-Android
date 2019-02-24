@@ -6,6 +6,8 @@
     <string name="select_lang">भाषा चुनें</string>
 
     <string name="ok">ओके</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
     <string name="cancel">रद्द</string>
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन करें</string>
@@ -149,13 +151,16 @@
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">प्रपत्र</string>
     <string name="no_records_available">डेटा उपलब्ध नहीं है!</string>
-  
+
+    <!--Forms-->
     <string name="verification_code">पुष्टि संख्या</string>
     <string name="verify">सत्यापित करें</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s पर भेजा गया सत्यापन कोड टाइप करें</string>
     <string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>
     <string name="reports">रिपोर्ट</string>
+    <string name="submitted_form_count">प्रस्तुत प्रपत्रों की कुल गणना : %1$s</string>
+    <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को छोड़ना चाहते हैं?</string>
 
-    <string name="coming_soon">Coming Soon&#8230;</string>
-    <string name="submitted_form_count">Total count of submitted forms %1$s</string>
+    <string name="coming_soon">जल्द आ रहा है&#8230;</string>
+
 </resources>

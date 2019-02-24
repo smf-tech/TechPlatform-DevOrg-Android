@@ -57,10 +57,7 @@ public class Platform extends Application {
                         Log.d(TAG, "remote config is fetched.");
                         firebaseRemoteConfig.activateFetched();
                     }
-                }).addOnFailureListener(exception -> {
-            Log.d(TAG, "Fetch failed");
-            // Do whatever should be done on failure
-        });
+                });
     }
 
     @NonNull

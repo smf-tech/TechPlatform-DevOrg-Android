@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -319,7 +320,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                getActivity().finish();
+                showConfirmPopUp();
                 break;
 
             case R.id.btn_submit:
@@ -349,6 +350,25 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 }
                 break;
         }
+    }
+
+    private void showConfirmPopUp() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.msg_confirm));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
+                (dialog, which) -> getActivity().finish());
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     private void saveFormToLocalDatabase() {
@@ -429,5 +449,4 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         renderFilledFormView(elements);
     }
-
 }
