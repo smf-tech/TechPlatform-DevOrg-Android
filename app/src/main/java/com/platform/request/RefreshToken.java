@@ -6,7 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.Platform;
@@ -33,7 +32,7 @@ public class RefreshToken implements PlatformRequestCallListener {
         Response.Listener<JSONObject> refreshTokenSuccessListener = response -> {
             try {
                 Log.e(TAG, "REFRESH_TOKEN_RESP: " + response);
-                tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS, new Gson().toJson(response));
+                tokenRetryPolicy.onRefreshTokenUpdate(Constants.SUCCESS, response.toString());
             } catch (Exception e) {
                 tokenRetryPolicy.onRefreshTokenUpdate(Constants.FAILURE, "");
             }

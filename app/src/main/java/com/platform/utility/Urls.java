@@ -5,7 +5,7 @@ public class Urls {
     public class Login {
         public static final String GENERATE_OTP = "api/message/otp?phone=%1$s";
         public static final String GENERATE_TOKEN = "api/token?phone=%1$s&otp=%2$s";
-        public static final String REFRESH_TOKEN = "oauth/token";
+        public static final String REFRESH_TOKEN = "api/refreshtoken";
     }
 
     public class Profile {
