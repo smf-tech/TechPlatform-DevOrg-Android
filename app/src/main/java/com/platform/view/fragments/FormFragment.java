@@ -59,7 +59,7 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
-    public static final String IMAGE_TYPE_FILE = "file";
+    public static final String IMAGE_TYPE_FILE = "form";
     private final String TAG = this.getClass().getSimpleName();
 
     private View formFragmentView;
@@ -85,10 +85,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
     private File mImageFile;
     private boolean mImageUploaded;
-    private String mUploadedImageUrl;
+    private List<String> mUploadedImageUrlList;
     private ImageView imgUserProfilePic;
     private ImageRequestCall uploadProfileImageCall;
     private ImageView mFileImageView;
+    private String mImageViewTag;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -104,6 +105,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         formPresenter = new FormActivityPresenter(this);
 //        profilePresenter = new ProfileActivityPresenter(this);
+
+        mUploadedImageUrlList = new ArrayList<>();
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
@@ -479,7 +482,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
                 Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -492,7 +494,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
                     Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -500,8 +501,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-                LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
-                ImageView view = fileTemplateView.findViewWithTag(mFileImageView.getTag());
+//                LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
+//                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());
                 mFileImageView.setImageURI(finalUri);
                 mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
@@ -521,7 +522,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     public void onImageUploaded(String uploadedImageUrl) {
         mImageUploaded = true;
-        mUploadedImageUrl = uploadedImageUrl;
+        mUploadedImageUrlList.add(uploadedImageUrl);
     }
 
     private String getImageName() {
