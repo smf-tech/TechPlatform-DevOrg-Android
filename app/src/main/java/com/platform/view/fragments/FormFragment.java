@@ -373,7 +373,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
-                            Util.showToast("Form saved offline ", getActivity());
+                            Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                             Objects.requireNonNull(getActivity()).onBackPressed();
                         }
@@ -554,7 +554,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (Util.isConnected(getContext())) {
                     formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
                 } else {
-                    Util.showToast("Internet is not available!", this);
+                    Util.showToast(getResources().getString(R.string.no_internet), this);
                 }
 
             } catch (Exception e) {

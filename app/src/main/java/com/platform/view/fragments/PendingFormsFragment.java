@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -93,7 +92,7 @@ public class PendingFormsFragment extends Fragment {
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
 
                     updateAdapter(context, 0);
-                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)){
+                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
                     Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -102,30 +101,38 @@ public class PendingFormsFragment extends Fragment {
     }
 
     private void updateAdapter(final Context context, final int formID) {
-        if (mPendingFormCategoryAdapter == null) {
-            mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
-        }
-
-        if (formID == 0) {
-            mSavedForms.clear();
-            mSavedForms.addAll(getAllNonSyncedSavedForms(context));
-        } else {
-            List<SavedForm> list = new ArrayList<>(mSavedForms);
-            for (final SavedForm form : mSavedForms) {
-                if (formID == form.id) {
-                    list.remove(form);
-                }
+        try {
+            if (mPendingFormCategoryAdapter == null) {
+                mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
             }
-            mSavedForms.clear();
-            mSavedForms.addAll(list);
+
+            if (formID == 0) {
+                mSavedForms.clear();
+                mSavedForms.addAll(getAllNonSyncedSavedForms(context));
+            } else {
+                List<SavedForm> list = new ArrayList<>(mSavedForms);
+                for (final SavedForm form : mSavedForms) {
+                    if (formID == form.id) {
+                        list.remove(form);
+                    }
+                }
+                mSavedForms.clear();
+                mSavedForms.addAll(list);
+            }
+
+            if (mSavedForms != null && !mSavedForms.isEmpty()) {
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mRecyclerView.setVisibility(View.GONE);
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+
+            if (mPendingFormCategoryAdapter != null) {
+                mPendingFormCategoryAdapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            Log.e("PendingForms", e.getMessage());
         }
-        if (mSavedForms != null && !mSavedForms.isEmpty()) {
-            mNoRecordsView.setVisibility(View.GONE);
-        } else {
-            mRecyclerView.setVisibility(View.GONE);
-            mNoRecordsView.setVisibility(View.VISIBLE);
-        }
-        mPendingFormCategoryAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -144,7 +151,5 @@ public class PendingFormsFragment extends Fragment {
                 mNoRecordsView.setVisibility(View.VISIBLE);
             }
         }
-
     }
-
 }

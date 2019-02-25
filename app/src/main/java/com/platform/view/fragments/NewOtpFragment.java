@@ -122,6 +122,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 if (sb.length() == 0) {
                     mOtp1.requestFocus();
                 }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 0) {
+                    sb.deleteCharAt(0);
+                }
             }
         });
 
@@ -141,6 +145,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             public void afterTextChanged(Editable s) {
                 if (sb.length() == 1) {
                     mOtp2.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 1) {
+                    sb.deleteCharAt(1);
                 }
             }
         });
@@ -162,6 +170,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 if (sb.length() == 2) {
                     mOtp3.requestFocus();
                 }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 2) {
+                    sb.deleteCharAt(2);
+                }
             }
         });
 
@@ -182,6 +194,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 if (sb.length() == 3) {
                     mOtp4.requestFocus();
                 }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 3) {
+                    sb.deleteCharAt(3);
+                }
             }
         });
 
@@ -201,6 +217,32 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             public void afterTextChanged(Editable s) {
                 if (sb.length() == 4) {
                     mOtp5.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 4) {
+                    sb.deleteCharAt(4);
+                }
+            }
+        });
+
+        mOtp6.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 5 & mOtp6.length() == 1) {
+                    sb.append(s);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 5) {
+                    mOtp6.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 5) {
+                    sb.deleteCharAt(5);
                 }
             }
         });

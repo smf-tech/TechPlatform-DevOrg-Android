@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.R;
 import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.JurisdictionLevelResponse;
@@ -206,10 +207,10 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     @Override
     public void onImageUploadedListener(final String response, final String formName) {
+
         Log.e(TAG, "onImageUploadedListener:\n" + response);
-
-        profileActivity.get().runOnUiThread(() -> Util.showToast("Image uploaded", profileActivity.get()));
-
+        profileActivity.get().runOnUiThread(() -> Util.showToast(
+                profileActivity.get().getResources().getString(R.string.image_upload_success), profileActivity.get()));
         profileActivity.get().hideProgressBar();
 
         try {
