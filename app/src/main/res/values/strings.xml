@@ -18,7 +18,7 @@
 
     <!--Login screen-->
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
-    <string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>
+    <!--<string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>-->
     <string name="msg_mobile_number_is_empty">Mobile Number is empty</string>
     <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
@@ -27,7 +27,7 @@
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
-    <string name="check_otp">Please check OTP</string>
+    <!--<string name="check_otp">Please check OTP</string>-->
     <string name="otp_timeout_text">Time out in %1$s sec</string>
     <string name="msg_otp_verification_timeout">OTP verification time out, please try again.</string>
     <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your above mobile number.</string>
