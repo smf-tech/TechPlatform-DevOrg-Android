@@ -563,11 +563,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
-    public void onImageUploaded(String uploadedImageUrl) {
-        mUploadedImageUrlList.add(uploadedImageUrl);
-        Log.e(TAG, "Image Url list size:!" + mUploadedImageUrlList.size());
-    }
-
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()

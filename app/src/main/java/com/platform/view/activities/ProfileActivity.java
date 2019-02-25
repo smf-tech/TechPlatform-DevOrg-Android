@@ -690,7 +690,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         selectedValues[projectIndex] = userInfo.getProjectIds().contains(projectData.get(projectIndex).getId());
                     }
                     spProject.setSelectedValues(selectedValues);
-                    spProject.setPrefilledText();
+                    spProject.setPreFilledText();
 
                     int id = 0;
                     List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
@@ -909,7 +909,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
                     spDistrict.setSelectedValues(selectedValues);
-                    spDistrict.setPrefilledText();
+                    spDistrict.setPreFilledText();
 
                 }
                 break;
@@ -947,7 +947,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
                     spTaluka.setSelectedValues(selectedValues);
-                    spTaluka.setPrefilledText();
+                    spTaluka.setPreFilledText();
                 }
                 break;
 
@@ -988,7 +988,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
                     spVillage.setSelectedValues(selectedValues);
-                    spVillage.setPrefilledText();
+                    spVillage.setPreFilledText();
                 }
                 break;
 
@@ -1029,7 +1029,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
                     spCluster.setSelectedValues(selectedValues);
-                    spCluster.setPrefilledText();
+                    spCluster.setPreFilledText();
                 }
                 break;
 
