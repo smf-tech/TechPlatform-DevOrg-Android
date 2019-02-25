@@ -269,7 +269,6 @@ public class Util {
         editor.apply();
     }
 
-    @SuppressWarnings("unused")
     public static UserLocation getUserLocationFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
