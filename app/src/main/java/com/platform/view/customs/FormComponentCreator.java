@@ -52,10 +52,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
 
-//    public LinearLayout getFileTemplateView() {
-//        return fileTemplateView;
-//    }
-
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
     }
@@ -255,15 +251,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             return null;
         }
 
-        LinearLayout fileTemplateView = (LinearLayout) View.inflate(
+        final LinearLayout fileTemplateView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_file_type, null);
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
         imageView.setTag(formData.getTitle());
-        imageView.setOnClickListener(v -> {
-            Log.e(TAG, "fileTemplate: " + v.getTag());
-            showPictureDialog(v);
-        });
+        imageView.setOnClickListener(v -> showPictureDialog(v, formData.getName()));
 
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
@@ -455,7 +448,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         editTextElementsHashMap = new HashMap<>();
     }
 
-    private void showPictureDialog(final View view) {
+    private void showPictureDialog(final View view, final String name) {
         Context context = fragment.get().getContext();
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(context.getString(R.string.title_choose_picture));
@@ -464,17 +457,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         dialog.setItems(items, (dialog1, which) -> {
             switch (which) {
                 case 0:
-                    fragment.get().choosePhotoFromGallery(view);
+                    fragment.get().choosePhotoFromGallery(view, name);
                     break;
 
                 case 1:
-                    fragment.get().takePhotoFromCamera(view);
+                    fragment.get().takePhotoFromCamera(view, name);
                     break;
             }
         });
 
         dialog.show();
     }
-
-
 }

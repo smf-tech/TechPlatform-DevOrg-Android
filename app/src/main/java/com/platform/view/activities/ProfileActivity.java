@@ -516,13 +516,37 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     Log.e(TAG, e.getMessage());
                 }
             }
+            /*if (data != null && data.getData() != null) {
+                try{
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    assert cursor != null;
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    //return Image Path to the Main Activity
+                    Intent returnFromGalleryIntent = new Intent();
+                    returnFromGalleryIntent.putExtra("picturePath",picturePath);
+                    setResult(RESULT_OK,returnFromGalleryIntent);
+//                    finish();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    Intent returnFromGalleryIntent = new Intent();
+                    setResult(RESULT_CANCELED, returnFromGalleryIntent);
+                    finish();
+                }
+            }*/
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-                imgUserProfilePic.setImageURI(finalUri);
-                File mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                imgUserProfilePic.setImageURI(finalUri);              
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
-                    profilePresenter.uploadProfileImage(mImageFile, Constants.Image.IMAGE_TYPE_PROFILE);
+                    profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }

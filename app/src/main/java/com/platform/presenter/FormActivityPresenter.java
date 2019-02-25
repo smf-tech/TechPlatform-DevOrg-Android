@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
@@ -39,6 +40,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     private SavedForm savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
+    private Map<String, String> mUploadedImageUrlList;
 
     private SavedForm getSavedForm() {
         return savedForm;
@@ -67,6 +69,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public FormActivityPresenter(FormFragment fragment) {
         this.formFragment = new WeakReference<>(fragment);
         this.gson = new GsonBuilder().serializeNulls().create();
+        mUploadedImageUrlList = new HashMap<>();
     }
 
     public void getProcessDetails(String processId) {
@@ -94,7 +97,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void uploadProfileImage(File file, String type) {
+    public void uploadProfileImage(File file, String type, final String formName) {
         ImageRequestCall requestCall = new ImageRequestCall();
         requestCall.setListener(this);
 
@@ -103,7 +106,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(file, type);
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, formName);
                 return null;
             }
         }.execute();
@@ -111,7 +114,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onImageUploadedListener(final String response) {
+    public void onImageUploadedListener(final String response, final String formName) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
 
         formFragment.get().hideProgressBar();
@@ -121,8 +124,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 JSONObject data = new JSONObject(response).getJSONObject("data");
                 String url = (String) data.get("url");
                 Log.e(TAG, "onPostExecute: Url: " + url);
+                mUploadedImageUrlList.put(formName, url);
 
-                formFragment.get().onImageUploaded(url);
             } else {
                 Log.e(TAG, "onPostExecute: Invalid response");
             }
@@ -203,11 +206,11 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getFormId(), getRequestedObject());
+                formRequestCall.createFormResponse(getFormId(), getRequestedObject(), mUploadedImageUrlList);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
-                formRequestCall.updateFormResponse(getFormId(), getRequestedObject());
+                formRequestCall.updateFormResponse(getFormId(), getRequestedObject(), mUploadedImageUrlList);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:

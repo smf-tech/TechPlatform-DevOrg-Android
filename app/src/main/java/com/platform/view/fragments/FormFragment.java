@@ -78,9 +78,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     private Uri outputUri;
     private Uri finalUri;
-
-    private List<String> mUploadedImageUrlList;
     private ImageView mFileImageView;
+    private String mFormName;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -95,7 +94,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         super.onViewCreated(view, savedInstanceState);
 
         formPresenter = new FormActivityPresenter(this);
-        mUploadedImageUrlList = new ArrayList<>();
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
@@ -485,8 +483,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         renderFilledFormView(elements);
     }
 
-    public void choosePhotoFromGallery(final View view) {
+    public void choosePhotoFromGallery(final View view, final String name) {
         mFileImageView = (ImageView) view;
+        mFormName = name;
         try {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
@@ -495,8 +494,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
-    public void takePhotoFromCamera(final View view) {
+    public void takePhotoFromCamera(final View view, final String name) {
         mFileImageView = (ImageView) view;
+        mFormName = name;
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -546,14 +546,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-//                LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
-//                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());
+                /*LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
+                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());*/
                 mFileImageView.setImageURI(finalUri);
-                File mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(getContext())) {
-                    FormActivityPresenter presenter = new FormActivityPresenter(this);
-                    presenter.uploadProfileImage(mImageFile, Constants.Image.IMAGE_TYPE_FILE);
+                    formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
@@ -565,7 +564,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     public void onImageUploaded(String uploadedImageUrl) {
-//        boolean mImageUploaded = true;
         mUploadedImageUrlList.add(uploadedImageUrl);
         Log.e(TAG, "Image Url list size:!" + mUploadedImageUrlList.size());
     }
@@ -583,5 +581,4 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
-
 }

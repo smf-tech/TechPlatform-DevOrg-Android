@@ -33,8 +33,8 @@ public class VolleyEntity extends Request<NetworkResponse> {
     private final String lineEnd = "\r\n";
     private final String boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
 
-    private Response.Listener<NetworkResponse> mListener;
-    private Response.ErrorListener mErrorListener;
+    final private Response.Listener<NetworkResponse> mListener;
+    final private Response.ErrorListener mErrorListener;
     private Map<String, String> mHeaders;
 
 
@@ -202,7 +202,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
         try {
             BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
             int read = buf.read(bytes, 0, bytes.length);
-            Log.i("TAG", "" + read);
+            Log.d("VolleyEntity", "buildDataPart1: " + read);
             buf.close();
         } catch (IOException e) {
             Log.e("TAG", e.getMessage());

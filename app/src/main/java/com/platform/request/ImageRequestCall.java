@@ -26,7 +26,7 @@ public class ImageRequestCall {
         this.listener = listener;
     }
 
-    public void uploadImageUsingHttpURLEncoded(File file, final String type) {
+    public void uploadImageUsingHttpURLEncoded(File file, final String type, final String formName) {
         final String twoHyphens = "--";
         final String lineEnd = "\r\n";
         final String boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
@@ -102,7 +102,7 @@ public class ImageRequestCall {
             response = b.toString();
             Log.i("Success#Response", response);
 
-            listener.onImageUploadedListener(response);
+            listener.onImageUploadedListener(response, formName);
 
         } catch (IOException e) {
             Log.e("TAG", e.getMessage());
