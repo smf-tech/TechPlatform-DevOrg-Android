@@ -15,6 +15,9 @@ public class SyncAdapterUtils {
     public static final String AUTHORITY = "com.platform";
     public static final String ACCOUNT_TYPE = "com.platform.account";
     public static final String EVENT_SYNC_COMPLETED = "SyncCompleted";
+    public static final String EVENT_SYNC_FAILED = "SyncFailed";
+    public static final String EVENT_FORM_ADDED = "formAdded";
+    public static final String EXTRA_TEXT = "SyncStatus";
 
     /**
      * This method creates sync account

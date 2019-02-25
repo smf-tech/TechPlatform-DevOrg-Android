@@ -1,5 +1,7 @@
 package com.platform.presenter;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -8,21 +10,27 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
+import com.platform.listeners.ImageRequestCallListener;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.request.FormRequestCall;
+import com.platform.request.ImageRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Objects;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
-public class FormActivityPresenter implements FormRequestCallListener {
+public class FormActivityPresenter implements FormRequestCallListener,
+        ImageRequestCallListener {
 
     private final String TAG = FormActivityPresenter.class.getName();
 
@@ -83,6 +91,44 @@ public class FormActivityPresenter implements FormRequestCallListener {
 
         formFragment.get().showProgressBar();
         requestCall.getFormResults(processId);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void uploadProfileImage(File file, String type) {
+        ImageRequestCall requestCall = new ImageRequestCall();
+        requestCall.setListener(this);
+
+        formFragment.get().showProgressBar();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                requestCall.uploadImageUsingHttpURLEncoded(file, type);
+                return null;
+            }
+        }.execute();
+
+    }
+
+    @Override
+    public void onImageUploadedListener(final String response) {
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+
+        formFragment.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+
+                formFragment.get().onImageUploaded(url);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

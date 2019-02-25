@@ -119,7 +119,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onMastersFormsLoaded(final String response) {
         try {
             String count;
-            if (new JSONObject(response).has("values")) {
+            if (new JSONObject(response).has("metadata")) {
                 JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
                 count = metadata.getJSONObject("form").getString("submit_count");
                 mCountList.add(count);

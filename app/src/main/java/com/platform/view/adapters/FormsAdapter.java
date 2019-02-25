@@ -107,10 +107,11 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
                 viewHolder.mName.setText(savedForm.getFormName());
                 viewHolder.mDate.setText(String.format("%s %s", savedForm.getFormId(), savedForm.getCreatedAt()));
             }
-
         }
 
         viewHolder.mRootView.setOnClickListener(v -> {
+            if (status.equals(FORM_STATUS_PENDING)) return;
+
             if (i >= mProcessData.size() || mProcessData.get(i).getId().equals("0")) return;
 
             Intent intent = new Intent(mContext, FormActivity.class);

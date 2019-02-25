@@ -78,6 +78,7 @@ public class Constants {
         public static final String USER_PROJECTS = "project_id";
         public static final String USER_LOCATION = "location";
         public static final String USER_FIREBASE_ID = "firebase_id";
+        public static final String USER_PROFILE_PIC = "profile_pic";
 
         public static final String ACTION = "action";
         public static final String ACTION_EDIT = "edit";
@@ -140,6 +141,7 @@ public class Constants {
 
     @SuppressWarnings("unused")
     public static class Form {
+        public static final String EXTRA_FORM_ID = "form_id";
         public static final String FORM_STATUS_ALL = "all";
         public static final String FORM_STATUS_PENDING = "pending";
         public static final String FORM_STATUS_COMPLETED = "completed";

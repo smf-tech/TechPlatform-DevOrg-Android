@@ -1,5 +1,6 @@
 package com.platform.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -37,6 +38,10 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
                 fragmentWeakReference.get().getActivity() == null)
             return null;
         return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getNonSyncedPendingForms();
+    }
+
+    public static List<SavedForm> getAllNonSyncedSavedForms(Context context) {
+        return DatabaseManager.getDBInstance(context).getNonSyncedPendingForms();
     }
 
     @Override

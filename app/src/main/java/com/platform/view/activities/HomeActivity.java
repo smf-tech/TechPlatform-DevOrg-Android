@@ -3,25 +3,36 @@ package com.platform.view.activities;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.platform.R;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
@@ -31,6 +42,8 @@ import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMFragment;
+
+import java.io.File;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -52,6 +65,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
+        ImageView bellImage = findViewById(R.id.home_bell_icon);
+        bellImage.setOnClickListener(v -> Util.start(this, ProfileActivity.class, Bundle.EMPTY));
         title.setText(name);
     }
 
@@ -71,8 +86,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         View headerLayout = navigationView.getHeaderView(0);
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
+        ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
+
         UserInfo user = Util.getUserObjectFromPref();
         if (user != null) {
+            loadProfileImage(userPic, user.getProfilePic());
             userName.setText(String.format("%s", user.getUserName()));
         }
         userName.setOnClickListener(this);
@@ -81,6 +99,46 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
         loadHomePage();
+    }
+
+    private void loadProfileImage(final ImageView userPic, final String profileUrl) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
+        loadFromSDCard(userPic, profileUrl);
+        Glide.with(this)
+                .load(profileUrl)
+                .apply(requestOptions)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
+                        Log.e(TAG, "onLoadFailed: ");
+
+//                        return !loadFromSDCard(userPic);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(final Drawable resource, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(userPic);
+    }
+
+    private void loadFromSDCard(final ImageView userPic, final String profileUrl) {
+        if (TextUtils.isEmpty(profileUrl)) return;
+
+        String[] split = profileUrl.split("/");
+        String url = split[split.length - 1];
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/MV/Image/profile");
+        if (!dir.exists()) {
+            Log.e(TAG, "Failed to load image from SD card");
+            return;
+        }
+
+        Uri uri = Uri.fromFile(new File(dir.getPath() + "/" + url));
+
+        runOnUiThread(() -> userPic.setImageURI(uri));
     }
 
     private void loadHomePage() {
@@ -121,7 +179,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_page_container,
-                    ReportsFragment.newInstance(false), "reportFragment");
+                    ReportsFragment.newInstance(true), "reportFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
