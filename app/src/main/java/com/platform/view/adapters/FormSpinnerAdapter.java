@@ -88,7 +88,11 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
 
     @Override
     public int getCount() {
-        return objects.size();
+        if (objects != null && !objects.isEmpty()) {
+            return objects.size();
+        } else {
+            return 0;
+        }
     }
 
     private class ViewHolder {
