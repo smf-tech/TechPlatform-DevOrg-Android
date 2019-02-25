@@ -394,7 +394,7 @@ public class Util {
                 starter.putExtra("bundle", bundle);
             context.startActivity(starter);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

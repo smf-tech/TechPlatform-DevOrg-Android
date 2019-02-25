@@ -59,7 +59,6 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
-    private static final String IMAGE_TYPE_FORM = "form";
     private final String TAG = this.getClass().getSimpleName();
 
     private View formFragmentView;
@@ -79,10 +78,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     private Uri outputUri;
     private Uri finalUri;
-    private static final String FILE_SEP = "/";
-    private static final String IMAGE_PREFIX = "picture_";
-    private static final String IMAGE_SUFFIX = ".jpg";
-    private static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
     private ImageView mFileImageView;
     private String mFormName;
 
@@ -343,7 +338,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -458,7 +453,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         if (formComponentCreator != null)
@@ -480,7 +475,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             break;
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                 }
             }
         }
@@ -557,29 +552,33 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(getContext())) {
-                    formPresenter.uploadProfileImage(imageFile, IMAGE_TYPE_FORM, mFormName);
+                    formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
-
         }
+    }
+
+    public void onImageUploaded(String uploadedImageUrl) {
+        mUploadedImageUrlList.add(uploadedImageUrl);
+        Log.e(TAG, "Image Url list size:!" + mUploadedImageUrlList.size());
     }
 
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + IMAGE_STORAGE_DIRECTORY);
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
                 Log.e(TAG, "Failed to create directory!");
                 return null;
             }
         }
-        return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
-
 }

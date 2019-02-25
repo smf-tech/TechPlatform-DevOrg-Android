@@ -416,7 +416,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                 dropDownTemplate.setListData(choiceValues);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
 
@@ -468,6 +468,4 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         dialog.show();
     }
-
-
 }

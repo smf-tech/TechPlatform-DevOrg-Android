@@ -125,7 +125,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mCountList.add(count);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         if (!mChildList.isEmpty()) {
