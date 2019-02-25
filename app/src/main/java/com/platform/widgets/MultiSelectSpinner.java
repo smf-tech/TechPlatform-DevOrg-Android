@@ -49,6 +49,10 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
     @Override
     public void onCancel(DialogInterface dialog) {
         // refresh text on spinner
+        setPrefilledText();
+    }
+
+    public void setPrefilledText() {
         StringBuilder spinnerSelectedText = new StringBuilder();
         for (int i = 0; i < stringList.size(); i++) {
             if (selectedValues[i]) {
@@ -95,6 +99,10 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
         }
 
         return true;
+    }
+
+    public void setSelectedValues(boolean[] selectedValues) {
+        this.selectedValues = selectedValues;
     }
 
     public void setItems(List<String> items, String allText,

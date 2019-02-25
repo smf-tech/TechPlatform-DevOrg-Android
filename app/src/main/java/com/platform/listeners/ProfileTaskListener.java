@@ -4,7 +4,6 @@ import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
-import com.platform.models.profile.State;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ public interface ProfileTaskListener extends PlatformTaskListener {
     void showOrganizationProjects(List<OrganizationProject> organizationProjects);
 
     void showOrganizationRoles(List<OrganizationRole> organizationRoles);
-
-    void showStates(List<State> states);
 
     void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName);
 }

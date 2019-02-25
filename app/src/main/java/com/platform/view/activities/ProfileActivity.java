@@ -43,7 +43,6 @@ import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
-import com.platform.models.profile.State;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.ProfileActivityPresenter;
@@ -120,7 +119,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
 
-    //    private String selectedState;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
 
@@ -218,7 +216,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             if (loginInfo != null) {
                 etUserMobileNumber.setText(loginInfo.getMobileNumber());
             } else {
-                if (getIntent().getStringExtra(Constants.Login.ACTION)
+                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+                        && getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
                     setActionbar(getString(R.string.update_profile));
@@ -259,29 +258,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     for (int i = 0; i < orgData.size(); i++) {
                         if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
                             id = i;
+                            this.selectedOrg = orgData.get(i);
                         }
                     }
                     spOrganization.setSelection(id);
-
-                    id = 0;
-                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref().getData();
-                    showOrganizationProjects(projectData);
-                    for (int i = 0; i < projectData.size(); i++) {
-                        if (userInfo.getProjectIds().contains(projectData.get(i).getId())) {
-                            id = i;
-                        }
-                    }
-                    spProject.setSelection(id);
-
-                    id = 0;
-                    List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
-                    showOrganizationRoles(roleData);
-                    for (int i = 0; i < roleData.size(); i++) {
-                        if (userInfo.getRoleIds().equals(roleData.get(i).getId())) {
-                            id = i;
-                        }
-                    }
-                    spRole.setSelection(id);
                 }
             }
         } else {
@@ -687,11 +667,35 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.sp_user_organization:
-                if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
-                        && !TextUtils.isEmpty(organizations.get(i).getId())) {
-                    this.selectedOrg = organizations.get(i);
-                    profilePresenter.getOrganizationProjects(organizations.get(i).getId());
-                    profilePresenter.getOrganizationRoles(organizations.get(i).getId());
+                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+                        && getIntent().getStringExtra(Constants.Login.ACTION)
+                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+                    UserInfo userInfo = Util.getUserObjectFromPref();
+                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref().getData();
+                    showOrganizationProjects(projectData);
+                    boolean[] selectedValues = new boolean[projectData.size()];
+                    for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
+                        selectedValues[projectIndex] = userInfo.getProjectIds().contains(projectData.get(projectIndex).getId());
+                    }
+                    spProject.setSelectedValues(selectedValues);
+                    spProject.setPrefilledText();
+
+                    int id = 0;
+                    List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
+                    showOrganizationRoles(roleData);
+                    for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
+                        if (userInfo.getRoleIds().equals(roleData.get(roleIndex).getId())) {
+                            id = roleIndex;
+                        }
+                    }
+                    spRole.setSelection(id);
+                } else {
+                    if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
+                            && !TextUtils.isEmpty(organizations.get(i).getId())) {
+                        this.selectedOrg = organizations.get(i);
+                        profilePresenter.getOrganizationProjects(organizations.get(i).getId());
+                        profilePresenter.getOrganizationRoles(organizations.get(i).getId());
+                    }
                 }
                 break;
 
@@ -739,8 +743,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     selectedStates.clear();
                     selectedStates.add(states.get(i));
-
-//                    Util.saveUserLocationJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
 
                     if (spDistrict.getVisibility() == View.VISIBLE) {
                         profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
@@ -834,20 +836,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     }
 
     @Override
-    public void showStates(List<State> states) {
-        //this.states = states;
-        List<String> stateNames = new ArrayList<>();
-        for (int i = 0; i < states.size(); i++) {
-            stateNames.add(states.get(i).getOrgName());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,
-                android.R.layout.simple_spinner_item, stateNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spState.setAdapter(adapter);
-    }
-
-    @Override
     public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.STATE_LEVEL:
@@ -864,6 +852,19 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             android.R.layout.simple_spinner_item, stateNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spState.setAdapter(adapter);
+
+                    if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+                            && getIntent().getStringExtra(Constants.Login.ACTION)
+                            .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+                        int id = 0;
+                        UserLocation savedUserLocation = Util.getUserLocationFromPref();
+                        for (int i = 0; i < states.size(); i++) {
+                            if (savedUserLocation.getStateId().get(0).equals(states.get(i).getId())) {
+                                id = i;
+                            }
+                        }
+                        spState.setSelection(id);
+                    }
                 }
                 break;
 
@@ -882,6 +883,22 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     }
 
                     spDistrict.setItems(districts, getString(R.string.district), this);
+
+                    List<String> districtIds = Util.getUserLocationFromPref().getDistrictIds();
+                    boolean[] selectedValues = new boolean[this.districts.size()];
+                    for (int districtIndex = 0; districtIndex < this.districts.size(); districtIndex++) {
+                        for (int districtIdIndex = 0; districtIdIndex < districtIds.size(); districtIdIndex++) {
+                            if (this.districts.get(districtIndex).getId().equals(districtIds.get(districtIdIndex))) {
+                                selectedValues[districtIndex] = true;
+                                break;
+                            } else {
+                                selectedValues[districtIndex] = false;
+                            }
+                        }
+                    }
+                    spDistrict.setSelectedValues(selectedValues);
+                    spDistrict.setPrefilledText();
+
                 }
                 break;
 
@@ -904,6 +921,21 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     }
 
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
+
+                    List<String> talukaIds = Util.getUserLocationFromPref().getTalukaIds();
+                    boolean[] selectedValues = new boolean[this.talukas.size()];
+                    for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
+                        for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
+                            if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex))) {
+                                selectedValues[talukaIndex] = true;
+                                break;
+                            } else {
+                                selectedValues[talukaIndex] = false;
+                            }
+                        }
+                    }
+                    spTaluka.setSelectedValues(selectedValues);
+                    spTaluka.setPrefilledText();
                 }
                 break;
 
@@ -930,6 +962,21 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     }
 
                     spVillage.setItems(villages, getString(R.string.village), this);
+
+                    List<String> villageIds = Util.getUserLocationFromPref().getVillageIds();
+                    boolean[] selectedValues = new boolean[this.villages.size()];
+                    for (int villageIndex = 0; villageIndex < this.villages.size(); villageIndex++) {
+                        for (int villageIdIndex = 0; villageIdIndex < villageIds.size(); villageIdIndex++) {
+                            if (this.villages.get(villageIndex).getId().equals(villageIds.get(villageIdIndex))) {
+                                selectedValues[villageIndex] = true;
+                                break;
+                            } else {
+                                selectedValues[villageIndex] = false;
+                            }
+                        }
+                    }
+                    spVillage.setSelectedValues(selectedValues);
+                    spVillage.setPrefilledText();
                 }
                 break;
 
@@ -956,6 +1003,21 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     }
 
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
+
+                    List<String> clusterIds = Util.getUserLocationFromPref().getClusterIds();
+                    boolean[] selectedValues = new boolean[this.clusters.size()];
+                    for (int clusterIndex = 0; clusterIndex < this.clusters.size(); clusterIndex++) {
+                        for (int clusterIdIndex = 0; clusterIdIndex < clusterIds.size(); clusterIdIndex++) {
+                            if (this.clusters.get(clusterIndex).getId().equals(clusterIds.get(clusterIdIndex))) {
+                                selectedValues[clusterIndex] = true;
+                                break;
+                            } else {
+                                selectedValues[clusterIndex] = false;
+                            }
+                        }
+                    }
+                    spCluster.setSelectedValues(selectedValues);
+                    spCluster.setPrefilledText();
                 }
                 break;
 
