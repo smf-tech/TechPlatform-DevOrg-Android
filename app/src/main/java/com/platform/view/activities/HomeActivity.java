@@ -1,6 +1,7 @@
 package com.platform.view.activities;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -27,14 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.kobakei.ratethisapp.RateThisApp;
 import com.platform.R;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
@@ -64,28 +62,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         initMenuView();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
         ImageView bellImage = findViewById(R.id.home_bell_icon);
-        bellImage.setOnClickListener(v -> {
-            Util.start(this, ProfileActivity.class, Bundle.EMPTY);
-        });
+        bellImage.setOnClickListener(v -> Util.start(this, ProfileActivity.class, Bundle.EMPTY));
         title.setText(name);
     }
 
@@ -143,8 +124,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 .into(userPic);
     }
 
-    private boolean loadFromSDCard(final ImageView userPic, final String profileUrl) {
-        if (TextUtils.isEmpty(profileUrl)) return false;
+    private void loadFromSDCard(final ImageView userPic, final String profileUrl) {
+        if (TextUtils.isEmpty(profileUrl)) return;
 
         String[] split = profileUrl.split("/");
         String url = split[split.length - 1];
@@ -152,13 +133,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 + "/MV/Image/profile");
         if (!dir.exists()) {
             Log.e(TAG, "Failed to load image from SD card");
-            return true;
+            return;
         }
 
         Uri uri = Uri.fromFile(new File(dir.getPath() + "/" + url));
 
         runOnUiThread(() -> userPic.setImageURI(uri));
-        return false;
     }
 
     private void loadHomePage() {
@@ -205,16 +185,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == Constants.IS_ROLE_CHANGE && resultCode == RESULT_OK) {
-//            if (dialogNotApproved != null && dialogNotApproved.isShowing()) {
-//                dialogNotApproved.dismiss();
-//            }
-//        }
     }
 
     @Override
@@ -297,8 +267,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_rate_us:
-                RateThisApp.showRateDialog(HomeActivity.this,
-                        R.style.Theme_AppCompat_Light_Dialog_Alert);
+                rateTheApp();
                 break;
 
             case R.id.action_menu_call_us:
@@ -375,28 +344,28 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
-    private void showUpdateDataPopup() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name_ss));
-        // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.update_data_string));
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
-        // Setting CANCEL Button
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-                (dialog, which) -> alertDialog.dismiss());
-        // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> {
-                    if (Util.isConnected(HomeActivity.this)) {
-                        //getUserData();
-                    }
-                });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
+//    private void showUpdateDataPopup() {
+//        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+//        // Setting Dialog Title
+//        alertDialog.setTitle(getString(R.string.app_name_ss));
+//        // Setting Dialog Message
+//        alertDialog.setMessage(getString(R.string.update_data_string));
+//        // Setting Icon to Dialog
+//        alertDialog.setIcon(R.mipmap.app_logo);
+//        // Setting CANCEL Button
+//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+//                (dialog, which) -> alertDialog.dismiss());
+//        // Setting OK Button
+//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+//                (dialog, which) -> {
+//                    if (Util.isConnected(HomeActivity.this)) {
+//                        //getUserData();
+//                    }
+//                });
+//
+//        // Showing Alert Message
+//        alertDialog.show();
+//    }
 
     private void showLogoutPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -454,7 +423,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    void callUsDialog() {
+    private void callUsDialog() {
         final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
 
@@ -486,6 +455,19 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         });
 
         dialog.show();
+    }
+
+    private void rateTheApp() {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
     }
 
     @Override

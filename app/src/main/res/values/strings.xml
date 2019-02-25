@@ -6,6 +6,8 @@
     <string name="select_lang">Select Language</string>
 
     <string name="ok">OK</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
     <string name="cancel">Cancel</string>
     <string name="no_thanks">No, thanks</string>
     <string name="update">Update</string>
@@ -51,7 +53,6 @@
     <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
-    <string name="role">Role</string>
     <string name="mandatory_state">State *</string>
     <string name="state">State </string>
     <string name="mandatory_district">District *</string>
@@ -66,7 +67,7 @@
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
-    <string name="update_data_string">Do you want to Update Data?</string>
+    <!--<string name="update_data_string">Do you want to Update Data?</string>-->
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
 
@@ -110,12 +111,9 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_logout">Logout</string>
 
-    <string name="my_profile">My Profile</string>
-    <string name="add_location">Add Location</string>
-    <string name="update_user_data">Update Data</string>
-    <string name="action_forms">Forms</string>
-    <string name="notification">Notification</string>
-    <string name="share_app">Share App</string>
+    <!--<string name="add_location">Add Location</string>-->
+    <!--<string name="update_user_data">Update Data</string>-->
+    <!--<string name="share_app">Share App</string>-->
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
@@ -150,6 +148,7 @@
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
     <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
 
+    <!--Forms-->
     <string name="category_title">Category Title</string>
     <string name="forms">Forms</string>
     <string name="no_records_available">Data is not available!</string>
@@ -158,8 +157,8 @@
     <string name="please_type_the_verification_code_n_sent_to">Please type the verification code\nsent to %1$s</string>
     <string name="forms_are_not_available">Forms are not available</string>
     <string name="reports">Reports</string>
+    <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
+    <string name="msg_confirm">Are you sure you want to leave this form?</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
-
-    <string name="submitted_form_count">Total count of submitted forms %1$s</string>
 </resources>

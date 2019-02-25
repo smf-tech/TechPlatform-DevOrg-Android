@@ -47,12 +47,10 @@ public class FormsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onDestroy() {
+        if (formsFragmentView != null) {
+            formsFragmentView = null;
+        }
         super.onDestroy();
     }
 

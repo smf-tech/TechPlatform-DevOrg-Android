@@ -44,7 +44,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private TextView mNoRecordsView;
     private List<ProcessData> mDataList = new ArrayList<>();
     private Map<String, List<ProcessDemoObject>> mFormList = new HashMap<>();
-    FormCategoryAdapter adapter;
+    private FormCategoryAdapter adapter;
 
     public CompletedFormsFragment() {
         // Required empty public constructor
@@ -151,7 +151,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     public static class ProcessDemoObject {
         String name;
         String id;
-
         String date;
 
         private ProcessDemoObject(String name, String id, final String date) {
@@ -164,25 +163,25 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             return date;
         }
 
-        public void setDate(final String date) {
-            this.date = date;
-        }
+//        public void setDate(final String date) {
+//            this.date = date;
+//        }
 
         public String getName() {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+//        public void setName(String name) {
+//            this.name = name;
+//        }
 
         public String getId() {
             return id;
         }
 
-        public void setId(String id) {
-            this.id = id;
-        }
+//        public void setId(String id) {
+//            this.id = id;
+//        }
     }
 
     static class FormResult {
@@ -191,7 +190,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String formID;
 
         @SerializedName("updated_at")
-        public String updatedAt;
+        String updatedAt;
 
         @SerializedName("_id")
         _ID mID;

@@ -3,6 +3,7 @@ package com.platform.view.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -75,7 +76,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private String errorMsg = "";
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
-    boolean mIsInEditMode;
+    private boolean mIsInEditMode;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -104,8 +105,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         super.onViewCreated(view, savedInstanceState);
 
         formPresenter = new FormActivityPresenter(this);
-//        profilePresenter = new ProfileActivityPresenter(this);
-
         mUploadedImageUrlList = new ArrayList<>();
 
         if (getArguments() != null) {
@@ -133,6 +132,29 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 formPresenter.getFormResults(processId);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (formDataArrayList != null) {
+            formDataArrayList.clear();
+            formDataArrayList = null;
+        }
+
+        if (mElementsListFromDB != null) {
+            mElementsListFromDB.clear();
+            mElementsListFromDB = null;
+        }
+
+        if (formPresenter != null) {
+            formPresenter = null;
+        }
+
+        if (formComponentCreator != null) {
+            formComponentCreator = null;
+        }
+
+        super.onDestroy();
     }
 
     private void initViews() {
@@ -277,7 +299,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public void showErrorMessage(String result) {
-
+        Log.d(TAG, "FORM_FRAGMENT_ERROR:" + result);
     }
 
     @Override
@@ -309,7 +331,21 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 Choice choice = new Choice();
                 choice.setText(text);
                 choice.setValue(value);
-                choiceValues.add(choice);
+
+                if (choiceValues.size() == 0) {
+                    choiceValues.add(choice);
+                } else {
+                    boolean isFound = false;
+                    for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                        if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        choiceValues.add(choice);
+                    }
+                }
             }
 
             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));
@@ -322,7 +358,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                getActivity().finish();
+                showConfirmPopUp();
                 break;
 
             case R.id.btn_submit:
@@ -357,6 +393,25 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 }
                 break;
         }
+    }
+
+    private void showConfirmPopUp() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.msg_confirm));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
+                (dialog, which) -> getActivity().finish());
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     private void saveFormToLocalDatabase() {

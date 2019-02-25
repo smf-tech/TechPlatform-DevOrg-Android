@@ -5,7 +5,7 @@ public class Urls {
     public class Login {
         public static final String GENERATE_OTP = "api/message/otp?phone=%1$s";
         public static final String GENERATE_TOKEN = "api/token?phone=%1$s&otp=%2$s";
-        public static final String REFRESH_TOKEN = "oauth/token";
+        public static final String REFRESH_TOKEN = "api/refreshtoken";
     }
 
     public class Profile {
@@ -13,7 +13,7 @@ public class Urls {
         public static final String GET_ORGANIZATION = "api/organizations";
         public static final String GET_ORGANIZATION_PROJECTS = "api/projects/%1$s";
         public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s";
-        public static final String GET_STATES = "api/states";
+        // public static final String GET_STATES = "api/states";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
         public static final String UPLOAD_IMAGE = "api/upload-image";
     }

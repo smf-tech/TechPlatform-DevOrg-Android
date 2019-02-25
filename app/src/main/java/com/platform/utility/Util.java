@@ -307,17 +307,17 @@ public class Util {
         editor.apply();
     }
 
-    public static void clearAllUserData() {
-        try {
-            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
+//    public static void clearAllUserData() {
+//        try {
+//            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+//                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.clear();
+//            editor.apply();
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
+//    }
 
     public static <T> void showToast(String msg, T context) {
         if (TextUtils.isEmpty(msg)) {
@@ -383,7 +383,7 @@ public class Util {
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         return date;
     }

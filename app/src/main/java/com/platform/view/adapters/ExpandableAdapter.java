@@ -118,10 +118,14 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             ProcessData data = processData.get(childPosition);
 
             ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().trim());
+
             if (groupPosition < mCountList.size()) {
                 String count = mCountList.get(groupPosition);
                 ((TextView) view.findViewById(R.id.submitted_count_label))
                         .setText(mContext.getString(R.string.submitted_form_count, count));
+            } else {
+                ((TextView) view.findViewById(R.id.submitted_count_label))
+                        .setText(mContext.getString(R.string.submitted_form_count, "0"));
             }
 
             view.findViewById(R.id.add_form_button).setOnClickListener(v -> {

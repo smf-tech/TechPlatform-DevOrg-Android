@@ -107,7 +107,7 @@ public class LoginRequestCall {
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(response.toString());
             }
         };
 

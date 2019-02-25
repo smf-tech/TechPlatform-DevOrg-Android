@@ -37,7 +37,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         TextView title;
         RelativeLayout container;
 
-        public ViewHolder(@NonNull final View itemView) {
+        ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.tv_report_title);

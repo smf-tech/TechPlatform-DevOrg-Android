@@ -6,6 +6,8 @@
     <string name="select_lang">भाषा निवडा</string>
 
     <string name="ok">ठीक</string>
+    <string name="yes">हो</string>
+    <string name="no">नाही</string>
     <string name="cancel">रद्द</string>
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन</string>
@@ -51,7 +53,6 @@
     <string name="mandatory_project">प्रकल्प *</string>
     <string name="project">प्रकल्प</string>
     <string name="mandatory_role">भूमिका *</string>
-    <string name="role">भूमिका</string>
     <string name="mandatory_state">राज्य *</string>
     <string name="state">राज्य</string>
     <string name="mandatory_district">जिल्हा *</string>
@@ -66,7 +67,7 @@
     <string name="school">संरचना नाव</string>
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
     <string name="update_profile">प्रोफाइल अद्ययावत करा</string>
-    <string name="update_data_string">तुम्हाला डेटा अपडेट करायचा आहे का?</string>
+    <!--<string name="update_data_string">तुम्हाला डेटा अपडेट करायचा आहे का?</string>-->
     <string name="approve_profile">आपण अद्याप मंजूर नाही.</string>
     <!--<string name="approve_profile2">तुम्हाला मान्यता देईल.</string>-->
 
@@ -110,11 +111,10 @@
     <string name="menu_settings">सेटिंग्ज</string>
     <string name="menu_logout">बाहेर पडा</string>
 
-    <string name="my_profile">माझी प्रोफाईल</string>
-    <string name="add_location">स्थान जोडा</string>
-    <string name="update_user_data">डेटा अद्ययावत करा</string>
-    <string name="notification">सूचना</string>
-    <string name="share_app">शेयर अॅप</string>
+    <!--<string name="add_location">स्थान जोडा</string>-->
+    <!--<string name="update_user_data">डेटा अद्ययावत करा</string>-->
+    <!--<string name="share_app">शेयर अॅप</string>-->
+
     <string name="drawer_open">ड्रॉवर उघडा</string>
     <string name="drawer_close">ड्रॉवर बंद करा</string>
     <string name="app_version">अॅप आवृत्ती</string>
@@ -148,7 +148,7 @@
     <string name="msg_image_capture_not_support">अरेरे - आपला डिव्हाइस प्रतिमा कॅप्चरिंगला समर्थन देत नाही!</string>
     <string name="msg_take_photo_error">अॅपला फोटो घेण्याची परवानगी नाही, कृपया त्यास अनुमती द्या.</string>
 
-    <string name="action_forms">फॉर्म</string>
+    <!--Forms-->
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">फॉर्म</string>
     <string name="no_records_available">डेटा उपलब्ध नाही!</string>
@@ -157,7 +157,9 @@
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s वर पाठविलेले सत्यापन कोड टाइप करा</string>
     <string name="forms_are_not_available">फॉर्म उपलब्ध नाहीत</string>
     <string name="reports">अहवाल</string>
+    <string name="submitted_form_count">सबमिट केलेल्या फॉर्मची एकूण संख्या : %1$s</string>
+    <string name="msg_confirm">आपणास खात्री आहे की आपण हा फॉर्म सोडू इच्छिता?</string>
 
-    <string name="coming_soon">Coming Soon&#8230;</string>
-    <string name="submitted_form_count">Total count of submitted forms %1$s</string>
+    <string name="coming_soon">लवकरच येत आहे&#8230;</string>
+
 </resources>
