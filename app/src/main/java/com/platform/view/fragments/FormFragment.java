@@ -1,9 +1,9 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -35,7 +35,6 @@ import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.presenter.FormActivityPresenter;
-import com.platform.request.ImageRequestCall;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -87,10 +86,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private File mImageFile;
     private boolean mImageUploaded;
     private List<String> mUploadedImageUrlList;
-    private ImageView imgUserProfilePic;
-    private ImageRequestCall uploadProfileImageCall;
     private ImageView mFileImageView;
-    private String mImageViewTag;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -201,9 +197,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
-                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
-                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                        } else if (elements.getChoicesByUrl() != null) {
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            if (elements.getChoicesByUrlResponse() != null) {
+                                showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            }
                         }
                         break;
 
@@ -240,9 +239,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
-                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
-                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                        } else if (elements.getChoicesByUrl() != null) {
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            if (elements.getChoicesByUrlResponse() != null) {
+                                showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            }
                         }
                         break;
 
@@ -260,6 +262,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
+    synchronized
     private void addViewToMainContainer(final View view) {
         getActivity().runOnUiThread(() -> {
             if (view != null) {
@@ -347,8 +350,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     }
                 }
             }
-
-            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));
+//            DropDownTemplate dropDownTemplate = (DropDownTemplate) customFormView.findViewWithTag(elements.getName());
+//            formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (JSONException e) {
             e.printStackTrace();
         }

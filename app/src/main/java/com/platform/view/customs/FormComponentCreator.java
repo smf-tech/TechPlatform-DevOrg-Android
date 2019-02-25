@@ -2,13 +2,8 @@ package com.platform.view.customs;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
@@ -38,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -117,13 +110,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized View dropDownTemplate(Elements formData, List<Choice> choiceValues) {
+    public synchronized View dropDownTemplate(Elements formData) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
 
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, choiceValues);
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
 
         View view;
         if (formData.isRequired() != null) {
@@ -134,16 +127,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         view.setTag(formData.getName());
 
-        if (choiceValues != null && !choiceValues.isEmpty()) {
-            for (int index = 0; index < choiceValues.size(); index++) {
-                if (!TextUtils.isEmpty(formData.getAnswer()) &&
-                        !TextUtils.isEmpty(choiceValues.get(index).getText()) &&
-                        formData.getAnswer().equals(choiceValues.get(index).getValue())) {
-                    template.setSelectedItem(index);
-                }
-            }
-        }
-
         dropDowns.add(template);
         dropDownElementsHashMap.put(template, formData);
 
@@ -153,6 +136,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         return view;
     }
+
+    /*public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "dropDownTemplate returned null");
+            return;
+        }
+    }*/
 
     public View textInputTemplate(final Elements formData) {
 
