@@ -26,6 +26,7 @@ import java.util.Map;
  * Created by Belal on 10/24/2017.
  */
 
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class VolleyEntity extends Request<NetworkResponse> {
 
     private final String twoHyphens = "--";
@@ -83,7 +84,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
 
             return bos.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
         return null;
     }
@@ -93,7 +94,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
      *
      * @return Map data part label with data byte
      */
-    protected Map<String, DataPart> getByteData() {
+    private Map<String, DataPart> getByteData() {
         return null;
     }
 
@@ -124,7 +125,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
      * @param dataOutputStream data output stream handle string parsing
      * @param params           string inputs collection
      * @param encoding         encode the inputs, default UTF-8
-     * @throws IOException
+     * @throws IOException     IOException
      */
     private void textParse(DataOutputStream dataOutputStream, Map<String, String> params, String encoding) throws IOException {
         try {
@@ -141,7 +142,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
      *
      * @param dataOutputStream data output stream handle file attachment
      * @param data             loop through data
-     * @throws IOException
+     * @throws IOException     IOException
      */
     private void dataParse(DataOutputStream dataOutputStream, Map<String, DataPart> data) throws IOException {
         for (Map.Entry<String, DataPart> entry : data.entrySet()) {
@@ -200,10 +201,11 @@ public class VolleyEntity extends Request<NetworkResponse> {
 
         try {
             BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
+            int read = buf.read(bytes, 0, bytes.length);
+            Log.i("TAG", "" + read);
             buf.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
 
 //        ByteArrayInputStream fileInputStream = new ByteArrayInputStream(dataFile.getContent());

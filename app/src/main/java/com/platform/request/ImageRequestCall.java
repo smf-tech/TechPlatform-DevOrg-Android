@@ -20,7 +20,7 @@ import static com.platform.utility.Util.getLoginObjectFromPref;
 
 public class ImageRequestCall {
 
-    ImageRequestCallListener listener;
+    private ImageRequestCallListener listener;
 
     public void setListener(final ImageRequestCallListener listener) {
         this.listener = listener;
@@ -105,7 +105,7 @@ public class ImageRequestCall {
             listener.onImageUploadedListener(response);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
             listener.onFailureListener(e.getMessage());
         } finally {
             if (fileInputStream != null) {
@@ -116,12 +116,10 @@ public class ImageRequestCall {
                         dos.close();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("TAG", e.getMessage());
                     listener.onFailureListener(e.getMessage());
                 }
             }
         }
-
     }
-
 }

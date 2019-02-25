@@ -144,7 +144,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

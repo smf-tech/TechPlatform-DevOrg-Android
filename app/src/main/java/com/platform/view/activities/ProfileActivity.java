@@ -7,10 +7,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,10 +49,7 @@ import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,11 +61,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         View.OnClickListener, AdapterView.OnItemSelectedListener,
         MultiSelectSpinner.MultiSpinnerListener {
 
-    public static final String FILE_SEP = "/";
-    public static final String IMAGE_PREFIX = "picture_";
-    public static final String IMAGE_SUFFIX = ".jpg";
-    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
-    public static final String IMAGE_TYPE_PROFILE = "profile";
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
     private EditText etUserLastName;
@@ -120,16 +108,14 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
 
-    //    private String selectedState;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
 
+    private boolean mImageUploaded;
+    private String mUploadedImageUrl;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = ProfileActivity.class.getName();
-    private File mImageFile;
-    private boolean mImageUploaded;
-    private String mUploadedImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -552,16 +538,16 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 imgUserProfilePic.setImageURI(finalUri);
-                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                File mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
-                    profilePresenter.uploadProfileImage(mImageFile, IMAGE_TYPE_PROFILE);
+                    profilePresenter.uploadProfileImage(mImageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
 
 //            Glide.with(this)
@@ -581,7 +567,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 //                                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 //                                profilePresenter.uploadProfileImage(mImageFile);
 //                            } catch (Exception e) {
-//                                e.printStackTrace();
+//                                Log.e(TAG, e.getMessage());
 //                            }
 //
 //                            return uploadImageHere(drawable);
@@ -595,58 +581,59 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + IMAGE_STORAGE_DIRECTORY);
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
                 Log.e(TAG, "Failed to create directory!");
                 return null;
             }
         }
-        return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
+//    File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
+//
+//        File imageFile = new File(dir, fileName);
+//        if (!imageFile.exists()) {
+//            try {
+//                if (!imageFile.createNewFile()) {
+//                    Log.e("app", "Failed to create new file");
+//                }
+//            } catch (IOException e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        }
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(imageFile);
+//            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+//            fos.close();
+//            return imageFile;
+//        } catch (IOException e) {
+//            Log.e("app", e.getMessage());
+//            if (fos != null) {
+//                try {
+//                    fos.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
-        File imageFile = new File(dir, fileName);
-        if (!imageFile.exists()) {
-            try {
-                if (!imageFile.createNewFile()) {
-                    Log.e("app", "Failed to create new file");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(imageFile);
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.close();
-            return imageFile;
-        } catch (IOException e) {
-            Log.e("app", e.getMessage());
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-    private void bitmapToFile(final Bitmap bitmap) {
-        FileOutputStream fos;
-        try {
-            mImageFile = File.createTempFile("profile_image", ".jpg", getFilesDir());
-            fos = new FileOutputStream(mImageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void bitmapToFile(final Bitmap bitmap) {
+//        FileOutputStream fos;
+//        try {
+//            mImageFile = File.createTempFile("profile_image", ".jpg", getFilesDir());
+//            fos = new FileOutputStream(mImageFile);
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//            fos.close();
+//        } catch (IOException e) {
+//            Log.e(TAG, e.getMessage());
+//        }
+//    }
 
     public void onImageUploaded(String uploadedImageUrl) {
         mImageUploaded = true;

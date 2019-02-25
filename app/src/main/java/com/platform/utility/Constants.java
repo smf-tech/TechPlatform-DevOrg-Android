@@ -164,4 +164,13 @@ public class Constants {
         public static final String INPUT_TYPE_ALPHABETS = "alphabets";
         public static final String INPUT_TYPE_TEXT = "text";
     }
+
+    public class Image {
+        public static final String FILE_SEP = "/";
+        public static final String IMAGE_PREFIX = "picture_";
+        public static final String IMAGE_SUFFIX = ".jpg";
+        public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+        public static final String IMAGE_TYPE_FILE = "form";
+        public static final String IMAGE_TYPE_PROFILE = "profile";
+    }
 }

@@ -127,7 +127,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 Log.e(TAG, "onPostExecute: Invalid response");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

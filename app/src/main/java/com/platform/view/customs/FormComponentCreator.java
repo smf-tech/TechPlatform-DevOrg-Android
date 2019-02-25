@@ -2,13 +2,8 @@ package com.platform.view.customs;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
@@ -38,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,11 +51,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
-    private LinearLayout fileTemplateView;
 
-    public LinearLayout getFileTemplateView() {
-        return fileTemplateView;
-    }
+//    public LinearLayout getFileTemplateView() {
+//        return fileTemplateView;
+//    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -263,7 +255,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             return null;
         }
 
-        fileTemplateView = (LinearLayout) View.inflate(
+        LinearLayout fileTemplateView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_file_type, null);
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
@@ -431,7 +423,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                 dropDownTemplate.setListData(choiceValues);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
 

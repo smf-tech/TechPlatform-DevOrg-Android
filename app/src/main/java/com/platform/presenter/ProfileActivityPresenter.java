@@ -1,7 +1,6 @@
 package com.platform.presenter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
@@ -102,13 +101,13 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     }
 
-    public void uploadProfileImage(Bitmap bitmap) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.uploadBitmap(bitmap);
-    }
+//    public void uploadProfileImage(Bitmap bitmap) {
+//        ProfileRequestCall requestCall = new ProfileRequestCall();
+//        requestCall.setListener(this);
+//
+//        profileActivity.get().showProgressBar();
+//        requestCall.uploadBitmap(bitmap);
+//    }
 
     @Override
     public void onProfileUpdated(String response) {
@@ -209,9 +208,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     public void onImageUploadedListener(final String response) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
 
-        profileActivity.get().runOnUiThread(() -> {
-            Util.showToast("Image uploaded", profileActivity.get());
-        });
+        profileActivity.get().runOnUiThread(() -> Util.showToast("Image uploaded", profileActivity.get()));
 
         profileActivity.get().hideProgressBar();
 
@@ -226,8 +223,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
                 Log.e(TAG, "onPostExecute: Invalid response");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
-
     }
 }

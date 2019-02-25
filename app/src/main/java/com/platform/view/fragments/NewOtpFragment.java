@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 //import android.content.BroadcastReceiver;
+//import android.content.Context;
 import android.content.Intent;
 //import android.content.IntentFilter;
 import android.os.Bundle;
@@ -245,7 +246,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 clearOtp();
 
                 if (timer != null) {
-                    timer.cancel();
+                    timer.start();
                 }
 
                 if (!isSmsReceiverRegistered) {
@@ -293,6 +294,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             timer.cancel();
             tvOtpTimer.setText("");
             tvOtpTimer.setVisibility(View.GONE);
+            timer = null;
         }
 
         timer = new CountDownTimer(30000, 1000) {
