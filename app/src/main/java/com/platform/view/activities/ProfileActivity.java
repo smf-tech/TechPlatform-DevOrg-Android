@@ -7,6 +7,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,7 +33,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
@@ -49,16 +52,26 @@ import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
 public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener,
         MultiSelectSpinner.MultiSpinnerListener {
 
+    public static final String FILE_SEP = "/";
+    public static final String IMAGE_PREFIX = "picture_";
+    public static final String IMAGE_SUFFIX = ".jpg";
+    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+    public static final String IMAGE_TYPE_PROFILE = "profile";
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
     private EditText etUserLastName;
@@ -112,6 +125,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = ProfileActivity.class.getName();
+    private File mImageFile;
+    private boolean mImageUploaded;
+    private String mUploadedImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,6 +365,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setProjectIds(selectedProjects);
             userInfo.setRoleIds(selectedRole.getId());
 
+            if (mImageUploaded && !TextUtils.isEmpty(mUploadedImageUrl))
+                userInfo.setProfilePic(mUploadedImageUrl);
+
             UserLocation userLocation = new UserLocation();
             ArrayList<String> s = new ArrayList<>();
             for (JurisdictionType state : selectedStates) {
@@ -487,8 +506,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
-                String imageFilePath = "/MV/Image/picture_crop.jpg";
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) return;
+
                 finalUri = Util.getUri(imageFilePath);
+                // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
                 Crop.of(outputUri, finalUri).asSquare().start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -496,19 +518,119 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = "/MV/Image/picture_crop.jpg";
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) return;
+
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
+                    // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
                     Crop.of(outputUri, finalUri).asSquare().start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            Glide.with(this)
-                    .load(finalUri)
-                    .into(imgUserProfilePic);
+            try {
+                imgUserProfilePic.setImageURI(finalUri);
+                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+
+                if (Util.isConnected(this)) {
+                    profilePresenter.uploadProfileImage(mImageFile, IMAGE_TYPE_PROFILE);
+                } else {
+                    Util.showToast("Internet is not available!", this);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            Glide.with(this)
+//                    .load(finalUri)
+//                    .listener(new RequestListener<Drawable>() {
+//                        @Override
+//                        public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
+//                            Util.showToast("Filed to load selected image!", ProfileActivity.this);
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onResourceReady(final Drawable drawable, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+//                            imgUserProfilePic.setImageURI(finalUri);
+//
+//                            try {
+//                                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+//                                profilePresenter.uploadProfileImage(mImageFile);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            return uploadImageHere(drawable);
+//
+//                        }
+//                    })
+//                    .into(imgUserProfilePic);
         }
+    }
+
+    private String getImageName() {
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
+    }
+
+    File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
+
+        File imageFile = new File(dir, fileName);
+        if (!imageFile.exists()) {
+            try {
+                if (!imageFile.createNewFile()) {
+                    Log.e("app", "Failed to create new file");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(imageFile);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+            return imageFile;
+        } catch (IOException e) {
+            Log.e("app", e.getMessage());
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    private void bitmapToFile(final Bitmap bitmap) {
+        FileOutputStream fos;
+        try {
+            mImageFile = File.createTempFile("profile_image", ".jpg", getFilesDir());
+            fos = new FileOutputStream(mImageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onImageUploaded(String uploadedImageUrl) {
+        mImageUploaded = true;
+        mUploadedImageUrl = uploadedImageUrl;
     }
 
     @Override
@@ -906,7 +1028,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public void showErrorMessage(String result) {
-        Util.showToast(result, this);
+        runOnUiThread(() -> Util.showToast(result, this));
     }
 
     @Override

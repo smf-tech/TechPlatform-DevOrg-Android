@@ -18,7 +18,7 @@
 
     <!--Login screen-->
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाइल नंबर प्रविष्ट करा!</string>
-    <string name="msg_manual_otp">आम्ही स्वयंचलितपणे एसएमएसवरून ओटीपी शोधण्यात अयशस्वी झालो तर खालील ओटीपी प्रविष्ट करा</string>
+    <!--<string name="msg_manual_otp">आम्ही स्वयंचलितपणे एसएमएसवरून ओटीपी शोधण्यात अयशस्वी झालो तर खालील ओटीपी प्रविष्ट करा</string>-->
     <string name="msg_mobile_number_is_empty">मोबाइल नंबर रिक्त आहे</string>
     <string name="msg_mobile_number_is_invalid">वैध मोबाइल नंबर नाही</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
@@ -27,7 +27,7 @@
     <string name="label_login">लॉगइन</string>
     <string name="label_time">वेळ</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
-    <string name="check_otp">कृपया OTP तपासा</string>
+    <!--<string name="check_otp">कृपया OTP तपासा</string>-->
     <string name="otp_timeout_text">वेळ संपला %1$s सेकंद</string>
     <string name="msg_otp_verification_timeout"> OTP सत्यापित करण्याची वेळ संपली, कृपया पुन्हा प्रयत्न करा</string>
     <string name="msg_waiting_for_otp_text">वर दिलेल्या तुमच्या नोंणदणीकृत मोबाइल क्रमांकावर पाठविलेल्या OTP प्रतिक्षा करत आहात</string>

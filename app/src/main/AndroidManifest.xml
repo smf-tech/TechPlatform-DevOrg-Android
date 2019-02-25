@@ -108,7 +108,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
         <provider
             android:name=".syncAdapter.ContentProvider"
             android:authorities="com.platform"
@@ -126,7 +125,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
-
         <service
             android:name=".syncAdapter.GenericAccountService"
             tools:ignore="ExportedService">
@@ -138,5 +136,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
     </application>
+
 </manifest>

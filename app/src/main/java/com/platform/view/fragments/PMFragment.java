@@ -1,10 +1,14 @@
 package com.platform.view.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,7 +37,13 @@ import com.platform.view.adapters.PendingFormsAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
+import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.saveFormCategoryForSync;
 
 @SuppressWarnings("CanBeFinal")
@@ -46,6 +56,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private RecyclerView rvPendingForms;
     private RelativeLayout rltPendingForms;
     private final String TAG = PMFragment.class.getName();
+    private PendingFormsAdapter pendingFormsAdapter;
+    List<SavedForm> mSavedForms;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -63,6 +75,63 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
         pmFragmentPresenter.getAllProcess();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(EVENT_SYNC_COMPLETED);
+        filter.addAction(EVENT_SYNC_FAILED);
+
+        SyncAdapterBroadCastReceiver(filter);
+    }
+
+    private void SyncAdapterBroadCastReceiver(final IntentFilter filter) {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
+                    Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
+
+                    int formID = intent.getIntExtra(EXTRA_FORM_ID, 0);
+                    updateAdapter(context, formID);
+                } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
+                    updateAdapter(context, 0);
+                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
+                    Log.e("PendingForms", "Sync failed!");
+                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, filter);
+    }
+
+    private void updateAdapter(final Context context, final int formID) {
+        if (pendingFormsAdapter == null) {
+            pendingFormsAdapter = (PendingFormsAdapter) rvPendingForms.getAdapter();
+            if (mSavedForms == null) {
+                mSavedForms = new ArrayList<>();
+            }
+        }
+
+        if (formID == 0) {
+            mSavedForms.clear();
+            mSavedForms.addAll(getAllNonSyncedSavedForms(context));
+        } else {
+            List<SavedForm> list = new ArrayList<>(mSavedForms);
+            for (final SavedForm form : mSavedForms) {
+                if (formID == form.id) {
+                    list.remove(form);
+                }
+            }
+            mSavedForms.clear();
+            mSavedForms.addAll(list);
+        }
+
+        if (mSavedForms != null && !mSavedForms.isEmpty()) {
+            rltPendingForms.setVisibility(View.VISIBLE);
+            if (pendingFormsAdapter != null) {
+                pendingFormsAdapter.notifyDataSetChanged();
+            }
+        } else {
+            rltPendingForms.setVisibility(View.GONE);
+        }
     }
 
     private void init() {
@@ -75,8 +144,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void setPendingForms() {
-        List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
-        if (savedForms != null && !savedForms.isEmpty()) {
+        mSavedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
+        if (mSavedForms != null && !mSavedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.sync_button).setOnClickListener(v -> {
@@ -90,7 +159,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 }
             });
 
-            PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
+            pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
         } else {
@@ -199,4 +268,5 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void showErrorMessage(String result) {
 
     }
+
 }

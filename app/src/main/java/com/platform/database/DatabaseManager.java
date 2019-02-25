@@ -54,4 +54,9 @@ public class DatabaseManager {
         FormDataDao formDataDao = appDatabase.formDataDao();
         return formDataDao.getFormSchema(processId);
     }
+
+    public void deleteForm(FormData formData) {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        formDataDao.delete(formData);
+    }
 }

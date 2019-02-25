@@ -69,6 +69,9 @@ public class UserInfo implements Parcelable {
     @SerializedName("project_id")
     @Expose
     private ArrayList<String> projectIds;
+    @SerializedName("profile_pic")
+    @Expose
+    private String profilePic;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
@@ -130,6 +133,7 @@ public class UserInfo implements Parcelable {
         userEmailId = in.readString();
         userGender = in.readString();
         approveStatus = in.readString();
+        profilePic = in.readString();
     }
 
     public String getId() {
@@ -229,5 +233,14 @@ public class UserInfo implements Parcelable {
         parcel.writeString(userEmailId);
         parcel.writeString(userGender);
         parcel.writeString(approveStatus);
+        parcel.writeString(profilePic);
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
     }
 }

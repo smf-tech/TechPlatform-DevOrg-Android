@@ -4,8 +4,10 @@ import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.platform.BuildConfig;
@@ -32,6 +34,7 @@ import java.net.URL;
 import java.util.List;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.getFormCategoryForSyncFromPref;
 import static com.platform.utility.Util.getLoginObjectFromPref;
 
@@ -61,19 +64,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncSavedForms() {
-        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
+        List<SavedForm> savedForms;
+        if (getContext() == null) {
+            savedForms = getAllNonSyncedSavedForms();
+        } else {
+            savedForms = getAllNonSyncedSavedForms(getContext());
+        }
+
         if (savedForms != null) {
             String formSyncCategory = getFormCategoryForSyncFromPref();
             for (final SavedForm form : savedForms) {
-                if (!form.isSynced() && form.getFormCategory() != null) {
-                    try {
-                        if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
+                if (!form.isSynced()) {
+                    if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
+                        try {
                             submitForm(form);
+                        } catch (MalformedURLException e) {
+                            Log.e(TAG, e.getMessage());
                         }
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
                     }
                 }
+                break;
             }
         }
     }
@@ -113,6 +123,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if (errorStream != null) {
                 String response = readStream(errorStream);
                 Log.e(TAG, "Response \n" + response);
+
+                sendBroadCast(form, SyncAdapterUtils.EVENT_SYNC_FAILED);
+
             } else {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 String response = readStream(in);
@@ -130,6 +143,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void updateForm(final SavedForm form) {
         form.setSynced(true);
         DatabaseManager.getDBInstance(getContext()).updateFormObject(form);
+
+        sendBroadCast(form, SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+    }
+
+    private void sendBroadCast(final SavedForm form, final String syncEvent) {
+        Intent intent = new Intent(syncEvent);
+        if (syncEvent.equals(SyncAdapterUtils.EVENT_SYNC_COMPLETED))
+            intent.putExtra(EXTRA_FORM_ID, form.id);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     private String readStream(final InputStream stream) throws IOException {

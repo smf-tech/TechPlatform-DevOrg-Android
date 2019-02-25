@@ -1,10 +1,14 @@
 package com.platform.presenter;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
@@ -12,14 +16,19 @@ import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
+import com.platform.request.ImageRequestCall;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
 import com.platform.view.activities.ProfileActivity;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class ProfileActivityPresenter implements ProfileRequestCallListener {
+public class ProfileActivityPresenter implements ProfileRequestCallListener,
+        ImageRequestCallListener {
 
     private final String TAG = ProfileActivityPresenter.class.getName();
     private WeakReference<ProfileActivity> profileActivity;
@@ -74,6 +83,31 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
         profileActivity.get().showProgressBar();
         requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void uploadProfileImage(File file, String type) {
+        ImageRequestCall requestCall = new ImageRequestCall();
+        requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                requestCall.uploadImageUsingHttpURLEncoded(file, type);
+                return null;
+            }
+        }.execute();
+
+    }
+
+    public void uploadProfileImage(Bitmap bitmap) {
+        ProfileRequestCall requestCall = new ProfileRequestCall();
+        requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
+        requestCall.uploadBitmap(bitmap);
     }
 
     @Override
@@ -163,11 +197,37 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "Error" + error);
+        Log.i(TAG, "Error: " + error);
         profileActivity.get().hideProgressBar();
 
         if (error != null) {
             profileActivity.get().showErrorMessage(error.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void onImageUploadedListener(final String response) {
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+
+        profileActivity.get().runOnUiThread(() -> {
+            Util.showToast("Image uploaded", profileActivity.get());
+        });
+
+        profileActivity.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+
+                profileActivity.get().onImageUploaded(url);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -1,7 +1,6 @@
 package com.platform.view.fragments;
 
 //import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 //import android.content.IntentFilter;
 import android.os.Bundle;
@@ -70,11 +69,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     public NewOtpFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     /**
