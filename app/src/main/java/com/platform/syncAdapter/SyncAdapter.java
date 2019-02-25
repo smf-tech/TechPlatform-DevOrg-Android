@@ -83,7 +83,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         }
                     }
                 }
-                break;
             }
         }
     }

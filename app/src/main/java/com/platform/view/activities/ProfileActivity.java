@@ -60,11 +60,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         View.OnClickListener, AdapterView.OnItemSelectedListener,
         MultiSelectSpinner.MultiSpinnerListener {
 
-    public static final String FILE_SEP = "/";
-    public static final String IMAGE_PREFIX = "picture_";
-    public static final String IMAGE_SUFFIX = ".jpg";
-    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
-    public static final String IMAGE_TYPE_PROFILE = "profile";
+    private static final String FILE_SEP = "/";
+    private static final String IMAGE_PREFIX = "picture_";
+    private static final String IMAGE_SUFFIX = ".jpg";
+    private static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+    private static final String IMAGE_TYPE_PROFILE = "profile";
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
     private EditText etUserLastName;

@@ -51,11 +51,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
-    private LinearLayout fileTemplateView;
-
-    public LinearLayout getFileTemplateView() {
-        return fileTemplateView;
-    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);

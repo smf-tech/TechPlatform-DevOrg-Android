@@ -20,7 +20,7 @@ import static com.platform.utility.Util.getLoginObjectFromPref;
 
 public class ImageRequestCall {
 
-    ImageRequestCallListener listener;
+    private ImageRequestCallListener listener;
 
     public void setListener(final ImageRequestCallListener listener) {
         this.listener = listener;

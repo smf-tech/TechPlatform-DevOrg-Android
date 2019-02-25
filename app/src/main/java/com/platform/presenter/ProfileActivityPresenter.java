@@ -1,7 +1,6 @@
 package com.platform.presenter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
@@ -102,14 +101,14 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     }
 
-    public void uploadProfileImage(Bitmap bitmap) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
+    /* public void uploadProfileImage(Bitmap bitmap) {
+         ProfileRequestCall requestCall = new ProfileRequestCall();
+         requestCall.setListener(this);
 
-        profileActivity.get().showProgressBar();
-        requestCall.uploadBitmap(bitmap);
-    }
-
+         profileActivity.get().showProgressBar();
+         requestCall.uploadBitmap(bitmap);
+     }
+ */
     @Override
     public void onProfileUpdated(String response) {
         User user = new Gson().fromJson(response, User.class);
@@ -209,9 +208,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     public void onImageUploadedListener(final String response, final String formName) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
 
-        profileActivity.get().runOnUiThread(() -> {
-            Util.showToast("Image uploaded", profileActivity.get());
-        });
+        profileActivity.get().runOnUiThread(() -> Util.showToast("Image uploaded", profileActivity.get()));
 
         profileActivity.get().hideProgressBar();
 

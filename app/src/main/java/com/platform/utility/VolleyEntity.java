@@ -32,8 +32,8 @@ public class VolleyEntity extends Request<NetworkResponse> {
     private final String lineEnd = "\r\n";
     private final String boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
 
-    private Response.Listener<NetworkResponse> mListener;
-    private Response.ErrorListener mErrorListener;
+    final private Response.Listener<NetworkResponse> mListener;
+    final private Response.ErrorListener mErrorListener;
     private Map<String, String> mHeaders;
 
 
@@ -124,7 +124,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
      * @param dataOutputStream data output stream handle string parsing
      * @param params           string inputs collection
      * @param encoding         encode the inputs, default UTF-8
-     * @throws IOException
+     * @throws IOException -
      */
     private void textParse(DataOutputStream dataOutputStream, Map<String, String> params, String encoding) throws IOException {
         try {
@@ -141,7 +141,7 @@ public class VolleyEntity extends Request<NetworkResponse> {
      *
      * @param dataOutputStream data output stream handle file attachment
      * @param data             loop through data
-     * @throws IOException
+     * @throws IOException -
      */
     private void dataParse(DataOutputStream dataOutputStream, Map<String, DataPart> data) throws IOException {
         for (Map.Entry<String, DataPart> entry : data.entrySet()) {
@@ -200,7 +200,8 @@ public class VolleyEntity extends Request<NetworkResponse> {
 
         try {
             BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
+            int read = buf.read(bytes, 0, bytes.length);
+            Log.d("VolleyEntity", "buildDataPart1: " + read);
             buf.close();
         } catch (IOException e) {
             e.printStackTrace();

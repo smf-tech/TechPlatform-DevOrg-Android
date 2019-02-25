@@ -57,7 +57,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private RelativeLayout rltPendingForms;
     private final String TAG = PMFragment.class.getName();
     private PendingFormsAdapter pendingFormsAdapter;
-    List<SavedForm> mSavedForms;
+    private List<SavedForm> mSavedForms;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

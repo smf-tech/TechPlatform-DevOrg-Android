@@ -59,7 +59,7 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
-    public static final String IMAGE_TYPE_FORM = "form";
+    private static final String IMAGE_TYPE_FORM = "form";
     private final String TAG = this.getClass().getSimpleName();
 
     private View formFragmentView;
@@ -79,10 +79,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     private Uri outputUri;
     private Uri finalUri;
-    public static final String FILE_SEP = "/";
-    public static final String IMAGE_PREFIX = "picture_";
-    public static final String IMAGE_SUFFIX = ".jpg";
-    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+    private static final String FILE_SEP = "/";
+    private static final String IMAGE_PREFIX = "picture_";
+    private static final String IMAGE_SUFFIX = ".jpg";
+    private static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
     private ImageView mFileImageView;
     private String mFormName;
 
