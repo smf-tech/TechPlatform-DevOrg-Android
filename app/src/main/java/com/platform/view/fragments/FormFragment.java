@@ -189,9 +189,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
-                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
-                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                        } else if (elements.getChoicesByUrl() != null) {
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            if (elements.getChoicesByUrlResponse() != null) {
+                                showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            }
                         }
                         break;
 
@@ -228,9 +231,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, elements.getChoices()));
-                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
-                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                        } else if (elements.getChoicesByUrl() != null) {
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            if (elements.getChoicesByUrlResponse() != null) {
+                                showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            }
                         }
                         break;
 
@@ -248,6 +254,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
+    synchronized
     private void addViewToMainContainer(final View view) {
         getActivity().runOnUiThread(() -> {
             if (view != null) {
@@ -335,8 +342,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     }
                 }
             }
-
-            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, choiceValues));
+//            DropDownTemplate dropDownTemplate = (DropDownTemplate) customFormView.findViewWithTag(elements.getName());
+//            formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }

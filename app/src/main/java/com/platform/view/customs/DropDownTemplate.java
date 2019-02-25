@@ -1,6 +1,7 @@
 package com.platform.view.customs;
 
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,11 +31,10 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private List<Choice> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener, List<Choice> valueList) {
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
-        this.valueList = valueList;
     }
 
     public List<Choice> getValueList() {
@@ -69,12 +69,6 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-//        if (formData.isRequired() != null) {
-//            spinner.setEnabled(formData.isRequired());
-//        } else {
-//            spinner.setEnabled(false);
-//        }
-
         return baseLayout;
     }
 
@@ -86,6 +80,16 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
             adapter.clear();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
+
+            if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
+                for (int index = 0; index < formData.getChoices().size(); index++) {
+                    if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                            !TextUtils.isEmpty(formData.getChoices().get(index).getText()) &&
+                            formData.getAnswer().equals(formData.getChoices().get(index).getValue())) {
+                        this.setSelectedItem(index);
+                    }
+                }
+            }
         }
     }
 
