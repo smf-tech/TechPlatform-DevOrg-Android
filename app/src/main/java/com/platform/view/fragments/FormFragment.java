@@ -59,7 +59,6 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
-    public static final String IMAGE_TYPE_FILE = "form";
     private final String TAG = this.getClass().getSimpleName();
 
     private View formFragmentView;
@@ -79,12 +78,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     private Uri outputUri;
     private Uri finalUri;
-    public static final String FILE_SEP = "/";
-    public static final String IMAGE_PREFIX = "picture_";
-    public static final String IMAGE_SUFFIX = ".jpg";
-    public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
-    private File mImageFile;
-    private boolean mImageUploaded;
+
     private List<String> mUploadedImageUrlList;
     private ImageView mFileImageView;
 
@@ -353,7 +347,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 //            DropDownTemplate dropDownTemplate = (DropDownTemplate) customFormView.findViewWithTag(elements.getName());
 //            formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -468,7 +462,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         if (formComponentCreator != null)
@@ -490,7 +484,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             break;
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                 }
             }
         }
@@ -562,38 +556,39 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 //                LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
 //                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());
                 mFileImageView.setImageURI(finalUri);
-                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                File mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(getContext())) {
                     FormActivityPresenter presenter = new FormActivityPresenter(this);
-                    presenter.uploadProfileImage(mImageFile, IMAGE_TYPE_FILE);
+                    presenter.uploadProfileImage(mImageFile, Constants.Image.IMAGE_TYPE_FILE);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
-
         }
     }
 
     public void onImageUploaded(String uploadedImageUrl) {
-        mImageUploaded = true;
+//        boolean mImageUploaded = true;
         mUploadedImageUrlList.add(uploadedImageUrl);
+        Log.e(TAG, "Image Url list size:!" + mUploadedImageUrlList.size());
     }
 
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + IMAGE_STORAGE_DIRECTORY);
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
                 Log.e(TAG, "Failed to create directory!");
                 return null;
             }
         }
-        return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.platform.request;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -12,9 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.ProfileRequestCallListener;
-import com.platform.models.login.Login;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
@@ -22,36 +19,17 @@ import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
-import com.platform.utility.VolleyEntity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.platform.utility.Util.getLoginObjectFromPref;
 
 public class ProfileRequestCall {
 
     @SuppressWarnings("CanBeFinal")
     private Gson gson;
     private ProfileRequestCallListener listener;
-    private ImageRequestCallListener imagListener;
     private final String TAG = ProfileRequestCall.class.getName();
-    private File mImageFile;
 
     public ProfileRequestCall() {
         gson = new GsonBuilder().serializeNulls().create();
@@ -221,157 +199,60 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void uploadBitmap(final Bitmap bitmap) {
-        VolleyEntity volleyMultipartRequest = new VolleyEntity(Request.Method.POST, BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE,
-                response -> {
-                    try {
-                        JSONObject obj = new JSONObject(new String(response.data));
-                        Log.e(TAG, "onResponse: " + obj.getString("message"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-                error -> {
-                    Log.e(TAG, "onResponse#error: " + error.getMessage());
-                }) {
-
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "multipart/form-data");
-
-                Login loginObj = getLoginObjectFromPref();
-                if (loginObj != null && loginObj.getLoginData() != null &&
-                        loginObj.getLoginData().getAccessToken() != null) {
-                    params.put(Constants.Login.AUTHORIZATION,
-                            "Bearer " + loginObj.getLoginData().getAccessToken());
-                }
-                return params;
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("type", "profile");
-                return params;
-            }
-
-            @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
-                long imagename = System.currentTimeMillis();
-                params.put("image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap), "multipart/form-data"));
-                return params;
-            }
-        };
-        volleyMultipartRequest.setHeaderParams(getHeaders());
-
-        Platform.getInstance().getVolleyRequestQueue().add(volleyMultipartRequest);
-    }
-
-//    public void uploadImageUsingHttpURLEncoded(File file) {
-//        final String twoHyphens = "--";
-//        final String lineEnd = "\r\n";
-//        final String boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
-//        String response;
+//    public void uploadBitmap(final Bitmap bitmap) {
+//        VolleyEntity volleyMultipartRequest = new VolleyEntity(Request.Method.POST,
+//                BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE,
 //
-//        FileInputStream fileInputStream = null;
-//        DataOutputStream dos = null;
-//        try {
-//            fileInputStream = new FileInputStream(file);
-//            URL connectURL = new URL(BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE);
-//            HttpURLConnection conn = (HttpURLConnection) connectURL.openConnection();
-//            conn.setDoInput(true);
-//            conn.setDoOutput(true);
-//            conn.setUseCaches(false);
-//            conn.setRequestMethod("POST");
-//
-//            Login loginObj = getLoginObjectFromPref();
-//            if (loginObj != null && loginObj.getLoginData() != null &&
-//                    loginObj.getLoginData().getAccessToken() != null) {
-//                conn.setRequestProperty(Constants.Login.AUTHORIZATION,
-//                        "Bearer " + loginObj.getLoginData().getAccessToken());
-//            }
-//            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-//            dos = new DataOutputStream(conn.getOutputStream());
-//            dos.writeBytes(twoHyphens + boundary + lineEnd);
-//            dos.writeBytes("Content-Disposition: form-data; name=\"type\"" + lineEnd);
-//            dos.writeBytes(lineEnd);
-//            dos.writeBytes("profile");
-//            dos.writeBytes(lineEnd);
-//            dos.writeBytes(twoHyphens + boundary + lineEnd);
-//            dos.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\"" + file.getName() + "\"" + lineEnd);
-//            dos.writeBytes(lineEnd);
-//
-//            int bytesAvailable = fileInputStream.available();
-//
-//            int maxBufferSize = 1024;
-//            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-//            byte[] buffer = new byte[bufferSize];
-//
-//            int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-//
-//            while (bytesRead > 0) {
-//                dos.write(buffer, 0, bufferSize);
-//                bytesAvailable = fileInputStream.available();
-//                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-//                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-//            }
-//            dos.writeBytes(lineEnd);
-//            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-//            fileInputStream.close();
-//            dos.flush();
-//
-//            int ch;
-//            InputStream errorStream = conn.getErrorStream();
-//            if (errorStream != null) {
-//                StringBuilder b = new StringBuilder();
-//                while ((ch = errorStream.read()) != -1) {
-//                    b.append((char) ch);
-//                }
-//
-//                response = b.toString();
-//                imagListener.onFailureListener(response);
-//                Log.i("Error#Response", response);
-//                return;
-//            }
-//
-//            InputStream is = conn.getInputStream();
-//
-//            StringBuilder b = new StringBuilder();
-//            while ((ch = is.read()) != -1) {
-//                b.append((char) ch);
-//            }
-//            response = b.toString();
-//            Log.i("Success#Response", response);
-//
-//            imagListener.onImageUploadedListener(response);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            imagListener.onFailureListener(e.getMessage());
-//        } finally {
-//            if (fileInputStream != null) {
-//                try {
-//                    fileInputStream.close();
-//                    if (dos != null) {
-//                        dos.flush();
-//                        dos.close();
+//                response -> {
+//                    try {
+//                        JSONObject obj = new JSONObject(new String(response.data));
+//                        Log.e(TAG, "onResponse: " + obj.getString("message"));
+//                    } catch (JSONException e) {
+//                        Log.e(TAG, e.getMessage());
 //                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    imagListener.onFailureListener(e.getMessage());
-//                }
-//            }
-//        }
+//                },
+//                error -> Log.e(TAG, "onResponse#error: " + error.getMessage())) {
 //
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "multipart/form-data");
+//
+//                Login loginObj = getLoginObjectFromPref();
+//                if (loginObj != null && loginObj.getLoginData() != null &&
+//                        loginObj.getLoginData().getAccessToken() != null) {
+//                    params.put(Constants.Login.AUTHORIZATION,
+//                            "Bearer " + loginObj.getLoginData().getAccessToken());
+//                }
+//                return params;
+//            }
+//
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("type", "profile");
+//                return params;
+//            }
+//
+//            @Override
+//            protected Map<String, DataPart> getByteData() {
+//                Map<String, DataPart> params = new HashMap<>();
+//                long imageName = System.currentTimeMillis();
+//                params.put("image", new DataPart(imageName + ".png",
+//                        getFileDataFromDrawable(bitmap), "multipart/form-data"));
+//                return params;
+//            }
+//        };
+//
+//        volleyMultipartRequest.setHeaderParams(getHeaders());
+//        Platform.getInstance().getVolleyRequestQueue().add(volleyMultipartRequest);
 //    }
 
-    private byte[] getFileDataFromDrawable(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
+//    private byte[] getFileDataFromDrawable(Bitmap bitmap) {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+//        return byteArrayOutputStream.toByteArray();
+//    }
 
     private JsonObject createBodyParams(UserInfo userInfo) {
         JsonObject body = new JsonObject();
@@ -456,24 +337,17 @@ public class ProfileRequestCall {
         return body;
     }
 
-    private Map<String, Object> getParams() {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("image", mImageFile);
-        parameters.put("type", "profile");
-        return parameters;
-    }
-
-    private static Map<String, String> getHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "multipart/form-data");
-
-        Login loginObj = getLoginObjectFromPref();
-        if (loginObj != null && loginObj.getLoginData() != null &&
-                loginObj.getLoginData().getAccessToken() != null) {
-            headers.put(Constants.Login.AUTHORIZATION,
-                    "Bearer " + loginObj.getLoginData().getAccessToken());
-        }
-
-        return headers;
-    }
+//    private static Map<String, String> getHeaders() {
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "multipart/form-data");
+//
+//        Login loginObj = getLoginObjectFromPref();
+//        if (loginObj != null && loginObj.getLoginData() != null &&
+//                loginObj.getLoginData().getAccessToken() != null) {
+//            headers.put(Constants.Login.AUTHORIZATION,
+//                    "Bearer " + loginObj.getLoginData().getAccessToken());
+//        }
+//
+//        return headers;
+//    }
 }

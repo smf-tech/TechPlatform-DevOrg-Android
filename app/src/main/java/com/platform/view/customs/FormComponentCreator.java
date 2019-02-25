@@ -51,11 +51,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
-    private LinearLayout fileTemplateView;
 
-    public LinearLayout getFileTemplateView() {
-        return fileTemplateView;
-    }
+//    public LinearLayout getFileTemplateView() {
+//        return fileTemplateView;
+//    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -253,7 +252,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             return null;
         }
 
-        fileTemplateView = (LinearLayout) View.inflate(
+        LinearLayout fileTemplateView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_file_type, null);
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
@@ -421,7 +420,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                 dropDownTemplate.setListData(choiceValues);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
 
