@@ -2,13 +2,8 @@ package com.platform.view.customs;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
@@ -38,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,11 +51,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropdowns = new ArrayList<>();
-    private LinearLayout fileTemplateView;
-
-    public LinearLayout getFileTemplateView() {
-        return fileTemplateView;
-    }
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -263,15 +251,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             return null;
         }
 
-        fileTemplateView = (LinearLayout) View.inflate(
+        final LinearLayout fileTemplateView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_file_type, null);
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
         imageView.setTag(formData.getTitle());
-        imageView.setOnClickListener(v -> {
-            Log.e(TAG, "fileTemplate: " + v.getTag());
-            showPictureDialog(v);
-        });
+        imageView.setOnClickListener(v -> showPictureDialog(v, formData.getName()));
 
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
@@ -463,7 +448,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         editTextElementsHashMap = new HashMap<>();
     }
 
-    private void showPictureDialog(final View view) {
+    private void showPictureDialog(final View view, final String name) {
         Context context = fragment.get().getContext();
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(context.getString(R.string.title_choose_picture));
@@ -472,11 +457,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         dialog.setItems(items, (dialog1, which) -> {
             switch (which) {
                 case 0:
-                    fragment.get().choosePhotoFromGallery(view);
+                    fragment.get().choosePhotoFromGallery(view, name);
                     break;
 
                 case 1:
-                    fragment.get().takePhotoFromCamera(view);
+                    fragment.get().takePhotoFromCamera(view, name);
                     break;
             }
         });

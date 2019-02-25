@@ -33,7 +33,7 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(String formId, HashMap<String, String> requestObjectMap) {
+    public void createFormResponse(String formId, HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList) {
 
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
@@ -63,12 +63,12 @@ public class FormRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap));
+        gsonRequest.setBodyParams(getFormRequest(requestObjectMap, uploadedImageUrlList));
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void updateFormResponse(String formId, HashMap<String, String> requestObjectMap) {
+    public void updateFormResponse(String formId, HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList) {
 
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
@@ -99,7 +99,7 @@ public class FormRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap));
+        gsonRequest.setBodyParams(getFormRequest(requestObjectMap, uploadedImageUrlList));
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
@@ -210,13 +210,22 @@ public class FormRequestCall {
     }
 
     @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap) {
+    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final Map<String, String> imageUrls) {
         JsonObject jsonObject = new JsonObject();
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             Log.d(TAG, "Request object key " + key + " value " + value);
             jsonObject.addProperty(key, value);
+        }
+
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            for (final Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                Log.d(TAG, "Request object key " + key + " value " + value);
+                jsonObject.addProperty(key, value);
+            }
         }
 
         JsonObject response = new JsonObject();

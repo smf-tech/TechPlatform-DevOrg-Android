@@ -1,9 +1,9 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -35,7 +35,6 @@ import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.presenter.FormActivityPresenter;
-import com.platform.request.ImageRequestCall;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -60,7 +59,7 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
 
-    public static final String IMAGE_TYPE_FILE = "form";
+    public static final String IMAGE_TYPE_FORM = "form";
     private final String TAG = this.getClass().getSimpleName();
 
     private View formFragmentView;
@@ -84,13 +83,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public static final String IMAGE_PREFIX = "picture_";
     public static final String IMAGE_SUFFIX = ".jpg";
     public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
-    private File mImageFile;
-    private boolean mImageUploaded;
-    private List<String> mUploadedImageUrlList;
-    private ImageView imgUserProfilePic;
-    private ImageRequestCall uploadProfileImageCall;
     private ImageView mFileImageView;
-    private String mImageViewTag;
+    private String mFormName;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -105,7 +99,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         super.onViewCreated(view, savedInstanceState);
 
         formPresenter = new FormActivityPresenter(this);
-        mUploadedImageUrlList = new ArrayList<>();
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
@@ -495,8 +488,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         renderFilledFormView(elements);
     }
 
-    public void choosePhotoFromGallery(final View view) {
+    public void choosePhotoFromGallery(final View view, final String name) {
         mFileImageView = (ImageView) view;
+        mFormName = name;
         try {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
@@ -505,8 +499,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
-    public void takePhotoFromCamera(final View view) {
+    public void takePhotoFromCamera(final View view, final String name) {
         mFileImageView = (ImageView) view;
+        mFormName = name;
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -556,14 +551,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-//                LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
-//                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());
+                /*LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
+                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());*/
                 mFileImageView.setImageURI(finalUri);
-                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(getContext())) {
-                    FormActivityPresenter presenter = new FormActivityPresenter(this);
-                    presenter.uploadProfileImage(mImageFile, IMAGE_TYPE_FILE);
+                    formPresenter.uploadProfileImage(imageFile, IMAGE_TYPE_FORM, mFormName);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
@@ -573,11 +567,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
 
         }
-    }
-
-    public void onImageUploaded(String uploadedImageUrl) {
-        mImageUploaded = true;
-        mUploadedImageUrlList.add(uploadedImageUrl);
     }
 
     private String getImageName() {

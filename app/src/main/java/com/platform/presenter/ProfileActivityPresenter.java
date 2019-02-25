@@ -95,7 +95,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(file, type);
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, null);
                 return null;
             }
         }.execute();
@@ -206,7 +206,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     }
 
     @Override
-    public void onImageUploadedListener(final String response) {
+    public void onImageUploadedListener(final String response, final String formName) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
 
         profileActivity.get().runOnUiThread(() -> {

@@ -7,10 +7,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,10 +49,7 @@ import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -127,7 +120,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = ProfileActivity.class.getName();
-    private File mImageFile;
     private boolean mImageUploaded;
     private String mUploadedImageUrl;
 
@@ -549,13 +541,37 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     Log.e(TAG, e.getMessage());
                 }
             }
+            /*if (data != null && data.getData() != null) {
+                try{
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    assert cursor != null;
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    //return Image Path to the Main Activity
+                    Intent returnFromGalleryIntent = new Intent();
+                    returnFromGalleryIntent.putExtra("picturePath",picturePath);
+                    setResult(RESULT_OK,returnFromGalleryIntent);
+//                    finish();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    Intent returnFromGalleryIntent = new Intent();
+                    setResult(RESULT_CANCELED, returnFromGalleryIntent);
+                    finish();
+                }
+            }*/
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 imgUserProfilePic.setImageURI(finalUri);
-                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
-                    profilePresenter.uploadProfileImage(mImageFile, IMAGE_TYPE_PROFILE);
+                    profilePresenter.uploadProfileImage(imageFile, IMAGE_TYPE_PROFILE);
                 } else {
                     Util.showToast("Internet is not available!", this);
                 }
@@ -605,7 +621,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         return IMAGE_STORAGE_DIRECTORY + FILE_SEP + IMAGE_PREFIX + time + IMAGE_SUFFIX;
     }
 
-    File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
+    /*File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
 
         File imageFile = new File(dir, fileName);
         if (!imageFile.exists()) {
@@ -646,7 +662,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void onImageUploaded(String uploadedImageUrl) {
         mImageUploaded = true;
