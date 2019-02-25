@@ -57,7 +57,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
     private ArrayList<EditText> editTexts = new ArrayList<>();
-    private ArrayList<DropDownTemplate> dropdowns = new ArrayList<>();
+    private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
     private LinearLayout fileTemplateView;
 
     public LinearLayout getFileTemplateView() {
@@ -144,7 +144,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
         }
 
-        dropdowns.add(template);
+        dropDowns.add(template);
         dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
@@ -330,7 +330,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
 
         //For all edit texts
-        for (DropDownTemplate dropDownTemplate : dropdowns) {
+        for (DropDownTemplate dropDownTemplate : dropDowns) {
             Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
             if (formData.isRequired() != null) {
 

@@ -2,7 +2,7 @@ package com.platform.utility;
 
 public class Constants {
 
-    public static final int SMS_RECEIVE_REQUEST = 1;
+    static final int SMS_RECEIVE_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
 
@@ -10,7 +10,6 @@ public class Constants {
     public static final String FAILURE = "failure";
     public static final String PENDING = "pending";
     public static final String REJECTED = "rejected";
-    public static final String RESULT_CODE = "ResultCode";
     public static final String RESPONSE_DATA = "data";
     public static final String KEY_SEPARATOR = ".";
 
@@ -18,7 +17,7 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
+    //public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
