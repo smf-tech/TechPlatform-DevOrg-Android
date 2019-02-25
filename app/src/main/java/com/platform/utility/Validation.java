@@ -7,10 +7,19 @@ import com.platform.models.forms.Validator;
 public class Validation {
 
     public static String editTextMinMaxValidation(String fieldName, String fieldValue, Validator validator) {
-        if (validator.getMinValue() != null && (fieldValue.length() < validator.getMinValue())) {
-            return fieldName + " should not be less than " + validator.getMinValue();
-        } else if (validator.getMinLength() != null && (fieldValue.length() < validator.getMinLength())) {
-            return fieldName + " should not be less than " + validator.getMinLength();
+        if (validator.getMinLength() != null && (fieldValue.length() < validator.getMinLength())) {
+            return fieldName + " length should not be less than " + validator.getMinLength();
+        }
+
+        if (validator.getMinValue() != null) {
+            int fieldIntValue = Integer.parseInt(fieldValue);
+            if ((fieldIntValue < validator.getMinValue())) {
+                return fieldName + " value should not be less than " + validator.getMinValue();
+            } else if (validator.getMaxValue() != null) {
+                if ((fieldIntValue > validator.getMaxValue())) {
+                    return fieldName + " value should not be greater than " + validator.getMaxValue();
+                }
+            }
         }
         return "";
     }
