@@ -105,13 +105,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized View dropDownTemplate(Elements formData, List<Choice> choiceValues) {
+    public synchronized View dropDownTemplate(Elements formData) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
 
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, choiceValues);
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
 
         View view;
         if (formData.isRequired() != null) {
@@ -122,16 +122,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         view.setTag(formData.getName());
 
-        if (choiceValues != null && !choiceValues.isEmpty()) {
-            for (int index = 0; index < choiceValues.size(); index++) {
-                if (!TextUtils.isEmpty(formData.getAnswer()) &&
-                        !TextUtils.isEmpty(choiceValues.get(index).getText()) &&
-                        formData.getAnswer().equals(choiceValues.get(index).getValue())) {
-                    template.setSelectedItem(index);
-                }
-            }
-        }
-
         dropDowns.add(template);
         dropDownElementsHashMap.put(template, formData);
 
@@ -141,6 +131,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         return view;
     }
+
+    /*public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "dropDownTemplate returned null");
+            return;
+        }
+    }*/
 
     public View textInputTemplate(final Elements formData) {
 
