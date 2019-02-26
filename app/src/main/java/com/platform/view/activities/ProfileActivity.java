@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
@@ -239,16 +240,27 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
-                    int id = 0;
                     List<Organization> orgData = Util.getUserOrgFromPref().getData();
-                    showOrganizations(orgData);
-                    for (int i = 0; i < orgData.size(); i++) {
-                        if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
-                            id = i;
-                            this.selectedOrg = orgData.get(i);
+                    if (orgData != null && orgData.size() > 0) {
+                        int id = 0;
+                        showOrganizations(orgData);
+
+                        for (int i = 0; i < orgData.size(); i++) {
+                            if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
+                                id = i;
+                                this.selectedOrg = orgData.get(i);
+                            }
                         }
+                        spOrganization.setSelection(id);
+                    } else {
+                        profilePresenter.getOrganizations();
                     }
-                    spOrganization.setSelection(id);
+
+                    if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
+                        Glide.with(this)
+                                .load(userInfo.getProfilePic())
+                                .into(imgUserProfilePic);
+                    }
                 }
             }
         } else {
@@ -516,33 +528,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     Log.e(TAG, e.getMessage());
                 }
             }
-            /*if (data != null && data.getData() != null) {
-                try{
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    assert cursor != null;
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-
-                    //return Image Path to the Main Activity
-                    Intent returnFromGalleryIntent = new Intent();
-                    returnFromGalleryIntent.putExtra("picturePath",picturePath);
-                    setResult(RESULT_OK,returnFromGalleryIntent);
-//                    finish();
-                }catch(Exception e){
-                    e.printStackTrace();
-                    Intent returnFromGalleryIntent = new Intent();
-                    setResult(RESULT_CANCELED, returnFromGalleryIntent);
-                    finish();
-                }
-            }*/
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-                imgUserProfilePic.setImageURI(finalUri);              
+                imgUserProfilePic.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
@@ -682,25 +670,39 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (getIntent().getStringExtra(Constants.Login.ACTION) != null
                         && getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
                     UserInfo userInfo = Util.getUserObjectFromPref();
+                    this.selectedOrg = organizations.get(i);
+
                     List<OrganizationProject> projectData = Util.getUserProjectsFromPref().getData();
-                    showOrganizationProjects(projectData);
-                    boolean[] selectedValues = new boolean[projectData.size()];
-                    for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
-                        selectedValues[projectIndex] = userInfo.getProjectIds().contains(projectData.get(projectIndex).getId());
+                    if (projectData != null && projectData.size() > 0) {
+                        showOrganizationProjects(projectData);
+
+                        boolean[] selectedValues = new boolean[projectData.size()];
+                        for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
+                            selectedValues[projectIndex]
+                                    = userInfo.getProjectIds().contains(projectData.get(projectIndex).getId());
+                        }
+
+                        spProject.setSelectedValues(selectedValues);
+                        spProject.setPreFilledText();
+                    } else {
+                        profilePresenter.getOrganizationProjects(organizations.get(i).getId());
                     }
-                    spProject.setSelectedValues(selectedValues);
-                    spProject.setPreFilledText();
 
                     int id = 0;
                     List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
-                    showOrganizationRoles(roleData);
-                    for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
-                        if (userInfo.getRoleIds().equals(roleData.get(roleIndex).getId())) {
-                            id = roleIndex;
+                    if (roleData != null && roleData.size() > 0) {
+                        showOrganizationRoles(roleData);
+                        for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
+                            if (userInfo.getRoleIds().equals(roleData.get(roleIndex).getId())) {
+                                id = roleIndex;
+                            }
                         }
+                        spRole.setSelection(id);
+                    } else {
+                        profilePresenter.getOrganizationRoles(organizations.get(i).getId());
                     }
-                    spRole.setSelection(id);
                 } else {
                     if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
                             && !TextUtils.isEmpty(organizations.get(i).getId())) {
@@ -813,7 +815,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 android.R.layout.simple_spinner_item, org);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spOrganization.setAdapter(adapter);
-
     }
 
     @Override
@@ -823,9 +824,26 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             for (OrganizationProject organizationProject : organizationProjects) {
                 projects.add(organizationProject.getOrgProjectName());
             }
+
             spProject.setItems(projects, getString(R.string.project), this);
             this.projects.clear();
             this.projects.addAll(organizationProjects);
+
+            if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+                    && getIntent().getStringExtra(Constants.Login.ACTION)
+                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
+                UserInfo userInfo = Util.getUserObjectFromPref();
+
+                boolean[] selectedValues = new boolean[organizationProjects.size()];
+                for (int projectIndex = 0; projectIndex < organizationProjects.size(); projectIndex++) {
+                    selectedValues[projectIndex]
+                            = userInfo.getProjectIds().contains(organizationProjects.get(projectIndex).getId());
+                }
+
+                spProject.setSelectedValues(selectedValues);
+                spProject.setPreFilledText();
+            }
         }
     }
 
@@ -844,6 +862,20 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     android.R.layout.simple_spinner_item, roles);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spRole.setAdapter(adapter);
+
+            if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+                    && getIntent().getStringExtra(Constants.Login.ACTION)
+                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
+                int id = 0;
+                UserInfo userInfo = Util.getUserObjectFromPref();
+                for (int roleIndex = 0; roleIndex < organizationRoles.size(); roleIndex++) {
+                    if (userInfo.getRoleIds().equals(organizationRoles.get(roleIndex).getId())) {
+                        id = roleIndex;
+                    }
+                }
+                spRole.setSelection(id);
+            }
         }
     }
 
@@ -868,10 +900,12 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     if (getIntent().getStringExtra(Constants.Login.ACTION) != null
                             && getIntent().getStringExtra(Constants.Login.ACTION)
                             .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
                         int id = 0;
-                        UserLocation savedUserLocation = Util.getUserLocationFromPref();
+                        UserInfo userInfo = Util.getUserObjectFromPref();
+                        List<String> stateId = userInfo.getUserLocation().getStateId();
                         for (int i = 0; i < states.size(); i++) {
-                            if (savedUserLocation.getStateId().get(0).equals(states.get(i).getId())) {
+                            if (stateId.get(0).equals(states.get(i).getId())) {
                                 id = i;
                             }
                         }
@@ -896,7 +930,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
-                    List<String> districtIds = Util.getUserLocationFromPref().getDistrictIds();
+                    List<String> districtIds = Util.getUserObjectFromPref().getUserLocation().getDistrictIds();
                     boolean[] selectedValues = new boolean[this.districts.size()];
                     for (int districtIndex = 0; districtIndex < this.districts.size(); districtIndex++) {
                         for (int districtIdIndex = 0; districtIdIndex < districtIds.size(); districtIdIndex++) {
@@ -934,7 +968,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
-                    List<String> talukaIds = Util.getUserLocationFromPref().getTalukaIds();
+                    List<String> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
                     boolean[] selectedValues = new boolean[this.talukas.size()];
                     for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
                         for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
@@ -975,7 +1009,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spVillage.setItems(villages, getString(R.string.village), this);
 
-                    List<String> villageIds = Util.getUserLocationFromPref().getVillageIds();
+                    List<String> villageIds = Util.getUserObjectFromPref().getUserLocation().getVillageIds();
                     boolean[] selectedValues = new boolean[this.villages.size()];
                     for (int villageIndex = 0; villageIndex < this.villages.size(); villageIndex++) {
                         for (int villageIdIndex = 0; villageIdIndex < villageIds.size(); villageIdIndex++) {
@@ -1016,7 +1050,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 
-                    List<String> clusterIds = Util.getUserLocationFromPref().getClusterIds();
+                    List<String> clusterIds = Util.getUserObjectFromPref().getUserLocation().getClusterIds();
                     boolean[] selectedValues = new boolean[this.clusters.size()];
                     for (int clusterIndex = 0; clusterIndex < this.clusters.size(); clusterIndex++) {
                         for (int clusterIdIndex = 0; clusterIdIndex < clusterIds.size(); clusterIdIndex++) {

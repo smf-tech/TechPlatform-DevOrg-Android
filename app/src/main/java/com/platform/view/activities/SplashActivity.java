@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.platform.R;
+import com.platform.utility.AppSignatureHelper;
 import com.platform.utility.Util;
 
 public class SplashActivity extends AppCompatActivity {
@@ -21,6 +22,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         Util.setApplicationLocale();
+
+        new AppSignatureHelper(this);
 
         new Handler().postDelayed(() -> {
             Intent intent;

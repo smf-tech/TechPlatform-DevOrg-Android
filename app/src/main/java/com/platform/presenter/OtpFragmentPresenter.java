@@ -2,10 +2,11 @@ package com.platform.presenter;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginFail;
 import com.platform.models.login.LoginInfo;
+import com.platform.models.user.User;
 import com.platform.request.LoginRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -13,10 +14,9 @@ import com.platform.view.fragments.NewOtpFragment;
 
 import java.lang.ref.WeakReference;
 
-public class OtpFragmentPresenter implements PlatformRequestCallListener {
+public class OtpFragmentPresenter implements UserRequestCallListener {
 
     @SuppressWarnings("CanBeFinal")
-//    private WeakReference<OtpFragment> otpFragment;
     private WeakReference<NewOtpFragment> otpFragment;
 
     public OtpFragmentPresenter(NewOtpFragment otpFragment) {
@@ -60,8 +60,21 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
             otpFragment.get().deRegisterOtpSmsReceiver();
         }
 
+        LoginRequestCall loginRequestCall = new LoginRequestCall();
+        loginRequestCall.setListener(this);
+        // Get User Profile
+        loginRequestCall.getUserProfile();
+    }
+
+    @Override
+    public void onUserProfileSuccessListener(String response) {
+        User user = new Gson().fromJson(response, User.class);
+        if (response != null && user.getUserInfo() != null) {
+            Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+        }
+
         otpFragment.get().hideProgressBar();
-        otpFragment.get().showNextScreen(login);
+        otpFragment.get().showNextScreen(user);
     }
 
     @Override

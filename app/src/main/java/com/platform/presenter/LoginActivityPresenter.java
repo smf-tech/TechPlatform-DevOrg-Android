@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
@@ -12,7 +12,7 @@ import com.platform.view.activities.LoginActivity;
 
 import java.lang.ref.WeakReference;
 
-public class LoginActivityPresenter implements PlatformRequestCallListener {
+public class LoginActivityPresenter implements UserRequestCallListener {
 
     private final String TAG = LoginActivityPresenter.class.getSimpleName();
     private WeakReference<LoginActivity> loginActivity;
@@ -43,6 +43,11 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
         Login login = new Gson().fromJson(response, Login.class);
         loginActivity.get().hideProgressBar();
         loginActivity.get().showNextScreen(login);
+    }
+
+    @Override
+    public void onUserProfileSuccessListener(String response) {
+
     }
 
     @Override
