@@ -8,6 +8,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.listeners.ImageRequestCallListener;
@@ -149,7 +150,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onFormCreatedUpdated(String message) {
         Log.e(TAG, "Request succeed " + message);
-        Util.showToast("Form submitted successfully", formFragment.get().getActivity());
+        Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success),
+                formFragment.get().getActivity());
         if (getSavedForm() != null) {
             getSavedForm().setSynced(true);
             DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormObject(getSavedForm());

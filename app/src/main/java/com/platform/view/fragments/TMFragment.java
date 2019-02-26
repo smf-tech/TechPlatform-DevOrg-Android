@@ -134,7 +134,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
 
     @Override
     public void updateRequestStatus(String response, PendingRequest pendingRequest) {
-        Util.showToast("Request status updated successfully", getActivity());
+        Util.showToast(getString(R.string.status_update_success), getActivity());
         this.pendingRequestList.remove(pendingRequest);
         newTMAdapter.notifyDataSetChanged();
 

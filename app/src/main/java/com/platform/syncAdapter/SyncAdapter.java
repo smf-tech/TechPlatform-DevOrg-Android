@@ -82,8 +82,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             Log.e(TAG, e.getMessage());
                         }
                     }
-                } else {
-                    continue;
                 }
             }
         }
