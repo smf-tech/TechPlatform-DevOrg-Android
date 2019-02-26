@@ -6,6 +6,7 @@ import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
 import com.platform.models.common.Project;
+import com.platform.models.forms.FormData;
 
 @SuppressWarnings("unused")
 public class ProcessData {
@@ -37,6 +38,21 @@ public class ProcessData {
     @SerializedName("entity")
     @Expose
     private Entity entity;
+
+    public ProcessData() {
+    }
+
+    public ProcessData(final FormData data) {
+        this.category = data.getCategory();
+        this.entity = data.getEntity();
+        this.microservice = data.getMicroService();
+        this.project = data.getProject();
+        this.id = data.getId();
+        this.active = data.getActive();
+        this.editable = data.getEditable();
+        this.multipleEntry = data.getMultipleEntry();
+        this.name = data.getName();
+    }
 
     public String getId() {
         return id;

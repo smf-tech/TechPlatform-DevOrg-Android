@@ -7,25 +7,22 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.platform.models.forms.FormData;
+import com.platform.models.reports.ReportData;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 @Dao
-public interface FormDataDao {
-    @Query("SELECT * FROM formdata where id = :formId")
-    FormData getFormSchema(String formId);
-
-    @Query("SELECT * FROM formdata")
-    List<FormData> getAllFormSchema();
+public interface ReportsDataDao {
+    @Query("SELECT * FROM reportdata")
+    List<ReportData> getAllReports();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(FormData... formData);
+    void insertAll(ReportData... formData);
 
     @Update
-    void update(FormData formData);
+    void update(ReportData formData);
 
     @Delete
-    void delete(FormData formData);
+    void delete(ReportData formData);
 }

@@ -23,8 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.SavedForm;
+import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
@@ -73,8 +75,23 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         init();
 
-        PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-        pmFragmentPresenter.getAllProcess();
+        ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
+        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
+        if (formDataList != null && !formDataList.isEmpty()) {
+            for (final FormData data : formDataList) {
+                ProcessData processData = new ProcessData(data);
+                processDataArrayList.add(processData);
+            }
+
+            Processes processes = new Processes();
+            processes.setData(processDataArrayList);
+
+            populateData(processes);
+
+        } else {
+            PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
+            pmFragmentPresenter.getAllProcess();
+        }
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
@@ -144,7 +161,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void setPendingForms() {
-        mSavedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
+        mSavedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getContext());
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
@@ -185,12 +202,16 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                             if (processData != null) {
                                 processData.add(data);
                                 processMap.put(categoryName, processData);
+
+                                addProcessDataInDatabase(data);
                             }
                         } else {
                             List<ProcessData> processData = new ArrayList<>();
                             processData.add(data);
                             processMap.put(categoryName, processData);
                             processCategoryList.add(categoryName);
+
+                            addProcessDataInDatabase(data);
                         }
                     }
                 }
@@ -207,6 +228,11 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 }
             }
         }
+    }
+
+    private void addProcessDataInDatabase(final ProcessData data) {
+        FormData formData = new FormData(data);
+        DatabaseManager.getDBInstance(getContext()).insertFormSchema(formData);
     }
 
     private void createCategoryLayout(String categoryName, List<ProcessData> childList) {

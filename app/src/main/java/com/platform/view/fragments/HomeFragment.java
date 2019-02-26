@@ -17,8 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.home.Home;
+import com.platform.models.home.HomeData;
+import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.HomeActivityPresenter;
 import com.platform.syncAdapter.GenericAccountService;
@@ -28,8 +31,12 @@ import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
+import java.util.List;
+
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
+import static com.platform.utility.Constants.RequestStatus.APPROVED_MODULE;
+import static com.platform.utility.Constants.RequestStatus.DEFAULT_MODULE;
 
 public class HomeFragment extends Fragment implements PlatformTaskListener {
 
@@ -43,12 +50,11 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        presenter = new HomeActivityPresenter(this);
-        if (Util.isConnected(getActivity())) {
-            getUserData();
-        }
 
         homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        presenter = new HomeActivityPresenter(this);
+        getUserData();
         return homeFragmentView;
     }
 
@@ -56,7 +62,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             ((HomeActivity) getActivity()).setActionBarTitle(
                     getActivity().getResources().getString(R.string.app_name_ss));
         }
@@ -89,17 +95,49 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     }
 
     private void getUserData() {
-        if (presenter != null) {
-            UserInfo user = Util.getUserObjectFromPref();
-            presenter.getModules(user);
-        }
-
         mSyncStatusObserver.onStatusChanged(0);
 
         // Watch for sync state changes
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
                 ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+
+        List<Modules> modulesFromDatabase = getModulesFromDatabase();
+        if (!modulesFromDatabase.isEmpty()) {
+
+            List<Modules> defaultModules = DatabaseManager.getDBInstance(getContext())
+                    .getModulesOfStatus(Constants.RequestStatus.DEFAULT_MODULE);
+
+            List<Modules> approveModules = DatabaseManager.getDBInstance(getContext())
+                    .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
+
+            HomeData homeData = new HomeData();
+            homeData.setDefaultModules(defaultModules);
+            homeData.setOnApproveModules(approveModules);
+
+            this.homeData = new Home();
+            this.homeData.setHomeData(homeData);
+            this.homeData.setUserApproveStatus(approveModules.isEmpty() ?
+                    Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+
+            ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+            setupViewPager(viewPager);
+
+            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+
+            return;
+        }
+
+        if (presenter != null) {
+            UserInfo user = Util.getUserObjectFromPref();
+            presenter.getModules(user);
+        }
+
+    }
+
+    private List<Modules> getModulesFromDatabase() {
+        return DatabaseManager.getDBInstance(getContext()).getAllModules();
     }
 
     @Override
@@ -117,8 +155,28 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         if (data != null) {
             homeData = (Home) data;
 
-            if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
-                    homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
+            List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
+            for (final Modules module : defaultModules) {
+                module.setModule(DEFAULT_MODULE);
+                DatabaseManager.getDBInstance(getContext()).insertModule(module);
+            }
+
+            List<Modules> approveModules = this.homeData.getHomeData().getOnApproveModules();
+            for (final Modules module : approveModules) {
+                module.setModule(APPROVED_MODULE);
+                DatabaseManager.getDBInstance(getContext()).insertModule(module);
+            }
+
+            HomeData homeData = new HomeData();
+            homeData.setDefaultModules(defaultModules);
+            homeData.setOnApproveModules(approveModules);
+
+            this.homeData.setHomeData(homeData);
+            this.homeData.setUserApproveStatus(approveModules.isEmpty() ?
+                    Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+
+            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
+                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
                 showApprovedDialog();
             }
 

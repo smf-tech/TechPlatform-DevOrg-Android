@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
+import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
@@ -70,8 +72,22 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mCountList = new ArrayList<>();
 
-        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-        presenter.getAllFormMasters();
+        ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
+        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
+        if (formDataList != null && !formDataList.isEmpty()) {
+            for (final FormData data : formDataList) {
+                ProcessData processData = new ProcessData(data);
+                processDataArrayList.add(processData);
+            }
+
+            Processes processes = new Processes();
+            processes.setData(processDataArrayList);
+
+            processResponse(processes);
+        } else {
+            FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+            presenter.getAllFormMasters();
+        }
 
         ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
@@ -91,12 +107,18 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     @Override
     public void onFormsLoaded(String response) {
 
+        Processes json = new Gson().fromJson(response, Processes.class);
+
+        processResponse(json);
+
+    }
+
+    private void processResponse(final Processes json) {
         mCountList.clear();
         mChildList.clear();
 
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
 
-        Processes json = new Gson().fromJson(response, Processes.class);
         for (ProcessData data : json.getData()) {
             String categoryName = data.getCategory().getName();
             if (mChildList.containsKey(categoryName)) {
@@ -112,7 +134,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
             presenter.getSubmittedFormsOfMaster(data.getId());
         }
-
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Validation {
         }
 
         if (validator.getMinValue() != null) {
-            int fieldIntValue = Integer.parseInt(fieldValue);
+            long fieldIntValue = Long.parseLong(fieldValue);
             if ((fieldIntValue < validator.getMinValue())) {
                 return fieldName + " value should not be less than " + validator.getMinValue();
             } else if (validator.getMaxValue() != null) {

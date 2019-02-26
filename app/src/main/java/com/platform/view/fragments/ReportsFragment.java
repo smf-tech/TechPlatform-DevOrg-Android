@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
@@ -72,8 +73,15 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
         }
 
         init();
-        ReportsFragmentPresenter presenter = new ReportsFragmentPresenter(this);
-        presenter.getAllReports();
+
+        List<ReportData> allReports = DatabaseManager.getDBInstance(getContext()).getAllReports();
+        if (allReports.isEmpty()) {
+            ReportsFragmentPresenter presenter = new ReportsFragmentPresenter(this);
+            presenter.getAllReports();
+        } else {
+            setAdapter(allReports);
+        }
+
     }
 
     private void init() {
@@ -112,37 +120,44 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public <T> void showNextScreen(T data) {
         if (data != null) {
             List<ReportData> reportData = ((Reports) data).getData();
-            reportsHeaderList.clear();
-            reportsList.clear();
+            setAdapter(reportData);
+        }
+    }
 
-            for (int i = 0; i < reportData.size(); i++) {
-                ReportData temp = new ReportData();
-                temp.setId(reportData.get(i).getId());
-                temp.setName(reportData.get(i).getName());
-                temp.setDescription(reportData.get(i).getDescription());
-                temp.setUrl(reportData.get(i).getUrl());
+    private void setAdapter(final List<ReportData> reportData) {
+        reportsHeaderList.clear();
+        reportsList.clear();
 
-                if (reportsList.containsKey(reportData.get(i).getCategory())) {
-                    List<ReportData> item = reportsList.get(reportData.get(i).getCategory());
-                    if (item != null) {
-                        item.add(temp);
-                        reportsList.put(reportData.get(i).getCategory(), item);
-                    }
-                } else {
-                    List<ReportData> item = new ArrayList<>();
+        for (int i = 0; i < reportData.size(); i++) {
+            ReportData temp = new ReportData();
+            temp.setId(reportData.get(i).getId());
+            temp.setName(reportData.get(i).getName());
+            temp.setDescription(reportData.get(i).getDescription());
+            temp.setUrl(reportData.get(i).getUrl());
+            temp.setCategory(reportData.get(i).getCategory());
+
+            DatabaseManager.getDBInstance(getContext()).insertReportData(temp);
+
+            if (reportsList.containsKey(reportData.get(i).getCategory())) {
+                List<ReportData> item = reportsList.get(reportData.get(i).getCategory());
+                if (item != null) {
                     item.add(temp);
                     reportsList.put(reportData.get(i).getCategory(), item);
-                    reportsHeaderList.add(reportData.get(i).getCategory());
                 }
-            }
-
-            adapter.notifyDataSetChanged();
-
-            if (reportsList == null || reportsList.isEmpty()) {
-                reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
             } else {
-                reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
+                List<ReportData> item = new ArrayList<>();
+                item.add(temp);
+                reportsList.put(reportData.get(i).getCategory(), item);
+                reportsHeaderList.add(reportData.get(i).getCategory());
             }
+        }
+
+        adapter.notifyDataSetChanged();
+
+        if (reportsList == null || reportsList.isEmpty()) {
+            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
+        } else {
+            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
         }
     }
 

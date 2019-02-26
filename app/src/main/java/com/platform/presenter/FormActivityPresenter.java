@@ -164,7 +164,9 @@ public class FormActivityPresenter implements FormRequestCallListener,
         if (!TextUtils.isEmpty(response)) {
             Form form = new Gson().fromJson(response, Form.class);
             if (form != null && form.getData() != null) {
-                DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
+
+                DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(form.getData());
+
                 Log.e(TAG, "Form schema saved in database.");
 
                 //Call choices by url

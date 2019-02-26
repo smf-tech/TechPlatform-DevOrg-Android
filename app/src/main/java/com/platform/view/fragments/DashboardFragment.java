@@ -58,10 +58,10 @@ public class DashboardFragment extends Fragment {
                         homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
 
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
-                    for (int i = 0; i < tabNames.size(); i++) {
+                    for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
-                            if (tabNames.get(i).getName().equalsIgnoreCase(module.getName())) {
-                                tabNames.get(i).setActive(true);
+                            if (tabName.getName().equalsIgnoreCase(module.getName())) {
+                                tabName.setActive(true);
                             }
                         }
                     }
