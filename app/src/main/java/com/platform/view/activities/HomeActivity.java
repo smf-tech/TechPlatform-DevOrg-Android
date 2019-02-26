@@ -34,7 +34,11 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
+import com.platform.models.SavedForm;
+import com.platform.models.forms.FormData;
 import com.platform.models.user.UserInfo;
+import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
@@ -44,6 +48,7 @@ import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMFragment;
 
 import java.io.File;
+import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -177,7 +182,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_page_container,
-                    ReportsFragment.newInstance(true), "reportFragment");
+                    ReportsFragment.newInstance(false), "reportFragment");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
@@ -384,8 +389,40 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         alertDialog.show();
     }
 
+    private void showPendingFormsPopUp() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                (dialog, which) -> logOutUser());
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
+
+        final List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
+        if (savedForms != null && !savedForms.isEmpty()) {
+            showPendingFormsPopUp();
+            return;
+        }
+
+        List<FormData> formDataList = DatabaseManager.getDBInstance(this).getAllFormSchema();
+        if (!formDataList.isEmpty()) {
+            for (final FormData data : formDataList) {
+                DatabaseManager.getDBInstance(this).deleteForm(data);
+            }
+        }
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);

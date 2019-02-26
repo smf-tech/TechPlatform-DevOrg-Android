@@ -97,21 +97,19 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+            FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
 
-            if (formDataList == null || formDataList.isEmpty()) {
+            if (formData == null) {
                 formPresenter.getProcessDetails(processId);
             } else {
-                formModel = new Form();
-                FormData data = formDataList.get(0);
 
-                /* Deleting form having empty category */
-                if (data.getCategory() == null || data.getCategory().getName() == null) {
-                    DatabaseManager.getDBInstance(getActivity()).deleteForm(data);
+                if (formData.getCategory() == null || formData.getComponents() == null) {
                     formPresenter.getProcessDetails(processId);
                     return;
                 }
-                formModel.setData(data);
+
+                formModel = new Form();
+                formModel.setData(formData);
                 initViews();
             }
 
@@ -151,6 +149,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         progressBar = formFragmentView.findViewById(R.id.pb_gen_form_fragment);
 
         Components components = formModel.getData().getComponents();
+        if (components == null) return;
+
         formDataArrayList = components.getPages().get(0).getElements();
 
         if (formDataArrayList != null) {
@@ -439,13 +439,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
-        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
-        if (formDataList == null || formDataList.isEmpty()) {
+        FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+        if (formData == null) {
             formPresenter.getProcessDetails(processId);
             return;
         }
 
-        mElementsListFromDB = formDataList.get(0).getComponents().getPages().get(0).getElements();
+        mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
         try {

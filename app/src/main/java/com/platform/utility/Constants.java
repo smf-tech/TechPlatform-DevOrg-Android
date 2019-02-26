@@ -125,6 +125,8 @@ public class Constants {
         public static final String PENDING = "pending";
         public static final String APPROVED = "approved";
         public static final String REJECTED = "rejected";
+        public static final String APPROVED_MODULE = "approved";
+        public static final String DEFAULT_MODULE = "default";
     }
 
     public static class FormsFactory {

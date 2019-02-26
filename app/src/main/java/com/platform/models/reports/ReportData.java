@@ -1,11 +1,19 @@
 package com.platform.models.reports;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
+@Entity
 public class ReportData {
 
+    @PrimaryKey
+    @ColumnInfo(name = "id")
     @SerializedName("_id")
     @Expose
     private String id;
@@ -18,6 +26,7 @@ public class ReportData {
     @SerializedName("url")
     @Expose
     private String url;
+    @ColumnInfo(name = "category")
     @SerializedName("category")
     @Expose
     private String category;
@@ -31,11 +40,12 @@ public class ReportData {
     @Expose
     private String createdAt;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
