@@ -4,13 +4,11 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.platform.dao.FormDataDao;
-import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
-import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
 import com.platform.models.reports.ReportData;
 
@@ -23,6 +21,13 @@ public class DatabaseManager {
     public static DatabaseManager getDBInstance(Context context) {
         appDatabase = Room.databaseBuilder(context, AppDatabase.class, "SMF").
                 allowMainThreadQueries()
+/*                .addMigrations(new Migration(1, 2) {
+                    @Override
+                    public void migrate(@NonNull final SupportSQLiteDatabase database) {
+
+                    }
+                })*/
+                .fallbackToDestructiveMigration()
                 .build();
 
         if (databaseManager == null) {
@@ -66,6 +71,11 @@ public class DatabaseManager {
         return formDataDao.getAllFormSchema();
     }
 
+    public void updateFormSchemaSubmitCount(final String formID, final String count) {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        formDataDao.updateSubmitCount(formID, count);
+    }
+
     public void deleteAllFormSchema() {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.deleteAllFormSchema();
@@ -91,7 +101,7 @@ public class DatabaseManager {
         return formDataDao.getAllReports();
     }
 
-    public List<FormResult> getAllFormResults(String formId) {
+/*    public List<FormResult> getAllFormResults(String formId) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         return formResultDao.getAllFormSchema(formId);
     }
@@ -99,7 +109,7 @@ public class DatabaseManager {
     public void insertFormResult(FormResult result) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         formResultDao.insertAll(result);
-    }
+    }*/
 
     public List<Modules> getAllModules() {
         ModuleDao modulesDao = appDatabase.homeDao();

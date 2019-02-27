@@ -31,4 +31,7 @@ public interface FormDataDao {
 
     @Delete
     void delete(FormData formData);
+
+    @Query("UPDATE formdata SET submit_count = :count where id = :formID")
+    void updateSubmitCount(String formID, String count);
 }
