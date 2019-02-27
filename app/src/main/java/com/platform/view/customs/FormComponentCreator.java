@@ -121,6 +121,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
 
         view.setTag(formData.getName());
+        template.setTag(formData.getName());
 
         dropDowns.add(template);
         dropDownElementsHashMap.put(template, formData);
@@ -132,12 +133,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return view;
     }
 
-    /*public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
-        if (fragment == null || fragment.get() == null) {
-            Log.e(TAG, "dropDownTemplate returned null");
-            return;
+    public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
+        for (int index = 0; index < dropDowns.size(); index++) {
+            if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) && dropDowns.get(index).getTag().equals(elements.getName())) {
+                dropDowns.get(index).setListData(choiceValues);
+                break;
+            }
         }
-    }*/
+    }
 
     public View textInputTemplate(final Elements formData) {
 
@@ -349,71 +352,75 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             String parentResponse = parentElement.getChoicesByUrlResponse();
             String dependentResponse = dependentElement.getChoicesByUrlResponse();
-            try {
-                JSONObject dependentOuterObj = new JSONObject(dependentResponse);
-                JSONObject parentOuterObj = new JSONObject(parentResponse);
-                JSONArray dependentDataArray = dependentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
-                JSONArray parentDataArray = parentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+            if (!TextUtils.isEmpty(parentResponse) && !TextUtils.isEmpty(dependentResponse)) {
+                try {
+                    JSONObject dependentOuterObj = new JSONObject(dependentResponse);
+                    JSONObject parentOuterObj = new JSONObject(parentResponse);
+                    JSONArray dependentDataArray = dependentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
+                    JSONArray parentDataArray = parentOuterObj.getJSONArray(Constants.RESPONSE_DATA);
 
-                for (int parentArrayIndex = 0; parentArrayIndex < parentDataArray.length(); parentArrayIndex++) {
-                    JSONObject parentInnerObj = parentDataArray.getJSONObject(parentArrayIndex);
-                    for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.length(); dependentArrayIndex++) {
-                        JSONObject dependentInnerObj = dependentDataArray.getJSONObject(dependentArrayIndex);
+                    if (parentDataArray != null && dependentDataArray != null) {
+                        for (int parentArrayIndex = 0; parentArrayIndex < parentDataArray.length(); parentArrayIndex++) {
+                            JSONObject parentInnerObj = parentDataArray.getJSONObject(parentArrayIndex);
+                            for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.length(); dependentArrayIndex++) {
+                                JSONObject dependentInnerObj = dependentDataArray.getJSONObject(dependentArrayIndex);
 
-                        if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElement.getName())) &&
-                                !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
-                                dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
+                                if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElement.getName())) &&
+                                        !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
+                                        dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
 
-                            Log.i(TAG, "Test");
-                            String choiceText = "";
-                            String choiceValue = "";
+                                    Log.i(TAG, "Test");
+                                    String choiceText = "";
+                                    String choiceValue = "";
 
-                            if (dependentElement.getChoicesByUrl() != null &&
-                                    !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
+                                    if (dependentElement.getChoicesByUrl() != null &&
+                                            !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
 
-                                if (dependentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
-                                    StringTokenizer titleTokenizer
-                                            = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                                    StringTokenizer valueTokenizer
-                                            = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                                        if (dependentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                                            StringTokenizer titleTokenizer
+                                                    = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                                            StringTokenizer valueTokenizer
+                                                    = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
 
-                                    JSONObject obj = dependentInnerObj.getJSONObject(titleTokenizer.nextToken());
-                                    choiceText = obj.getString(titleTokenizer.nextToken());
+                                            JSONObject obj = dependentInnerObj.getJSONObject(titleTokenizer.nextToken());
+                                            choiceText = obj.getString(titleTokenizer.nextToken());
 
-                                    //Ignore first value of valueToken
-                                    valueTokenizer.nextToken();
-                                    choiceValue = obj.getString(valueTokenizer.nextToken());
-                                } else {
-                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
-                                    choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
-                                }
-                            }
-
-                            Choice choice = new Choice();
-                            choice.setText(choiceText);
-                            choice.setValue(choiceValue);
-
-                            if (choiceValues.size() == 0) {
-                                choiceValues.add(choice);
-                            } else {
-                                boolean isFound = false;
-                                for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
-                                    if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
-                                        isFound = true;
-                                        break;
+                                            //Ignore first value of valueToken
+                                            valueTokenizer.nextToken();
+                                            choiceValue = obj.getString(valueTokenizer.nextToken());
+                                        } else {
+                                            choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                            choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
+                                        }
                                     }
-                                }
-                                if (!isFound) {
-                                    choiceValues.add(choice);
+
+                                    Choice choice = new Choice();
+                                    choice.setText(choiceText);
+                                    choice.setValue(choiceValue);
+
+                                    if (choiceValues.size() == 0) {
+                                        choiceValues.add(choice);
+                                    } else {
+                                        boolean isFound = false;
+                                        for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                                            if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                                                isFound = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!isFound) {
+                                            choiceValues.add(choice);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                dropDownTemplate.setListData(choiceValues);
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
+                    dropDownTemplate.setListData(choiceValues);
+                } catch (JSONException e) {
+                    Log.e(TAG, e.getMessage());
+                }
             }
         }
 

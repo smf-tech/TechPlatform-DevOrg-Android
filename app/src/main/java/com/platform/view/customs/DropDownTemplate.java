@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
@@ -30,11 +30,27 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private WeakReference<FormFragment> context;
     private List<Choice> valueList;
     private DropDownValueSelectListener dropDownValueSelectListener;
+    private String tag;
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
     DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
+
+        Choice dummyChoice = new Choice();
+        dummyChoice.setText("");
+        dummyChoice.setValue("");
+        List<Choice> choices = new ArrayList<>();
+        choices.add(dummyChoice);
+        this.valueList = choices;
     }
 
     public List<Choice> getValueList() {
@@ -76,7 +92,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     void setListData(List<Choice> valueList) {
         if (valueList != null) {
             this.valueList = valueList;
-            ArrayAdapter<Choice> adapter = (ArrayAdapter<Choice>) spinner.getAdapter();
+            FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
             adapter.clear();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
