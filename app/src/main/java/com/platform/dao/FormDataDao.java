@@ -20,6 +20,9 @@ public interface FormDataDao {
     @Query("SELECT * FROM formdata")
     List<FormData> getAllFormSchema();
 
+    @Query("DELETE FROM formdata")
+    void deleteAllFormSchema();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormData... formData);
 

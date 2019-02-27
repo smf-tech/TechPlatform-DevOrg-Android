@@ -36,7 +36,6 @@ import com.bumptech.glide.request.target.Target;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
-import com.platform.models.forms.FormData;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
@@ -417,12 +416,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             return;
         }
 
-        List<FormData> formDataList = DatabaseManager.getDBInstance(this).getAllFormSchema();
-        if (!formDataList.isEmpty()) {
-            for (final FormData data : formDataList) {
-                DatabaseManager.getDBInstance(this).deleteForm(data);
-            }
-        }
+        DatabaseManager.getDBInstance(this).deleteAllFormSchema();
+        DatabaseManager.getDBInstance(this).deleteAllModules();
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);

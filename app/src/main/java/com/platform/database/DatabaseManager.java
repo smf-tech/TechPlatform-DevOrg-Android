@@ -4,7 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.platform.dao.FormDataDao;
-import com.platform.dao.HomeDao;
+import com.platform.dao.ModuleDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
@@ -64,10 +64,20 @@ public class DatabaseManager {
         return formDataDao.getAllFormSchema();
     }
 
-    public void deleteForm(FormData formData) {
+    public void deleteAllFormSchema() {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        formDataDao.deleteAllFormSchema();
+    }
+
+    public void deleteAllModules() {
+        ModuleDao modulesDao = appDatabase.homeDao();
+        modulesDao.deleteAllModules();
+    }
+
+   /* public void deleteForm(FormData formData) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.delete(formData);
-    }
+    }*/
 
     public void insertReportData(ReportData... formData) {
         ReportsDataDao formDataDao = appDatabase.reportDao();
@@ -78,7 +88,6 @@ public class DatabaseManager {
         ReportsDataDao formDataDao = appDatabase.reportDao();
         return formDataDao.getAllReports();
     }
-
 
 /*    public List<FormResult> getAllFormResults(String formId) {
         FormResultDao formResultDao = appDatabase.formResultDao();
@@ -91,22 +100,22 @@ public class DatabaseManager {
     }*/
 
     public List<Modules> getAllModules() {
-        HomeDao modulesDao = appDatabase.homeDao();
+        ModuleDao modulesDao = appDatabase.homeDao();
         return modulesDao.getAllModules();
     }
 
     public List<Modules> getModulesOfStatus(String status) {
-        HomeDao modulesDao = appDatabase.homeDao();
+        ModuleDao modulesDao = appDatabase.homeDao();
         return modulesDao.getModulesOfStatus(status);
     }
 
     public void insertModule(Modules home) {
-        HomeDao modulesDao = appDatabase.homeDao();
+        ModuleDao modulesDao = appDatabase.homeDao();
         modulesDao.insertAll(home);
     }
 
    /* public void deleteModule(Modules home) {
-        HomeDao modulesDao = appDatabase.homeDao();
+        ModuleDao modulesDao = appDatabase.homeDao();
         modulesDao.delete(home);
     }*/
 
