@@ -4,11 +4,13 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.platform.dao.FormDataDao;
+import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
 import com.platform.models.reports.ReportData;
 
@@ -89,15 +91,15 @@ public class DatabaseManager {
         return formDataDao.getAllReports();
     }
 
-/*    public List<FormResult> getAllFormResults(String formId) {
+    public List<FormResult> getAllFormResults(String formId) {
         FormResultDao formResultDao = appDatabase.formResultDao();
-        return formResultDao.getAllFormSchema();
+        return formResultDao.getAllFormSchema(formId);
     }
 
     public void insertFormResult(FormResult result) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         formResultDao.insertAll(result);
-    }*/
+    }
 
     public List<Modules> getAllModules() {
         ModuleDao modulesDao = appDatabase.homeDao();

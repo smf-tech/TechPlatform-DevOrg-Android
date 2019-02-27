@@ -155,6 +155,16 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                     FormResult formResult = new Gson()
                             .fromJson(String.valueOf(values.get(i)), FormResult.class);
+                    /*JSONObject obj = (JSONObject) values.get(i);
+                    if (obj == null) return;
+
+                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
+                    result.set_id(formResult.mID.oid);
+                    result.setFormId(formResult.formID);
+                    result.setResult(obj);
+
+                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);*/
+
                     formID = formResult.formID;
                     list.add(new ProcessDemoObject(formResult.mID.oid,
                             formID, formResult.updatedAt));
