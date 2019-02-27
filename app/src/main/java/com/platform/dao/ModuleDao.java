@@ -12,12 +12,15 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @Dao
-public interface HomeDao {
+public interface ModuleDao {
     @Query("SELECT * FROM Modules where module = :status")
     List<Modules> getModulesOfStatus(String status);
 
     @Query("SELECT * FROM Modules")
     List<Modules> getAllModules();
+
+    @Query("DELETE FROM Modules")
+    void deleteAllModules();
 
     @Insert
     void insertAll(Modules... homes);

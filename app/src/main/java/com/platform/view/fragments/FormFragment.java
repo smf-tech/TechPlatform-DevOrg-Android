@@ -288,6 +288,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formModel = new Gson().fromJson((String) data, Form.class);
         initViews();
 
+        Form form = new Gson().fromJson(String.valueOf(data), Form.class);
+        if (form != null && form.getData() != null) {
+            DatabaseManager.getDBInstance(getContext()).insertFormSchema(form.getData());
+//            DatabaseManager.getDBInstance(getActivity()).updateFormSchema(form.getData());
+        }
+
         if (mFormJSONObject != null && mElementsListFromDB != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
@@ -422,7 +428,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         }
 
-        savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+        }
         SimpleDateFormat createdDateFormat =
                 new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));

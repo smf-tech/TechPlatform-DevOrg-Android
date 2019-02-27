@@ -16,6 +16,7 @@ public class ReportData {
     @ColumnInfo(name = "id")
     @SerializedName("_id")
     @Expose
+    @NonNull
     private String id;
     @SerializedName("name")
     @Expose
