@@ -206,7 +206,7 @@ public class FormRequestCall {
         gsonRequest.setBodyParams(new JsonObject());
         gsonRequest.setShouldCache(false);
 
-//        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
     @NonNull

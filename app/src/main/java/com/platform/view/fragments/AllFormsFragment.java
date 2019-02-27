@@ -72,6 +72,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mCountList = new ArrayList<>();
 
+        ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
+        adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
+        expandableListView.setAdapter(adapter);
+
         ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
         List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
         if (formDataList != null && !formDataList.isEmpty()) {
@@ -88,10 +92,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
             presenter.getAllFormMasters();
         }
-
-        ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
-        adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
-        expandableListView.setAdapter(adapter);
     }
 
     @Override
@@ -133,6 +133,13 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
             presenter.getSubmittedFormsOfMaster(data.getId());
+        }
+
+        if (!mChildList.isEmpty()) {
+            setAdapter(mChildList);
+            mNoRecordsView.setVisibility(View.GONE);
+        } else {
+            mNoRecordsView.setVisibility(View.VISIBLE);
         }
     }
 
