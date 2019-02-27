@@ -19,8 +19,9 @@ public class DatabaseManager {
     private static DatabaseManager databaseManager;
 
     public static DatabaseManager getDBInstance(Context context) {
-        appDatabase = Room.databaseBuilder(context, AppDatabase.class, "SMF").
-                allowMainThreadQueries()
+        appDatabase = Room.databaseBuilder(context, AppDatabase.class, "SMF")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
 
         if (databaseManager == null) {
@@ -64,6 +65,11 @@ public class DatabaseManager {
         return formDataDao.getAllFormSchema();
     }
 
+    public void updateFormSchemaSubmitCount(final String formID, final String count) {
+        FormDataDao formDataDao = appDatabase.formDataDao();
+        formDataDao.updateSubmitCount(formID, count);
+    }
+
     public void deleteAllFormSchema() {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.deleteAllFormSchema();
@@ -74,10 +80,10 @@ public class DatabaseManager {
         modulesDao.deleteAllModules();
     }
 
-   /* public void deleteForm(FormData formData) {
-        FormDataDao formDataDao = appDatabase.formDataDao();
-        formDataDao.delete(formData);
-    }*/
+//    public void deleteForm(FormData formData) {
+//        FormDataDao formDataDao = appDatabase.formDataDao();
+//        formDataDao.delete(formData);
+//    }
 
     public void insertReportData(ReportData... formData) {
         ReportsDataDao formDataDao = appDatabase.reportDao();
@@ -114,9 +120,8 @@ public class DatabaseManager {
         modulesDao.insertAll(home);
     }
 
-   /* public void deleteModule(Modules home) {
-        ModuleDao modulesDao = appDatabase.homeDao();
-        modulesDao.delete(home);
-    }*/
-
+//    public void deleteModule(Modules home) {
+//        ModuleDao modulesDao = appDatabase.homeDao();
+//        modulesDao.delete(home);
+//    }
 }

@@ -21,6 +21,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.utility.Util;
 import com.platform.view.adapters.ExpandableAdapter;
 
 import org.json.JSONException;
@@ -42,7 +43,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private static final String TAG = AllFormsFragment.class.getSimpleName();
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
     private TextView mNoRecordsView;
-    private List<String> mCountList;
+//    private List<String> mCountList;
+    private Map<String, String> mCountList;
     private ExpandableAdapter adapter;
 
     public AllFormsFragment() {
@@ -70,7 +72,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         super.onViewCreated(view, savedInstanceState);
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
-        mCountList = new ArrayList<>();
+        mCountList = new HashMap<>();
 
         ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
@@ -132,7 +134,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 processData.add(data);
                 mChildList.put(categoryName, processData);
             }
-            presenter.getSubmittedFormsOfMaster(data.getId());
+
+            if (Util.isConnected(getContext())) {
+                presenter.getSubmittedFormsOfMaster(data.getId());
+            } else {
+                FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(data.getId());
+                String submitCount = formSchema.getSubmitCount();
+//                mCountList.add(submitCount);
+                mCountList.put(data.getId(), submitCount);
+            }
         }
 
         if (!mChildList.isEmpty()) {
@@ -150,7 +160,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             if (new JSONObject(response).has("metadata")) {
                 JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
                 count = metadata.getJSONObject("form").getString("submit_count");
-                mCountList.add(count);
+                String formID = metadata.getJSONObject("form").getString("form_id");
+//                mCountList.add(count);
+                mCountList.put(formID, count);
+                DatabaseManager.getDBInstance(getContext()).updateFormSchemaSubmitCount(formID, count);
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());

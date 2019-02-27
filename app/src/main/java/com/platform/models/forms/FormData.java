@@ -57,6 +57,10 @@ public class FormData {
     @Expose
     private String multipleEntry;
 
+    @ColumnInfo(name = "submit_count")
+    @Expose
+    private String submitCount;
+
     @TypeConverters(DataCategoryConverter.class)
     @ColumnInfo(name = "category")
     @SerializedName("category")
@@ -99,7 +103,6 @@ public class FormData {
         this.multipleEntry = data.getMultipleEntry();
         this.name = data.getName();
     }
-
 
     @NonNull
     public String getId() {
@@ -190,11 +193,19 @@ public class FormData {
         this.entity = entity;
     }
 
-    private List<String> getFormKeys() {
+    public List<String> getFormKeys() {
         return formKeys;
     }
 
-    private void setFormKeys(final List<String> formKeys) {
+    public void setFormKeys(final List<String> formKeys) {
         this.formKeys = formKeys;
+    }
+
+    public String getSubmitCount() {
+        return submitCount;
+    }
+
+    public void setSubmitCount(final String submitCount) {
+        this.submitCount = submitCount;
     }
 }
