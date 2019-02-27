@@ -24,6 +24,7 @@ import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
 import com.platform.utility.Constants;
+import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.Validation;
 import com.platform.view.fragments.FormFragment;
@@ -207,7 +208,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             editTextElementsHashMap.put(textInputField, formData);
 
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
-            textInputLayout.setHint(formData.getTitle());
+            if (formData.isRequired() != null) {
+                textInputLayout.setHint(formData.getTitle() + setFieldAsMandatory(formData.isRequired()));
+            } else {
+                textInputLayout.setHint(formData.getTitle() + setFieldAsMandatory(false));
+            }
         }
         return textTemplateView;
     }
@@ -253,7 +258,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
         imageView.setTag(formData.getTitle());
-        imageView.setOnClickListener(v -> showPictureDialog(v, formData.getName()));
+        imageView.setOnClickListener(v -> onAddImageClick(v, formData.getName()));
 
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
@@ -443,6 +448,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         editTextElementsHashMap.clear();
         editTextElementsHashMap = new HashMap<>();
+    }
+
+    private void onAddImageClick(final View view, final String name) {
+        if (Permissions.isCameraPermissionGranted(fragment.get().getActivity(), this)) {
+            showPictureDialog(view, name);
+        }
     }
 
     private void showPictureDialog(final View view, final String name) {

@@ -284,6 +284,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 showLogoutPopUp();
                 break;
         }
+
+        DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -510,6 +513,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (view.getId()) {
             case R.id.menu_user_name:
                 showProfileScreen();
+
+                DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 break;
         }
     }
