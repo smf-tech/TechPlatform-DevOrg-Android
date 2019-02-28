@@ -37,7 +37,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
     private final String TAG = FormActivityPresenter.class.getName();
 
     private final Gson gson;
-    private String formId;
     private SavedForm savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
@@ -49,14 +48,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     public void setSavedForm(SavedForm savedForm) {
         this.savedForm = savedForm;
-    }
-
-    private String getFormId() {
-        return formId;
-    }
-
-    public void setFormId(String formId) {
-        this.formId = formId;
     }
 
     private HashMap<String, String> getRequestedObject() {
@@ -166,7 +157,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
             if (form != null && form.getData() != null) {
 
                 DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
-
                 Log.e(TAG, "Form schema saved in database.");
 
                 //Call choices by url
@@ -204,17 +194,17 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onSubmitClick(String submitType) {
+    public void onSubmitClick(String submitType, String url) {
         FormRequestCall formRequestCall = new FormRequestCall();
         formRequestCall.setListener(this);
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getFormId(), getRequestedObject(), mUploadedImageUrlList);
+                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
-                formRequestCall.updateFormResponse(getFormId(), getRequestedObject(), mUploadedImageUrlList);
+                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:

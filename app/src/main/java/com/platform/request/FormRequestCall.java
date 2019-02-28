@@ -14,7 +14,6 @@ import com.platform.Platform;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.FormData;
-import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -33,7 +32,7 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(String formId, HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList) {
+    public void createFormResponse(HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList, String postUrl) {
 
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
@@ -50,11 +49,9 @@ public class FormRequestCall {
         Response.ErrorListener createFormErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String createFormUrl = BuildConfig.BASE_URL
-                + String.format(Urls.PM.CREATE_FORM, formId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(Request.Method.POST,
-                createFormUrl,
+                postUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -68,7 +65,7 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void updateFormResponse(String formId, HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList) {
+    public void updateFormResponse(HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList, String postUrl) {
 
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
@@ -85,12 +82,10 @@ public class FormRequestCall {
         Response.ErrorListener createFormErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String createFormUrl = BuildConfig.BASE_URL
-                + String.format(Urls.PM.CREATE_FORM, formId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                createFormUrl,
+                postUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -211,12 +206,12 @@ public class FormRequestCall {
 
     @NonNull
     private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final Map<String, String> imageUrls) {
-        JsonObject jsonObject = new JsonObject();
+        JsonObject requestObject = new JsonObject();
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             Log.d(TAG, "Request object key " + key + " value " + value);
-            jsonObject.addProperty(key, value);
+            requestObject.addProperty(key, value);
         }
 
         if (imageUrls != null && !imageUrls.isEmpty()) {
@@ -224,12 +219,10 @@ public class FormRequestCall {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 Log.d(TAG, "Request object key " + key + " value " + value);
-                jsonObject.addProperty(key, value);
+                requestObject.addProperty(key, value);
             }
         }
 
-        JsonObject response = new JsonObject();
-        response.add(Constants.PM.RESPONSE, jsonObject);
-        return response;
+        return requestObject;
     }
 }

@@ -166,6 +166,7 @@
     <string name="new_forms">नया</string>
     <string name="saved_forms">बचाया</string>
     <string name="submitted_forms">प्रस्तुत</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
 

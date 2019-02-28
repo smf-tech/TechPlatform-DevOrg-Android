@@ -17,7 +17,7 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    //public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
+    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
@@ -112,7 +112,7 @@ public class Constants {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
         public static final String FORM_ID = "formId";
-        public static final String RESPONSE = "response";
+//        public static final String RESPONSE = "response";
         public static final String EDIT_MODE = "editMode";
     }
 
@@ -120,7 +120,6 @@ public class Constants {
         public static final String UPDATE_STATUS = "update_status";
     }
 
-    @SuppressWarnings("unused")
     public static class RequestStatus {
         public static final String PENDING = "pending";
         public static final String APPROVED = "approved";
@@ -137,14 +136,12 @@ public class Constants {
     }
 
     public static final String callUsNumber = "+9120-660-50226";
-    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
     // public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
     public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 
-    @SuppressWarnings("unused")
     public static class Form {
         public static final String EXTRA_FORM_ID = "form_id";
-        public static final String FORM_STATUS_ALL = "all";
+        // public static final String FORM_STATUS_ALL = "all";
         public static final String FORM_STATUS_PENDING = "pending";
         public static final String FORM_STATUS_COMPLETED = "completed";
     }

@@ -2,19 +2,23 @@ package com.platform.database;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.util.Log;
 
 import com.platform.dao.FormDataDao;
+import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
 import com.platform.models.reports.ReportData;
 
 import java.util.List;
 
 public class DatabaseManager {
+    private static final String TAG = DatabaseManager.class.getSimpleName();
     private static AppDatabase appDatabase;
     private static DatabaseManager databaseManager;
 
@@ -51,6 +55,7 @@ public class DatabaseManager {
     public void insertFormSchema(FormData... formData) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.insertAll(formData);
+        Log.d(TAG, "insertFormSchema");
     }
 
     public void updateFormSchema(FormData formData) {
@@ -83,14 +88,10 @@ public class DatabaseManager {
         modulesDao.deleteAllModules();
     }
 
-//    public void deleteForm(FormData formData) {
-//        FormDataDao formDataDao = appDatabase.formDataDao();
-//        formDataDao.delete(formData);
-//    }
-
     public void insertReportData(ReportData... formData) {
         ReportsDataDao formDataDao = appDatabase.reportDao();
         formDataDao.insertAll(formData);
+        Log.d(TAG, "insertReportData");
     }
 
     public List<ReportData> getAllReports() {
@@ -98,15 +99,21 @@ public class DatabaseManager {
         return formDataDao.getAllReports();
     }
 
-//    public List<FormResult> getAllFormResults(String formId) {
-//        FormResultDao formResultDao = appDatabase.formResultDao();
-//        return formResultDao.getAllFormSchema(formId);
-//    }
-//
-//    public void insertFormResult(FormResult result) {
-//        FormResultDao formResultDao = appDatabase.formResultDao();
-//        formResultDao.insertAll(result);
-//    }
+    public List<String> getAllFormResults(String formId) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        return formResultDao.getAllFormResults(formId);
+    }
+
+    public void insertFormResult(FormResult result) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        formResultDao.insertAll(result);
+        Log.d(TAG, "insertFormResult");
+    }
+
+    public void deleteAllFormResults() {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        formResultDao.deleteAllFormResults();
+    }
 
     public List<Modules> getAllModules() {
         ModuleDao modulesDao = appDatabase.homeDao();
@@ -121,10 +128,6 @@ public class DatabaseManager {
     public void insertModule(Modules home) {
         ModuleDao modulesDao = appDatabase.homeDao();
         modulesDao.insertAll(home);
+        Log.d(TAG, "insertModule");
     }
-
-//    public void deleteModule(Modules home) {
-//        ModuleDao modulesDao = appDatabase.homeDao();
-//        modulesDao.delete(home);
-//    }
 }

@@ -23,6 +23,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.utility.Util;
 import com.platform.view.adapters.FormCategoryAdapter;
 
 import org.json.JSONArray;
@@ -76,6 +77,9 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        adapter = new FormCategoryAdapter(getContext(), mFormList);
+        recyclerView.setAdapter(adapter);
+
         ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
         List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
         if (formDataList != null && !formDataList.isEmpty()) {
@@ -93,8 +97,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             presenter.getAllFormMasters();
         }
 
-        adapter = new FormCategoryAdapter(getContext(), mFormList);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -121,17 +123,16 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             String id = data.getId();
             mDataList.add(data);
 
-//            String response = getFormResults(id);
-//            processFormResultResponse(response);
-            presenter.getSubmittedFormsOfMaster(id);
+            if (Util.isConnected(getContext()))
+                presenter.getSubmittedFormsOfMaster(id);
+            else {
+                List<String> response = DatabaseManager.getDBInstance(getActivity())
+                        .getAllFormResults(id);
+                if (response != null && !response.isEmpty())
+                    processFormResultResponse(response);
+            }
         }
     }
-
-//    private String getFormResults(final String id) {
-//        DatabaseManager.getDBInstance(getActivity()).getAllFormResults(id);
-
-//        return null;
-//    }
 
     @Override
     public void onMastersFormsLoaded(final String response) {
@@ -147,28 +148,31 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             if (new JSONObject(response).has("values")) {
                 JSONArray values = new JSONObject(response).getJSONArray("values");
                 for (int i = 0; i < values.length(); i++) {
-                    /*com.platform.models.forms.FormResult result = new Gson()
-                            .fromJson(String.valueOf(values.get(i)),
-                                    com.platform.models.forms.FormResult.class);
-
-                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);*/
 
                     FormResult formResult = new Gson()
                             .fromJson(String.valueOf(values.get(i)), FormResult.class);
-                    /*JSONObject obj = (JSONObject) values.get(i);
-                    if (obj == null) return;
-
-                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(formResult.mID.oid);
-                    result.setFormId(formResult.formID);
-                    result.setResult(obj);
-
-                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);*/
 
                     formID = formResult.formID;
                     list.add(new ProcessDemoObject(formResult.mID.oid,
                             formID, formResult.updatedAt));
+
+                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
+                    result.set_id(formResult.mID.oid);
+                    result.setFormId(formID);
+
+                    JSONObject obj = (JSONObject) values.get(i);
+                    if (obj == null) return;
+
+
+                    List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                            .getAllFormResults(formID);
+                    if (!localFormResults.contains(obj.toString())) {
+                        result.setResult(obj.toString());
+                        DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                    }
+
                 }
+
                 if (formID == null) {
                     JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
                     formID = metadata.getJSONObject("form").getString("form_id");
@@ -192,6 +196,43 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
+        }
+    }
+
+    private void processFormResultResponse(final List<String> response) {
+
+        ArrayList<ProcessDemoObject> list = new ArrayList<>();
+        String formID = "";
+
+        try {
+            for (final String s : response) {
+                JSONObject obj = new JSONObject(s);
+                FormResult formResult = new Gson()
+                        .fromJson(String.valueOf(obj), FormResult.class);
+                com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
+                result.set_id(formResult.mID.oid);
+                result.setFormId(formResult.formID);
+                result.setResult(obj.toString());
+
+                formID = formResult.formID;
+                list.add(new ProcessDemoObject(formResult.mID.oid,
+                        formID, formResult.updatedAt));
+            }
+
+            for (final ProcessData data : mDataList) {
+                if (data.getId().equals(formID)) {
+                    mFormList.put(data.getName(), list);
+                }
+            }
+
+            if (!mFormList.isEmpty()) {
+                adapter.notifyDataSetChanged();
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

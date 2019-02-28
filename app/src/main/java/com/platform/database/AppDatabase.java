@@ -4,6 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
 import com.platform.dao.FormDataDao;
+import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SavedFormDao;
@@ -25,5 +26,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ReportsDataDao reportDao();
 
-    //public abstract FormResultDao formResultDao();
+    abstract FormResultDao formResultDao();
 }

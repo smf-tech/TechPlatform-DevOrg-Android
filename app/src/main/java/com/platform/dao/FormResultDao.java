@@ -14,8 +14,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Dao
 public interface FormResultDao {
-    @Query("SELECT * FROM formresult where form_id = :formId")
-    List<FormResult> getAllFormSchema(String formId);
+
+    @Query("SELECT result FROM formresult where form_id = :formId")
+    List<String> getAllFormResults(String formId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormResult result);
@@ -25,4 +26,8 @@ public interface FormResultDao {
 
     @Delete
     void delete(FormResult formData);
+
+    @Query("DELETE FROM Modules")
+    void deleteAllFormResults();
+
 }

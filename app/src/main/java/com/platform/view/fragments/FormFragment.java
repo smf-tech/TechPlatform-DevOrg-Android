@@ -102,20 +102,23 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             if (formData == null) {
                 formPresenter.getProcessDetails(processId);
             } else {
-
                 if (formData.getCategory() == null || formData.getComponents() == null) {
                     formPresenter.getProcessDetails(processId);
-                    return;
+                } else {
+                    formModel = new Form();
+                    formModel.setData(formData);
+                    initViews();
                 }
-
-                formModel = new Form();
-                formModel.setData(formData);
-                initViews();
             }
 
             mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
             if (mIsInEditMode) {
-                formPresenter.getFormResults(processId);
+                if (Util.isConnected(getContext())) {
+                    formPresenter.getFormResults(processId);
+                } else {
+                    List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+                    getFormDataAndParse(formResults);
+                }
             }
         }
     }
@@ -292,8 +295,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         Form form = new Gson().fromJson(String.valueOf(data), Form.class);
         if (form != null && form.getData() != null) {
-            DatabaseManager.getDBInstance(getContext()).insertFormSchema(form.getData());
-//            DatabaseManager.getDBInstance(getActivity()).updateFormSchema(form.getData());
+            DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
+                    .getApplicationContext()).insertFormSchema(form.getData());
         }
 
         if (mFormJSONObject != null && mElementsListFromDB != null)
@@ -369,19 +372,27 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 } else {
                     saveFormToLocalDatabase();
                     if (Util.isConnected(getActivity())) {
-                        formPresenter.setFormId(formModel.getData().getId());
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+
+                        String url = null;
+                        if (formModel.getData() != null && formModel.getData().getMicroService() != null
+                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
+                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+                            url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
+                                    formModel.getData().getMicroService().getRoute());
+                        }
+
                         if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE);
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url);
                         }
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null);
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
@@ -448,7 +459,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
-        FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+        FormData formData = DatabaseManager.getDBInstance(
+                Objects.requireNonNull(getActivity()).getApplicationContext())
+                .getFormSchema(processId);
         if (formData == null) {
             formPresenter.getProcessDetails(processId);
             return;
@@ -468,6 +481,48 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     break;
                 }
             }
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        if (formComponentCreator != null)
+            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
+    }
+
+    private void getFormDataAndParse(final List<String> response) {
+
+        String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+        String formId = getArguments().getString(Constants.PM.FORM_ID);
+        FormData formData = DatabaseManager.getDBInstance(
+                Objects.requireNonNull(getActivity()).getApplicationContext())
+                .getFormSchema(processId);
+        if (formData == null || formData.getComponents() == null) {
+            formPresenter.getProcessDetails(processId);
+            return;
+        }
+
+        mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
+        Log.e(TAG, "Form schema fetched from database.");
+
+        try {
+            for (final String s : response) {
+                mFormJSONObject = new JSONObject(s);
+                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (id.equals(formId)) {
+                    Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
+                    break;
+                }
+            }
+            /*JSONObject object = new JSONObject(response);
+            JSONArray values = object.getJSONArray("values");
+            for (int i = 0; i < values.length(); i++) {
+                mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
+                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (id.equals(formId)) {
+                    Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
+                    break;
+                }
+            }*/
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }

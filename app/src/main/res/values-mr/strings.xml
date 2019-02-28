@@ -166,6 +166,7 @@
     <string name="new_forms">नवीन</string>
     <string name="saved_forms">जतन</string>
     <string name="submitted_forms">सबमिट केलेले</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
 
