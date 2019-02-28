@@ -24,9 +24,18 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private Map<String, List<ProcessData>> mFormsData;
-    private List<String> mCountList;
+//    private List<String> mCountList;
+    private Map<String, String> mCountList;
 
+/*
     public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData, final List<String> countList) {
+        this.mContext = context;
+        mFormsData = formsData;
+        mCountList = countList;
+    }
+*/
+
+    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData, final Map<String, String> countList) {
         this.mContext = context;
         mFormsData = formsData;
         mCountList = countList;
@@ -120,7 +129,9 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().trim());
 
             if (groupPosition < mCountList.size()) {
-                String count = mCountList.get(groupPosition);
+                String count = mCountList.get(data.getId());
+                if (count == null) count = "0";
+
                 ((TextView) view.findViewById(R.id.submitted_count_label))
                         .setText(mContext.getString(R.string.submitted_form_count, count));
             } else {

@@ -17,11 +17,6 @@ public interface FormResultDao {
     @Query("SELECT * FROM formresult where form_id = :formId")
     List<FormResult> getAllFormSchema(String formId);
 
-/*
-    @Query("SELECT * FROM formdata")
-    List<FormResult> getAllFormSchema();
-*/
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormResult result);
 
