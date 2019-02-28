@@ -32,6 +32,7 @@ import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
@@ -105,10 +106,10 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         List<Modules> modulesFromDatabase = getModulesFromDatabase();
         if (!modulesFromDatabase.isEmpty()) {
 
-            List<Modules> defaultModules = DatabaseManager.getDBInstance(getContext())
+            List<Modules> defaultModules = DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getModulesOfStatus(Constants.RequestStatus.DEFAULT_MODULE);
 
-            List<Modules> approveModules = DatabaseManager.getDBInstance(getContext())
+            List<Modules> approveModules = DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
 
             HomeData homeData = new HomeData();
@@ -137,7 +138,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     }
 
     private List<Modules> getModulesFromDatabase() {
-        return DatabaseManager.getDBInstance(getContext()).getAllModules();
+        return DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext()).getAllModules();
     }
 
     @Override
@@ -158,13 +159,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
             List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
             for (final Modules module : defaultModules) {
                 module.setModule(DEFAULT_MODULE);
-                DatabaseManager.getDBInstance(getContext()).insertModule(module);
+                DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext()).insertModule(module);
             }
 
             List<Modules> approveModules = this.homeData.getHomeData().getOnApproveModules();
             for (final Modules module : approveModules) {
                 module.setModule(APPROVED_MODULE);
-                DatabaseManager.getDBInstance(getContext()).insertModule(module);
+                DatabaseManager.getDBInstance(getActivity().getApplicationContext()).insertModule(module);
             }
 
             HomeData homeData = new HomeData();
