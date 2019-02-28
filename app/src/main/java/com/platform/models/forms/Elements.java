@@ -28,6 +28,9 @@ public class Elements {
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
+    @SerializedName("maxLength")
+    @Expose
+    private Integer maxLength;
     @SerializedName("enableIf")
     @Expose
     private String enableIf;
@@ -66,6 +69,14 @@ public class Elements {
 
     public void setVisibleIf(String visibleIf) {
         this.visibleIf = visibleIf;
+    }
+
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
     }
 
     public String getInputType() {
