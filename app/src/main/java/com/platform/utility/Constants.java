@@ -2,7 +2,7 @@ package com.platform.utility;
 
 public class Constants {
 
-    static final int SMS_RECEIVE_REQUEST = 1;
+    public static final int SMS_RECEIVE_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
 
@@ -137,9 +137,9 @@ public class Constants {
     }
 
     public static final String callUsNumber = "+9120-660-50226";
-    public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
-    public static final String playStoreLink = "https://play.google.com/store/apps/details?" +
-            "id=com.bjs.ss&hl=en";
+    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
+    // public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
+    public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 
     @SuppressWarnings("unused")
     public static class Form {

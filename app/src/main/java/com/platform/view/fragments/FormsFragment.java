@@ -96,15 +96,15 @@ public class FormsFragment extends Fragment {
             String title = "";
             switch (position) {
                 case 0:
-                    title = "All";
+                    title = getResources().getString(R.string.new_forms);
                     break;
 
                 case 1:
-                    title = "Pending";
+                    title = getResources().getString(R.string.saved_forms);
                     break;
 
                 case 2:
-                    title = "Completed";
+                    title = getResources().getString(R.string.submitted_forms);
                     break;
             }
 
