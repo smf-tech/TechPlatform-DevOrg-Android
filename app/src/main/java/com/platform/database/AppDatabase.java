@@ -16,6 +16,7 @@ import com.platform.models.reports.ReportData;
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class}, version = 2)
 
 public abstract class AppDatabase extends RoomDatabase {
+
     public abstract SavedFormDao formDao();
 
     public abstract FormDataDao formDataDao();
