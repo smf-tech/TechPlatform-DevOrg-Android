@@ -29,29 +29,22 @@ import java.util.Map;
 @SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
-    private boolean mShowAllReportsText;
     private View reportFragmentView;
     private ReportCategoryAdapter adapter;
+    private boolean mShowAllReportsText = true;
+
     private List<String> reportsHeaderList = new ArrayList<>();
     private Map<String, List<ReportData>> reportsList = new HashMap<>();
-
-    public ReportsFragment() {
-    }
-
-    public static ReportsFragment newInstance(boolean showAllReportsText) {
-        Bundle args = new Bundle();
-        args.putBoolean("showAllReportsText", showAllReportsText);
-        ReportsFragment fragment = new ReportsFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mShowAllReportsText = getArguments().getBoolean("showAllReportsText", true);
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+
+            mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }
     }
 
@@ -67,9 +60,9 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getActivity() != null) {
-            ((HomeActivity) getActivity()).setActionBarTitle(
-                    getActivity().getResources().getString(R.string.reports));
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
         }
 
         init();
@@ -170,7 +163,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
-                Util.launchFragment(ReportsFragment.newInstance(false), getContext(), "reportsFragment");
+                Util.launchFragment(new ReportsFragment(), getContext(), getString(R.string.reports));
                 break;
         }
     }

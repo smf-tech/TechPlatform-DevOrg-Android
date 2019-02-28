@@ -124,6 +124,7 @@
     <string name="call_on_phone">फोनवर कॉल करा (10AM ते 6PM)</string>
 
     <!--Home-->
+    <string name="tab_dashboard">डॅशबोर्ड</string>
     <string name="tab_connect">कनेक्ट</string>
     <string name="tab_stories">कथा</string>
     <string name="programme_management">कार्यक्रम\nव्यवस्थापन</string>

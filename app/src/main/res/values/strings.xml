@@ -124,6 +124,7 @@
     <string name="call_on_phone">Call on Phone (10AM to 6PM)</string>
 
     <!--Home-->
+    <string name="tab_dashboard">Dashboard</string>
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
