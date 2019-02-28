@@ -23,20 +23,17 @@ public class DatabaseManager {
     private static DatabaseManager databaseManager;
 
     public static DatabaseManager getDBInstance(Context context) {
-        appDatabase = Room.databaseBuilder(context, AppDatabase.class, "SMF").
-                allowMainThreadQueries()
-/*                .addMigrations(new Migration(1, 2) {
-                    @Override
-                    public void migrate(@NonNull final SupportSQLiteDatabase database) {
-
-                    }
-                })*/
-                .fallbackToDestructiveMigration()
-                .build();
+        if (appDatabase == null) {
+            appDatabase = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "SMF")
+                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
+                    .build();
+        }
 
         if (databaseManager == null) {
             databaseManager = new DatabaseManager();
         }
+
         return databaseManager;
     }
 

@@ -22,10 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-//import com.google.android.gms.auth.api.phone.SmsRetriever;
-//import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
-//import com.google.android.gms.tasks.Task;
-//import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
@@ -37,6 +33,11 @@ import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
+
+//import com.google.android.gms.auth.api.phone.SmsRetriever;
+//import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+//import com.google.android.gms.tasks.Task;
+//import com.platform.Platform;
 
 /**
  * A simple {@link Fragment} subclass.

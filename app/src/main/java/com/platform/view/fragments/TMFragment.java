@@ -24,29 +24,24 @@ import java.util.List;
 
 public class TMFragment extends Fragment implements View.OnClickListener, TMTaskListener {
 
-    private boolean mShowAllApprovalsText;
     private View tmFragmentView;
+    private TextView txtNoData;
     private RecyclerView rvPendingRequests;
     private TMFragmentPresenter tmFragmentPresenter;
     private NewTMAdapter newTMAdapter;
-    private List<PendingRequest> pendingRequestList;
-    private TextView txtNoData;
+    private boolean mShowAllApprovalsText = true;
 
-    public static TMFragment newInstance(boolean showAllApprovalsText) {
-        Bundle args = new Bundle();
-        args.putBoolean("showAllApprovalsText", showAllApprovalsText);
-        TMFragment fragment = new TMFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private List<PendingRequest> pendingRequestList;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mShowAllApprovalsText = getArguments()
-                    .getBoolean("showAllApprovalsText", true);
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+
+            mShowAllApprovalsText = getArguments().getBoolean("SHOW_ALL", true);
         }
     }
 
@@ -65,11 +60,6 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
         tmFragmentPresenter = new TMFragmentPresenter(this);
         tmFragmentPresenter.getAllPendingRequests();
 
-        if (getActivity() != null) {
-            ((HomeActivity) getActivity()).setActionBarTitle(
-                    getActivity().getResources().getString(R.string.team_management));
-        }
-
         init();
     }
 
@@ -82,6 +72,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
 
         final TextView viewAllApprovals = tmFragmentView.findViewById(R.id.txt_view_all_approvals);
         viewAllApprovals.setOnClickListener(this);
+
         if (!mShowAllApprovalsText) {
             viewAllApprovals.setVisibility(View.GONE);
         } else {
@@ -93,7 +84,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
-                Util.launchFragment(TMFragment.newInstance(false), getContext(), "teamsFragment");
+                Util.launchFragment(new TMFragment(), getContext(), getString(R.string.team_management));
                 break;
         }
     }

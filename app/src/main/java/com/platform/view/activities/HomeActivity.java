@@ -111,7 +111,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 .apply(requestOptions)
                 .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable final GlideException e, final Object model,
+                                                final Target<Drawable> target, final boolean isFirstResource) {
                         Log.e(TAG, "onLoadFailed: ");
 
 //                        return !loadFromSDCard(userPic);
@@ -119,7 +120,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     }
 
                     @Override
-                    public boolean onResourceReady(final Drawable resource, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
+                    public boolean onResourceReady(final Drawable resource, final Object model,
+                                                   final Target<Drawable> target, final DataSource dataSource,
+                                                   final boolean isFirstResource) {
                         return false;
                     }
                 })
@@ -155,38 +158,15 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFormsPage() {
-        try {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container, new FormsFragment(), "formsFragment");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+        Util.launchFragment(new FormsFragment(), this, getString(R.string.forms));
     }
 
     private void loadTeamsPage() {
-        try {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container,
-                    TMFragment.newInstance(false), "teamFragment");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+        Util.launchFragment(new TMFragment(), this, getString(R.string.team_management));
     }
 
     private void loadReportsPage() {
-        try {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container,
-                    ReportsFragment.newInstance(false), "reportFragment");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+        Util.launchFragment(new ReportsFragment(), this, getString(R.string.reports));
     }
 
     @Override
@@ -283,6 +263,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 showLogoutPopUp();
                 break;
         }
+
+        DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -510,6 +493,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (view.getId()) {
             case R.id.menu_user_name:
                 showProfileScreen();
+
+                DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 break;
         }
     }

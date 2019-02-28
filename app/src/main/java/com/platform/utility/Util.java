@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -385,12 +386,17 @@ public class Util {
         return date;
     }
 
-    public static void launchFragment(Fragment fragment, Context context, String name) {
+    public static void launchFragment(Fragment fragment, Context context, String titleName) {
         try {
+            Bundle b = new Bundle();
+            b.putSerializable("TITLE", titleName);
+            b.putBoolean("SHOW_ALL", false);
+            fragment.setArguments(b);
+
             FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
                     .requireNonNull(context))
                     .getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container, fragment, name);
+            fragmentTransaction.replace(R.id.home_page_container, fragment, titleName);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {

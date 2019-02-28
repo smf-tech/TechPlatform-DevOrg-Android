@@ -48,6 +48,16 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     private Object mSyncObserverHandle;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null) {
+            String title = getResources().getString(R.string.app_name_ss);
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
@@ -62,11 +72,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (getActivity() != null) {
-            ((HomeActivity) getActivity()).setActionBarTitle(
-                    getActivity().getResources().getString(R.string.app_name_ss));
-        }
         dialogNotApproved = new AlertDialog.Builder(getActivity()).create();
     }
 
@@ -89,9 +94,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         }
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(dashboardFragment, "Dashboard");
-        adapter.addFragment(new StoriesFragment(), "Stories");
-        adapter.addFragment(new ConnectFragment(), "Connect");
+        adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
+        adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
+        adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
         viewPager.setAdapter(adapter);
     }
 

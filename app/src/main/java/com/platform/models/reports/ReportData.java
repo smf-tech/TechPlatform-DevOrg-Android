@@ -17,7 +17,7 @@ public class ReportData {
     @SerializedName("_id")
     @Expose
     @NonNull
-    private String id;
+    private String id = "";
     @SerializedName("name")
     @Expose
     private String name;
