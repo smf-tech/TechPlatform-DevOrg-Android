@@ -369,19 +369,27 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 } else {
                     saveFormToLocalDatabase();
                     if (Util.isConnected(getActivity())) {
-                        formPresenter.setFormId(formModel.getData().getId());
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+
+                        String url = null;
+                        if (formModel.getData() != null && formModel.getData().getMicroService() != null
+                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
+                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+                            url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
+                                    formModel.getData().getMicroService().getRoute());
+                        }
+
                         if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE);
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url);
                         }
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null);
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
