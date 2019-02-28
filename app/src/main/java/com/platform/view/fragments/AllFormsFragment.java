@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +44,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private static final String TAG = AllFormsFragment.class.getSimpleName();
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
     private TextView mNoRecordsView;
-//    private List<String> mCountList;
     private Map<String, String> mCountList;
     private ExpandableAdapter adapter;
 
@@ -78,21 +78,23 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
         expandableListView.setAdapter(adapter);
 
-        ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
-        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
-        if (formDataList != null && !formDataList.isEmpty()) {
-            for (final FormData data : formDataList) {
-                ProcessData processData = new ProcessData(data);
-                processDataArrayList.add(processData);
-            }
-
-            Processes processes = new Processes();
-            processes.setData(processDataArrayList);
-
-            processResponse(processes);
-        } else {
+        if (Util.isConnected(getContext())) {
             FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
             presenter.getAllFormMasters();
+        } else {
+            ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
+            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
+            if (formDataList != null && !formDataList.isEmpty()) {
+                for (final FormData data : formDataList) {
+                    ProcessData processData = new ProcessData(data);
+                    processDataArrayList.add(processData);
+                }
+
+                Processes processes = new Processes();
+                processes.setData(processDataArrayList);
+
+                processResponse(processes);
+            }
         }
     }
 
@@ -138,9 +140,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             if (Util.isConnected(getContext())) {
                 presenter.getSubmittedFormsOfMaster(data.getId());
             } else {
-                FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(data.getId());
+                FormData formSchema = DatabaseManager.getDBInstance(
+                        Objects.requireNonNull(getActivity()).getApplicationContext())
+                        .getFormSchema(data.getId());
                 String submitCount = formSchema.getSubmitCount();
-//                mCountList.add(submitCount);
                 mCountList.put(data.getId(), submitCount);
             }
         }
@@ -161,9 +164,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
                 count = metadata.getJSONObject("form").getString("submit_count");
                 String formID = metadata.getJSONObject("form").getString("form_id");
-//                mCountList.add(count);
                 mCountList.put(formID, count);
-                DatabaseManager.getDBInstance(getContext()).updateFormSchemaSubmitCount(formID, count);
+                DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
+                        .getApplicationContext()).updateFormSchemaSubmitCount(formID, count);
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());

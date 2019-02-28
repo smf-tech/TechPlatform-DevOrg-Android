@@ -3,14 +3,10 @@ package com.platform.models.forms;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.database.FormResultJsonDataConverter;
-
-import org.json.JSONObject;
 
 @Entity
 @SuppressWarnings("unused")
@@ -29,8 +25,7 @@ public class FormResult {
     private String formId;
 
     @ColumnInfo(name = "result")
-    @TypeConverters(FormResultJsonDataConverter.class)
-    private JSONObject result;
+    private String result;
 
     @NonNull
     public String get_id() {
@@ -49,11 +44,11 @@ public class FormResult {
         this.formId = formId;
     }
 
-    public JSONObject getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(final JSONObject result) {
+    public void setResult(final String result) {
         this.result = result;
     }
 }

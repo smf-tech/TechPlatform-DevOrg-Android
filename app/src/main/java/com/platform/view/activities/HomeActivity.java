@@ -399,8 +399,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             return;
         }
 
-        DatabaseManager.getDBInstance(this).deleteAllFormSchema();
-        DatabaseManager.getDBInstance(this).deleteAllModules();
+        removeDatabaseRecords();
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
@@ -410,6 +409,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    private void removeDatabaseRecords() {
+        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormSchema();
+        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllModules();
+        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormResults();
     }
 
     @Override
