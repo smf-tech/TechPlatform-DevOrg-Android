@@ -164,6 +164,7 @@
     <string name="image_upload_success">Image uploaded successfully!</string>
     <string name="no_internet">Internet is not available!</string>
     <string name="status_update_success">Status updated successfully!</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
 

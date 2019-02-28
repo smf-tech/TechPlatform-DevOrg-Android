@@ -164,6 +164,7 @@
     <string name="image_upload_success">प्रतिमा यशस्वीरित्या अपलोड केली!</string>
     <string name="no_internet">इंटरनेट उपलब्ध नाही!</string>
     <string name="status_update_success">स्थिती यशस्वीरित्या अद्यतनित केली!</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
 

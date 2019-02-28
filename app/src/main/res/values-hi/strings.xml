@@ -164,6 +164,7 @@
     <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
     <string name="no_internet">इंटरनेट उपलब्ध नहीं है!</string>
     <string name="status_update_success">स्थिति सफलतापूर्वक अपडेट की गई!</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
 

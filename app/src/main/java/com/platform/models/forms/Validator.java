@@ -17,6 +17,12 @@ public class Validator {
     @SerializedName("maxValue")
     @Expose
     private Integer maxValue;
+    @SerializedName("minLength")
+    @Expose
+    private Integer minLength;
+    @SerializedName("maxLength")
+    @Expose
+    private Integer maxLength;
     @SerializedName("allowDigits")
     @Expose
     private Boolean isDigitAllowed;
@@ -59,5 +65,21 @@ public class Validator {
 
     public void setMaxValue(Integer maxValue) {
         this.maxValue = maxValue;
+    }
+
+    public Integer getMinLength() {
+        return minLength;
+    }
+
+    public void setMinLength(Integer minLength) {
+        this.minLength = minLength;
+    }
+
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
     }
 }
