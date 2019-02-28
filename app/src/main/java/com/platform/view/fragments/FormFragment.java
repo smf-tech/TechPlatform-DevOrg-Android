@@ -193,6 +193,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
                             if (elements.getChoicesByUrlResponse() != null) {
@@ -235,6 +236,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
                             if (elements.getChoicesByUrlResponse() != null) {
@@ -351,8 +353,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     }
                 }
             }
-//            DropDownTemplate dropDownTemplate = (DropDownTemplate) customFormView.findViewWithTag(elements.getName());
-//            formComponentCreator.updateDropDownValues(elements, choiceValues);
+            formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }

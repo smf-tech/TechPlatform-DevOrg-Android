@@ -1,9 +1,9 @@
 package com.platform.view.fragments;
 
-//import android.content.BroadcastReceiver;
-//import android.content.Context;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-//import android.content.IntentFilter;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
+import com.platform.models.user.User;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -53,7 +54,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private boolean isSmSPermissionNotDenied;
 
     private OtpFragmentPresenter otpPresenter;
-//    private BroadcastReceiver mIntentReceiver;
+    private final BroadcastReceiver mIntentReceiver;
+    private final IntentFilter intentFilter;
 
     private CountDownTimer timer;
     private Button mBtnVerify;
@@ -69,7 +71,27 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private final String TAG = NewOtpFragment.class.getSimpleName();
 
     public NewOtpFragment() {
-        // Required empty public constructor
+        intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
+        mIntentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Process the sms format and extract body &amp; phoneNumber
+                String msg = intent.getStringExtra("get_msg");
+                if (msg != null && !msg.isEmpty()) {
+                    msg = msg.replace("\n", "");
+                    String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                    Log.d("SMS_OTP_R", body);
+
+                    try {
+                        hideProgressBar();
+                        // String otp[] = body.split(" ");
+                        // setOtp(otp);
+                    } catch (Exception e) {
+                        Log.d(TAG, e.getMessage());
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -82,6 +104,15 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public static NewOtpFragment newInstance(final LoginInfo loginInfo) {
         sLoginInfo = loginInfo;
         return new NewOtpFragment();
+    }
+
+    @Override
+    public void onResume() {
+        if (getActivity() != null) {
+            getActivity().registerReceiver(mIntentReceiver, intentFilter);
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -304,6 +335,28 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         }
     }
 
+//    private void setOtp(final String[] msg) {
+//        if (getActivity()!=null) {
+//            getActivity().runOnUiThread(() -> {
+//                char[] otpChars = msg[0].toCharArray();
+//                if (otpChars.length == 6) {
+//                    mOtp1.setText(otpChars[0]);
+//                    mOtp2.setText(otpChars[1]);
+//                    mOtp3.setText(otpChars[2]);
+//                    mOtp4.setText(otpChars[3]);
+//                    mOtp5.setText(otpChars[4]);
+//                    mOtp6.setText(otpChars[5]);
+//                }
+//
+//                if (timer != null) {
+//                    timer.cancel();
+//                }
+//
+//                tvOtpTimer.setVisibility(View.GONE);
+//            });
+//        }
+//    }
+
     private void clearOtp() {
         mOtp1.setText("");
         mOtp2.setText("");
@@ -374,7 +427,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
-                //smsRetrieval();
+                // smsRetrieval();
                 startOtpTimer();
                 isSmsReceiverRegistered = true;
             }
@@ -429,27 +482,27 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             return;
         }
 
-        if (data != null) {
-            try {
-                Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
+        User userObj = (User) data;
+        Intent intent;
+        if (userObj != null && !TextUtils.isEmpty(userObj.getUserInfo().getOrgId())) {
+            intent = new Intent(getActivity(), HomeActivity.class);
+        } else {
+            intent = new Intent(getActivity(), ProfileActivity.class);
+        }
 
-                Intent intent;
-                if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
-                    intent = new Intent(getActivity(), ProfileActivity.class);
-                } else {
-                    intent = new Intent(getActivity(), HomeActivity.class);
-                }
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
+        try {
+            Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
 
-                OtpActivity activity = (OtpActivity) getActivity();
-                if (activity != null) {
-                    activity.startActivity(intent);
-                    activity.finish();
-                }
-            } catch (Exception e) {
-                Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
+
+            OtpActivity activity = (OtpActivity) getActivity();
+            if (activity != null) {
+                activity.startActivity(intent);
+                activity.finish();
             }
+        } catch (Exception e) {
+            Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");
         }
     }
 
@@ -472,28 +525,9 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 //        // can be made blocking using Tasks.await(task, [timeout]);
 //        task.addOnSuccessListener(aVoid -> {
 //            // Successfully started retriever, expect broadcast intent
-//            IntentFilter intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
-//            mIntentReceiver = new BroadcastReceiver() {
-//
-//                @Override
-//                public void onReceive(Context context, Intent intent) {
-//                    //Process the sms format and extract body &amp; phoneNumber
-//                    String msg = intent.getStringExtra("get_msg");
-//                    if (msg != null && !msg.isEmpty()) {
-//                        msg = msg.replace("\n", "");
-//
-//                        String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-//                        body = body.substring(0, body.lastIndexOf(" "));
-//                        Log.d("OTP", body);
-//                    }
-//
-//                    if (timer != null) {
-//                        timer.cancel();
-//                    }
-//                }
-//            };
-//
-//            Platform.getInstance().registerReceiver(mIntentReceiver, intentFilter);
+//            if (getActivity() != null) {
+//                getActivity().registerReceiver(mIntentReceiver, intentFilter);
+//            }
 //        });
 //
 //        task.addOnFailureListener(e -> {

@@ -10,6 +10,7 @@ public class Urls {
 
     public class Profile {
         public static final String SUBMIT_PROFILE = "api/users/%1$s";
+        public static final String GET_PROFILE = "api/user";
         public static final String GET_ORGANIZATION = "api/organizations";
         public static final String GET_ORGANIZATION_PROJECTS = "api/projects/%1$s";
         public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s";

@@ -269,13 +269,13 @@ public class Util {
         editor.apply();
     }
 
-    public static UserLocation getUserLocationFromPref() {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        String obj = preferences.getString(Constants.App.USER_LOC_OBJ, "{}");
-        return new Gson().fromJson(obj, UserLocation.class);
-    }
+//    public static UserLocation getUserLocationFromPref() {
+//        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+//                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+//
+//        String obj = preferences.getString(Constants.App.USER_LOC_OBJ, "{}");
+//        return new Gson().fromJson(obj, UserLocation.class);
+//    }
 
     public static void saveUserLocationInPref(UserLocation location) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
