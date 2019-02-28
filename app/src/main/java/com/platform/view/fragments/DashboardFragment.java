@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.platform.R;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
 import com.platform.utility.Constants;
-import com.platform.view.adapters.ViewPagerAdapter;
+import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,23 +88,23 @@ public class DashboardFragment extends Fragment {
 
     @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
             switch (modules.getName()) {
                 case Constants.Home.FORMS:
-                    adapter.addFragment(new PMFragment(), "Forms");
+                    adapter.addFragment(new PMFragment());
                     break;
 
                 case Constants.Home.MEETINGS:
-                    adapter.addFragment(new MeetingsFragment(), "Meetings");
+                    adapter.addFragment(new MeetingsFragment());
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(TMFragment.newInstance(true), "Teams");
+                    adapter.addFragment(new TMFragment());
                     break;
 
                 case Constants.Home.REPORTS:
-                    adapter.addFragment(ReportsFragment.newInstance(true), "Reports");
+                    adapter.addFragment(new ReportsFragment());
                     break;
             }
         }
@@ -132,6 +133,29 @@ public class DashboardFragment extends Fragment {
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setEnabled(tabNames.get(i).isActive());
+        }
+    }
+
+    class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+
+        DashboardViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
         }
     }
 }

@@ -10,8 +10,19 @@ import android.view.ViewGroup;
 
 import com.platform.R;
 import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 
 public class MeetingsFragment extends Fragment implements View.OnClickListener {
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -24,7 +35,7 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
-                Util.launchFragment(new MeetingsFragment(), getContext(), "meetingFragment");
+                Util.launchFragment(new MeetingsFragment(), getContext(), getString(R.string.meetings));
                 break;
         }
     }
