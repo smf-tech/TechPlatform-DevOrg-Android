@@ -11,12 +11,6 @@ public class Validator {
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("minLength")
-    @Expose
-    private Integer minLength;
-    @SerializedName("maxLength")
-    @Expose
-    private Integer maxLength;
     @SerializedName("minValue")
     @Expose
     private Integer minValue;
@@ -41,22 +35,6 @@ public class Validator {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Integer getMinLength() {
-        return minLength;
-    }
-
-    public void setMinLength(Integer minLength) {
-        this.minLength = minLength;
-    }
-
-    public Integer getMaxLength() {
-        return maxLength;
-    }
-
-    public void setMaxLength(Integer maxLength) {
-        this.maxLength = maxLength;
     }
 
     public Boolean getDigitAllowed() {

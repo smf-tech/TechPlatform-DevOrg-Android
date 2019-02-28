@@ -160,13 +160,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 setInputType(formData.getValidators().get(0).getType(), textInputField);
 
                 //set max length allowed
-                if (formData.getValidators().get(0).getMaxLength() != null) {
+                if (formData.getMaxLength() != null) {
                     textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                            formData.getValidators().get(0).getMaxLength())});
+                            formData.getMaxLength())});
 
-                } else if (formData.getValidators().get(0).getMaxValue() != null) {
-                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                            formData.getValidators().get(0).getMaxValue())});
                 }
             }
 
@@ -294,8 +291,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                         if (!TextUtils.isEmpty(editText.getText().toString())) {
 
-                            errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(),
+                            errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
                                     editText.getText().toString(), formData.getValidators().get(0));
+
+                            if (TextUtils.isEmpty(errorMsg)) {
+                                errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
+                                        editText.getText().toString(), formData.getMaxLength());
+                            }
 
                             if (!TextUtils.isEmpty(errorMsg)) {
                                 fragment.get().setErrorMsg(errorMsg);
@@ -307,8 +309,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
-                    errorMsg = Validation.editTextMinMaxValidation(editText.getTag().toString(),
+                    errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
                             editText.getText().toString(), formData.getValidators().get(0));
+
+                    if (TextUtils.isEmpty(errorMsg)) {
+                        errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
+                                editText.getText().toString(), formData.getMaxLength());
+                    }
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
