@@ -244,7 +244,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE) {
-            Util.hideKeyboard (etUserMobileNumber);
+            Util.hideKeyboard(etUserMobileNumber);
 
             if (isAllInputsValid()) {
                 goToVerifyOtpScreen();

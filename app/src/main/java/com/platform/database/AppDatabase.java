@@ -26,5 +26,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ReportsDataDao reportDao();
 
-    abstract FormResultDao formResultDao();
+    public abstract FormResultDao formResultDao();
 }
