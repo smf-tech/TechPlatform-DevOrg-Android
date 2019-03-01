@@ -7,7 +7,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.models.forms.FormResult;
+import com.platform.models.SavedForm;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
 import com.platform.view.fragments.PMFragment;
@@ -33,8 +33,15 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
         requestCall.getAllProcess();
     }
 
-    public static List<FormResult> getAllNonSyncedSavedForms(Context context) {
-        return DatabaseManager.getDBInstance(context).getNonSyncedPendingForms1();
+    public static List<SavedForm> getAllNonSyncedSavedForms() {
+        if (fragmentWeakReference == null || fragmentWeakReference.get() == null ||
+                fragmentWeakReference.get().getActivity() == null)
+            return null;
+        return DatabaseManager.getDBInstance(fragmentWeakReference.get().getActivity()).getNonSyncedPendingForms();
+    }
+
+    public static List<SavedForm> getAllNonSyncedSavedForms(Context context) {
+        return DatabaseManager.getDBInstance(context).getNonSyncedPendingForms();
     }
 
     @Override

@@ -37,7 +37,6 @@ import com.bumptech.glide.request.target.Target;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
-import com.platform.models.forms.FormResult;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
@@ -389,7 +388,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name_ss));
         // Setting Dialog Message
-        alertDialog.setMessage("Pending forms are not synced!");
+        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
         // Setting Icon to Dialog
         alertDialog.setIcon(R.mipmap.app_logo);
         // Setting CANCEL Button
@@ -397,7 +396,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> removeDatabaseRecords());
+                (dialog, which) -> logOutUser());
 
         // Showing Alert Message
         alertDialog.show();
@@ -406,11 +405,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
-        /*final List<FormResult> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getApplicationContext());
+        final List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             showPendingFormsPopUp();
             return;
-        }*/
+        }
 
         removeDatabaseRecords();
 

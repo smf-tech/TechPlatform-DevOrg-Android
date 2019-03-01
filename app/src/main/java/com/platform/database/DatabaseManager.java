@@ -54,11 +54,6 @@ public class DatabaseManager {
         return savedFormDao.getAllNonSyncedForms();
     }
 
-    public List<FormResult> getNonSyncedPendingForms1() {
-        FormResultDao formResultDao = appDatabase.formResultDao();
-        return formResultDao.getAllNonSyncedForms();
-    }
-
     public void insertFormSchema(FormData... formData) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.insertAll(formData);
@@ -72,16 +67,6 @@ public class DatabaseManager {
     public FormData getFormSchema(final String processId) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         return formDataDao.getFormSchema(processId);
-    }
-
-    public List<FormData> getAllFormSchema() {
-        FormDataDao formDataDao = appDatabase.formDataDao();
-        return formDataDao.getAllFormSchema();
-    }
-
-    public void updateFormSchemaSubmitCount(final String formID, final String count) {
-        FormDataDao formDataDao = appDatabase.formDataDao();
-        formDataDao.updateSubmitCount(formID, count);
     }
 
     public void deleteAllFormSchema() {
@@ -138,12 +123,6 @@ public class DatabaseManager {
     public void insertFormResult(FormResult result) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         formResultDao.insertAll(result);
-        Log.d(TAG, "insertFormResult");
-    }
-
-    public void updateFormResult(FormResult result) {
-        FormResultDao formResultDao = appDatabase.formResultDao();
-        formResultDao.update(result);
         Log.d(TAG, "insertFormResult");
     }
 
