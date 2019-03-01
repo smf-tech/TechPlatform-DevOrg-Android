@@ -8,22 +8,17 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.database.DataCategoryConverter;
 import com.platform.database.DataConverter;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
 import com.platform.models.common.Project;
-import com.platform.models.pm.ProcessData;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 @android.arch.persistence.room.Entity
 public class FormData {
-    public FormData() {
-    }
-
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("_id")
@@ -57,11 +52,7 @@ public class FormData {
     @Expose
     private String multipleEntry;
 
-    @ColumnInfo(name = "submit_count")
-    @Expose
-    private String submitCount;
-
-    @TypeConverters(DataCategoryConverter.class)
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "category")
     @SerializedName("category")
     @Expose
@@ -72,7 +63,8 @@ public class FormData {
     @Expose
     private List<String> assignedRoles = null;
 
-    @Ignore
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "microservice")
     @SerializedName("microservice")
     @Expose
     private Microservice microService;
@@ -91,18 +83,6 @@ public class FormData {
     @SerializedName("form_keys")
     @Expose
     private List<String> formKeys;
-
-    public FormData(final ProcessData data) {
-        this.category = data.getCategory();
-        this.entity = data.getEntity();
-        this.microService = data.getMicroservice();
-        this.project = data.getProject();
-        this.id = data.getId();
-        this.active = data.getActive();
-        this.editable = data.getEditable();
-        this.multipleEntry = data.getMultipleEntry();
-        this.name = data.getName();
-    }
 
     @NonNull
     public String getId() {
@@ -201,11 +181,4 @@ public class FormData {
         this.formKeys = formKeys;
     }
 
-    public String getSubmitCount() {
-        return submitCount;
-    }
-
-    public void setSubmitCount(final String submitCount) {
-        this.submitCount = submitCount;
-    }
 }
