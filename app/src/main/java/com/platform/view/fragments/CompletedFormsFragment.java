@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.FormCategoryAdapter;
 
@@ -85,11 +87,10 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
             processResponse(processes);
-
         } else {
             if (Util.isConnected(getContext())) {
                 FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-                presenter.getAllFormMasters();
+                presenter.getAllProcesses();
             }
         }
 
@@ -108,7 +109,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     @Override
     public void onFormsLoaded(String response) {
         Processes json = new Gson().fromJson(response, Processes.class);
-        processResponse(json);
+        if (json != null && json.getData() != null && !json.getData().isEmpty()) {
+            for (ProcessData processData :
+                    json.getData()) {
+                DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
+            }
+            processResponse(json);
+        }
     }
 
     private void processResponse(final Processes json) {
@@ -126,15 +133,16 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             if (response != null && !response.isEmpty()) {
                 processFormResultResponse(response);
             } else {
-                if (Util.isConnected(getContext())) {
-                    presenter.getSubmittedFormsOfMaster(id);
+                if (Util.isConnected(getContext()) && !TextUtils.isEmpty(data.getSubmitCount()) &&
+                        Integer.parseInt(data.getSubmitCount()) != 0) {
+                    presenter.getSubmittedForms(id);
                 }
             }
         }
     }
 
     @Override
-    public void onMastersFormsLoaded(final String response) {
+    public void onMastersFormsLoaded(final String response, final String formId) {
         processFormResultResponse(response);
     }
 
@@ -144,8 +152,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String formID = "";
 
         try {
-            if (new JSONObject(response).has("values")) {
-                JSONArray values = new JSONObject(response).getJSONArray("values");
+            if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
+                JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
                 for (int i = 0; i < values.length(); i++) {
 
                     FormResult formResult = new Gson()
@@ -173,8 +181,11 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 }
 
                 if (formID == null) {
-                    JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
-                    formID = metadata.getJSONObject("form").getString("form_id");
+                    JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
+                    if (metadata != null && metadata.length() > 0) {
+                        JSONObject metadataObj = metadata.getJSONObject(0);
+                        formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.FORM_ID);
+                    }
                 }
             } else {
                 list.add(new ProcessDemoObject("No Forms available", "0", ""));
