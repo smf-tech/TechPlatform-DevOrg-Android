@@ -74,23 +74,23 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         init();
 
-        if (Util.isConnected(getContext())) {
-            PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-            pmFragmentPresenter.getAllProcess();
+        ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
+        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
+        if (formDataList != null && !formDataList.isEmpty()) {
+            for (final FormData data : formDataList) {
+                ProcessData processData = new ProcessData(data);
+                processDataArrayList.add(processData);
+            }
+
+            Processes processes = new Processes();
+            processes.setData(processDataArrayList);
+
+            populateData(processes);
+
         } else {
-            ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
-            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
-            if (formDataList != null && !formDataList.isEmpty()) {
-                for (final FormData data : formDataList) {
-                    ProcessData processData = new ProcessData(data);
-                    processDataArrayList.add(processData);
-                }
-
-                Processes processes = new Processes();
-                processes.setData(processDataArrayList);
-
-                populateData(processes);
-
+            if (Util.isConnected(getContext())) {
+                PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
+                pmFragmentPresenter.getAllProcess();
             }
         }
 

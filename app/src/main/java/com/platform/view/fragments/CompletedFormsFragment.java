@@ -94,8 +94,10 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             processResponse(processes);
 
         } else {
-            FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-            presenter.getAllFormMasters();
+            if (Util.isConnected(getContext())) {
+                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                presenter.getAllFormMasters();
+            }
         }
 
     }
@@ -126,13 +128,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             String id = data.getId();
             mDataList.add(data);
 
-            if (Util.isConnected(getContext()))
-                presenter.getSubmittedFormsOfMaster(id);
-            else {
-                List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
-                        .getAllFormResults(id);
-                if (response != null && !response.isEmpty())
-                    processFormResultResponse(response);
+            List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
+                    .getAllFormResults(id);
+            if (response != null && !response.isEmpty()) {
+                processFormResultResponse(response);
+            } else {
+                if (Util.isConnected(getContext())) {
+                    presenter.getSubmittedFormsOfMaster(id);
+                }
             }
         }
     }
