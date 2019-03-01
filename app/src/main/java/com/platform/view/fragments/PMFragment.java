@@ -25,8 +25,8 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.FormResult;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms1;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
@@ -58,7 +58,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private RecyclerView rvPendingForms;
     private RelativeLayout rltPendingForms;
     private PendingFormsAdapter pendingFormsAdapter;
-    private List<SavedForm> mSavedForms;
+    private List<FormResult> mSavedForms;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -74,6 +74,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         init();
 
+        PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
         ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
         List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
         if (formDataList != null && !formDataList.isEmpty()) {
@@ -89,7 +90,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         } else {
             if (Util.isConnected(getContext())) {
-                PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
                 pmFragmentPresenter.getAllProcess();
             }
         }
@@ -130,16 +130,16 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         if (formID == 0) {
             mSavedForms.clear();
-            mSavedForms.addAll(getAllNonSyncedSavedForms(context));
-        } else {
-            List<SavedForm> list = new ArrayList<>(mSavedForms);
-            for (final SavedForm form : mSavedForms) {
-                if (formID == form.id) {
-                    list.remove(form);
-                }
-            }
-            mSavedForms.clear();
-            mSavedForms.addAll(list);
+            mSavedForms.addAll(getAllNonSyncedSavedForms1());
+//        } else {
+//            List<FormResult> list = new ArrayList<>(mSavedForms);
+//            for (final FormResult form : mSavedForms) {
+//                if (formID == form.id) {
+//                    list.remove(form);
+//                }
+//            }
+//            mSavedForms.clear();
+//            mSavedForms.addAll(list);
         }
 
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
@@ -162,7 +162,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void setPendingForms() {
-        mSavedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getContext());
+        mSavedForms = getAllNonSyncedSavedForms1();
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
