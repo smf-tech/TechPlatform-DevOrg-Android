@@ -71,15 +71,18 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        boolean isSyncRequired = false;
+        if (getArguments() != null) {
+            isSyncRequired = getArguments().getBoolean("NEED_SYNC");
+        }
+
         init();
 
         List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
-        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+        if (processDataArrayList != null && !processDataArrayList.isEmpty() && !isSyncRequired) {
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
-
             populateData(processes);
-
         } else {
             if (Util.isConnected(getContext())) {
                 PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);

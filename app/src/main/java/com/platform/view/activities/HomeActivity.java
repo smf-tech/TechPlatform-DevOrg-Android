@@ -55,6 +55,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
+    private OnSyncClicked clickListener;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -101,6 +102,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
+
+        findViewById(R.id.home_sync_icon).setOnClickListener(this);
 
         loadHomePage();
     }
@@ -507,6 +510,18 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
+
+            case R.id.home_sync_icon:
+                clickListener.onSyncButtonClicked();
+                break;
         }
+    }
+
+    public void setSyncClickListener(OnSyncClicked listener) {
+        clickListener = listener;
+    }
+
+    public interface OnSyncClicked {
+        void onSyncButtonClicked();
     }
 }
