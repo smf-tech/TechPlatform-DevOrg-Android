@@ -112,7 +112,6 @@ public class Constants {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
         public static final String FORM_ID = "formId";
-//        public static final String RESPONSE = "response";
         public static final String EDIT_MODE = "editMode";
     }
 
@@ -171,5 +170,13 @@ public class Constants {
         public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
+    }
+
+    public class FormDynamicKeys {
+        public static final String FORM_ID = "form_id";
+        public static final String METADATA = "metadata";
+        public static final String FORM = "form";
+        public static final String SUBMIT_COUNT = "submit_count";
+        public static final String VALUES = "values";
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,14 @@ import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
-import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.ExpandableAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,21 +80,16 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
         expandableListView.setAdapter(adapter);
 
-        ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
-        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
-        if (formDataList != null && !formDataList.isEmpty()) {
-            for (final FormData data : formDataList) {
-                ProcessData processData = new ProcessData(data);
-                processDataArrayList.add(processData);
-            }
-
+        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
-
             processResponse(processes);
         } else {
-            FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-            presenter.getAllFormMasters();
+            if (Util.isConnected(getContext())) {
+                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                presenter.getAllProcesses();
+            }
         }
     }
 
@@ -107,11 +105,14 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onFormsLoaded(String response) {
-
         Processes json = new Gson().fromJson(response, Processes.class);
-
-        processResponse(json);
-
+        if (json != null && json.getData() != null && !json.getData().isEmpty()) {
+            for (ProcessData processData :
+                    json.getData()) {
+                DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
+            }
+            processResponse(json);
+        }
     }
 
     private void processResponse(final Processes json) {
@@ -134,13 +135,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
 
-            if (Util.isConnected(getContext())) {
-                presenter.getSubmittedFormsOfMaster(data.getId());
-            } else {
-                FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(data.getId());
-                String submitCount = formSchema.getSubmitCount();
-//                mCountList.add(submitCount);
+
+            ProcessData processData = DatabaseManager.getDBInstance(
+                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    .getProcessData(data.getId());
+            String submitCount = processData.getSubmitCount();
+            if (!TextUtils.isEmpty(submitCount)) {
                 mCountList.put(data.getId(), submitCount);
+            } else if (Util.isConnected(getContext())) {
+                presenter.getSubmittedForms(data.getId());
             }
         }
 
@@ -153,15 +156,23 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     }
 
     @Override
-    public void onMastersFormsLoaded(final String response) {
+    public void onMastersFormsLoaded(final String response, final String formId) {
         try {
             String count;
-            if (new JSONObject(response).has("metadata")) {
-                JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
-                count = metadata.getJSONObject("form").getString("submit_count");
-                String formID = metadata.getJSONObject("form").getString("form_id");
-                mCountList.put(formID, count);
-                DatabaseManager.getDBInstance(getContext()).updateFormSchemaSubmitCount(formID, count);
+            if (new JSONObject(response).has(Constants.FormDynamicKeys.METADATA)) {
+                JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
+                if (metadata != null && metadata.length() > 0) {
+                    JSONObject metadataObj = metadata.getJSONObject(0);
+                    count = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.SUBMIT_COUNT);
+                    String formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.FORM_ID);
+                    mCountList.put(formID, count);
+                    DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
+                            .getApplicationContext()).updateProcessSubmitCount(formID, count);
+                } else {
+                    mCountList.put(formId, String.valueOf(0));
+                    DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
+                            .getApplicationContext()).updateProcessSubmitCount(formId, String.valueOf(0));
+                }
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());

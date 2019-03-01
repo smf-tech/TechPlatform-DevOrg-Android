@@ -300,12 +300,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formModel = new Gson().fromJson((String) data, Form.class);
         initViews();
 
-        Form form = new Gson().fromJson(String.valueOf(data), Form.class);
-        if (form != null && form.getData() != null) {
-            DatabaseManager.getDBInstance(getContext()).insertFormSchema(form.getData());
-//            DatabaseManager.getDBInstance(getActivity()).updateFormSchema(form.getData());
-        }
-
         if (mFormJSONObject != null && mElementsListFromDB != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
@@ -436,14 +430,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     private void saveFormToLocalDatabase() {
         SavedForm savedForm = new SavedForm();
-        FormData formData = formModel.getData();
-        savedForm.setFormId(formData.getId());
-        savedForm.setFormName(formData.getName());
+        savedForm.setFormId(formModel.getData().getId());
+        savedForm.setFormName(formModel.getData().getName());
         savedForm.setSynced(false);
 
-        if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName();
-            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
+        if (formModel.getData().getCategory() != null) {
+            String category = formModel.getData().getCategory().getName();
+            if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(category)) {
                 savedForm.setFormCategory(category);
             }
         }
@@ -455,6 +448,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
+        FormData formData = formModel.getData();
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
         result.setFormName(formData.getName());
