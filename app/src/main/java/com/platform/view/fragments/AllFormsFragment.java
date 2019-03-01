@@ -78,23 +78,21 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
         expandableListView.setAdapter(adapter);
 
-        if (Util.isConnected(getContext())) {
+        ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
+        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
+        if (formDataList != null && !formDataList.isEmpty()) {
+            for (final FormData data : formDataList) {
+                ProcessData processData = new ProcessData(data);
+                processDataArrayList.add(processData);
+            }
+
+            Processes processes = new Processes();
+            processes.setData(processDataArrayList);
+
+            processResponse(processes);
+        } else {
             FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
             presenter.getAllFormMasters();
-        } else {
-            ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
-            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
-            if (formDataList != null && !formDataList.isEmpty()) {
-                for (final FormData data : formDataList) {
-                    ProcessData processData = new ProcessData(data);
-                    processDataArrayList.add(processData);
-                }
-
-                Processes processes = new Processes();
-                processes.setData(processDataArrayList);
-
-                processResponse(processes);
-            }
         }
     }
 
@@ -137,14 +135,16 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
 
-            if (Util.isConnected(getContext())) {
+            FormData formSchema = DatabaseManager.getDBInstance(
+                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    .getFormSchema(data.getId());
+            String submitCount = formSchema.getSubmitCount();
+            if (submitCount != null) {
+                mCountList.put(data.getId(), submitCount);
+            } else if (!Util.isConnected(getContext())) {
                 presenter.getSubmittedFormsOfMaster(data.getId());
             } else {
-                FormData formSchema = DatabaseManager.getDBInstance(
-                        Objects.requireNonNull(getActivity()).getApplicationContext())
-                        .getFormSchema(data.getId());
-                String submitCount = formSchema.getSubmitCount();
-                mCountList.put(data.getId(), submitCount);
+                mCountList.put(data.getId(), "0");
             }
         }
 

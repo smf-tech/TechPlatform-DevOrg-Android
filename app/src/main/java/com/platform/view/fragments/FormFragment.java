@@ -100,10 +100,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
 
             if (formData == null) {
-                formPresenter.getProcessDetails(processId);
+                if (Util.isConnected(getContext())) {
+                    formPresenter.getProcessDetails(processId);
+                }
             } else {
                 if (formData.getCategory() == null || formData.getComponents() == null) {
-                    formPresenter.getProcessDetails(processId);
+                    if (Util.isConnected(getContext())) {
+                        formPresenter.getProcessDetails(processId);
+                    }
                 } else {
                     formModel = new Form();
                     formModel.setData(formData);
@@ -113,11 +117,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
             mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
             if (mIsInEditMode) {
-                if (Util.isConnected(getContext())) {
-                    formPresenter.getFormResults(processId);
-                } else {
-                    List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+                List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+                if (formResults != null && !formResults.isEmpty()) {
                     getFormDataAndParse(formResults);
+                } else {
+                    if (Util.isConnected(getContext())) {
+                        formPresenter.getFormResults(processId);
+                    }
                 }
             }
         }

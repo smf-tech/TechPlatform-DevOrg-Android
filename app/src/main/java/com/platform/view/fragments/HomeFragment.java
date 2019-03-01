@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
 
         List<Modules> modulesFromDatabase = getModulesFromDatabase();
-        if (!modulesFromDatabase.isEmpty()) {
+        if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {
 
             List<Modules> defaultModules = DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getModulesOfStatus(Constants.RequestStatus.DEFAULT_MODULE);
@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
             return;
         }
 
-        if (presenter != null) {
+        if (presenter != null && Util.isConnected(getActivity())) {
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
         }
