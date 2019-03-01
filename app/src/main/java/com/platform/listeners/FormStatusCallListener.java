@@ -10,6 +10,6 @@ public interface FormStatusCallListener {
 
     void onFormsLoaded(String response);
 
-    void onMastersFormsLoaded(String response);
+    void onMastersFormsLoaded(String response, String formId);
 
 }

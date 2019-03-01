@@ -15,9 +15,6 @@ import java.util.List;
 @Dao
 public interface FormResultDao {
 
-    @Query("SELECT * FROM formresult WHERE is_synced = 0")
-    List<FormResult> getAllNonSyncedForms();
-
     @Query("SELECT result FROM formresult where form_id = :formId")
     List<String> getAllFormResults(String formId);
 
