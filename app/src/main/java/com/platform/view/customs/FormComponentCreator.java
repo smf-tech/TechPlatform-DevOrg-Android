@@ -416,8 +416,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                                                 choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
                                             }
                                         } else {
-                                            choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
-                                            choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
+                                            String valueStr = dependentInnerObj.getString(parentElement.getChoicesByUrl().getValueName());
+
+                                            if (valueStr.equals(value)) {
+                                                choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                                choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
+                                            }
                                         }
                                     }
 
@@ -445,7 +449,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                             }
                         }
                     }
-
+                    dropDownTemplate.setFormData(dependentElement);
                     dropDownTemplate.setListData(choiceValues);
                 } catch (JSONException e) {
                     Log.e(TAG, e.getMessage());
