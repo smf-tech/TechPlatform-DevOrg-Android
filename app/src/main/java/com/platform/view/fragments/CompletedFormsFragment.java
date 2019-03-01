@@ -23,7 +23,6 @@ import com.platform.models.forms.FormData;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
-import com.platform.utility.Util;
 import com.platform.view.adapters.FormCategoryAdapter;
 
 import org.json.JSONArray;
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,9 +76,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new FormCategoryAdapter(getContext(), mFormList);
-        recyclerView.setAdapter(adapter);
-
         ArrayList<ProcessData> processDataArrayList = new ArrayList<>();
         List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getAllFormSchema();
         if (formDataList != null && !formDataList.isEmpty()) {
@@ -94,12 +89,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             processResponse(processes);
 
         } else {
-            if (Util.isConnected(getContext())) {
-                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-                presenter.getAllFormMasters();
-            }
+            FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+            presenter.getAllFormMasters();
         }
 
+        adapter = new FormCategoryAdapter(getContext(), mFormList);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -120,23 +115,15 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void processResponse(final Processes json) {
         mFormList.clear();
-        mDataList.clear();
-
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
         for (ProcessData data : json.getData()) {
 
             String id = data.getId();
             mDataList.add(data);
 
-            List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
-                    .getAllFormResults(id);
-            if (response != null && !response.isEmpty()) {
-                processFormResultResponse(response);
-            } else {
-                if (Util.isConnected(getContext())) {
-                    presenter.getSubmittedFormsOfMaster(id);
-                }
-            }
+//            String response = getFormResults(id);
+//            processFormResultResponse(response);
+            presenter.getSubmittedFormsOfMaster(id);
         }
     }
 
@@ -157,28 +144,20 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                     FormResult formResult = new Gson()
                             .fromJson(String.valueOf(values.get(i)), FormResult.class);
+                    /*JSONObject obj = (JSONObject) values.get(i);
+                    if (obj == null) return;
+
+                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
+                    result.set_id(formResult.mID.oid);
+                    result.setFormId(formResult.formID);
+                    result.setResult(obj);
+
+                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);*/
 
                     formID = formResult.formID;
                     list.add(new ProcessDemoObject(formResult.mID.oid,
                             formID, formResult.updatedAt));
-
-                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(formResult.mID.oid);
-                    result.setFormId(formID);
-
-                    JSONObject obj = (JSONObject) values.get(i);
-                    if (obj == null) return;
-
-
-                    List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(formID);
-                    if (!localFormResults.contains(obj.toString())) {
-                        result.setResult(obj.toString());
-                        DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
-                    }
-
                 }
-
                 if (formID == null) {
                     JSONObject metadata = (JSONObject) new JSONObject(response).get("metadata");
                     formID = metadata.getJSONObject("form").getString("form_id");
@@ -202,43 +181,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
-        }
-    }
-
-    private void processFormResultResponse(final List<String> response) {
-
-        ArrayList<ProcessDemoObject> list = new ArrayList<>();
-        String formID = "";
-
-        try {
-            for (final String s : response) {
-                JSONObject obj = new JSONObject(s);
-                FormResult formResult = new Gson()
-                        .fromJson(String.valueOf(obj), FormResult.class);
-                com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-//                result.set_id(formResult.mID.oid);
-                result.setFormId(formResult.formID);
-                result.setResult(obj.toString());
-
-                formID = formResult.formID;
-                list.add(new ProcessDemoObject("Form name",
-                        formID, formResult.updatedAt));
-            }
-
-            for (final ProcessData data : mDataList) {
-                if (data.getId().equals(formID)) {
-                    mFormList.put(data.getName(), list);
-                }
-            }
-
-            if (!mFormList.isEmpty()) {
-                adapter.notifyDataSetChanged();
-                mNoRecordsView.setVisibility(View.GONE);
-            } else {
-                mNoRecordsView.setVisibility(View.VISIBLE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 

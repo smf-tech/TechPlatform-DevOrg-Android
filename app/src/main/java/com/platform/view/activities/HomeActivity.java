@@ -422,6 +422,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void removeDatabaseRecords() {
+        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllProcesses();
         DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormSchema();
         DatabaseManager.getDBInstance(getApplicationContext()).deleteAllModules();
         DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormResults();

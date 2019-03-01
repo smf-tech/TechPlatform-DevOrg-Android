@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms1;
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
@@ -108,7 +108,7 @@ public class PendingFormsFragment extends Fragment {
 
             if (formID == 0) {
                 mSavedForms.clear();
-                mSavedForms.addAll(getAllNonSyncedSavedForms1());
+                mSavedForms.addAll(getAllNonSyncedSavedForms(context));
             /*} else {
                 List<FormResult> list = new ArrayList<>(mSavedForms);
                 for (final FormResult form : mSavedForms) {
@@ -139,7 +139,7 @@ public class PendingFormsFragment extends Fragment {
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-        List<FormResult> allNonSyncedSavedForms = getAllNonSyncedSavedForms1();
+        List<FormResult> allNonSyncedSavedForms = getAllNonSyncedSavedForms(getContext());
         if (allNonSyncedSavedForms != null) {
             mSavedForms.addAll(allNonSyncedSavedForms);
 

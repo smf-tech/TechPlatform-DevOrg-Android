@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,10 +90,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
             processResponse(processes);
         } else {
-            if (Util.isConnected(getContext())) {
-                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-                presenter.getAllFormMasters();
-            }
+            FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+            presenter.getAllFormMasters();
         }
     }
 
@@ -137,17 +134,13 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
 
-
-            FormData formSchema = DatabaseManager.getDBInstance(
-                    Objects.requireNonNull(getActivity()).getApplicationContext())
-                    .getFormSchema(data.getId());
-            String submitCount = formSchema.getSubmitCount();
-            if (submitCount != null) {
-                mCountList.put(data.getId(), submitCount);
-            } else if (Util.isConnected(getContext())) {
+            if (Util.isConnected(getContext())) {
                 presenter.getSubmittedFormsOfMaster(data.getId());
             } else {
-                mCountList.put(data.getId(), "0");
+                FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(data.getId());
+                String submitCount = formSchema.getSubmitCount();
+//                mCountList.add(submitCount);
+                mCountList.put(data.getId(), submitCount);
             }
         }
 
@@ -168,8 +161,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 count = metadata.getJSONObject("form").getString("submit_count");
                 String formID = metadata.getJSONObject("form").getString("form_id");
                 mCountList.put(formID, count);
-                DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
-                        .getApplicationContext()).updateFormSchemaSubmitCount(formID, count);
+                DatabaseManager.getDBInstance(getContext()).updateFormSchemaSubmitCount(formID, count);
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());

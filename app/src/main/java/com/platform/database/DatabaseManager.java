@@ -7,12 +7,14 @@ import android.util.Log;
 import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
+import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
+import com.platform.models.pm.ProcessData;
 import com.platform.models.reports.ReportData;
 
 import java.util.List;
@@ -60,7 +62,6 @@ public class DatabaseManager {
     public void insertFormSchema(FormData... formData) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.insertAll(formData);
-        Log.d(TAG, "insertFormSchema");
     }
 
     public void updateFormSchema(FormData formData) {
@@ -86,6 +87,31 @@ public class DatabaseManager {
     public void deleteAllFormSchema() {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.deleteAllFormSchema();
+    }
+
+    public void insertProcessData(ProcessData... processData) {
+        ProcessDataDao processDataDao = appDatabase.processDataDao();
+        processDataDao.insertAll(processData);
+    }
+
+    public ProcessData getProcessData(final String processId) {
+        ProcessDataDao processDataDao = appDatabase.processDataDao();
+        return processDataDao.getProcessData(processId);
+    }
+
+    public void updateProcessSubmitCount(final String processId, final String count) {
+        ProcessDataDao processDataDao = appDatabase.processDataDao();
+        processDataDao.updateSubmitCount(processId, count);
+    }
+
+    public List<ProcessData> getAllProcesses() {
+        ProcessDataDao processDataDao = appDatabase.processDataDao();
+        return processDataDao.getAllProcesses();
+    }
+
+    public void deleteAllProcesses() {
+        ProcessDataDao processDataDao = appDatabase.processDataDao();
+        processDataDao.deleteAllProcesses();
     }
 
     public void deleteAllModules() {

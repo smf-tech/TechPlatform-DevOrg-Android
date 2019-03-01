@@ -18,8 +18,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.platform.BuildConfig;
 import com.platform.Platform;
+import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.common.Microservice;
 import com.platform.models.forms.FormData;
@@ -27,7 +27,6 @@ import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
-import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
 import org.json.JSONException;
@@ -42,14 +41,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
-import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms1;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.getFormCategoryForSyncFromPref;
 import static com.platform.utility.Util.getLoginObjectFromPref;
@@ -80,12 +77,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncSavedForms() {
-        List<FormResult> savedForms;
-        if (getContext() == null) {
-            savedForms = getAllNonSyncedSavedForms1();
-        } else {
-            savedForms = getAllNonSyncedSavedForms(getContext());
-        }
+        List<FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
 
         if (savedForms != null) {
             String formSyncCategory = getFormCategoryForSyncFromPref();
@@ -166,15 +158,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void submitForm(final FormResult form) {
 
-        URL formUrl = getFormUrl(form);
-        if (formUrl == null) {
-            Util.showToast("Invalid url!", getContext());
-            return;
-        }
 
         try {
-//            URL formUrl = new URL(BuildConfig.BASE_URL + String.format(Urls.PM.CREATE_FORM,
-//                    form.getFormId()));
+            URL formUrl = new URL(getFormUrl(form));
 
             Login loginObj = getLoginObjectFromPref();
             if (loginObj == null || loginObj.getLoginData() == null ||
@@ -222,23 +208,23 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private URL getFormUrl(final FormResult form) {
+    private String getFormUrl(final FormResult form) {
         String formId = form.getFormId();
-        URL url = null;
+        String url = null;
 
-        try {
-            FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(formId);
-            if (formSchema != null && formSchema.getMicroService() != null) {
-                Microservice microService = formSchema.getMicroService();
+        FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(formId);
+        if (formSchema != null && formSchema.getMicroService() != null) {
+            Microservice microService = formSchema.getMicroService();
 
-                String baseUrl = microService.getBaseUrl();
-                String route = microService.getRoute();
-                if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
-                    url = new URL(baseUrl + route);
-                }
+            String baseUrl = microService.getBaseUrl();
+            String route = microService.getRoute();
+            if (route.contains("form_id"))
+                route = route.replace("form_id", formSchema.getId());
+            if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
+//                    url = new URL(baseUrl + route);
+                url = getContext().getResources().getString(R.string.form_field_mandatory, baseUrl, route);
+                url = url + "/" + formSchema.getId();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         }
         return url;
     }
