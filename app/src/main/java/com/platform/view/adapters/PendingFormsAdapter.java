@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.platform.R;
-import com.platform.models.SavedForm;
+import com.platform.models.forms.FormResult;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
 
     @SuppressWarnings("FieldCanBeLocal")
     private Context context;
-    private List<SavedForm> savedFormList;
+    private List<FormResult> savedFormList;
 
-    public PendingFormsAdapter(Context context, List<SavedForm> savedFormList) {
+    public PendingFormsAdapter(Context context, List<FormResult> savedFormList) {
         this.context = context;
         this.savedFormList = savedFormList;
     }
@@ -36,7 +36,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
-        SavedForm savedForm = savedFormList.get(position);
+        FormResult savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
         holder.txtCreatedAt.setText(String.format("on %s", savedForm.getCreatedAt()));
     }

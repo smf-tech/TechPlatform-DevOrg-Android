@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.models.SavedForm;
+import com.platform.models.forms.FormResult;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Util;
 
@@ -26,15 +27,15 @@ import static com.platform.utility.Util.saveFormCategoryForSync;
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<SavedForm> mData;
+    private List<FormResult> mData;
     private ArrayList<String> mCategoryList;
 
-    public PendingFormCategoryAdapter(final Context context, final List<SavedForm> data) {
+    public PendingFormCategoryAdapter(final Context context, final List<FormResult> data) {
         this.mContext = context;
         mData = data;
 
         mCategoryList = new ArrayList<>();
-        for (final SavedForm form : mData) {
+        for (final FormResult form : mData) {
             if (!mCategoryList.contains(form.getFormCategory())) {
                 mCategoryList.add(form.getFormCategory());
             }
@@ -88,8 +89,8 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         viewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         viewHolder.categoryName.setText(mCategoryList.get(i));
 
-        List<SavedForm> list = new ArrayList<>();
-        for (final SavedForm form : mData) {
+        List<FormResult> list = new ArrayList<>();
+        for (final FormResult form : mData) {
             if (form.getFormCategory().equals(mCategoryList.get(i))) {
                 list.add(form);
             }

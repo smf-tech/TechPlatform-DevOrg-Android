@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.models.SavedForm;
+import com.platform.models.forms.FormResult;
 import com.platform.view.adapters.PendingFormCategoryAdapter;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class PendingFormsFragment extends Fragment {
     private TextView mNoRecordsView;
     private RecyclerView mRecyclerView;
     private PendingFormCategoryAdapter mPendingFormCategoryAdapter;
-    private List<SavedForm> mSavedForms;
+    private List<FormResult> mSavedForms;
 
     public PendingFormsFragment() {
         // Required empty public constructor
@@ -109,15 +109,15 @@ public class PendingFormsFragment extends Fragment {
             if (formID == 0) {
                 mSavedForms.clear();
                 mSavedForms.addAll(getAllNonSyncedSavedForms(context));
-            } else {
-                List<SavedForm> list = new ArrayList<>(mSavedForms);
-                for (final SavedForm form : mSavedForms) {
+            /*} else {
+                List<FormResult> list = new ArrayList<>(mSavedForms);
+                for (final FormResult form : mSavedForms) {
                     if (formID == form.id) {
                         list.remove(form);
                     }
                 }
                 mSavedForms.clear();
-                mSavedForms.addAll(list);
+                mSavedForms.addAll(list);*/
             }
 
             if (mSavedForms != null && !mSavedForms.isEmpty()) {
@@ -139,7 +139,7 @@ public class PendingFormsFragment extends Fragment {
      * This method fetches all the pending forms from DB
      */
     private void getPendingFormsFromDB() {
-        List<SavedForm> allNonSyncedSavedForms = getAllNonSyncedSavedForms(getContext());
+        List<FormResult> allNonSyncedSavedForms = getAllNonSyncedSavedForms(getContext());
         if (allNonSyncedSavedForms != null) {
             mSavedForms.addAll(allNonSyncedSavedForms);
 

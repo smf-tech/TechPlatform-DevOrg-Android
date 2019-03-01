@@ -27,6 +27,21 @@ public class FormResult {
     @ColumnInfo(name = "result")
     private String result;
 
+    @ColumnInfo(name = "form_name")
+    private String formName;
+
+    @ColumnInfo(name = "is_synced")
+    private Boolean isSynced;
+
+    @ColumnInfo(name = "form_category")
+    private String formCategory;
+
+    @ColumnInfo(name = "request_object")
+    private String requestObject;
+
+    @ColumnInfo(name = "created_at")
+    private String createdAt;
+
     @NonNull
     public String get_id() {
         return _id;
@@ -50,5 +65,45 @@ public class FormResult {
 
     public void setResult(final String result) {
         this.result = result;
+    }
+
+    public String getFormName() {
+        return formName;
+    }
+
+    public void setFormName(final String formName) {
+        this.formName = formName;
+    }
+
+    public Boolean getSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(final Boolean synced) {
+        isSynced = synced;
+    }
+
+    public String getFormCategory() {
+        return formCategory;
+    }
+
+    public void setFormCategory(final String formCategory) {
+        this.formCategory = formCategory;
+    }
+
+    public String getRequestObject() {
+        return requestObject;
+    }
+
+    public void setRequestObject(final String requestObject) {
+        this.requestObject = requestObject;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final String createdAt) {
+        this.createdAt = createdAt;
     }
 }

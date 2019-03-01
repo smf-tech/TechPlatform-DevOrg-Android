@@ -9,10 +9,16 @@ import android.arch.persistence.room.Update;
 
 import com.platform.models.forms.FormData;
 
+import java.util.List;
+
+@SuppressWarnings("unused")
 @Dao
 public interface FormDataDao {
     @Query("SELECT * FROM formdata where id = :formId")
     FormData getFormSchema(String formId);
+
+    @Query("SELECT * FROM formdata")
+    List<FormData> getAllFormSchema();
 
     @Query("DELETE FROM formdata")
     void deleteAllFormSchema();
@@ -25,4 +31,7 @@ public interface FormDataDao {
 
     @Delete
     void delete(FormData formData);
+
+    @Query("UPDATE formdata SET submit_count = :count where id = :formID")
+    void updateSubmitCount(String formID, String count);
 }
