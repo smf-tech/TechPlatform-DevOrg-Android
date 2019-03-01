@@ -481,7 +481,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
 
-    public void getFormDataAndParse(final List<String> response) {
+    private void getFormDataAndParse(final List<String> response) {
 
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);

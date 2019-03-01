@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -117,6 +118,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void processResponse(final Processes json) {
         mFormList.clear();
+        mDataList.clear();
+
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
         for (ProcessData data : json.getData()) {
 
@@ -126,7 +129,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             if (Util.isConnected(getContext()))
                 presenter.getSubmittedFormsOfMaster(id);
             else {
-                List<String> response = DatabaseManager.getDBInstance(getActivity())
+                List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
                         .getAllFormResults(id);
                 if (response != null && !response.isEmpty())
                     processFormResultResponse(response);
