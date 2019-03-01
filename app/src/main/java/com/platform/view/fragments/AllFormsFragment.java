@@ -137,6 +137,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
 
+
             FormData formSchema = DatabaseManager.getDBInstance(
                     Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getFormSchema(data.getId());
