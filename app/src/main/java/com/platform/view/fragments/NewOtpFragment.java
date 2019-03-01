@@ -372,6 +372,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (timer != null) {
             timer.cancel();
             tvOtpTimer.setText("");
+            showProgressBar();
             tvOtpTimer.setVisibility(View.GONE);
             timer = null;
         }
