@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.SavedForm;
-import com.platform.models.forms.FormResult;
 import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
 import com.platform.view.activities.FormActivity;
@@ -28,7 +27,7 @@ import static com.platform.utility.Util.getFormattedDate;
 class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<FormResult> mSavedForms;
+    private List<SavedForm> mSavedForms;
     private String status;
     private List<ProcessData> mProcessData;
 
@@ -38,7 +37,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         mProcessData = processData;
     }
 
-    FormsAdapter(final Context context, final List<FormResult> savedForms, final String status) {
+    FormsAdapter(final Context context, final List<SavedForm> savedForms, final String status) {
         this.mContext = context;
         this.status = status;
         mSavedForms = savedForms;
@@ -104,7 +103,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
         } else {
             if (!mSavedForms.isEmpty()) {
-                FormResult savedForm = mSavedForms.get(i);
+                SavedForm savedForm = mSavedForms.get(i);
                 viewHolder.mName.setText(savedForm.getFormName());
                 viewHolder.mDate.setText(String.format("%s %s", savedForm.getFormId(), savedForm.getCreatedAt()));
             }
