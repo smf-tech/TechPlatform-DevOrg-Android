@@ -25,9 +25,20 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_20"
+                    android:textSize="@dimen/text_size_18"
                     android:textStyle="bold" />
             </android.support.v7.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/home_sync_icon"
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_toStartOf="@+id/home_bell_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/dimen_05dp"
+                android:src="@drawable/ic_sync" />
 
             <ImageView
                 android:id="@+id/home_bell_icon"
