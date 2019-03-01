@@ -185,9 +185,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.GONE);
             rltPendingForms.setVisibility(View.GONE);
         }
-
-        //List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema();
-        Log.e(TAG, "Form schema fetched from database.");
     }
 
     private void populateData(Processes process) {

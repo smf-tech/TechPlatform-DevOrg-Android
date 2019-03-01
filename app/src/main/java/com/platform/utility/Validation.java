@@ -6,20 +6,31 @@ import com.platform.models.forms.Validator;
 
 public class Validation {
 
-    public static String editTextMinMaxValidation(String fieldName, String fieldValue, Validator validator) {
-        if (validator.getMinLength() != null && (fieldValue.length() < validator.getMinLength())) {
-            return fieldName + " length should not be less than " + validator.getMinLength();
-        }
-
+    public static String editTextMinMaxValueValidation(String fieldName, String fieldValue, Validator validator) {
         if (validator.getMinValue() != null) {
             long fieldIntValue = Long.parseLong(fieldValue);
             if ((fieldIntValue < validator.getMinValue())) {
-                return fieldName + " value should not be less than " + validator.getMinValue();
+                if (!TextUtils.isEmpty(validator.getText())) {
+                    return validator.getText();
+                } else {
+                    return fieldName + " value should not be less than " + validator.getMinValue();
+                }
             } else if (validator.getMaxValue() != null) {
                 if ((fieldIntValue > validator.getMaxValue())) {
-                    return fieldName + " value should not be greater than " + validator.getMaxValue();
+                    if (!TextUtils.isEmpty(validator.getText())) {
+                        return validator.getText();
+                    } else {
+                        return fieldName + " value should not be greater than " + validator.getMaxValue();
+                    }
                 }
             }
+        }
+        return "";
+    }
+
+    public static String editTextMaxLengthValidation(String fieldName, String fieldValue, Integer maxLength) {
+        if (maxLength != null && (fieldValue.length() < maxLength)) {
+            return fieldName + " length should not be less than " + maxLength;
         }
         return "";
     }
