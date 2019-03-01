@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,8 +87,10 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             processResponse(processes);
 
         } else {
-            FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-            presenter.getAllFormMasters();
+            if (Util.isConnected(getContext())) {
+                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                presenter.getAllFormMasters();
+            }
         }
 
     }
@@ -110,19 +113,22 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void processResponse(final Processes json) {
         mFormList.clear();
+        mDataList.clear();
+
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
         for (ProcessData data : json.getData()) {
 
             String id = data.getId();
             mDataList.add(data);
 
-            if (Util.isConnected(getContext()))
-                presenter.getSubmittedFormsOfMaster(id);
-            else {
-                List<String> response = DatabaseManager.getDBInstance(getActivity())
-                        .getAllFormResults(id);
-                if (response != null && !response.isEmpty())
-                    processFormResultResponse(response);
+            List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
+                    .getAllFormResults(id);
+            if (response != null && !response.isEmpty()) {
+                processFormResultResponse(response);
+            } else {
+                if (Util.isConnected(getContext())) {
+                    presenter.getSubmittedFormsOfMaster(id);
+                }
             }
         }
     }

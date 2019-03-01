@@ -81,8 +81,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             populateData(processes);
 
         } else {
-            PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-            pmFragmentPresenter.getAllProcess();
+            if (Util.isConnected(getContext())) {
+                PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
+                pmFragmentPresenter.getAllProcess();
+            }
         }
 
         IntentFilter filter = new IntentFilter();
