@@ -26,13 +26,13 @@ public class FormStatusRequestCall {
         this.listener = listener;
     }
 
-    public void getSubmittedForms(final String formID) {
+    public void getSubmittedFormsOfMaster(String formID) {
         Response.Listener<JSONObject> processDetailsResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getSubmittedForms - Resp: " + res);
-                    listener.onMastersFormsLoaded(res, formID);
+                    Log.i(TAG, "getProcessDetails - Resp: " + res);
+                    listener.onMastersFormsLoaded(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -62,12 +62,12 @@ public class FormStatusRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getProcesses() {
+    public void getFormMasters() {
         Response.Listener<JSONObject> processDetailsResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getProcesses - Resp: " + res);
+                    Log.i(TAG, "getProcessDetails - Resp: " + res);
                     listener.onFormsLoaded(res);
                 }
             } catch (Exception e) {

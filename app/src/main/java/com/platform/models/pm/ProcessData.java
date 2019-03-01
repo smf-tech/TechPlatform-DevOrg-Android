@@ -1,91 +1,65 @@
 package com.platform.models.pm;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.database.DataConverter;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
 import com.platform.models.common.Project;
+import com.platform.models.forms.FormData;
 
 @SuppressWarnings("unused")
-@android.arch.persistence.room.Entity
 public class ProcessData {
 
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "id")
     @SerializedName("_id")
     @Expose
-    private String id = "";
-
-    @ColumnInfo(name = "name")
+    private String id;
     @SerializedName("name")
     @Expose
     private String name;
-
-    @ColumnInfo(name = "active")
     @SerializedName("active")
     @Expose
     private String active;
-
-    @ColumnInfo(name = "editable")
     @SerializedName("editable")
     @Expose
     private String editable;
-
-    @ColumnInfo(name = "multiple_entry")
     @SerializedName("multiple_entry")
     @Expose
     private String multipleEntry;
-
-    @TypeConverters(DataConverter.class)
-    @ColumnInfo(name = "microservice")
     @SerializedName("microservice")
     @Expose
     private Microservice microservice;
-
-    @Ignore
     @SerializedName("project")
     @Expose
     private Project project;
-
-    @ColumnInfo(name = "submit_count")
-    @Expose
-    private String submitCount;
-
-    @TypeConverters(DataConverter.class)
-    @ColumnInfo(name = "category")
     @SerializedName("category")
     @Expose
     private Category category;
-
-    @Ignore
     @SerializedName("entity")
     @Expose
     private Entity entity;
 
-    @NonNull
+    public ProcessData() {
+    }
+
+    public ProcessData(final FormData data) {
+        this.category = data.getCategory();
+        this.entity = data.getEntity();
+        this.microservice = data.getMicroService();
+        this.project = data.getProject();
+        this.id = data.getId();
+        this.active = data.getActive();
+        this.editable = data.getEditable();
+        this.multipleEntry = data.getMultipleEntry();
+        this.name = data.getName();
+    }
+
     public String getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getSubmitCount() {
-        return submitCount;
-    }
-
-    public void setSubmitCount(String submitCount) {
-        this.submitCount = submitCount;
     }
 
     public String getName() {

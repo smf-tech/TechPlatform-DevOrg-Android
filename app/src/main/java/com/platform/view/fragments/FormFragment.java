@@ -34,6 +34,7 @@ import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.FormResult;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
@@ -299,6 +300,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formModel = new Gson().fromJson((String) data, Form.class);
         initViews();
 
+        Form form = new Gson().fromJson(String.valueOf(data), Form.class);
+        if (form != null && form.getData() != null) {
+            DatabaseManager.getDBInstance(getContext()).insertFormSchema(form.getData());
+//            DatabaseManager.getDBInstance(getActivity()).updateFormSchema(form.getData());
+        }
+
         if (mFormJSONObject != null && mElementsListFromDB != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
@@ -396,7 +403,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
-                            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+                            LocalBroadcastManager.getInstance(getContext().getApplicationContext()).sendBroadcast(intent);
 
                             Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
@@ -429,13 +436,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     private void saveFormToLocalDatabase() {
         SavedForm savedForm = new SavedForm();
-        savedForm.setFormId(formModel.getData().getId());
-        savedForm.setFormName(formModel.getData().getName());
+        FormData formData = formModel.getData();
+        savedForm.setFormId(formData.getId());
+        savedForm.setFormName(formData.getName());
         savedForm.setSynced(false);
 
-        if (formModel.getData().getCategory() != null) {
-            String category = formModel.getData().getCategory().getName();
-            if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(category)) {
+        if (formData.getCategory() != null) {
+            String category = formData.getCategory().getName();
+            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
                 savedForm.setFormCategory(category);
             }
         }
@@ -447,7 +455,34 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
-        formPresenter.setSavedForm(savedForm);
+        FormResult result = new FormResult();
+        result.setFormId(formData.getId());
+        result.setFormName(formData.getName());
+        result.setSynced(false);
+
+        if (formData.getCategory() != null) {
+            String category = formData.getCategory().getName();
+            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
+                result.setFormCategory(category);
+            }
+        }
+
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+        }
+        result.set_id(formData.getId());
+        result.setFormId(formData.getId());
+
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            if (obj != null) {
+                result.setResult(obj.toString());
+                formPresenter.setSavedForm(result);
+                DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+            }
+        }
+
+        // TODO: 01-03-2019 Update submitted count also
     }
 
     public void setErrorMsg(String errorMsg) {
