@@ -299,12 +299,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formModel = new Gson().fromJson((String) data, Form.class);
         initViews();
 
-        Form form = new Gson().fromJson(String.valueOf(data), Form.class);
-        if (form != null && form.getData() != null) {
-            DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
-                    .getApplicationContext()).insertFormSchema(form.getData());
-        }
-
         if (mFormJSONObject != null && mElementsListFromDB != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
