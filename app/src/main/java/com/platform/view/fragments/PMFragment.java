@@ -57,7 +57,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private LinearLayout lnrOuter;
     private RecyclerView rvPendingForms;
     private RelativeLayout rltPendingForms;
-    private final String TAG = PMFragment.class.getName();
     private PendingFormsAdapter pendingFormsAdapter;
     private List<SavedForm> mSavedForms;
 

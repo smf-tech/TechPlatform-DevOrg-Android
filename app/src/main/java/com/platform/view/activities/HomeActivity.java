@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerLayout = navigationView.getHeaderView(0);
+        LinearLayout profileView = headerLayout.findViewById(R.id.menu_user_profile_layout);
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
         ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
 
@@ -95,7 +97,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             loadProfileImage(userPic, user.getProfilePic());
             userName.setText(String.format("%s", user.getUserName()));
         }
-        userName.setOnClickListener(this);
+        profileView.setOnClickListener(this);
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
@@ -253,7 +255,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_call_us:
-                callUsDialog();
+                try {
+                    Intent dial = new Intent();
+                    dial.setAction("android.intent.action.DIAL");
+                    dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
+                    startActivity(dial);
+                } catch (Exception e) {
+                    Log.e("Calling Phone", "" + e.getMessage());
+                }
                 break;
 
             case R.id.action_menu_settings:
@@ -441,39 +450,39 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    private void callUsDialog() {
-        final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
-
-        dialog.setItems(items, (dialogInterface, position) -> {
-            dialogInterface.dismiss();
-
-            switch (position) {
-                case 0:
-                    try {
-                        Uri uri = Uri.parse(Constants.hangoutLink);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        Log.e("Calling Hangout", "" + e.getMessage());
-                    }
-                    break;
-
-                case 1:
-                    try {
-                        Intent dial = new Intent();
-                        dial.setAction("android.intent.action.DIAL");
-                        dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
-                        startActivity(dial);
-                    } catch (Exception e) {
-                        Log.e("Calling Phone", "" + e.getMessage());
-                    }
-                    break;
-            }
-        });
-
-        dialog.show();
-    }
+//    private void callUsDialog() {
+//        final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
+//        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
+//
+//        dialog.setItems(items, (dialogInterface, position) -> {
+//            dialogInterface.dismiss();
+//
+//            switch (position) {
+//                case 0:
+//                    try {
+//                        Uri uri = Uri.parse(Constants.hangoutLink);
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                        startActivity(intent);
+//                    } catch (Exception e) {
+//                        Log.e("Calling Hangout", "" + e.getMessage());
+//                    }
+//                    break;
+//
+//                case 1:
+//                    try {
+//                        Intent dial = new Intent();
+//                        dial.setAction("android.intent.action.DIAL");
+//                        dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
+//                        startActivity(dial);
+//                    } catch (Exception e) {
+//                        Log.e("Calling Phone", "" + e.getMessage());
+//                    }
+//                    break;
+//            }
+//        });
+//
+//        dialog.show();
+//    }
 
     private void rateTheApp() {
         try {
@@ -491,7 +500,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.menu_user_name:
+            case R.id.menu_user_profile_layout:
                 showProfileScreen();
 
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);

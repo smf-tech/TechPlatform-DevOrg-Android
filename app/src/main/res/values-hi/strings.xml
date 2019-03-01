@@ -30,7 +30,8 @@
     <!--<string name="check_otp">कृपया OTP जांचें</string>-->
     <string name="otp_timeout_text">समय आउट %1$s सेकंड</string>
     <string name="msg_otp_verification_timeout">OTP सत्यापन का समय समाप्त हो गया, कृपया फिरसे कोशिश करें।</string>
-    <string name="msg_waiting_for_otp_text">आपके उल्लिखित मोबाइल पर भेजे गए OTP के लिए प्रतिक्षा कर रहे हैं।</string>
+    <string name="msg_waiting_for_otp_text">आपके मोबाइल नंबर पर भेजे गए ओटीपी का इंतजार है।</string>
+    <string name="msg_verify_otp_text">अपना मोबाइल नंबर सत्यापित करने के लिए सत्यापन बटन पर क्लिक करें।</string>
     <string name="msg_logout">क्या आप लॉगआउट करना चाहते हैं?</string>
 
     <!--Registration-->
@@ -120,9 +121,6 @@
     <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="locked">बंद</string>
 
-    <string name="call_on_hangout">Hangout पर कॉल करें</string>
-    <string name="call_on_phone">फोन पर कॉल करें (10AM से 6PM)</string>
-
     <!--Home-->
     <string name="tab_dashboard">डैशबोर्ड</string>
     <string name="tab_connect">जुडिये</string>
@@ -165,6 +163,9 @@
     <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
     <string name="no_internet">इंटरनेट उपलब्ध नहीं है!</string>
     <string name="status_update_success">स्थिति सफलतापूर्वक अपडेट की गई!</string>
+    <string name="new_forms">नया</string>
+    <string name="saved_forms">बचाया</string>
+    <string name="submitted_forms">प्रस्तुत</string>
     <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>

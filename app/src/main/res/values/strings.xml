@@ -30,7 +30,8 @@
     <!--<string name="check_otp">Please check OTP</string>-->
     <string name="otp_timeout_text">Time out in %1$s sec</string>
     <string name="msg_otp_verification_timeout">OTP verification time out, please try again.</string>
-    <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your above mobile number.</string>
+    <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your mobile number.</string>
+    <string name="msg_verify_otp_text">Click on verify button to verify your mobile number.</string>
     <string name="msg_logout">Do you want to Logout?</string>
 
     <!--Profile-->
@@ -120,9 +121,6 @@
     <string name="app_version">App Version</string>
     <string name="locked">Locked</string>
 
-    <string name="call_on_hangout">Call on Hangout</string>
-    <string name="call_on_phone">Call on Phone (10AM to 6PM)</string>
-
     <!--Home-->
     <string name="tab_dashboard">Dashboard</string>
     <string name="tab_connect">Connect</string>
@@ -165,6 +163,9 @@
     <string name="image_upload_success">Image uploaded successfully!</string>
     <string name="no_internet">Internet is not available!</string>
     <string name="status_update_success">Status updated successfully!</string>
+    <string name="new_forms">New</string>
+    <string name="saved_forms">Saved</string>
+    <string name="submitted_forms">Submitted</string>
     <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
