@@ -24,7 +24,7 @@ public class Constants {
     public static final String ONLINE_UPDATE_FORM_TYPE = "OnlineUpdate";
     public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
-    public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
+    public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
 
     public static class App {
         static final String APP_DATA = "AppData";

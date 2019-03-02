@@ -44,14 +44,14 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/toolbar_more_action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/toolbar_edit_action"
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/dimen_05dp"
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_05dp"
-                android:src="@drawable/ic_more_menu"
+                android:src="@drawable/ic_edit"
                 android:visibility="invisible" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
