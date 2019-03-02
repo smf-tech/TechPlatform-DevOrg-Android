@@ -34,7 +34,6 @@ import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
-import com.platform.models.forms.FormResult;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
@@ -414,35 +413,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
         savedForm.setCreatedAt(createdDateFormat.format(new Date()));
 
-        FormData formData = formModel.getData();
-        FormResult result = new FormResult();
-        result.setFormId(formData.getId());
-        result.setFormName(formData.getName());
-        result.setSynced(false);
-
-        if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName();
-            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
-                result.setFormCategory(category);
-            }
-        }
-
-        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        }
-        result.set_id(formData.getId());
-        result.setFormId(formData.getId());
-
-        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
-            if (obj != null) {
-                result.setResult(obj.toString());
-                formPresenter.setSavedForm(result);
-                DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
-            }
-        }
-
-        // TODO: 01-03-2019 Update submitted count also
+        formPresenter.setSavedForm(savedForm);
     }
 
     public void setErrorMsg(String errorMsg) {
