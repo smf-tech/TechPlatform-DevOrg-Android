@@ -49,6 +49,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -75,6 +76,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
     private boolean mIsInEditMode;
+    private String processId;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -96,7 +98,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formPresenter = new FormActivityPresenter(this);
 
         if (getArguments() != null) {
-            String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+            processId = getArguments().getString(Constants.PM.PROCESS_ID);
+            mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
             FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
 
             if (formData == null) {
@@ -104,25 +107,19 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     formPresenter.getProcessDetails(processId);
                 }
             } else {
-                if (formData.getCategory() == null || formData.getComponents() == null) {
-                    if (Util.isConnected(getContext())) {
-                        formPresenter.getProcessDetails(processId);
-                    }
-                } else {
-                    formModel = new Form();
-                    formModel.setData(formData);
-                    initViews();
-                }
-            }
+                formModel = new Form();
+                formModel.setData(formData);
+                initViews();
 
-            mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
-            if (mIsInEditMode) {
-                List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
-                if (formResults != null && !formResults.isEmpty()) {
-                    getFormDataAndParse(formResults);
-                } else {
-                    if (Util.isConnected(getContext())) {
-                        formPresenter.getFormResults(processId);
+                if (mIsInEditMode) {
+                    formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+                    List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+                    if (formResults != null && !formResults.isEmpty()) {
+                        getFormDataAndParse(formResults);
+                    } else {
+                        if (Util.isConnected(getContext())) {
+                            formPresenter.getFormResults(processId);
+                        }
                     }
                 }
             }
@@ -164,7 +161,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         if (formDataArrayList != null) {
             formComponentCreator = new FormComponentCreator(this);
-            renderFormView();
+            if (!mIsInEditMode) {
+                renderFormView(formDataArrayList);
+            }
         }
 
         Button submit = formFragmentView.findViewById(R.id.btn_submit);
@@ -180,49 +179,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         img_back.setOnClickListener(this);
     }
 
-    private void renderFormView() {
-        customFormView = formFragmentView.findViewById(R.id.ll_form_container);
-
-        getActivity().runOnUiThread(() -> customFormView.removeAllViews());
-
-        for (Elements elements : formDataArrayList) {
-            if (elements != null && !elements.getType().equals("")) {
-
-                String formDataType = elements.getType();
-                switch (formDataType) {
-                    case Constants.FormsFactory.TEXT_TEMPLATE:
-                        Log.d(TAG, "TEXT_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.textInputTemplate(elements));
-                        break;
-
-                    case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        if (elements.getChoicesByUrl() == null) {
-                            Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
-                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
-                        } else if (elements.getChoicesByUrl() != null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
-                            if (elements.getChoicesByUrlResponse() != null) {
-                                showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
-                            }
-                        }
-                        break;
-
-                    case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
-                        Log.d(TAG, "RADIO_GROUP_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(elements));
-                        break;
-
-                    case Constants.FormsFactory.FILE_TEMPLATE:
-                        Log.d(TAG, "FILE_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.fileTemplate(elements));
-                        break;
-                }
-            }
-        }
-    }
-
-    private void renderFilledFormView(final List<Elements> formDataArrayList) {
+    private void renderFormView(final List<Elements> formDataArrayList) {
         customFormView = formFragmentView.findViewById(R.id.ll_form_container);
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
@@ -299,8 +256,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formModel = new Gson().fromJson((String) data, Form.class);
         initViews();
 
-        if (mFormJSONObject != null && mElementsListFromDB != null)
-            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
+        if (mIsInEditMode) {
+            List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+            if (formResults != null && !formResults.isEmpty()) {
+                getFormDataAndParse(formResults);
+            } else {
+                if (Util.isConnected(getContext())) {
+                    formPresenter.getFormResults(processId);
+                }
+            }
+        }
     }
 
     @Override
@@ -353,6 +318,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     }
                 }
             }
+            elements.setChoices(choiceValues);
             formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
@@ -462,12 +428,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormData formData = DatabaseManager.getDBInstance(
                 Objects.requireNonNull(getActivity()).getApplicationContext())
                 .getFormSchema(processId);
-        if (formData == null) {
-            if (Util.isConnected(getContext())) {
-                formPresenter.getProcessDetails(processId);
-            }
-            return;
-        }
 
         mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
@@ -498,12 +458,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormData formData = DatabaseManager.getDBInstance(
                 Objects.requireNonNull(getActivity()).getApplicationContext())
                 .getFormSchema(processId);
-        if (formData == null || formData.getComponents() == null) {
-            if (Util.isConnected(getContext())) {
-                formPresenter.getProcessDetails(processId);
-            }
-            return;
-        }
 
         mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
@@ -517,16 +471,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     break;
                 }
             }
-            /*JSONObject object = new JSONObject(response);
-            JSONArray values = object.getJSONArray("values");
-            for (int i = 0; i < values.length(); i++) {
-                mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
-                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (id.equals(formId)) {
-                    Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
-                    break;
-                }
-            }*/
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
@@ -538,6 +482,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
         if (object == null || elements == null || elements.size() == 0) return;
 
+        HashMap<String, String> requestedObject = new HashMap<>();
         for (final Elements element : elements) {
             if (object.has(element.getName())) {
                 try {
@@ -547,6 +492,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                             element.setAnswer(object.getString(element.getName()));
+                            requestedObject.put(element.getName(), element.getAnswer());
                             break;
                     }
                 } catch (JSONException e) {
@@ -555,7 +501,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         }
 
-        renderFilledFormView(elements);
+        formComponentCreator.setRequestObject(requestedObject);
+        renderFormView(elements);
     }
 
     public void choosePhotoFromGallery(final View view, final String name) {

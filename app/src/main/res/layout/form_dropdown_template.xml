@@ -13,7 +13,7 @@
         android:id="@+id/dropdown_label"
         style="@style/FormLabel" />
 
-    <Spinner
+    <com.platform.widgets.PlatformSpinner
         android:id="@+id/sp_single_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
