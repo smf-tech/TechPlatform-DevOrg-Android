@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -23,9 +25,11 @@ import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.FormCategoryAdapter;
+import com.platform.view.adapters.PendingFormsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.utility.Util.saveFormCategoryForSync;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +58,9 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private List<ProcessData> mDataList = new ArrayList<>();
     private Map<String, List<ProcessDemoObject>> mFormList = new HashMap<>();
     private FormCategoryAdapter adapter;
+    private RecyclerView rvPendingForms;
+    private RelativeLayout rltPendingForms;
+    private View mSubmittedFormsView;
 
     public CompletedFormsFragment() {
         // Required empty public constructor
@@ -68,12 +79,16 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_form_status, container, false);
+        mSubmittedFormsView = inflater.inflate(R.layout.fragment_form_status, container, false);
+        return mSubmittedFormsView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        rvPendingForms = view.findViewById(R.id.rv_dashboard_pending_forms);
+        rltPendingForms = view.findViewById(R.id.rlt_pending_forms);
 
         final RecyclerView recyclerView = view.findViewById(R.id.forms_list);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
@@ -87,6 +102,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
             processResponse(processes);
+
         } else {
             if (Util.isConnected(getContext())) {
                 FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
@@ -94,6 +110,30 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             }
         }
 
+//        setPendingForms();
+    }
+
+    private void setPendingForms() {
+        List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
+        if (savedForms != null && !savedForms.isEmpty()) {
+            rltPendingForms.setVisibility(View.VISIBLE);
+            mSubmittedFormsView.findViewById(R.id.sync_button).setOnClickListener(v -> {
+                if (Util.isConnected(getContext())) {
+                    Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
+                    // TODO: 14-02-2019 Category is not known for syncing
+                    saveFormCategoryForSync("");
+                    SyncAdapterUtils.manualRefresh();
+                } else {
+                    Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
+            rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvPendingForms.setAdapter(pendingFormsAdapter);
+        } else {
+            rltPendingForms.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -166,6 +206,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
                     result.set_id(formResult.mID.oid);
                     result.setFormId(formID);
+                    result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
 
                     JSONObject obj = (JSONObject) values.get(i);
                     if (obj == null) return;
@@ -220,12 +261,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 FormResult formResult = new Gson()
                         .fromJson(String.valueOf(obj), FormResult.class);
                 com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                result.set_id(formResult.mID.oid);
+                String uuid = UUID.randomUUID().toString();
+                result.set_id(uuid);
                 result.setFormId(formResult.formID);
                 result.setResult(obj.toString());
 
                 formID = formResult.formID;
-                list.add(new ProcessDemoObject(formResult.mID.oid,
+                list.add(new ProcessDemoObject(uuid,
                         formID, formResult.updatedAt));
             }
 

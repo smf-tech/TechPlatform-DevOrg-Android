@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.database.DataCategoryConverter;
 import com.platform.database.DataConverter;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
@@ -61,7 +60,7 @@ public class FormData {
     @Expose
     private String submitCount;
 
-    @TypeConverters(DataCategoryConverter.class)
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "category")
     @SerializedName("category")
     @Expose
@@ -72,7 +71,8 @@ public class FormData {
     @Expose
     private List<String> assignedRoles = null;
 
-    @Ignore
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "microservice")
     @SerializedName("microservice")
     @Expose
     private Microservice microService;

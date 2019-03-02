@@ -20,6 +20,12 @@ public class SyncAdapterUtils {
     public static final String EXTRA_TEXT = "SyncStatus";
     private static final long SYNC_FREQUENCY = 5 * 60 * 1000;
 
+    public class FormStatus {
+        public static final int SYNCED = 1;
+        public static final int UN_SYNCED = 0;
+        public static final int PARTIAL = 2;
+    }
+
     /**
      * This method creates sync account
      *

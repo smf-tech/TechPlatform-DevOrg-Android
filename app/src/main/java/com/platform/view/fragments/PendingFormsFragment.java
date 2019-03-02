@@ -62,7 +62,7 @@ public class PendingFormsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_form_status, container, false);
+        return inflater.inflate(R.layout.fragment_saved_forms, container, false);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class PendingFormsFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mSavedForms = new ArrayList<>();
-        getPendingFormsFromDB();
+//        getPendingFormsFromDB();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);

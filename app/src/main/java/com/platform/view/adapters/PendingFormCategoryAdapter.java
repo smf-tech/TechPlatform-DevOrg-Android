@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.models.SavedForm;
 import com.platform.models.forms.FormResult;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Util;
@@ -91,9 +90,9 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
 
         List<FormResult> list = new ArrayList<>();
         for (final FormResult form : mData) {
-            if (form.getFormCategory().equals(mCategoryList.get(i))) {
+//            if (form.getFormCategory().equals(mCategoryList.get(i))) {
                 list.add(form);
-            }
+//            }
         }
 
         FormsAdapter adapter = new FormsAdapter(mContext, list, FORM_STATUS_PENDING);

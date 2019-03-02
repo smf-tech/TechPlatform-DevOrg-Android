@@ -18,6 +18,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.request.FormRequestCall;
 import com.platform.request.ImageRequestCall;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
@@ -145,7 +146,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success),
                 formFragment.get().getActivity());
         if (getSavedForm() != null) {
-            getSavedForm().setSynced(true);
+            getSavedForm().setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
             DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormResult(getSavedForm());
         }
         Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();

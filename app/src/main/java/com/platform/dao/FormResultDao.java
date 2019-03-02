@@ -15,11 +15,14 @@ import java.util.List;
 @Dao
 public interface FormResultDao {
 
-    @Query("SELECT * FROM formresult WHERE is_synced = 0")
-    List<FormResult> getAllNonSyncedForms();
+    @Query("SELECT * FROM formresult WHERE form_status = :sync")
+    List<FormResult> getAllNonSyncedForms(int sync);
 
-    @Query("SELECT result FROM formresult where form_id = :formId")
-    List<String> getAllFormResults(String formId);
+    @Query("SELECT result FROM formresult where form_id = :formId and form_status = :sync")
+    List<String> getAllFormResults(String formId, int sync);
+
+    @Query("SELECT result FROM formresult where form_status = :sync")
+    List<String> getAllFormResults(boolean sync);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormResult result);
@@ -32,5 +35,8 @@ public interface FormResultDao {
 
     @Query("DELETE FROM Modules")
     void deleteAllFormResults();
+
+    @Query("DELETE FROM formresult where form_status = :sync")
+    void deleteAllNonSyncedFormResults(int sync);
 
 }

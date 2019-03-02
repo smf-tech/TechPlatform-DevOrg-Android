@@ -3,10 +3,12 @@ package com.platform.models.forms;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
 
 @Entity
 @SuppressWarnings("unused")
@@ -30,8 +32,8 @@ public class FormResult {
     @ColumnInfo(name = "form_name")
     private String formName;
 
-    @ColumnInfo(name = "is_synced")
-    private Boolean isSynced;
+    @ColumnInfo(name = "form_status")
+    private int mFormStatus;
 
     @ColumnInfo(name = "form_category")
     private String formCategory;
@@ -75,14 +77,6 @@ public class FormResult {
         this.formName = formName;
     }
 
-    public Boolean getSynced() {
-        return isSynced;
-    }
-
-    public void setSynced(final Boolean synced) {
-        isSynced = synced;
-    }
-
     public String getFormCategory() {
         return formCategory;
     }
@@ -105,5 +99,13 @@ public class FormResult {
 
     public void setCreatedAt(final String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getFormStatus() {
+        return mFormStatus;
+    }
+
+    public void setFormStatus(final int formStatus) {
+        mFormStatus = formStatus;
     }
 }

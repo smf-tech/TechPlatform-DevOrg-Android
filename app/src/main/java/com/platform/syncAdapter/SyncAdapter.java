@@ -89,7 +89,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }*/
             for (final FormResult form : savedForms) {
-                if (!form.getSynced()) {
+                if (form.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED) {
                     if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
                         submitForm(form);
                     }
@@ -204,7 +204,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.i(TAG, "Form Synced");
             }
         } catch (IOException | JSONException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage() + "");
         }
     }
 
@@ -221,16 +221,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if (route.contains("form_id"))
                 route = route.replace("form_id", formSchema.getId());
             if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
-//                    url = new URL(baseUrl + route);
-                url = getContext().getResources().getString(R.string.form_field_mandatory, baseUrl, route);
-                url = url + "/" + formSchema.getId();
+                url = getContext().getResources().getString(R.string.form_field_mandatory,
+                        baseUrl, route);
             }
         }
         return url;
     }
 
     private void updateForm(final FormResult form) {
-        form.setSynced(true);
+        form.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
         DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
 
         sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);

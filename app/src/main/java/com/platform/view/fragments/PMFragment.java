@@ -73,19 +73,19 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
         init();
 
-//        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
-//        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
-//            Processes processes = new Processes();
-//            processes.setData(processDataArrayList);
-//
-//            populateData(processes);
-//
-//        } else {
+        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+            Processes processes = new Processes();
+            processes.setData(processDataArrayList);
+
+            populateData(processes);
+
+        } else {
             if (Util.isConnected(getContext())) {
                 PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
                 pmFragmentPresenter.getAllProcess();
             }
-//        }
+        }
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
@@ -101,10 +101,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
 
-                    int formID = intent.getIntExtra(EXTRA_FORM_ID, 0);
+                    String formID = intent.getStringExtra(EXTRA_FORM_ID);
                     updateAdapter(context, formID);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
-                    updateAdapter(context, 0);
+                    updateAdapter(context, "0");
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
                     Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
@@ -113,7 +113,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         }, filter);
     }
 
-    private void updateAdapter(final Context context, final int formID) {
+    private void updateAdapter(final Context context, final String formID) {
         if (pendingFormsAdapter == null) {
             pendingFormsAdapter = (PendingFormsAdapter) rvPendingForms.getAdapter();
             if (mSavedForms == null) {
@@ -121,9 +121,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             }
         }
 
-        if (formID == 0) {
-            mSavedForms.clear();
-            mSavedForms.addAll(getAllNonSyncedSavedForms(getContext()));
+//        if (formID == 0) {
+//            mSavedForms.clear();
+//            mSavedForms.addAll(getAllNonSyncedSavedForms(getContext()));
 //        } else {
 //            List<FormResult> list = new ArrayList<>(mSavedForms);
 //            for (final FormResult form : mSavedForms) {
@@ -131,9 +131,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 //                    list.remove(form);
 //                }
 //            }
-//            mSavedForms.clear();
-//            mSavedForms.addAll(list);
-        }
+//        }
+        mSavedForms.clear();
+        mSavedForms.addAll(getAllNonSyncedSavedForms(getContext()));
 
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);

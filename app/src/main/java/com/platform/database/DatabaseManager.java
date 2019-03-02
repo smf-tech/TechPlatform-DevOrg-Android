@@ -16,6 +16,7 @@ import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.reports.ReportData;
+import com.platform.syncAdapter.SyncAdapterUtils;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class DatabaseManager {
 
     public List<FormResult> getNonSyncedPendingForms1() {
         FormResultDao formResultDao = appDatabase.formResultDao();
-        return formResultDao.getAllNonSyncedForms();
+        return formResultDao.getAllNonSyncedForms(SyncAdapterUtils.FormStatus.UN_SYNCED);
     }
 
     public void insertFormSchema(FormData... formData) {
@@ -132,7 +133,7 @@ public class DatabaseManager {
 
     public List<String> getAllFormResults(String formId) {
         FormResultDao formResultDao = appDatabase.formResultDao();
-        return formResultDao.getAllFormResults(formId);
+        return formResultDao.getAllFormResults(formId, SyncAdapterUtils.FormStatus.SYNCED);
     }
 
     public void insertFormResult(FormResult result) {
@@ -166,5 +167,10 @@ public class DatabaseManager {
         ModuleDao modulesDao = appDatabase.homeDao();
         modulesDao.insertAll(home);
         Log.d(TAG, "insertModule");
+    }
+
+    public void getAllFormResults() {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        formResultDao.deleteAllNonSyncedFormResults(SyncAdapterUtils.FormStatus.UN_SYNCED);
     }
 }
