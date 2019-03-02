@@ -55,8 +55,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
 
         if (getActivity() != null) {
             context = getActivity();
-            String title = getResources().getString(R.string.app_name_ss);
-            ((HomeActivity) context).setActionBarTitle(title);
+            ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
             ((HomeActivity) context).setSyncClickListener(this);
         }
     }
@@ -167,7 +166,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
         if (data != null) {
             homeData = (Home) data;
 
-            DatabaseManager.getDBInstance(context.getApplicationContext()).deleteAllModules();
             List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
             for (final Modules module : defaultModules) {
                 module.setModule(DEFAULT_MODULE);
@@ -243,6 +241,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
     public void onSyncButtonClicked() {
         if (presenter != null && Util.isConnected(context)) {
             isSyncRequired = true;
+            Util.removeDatabaseRecords();
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
         }

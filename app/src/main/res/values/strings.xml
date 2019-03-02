@@ -68,7 +68,7 @@
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
-    <!--<string name="update_data_string">Do you want to Update Data?</string>-->
+    <string name="update_data_string">Do you want to Update Data?</string>
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
 

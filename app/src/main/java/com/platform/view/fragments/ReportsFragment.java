@@ -43,6 +43,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
             mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }

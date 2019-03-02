@@ -35,7 +35,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.platform.R;
-import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.PMFragmentPresenter;
@@ -74,6 +73,17 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         title.setText(name);
     }
 
+    public void setSyncButtonVisibility(boolean flag) {
+        ImageView sync = findViewById(R.id.home_sync_icon);
+        if (flag) {
+            sync.setVisibility(View.VISIBLE);
+            sync.setOnClickListener(this);
+        } else {
+            sync.setVisibility(View.GONE);
+            sync.setOnClickListener(null);
+        }
+    }
+
     @SuppressWarnings("deprecation")
     private void initMenuView() {
         setActionBarTitle(getResources().getString(R.string.app_name_ss));
@@ -102,8 +112,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
-
-        findViewById(R.id.home_sync_icon).setOnClickListener(this);
 
         loadHomePage();
     }
@@ -341,28 +349,28 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
-//    private void showUpdateDataPopup() {
-//        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-//        // Setting Dialog Title
-//        alertDialog.setTitle(getString(R.string.app_name_ss));
-//        // Setting Dialog Message
-//        alertDialog.setMessage(getString(R.string.update_data_string));
-//        // Setting Icon to Dialog
-//        alertDialog.setIcon(R.mipmap.app_logo);
-//        // Setting CANCEL Button
-//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-//                (dialog, which) -> alertDialog.dismiss());
-//        // Setting OK Button
-//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-//                (dialog, which) -> {
-//                    if (Util.isConnected(HomeActivity.this)) {
-//                        //getUserData();
-//                    }
-//                });
-//
-//        // Showing Alert Message
-//        alertDialog.show();
-//    }
+    private void showUpdateDataPopup() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.update_data_string));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                (dialog, which) -> {
+                    if (Util.isConnected(HomeActivity.this)) {
+                        clickListener.onSyncButtonClicked();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
 
     private void showLogoutPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -411,7 +419,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             return;
         }
 
-        removeDatabaseRecords();
+        Util.removeDatabaseRecords();
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
@@ -421,13 +429,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-    }
-
-    private void removeDatabaseRecords() {
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllProcesses();
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormSchema();
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllModules();
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormResults();
     }
 
     @Override
@@ -512,7 +513,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.home_sync_icon:
-                clickListener.onSyncButtonClicked();
+                showUpdateDataPopup();
                 break;
         }
     }

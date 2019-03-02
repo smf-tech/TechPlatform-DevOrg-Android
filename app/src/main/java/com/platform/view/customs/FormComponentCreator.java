@@ -409,7 +409,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                                             JSONObject dObj = dependentInnerObj.getJSONObject(title);
 
                                             //Ignore first value of valueToken
-                                            String valueStr = valueTokenizer.nextToken();
+                                            //String valueStr = valueTokenizer.nextToken();
                                             String valueStrNext = valueTokenizer.nextToken();
                                             if (dObj.getString(valueStrNext).equals(value)) {
                                                 choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());

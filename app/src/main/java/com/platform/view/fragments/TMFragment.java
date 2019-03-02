@@ -40,6 +40,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
             mShowAllApprovalsText = getArguments().getBoolean("SHOW_ALL", true);
         }
