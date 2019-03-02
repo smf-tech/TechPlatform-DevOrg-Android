@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -149,6 +151,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         super.onDestroy();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initViews() {
         setActionbar(formModel.getData().getName());
         progressBarLayout = formFragmentView.findViewById(R.id.gen_frag_progress_bar);
@@ -166,7 +169,38 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         }
 
+        ImageView editButton = formFragmentView.findViewById(R.id.toolbar_edit_action);
+        boolean isFormEditable = Boolean.parseBoolean(formModel.getData().getEditable());
+        if (mIsInEditMode) {
+            if (!isFormEditable) {
+                editButton.setVisibility(View.VISIBLE);
+                editButton.setOnClickListener(this);
+            } else {
+                editButton.setVisibility(View.GONE);
+                editButton.setOnClickListener(null);
+            }
+
+            View layer = formFragmentView.findViewById(R.id.read_only_view);
+            layer.setVisibility(View.VISIBLE);
+            layer.setOnClickListener(this);
+
+            layer.setOnTouchListener((v, event) -> {
+                ScrollView root = formFragmentView.findViewById(R.id.sv_form_view);
+                root.onTouchEvent(event);
+                return true;
+            });
+        } else {
+            enableEditMode();
+        }
+    }
+
+    private void enableEditMode() {
+        View layer = formFragmentView.findViewById(R.id.read_only_view);
+        layer.setVisibility(View.GONE);
+        layer.setOnClickListener(null);
+
         Button submit = formFragmentView.findViewById(R.id.btn_submit);
+        submit.setVisibility(View.VISIBLE);
         submit.setOnClickListener(this);
     }
 
@@ -330,6 +364,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         switch (view.getId()) {
             case R.id.toolbar_back_action:
                 showConfirmPopUp();
+                break;
+
+            case R.id.toolbar_edit_action:
+                enableEditMode();
+                break;
+
+            case R.id.read_only_view:
                 break;
 
             case R.id.btn_submit:
