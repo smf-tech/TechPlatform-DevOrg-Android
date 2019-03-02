@@ -16,12 +16,14 @@ import com.platform.models.SavedForm;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
+import com.platform.models.forms.FormResult;
 import com.platform.request.FormRequestCall;
 import com.platform.request.ImageRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -147,6 +149,26 @@ public class FormActivityPresenter implements FormRequestCallListener,
             getSavedForm().setSynced(true);
             DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormObject(getSavedForm());
         }
+
+        //Save form result
+        try {
+            JSONObject outerObject = new JSONObject(message);
+            if (outerObject.has(Constants.RESPONSE_DATA)) {
+                JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
+                JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
+
+                FormResult result = new FormResult();
+                result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
+                result.setFormId(dataObject.getString(Constants.FormDynamicKeys.FORM_ID));
+                result.setResult(dataObject.toString());
+                DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+            }
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+
         Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
     }
 
