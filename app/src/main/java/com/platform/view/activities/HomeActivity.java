@@ -35,9 +35,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.platform.R;
-import com.platform.models.SavedForm;
 import com.platform.models.user.UserInfo;
-import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
@@ -47,7 +45,8 @@ import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMFragment;
 
 import java.io.File;
-import java.util.List;
+
+import static com.platform.utility.Util.removeDatabaseRecords;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -344,8 +343,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void showProfileScreen() {
-        DatabaseManager.getDBInstance(this).getAllFormResults();
-
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
@@ -415,13 +412,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
-        final List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
+        /*final List<FormResult> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getApplicationContext());
         if (savedForms != null && !savedForms.isEmpty()) {
             showPendingFormsPopUp();
             return;
-        }
+        }*/
 
-        Util.removeDatabaseRecords();
+        removeDatabaseRecords();
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);

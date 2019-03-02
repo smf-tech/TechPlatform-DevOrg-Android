@@ -46,7 +46,6 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
-import static com.platform.utility.Util.saveFormCategoryForSync;
 
 @SuppressWarnings("CanBeFinal")
 public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
@@ -177,8 +176,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             pmFragmentView.findViewById(R.id.sync_button).setOnClickListener(v -> {
                 if (Util.isConnected(getContext())) {
                     Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
-                    // TODO: 14-02-2019 Category is not known for syncing
-                    saveFormCategoryForSync("");
                     SyncAdapterUtils.manualRefresh();
                 } else {
                     Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();

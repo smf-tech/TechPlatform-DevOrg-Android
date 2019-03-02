@@ -9,8 +9,6 @@ import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
-import com.platform.dao.SavedFormDao;
-import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
@@ -40,24 +38,19 @@ public class DatabaseManager {
         return databaseManager;
     }
 
-    public void insertFormObject(SavedForm... savedForms) {
-        SavedFormDao savedFormDao = appDatabase.formDao();
-        savedFormDao.insertAll(savedForms);
-    }
-
-    public void updateFormObject(SavedForm savedForms) {
-        SavedFormDao savedFormDao = appDatabase.formDao();
-        savedFormDao.update(savedForms);
-    }
-
-    public List<SavedForm> getNonSyncedPendingForms() {
-        SavedFormDao savedFormDao = appDatabase.formDao();
-        return savedFormDao.getAllNonSyncedForms();
-    }
-
-    public List<FormResult> getNonSyncedPendingForms1() {
+    public List<FormResult> getNonSyncedPendingForms() {
         FormResultDao formResultDao = appDatabase.formResultDao();
-        return formResultDao.getAllNonSyncedForms(SyncAdapterUtils.FormStatus.UN_SYNCED);
+        return formResultDao.getAllFormResults(SyncAdapterUtils.FormStatus.UN_SYNCED);
+    }
+
+    public List<FormResult> getAllPartiallySavedForms() {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        return formResultDao.getAllFormResults(SyncAdapterUtils.FormStatus.PARTIAL);
+    }
+
+    public FormResult getPartiallySavedForm(String formID) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        return formResultDao.getPartialForm(SyncAdapterUtils.FormStatus.PARTIAL, formID);
     }
 
     public void insertFormSchema(FormData... formData) {
@@ -75,7 +68,7 @@ public class DatabaseManager {
         return formDataDao.getFormSchema(processId);
     }
 
-    public List<FormData> getAllFormSchema() {
+/*    public List<FormData> getAllFormSchema() {
         FormDataDao formDataDao = appDatabase.formDataDao();
         return formDataDao.getAllFormSchema();
     }
@@ -83,7 +76,7 @@ public class DatabaseManager {
     public void updateFormSchemaSubmitCount(final String formID, final String count) {
         FormDataDao formDataDao = appDatabase.formDataDao();
         formDataDao.updateSubmitCount(formID, count);
-    }
+    }*/
 
     public void deleteAllFormSchema() {
         FormDataDao formDataDao = appDatabase.formDataDao();
@@ -131,9 +124,9 @@ public class DatabaseManager {
         return formDataDao.getAllReports();
     }
 
-    public List<String> getAllFormResults(String formId) {
+    public List<String> getAllFormResults(String formId, int formStatus) {
         FormResultDao formResultDao = appDatabase.formResultDao();
-        return formResultDao.getAllFormResults(formId, SyncAdapterUtils.FormStatus.SYNCED);
+        return formResultDao.getAllFormResults(formId, formStatus);
     }
 
     public void insertFormResult(FormResult result) {
@@ -169,8 +162,4 @@ public class DatabaseManager {
         Log.d(TAG, "insertModule");
     }
 
-    public void getAllFormResults() {
-        FormResultDao formResultDao = appDatabase.formResultDao();
-        formResultDao.deleteAllNonSyncedFormResults(SyncAdapterUtils.FormStatus.UN_SYNCED);
-    }
 }

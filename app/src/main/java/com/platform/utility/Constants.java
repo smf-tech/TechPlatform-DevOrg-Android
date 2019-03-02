@@ -113,6 +113,7 @@ public class Constants {
         public static final String PROCESS_ID = "processId";
         public static final String FORM_ID = "formId";
         public static final String EDIT_MODE = "editMode";
+        public static final String PARTIAL_FORM = "partialForm";
     }
 
     public static class TM {

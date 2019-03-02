@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
-import com.platform.models.SavedForm;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
@@ -47,13 +46,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -76,6 +74,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
     private boolean mIsInEditMode;
+    private boolean mIsPartiallySaved;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -99,6 +98,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         if (getArguments() != null) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
             FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+            mIsPartiallySaved = getArguments().getBoolean(Constants.PM.PARTIAL_FORM);
+            if (mIsPartiallySaved) {
+                String formId = getArguments().getString(Constants.PM.FORM_ID);
+                formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
+            }
 
             if (formData == null) {
                 if (Util.isConnected(getContext())) {
@@ -118,11 +122,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
             mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
             if (mIsInEditMode) {
-                List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+                List<String> formResults;
+                if (mIsPartiallySaved) {
+                    String formId = getArguments().getString(Constants.PM.FORM_ID);
+                    formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(formId, SyncAdapterUtils.FormStatus.PARTIAL);
+                } else {
+                    formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId, SyncAdapterUtils.FormStatus.SYNCED);
+                }
                 if (formResults != null && !formResults.isEmpty()) {
                     getFormDataAndParse(formResults);
                 } else {
-                    if (Util.isConnected(getContext())) {
+                    if (Util.isConnected(getContext()) && !mIsPartiallySaved) {
                         formPresenter.getFormResults(processId);
                     }
                 }
@@ -364,7 +374,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                showConfirmPopUp();
+//                showConfirmPopUp();
+                storePartiallySavedForm();
+                getActivity().finish();
                 break;
 
             case R.id.btn_submit:
@@ -372,6 +384,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     Util.showToast(errorMsg, this);
                 } else {
                     saveFormToLocalDatabase();
+
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
 
@@ -412,6 +425,43 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
+    private void storePartiallySavedForm() {
+        FormData formData = formModel.getData();
+        FormResult result = new FormResult();
+        result.set_id(UUID.randomUUID().toString());
+        result.setFormId(formData.getId());
+        result.setFormCategory(formData.getCategory().getName());
+        result.setFormName(formData.getName());
+        result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
+
+        if (formData.getCategory() != null) {
+            String category = formData.getCategory().getName();
+            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
+                result.setFormCategory(category);
+            }
+        }
+
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+        }
+
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            if (obj != null) {
+                result.setResult(obj.toString());
+            }
+        }
+
+        if (mIsPartiallySaved) {
+            String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+            FormResult form = DatabaseManager.getDBInstance(getActivity()).getPartiallySavedForm(processId);
+            result.set_id(form.get_id());
+            DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
+        } else {
+            DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+        }
+    }
+
     private void showConfirmPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         // Setting Dialog Title
@@ -432,7 +482,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     private void saveFormToLocalDatabase() {
-        SavedForm savedForm = new SavedForm();
+        /*SavedForm savedForm = new SavedForm();
         savedForm.setFormId(formModel.getData().getId());
         savedForm.setFormName(formModel.getData().getName());
         savedForm.setSynced(false);
@@ -449,12 +499,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
         SimpleDateFormat createdDateFormat =
                 new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
-        savedForm.setCreatedAt(createdDateFormat.format(new Date()));
+        savedForm.setCreatedAt(createdDateFormat.format(new Date()));*/
 
         FormData formData = formModel.getData();
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
         result.setFormName(formData.getName());
+
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
@@ -467,7 +518,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
             result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
         }
-        result.set_id(formData.getId());
+        result.set_id(UUID.randomUUID().toString());
         result.setFormId(formData.getId());
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
@@ -475,7 +526,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             if (obj != null) {
                 result.setResult(obj.toString());
                 formPresenter.setSavedForm(result);
-                DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                if (mIsPartiallySaved) {
+                    String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+                    FormResult form = DatabaseManager.getDBInstance(getActivity()).getPartiallySavedForm(processId);
+                    result.set_id(form.get_id());
+                    DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
+                } else {
+                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                }
             }
         }
 
@@ -527,9 +585,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
-        FormData formData = DatabaseManager.getDBInstance(
-                Objects.requireNonNull(getActivity()).getApplicationContext())
-                .getFormSchema(processId);
+        FormData formData;
+        if (mIsPartiallySaved) {
+            formData = DatabaseManager.getDBInstance(
+                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    .getFormSchema(formId);
+        } else {
+            formData = DatabaseManager.getDBInstance(
+                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    .getFormSchema(processId);
+        }
         if (formData == null || formData.getComponents() == null) {
             if (Util.isConnected(getContext())) {
                 formPresenter.getProcessDetails(processId);

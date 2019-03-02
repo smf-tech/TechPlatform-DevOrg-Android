@@ -123,7 +123,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         String languageCode = preferences.getString(Constants.App.LANGUAGE_CODE, "");
-        if (languageCode.contentEquals("")) {
+        if (languageCode != null && languageCode.contentEquals("")) {
             setLocaleLanguageCode("en");
         } else {
             setLocaleLanguageCode(languageCode);
@@ -290,6 +290,7 @@ public class Util {
         editor.apply();
     }
 
+/*
     public static String getFormCategoryForSyncFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
@@ -305,6 +306,7 @@ public class Util {
         editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
         editor.apply();
     }
+*/
 
 //    public static void clearAllUserData() {
 //        try {

@@ -41,7 +41,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +48,6 @@ import java.util.Map;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
-import static com.platform.utility.Util.getFormCategoryForSyncFromPref;
 import static com.platform.utility.Util.getLoginObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
@@ -81,80 +79,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         List<FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
 
         if (savedForms != null) {
-            String formSyncCategory = getFormCategoryForSyncFromPref();
-            /*for (final SavedForm form : savedForms) {
-                if (!form.isSynced()) {
-                    if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
-                        submitForm(form);
-                    }
-                }
-            }*/
             for (final FormResult form : savedForms) {
                 if (form.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED) {
-                    if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
-                        submitForm(form);
-                    }
+                    submitForm(form);
                 }
             }
         }
-    }
-
-    public void createFormResponse(HashMap<String, String> requestObjectMap,
-                                   final Map<String, String> uploadedImageUrlList,
-                                   String postUrl, FormResult form) {
-
-        Response.Listener<JSONObject> createFormResponseListener = response -> {
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    updateForm(form);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_FAILED);
-            }
-        };
-
-        Response.ErrorListener createFormErrorListener = error ->
-                sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_FAILED);
-
-        Gson gson = new GsonBuilder().serializeNulls().create();
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(Request.Method.POST,
-                postUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                createFormResponseListener,
-                createFormErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap, uploadedImageUrlList));
-        gsonRequest.setShouldCache(false);
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-    }
-
-    @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final Map<String, String> imageUrls) {
-        JsonObject requestObject = new JsonObject();
-        for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            Log.d(TAG, "Request object key " + key + " value " + value);
-            requestObject.addProperty(key, value);
-        }
-
-        if (imageUrls != null && !imageUrls.isEmpty()) {
-            for (final Map.Entry<String, String> entry : imageUrls.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                Log.d(TAG, "Request object key " + key + " value " + value);
-                requestObject.addProperty(key, value);
-            }
-        }
-
-        return requestObject;
     }
 
     private void submitForm(final FormResult form) {

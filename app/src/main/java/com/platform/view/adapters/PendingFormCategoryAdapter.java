@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
-import static com.platform.utility.Util.saveFormCategoryForSync;
 
 @SuppressWarnings("CanBeFinal")
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {
@@ -41,7 +40,7 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         FloatingActionButton syncButton;
         FloatingActionButton addButton;
@@ -70,16 +69,7 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
     @Override
     public void onBindViewHolder(@NonNull PendingFormCategoryAdapter.ViewHolder viewHolder, int i) {
 
-        viewHolder.syncButton.setOnClickListener(v -> {
-            if (Util.isConnected(mContext)) {
-                Toast.makeText(mContext, "Sync started...", Toast.LENGTH_SHORT).show();
-                saveFormCategoryForSync(mCategoryList.get(i));
-                SyncAdapterUtils.manualRefresh();
-            } else {
-                Toast.makeText(mContext, "Internet is not available!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        viewHolder.syncButton.hide();
         viewHolder.syncButton.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setRippleColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setImageDrawable(mContext.getResources().getDrawable(android.R.drawable.stat_notify_sync));
@@ -90,12 +80,11 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
 
         List<FormResult> list = new ArrayList<>();
         for (final FormResult form : mData) {
-//            if (form.getFormCategory().equals(mCategoryList.get(i))) {
+            if (form.getFormCategory().equals(mCategoryList.get(i)))
                 list.add(form);
-//            }
         }
 
-        FormsAdapter adapter = new FormsAdapter(mContext, list, FORM_STATUS_PENDING);
+        PartiallySavedFormAdapter adapter = new PartiallySavedFormAdapter(mContext, list);
         viewHolder.recyclerView.setAdapter(adapter);
     }
 

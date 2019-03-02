@@ -12,9 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -29,7 +27,6 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.FormCategoryAdapter;
-import com.platform.view.adapters.PendingFormsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +40,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
-import static com.platform.utility.Util.saveFormCategoryForSync;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,9 +54,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private List<ProcessData> mDataList = new ArrayList<>();
     private Map<String, List<ProcessDemoObject>> mFormList = new HashMap<>();
     private FormCategoryAdapter adapter;
-    private RecyclerView rvPendingForms;
-    private RelativeLayout rltPendingForms;
-    private View mSubmittedFormsView;
 
     public CompletedFormsFragment() {
         // Required empty public constructor
@@ -79,23 +72,22 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mSubmittedFormsView = inflater.inflate(R.layout.fragment_form_status, container, false);
-        return mSubmittedFormsView;
+        return inflater.inflate(R.layout.fragment_form_status, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvPendingForms = view.findViewById(R.id.rv_dashboard_pending_forms);
-        rltPendingForms = view.findViewById(R.id.rlt_pending_forms);
-
         final RecyclerView recyclerView = view.findViewById(R.id.forms_list);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
         adapter = new FormCategoryAdapter(getContext(), mFormList);
         recyclerView.setAdapter(adapter);
+
+        setPendingForms();
 
         List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
         if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
@@ -108,12 +100,18 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 presenter.getAllProcesses();
             }
         }
+    }
 
-            PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
-            rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvPendingForms.setAdapter(pendingFormsAdapter);
-        } else {
-            rltPendingForms.setVisibility(View.GONE);
+    private void setPendingForms() {
+        List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
+        if (savedForms != null && !savedForms.isEmpty()) {
+            List<ProcessDemoObject> list = new ArrayList<>();
+            for (com.platform.models.forms.FormResult form : savedForms) {
+                list.add(new ProcessDemoObject(form.get_id(),
+                        form.getFormId(), form.getCreatedAt()));
+            }
+            mFormList.put("Syncing Pending", list);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -150,7 +148,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             mDataList.add(data);
 
             List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
-                    .getAllFormResults(id);
+                    .getAllFormResults(id, SyncAdapterUtils.FormStatus.SYNCED);
             if (response != null && !response.isEmpty()) {
                 processFormResultResponse(response);
             } else {
@@ -180,12 +178,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     FormResult formResult = new Gson()
                             .fromJson(String.valueOf(values.get(i)), FormResult.class);
 
+                    String uuid = UUID.randomUUID().toString();
                     formID = formResult.formID;
-                    list.add(new ProcessDemoObject(formResult.mID.oid,
+                    list.add(new ProcessDemoObject(uuid,
                             formID, formResult.updatedAt));
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(formResult.mID.oid);
+                    result.set_id(uuid);
                     result.setFormId(formID);
                     result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
 
@@ -194,7 +193,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
 
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(formID);
+                            .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
                     if (!localFormResults.contains(obj.toString())) {
                         result.setResult(obj.toString());
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
