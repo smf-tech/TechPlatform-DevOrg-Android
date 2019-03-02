@@ -235,6 +235,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
                 case Constants.FormInputType.INPUT_TYPE_NUMERIC:
                     textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
@@ -364,6 +365,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return null;
     }
 
+    public void setRequestObject(HashMap<String, String> requestObjectMap) {
+        if (requestObjectMap != null) {
+            this.requestObjectMap = requestObjectMap;
+        }
+
+    }
+
     @Override
     public void onDropdownValueSelected(Elements parentElement, String value) {
         //It means dependency is there
@@ -392,7 +400,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                                         !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
                                         dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
 
-                                    Log.i(TAG, "Test");
                                     String choiceText = "";
                                     String choiceValue = "";
 
@@ -409,7 +416,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                                             JSONObject dObj = dependentInnerObj.getJSONObject(title);
 
                                             //Ignore first value of valueToken
-                                            //String valueStr = valueTokenizer.nextToken();
+                                            String valueStr = valueTokenizer.nextToken();
                                             String valueStrNext = valueTokenizer.nextToken();
                                             if (dObj.getString(valueStrNext).equals(value)) {
                                                 choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
@@ -449,7 +456,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                             }
                         }
                     }
-                    dropDownTemplate.setFormData(dependentElement);
                     dropDownTemplate.setListData(choiceValues);
                 } catch (JSONException e) {
                     Log.e(TAG, e.getMessage());
@@ -460,6 +466,18 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (parentElement != null && !TextUtils.isEmpty(parentElement.getName()) && !TextUtils.isEmpty(value)) {
             requestObjectMap.put(parentElement.getName(), value);
         }
+    }
+
+    @Override
+    public void onEmptyDropdownSelected(Elements parentElement) {
+        //It means dependency is there
+        String key = "{" + parentElement.getName() + "} notempty";
+        if (dependencyMap.get(key) != null) {
+            DropDownTemplate dropDownTemplate = dependencyMap.get(key);
+            List<Choice> choiceValues = new ArrayList<>();
+            dropDownTemplate.setListData(choiceValues);
+        }
+
     }
 
     private void showDateDialog(Context context, final EditText editText) {
