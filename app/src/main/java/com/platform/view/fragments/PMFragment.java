@@ -33,6 +33,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
@@ -58,6 +59,15 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private RelativeLayout rltPendingForms;
     private PendingFormsAdapter pendingFormsAdapter;
     private List<SavedForm> mSavedForms;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null) {
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(true);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

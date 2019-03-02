@@ -21,6 +21,7 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
         }
     }
 
