@@ -395,60 +395,75 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                             JSONObject parentInnerObj = parentDataArray.getJSONObject(parentArrayIndex);
                             for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.length(); dependentArrayIndex++) {
                                 JSONObject dependentInnerObj = dependentDataArray.getJSONObject(dependentArrayIndex);
-
-                                if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElement.getName())) &&
-                                        !TextUtils.isEmpty(parentInnerObj.getString(parentElement.getName())) &&
-                                        dependentInnerObj.getString(parentElement.getName()).equals(parentInnerObj.getString(parentElement.getName()))) {
-
-                                    String choiceText = "";
-                                    String choiceValue = "";
-
-                                    if (dependentElement.getChoicesByUrl() != null &&
-                                            !TextUtils.isEmpty(dependentElement.getChoicesByUrl().getTitleName())) {
-
-                                        if (parentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
-                                            StringTokenizer titleTokenizer
-                                                    = new StringTokenizer(parentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                                            StringTokenizer valueTokenizer
-                                                    = new StringTokenizer(parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
-
-                                            String title = titleTokenizer.nextToken();
-                                            JSONObject dObj = dependentInnerObj.getJSONObject(title);
-
-                                            //Ignore first value of valueToken
-                                            String valueStr = valueTokenizer.nextToken();
-                                            String valueStrNext = valueTokenizer.nextToken();
-                                            if (dObj.getString(valueStrNext).equals(value)) {
-                                                choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
-                                                choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
-                                            }
-                                        } else {
-                                            String valueStr = dependentInnerObj.getString(parentElement.getChoicesByUrl().getValueName());
-
-                                            if (valueStr.equals(value)) {
-                                                choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
-                                                choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
-                                            }
-                                        }
+                                String parentElementName = parentElement.getName();
+                                if (!TextUtils.isEmpty(parentElementName)) {
+                                    if (parentElementName.equals(Constants.FormDynamicKeys.OLD_STRUCTURE_CODE)) {
+                                        parentElementName = Constants.FormDynamicKeys.STRUCTURE_CODE;
+                                    }
+                                    if (parentElementName.equals(Constants.FormDynamicKeys.NEW_STRUCTURE_CODE)) {
+                                        parentElementName = Constants.FormDynamicKeys.STRUCTURE_CODE;
+                                    }
+                                    if (parentElementName.equals(Constants.FormDynamicKeys.MOVED_FROM)) {
+                                        parentElementName = Constants.FormDynamicKeys.VILLAGE;
+                                    }
+                                    if (parentElementName.equals(Constants.FormDynamicKeys.MOVED_TO)) {
+                                        parentElementName = Constants.FormDynamicKeys.VILLAGE;
                                     }
 
-                                    if (!TextUtils.isEmpty(choiceText)) {
-                                        Choice choice = new Choice();
-                                        choice.setText(choiceText);
-                                        choice.setValue(choiceValue);
+                                    if (!TextUtils.isEmpty(dependentInnerObj.getString(parentElementName)) &&
+                                            !TextUtils.isEmpty(parentInnerObj.getString(parentElementName)) &&
+                                            dependentInnerObj.getString(parentElementName).equals(parentInnerObj.getString(parentElementName))) {
 
-                                        if (choiceValues.size() == 0) {
-                                            choiceValues.add(choice);
-                                        } else {
-                                            boolean isFound = false;
-                                            for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
-                                                if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
-                                                    isFound = true;
-                                                    break;
+                                        String choiceText = "";
+                                        String choiceValue = "";
+
+                                        if (parentElement.getChoicesByUrl() != null &&
+                                                !TextUtils.isEmpty(parentElement.getChoicesByUrl().getTitleName())) {
+
+                                            if (parentElement.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                                                StringTokenizer titleTokenizer
+                                                        = new StringTokenizer(parentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                                                StringTokenizer valueTokenizer
+                                                        = new StringTokenizer(parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+
+                                                String title = titleTokenizer.nextToken();
+                                                JSONObject dObj = dependentInnerObj.getJSONObject(title);
+
+                                                //Ignore first value of valueToken
+                                                String valueStr = valueTokenizer.nextToken();
+                                                String valueStrNext = valueTokenizer.nextToken();
+                                                if (dObj.getString(valueStrNext).equals(value)) {
+                                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                                    choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
+                                                }
+                                            } else {
+                                                String valueStr = dependentInnerObj.getString(parentElement.getChoicesByUrl().getValueName());
+
+                                                if (valueStr.equals(value)) {
+                                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                                    choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
                                                 }
                                             }
-                                            if (!isFound) {
+                                        }
+
+                                        if (!TextUtils.isEmpty(choiceText)) {
+                                            Choice choice = new Choice();
+                                            choice.setText(choiceText);
+                                            choice.setValue(choiceValue);
+
+                                            if (choiceValues.size() == 0) {
                                                 choiceValues.add(choice);
+                                            } else {
+                                                boolean isFound = false;
+                                                for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                                                    if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                                                        isFound = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!isFound) {
+                                                    choiceValues.add(choice);
+                                                }
                                             }
                                         }
                                     }
