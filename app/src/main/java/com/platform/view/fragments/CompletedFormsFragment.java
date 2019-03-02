@@ -102,31 +102,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
             processResponse(processes);
-
         } else {
             if (Util.isConnected(getContext())) {
                 FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
                 presenter.getAllProcesses();
             }
         }
-
-//        setPendingForms();
-    }
-
-    private void setPendingForms() {
-        List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
-        if (savedForms != null && !savedForms.isEmpty()) {
-            rltPendingForms.setVisibility(View.VISIBLE);
-            mSubmittedFormsView.findViewById(R.id.sync_button).setOnClickListener(v -> {
-                if (Util.isConnected(getContext())) {
-                    Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
-                    // TODO: 14-02-2019 Category is not known for syncing
-                    saveFormCategoryForSync("");
-                    SyncAdapterUtils.manualRefresh();
-                } else {
-                    Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();
-                }
-            });
 
             PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));

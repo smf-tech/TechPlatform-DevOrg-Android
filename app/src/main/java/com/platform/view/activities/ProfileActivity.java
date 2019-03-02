@@ -364,8 +364,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setProjectIds(selectedProjects);
             userInfo.setRoleIds(selectedRole.getId());
 
-            if (mImageUploaded && !TextUtils.isEmpty(mUploadedImageUrl))
+            if (mImageUploaded && !TextUtils.isEmpty(mUploadedImageUrl)) {
                 userInfo.setProfilePic(mUploadedImageUrl);
+            } else {
+                // Set old profile url if profile unchanged
+                UserInfo info = Util.getUserObjectFromPref();
+                if (!TextUtils.isEmpty(info.getProfilePic())) {
+                    userInfo.setProfilePic(info.getProfilePic());
+                }
+            }
 
             UserLocation userLocation = new UserLocation();
             ArrayList<String> s = new ArrayList<>();

@@ -33,6 +33,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
@@ -60,6 +61,15 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private List<FormResult> mSavedForms;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null) {
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(true);
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
@@ -71,10 +81,15 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        boolean isSyncRequired = false;
+        if (getArguments() != null) {
+            isSyncRequired = getArguments().getBoolean("NEED_SYNC");
+        }
+
         init();
 
         List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
-        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+        if (processDataArrayList != null && !processDataArrayList.isEmpty() && !isSyncRequired) {
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
 

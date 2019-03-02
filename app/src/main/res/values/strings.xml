@@ -68,7 +68,7 @@
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
-    <!--<string name="update_data_string">Do you want to Update Data?</string>-->
+    <string name="update_data_string">Do you want to Update Data?</string>
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
 
@@ -166,7 +166,7 @@
     <string name="new_forms">New</string>
     <string name="saved_forms">Saved</string>
     <string name="submitted_forms">Submitted</string>
-    <string name="form_field_mandatory" translatable="false">%1$s%2$s</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
 

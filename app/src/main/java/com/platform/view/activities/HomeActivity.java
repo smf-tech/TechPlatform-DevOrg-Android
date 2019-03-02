@@ -35,9 +35,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.platform.R;
-import com.platform.database.DatabaseManager;
 import com.platform.models.SavedForm;
-import com.platform.models.forms.FormResult;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
@@ -56,6 +54,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
+    private OnSyncClicked clickListener;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -72,6 +71,17 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         toolbar = findViewById(R.id.home_toolbar);
         TextView title = toolbar.findViewById(R.id.home_toolbar_title);
         title.setText(name);
+    }
+
+    public void setSyncButtonVisibility(boolean flag) {
+        ImageView sync = findViewById(R.id.home_sync_icon);
+        if (flag) {
+            sync.setVisibility(View.VISIBLE);
+            sync.setOnClickListener(this);
+        } else {
+            sync.setVisibility(View.GONE);
+            sync.setOnClickListener(null);
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -341,28 +351,28 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
-//    private void showUpdateDataPopup() {
-//        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-//        // Setting Dialog Title
-//        alertDialog.setTitle(getString(R.string.app_name_ss));
-//        // Setting Dialog Message
-//        alertDialog.setMessage(getString(R.string.update_data_string));
-//        // Setting Icon to Dialog
-//        alertDialog.setIcon(R.mipmap.app_logo);
-//        // Setting CANCEL Button
-//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-//                (dialog, which) -> alertDialog.dismiss());
-//        // Setting OK Button
-//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-//                (dialog, which) -> {
-//                    if (Util.isConnected(HomeActivity.this)) {
-//                        //getUserData();
-//                    }
-//                });
-//
-//        // Showing Alert Message
-//        alertDialog.show();
-//    }
+    private void showUpdateDataPopup() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.update_data_string));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                (dialog, which) -> alertDialog.dismiss());
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                (dialog, which) -> {
+                    if (Util.isConnected(HomeActivity.this)) {
+                        clickListener.onSyncButtonClicked();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
 
     private void showLogoutPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -388,7 +398,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name_ss));
         // Setting Dialog Message
-        alertDialog.setMessage("Pending forms are not synced!");
+        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
         // Setting Icon to Dialog
         alertDialog.setIcon(R.mipmap.app_logo);
         // Setting CANCEL Button
@@ -396,7 +406,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> removeDatabaseRecords());
+                (dialog, which) -> logOutUser());
 
         // Showing Alert Message
         alertDialog.show();
@@ -405,13 +415,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
-        /*final List<FormResult> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getApplicationContext());
+        final List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
         if (savedForms != null && !savedForms.isEmpty()) {
             showPendingFormsPopUp();
             return;
-        }*/
+        }
 
-        removeDatabaseRecords();
+        Util.removeDatabaseRecords();
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
@@ -421,13 +431,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-    }
-
-    private void removeDatabaseRecords() {
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllProcesses();
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormSchema();
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllModules();
-        DatabaseManager.getDBInstance(getApplicationContext()).deleteAllFormResults();
     }
 
     @Override
@@ -510,6 +513,18 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
+
+            case R.id.home_sync_icon:
+                showUpdateDataPopup();
+                break;
         }
+    }
+
+    public void setSyncClickListener(OnSyncClicked listener) {
+        clickListener = listener;
+    }
+
+    public interface OnSyncClicked {
+        void onSyncButtonClicked();
     }
 }

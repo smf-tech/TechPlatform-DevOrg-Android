@@ -65,6 +65,10 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         return formData;
     }
 
+    public void setFormData(Elements formData) {
+        this.formData = formData;
+    }
+
     @SuppressWarnings("ConstantConditions")
     private synchronized View dropDownView(String mandatory) {
         if (context == null || context.get() == null) {

@@ -26,6 +26,7 @@ public class DashboardFragment extends Fragment {
 
     private View dashboardView;
     private TabLayout tabLayout;
+    private boolean isSyncRequired;
     private final int[] tabIcons = {
             R.drawable.bg_circle_pink,
             R.drawable.bg_circle_orange,
@@ -51,6 +52,7 @@ public class DashboardFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
+            this.isSyncRequired = arguments.getBoolean("NEED_SYNC");
             Home homeData = (Home) arguments.getSerializable(Constants.Home.HOME_DATA);
             if (homeData != null) {
                 tabNames = homeData.getHomeData().getOnApproveModules();
@@ -92,7 +94,11 @@ public class DashboardFragment extends Fragment {
         for (Modules modules : tabNames) {
             switch (modules.getName()) {
                 case Constants.Home.FORMS:
-                    adapter.addFragment(new PMFragment());
+                    Bundle b = new Bundle();
+                    b.putBoolean("NEED_SYNC", isSyncRequired);
+                    PMFragment fragment = new PMFragment();
+                    fragment.setArguments(b);
+                    adapter.addFragment(fragment);
                     break;
 
                 case Constants.Home.MEETINGS:
@@ -121,7 +127,26 @@ public class DashboardFragment extends Fragment {
             if (!tabNames.get(i).isActive()) {
                 tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
             } else {
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+                int resId = tabIcons[0];
+                switch (tabNames.get(i).getName()) {
+                    case Constants.Home.FORMS:
+                        resId = tabIcons[0];
+                        break;
+
+                    case Constants.Home.MEETINGS:
+                        resId = tabIcons[1];
+                        break;
+
+                    case Constants.Home.APPROVALS:
+                        resId = tabIcons[2];
+                        break;
+
+                    case Constants.Home.REPORTS:
+                        resId = tabIcons[3];
+                        break;
+                }
+
+                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
             }
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);

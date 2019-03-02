@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.models.login.Login;
 import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
@@ -402,5 +403,12 @@ public class Util {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    public static void removeDatabaseRecords() {
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
     }
 }

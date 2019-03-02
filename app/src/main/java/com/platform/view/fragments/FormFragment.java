@@ -400,7 +400,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
-                            LocalBroadcastManager.getInstance(getContext().getApplicationContext()).sendBroadcast(intent);
+                            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
                             Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());

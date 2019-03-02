@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.SyncStatusObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,28 +33,30 @@ import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
 import static com.platform.utility.Constants.RequestStatus.APPROVED_MODULE;
 import static com.platform.utility.Constants.RequestStatus.DEFAULT_MODULE;
 
-public class HomeFragment extends Fragment implements PlatformTaskListener {
+public class HomeFragment extends Fragment implements PlatformTaskListener, HomeActivity.OnSyncClicked {
 
     private Home homeData;
+    private Context context;
     private View homeFragmentView;
     private HomeActivityPresenter presenter;
     private AlertDialog dialogNotApproved;
     private Object mSyncObserverHandle;
+    private boolean isSyncRequired;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getActivity() != null) {
-            String title = getResources().getString(R.string.app_name_ss);
-            ((HomeActivity) getActivity()).setActionBarTitle(title);
+            context = getActivity();
+            ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
+            ((HomeActivity) context).setSyncClickListener(this);
         }
     }
 
@@ -72,7 +75,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dialogNotApproved = new AlertDialog.Builder(getActivity()).create();
+        dialogNotApproved = new AlertDialog.Builder(context).create();
     }
 
     @Override
@@ -90,6 +93,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         if (homeData != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Home.HOME_DATA, homeData);
+            bundle.putBoolean("NEED_SYNC", isSyncRequired);
             dashboardFragment.setArguments(bundle);
         }
 
@@ -104,6 +108,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         mSyncStatusObserver.onStatusChanged(0);
 
         // Watch for sync state changes
+        isSyncRequired = false;
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
                 ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
@@ -111,10 +116,10 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         List<Modules> modulesFromDatabase = getModulesFromDatabase();
         if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {
 
-            List<Modules> defaultModules = DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext())
+            List<Modules> defaultModules = DatabaseManager.getDBInstance(context.getApplicationContext())
                     .getModulesOfStatus(Constants.RequestStatus.DEFAULT_MODULE);
 
-            List<Modules> approveModules = DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext())
+            List<Modules> approveModules = DatabaseManager.getDBInstance(context.getApplicationContext())
                     .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
 
             HomeData homeData = new HomeData();
@@ -135,15 +140,15 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
             return;
         }
 
-        if (presenter != null && Util.isConnected(getActivity())) {
+        if (presenter != null && Util.isConnected(context)) {
+            isSyncRequired = true;
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
         }
-
     }
 
     private List<Modules> getModulesFromDatabase() {
-        return DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext()).getAllModules();
+        return DatabaseManager.getDBInstance(context.getApplicationContext()).getAllModules();
     }
 
     @Override
@@ -164,13 +169,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
             List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
             for (final Modules module : defaultModules) {
                 module.setModule(DEFAULT_MODULE);
-                DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity()).getApplicationContext()).insertModule(module);
+                DatabaseManager.getDBInstance(context.getApplicationContext()).insertModule(module);
             }
 
             List<Modules> approveModules = this.homeData.getHomeData().getOnApproveModules();
             for (final Modules module : approveModules) {
                 module.setModule(APPROVED_MODULE);
-                DatabaseManager.getDBInstance(getActivity().getApplicationContext()).insertModule(module);
+                DatabaseManager.getDBInstance(context.getApplicationContext()).insertModule(module);
             }
 
             HomeData homeData = new HomeData();
@@ -231,4 +236,14 @@ public class HomeFragment extends Fragment implements PlatformTaskListener {
         ContentResolver.isSyncActive(account, SyncAdapterUtils.AUTHORITY);
         ContentResolver.isSyncPending(account, SyncAdapterUtils.AUTHORITY);
     };
+
+    @Override
+    public void onSyncButtonClicked() {
+        if (presenter != null && Util.isConnected(context)) {
+            isSyncRequired = true;
+            Util.removeDatabaseRecords();
+            UserInfo user = Util.getUserObjectFromPref();
+            presenter.getModules(user);
+        }
+    }
 }
