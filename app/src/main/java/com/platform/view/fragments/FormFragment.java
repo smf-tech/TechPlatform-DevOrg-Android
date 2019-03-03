@@ -267,7 +267,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         initViews();
 
         if (mIsInEditMode) {
-            List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId);
+            List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);
             if (formResults != null && !formResults.isEmpty()) {
                 getFormDataAndParse(formResults);
             } else {
