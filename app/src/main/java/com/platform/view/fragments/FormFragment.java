@@ -172,7 +172,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         ImageView editButton = formFragmentView.findViewById(R.id.toolbar_edit_action);
         boolean isFormEditable = Boolean.parseBoolean(formModel.getData().getEditable());
         if (mIsInEditMode) {
-            if (!isFormEditable) {
+            if (isFormEditable) {
                 editButton.setVisibility(View.VISIBLE);
                 editButton.setOnClickListener(this);
             } else {
