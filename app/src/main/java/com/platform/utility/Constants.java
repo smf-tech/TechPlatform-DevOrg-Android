@@ -24,7 +24,8 @@ public class Constants {
     public static final String ONLINE_UPDATE_FORM_TYPE = "OnlineUpdate";
     public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
-    public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
+    static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
 
     public static class App {
         static final String APP_DATA = "AppData";
@@ -39,8 +40,6 @@ public class Constants {
 
         static final String FIRST_TIME_KEY = "FirstTimeKey";
         static final String FIRST_TIME_CODE = "FirstTimeCode";
-
-        static final String SYNC_FORM_CATEGORY = "formCategory";
 
         static final String LANGUAGE_LOCALE = "LanguageLocale";
         static final String LANGUAGE_CODE = "languageCode";

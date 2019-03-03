@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,14 +33,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.utility.Constants.DATE_FORMAT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,7 +119,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 list.add(new ProcessDemoObject(form.get_id(),
                         form.getFormId(), form.getCreatedAt()));
             }
-            mFormList.put("Syncing Pending", list);
+            mFormList.put(SyncAdapterUtils.SYNCING_PENDING, list);
             adapter.notifyDataSetChanged();
         }
     }
@@ -218,6 +227,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
 
+            setPendingForms();
+
             if (!mFormList.isEmpty()) {
                 adapter.notifyDataSetChanged();
                 mNoRecordsView.setVisibility(View.GONE);
@@ -247,6 +258,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 result.setResult(obj.toString());
 
                 formID = formResult.formID;
+
+                if (formResult.updatedAt != null) {
+                    if (isFormOneMonthOld(formResult.updatedAt)) {
+                        continue;
+                    }
+                }
+
                 list.add(new ProcessDemoObject(uuid,
                         formID, formResult.updatedAt));
             }
@@ -257,6 +275,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
 
+            setPendingForms();
+
             if (!mFormList.isEmpty()) {
                 adapter.notifyDataSetChanged();
                 mNoRecordsView.setVisibility(View.GONE);
@@ -266,6 +286,30 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isFormOneMonthOld(final String updatedAt) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            LocalDate formDate = LocalDate.parse(updatedAt);
+            LocalDate days30 = LocalDate.now().minusDays(30);
+
+            return formDate.isBefore(days30);
+
+        }
+
+        Date eventStartDate;
+        DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        try {
+            eventStartDate = inputFormat.parse(updatedAt);
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, -30);
+            Date days30 = calendar.getTime();
+            return eventStartDate.before(days30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public static class ProcessDemoObject {
@@ -300,13 +344,5 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
         @SerializedName("updated_at")
         String updatedAt;
-
-        @SerializedName("_id")
-        _ID mID;
-    }
-
-    static class _ID {
-        @SerializedName("$oid")
-        String oid;
     }
 }

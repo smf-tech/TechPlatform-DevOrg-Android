@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
-
 @SuppressWarnings("CanBeFinal")
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
 
@@ -77,7 +75,9 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         objects1 = mFormData.keySet().toArray(objects1);
         String category = objects1[i];
 
-        if (category.equals("Syncing Pending")) {
+        boolean pendingFormCategory = false;
+        if (category.equals(SyncAdapterUtils.SYNCING_PENDING)) {
+            pendingFormCategory = true;
             viewHolder.syncButton.show();
             viewHolder.syncButton.setOnClickListener(v -> {
                 if (Util.isConnected(mContext)) {
@@ -108,7 +108,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         }
 
         viewHolder.categoryName.setText(category);
-        viewHolder.adapter = new FormsAdapter(mContext, dataList);
+        viewHolder.adapter = new FormsAdapter(mContext, dataList, pendingFormCategory);
         viewHolder.addButton.hide();
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);
     }

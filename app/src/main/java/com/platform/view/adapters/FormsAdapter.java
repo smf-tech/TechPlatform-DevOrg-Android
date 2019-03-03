@@ -25,10 +25,12 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     private Context mContext;
     private List<ProcessData> mProcessData;
+    private boolean mPendingFormCategory;
 
-    FormsAdapter(Context context, final List<ProcessData> processData) {
+    FormsAdapter(Context context, final List<ProcessData> processData, final boolean pendingFormCategory) {
         this.mContext = context;
         mProcessData = processData;
+        mPendingFormCategory = pendingFormCategory;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +64,9 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
         viewHolder.mPinButton.setVisibility(View.GONE);
         Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
+        if (mPendingFormCategory) {
+            drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
+        }
         viewHolder.indicatorView.setBackground(drawable);
 
         ProcessData processData = mProcessData.get(i);

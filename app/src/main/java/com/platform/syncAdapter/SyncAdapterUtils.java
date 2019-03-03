@@ -18,6 +18,7 @@ public class SyncAdapterUtils {
     public static final String EVENT_SYNC_FAILED = "SyncFailed";
     public static final String EVENT_FORM_ADDED = "formAdded";
     public static final String EXTRA_TEXT = "SyncStatus";
+    public static final String SYNCING_PENDING = "Syncing Pending";
 
     public class FormStatus {
         public static final int SYNCED = 1;

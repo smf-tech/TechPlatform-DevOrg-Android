@@ -43,6 +43,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.platform.utility.Constants.DATE_FORMAT;
+
 public class Util {
 
     private static final String TAG = Util.class.getSimpleName();
@@ -379,7 +381,7 @@ public class Util {
 
         try {
             DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
