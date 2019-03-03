@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -20,10 +20,10 @@ import org.json.JSONObject;
 
 public class HomeRequestCall {
 
-    private PlatformRequestCallListener listener;
+    private UserRequestCallListener listener;
     private final String TAG = HomeRequestCall.class.getName();
 
-    public void setListener(PlatformRequestCallListener listener) {
+    public void setListener(UserRequestCallListener listener) {
         this.listener = listener;
     }
 

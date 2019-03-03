@@ -17,6 +17,7 @@ import com.platform.R;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
 import com.platform.utility.Constants;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -56,9 +57,10 @@ public class DashboardFragment extends Fragment {
             Home homeData = (Home) arguments.getSerializable(Constants.Home.HOME_DATA);
             if (homeData != null) {
                 tabNames = homeData.getHomeData().getOnApproveModules();
+                setMenuResourceId();
 
-                if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
-                        homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
+                if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+                        homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
                     for (final Modules tabName : tabNames) {
@@ -79,6 +81,28 @@ public class DashboardFragment extends Fragment {
         initViews();
     }
 
+    private void setMenuResourceId() {
+        for (int i = 0; i < tabNames.size(); i++) {
+            switch (tabNames.get(i).getName()) {
+                case Constants.Home.FORMS:
+                    tabNames.get(i).setResId(R.id.action_menu_forms);
+                    break;
+
+                case Constants.Home.MEETINGS:
+                    tabNames.get(i).setResId(R.id.action_menu_calendar);
+                    break;
+
+                case Constants.Home.APPROVALS:
+                    tabNames.get(i).setResId(R.id.action_menu_teams);
+                    break;
+
+                case Constants.Home.REPORTS:
+                    tabNames.get(i).setResId(R.id.action_menu_reports);
+                    break;
+            }
+        }
+    }
+
     private void initViews() {
         ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
         setupViewPager(viewPager);
@@ -86,6 +110,10 @@ public class DashboardFragment extends Fragment {
         tabLayout = dashboardView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
+
+        if (getActivity() != null) {
+            ((HomeActivity) getActivity()).hideItem(tabNames);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")

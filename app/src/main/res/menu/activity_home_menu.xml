@@ -18,14 +18,13 @@
             android:icon="@drawable/ic_menu_forms"
             android:title="@string/menu_forms" />
         <item
+            android:id="@+id/action_menu_calendar"
+            android:icon="@drawable/ic_menu_calendar"
+            android:title="@string/meetings" />
+        <item
             android:id="@+id/action_menu_teams"
             android:icon="@drawable/ic_menu_teams"
             android:title="@string/menu_teams" />
-        <item
-            android:id="@+id/action_menu_calendar"
-            android:icon="@drawable/ic_menu_calendar"
-            android:title="@string/menu_calendar"
-            android:visible="false" />
         <item
             android:id="@+id/action_menu_assets"
             android:icon="@drawable/ic_menu_assets"
