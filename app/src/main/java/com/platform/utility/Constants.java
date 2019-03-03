@@ -158,6 +158,7 @@ public class Constants {
     public class FormInputType {
         public static final String INPUT_TYPE_DATE = "date";
         public static final String INPUT_TYPE_NUMBER = "number";
+        public static final String INPUT_TYPE_TELEPHONE = "tel";
         public static final String INPUT_TYPE_NUMERIC = "numeric";
         public static final String INPUT_TYPE_DECIMAL = "decimal";
         public static final String INPUT_TYPE_ALPHABETS = "alphabets";

@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.platform.Platform;
@@ -16,6 +15,7 @@ import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
 import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
+import com.platform.widgets.PlatformSpinner;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private Elements formData;
-    private Spinner spinner;
+    private PlatformSpinner spinner;
     private WeakReference<FormFragment> context;
-    private List<Choice> valueList;
+    private List<Choice> valueList = new ArrayList<>();
     private DropDownValueSelectListener dropDownValueSelectListener;
     private String tag;
 
@@ -44,13 +44,6 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
-
-        Choice dummyChoice = new Choice();
-        dummyChoice.setText("");
-        dummyChoice.setValue("");
-        List<Choice> choices = new ArrayList<>();
-        choices.add(dummyChoice);
-        this.valueList = choices;
     }
 
     public List<Choice> getValueList() {
@@ -95,11 +88,16 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     @SuppressWarnings("unchecked")
     void setListData(List<Choice> valueList) {
         if (valueList != null) {
+//            this.valueList.clear();
+//            this.valueList.addAll(valueList);
             this.valueList = valueList;
             FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
             adapter.clear();
             adapter.addAll(valueList);
             adapter.notifyDataSetChanged();
+            if (valueList.size() > 0) {
+                this.setSelectedItem(0);
+            }
 
             if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
                 for (int index = 0; index < formData.getChoices().size(); index++) {
@@ -115,7 +113,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     void setSelectedItem(int position) {
         if (spinner != null) {
-            spinner.setSelection(position);
+            spinner.setSelection(position, true);
         }
     }
 
@@ -130,6 +128,6 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        dropDownValueSelectListener.onEmptyDropdownSelected(formData);
     }
 }
