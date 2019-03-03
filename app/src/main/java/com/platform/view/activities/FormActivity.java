@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.platform.R;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.FormFragment;
 
@@ -54,6 +55,8 @@ public class FormActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        SyncAdapterUtils.manualRefresh();
         Log.d(TAG, "onResume");
     }
 

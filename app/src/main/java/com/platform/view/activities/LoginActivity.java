@@ -45,8 +45,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        SyncAdapterUtils.createSyncAccount(this);
-
         initViews();
 
         loginInfo = new LoginInfo();
