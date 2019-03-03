@@ -24,7 +24,7 @@ public class Constants {
     public static final String ONLINE_UPDATE_FORM_TYPE = "OnlineUpdate";
     public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
-    public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
+    public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
 
     public static class App {
         static final String APP_DATA = "AppData";
@@ -180,5 +180,13 @@ public class Constants {
         public static final String FORM = "form";
         public static final String SUBMIT_COUNT = "submit_count";
         public static final String VALUES = "values";
+        public static final String NEW_STRUCTURE_CODE = "new_structure_code";
+        public static final String OLD_STRUCTURE_CODE = "old_structure_code";
+        public static final String STRUCTURE_CODE = "structure_code";
+        public static final String MOVED_FROM = "moved_from";
+        public static final String MOVED_TO = "moved_to";
+        public static final String VILLAGE = "village";
+        public static final String _ID = "_id";
+        public static final String OID = "\"$oid";
     }
 }

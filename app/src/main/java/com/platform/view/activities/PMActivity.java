@@ -64,8 +64,6 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
             str = str.replace("\n", " ");
         }
 
-        findViewById(R.id.toolbar_more_action).setVisibility(View.GONE);
-
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
 

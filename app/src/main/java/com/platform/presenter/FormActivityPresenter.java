@@ -23,6 +23,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -149,6 +150,26 @@ public class FormActivityPresenter implements FormRequestCallListener,
             getSavedForm().setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
             DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormResult(getSavedForm());
         }
+
+        //Save form result
+        try {
+            JSONObject outerObject = new JSONObject(message);
+            if (outerObject.has(Constants.RESPONSE_DATA)) {
+                JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
+                JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
+
+                FormResult result = new FormResult();
+                result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
+                result.setFormId(dataObject.getString(Constants.FormDynamicKeys.FORM_ID));
+                result.setResult(dataObject.toString());
+                DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+            }
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+
         Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
     }
 

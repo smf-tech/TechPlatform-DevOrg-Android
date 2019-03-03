@@ -27,6 +27,15 @@
             android:orientation="vertical" />
     </ScrollView>
 
+    <View
+        android:id="@+id/read_only_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_submit"
+        android:layout_below="@id/gen_form_toolbar"
+        android:background="#66FFFFFF"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="fill_parent"
@@ -36,7 +45,8 @@
         android:background="@color/darkest_blue"
         android:text="@string/submit"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_20" />
+        android:textSize="@dimen/text_size_20"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"
