@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,12 +116,14 @@ public class FormsFragment extends Fragment {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
+            Log.i("TAG", "instantiateItem");
             return super.instantiateItem(container, position);
         }
 
         @Override
         public void notifyDataSetChanged() {
             super.notifyDataSetChanged();
+            Log.i("TAG", "notifyDataSetChanged");
         }
     }
 }

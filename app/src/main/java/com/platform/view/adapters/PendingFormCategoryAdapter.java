@@ -49,7 +49,6 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
             addButton = itemView.findViewById(R.id.add_button);
             categoryName = itemView.findViewById(R.id.form_title);
             recyclerView = itemView.findViewById(R.id.forms);
-
         }
     }
 

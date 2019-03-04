@@ -374,9 +374,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-//                showConfirmPopUp();
-                storePartiallySavedForm();
-                getActivity().finish();
+                showConfirmPopUp();
                 break;
 
             case R.id.toolbar_edit_action:
@@ -484,8 +482,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
-                (dialog, which) -> getActivity().finish());
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
+            storePartiallySavedForm();
+            getActivity().finish();
+        });
 
         // Showing Alert Message
         alertDialog.show();

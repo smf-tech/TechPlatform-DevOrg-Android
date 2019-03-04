@@ -48,7 +48,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
             addButton = itemView.findViewById(R.id.add_button);
             categoryName = itemView.findViewById(R.id.form_title);
             recyclerView = itemView.findViewById(R.id.forms);
-
         }
     }
 

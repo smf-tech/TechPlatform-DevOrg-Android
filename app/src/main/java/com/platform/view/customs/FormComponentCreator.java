@@ -24,6 +24,7 @@ import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
+import com.platform.models.forms.Validator;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
@@ -175,6 +176,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.getMaxLength() != null) {
                 textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
                         formData.getMaxLength())});
+            } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                Validator validator = formData.getValidators().get(0);
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                        validator.getMaxLength())});
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {

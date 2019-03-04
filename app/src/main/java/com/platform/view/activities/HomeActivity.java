@@ -400,24 +400,24 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         alertDialog.show();
     }
 
-    private void showPendingFormsPopUp() {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name_ss));
-        // Setting Dialog Message
-        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
-        // Setting CANCEL Button
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-                (dialog, which) -> alertDialog.dismiss());
-        // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> logOutUser());
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
+//    private void showPendingFormsPopUp() {
+//        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+//        // Setting Dialog Title
+//        alertDialog.setTitle(getString(R.string.app_name_ss));
+//        // Setting Dialog Message
+//        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
+//        // Setting Icon to Dialog
+//        alertDialog.setIcon(R.mipmap.app_logo);
+//        // Setting CANCEL Button
+//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+//                (dialog, which) -> alertDialog.dismiss());
+//        // Setting OK Button
+//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+//                (dialog, which) -> logOutUser());
+//
+//        // Showing Alert Message
+//        alertDialog.show();
+//    }
 
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
@@ -457,40 +457,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
-
-//    private void callUsDialog() {
-//        final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
-//        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
-//
-//        dialog.setItems(items, (dialogInterface, position) -> {
-//            dialogInterface.dismiss();
-//
-//            switch (position) {
-//                case 0:
-//                    try {
-//                        Uri uri = Uri.parse(Constants.hangoutLink);
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                        startActivity(intent);
-//                    } catch (Exception e) {
-//                        Log.e("Calling Hangout", "" + e.getMessage());
-//                    }
-//                    break;
-//
-//                case 1:
-//                    try {
-//                        Intent dial = new Intent();
-//                        dial.setAction("android.intent.action.DIAL");
-//                        dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
-//                        startActivity(dial);
-//                    } catch (Exception e) {
-//                        Log.e("Calling Phone", "" + e.getMessage());
-//                    }
-//                    break;
-//            }
-//        });
-//
-//        dialog.show();
-//    }
 
     private void rateTheApp() {
         try {

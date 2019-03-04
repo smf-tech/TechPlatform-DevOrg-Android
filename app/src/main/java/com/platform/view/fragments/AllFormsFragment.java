@@ -135,10 +135,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
 
-
             ProcessData processData = DatabaseManager.getDBInstance(
                     Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getProcessData(data.getId());
+
             String submitCount = processData.getSubmitCount();
             if (!TextUtils.isEmpty(submitCount)) {
                 mCountList.put(data.getId(), submitCount);
@@ -192,5 +192,4 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             mNoRecordsView.setVisibility(View.GONE);
         }
     }
-
 }
