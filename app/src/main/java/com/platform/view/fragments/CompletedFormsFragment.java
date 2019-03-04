@@ -161,11 +161,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                     formID = formResult.formID;
                     list.add(new ProcessDemoObject(formResult.mID.oid,
-                            formID, formResult.updatedAt));
+                            formID, formResult.updatedAt, formResult.formTitle));
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
                     result.set_id(formResult.mID.oid);
                     result.setFormId(formID);
+                    result.setFormTitle(formResult.formTitle);
 
                     JSONObject obj = (JSONObject) values.get(i);
                     if (obj == null) return;
@@ -188,7 +189,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     }
                 }
             } else {
-                list.add(new ProcessDemoObject("No Forms available", "0", ""));
+                list.add(new ProcessDemoObject("No Forms available", "0", "", ""));
             }
 
             for (final ProcessData data : mDataList) {
@@ -222,11 +223,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
                 result.set_id(formResult.mID.oid);
                 result.setFormId(formResult.formID);
+                result.setFormTitle(formResult.formTitle);
                 result.setResult(obj.toString());
 
                 formID = formResult.formID;
                 list.add(new ProcessDemoObject(formResult.mID.oid,
-                        formID, formResult.updatedAt));
+                        formID, formResult.updatedAt, formResult.formTitle));
             }
 
             for (final ProcessData data : mDataList) {
@@ -250,11 +252,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String name;
         String id;
         String date;
+        String formTitle;
 
-        private ProcessDemoObject(String name, String id, final String date) {
+        private ProcessDemoObject(String name, String id, final String date, String formTitle) {
             this.name = name;
             this.id = id;
             this.date = date;
+            this.formTitle = formTitle;
         }
 
         public String getDate() {
@@ -269,9 +273,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             return id;
         }
 
+        public String getFormTitle() {
+            return formTitle;
+        }
     }
 
     static class FormResult {
+        @SerializedName("form_title")
+        String formTitle;
 
         @SerializedName("form_id")
         String formID;

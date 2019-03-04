@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
@@ -265,7 +266,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 fragment.get().getContext(), R.layout.row_file_type, null);
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
-        imageView.setTag(formData.getTitle());
         imageView.setOnClickListener(v -> onAddImageClick(v, formData.getName()));
 
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
@@ -275,6 +275,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             } else {
                 txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(false)));
             }
+        }
+
+        if (!TextUtils.isEmpty(formData.getAnswer())) {
+            Glide.with(fragment.get().getContext())
+                    .load(formData.getAnswer()) // Remote URL of image.
+                    .into(imageView);
         }
 
         return fileTemplateView;
@@ -302,6 +308,18 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
+            if (formData.getMaxLength() != null) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                    errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getMaxLength());
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
+                    }
+                }
+            }
+
             if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
@@ -315,10 +333,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
-            if (formData.getMaxLength() != null) {
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
-                    errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getMaxLength());
+
+                    errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getValidators().get(0));
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
