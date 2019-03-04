@@ -35,6 +35,7 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
+import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
 
@@ -406,6 +408,27 @@ public class Util {
             Log.e(TAG, e.getMessage());
         }
         return date;
+    }
+
+    public static long getCurrentTimeStamp() {
+        try {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            Date date1 = new Date(timestamp.getTime());
+            return timestamp.getTime();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return 0;
+    }
+
+    public static String getDateFromTimestamp(long date) {
+        try {
+            Date d = new Timestamp(date);
+            return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return "";
     }
 
     public static void launchFragment(Fragment fragment, Context context, String titleName) {

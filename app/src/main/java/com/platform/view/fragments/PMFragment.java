@@ -265,7 +265,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onResume() {
         super.onResume();
 
-        SyncAdapterUtils.manualRefresh();
         setPendingForms();
     }
 

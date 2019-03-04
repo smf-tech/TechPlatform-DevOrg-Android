@@ -3,12 +3,10 @@ package com.platform.models.forms;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.database.DataConverter;
 
 @Entity
 @SuppressWarnings("unused")
@@ -42,7 +40,7 @@ public class FormResult {
     private String requestObject;
 
     @ColumnInfo(name = "created_at")
-    private String createdAt;
+    private long createdAt;
 
     @NonNull
     public String get_id() {
@@ -93,11 +91,11 @@ public class FormResult {
         this.requestObject = requestObject;
     }
 
-    public String getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final String createdAt) {
+    public void setCreatedAt(final long createdAt) {
         this.createdAt = createdAt;
     }
 

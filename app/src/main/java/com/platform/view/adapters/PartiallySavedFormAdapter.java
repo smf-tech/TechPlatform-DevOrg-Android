@@ -15,12 +15,10 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.models.forms.FormResult;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
-
-import static com.platform.utility.Constants.FORM_DATE_FORMAT;
-import static com.platform.utility.Util.getFormattedDate;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormAdapter.ViewHolder> {
@@ -69,8 +67,8 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);
             viewHolder.mName.setText(savedForm.getFormName());
-            if (!TextUtils.isEmpty(savedForm.getCreatedAt())) {
-                String formattedDate = getFormattedDate(savedForm.getCreatedAt(), FORM_DATE_FORMAT);
+            if (!TextUtils.isEmpty(Util.getDateFromTimestamp(savedForm.getCreatedAt()))) {
+                String formattedDate = Util.getDateFromTimestamp(savedForm.getCreatedAt());
                 viewHolder.mDate.setText(String.format("on %s", formattedDate));
             }
         }

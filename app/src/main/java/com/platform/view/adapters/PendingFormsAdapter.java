@@ -13,6 +13,8 @@ import com.platform.models.forms.FormResult;
 
 import java.util.List;
 
+import static com.platform.utility.Util.getDateFromTimestamp;
+
 @SuppressWarnings({"CanBeFinal", "unused"})
 public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapter.TMViewHolder> {
 
@@ -38,7 +40,8 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         FormResult savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
-        holder.txtCreatedAt.setText(String.format("on %s", savedForm.getCreatedAt()));
+        holder.txtCreatedAt.setText(String.format("on %s",
+                getDateFromTimestamp(savedForm.getCreatedAt())));
     }
 
     @Override
