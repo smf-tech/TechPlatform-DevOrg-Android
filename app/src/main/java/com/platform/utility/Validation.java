@@ -8,7 +8,7 @@ public class Validation {
 
     public static String editTextMinMaxValueValidation(String fieldName, String fieldValue, Validator validator) {
         if (validator.getMinValue() != null) {
-            int fieldIntValue = Integer.parseInt(fieldValue);
+            double fieldIntValue = Double.parseDouble(fieldValue);
             if ((fieldIntValue <= validator.getMinValue())) {
                 if (!TextUtils.isEmpty(validator.getText())) {
                     return validator.getText();
