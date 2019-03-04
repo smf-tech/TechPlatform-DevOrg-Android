@@ -391,6 +391,23 @@ public class Util {
         return date;
     }
 
+    public static String getFormattedDate(String date, String dateFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
+
+        try {
+            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+
+            Date date1 = inputFormat.parse(date);
+            return outputFormat.format(date1);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return date;
+    }
+
     public static void launchFragment(Fragment fragment, Context context, String titleName) {
         try {
             Bundle b = new Bundle();

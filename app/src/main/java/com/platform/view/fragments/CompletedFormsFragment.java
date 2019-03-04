@@ -188,10 +188,21 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     FormResult formResult = new Gson()
                             .fromJson(String.valueOf(values.get(i)), FormResult.class);
 
+                    String date = formResult.updatedDateTime;
+                    if (date == null) {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject metadata = (JSONObject) object.getJSONArray("metadata").get(0);
+                        if (metadata != null && metadata.getJSONObject("form") != null) {
+                            date = (String) metadata.getJSONObject("form").get("createdDateTime");
+                            date = Util.getFormattedDate(date);
+                        } else {
+                            date = Util.getFormattedDate(new Date().toString());
+                        }
+                    }
+
                     String uuid = UUID.randomUUID().toString();
                     formID = formResult.formID;
-                    list.add(new ProcessDemoObject(uuid,
-                            formID, formResult.updatedAt));
+                    list.add(new ProcessDemoObject(uuid, formID, date));
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
                     result.set_id(uuid);
@@ -260,14 +271,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                 formID = formResult.formID;
 
-                if (formResult.updatedAt != null) {
-                    if (isFormOneMonthOld(formResult.updatedAt)) {
+                if (formResult.updatedDateTime != null) {
+                    if (isFormOneMonthOld(formResult.updatedDateTime)) {
                         continue;
                     }
                 }
 
                 list.add(new ProcessDemoObject(uuid,
-                        formID, formResult.updatedAt));
+                        formID, formResult.updatedDateTime));
             }
 
             for (final ProcessData data : mDataList) {
@@ -290,13 +301,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     private boolean isFormOneMonthOld(final String updatedAt) {
-        if (Build.VERSION.SDK_INT >= 26) {
+        /*if (Build.VERSION.SDK_INT >= 26) {
             LocalDate formDate = LocalDate.parse(updatedAt);
             LocalDate days30 = LocalDate.now().minusDays(30);
 
             return formDate.isBefore(days30);
 
-        }
+        }*/
 
         Date eventStartDate;
         DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
@@ -345,5 +356,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
         @SerializedName("updated_at")
         String updatedAt;
+
+        @SerializedName("updatedDateTime")
+        String updatedDateTime;
     }
 }
