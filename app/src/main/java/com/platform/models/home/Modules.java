@@ -35,6 +35,8 @@ public class Modules implements Serializable {
 
     @Ignore
     private boolean isActive;
+    @Ignore
+    private int resId;
 
     public String getModuleId() {
         return moduleId;
@@ -74,5 +76,13 @@ public class Modules implements Serializable {
 
     public void setId(final int id) {
         this.id = id;
+    }
+
+    public int getResId() {
+        return resId;
+    }
+
+    public void setResId(int resId) {
+        this.resId = resId;
     }
 }

@@ -58,24 +58,19 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
             ((HomeActivity) context).setSyncClickListener(this);
         }
+
+        dialogNotApproved = new AlertDialog.Builder(context).create();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
         homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         presenter = new HomeActivityPresenter(this);
         getUserData();
         return homeFragmentView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        dialogNotApproved = new AlertDialog.Builder(context).create();
     }
 
     @Override
@@ -128,8 +123,17 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
 
             this.homeData = new Home();
             this.homeData.setHomeData(homeData);
-            this.homeData.setUserApproveStatus(approveModules.isEmpty() ?
-                    Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+
+            UserInfo userInfo = Util.getUserObjectFromPref();
+            this.homeData.setUserApproveStatus(
+                    (userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+                            userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
+                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+
+            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
+                showApprovedDialog();
+            }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
             setupViewPager(viewPager);
@@ -183,11 +187,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             homeData.setOnApproveModules(approveModules);
 
             this.homeData.setHomeData(homeData);
-            this.homeData.setUserApproveStatus(approveModules.isEmpty() ?
-                    Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+            this.homeData.setUserApproveStatus(
+                    (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+                            this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
+                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
 
-            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
-                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
+            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
                 showApprovedDialog();
             }
 
@@ -205,26 +211,28 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
     }
 
     private void showApprovedDialog() {
-        if (dialogNotApproved.isShowing()) {
-            dialogNotApproved.dismiss();
-        }
+        if (dialogNotApproved != null) {
+            try {
+                if (dialogNotApproved.isShowing()) {
+                    dialogNotApproved.dismiss();
+                }
 
-        dialogNotApproved.setTitle(getString(R.string.app_name_ss));
-        String message = getString(R.string.approve_profile);
-        dialogNotApproved.setMessage(message);
+                dialogNotApproved.setTitle(getString(R.string.app_name_ss));
+                String message = getString(R.string.approve_profile);
+                dialogNotApproved.setMessage(message);
 
-        // Setting Icon to Dialog
-        dialogNotApproved.setIcon(R.mipmap.app_logo);
+                // Setting Icon to Dialog
+                dialogNotApproved.setIcon(R.mipmap.app_logo);
 
-        // Setting OK Button
-        dialogNotApproved.setButton(Dialog.BUTTON_POSITIVE, getString(android.R.string.ok),
-                (dialog, which) -> dialogNotApproved.dismiss());
+                // Setting OK Button
+                dialogNotApproved.setButton(Dialog.BUTTON_POSITIVE, getString(android.R.string.ok),
+                        (dialog, which) -> dialogNotApproved.dismiss());
 
-        try {
-            // Showing Alert Message
-            dialogNotApproved.show();
-        } catch (Exception e) {
-            Log.e("Error in showing dialog", e.getMessage());
+                // Showing Alert Message
+                dialogNotApproved.show();
+            } catch (Exception e) {
+                Log.e("Error in showing dialog", e.getMessage());
+            }
         }
     }
 
@@ -242,8 +250,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
         if (presenter != null && Util.isConnected(context)) {
             isSyncRequired = true;
             Util.removeDatabaseRecords();
-            UserInfo user = Util.getUserObjectFromPref();
-            presenter.getModules(user);
+            presenter.getUserProfile();
         }
     }
 }

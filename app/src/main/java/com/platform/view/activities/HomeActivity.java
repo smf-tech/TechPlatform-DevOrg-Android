@@ -35,18 +35,21 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.platform.R;
+import com.platform.models.SavedForm;
+import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
+import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
+import com.platform.view.fragments.MeetingsFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMFragment;
 
 import java.io.File;
-
-import static com.platform.utility.Util.removeDatabaseRecords;
+import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -68,18 +71,22 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
-        TextView title = toolbar.findViewById(R.id.home_toolbar_title);
-        title.setText(name);
+        if (toolbar != null) {
+            TextView title = toolbar.findViewById(R.id.home_toolbar_title);
+            title.setText(name);
+        }
     }
 
     public void setSyncButtonVisibility(boolean flag) {
         ImageView sync = findViewById(R.id.home_sync_icon);
-        if (flag) {
-            sync.setVisibility(View.VISIBLE);
-            sync.setOnClickListener(this);
-        } else {
-            sync.setVisibility(View.GONE);
-            sync.setOnClickListener(null);
+        if (sync != null) {
+            if (flag) {
+                sync.setVisibility(View.VISIBLE);
+                sync.setOnClickListener(this);
+            } else {
+                sync.setVisibility(View.GONE);
+                sync.setOnClickListener(null);
+            }
         }
     }
 
@@ -173,6 +180,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         Util.launchFragment(new FormsFragment(), this, getString(R.string.forms));
     }
 
+    private void loadMeetingsPage() {
+        Util.launchFragment(new MeetingsFragment(), this, getString(R.string.meetings));
+    }
+
     private void loadTeamsPage() {
         Util.launchFragment(new TMFragment(), this, getString(R.string.team_management));
     }
@@ -232,6 +243,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_calendar:
+                loadMeetingsPage();
                 break;
 
             case R.id.action_menu_assets:
@@ -418,7 +430,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             return;
         }*/
 
-        removeDatabaseRecords();
+        Util.removeDatabaseRecords();
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
@@ -523,5 +535,25 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     public interface OnSyncClicked {
         void onSyncButtonClicked();
+    }
+
+    public void hideItem(List<Modules> tabNames) {
+        try {
+            NavigationView navigationView = findViewById(R.id.home_menu_view);
+            if (navigationView != null) {
+                Menu navMenu = navigationView.getMenu();
+                if (navMenu != null) {
+                    for (Modules m : tabNames) {
+                        if (m.isActive()) {
+                            navMenu.findItem(m.getResId()).setVisible(true);
+                        } else {
+                            navMenu.findItem(m.getResId()).setVisible(false);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 }

@@ -39,21 +39,24 @@ public class UserInfo implements Parcelable {
     @SerializedName("name")
     @Expose
     private String userName;
-    @SerializedName("dob")
-    @Expose
-    private String userBirthDate;
-    @SerializedName("phone")
-    @Expose
-    private String userMobileNumber;
     @SerializedName("email")
     @Expose
     private String userEmailId;
-    @SerializedName("gender")
+    @SerializedName("phone")
     @Expose
-    private String userGender;
+    private String userMobileNumber;
     @SerializedName("approve_status")
     @Expose
     private String approveStatus;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("dob")
+    @Expose
+    private String userBirthDate;
     @SerializedName("org_id")
     @Expose
     private String orgId;
@@ -66,12 +69,21 @@ public class UserInfo implements Parcelable {
     @SerializedName("location")
     @Expose
     private UserLocation userLocation;
+    @SerializedName("firebase_id")
+    @Expose
+    private String firebaseId;
     @SerializedName("project_id")
     @Expose
     private ArrayList<String> projectIds;
     @SerializedName("profile_pic")
     @Expose
     private String profilePic;
+    @SerializedName("gender")
+    @Expose
+    private String userGender;
+    @SerializedName("approvers")
+    @Expose
+    private ArrayList<Approver> approvers = null;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
@@ -116,6 +128,38 @@ public class UserInfo implements Parcelable {
 
     public void setProjectIds(ArrayList<String> projectIds) {
         this.projectIds = projectIds;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
+
+    public ArrayList<Approver> getApprovers() {
+        return approvers;
+    }
+
+    public void setApprovers(ArrayList<Approver> approvers) {
+        this.approvers = approvers;
     }
 
     public UserInfo() {
