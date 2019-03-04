@@ -30,7 +30,7 @@ public interface FormResultDao {
     @Delete
     void delete(FormResult formData);
 
-    @Query("DELETE FROM Modules")
+    @Query("DELETE FROM formresult")
     void deleteAllFormResults();
 
     @Query("DELETE FROM formresult where form_status = :sync")

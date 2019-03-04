@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.forms.FormResult;
-import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.view.adapters.PendingFormCategoryAdapter;
 
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import java.util.Objects;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +81,7 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(EVENT_SYNC_COMPLETED);
         filter.addAction(EVENT_SYNC_FAILED);
         filter.addAction(EVENT_FORM_ADDED);
-        filter.addAction(SyncAdapterUtils.PARTIAL_FORM_ADDED);
+        filter.addAction(PARTIAL_FORM_ADDED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
@@ -93,7 +93,7 @@ public class PendingFormsFragment extends Fragment {
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
 
                     updateAdapter(context);
-                } else if (Objects.requireNonNull(intent.getAction()).equals(SyncAdapterUtils.PARTIAL_FORM_ADDED)) {
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
                     Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
                     updateAdapter(context);
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
@@ -108,6 +108,9 @@ public class PendingFormsFragment extends Fragment {
         try {
             if (mPendingFormCategoryAdapter == null) {
                 mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
+            }
+            if (mSavedForms == null) {
+                mSavedForms = new ArrayList<>();
             }
 
             List<FormResult> list = DatabaseManager.getDBInstance(context).getAllPartiallySavedForms();
@@ -127,7 +130,8 @@ public class PendingFormsFragment extends Fragment {
                 mPendingFormCategoryAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
-            Log.e("PendingForms", e.getMessage());
+            e.printStackTrace();
+            Log.e("PendingForms", e.getMessage() + "");
         }
     }
 

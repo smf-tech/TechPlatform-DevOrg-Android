@@ -422,12 +422,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
-        /*final List<FormResult> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getApplicationContext());
-        if (savedForms != null && !savedForms.isEmpty()) {
-            showPendingFormsPopUp();
-            return;
-        }*/
-
         Util.removeDatabaseRecords();
 
         try {
