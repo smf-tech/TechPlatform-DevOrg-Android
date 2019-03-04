@@ -180,8 +180,8 @@ public class Constants {
         public static final String NEW_STRUCTURE_CODE = "new_structure_code";
         public static final String OLD_STRUCTURE_CODE = "old_structure_code";
         public static final String STRUCTURE_CODE = "structure_code";
-        public static final String MOVED_FROM = "moved_from";
-        public static final String MOVED_TO = "moved_to";
+        public static final String MOVED_FROM = "moved_from_village";
+        public static final String MOVED_TO = "moved_to_village";
         public static final String VILLAGE = "village";
         public static final String _ID = "_id";
         public static final String OID = "$oid";
