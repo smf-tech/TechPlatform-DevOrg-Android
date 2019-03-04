@@ -79,6 +79,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private List<Elements> mElementsListFromDB;
     private boolean mIsInEditMode;
     private String processId;
+    private String oid;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -390,16 +391,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         }
 
                         if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url);
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url, formModel.getData().getId(), oid);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url, formModel.getData().getId(), null);
                         }
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null, formModel.getData().getId(), null);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null, formModel.getData().getId(), null);
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
@@ -478,8 +479,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             JSONArray values = object.getJSONArray("values");
             for (int i = 0; i < values.length(); i++) {
                 mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
-                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (id.equals(formId)) {
+                oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (oid.equals(formId)) {
                     Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
                     break;
                 }
@@ -506,8 +507,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         try {
             for (final String s : response) {
                 mFormJSONObject = new JSONObject(s);
-                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (id.equals(formId)) {
+                oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (oid.equals(formId)) {
                     Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
                     break;
                 }
