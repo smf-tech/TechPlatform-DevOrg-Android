@@ -73,9 +73,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (!TextUtils.isEmpty(formData.getTitle())) {
             if (!TextUtils.isEmpty(formData.getTitle())) {
                 if (formData.isRequired() != null) {
-                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
+                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                            formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
                 } else {
-                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(false)));
+                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                            formData.getTitle(), setFieldAsMandatory(false)));
                 }
             }
         }
@@ -143,7 +145,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
         for (int index = 0; index < dropDowns.size(); index++) {
-            if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) && dropDowns.get(index).getTag().equals(elements.getName())) {
+            if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) &&
+                    dropDowns.get(index).getTag().equals(elements.getName())) {
                 dropDowns.get(index).setFormData(elements);
                 dropDowns.get(index).setListData(choiceValues);
                 break;
@@ -172,7 +175,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.getMaxLength() != null) {
                 textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
                         formData.getMaxLength())});
-
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
@@ -271,9 +273,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
             if (formData.isRequired() != null) {
-                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
+                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                        formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
             } else {
-                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(false)));
+                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                        formData.getTitle(), setFieldAsMandatory(false)));
             }
         }
 
@@ -347,12 +351,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
         }
 
-
         //For all edit texts
-        for (
-                DropDownTemplate dropDownTemplate : dropDowns)
-
-        {
+        for (DropDownTemplate dropDownTemplate : dropDowns) {
             Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
             if (formData.isRequired() != null) {
 
@@ -382,7 +382,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (requestObjectMap != null) {
             this.requestObjectMap = requestObjectMap;
         }
-
     }
 
     @Override
