@@ -492,25 +492,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     private void saveFormToLocalDatabase() {
-        /*SavedForm savedForm = new SavedForm();
-        savedForm.setFormId(formModel.getData().getId());
-        savedForm.setFormName(formModel.getData().getName());
-        savedForm.setSynced(false);
-
-        if (formModel.getData().getCategory() != null) {
-            String category = formModel.getData().getCategory().getName();
-            if (formModel.getData().getCategory() != null && !TextUtils.isEmpty(category)) {
-                savedForm.setFormCategory(category);
-            }
-        }
-
-        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        }
-        SimpleDateFormat createdDateFormat =
-                new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
-        savedForm.setCreatedAt(createdDateFormat.format(new Date()));*/
-
         FormData formData = formModel.getData();
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
@@ -529,7 +510,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
             result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
         }
-        result.set_id(UUID.randomUUID().toString());
+        String locallySavedFormID = UUID.randomUUID().toString();
+        result.set_id(locallySavedFormID);
         result.setFormId(formData.getId());
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
@@ -539,8 +521,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 formPresenter.setSavedForm(result);
                 if (mIsPartiallySaved) {
                     String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-                    FormResult form = DatabaseManager.getDBInstance(getActivity()).getPartiallySavedForm(processId);
-                    result.set_id(form.get_id());
+                    FormResult form = DatabaseManager.getDBInstance(getActivity())
+                            .getPartiallySavedForm(processId);
+                    locallySavedFormID = form.get_id();
+                    result.set_id(locallySavedFormID);
+
                     DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
                 } else {
                     DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);

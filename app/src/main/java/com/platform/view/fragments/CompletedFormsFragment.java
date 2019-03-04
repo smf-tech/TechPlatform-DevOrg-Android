@@ -111,7 +111,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             List<ProcessDemoObject> list = new ArrayList<>();
             for (com.platform.models.forms.FormResult form : savedForms) {
                 list.add(new ProcessDemoObject(form.get_id(),
-                        form.getFormId(), form.getCreatedAt()));
+                        form.getFormId(), form.getCreatedAt(), ""));
             }
             mFormList.put(SyncAdapterUtils.SYNCING_PENDING, list);
             adapter.notifyDataSetChanged();
@@ -201,7 +201,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                     String uuid = UUID.randomUUID().toString();
                     formID = formResult.formID;
-                    list.add(new ProcessDemoObject(uuid, formID, date));
+                    list.add(new ProcessDemoObject(uuid, formID, date, formResult.formTitle));
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
                     result.set_id(uuid);
@@ -229,7 +229,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     }
                 }
             } else {
-                list.add(new ProcessDemoObject("No Forms available", "0", getCurrentTimeStamp()));
+                list.add(new ProcessDemoObject("No Forms available", "0", getCurrentTimeStamp(), ""));
             }
 
             for (final ProcessData data : mDataList) {
@@ -278,7 +278,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 }
 
                 list.add(new ProcessDemoObject(uuid,
-                        formID, formResult.updatedDateTime));
+                        formID, formResult.updatedDateTime, formResult.formTitle));
             }
 
             for (final ProcessData data : mDataList) {
