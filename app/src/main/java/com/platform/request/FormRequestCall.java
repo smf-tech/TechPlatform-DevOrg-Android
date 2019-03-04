@@ -88,7 +88,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                postUrl + "/" + oid,
+                postUrl/* + "/" + oid*/,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
