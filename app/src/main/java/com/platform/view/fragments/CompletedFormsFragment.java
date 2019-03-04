@@ -87,7 +87,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
         adapter = new FormCategoryAdapter(getContext(), mFormList);
         recyclerView.setAdapter(adapter);
 
@@ -267,6 +266,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 String uuid = UUID.randomUUID().toString();
                 result.set_id(uuid);
                 result.setFormId(formResult.formID);
+                result.setFormTitle(formResult.formTitle);
                 result.setResult(obj.toString());
 
                 formID = formResult.formID;
@@ -320,12 +320,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     public static class ProcessDemoObject {
         String name;
         String id;
+        String formTitle;
         long date;
 
-        private ProcessDemoObject(String name, String id, final long date) {
+        private ProcessDemoObject(String name, String id, final long date, String formTitle) {
             this.name = name;
             this.id = id;
             this.date = date;
+            this.formTitle = formTitle;
         }
 
         public long getDate() {
@@ -340,9 +342,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             return id;
         }
 
+        public String getFormTitle() {
+            return formTitle;
+        }
     }
 
     static class FormResult {
+        @SerializedName("form_title")
+        String formTitle;
 
         @SerializedName("form_id")
         String formID;

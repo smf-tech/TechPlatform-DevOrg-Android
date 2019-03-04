@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
@@ -72,9 +73,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (!TextUtils.isEmpty(formData.getTitle())) {
             if (!TextUtils.isEmpty(formData.getTitle())) {
                 if (formData.isRequired() != null) {
-                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
+                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                            formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
                 } else {
-                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(false)));
+                    txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                            formData.getTitle(), setFieldAsMandatory(false)));
                 }
             }
         }
@@ -142,7 +145,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
     public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
         for (int index = 0; index < dropDowns.size(); index++) {
-            if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) && dropDowns.get(index).getTag().equals(elements.getName())) {
+            if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) &&
+                    dropDowns.get(index).getTag().equals(elements.getName())) {
                 dropDowns.get(index).setFormData(elements);
                 dropDowns.get(index).setListData(choiceValues);
                 break;
@@ -165,13 +169,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 //set input type
                 setInputType(formData.getValidators().get(0).getType(), textInputField);
+            }
 
-                //set max length allowed
-                if (formData.getMaxLength() != null) {
-                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                            formData.getMaxLength())});
-
-                }
+            //set max length allowed
+            if (formData.getMaxLength() != null) {
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                        formData.getMaxLength())});
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
@@ -265,16 +268,23 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 fragment.get().getContext(), R.layout.row_file_type, null);
 
         ImageView imageView = fileTemplateView.findViewById(R.id.iv_file);
-        imageView.setTag(formData.getTitle());
         imageView.setOnClickListener(v -> onAddImageClick(v, formData.getName()));
 
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
         if (!TextUtils.isEmpty(formData.getTitle())) {
             if (formData.isRequired() != null) {
-                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
+                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                        formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
             } else {
-                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory, formData.getTitle(), setFieldAsMandatory(false)));
+                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                        formData.getTitle(), setFieldAsMandatory(false)));
             }
+        }
+
+        if (!TextUtils.isEmpty(formData.getAnswer())) {
+            Glide.with(fragment.get().getContext())
+                    .load(formData.getAnswer()) // Remote URL of image.
+                    .into(imageView);
         }
 
         return fileTemplateView;
@@ -299,35 +309,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
                     return false;
-                } else {
-                    if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                        if (!TextUtils.isEmpty(editText.getText().toString())) {
-
-                            errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                                    editText.getText().toString(), formData.getValidators().get(0));
-
-                            if (TextUtils.isEmpty(errorMsg)) {
-                                errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                                        editText.getText().toString(), formData.getMaxLength());
-                            }
-
-                            if (!TextUtils.isEmpty(errorMsg)) {
-                                fragment.get().setErrorMsg(errorMsg);
-                                return false;
-                            }
-                        }
-                    }
                 }
-            } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+            }
+
+            if (formData.getMaxLength() != null) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
-
-                    errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getValidators().get(0));
-
-                    if (TextUtils.isEmpty(errorMsg)) {
-                        errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                                editText.getText().toString(), formData.getMaxLength());
-                    }
+                    errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getMaxLength());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -336,6 +324,31 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                    errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getValidators().get(0));
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
+                    }
+                }
+            }
+
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                    errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getValidators().get(0));
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
+                    }
+                }
+            }
         }
 
         //For all edit texts
@@ -369,7 +382,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (requestObjectMap != null) {
             this.requestObjectMap = requestObjectMap;
         }
-
     }
 
     @Override
@@ -431,6 +443,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                                                 //Ignore first value of valueToken
                                                 String valueStr = valueTokenizer.nextToken();
+                                                Log.e(TAG, valueStr);
+
                                                 String valueStrNext = valueTokenizer.nextToken();
                                                 if (dObj.getString(valueStrNext).equals(value)) {
                                                     choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
@@ -492,7 +506,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             List<Choice> choiceValues = new ArrayList<>();
             dropDownTemplate.setListData(choiceValues);
         }
-
     }
 
     private void showDateDialog(Context context, final EditText editText) {

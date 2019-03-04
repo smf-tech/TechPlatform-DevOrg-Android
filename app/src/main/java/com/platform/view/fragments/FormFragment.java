@@ -79,6 +79,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private boolean mIsInEditMode;
     private String processId;
     private boolean mIsPartiallySaved;
+    private String oid;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -405,16 +406,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         }
 
                         if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url);
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url, formModel.getData().getId(), oid);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url, formModel.getData().getId(), null);
                         }
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null, formModel.getData().getId(), null);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null, formModel.getData().getId(), null);
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
@@ -571,8 +572,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             JSONArray values = object.getJSONArray("values");
             for (int i = 0; i < values.length(); i++) {
                 mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
-                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (id.equals(formId)) {
+                oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (oid.equals(formId)) {
                     Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
                     break;
                 }
@@ -586,7 +587,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     private void getFormDataAndParse(final List<String> response) {
-
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
         FormData formData;
@@ -612,8 +612,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         try {
             for (final String s : response) {
                 mFormJSONObject = new JSONObject(s);
-                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (id.equals(formId)) {
+                oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (oid.equals(formId)) {
                     Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
                     break;
                 }
@@ -638,6 +638,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         case Constants.FormsFactory.TEXT_TEMPLATE:
                         case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                        case Constants.FormsFactory.FILE_TEMPLATE:
                             element.setAnswer(object.getString(element.getName()));
                             requestedObject.put(element.getName(), element.getAnswer());
                             break;
@@ -715,8 +716,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-                /*LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
-                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());*/
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 

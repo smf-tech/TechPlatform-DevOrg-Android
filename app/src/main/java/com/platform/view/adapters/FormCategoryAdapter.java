@@ -101,6 +101,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
             ProcessData data = new ProcessData();
             data.setName(object.getName());
             data.setId(object.getId());
+            data.setFormTitle(object.getFormTitle());
             Microservice microservice = new Microservice();
             microservice.setUpdatedAt(Util.getDateFromTimestamp(object.getDate()));
             data.setMicroservice(microservice);

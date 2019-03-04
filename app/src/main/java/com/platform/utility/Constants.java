@@ -30,6 +30,7 @@ public class Constants {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
+        public static final String DATABASE_NAME = "TechPlatform";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
@@ -174,6 +175,7 @@ public class Constants {
 
     public class FormDynamicKeys {
         public static final String FORM_ID = "form_id";
+        public static final String FORM_TITLE = "form_title";
         public static final String METADATA = "metadata";
         public static final String FORM = "form";
         public static final String SUBMIT_COUNT = "submit_count";
@@ -181,10 +183,10 @@ public class Constants {
         public static final String NEW_STRUCTURE_CODE = "new_structure_code";
         public static final String OLD_STRUCTURE_CODE = "old_structure_code";
         public static final String STRUCTURE_CODE = "structure_code";
-        public static final String MOVED_FROM = "moved_from";
-        public static final String MOVED_TO = "moved_to";
+        public static final String MOVED_FROM = "moved_from_village";
+        public static final String MOVED_TO = "moved_to_village";
         public static final String VILLAGE = "village";
         public static final String _ID = "_id";
-        public static final String OID = "\"$oid";
+        public static final String OID = "$oid";
     }
 }

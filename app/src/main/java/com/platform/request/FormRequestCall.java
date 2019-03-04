@@ -32,13 +32,14 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList, String postUrl) {
-
+    public void createFormResponse(final HashMap<String, String> requestObjectMap, final Map<String,
+            String> uploadedImageUrlList, String postUrl, final String formId) {
+        JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onFormCreatedUpdated(res);
+                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -60,18 +61,20 @@ public class FormRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap, uploadedImageUrlList));
+        gsonRequest.setBodyParams(requestObject);
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void updateFormResponse(HashMap<String, String> requestObjectMap, final Map<String, String> uploadedImageUrlList, String postUrl) {
+    public void updateFormResponse(final HashMap<String, String> requestObjectMap,
+                                   final Map<String, String> uploadedImageUrlList, String postUrl, final String formId, String oid) {
 
+        JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onFormCreatedUpdated(res);
+                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -85,7 +88,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                postUrl,
+                postUrl/* + "/" + formId + "/" + oid*/,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -94,7 +97,7 @@ public class FormRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap, uploadedImageUrlList));
+        gsonRequest.setBodyParams(requestObject);
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
@@ -210,7 +213,6 @@ public class FormRequestCall {
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            Log.d(TAG, "Request object key " + key + " value " + value);
             requestObject.addProperty(key, value);
         }
 
@@ -218,7 +220,6 @@ public class FormRequestCall {
             for (final Map.Entry<String, String> entry : imageUrls.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                Log.d(TAG, "Request object key " + key + " value " + value);
                 requestObject.addProperty(key, value);
             }
         }

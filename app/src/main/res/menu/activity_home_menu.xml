@@ -20,7 +20,7 @@
         <item
             android:id="@+id/action_menu_calendar"
             android:icon="@drawable/ic_menu_calendar"
-            android:title="@string/meetings" />
+            android:title="@string/menu_calendar" />
         <item
             android:id="@+id/action_menu_teams"
             android:icon="@drawable/ic_menu_teams"

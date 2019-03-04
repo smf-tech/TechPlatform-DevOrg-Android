@@ -15,6 +15,7 @@ import com.platform.models.home.Modules;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.reports.ReportData;
 import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.Constants;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class DatabaseManager {
 
     public static DatabaseManager getDBInstance(Context context) {
         if (appDatabase == null) {
-            appDatabase = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "SMF")
+            appDatabase = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build();
@@ -67,16 +68,6 @@ public class DatabaseManager {
         FormDataDao formDataDao = appDatabase.formDataDao();
         return formDataDao.getFormSchema(processId);
     }
-
-/*    public List<FormData> getAllFormSchema() {
-        FormDataDao formDataDao = appDatabase.formDataDao();
-        return formDataDao.getAllFormSchema();
-    }
-
-    public void updateFormSchemaSubmitCount(final String formID, final String count) {
-        FormDataDao formDataDao = appDatabase.formDataDao();
-        formDataDao.updateSubmitCount(formID, count);
-    }*/
 
     public void deleteAllFormSchema() {
         FormDataDao formDataDao = appDatabase.formDataDao();
@@ -161,5 +152,4 @@ public class DatabaseManager {
         modulesDao.insertAll(home);
         Log.d(TAG, "insertModule");
     }
-
 }

@@ -142,7 +142,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onFormCreatedUpdated(String message) {
+    public void onFormCreatedUpdated(String message, String requestObjectString, String formId) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success),
                 formFragment.get().getActivity());
@@ -154,21 +154,27 @@ public class FormActivityPresenter implements FormRequestCallListener,
         //Save form result
         try {
             JSONObject outerObject = new JSONObject(message);
+            JSONObject requestObject = new JSONObject(requestObjectString);
             if (outerObject.has(Constants.RESPONSE_DATA)) {
                 JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
 
+                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
+                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE, dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+
+                Log.d(TAG, "Result saved " + requestObject.toString());
+
                 FormResult result = new FormResult();
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
-                result.setFormId(dataObject.getString(Constants.FormDynamicKeys.FORM_ID));
-                result.setResult(dataObject.toString());
+                result.setFormId(formId);
+                result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                result.setResult(requestObject.toString());
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
             }
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
-
 
         Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
     }
@@ -217,17 +223,17 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onSubmitClick(String submitType, String url) {
+    public void onSubmitClick(String submitType, String url, String formId, String oid) {
         FormRequestCall formRequestCall = new FormRequestCall();
         formRequestCall.setListener(this);
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url);
+                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
-                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url);
+                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
