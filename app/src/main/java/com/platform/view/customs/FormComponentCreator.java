@@ -444,6 +444,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                                                 //Ignore first value of valueToken
                                                 String valueStr = valueTokenizer.nextToken();
+                                                Log.e(TAG, valueStr);
+
                                                 String valueStrNext = valueTokenizer.nextToken();
                                                 if (dObj.getString(valueStrNext).equals(value)) {
                                                     choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
