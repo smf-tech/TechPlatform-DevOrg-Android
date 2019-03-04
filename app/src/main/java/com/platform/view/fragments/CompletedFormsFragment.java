@@ -158,11 +158,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
             List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
                     .getAllFormResults(id, SyncAdapterUtils.FormStatus.SYNCED);
+            response.addAll(DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
+                    .getAllFormResults(id, SyncAdapterUtils.FormStatus.UN_SYNCED));
             if (response != null && !response.isEmpty()) {
                 processFormResultResponse(response);
             } else {
-                if (Util.isConnected(getContext()) && !TextUtils.isEmpty(data.getSubmitCount()) &&
-                        Integer.parseInt(data.getSubmitCount()) != 0) {
+                if (Util.isConnected(getContext())) {
                     presenter.getSubmittedForms(id);
                 }
             }

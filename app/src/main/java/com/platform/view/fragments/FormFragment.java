@@ -438,7 +438,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.setFormCategory(formData.getCategory().getName());
         result.setFormName(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
+        result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName();
@@ -467,7 +467,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
         }
 
-        Intent intent = new Intent("PartialFormAdded");
+        Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 

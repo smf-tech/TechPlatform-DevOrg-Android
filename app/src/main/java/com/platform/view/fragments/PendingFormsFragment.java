@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.forms.FormResult;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.view.adapters.PendingFormCategoryAdapter;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(EVENT_SYNC_COMPLETED);
         filter.addAction(EVENT_SYNC_FAILED);
         filter.addAction(EVENT_FORM_ADDED);
-        filter.addAction("PartialFormAdded");
+        filter.addAction(SyncAdapterUtils.PARTIAL_FORM_ADDED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
@@ -94,7 +95,7 @@ public class PendingFormsFragment extends Fragment {
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
 
                     updateAdapter(context, 0);
-                } else if (Objects.requireNonNull(intent.getAction()).equals("PartialFormAdded")) {
+                } else if (Objects.requireNonNull(intent.getAction()).equals(SyncAdapterUtils.PARTIAL_FORM_ADDED)) {
                     Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
                     updateAdapter(context, 0);
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
@@ -132,9 +133,6 @@ public class PendingFormsFragment extends Fragment {
         }
     }
 
-    /**
-     * This method fetches all the pending forms from DB
-     */
     private void getPendingFormsFromDB() {
         List<FormResult> partialSavedForms = DatabaseManager.getDBInstance(getContext())
                 .getAllPartiallySavedForms();

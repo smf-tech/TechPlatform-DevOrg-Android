@@ -9,17 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.models.forms.FormResult;
-import com.platform.syncAdapter.SyncAdapterUtils;
-import com.platform.utility.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
 
 @SuppressWarnings("CanBeFinal")
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {

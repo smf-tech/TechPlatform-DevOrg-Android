@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,11 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.forms.FormResult;
-import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
-
-import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
-import static com.platform.utility.Constants.Form.FORM_STATUS_PENDING;
-import static com.platform.utility.Util.getFormattedDate;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormAdapter.ViewHolder> {
@@ -70,7 +67,9 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);
             viewHolder.mName.setText(savedForm.getFormName());
-            viewHolder.mDate.setText(String.format("%s %s", savedForm.getFormId(), savedForm.getCreatedAt()));
+            if (!TextUtils.isEmpty(savedForm.getCreatedAt())) {
+                viewHolder.mDate.setText(String.format("%s", Util.getFormattedDate(savedForm.getCreatedAt())));
+            }
         }
 
         viewHolder.mRootView.setOnClickListener(v -> {
