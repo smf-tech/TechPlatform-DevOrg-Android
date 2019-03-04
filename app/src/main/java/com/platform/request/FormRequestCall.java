@@ -88,7 +88,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                postUrl/* + "/" + oid*/,
+                postUrl/* + "/" + formId + "/" + oid*/,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -213,7 +213,6 @@ public class FormRequestCall {
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            Log.d(TAG, "Request object key " + key + " value " + value);
             requestObject.addProperty(key, value);
         }
 
@@ -221,7 +220,6 @@ public class FormRequestCall {
             for (final Map.Entry<String, String> entry : imageUrls.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                Log.d(TAG, "Request object key " + key + " value " + value);
                 requestObject.addProperty(key, value);
             }
         }

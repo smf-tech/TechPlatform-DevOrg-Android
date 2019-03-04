@@ -88,8 +88,6 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     @SuppressWarnings("unchecked")
     void setListData(List<Choice> valueList) {
         if (valueList != null) {
-//            this.valueList.clear();
-//            this.valueList.addAll(valueList);
             this.valueList = valueList;
             FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
             adapter.clear();
