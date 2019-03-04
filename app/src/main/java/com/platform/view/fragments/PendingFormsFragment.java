@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
@@ -82,6 +81,7 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(EVENT_SYNC_COMPLETED);
         filter.addAction(EVENT_SYNC_FAILED);
         filter.addAction(EVENT_FORM_ADDED);
+        filter.addAction("PartialFormAdded");
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
@@ -93,6 +93,9 @@ public class PendingFormsFragment extends Fragment {
                     updateAdapter(context, formID);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
 
+                    updateAdapter(context, 0);
+                } else if (Objects.requireNonNull(intent.getAction()).equals("PartialFormAdded")) {
+                    Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
                     updateAdapter(context, 0);
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
@@ -108,19 +111,11 @@ public class PendingFormsFragment extends Fragment {
                 mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
             }
 
-            if (formID == 0) {
+            List<FormResult> list = DatabaseManager.getDBInstance(context).getAllPartiallySavedForms();
+            if (!list.isEmpty()) {
                 mSavedForms.clear();
-                mSavedForms.addAll(getAllNonSyncedSavedForms(context));
-            /*} else {
-                List<FormResult> list = new ArrayList<>(mSavedForms);
-                for (final FormResult form : mSavedForms) {
-                    if (formID == form.id) {
-                        list.remove(form);
-                    }
-                }
-                mSavedForms.clear();
-                mSavedForms.addAll(list);*/
             }
+            mSavedForms.addAll(list);
 
             if (mSavedForms != null && !mSavedForms.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);

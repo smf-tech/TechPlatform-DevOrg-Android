@@ -182,7 +182,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         ImageView editButton = formFragmentView.findViewById(R.id.toolbar_edit_action);
         boolean isFormEditable = Boolean.parseBoolean(formModel.getData().getEditable());
         if (mIsInEditMode) {
-            if (isFormEditable) {
+            if (mIsPartiallySaved || isFormEditable) {
                 editButton.setVisibility(View.VISIBLE);
                 editButton.setOnClickListener(this);
             } else {
@@ -438,6 +438,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.setFormCategory(formData.getCategory().getName());
         result.setFormName(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
+        result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName();
@@ -465,6 +466,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         } else {
             DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
         }
+
+        Intent intent = new Intent("PartialFormAdded");
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     private void showConfirmPopUp() {
