@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
 
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
-import static com.platform.utility.Util.getFormattedDate;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
@@ -76,7 +76,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         if (!processData.getName().equals(mContext.getString(R.string.forms_are_not_available))) {
             if (processData.getMicroservice() != null
                     && processData.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = getFormattedDate(processData.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
+                String formattedDate = Util.getFormattedDate(processData.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
                 viewHolder.mDate.setText(String.format("on %s", formattedDate));
             }
         } else {

@@ -127,7 +127,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         String languageCode = preferences.getString(Constants.App.LANGUAGE_CODE, "");
-        if (languageCode != null && languageCode.contentEquals("")) {
+        if (languageCode.contentEquals("")) {
             setLocaleLanguageCode("en");
         } else {
             setLocaleLanguageCode(languageCode);
@@ -376,7 +376,7 @@ public class Util {
     }
 
     @NonNull
-    public static String getFormattedDate(String date) {
+    private static String getFormattedDate(String date) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -411,14 +411,8 @@ public class Util {
     }
 
     public static long getCurrentTimeStamp() {
-        try {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            Date date1 = new Date(timestamp.getTime());
-            return timestamp.getTime();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return 0;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.getTime();
     }
 
     public static String getDateFromTimestamp(long date) {

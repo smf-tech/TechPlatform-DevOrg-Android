@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.models.common.Category;
 import com.platform.models.common.Microservice;
 import com.platform.models.forms.Components;
-import com.platform.models.forms.FormResult;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

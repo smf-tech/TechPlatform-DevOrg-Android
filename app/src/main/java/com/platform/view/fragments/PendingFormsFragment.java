@@ -31,7 +31,6 @@ import java.util.Objects;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
-import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 
 /**
  * A simple {@link Fragment} subclass.

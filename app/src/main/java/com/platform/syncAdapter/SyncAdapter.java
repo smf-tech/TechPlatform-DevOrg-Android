@@ -7,18 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.common.Microservice;
@@ -26,8 +18,6 @@ import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
 import com.platform.utility.Constants;
-import com.platform.utility.GsonRequestFactory;
-import com.platform.utility.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,9 +32,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
