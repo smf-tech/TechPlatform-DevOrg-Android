@@ -30,6 +30,11 @@ public class ProcessData {
     @Expose
     private String name;
 
+    @ColumnInfo(name = "form_title")
+    @SerializedName("form_title")
+    @Expose
+    private String formTitle;
+
     @ColumnInfo(name = "active")
     @SerializedName("active")
     @Expose
@@ -150,5 +155,13 @@ public class ProcessData {
 
     public void setEntity(Entity entity) {
         this.entity = entity;
+    }
+
+    public String getFormTitle() {
+        return formTitle;
+    }
+
+    public void setFormTitle(String formTitle) {
+        this.formTitle = formTitle;
     }
 }

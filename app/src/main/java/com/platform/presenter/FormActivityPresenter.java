@@ -161,10 +161,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 requestObject.put(Constants.FormDynamicKeys._ID, idObject);
                 requestObject.put(Constants.FormDynamicKeys.FORM_TITLE, dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
 
+                Log.d(TAG, "Result saved " + requestObject.toString());
+
                 FormResult result = new FormResult();
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                 result.setFormId(formId);
-                Log.d(TAG, "Result saved " + requestObject.toString());
+                result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
             }

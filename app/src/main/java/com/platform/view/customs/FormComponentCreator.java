@@ -302,6 +302,18 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
+            if (formData.getMaxLength() != null) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                    errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getMaxLength());
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
+                    }
+                }
+            }
+
             if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
@@ -315,10 +327,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
-            if (formData.getMaxLength() != null) {
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
-                    errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getMaxLength());
+
+                    errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getValidators().get(0));
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);

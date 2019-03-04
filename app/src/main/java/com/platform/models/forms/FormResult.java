@@ -24,6 +24,11 @@ public class FormResult {
     @Expose
     private String formId;
 
+    @ColumnInfo(name = "form_title")
+    @SerializedName("form_title")
+    @Expose
+    private String formTitle;
+
     @ColumnInfo(name = "result")
     private String result;
 
@@ -50,5 +55,13 @@ public class FormResult {
 
     public void setResult(final String result) {
         this.result = result;
+    }
+
+    public String getFormTitle() {
+        return formTitle;
+    }
+
+    public void setFormTitle(String formTitle) {
+        this.formTitle = formTitle;
     }
 }
