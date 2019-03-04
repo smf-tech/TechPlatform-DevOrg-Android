@@ -165,13 +165,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 //set input type
                 setInputType(formData.getValidators().get(0).getType(), textInputField);
+            }
 
-                //set max length allowed
-                if (formData.getMaxLength() != null) {
-                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                            formData.getMaxLength())});
+            //set max length allowed
+            if (formData.getMaxLength() != null) {
+                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                        formData.getMaxLength())});
 
-                }
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
@@ -299,35 +299,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
                     return false;
-                } else {
-                    if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                        if (!TextUtils.isEmpty(editText.getText().toString())) {
-
-                            errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                                    editText.getText().toString(), formData.getValidators().get(0));
-
-                            if (TextUtils.isEmpty(errorMsg)) {
-                                errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                                        editText.getText().toString(), formData.getMaxLength());
-                            }
-
-                            if (!TextUtils.isEmpty(errorMsg)) {
-                                fragment.get().setErrorMsg(errorMsg);
-                                return false;
-                            }
-                        }
-                    }
                 }
-            } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+            }
+
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                     errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
                             editText.getText().toString(), formData.getValidators().get(0));
-
-                    if (TextUtils.isEmpty(errorMsg)) {
-                        errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                                editText.getText().toString(), formData.getMaxLength());
-                    }
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -336,10 +315,25 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
+            if (formData.getMaxLength() != null) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                    errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getMaxLength());
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
+                    }
+                }
+            }
         }
 
+
         //For all edit texts
-        for (DropDownTemplate dropDownTemplate : dropDowns) {
+        for (
+                DropDownTemplate dropDownTemplate : dropDowns)
+
+        {
             Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
             if (formData.isRequired() != null) {
 
