@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.home.Home;
 import com.platform.models.user.User;

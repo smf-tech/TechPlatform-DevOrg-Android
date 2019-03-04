@@ -18,7 +18,7 @@ public class SyncAdapterUtils {
     public static final String EVENT_SYNC_FAILED = "SyncFailed";
     public static final String EVENT_FORM_ADDED = "formAdded";
     public static final String EXTRA_TEXT = "SyncStatus";
-    private static final long SYNC_FREQUENCY = 5 * 60 * 1000;
+    private static final long SYNC_FREQUENCY = 300000;
 
     /**
      * This method creates sync account
