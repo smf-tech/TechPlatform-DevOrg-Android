@@ -514,6 +514,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
         result.setFormName(formData.getName());
+        result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
 
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 

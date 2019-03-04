@@ -90,14 +90,13 @@ public class PendingFormsFragment extends Fragment {
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
 
-                    int formID = intent.getIntExtra(EXTRA_FORM_ID, 0);
-                    updateAdapter(context, formID);
+                    updateAdapter(context);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
 
-                    updateAdapter(context, 0);
+                    updateAdapter(context);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(SyncAdapterUtils.PARTIAL_FORM_ADDED)) {
                     Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
-                    updateAdapter(context, 0);
+                    updateAdapter(context);
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
                     Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
@@ -106,7 +105,7 @@ public class PendingFormsFragment extends Fragment {
         }, filter);
     }
 
-    private void updateAdapter(final Context context, final int formID) {
+    private void updateAdapter(final Context context) {
         try {
             if (mPendingFormCategoryAdapter == null) {
                 mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
