@@ -175,7 +175,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
             Log.e(TAG, e.getMessage());
         }
 
-
         Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
     }
 

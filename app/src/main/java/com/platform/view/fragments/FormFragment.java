@@ -494,7 +494,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     }
 
     private void getFormDataAndParse(final List<String> response) {
-
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
         FormData formData = DatabaseManager.getDBInstance(

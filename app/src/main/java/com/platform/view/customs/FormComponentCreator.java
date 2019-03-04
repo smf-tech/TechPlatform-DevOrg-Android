@@ -347,7 +347,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
         }
 
-
         //For all edit texts
         for (
                 DropDownTemplate dropDownTemplate : dropDowns)
@@ -505,7 +504,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             List<Choice> choiceValues = new ArrayList<>();
             dropDownTemplate.setListData(choiceValues);
         }
-
     }
 
     private void showDateDialog(Context context, final EditText editText) {
