@@ -111,5 +111,16 @@ public class FormsFragment extends Fragment {
 
             return title.toUpperCase();
         }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
     }
 }

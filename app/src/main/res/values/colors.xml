@@ -34,4 +34,5 @@
     <color name="tab_selector">#1A4B98</color>
     <color name="tab_disable">#DDDDDD</color>
     <color name="tab_disable_bg">#E3E3E3</color>
+    <color name="partial_form_color">#9f9bff</color>
 </resources>

@@ -32,6 +32,21 @@ public class FormResult {
     @ColumnInfo(name = "result")
     private String result;
 
+    @ColumnInfo(name = "form_name")
+    private String formName;
+
+    @ColumnInfo(name = "form_status")
+    private int mFormStatus;
+
+    @ColumnInfo(name = "form_category")
+    private String formCategory;
+
+    @ColumnInfo(name = "request_object")
+    private String requestObject;
+
+    @ColumnInfo(name = "created_at")
+    private long createdAt;
+
     @NonNull
     public String get_id() {
         return _id;
@@ -55,6 +70,46 @@ public class FormResult {
 
     public void setResult(final String result) {
         this.result = result;
+    }
+
+    public String getFormName() {
+        return formName;
+    }
+
+    public void setFormName(final String formName) {
+        this.formName = formName;
+    }
+
+    public String getFormCategory() {
+        return formCategory;
+    }
+
+    public void setFormCategory(final String formCategory) {
+        this.formCategory = formCategory;
+    }
+
+    public String getRequestObject() {
+        return requestObject;
+    }
+
+    public void setRequestObject(final String requestObject) {
+        this.requestObject = requestObject;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public int getFormStatus() {
+        return mFormStatus;
+    }
+
+    public void setFormStatus(final int formStatus) {
+        mFormStatus = formStatus;
     }
 
     public String getFormTitle() {

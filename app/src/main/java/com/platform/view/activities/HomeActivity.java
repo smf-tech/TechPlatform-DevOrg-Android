@@ -35,10 +35,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.platform.R;
-import com.platform.models.SavedForm;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
-import com.platform.presenter.PMFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
@@ -423,12 +421,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
-
-        final List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
-        if (savedForms != null && !savedForms.isEmpty()) {
-            showPendingFormsPopUp();
-            return;
-        }
 
         Util.removeDatabaseRecords();
 

@@ -18,7 +18,14 @@ public class SyncAdapterUtils {
     public static final String EVENT_SYNC_FAILED = "SyncFailed";
     public static final String EVENT_FORM_ADDED = "formAdded";
     public static final String EXTRA_TEXT = "SyncStatus";
-    private static final long SYNC_FREQUENCY = 300000;
+    public static final String SYNCING_PENDING = "Syncing Pending";
+    public static final String PARTIAL_FORM_ADDED = "PartialFormAdded";
+
+    public class FormStatus {
+        public static final int SYNCED = 1;
+        public static final int UN_SYNCED = 0;
+        public static final int PARTIAL = 2;
+    }
 
     /**
      * This method creates sync account
@@ -40,7 +47,7 @@ public class SyncAdapterUtils {
 
             ContentResolver.setIsSyncable(account, AUTHORITY, 1);
             ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
-            ContentResolver.addPeriodicSync(account, AUTHORITY, new Bundle(), SYNC_FREQUENCY);
+//            ContentResolver.addPeriodicSync(account, AUTHORITY, new Bundle(), SYNC_FREQUENCY);
             newAccount = true;
         }
 

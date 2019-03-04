@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.platform.R;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppSignatureHelper;
 import com.platform.utility.Util;
 
@@ -20,6 +21,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        SyncAdapterUtils.createSyncAccount(getApplicationContext());
 
         Util.setApplicationLocale();
 

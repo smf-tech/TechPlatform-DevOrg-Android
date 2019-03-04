@@ -12,13 +12,13 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.listeners.ImageRequestCallListener;
-import com.platform.models.SavedForm;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.request.FormRequestCall;
 import com.platform.request.ImageRequestCall;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
@@ -39,16 +39,17 @@ public class FormActivityPresenter implements FormRequestCallListener,
     private final String TAG = FormActivityPresenter.class.getName();
 
     private final Gson gson;
-    private SavedForm savedForm;
+    //    private SavedForm savedForm;
+    private FormResult savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
     private Map<String, String> mUploadedImageUrlList;
 
-    private SavedForm getSavedForm() {
+    private FormResult getSavedForm() {
         return savedForm;
     }
 
-    public void setSavedForm(SavedForm savedForm) {
+    public void setSavedForm(FormResult savedForm) {
         this.savedForm = savedForm;
     }
 
@@ -146,8 +147,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success),
                 formFragment.get().getActivity());
         if (getSavedForm() != null) {
-            getSavedForm().setSynced(true);
-            DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormObject(getSavedForm());
+            getSavedForm().setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+            DatabaseManager.getDBInstance(formFragment.get().getContext()).updateFormResult(getSavedForm());
         }
 
         //Save form result
@@ -237,12 +238,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
-                        .insertFormObject(getSavedForm());
+                        .insertFormResult(getSavedForm());
                 Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
                 break;
             case Constants.OFFLINE_UPDATE_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
-                        .updateFormObject(getSavedForm());
+                        .updateFormResult(getSavedForm());
                 Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
                 break;
         }

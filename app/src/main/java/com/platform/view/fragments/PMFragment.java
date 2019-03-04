@@ -25,11 +25,10 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.SavedForm;
+import com.platform.models.forms.FormResult;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
-import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
@@ -41,12 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
-import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
-import static com.platform.utility.Util.saveFormCategoryForSync;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 
 @SuppressWarnings("CanBeFinal")
 public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
@@ -58,7 +55,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private RecyclerView rvPendingForms;
     private RelativeLayout rltPendingForms;
     private PendingFormsAdapter pendingFormsAdapter;
-    private List<SavedForm> mSavedForms;
+    private List<FormResult> mSavedForms;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +102,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
         filter.addAction(EVENT_SYNC_FAILED);
+        filter.addAction(PARTIAL_FORM_ADDED);
 
         SyncAdapterBroadCastReceiver(filter);
     }
@@ -116,10 +114,12 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
 
-                    int formID = intent.getIntExtra(EXTRA_FORM_ID, 0);
-                    updateAdapter(context, formID);
+                    updateAdapter();
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
-                    updateAdapter(context, 0);
+                    updateAdapter();
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
+                    Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
+                    updateAdapter();
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
                     Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
@@ -128,27 +128,18 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         }, filter);
     }
 
-    private void updateAdapter(final Context context, final int formID) {
+    private void updateAdapter() {
         if (pendingFormsAdapter == null) {
             pendingFormsAdapter = (PendingFormsAdapter) rvPendingForms.getAdapter();
-            if (mSavedForms == null) {
-                mSavedForms = new ArrayList<>();
-            }
+        }
+        if (mSavedForms == null) {
+            mSavedForms = new ArrayList<>();
         }
 
-        if (formID == 0) {
-            mSavedForms.clear();
-            mSavedForms.addAll(getAllNonSyncedSavedForms(context));
-        } else {
-            List<SavedForm> list = new ArrayList<>(mSavedForms);
-            for (final SavedForm form : mSavedForms) {
-                if (formID == form.id) {
-                    list.remove(form);
-                }
-            }
-            mSavedForms.clear();
-            mSavedForms.addAll(list);
-        }
+        mSavedForms.clear();
+        List<FormResult> partiallySavedForms = DatabaseManager.getDBInstance(getContext())
+                .getAllPartiallySavedForms();
+        mSavedForms.addAll(partiallySavedForms);
 
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
@@ -169,22 +160,12 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         txtViewAllForms.setOnClickListener(this);
     }
 
-    private void setPendingForms() {
-        mSavedForms = PMFragmentPresenter.getAllNonSyncedSavedForms(getContext());
+    private void getPartiallySavedForms() {
+        mSavedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
             rltPendingForms.setVisibility(View.VISIBLE);
+            rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
-            pmFragmentView.findViewById(R.id.sync_button).setOnClickListener(v -> {
-                if (Util.isConnected(getContext())) {
-                    Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
-                    // TODO: 14-02-2019 Category is not known for syncing
-                    saveFormCategoryForSync("");
-                    SyncAdapterUtils.manualRefresh();
-                } else {
-                    Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();
-                }
-            });
-
             pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
@@ -268,7 +249,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onResume() {
         super.onResume();
 
-        setPendingForms();
+        getPartiallySavedForms();
     }
 
     @Override

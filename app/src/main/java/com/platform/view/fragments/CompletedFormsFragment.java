@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -23,6 +23,7 @@ import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.FormCategoryAdapter;
@@ -31,11 +32,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+
+import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.utility.Util.getCurrentTimeStamp;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,6 +90,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         adapter = new FormCategoryAdapter(getContext(), mFormList);
         recyclerView.setAdapter(adapter);
 
+        setPendingForms();
+
         List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
         if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
             Processes processes = new Processes();
@@ -93,7 +103,19 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 presenter.getAllProcesses();
             }
         }
+    }
 
+    private void setPendingForms() {
+        List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
+        if (savedForms != null && !savedForms.isEmpty()) {
+            List<ProcessDemoObject> list = new ArrayList<>();
+            for (com.platform.models.forms.FormResult form : savedForms) {
+                list.add(new ProcessDemoObject(form.get_id(),
+                        form.getFormId(), form.getCreatedAt(), ""));
+            }
+            mFormList.put(SyncAdapterUtils.SYNCING_PENDING, list);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -129,12 +151,13 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             mDataList.add(data);
 
             List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
-                    .getAllFormResults(id);
-            if (response != null && !response.isEmpty()) {
+                    .getAllFormResults(id, SyncAdapterUtils.FormStatus.SYNCED);
+            response.addAll(DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
+                    .getAllFormResults(id, SyncAdapterUtils.FormStatus.UN_SYNCED));
+            if (!response.isEmpty()) {
                 processFormResultResponse(response);
             } else {
-                if (Util.isConnected(getContext()) && !TextUtils.isEmpty(data.getSubmitCount()) &&
-                        Integer.parseInt(data.getSubmitCount()) != 0) {
+                if (Util.isConnected(getContext())) {
                     presenter.getSubmittedForms(id);
                 }
             }
@@ -156,24 +179,41 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
                 for (int i = 0; i < values.length(); i++) {
 
-                    FormResult formResult = new Gson()
-                            .fromJson(String.valueOf(values.get(i)), FormResult.class);
+                    FormResult formResult;
+                    try {
+                        formResult = new Gson()
+                                .fromJson(String.valueOf(values.get(i)), FormResult.class);
+                    } catch (JsonSyntaxException | JSONException | NumberFormatException e) {
+                        e.printStackTrace();
+                        continue;
+                    }
 
+                    long date = formResult.updatedDateTime;
+                    if (date == 0) {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject metadata = (JSONObject) object.getJSONArray("metadata").get(0);
+                        if (metadata != null && metadata.getJSONObject("form") != null) {
+                            date = (long) metadata.getJSONObject("form").get("createdDateTime");
+                        } else {
+                            date = getCurrentTimeStamp();
+                        }
+                    }
+
+                    String uuid = UUID.randomUUID().toString();
                     formID = formResult.formID;
-                    list.add(new ProcessDemoObject(formResult.mID.oid,
-                            formID, formResult.updatedAt, formResult.formTitle));
+                    list.add(new ProcessDemoObject(uuid, formID, date, formResult.formTitle));
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(formResult.mID.oid);
+                    result.set_id(uuid);
                     result.setFormId(formID);
-                    result.setFormTitle(formResult.formTitle);
+                    result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
 
                     JSONObject obj = (JSONObject) values.get(i);
                     if (obj == null) return;
 
 
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(formID);
+                            .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
                     if (!localFormResults.contains(obj.toString())) {
                         result.setResult(obj.toString());
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
@@ -189,7 +229,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     }
                 }
             } else {
-                list.add(new ProcessDemoObject("No Forms available", "0", "", ""));
+                list.add(new ProcessDemoObject("No Forms available", "0", getCurrentTimeStamp(), ""));
             }
 
             for (final ProcessData data : mDataList) {
@@ -197,6 +237,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     mFormList.put(data.getName(), list);
                 }
             }
+
+            setPendingForms();
 
             if (!mFormList.isEmpty()) {
                 adapter.notifyDataSetChanged();
@@ -221,14 +263,22 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 FormResult formResult = new Gson()
                         .fromJson(String.valueOf(obj), FormResult.class);
                 com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                result.set_id(formResult.mID.oid);
+                String uuid = UUID.randomUUID().toString();
+                result.set_id(uuid);
                 result.setFormId(formResult.formID);
                 result.setFormTitle(formResult.formTitle);
                 result.setResult(obj.toString());
 
                 formID = formResult.formID;
-                list.add(new ProcessDemoObject(formResult.mID.oid,
-                        formID, formResult.updatedAt, formResult.formTitle));
+
+                if (formResult.updatedDateTime != 0) {
+                    if (isFormOneMonthOld(formResult.updatedDateTime)) {
+                        continue;
+                    }
+                }
+
+                list.add(new ProcessDemoObject(uuid,
+                        formID, formResult.updatedDateTime, formResult.formTitle));
             }
 
             for (final ProcessData data : mDataList) {
@@ -236,6 +286,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     mFormList.put(data.getName(), list);
                 }
             }
+
+            setPendingForms();
 
             if (!mFormList.isEmpty()) {
                 adapter.notifyDataSetChanged();
@@ -248,20 +300,37 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
+    private boolean isFormOneMonthOld(final long updatedAt) {
+        /*if (Build.VERSION.SDK_INT >= 26) {
+            LocalDate formDate = LocalDate.parse(updatedAt);
+            LocalDate days30 = LocalDate.now().minusDays(30);
+
+            return formDate.isBefore(days30);
+
+        }*/
+
+        Date eventStartDate;
+        eventStartDate = new Timestamp(updatedAt);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -30);
+        Date days30 = calendar.getTime();
+        return eventStartDate.before(days30);
+    }
+
     public static class ProcessDemoObject {
         String name;
         String id;
-        String date;
         String formTitle;
+        long date;
 
-        private ProcessDemoObject(String name, String id, final String date, String formTitle) {
+        private ProcessDemoObject(String name, String id, final long date, String formTitle) {
             this.name = name;
             this.id = id;
             this.date = date;
             this.formTitle = formTitle;
         }
 
-        public String getDate() {
+        public long getDate() {
             return date;
         }
 
@@ -285,15 +354,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         @SerializedName("form_id")
         String formID;
 
-        @SerializedName("updated_at")
-        String updatedAt;
-
-        @SerializedName("_id")
-        _ID mID;
-    }
-
-    static class _ID {
-        @SerializedName("$oid")
-        String oid;
+        @SerializedName("updatedDateTime")
+        long updatedDateTime;
     }
 }

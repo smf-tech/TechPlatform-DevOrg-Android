@@ -116,6 +116,18 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
         // Save response
         if (response != null && user.getUserInfo() != null) {
+
+            UserInfo oldUserInfo = Util.getUserObjectFromPref();
+            if (oldUserInfo != null) {
+                String roleIds = oldUserInfo.getRoleIds();
+                String newRoles = user.getUserInfo().getRoleIds();
+                Log.d(TAG, "Use roles: (old, new) => " + roleIds + " " + newRoles);
+
+                if (!TextUtils.isEmpty(newRoles) && !newRoles.equals(roleIds)) {
+                    Log.d(TAG, "Deleting old records." + roleIds);
+                    Util.removeDatabaseRecords();
+                }
+            }
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
 

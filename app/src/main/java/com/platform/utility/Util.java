@@ -35,6 +35,7 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +43,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.platform.utility.Constants.DATE_FORMAT;
+import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
 
@@ -123,7 +127,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         String languageCode = preferences.getString(Constants.App.LANGUAGE_CODE, "");
-        if (languageCode.contentEquals("")) {
+        if (languageCode == null || languageCode.contentEquals("")) {
             setLocaleLanguageCode("en");
         } else {
             setLocaleLanguageCode(languageCode);
@@ -290,6 +294,7 @@ public class Util {
         editor.apply();
     }
 
+/*
     public static String getFormCategoryForSyncFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
@@ -305,6 +310,7 @@ public class Util {
         editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
         editor.apply();
     }
+*/
 
 //    public static void clearAllUserData() {
 //        try {
@@ -370,14 +376,14 @@ public class Util {
     }
 
     @NonNull
-    public static String getFormattedDate(String date) {
+    private static String getFormattedDate(String date) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
 
         try {
             DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
@@ -385,6 +391,38 @@ public class Util {
             Log.e(TAG, e.getMessage());
         }
         return date;
+    }
+
+    public static String getFormattedDate(String date, String dateFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
+
+        try {
+            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+
+            Date date1 = inputFormat.parse(date);
+            return outputFormat.format(date1);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return date;
+    }
+
+    public static long getCurrentTimeStamp() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.getTime();
+    }
+
+    public static String getDateFromTimestamp(long date) {
+        try {
+            Date d = new Timestamp(date);
+            return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return "";
     }
 
     public static void launchFragment(Fragment fragment, Context context, String titleName) {

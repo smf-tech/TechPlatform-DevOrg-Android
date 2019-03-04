@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +13,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.platform.R;
-import com.platform.models.pm.ProcessData;
+import com.platform.models.forms.FormResult;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
 
-import static com.platform.utility.Constants.FORM_DATE_FORMAT;
-
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
-class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
+class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<ProcessData> mProcessData;
-    private boolean mPendingFormCategory;
+    private List<FormResult> mSavedForms;
 
-    FormsAdapter(Context context, final List<ProcessData> processData, final boolean pendingFormCategory) {
+    PartiallySavedFormAdapter(final Context context, final List<FormResult> savedForms) {
         this.mContext = context;
-        mProcessData = processData;
-        mPendingFormCategory = pendingFormCategory;
+        mSavedForms = savedForms;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,47 +60,40 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
-        viewHolder.mPinButton.setVisibility(View.GONE);
-        Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
-        if (mPendingFormCategory) {
-            drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
-        }
+        Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
         viewHolder.indicatorView.setBackground(drawable);
+        viewHolder.mPinButton.setVisibility(View.GONE);
 
-        ProcessData processData = mProcessData.get(i);
-        viewHolder.mName.setText(processData.getName());
-
-        if (!processData.getName().equals(mContext.getString(R.string.forms_are_not_available))) {
-            if (processData.getMicroservice() != null
-                    && processData.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = Util.getFormattedDate(processData.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
+        if (!mSavedForms.isEmpty()) {
+            FormResult savedForm = mSavedForms.get(i);
+            viewHolder.mName.setText(savedForm.getFormName());
+            if (!TextUtils.isEmpty(Util.getDateFromTimestamp(savedForm.getCreatedAt()))) {
+                String formattedDate = Util.getDateFromTimestamp(savedForm.getCreatedAt());
                 viewHolder.mDate.setText(String.format("on %s", formattedDate));
             }
-        } else {
-            viewHolder.mDate.setVisibility(View.GONE);
         }
 
         viewHolder.mRootView.setOnClickListener(v -> {
             String processID;
             String formID;
 
-            if (mProcessData == null || i >= mProcessData.size() || mProcessData.get(i).getId().equals("0")) {
-                return;
+            if (mSavedForms != null && !mSavedForms.isEmpty()) {
+                formID = mSavedForms.get(i).getFormId();
+                processID = mSavedForms.get(i).get_id();
+
+                Intent intent = new Intent(mContext, FormActivity.class);
+                intent.putExtra(Constants.PM.PROCESS_ID, processID);
+                intent.putExtra(Constants.PM.FORM_ID, formID);
+                intent.putExtra(Constants.PM.EDIT_MODE, true);
+                intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+                mContext.startActivity(intent);
             }
 
-            formID = mProcessData.get(i).getName();
-            processID = mProcessData.get(i).getId();
-
-            Intent intent = new Intent(mContext, FormActivity.class);
-            intent.putExtra(Constants.PM.PROCESS_ID, processID);
-            intent.putExtra(Constants.PM.FORM_ID, formID);
-            intent.putExtra(Constants.PM.EDIT_MODE, true);
-            mContext.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return mProcessData.size();
+        return mSavedForms.size();
     }
 }
