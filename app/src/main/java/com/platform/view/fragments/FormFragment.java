@@ -533,6 +533,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         case Constants.FormsFactory.TEXT_TEMPLATE:
                         case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                        case Constants.FormsFactory.FILE_TEMPLATE:
                             element.setAnswer(object.getString(element.getName()));
                             requestedObject.put(element.getName(), element.getAnswer());
                             break;
@@ -610,8 +611,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-                /*LinearLayout fileTemplateView = formComponentCreator.getFileTemplateView();
-                ImageView viewWithTag = fileTemplateView.findViewWithTag(mFileImageView.getTag());*/
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
