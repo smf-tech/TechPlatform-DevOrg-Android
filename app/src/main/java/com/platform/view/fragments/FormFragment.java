@@ -391,7 +391,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
                 } else {
-                    saveFormToLocalDatabase();
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
 
@@ -418,6 +417,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null, formModel.getData().getId(), null);
                             }
+
+                            saveFormToLocalDatabase();
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
