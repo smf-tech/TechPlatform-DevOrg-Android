@@ -169,6 +169,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.setFormId(formId);
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
+                result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
             }
 

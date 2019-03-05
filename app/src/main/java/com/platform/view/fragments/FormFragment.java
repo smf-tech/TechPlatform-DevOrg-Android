@@ -398,9 +398,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                                 && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
                             url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
                                     formModel.getData().getMicroService().getRoute());
-                            if (url.contains("form_id")) {
-                                url = url.replace("form_id", formModel.getData().getId());
-                            }
                         }
 
                         if (mIsInEditMode) {
@@ -512,7 +509,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
         String locallySavedFormID = UUID.randomUUID().toString();
         result.set_id(locallySavedFormID);
-        result.setFormId(formData.getId());
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
             JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
