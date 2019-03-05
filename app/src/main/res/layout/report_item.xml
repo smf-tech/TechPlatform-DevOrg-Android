@@ -6,7 +6,7 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dp"
         android:layout_marginStart="@dimen/dimen_07dp"
@@ -57,5 +57,5 @@
                 android:src="@android:drawable/btn_star"
                 android:visibility="gone" />
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

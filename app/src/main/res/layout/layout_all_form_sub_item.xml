@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/medium_grey"
@@ -91,5 +91,5 @@
                 android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_plus" />
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

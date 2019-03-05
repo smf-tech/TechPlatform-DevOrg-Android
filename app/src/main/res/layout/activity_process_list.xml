@@ -8,7 +8,7 @@
         android:id="@+id/process_list_toolbar"
         layout="@layout/app_toolbar" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/process_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:layout_marginEnd="@dimen/dimen_15dp"
         android:scrollbars="vertical" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_process"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

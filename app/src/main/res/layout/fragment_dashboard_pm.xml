@@ -39,7 +39,7 @@
                     android:layout_margin="@dimen/dimen_12dp"
                     android:text="@string/saved_forms_cat" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_dashboard_pending_forms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
