@@ -57,6 +57,7 @@ import java.util.StringTokenizer;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static com.platform.view.fragments.FormsFragment.viewPager;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
@@ -462,7 +463,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         if (mIsPartiallySaved) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
             FormResult form = DatabaseManager.getDBInstance(getActivity()).getPartiallySavedForm(processId);
-            result.set_id(form.get_id());
+            if (form != null) {
+                result.set_id(form.get_id());
+            }
             DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
         } else {
             DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
@@ -470,6 +473,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+        if (viewPager != null) {
+            viewPager.getAdapter().getItemPosition(null);
+            viewPager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     private void showConfirmPopUp() {
