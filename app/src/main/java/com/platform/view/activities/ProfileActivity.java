@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -55,6 +53,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 @SuppressWarnings("CanBeFinal")
 public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
@@ -1103,7 +1104,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedProjects.add(projects.get(i).getId());
-                        Log.d("TAG", "Selected project " + projects.get(i).getOrgProjectName());
                     }
                 }
                 break;
@@ -1113,7 +1113,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedRoles.add(roles.get(i).getId());
-                        Log.d("TAG", "Selected role " + roles.get(i).getDisplayName());
                     }
                 }
                 break;
@@ -1123,7 +1122,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedDistricts.add(districts.get(i));
-                        Log.d("TAG", "Selected district " + districts.get(i));
                     }
                 }
 
@@ -1139,7 +1137,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedTalukas.add(talukas.get(i));
-                        Log.d("TAG", "Selected taluka " + talukas.get(i));
                     }
                 }
 
@@ -1155,7 +1152,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedClusters.add(clusters.get(i));
-                        Log.d("TAG", "Selected cluster " + clusters.get(i));
                     }
                 }
                 break;
@@ -1165,8 +1161,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedVillages.add(villages.get(i));
-                        Log.d("TAG", "Selected village " + villages.get(i)
-                        );
                     }
                 }
                 break;

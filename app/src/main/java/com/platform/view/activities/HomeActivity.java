@@ -8,14 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +26,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.navigation.NavigationView;
 import com.platform.R;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
@@ -48,6 +41,14 @@ import com.platform.view.fragments.TMFragment;
 
 import java.io.File;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -122,6 +123,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
+        if (!TextUtils.isEmpty(profileUrl)) {
+            requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+        }
         loadFromSDCard(userPic, profileUrl);
         Glide.with(this)
                 .load(profileUrl)
