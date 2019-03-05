@@ -1,6 +1,6 @@
 package com.platform.request;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.Request;

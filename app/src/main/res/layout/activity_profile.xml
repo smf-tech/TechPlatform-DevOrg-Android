@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <!--First Name-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_first_name"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -34,10 +34,10 @@
                     android:hint="@string/first_name"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Middle Name-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_middle_name"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -48,10 +48,10 @@
                     android:hint="@string/middle_name"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Last Name-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_last_name"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -62,10 +62,10 @@
                     android:hint="@string/last_name"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Birth Date-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_birth_date"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -78,10 +78,10 @@
                     android:hint="@string/birth_date"
                     android:inputType="date"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Mobile Number-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_mobile_number"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -94,10 +94,10 @@
                     android:inputType="phone"
                     android:maxLength="10"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Email-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_email_id"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -108,7 +108,7 @@
                     android:hint="@string/email_id"
                     android:inputType="textEmailAddress"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Geo Location-->
             <LinearLayout
@@ -118,7 +118,7 @@
                 android:orientation="horizontal"
                 android:weightSum="10">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_user_geo_location"
                     style="@style/RegistrationTextInputLayout"
                     android:layout_width="0dp"
@@ -131,7 +131,7 @@
                         android:hint="@string/work_location"
                         android:inputType="textEmailAddress"
                         tools:ignore="Autofill" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
                     android:id="@+id/btn_user_refresh_location"
@@ -147,7 +147,7 @@
             </LinearLayout>
 
             <!--Address-->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_address"
                 style="@style/RegistrationTextInputLayout"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -158,7 +158,7 @@
                     android:hint="@string/address"
                     android:inputType="textPostalAddress"
                     tools:ignore="Autofill" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Gender-->
             <RelativeLayout

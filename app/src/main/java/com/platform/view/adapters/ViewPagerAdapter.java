@@ -1,7 +1,8 @@
 package com.platform.view.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
         super(manager);
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         return mFragmentList.get(position);
