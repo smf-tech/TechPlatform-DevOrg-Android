@@ -1,11 +1,5 @@
 package com.platform.models.pm;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.database.DataConverter;
@@ -14,8 +8,14 @@ import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
 import com.platform.models.common.Project;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 @SuppressWarnings("unused")
-@android.arch.persistence.room.Entity
+@androidx.room.Entity
 public class ProcessData {
 
     @PrimaryKey

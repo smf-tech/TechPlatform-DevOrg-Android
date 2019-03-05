@@ -41,7 +41,6 @@ public class TMFragmentPresenter implements TMRequestCallListener {
 
     @Override
     public void onPendingRequestsFetched(String response) {
-        Log.d(TAG, "Pending requests list API response: " + response);
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             PendingRequestsResponse pendingRequestsResponse
@@ -56,7 +55,6 @@ public class TMFragmentPresenter implements TMRequestCallListener {
 
     @Override
     public void onRequestStatusChanged(String response, PendingRequest pendingRequest) {
-        Log.d(TAG, "Status updated API response: " + response);
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
@@ -65,8 +63,10 @@ public class TMFragmentPresenter implements TMRequestCallListener {
 
     @Override
     public void onFailureListener(String message) {
-        Log.i(TAG, "Fail: " + message);
         fragmentWeakReference.get().hideProgressBar();
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @SuppressWarnings("ThrowableNotThrown")

@@ -3,12 +3,11 @@ package com.platform.view.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -18,6 +17,9 @@ import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
@@ -41,6 +43,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         TextView mDate;
         View indicatorView;
         ImageButton mPinButton;
+        ImageView mFormImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -49,6 +52,7 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
             mDate = itemView.findViewById(R.id.form_date);
             mPinButton = itemView.findViewById(R.id.pin_button);
             indicatorView = itemView.findViewById(R.id.form_status_indicator);
+            mFormImage = itemView.findViewById(R.id.form_image);
         }
     }
 
@@ -64,9 +68,14 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
         viewHolder.mPinButton.setVisibility(View.GONE);
+
+        // Set Indicator and icon
         Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
         if (mPendingFormCategory) {
+            viewHolder.mFormImage.setBackgroundResource(R.drawable.ic_pending_forms);
             drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
+        } else {
+            viewHolder.mFormImage.setBackgroundResource(R.drawable.ic_menu_forms);
         }
         viewHolder.indicatorView.setBackground(drawable);
 

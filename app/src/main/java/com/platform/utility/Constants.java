@@ -24,7 +24,7 @@ public class Constants {
 
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
     static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
-    static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
 
     public static class App {
         static final String APP_DATA = "AppData";
@@ -141,8 +141,8 @@ public class Constants {
     public static class Form {
         public static final String EXTRA_FORM_ID = "form_id";
         // public static final String FORM_STATUS_ALL = "all";
-        public static final String FORM_STATUS_PENDING = "pending";
-        public static final String FORM_STATUS_COMPLETED = "completed";
+        // public static final String FORM_STATUS_PENDING = "pending";
+        // public static final String FORM_STATUS_COMPLETED = "completed";
     }
 
     public class MultiSelectSpinnerType {

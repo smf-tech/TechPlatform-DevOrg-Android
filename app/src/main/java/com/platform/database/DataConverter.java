@@ -1,7 +1,5 @@
 package com.platform.database;
 
-import android.arch.persistence.room.TypeConverter;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.platform.models.common.Category;
@@ -10,6 +8,8 @@ import com.platform.models.forms.Components;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+
+import androidx.room.TypeConverter;
 
 public class DataConverter implements Serializable {
 

@@ -2,10 +2,11 @@ package com.platform.utility;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
+import androidx.annotation.NonNull;
 
 @SuppressWarnings("CanBeFinal")
 public class ForceUpdateChecker {

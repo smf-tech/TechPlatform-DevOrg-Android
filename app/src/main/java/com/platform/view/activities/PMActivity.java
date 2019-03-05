@@ -2,7 +2,6 @@ package com.platform.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -21,6 +20,8 @@ import com.platform.view.adapters.PMAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @SuppressWarnings("CanBeFinal")
 public class PMActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener,

@@ -34,11 +34,9 @@ import java.util.Objects;
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class FormActivityPresenter implements FormRequestCallListener,
         ImageRequestCallListener {
-
     private final String TAG = FormActivityPresenter.class.getName();
 
     private final Gson gson;
-    //    private SavedForm savedForm;
     private FormResult savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
@@ -131,13 +129,14 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onFailureListener(String message) {
         if (!TextUtils.isEmpty(message)) {
-            Log.e(TAG, "Request failed :" + message);
+            Log.e(TAG, "onFailureListener :" + message);
         }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.e(TAG, "Request Error :" + error);
+        Log.e(TAG, "onErrorListener :" + error);
+        Util.showToast(error.getMessage(), formFragment.get().getActivity());
     }
 
     @Override
@@ -162,6 +161,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.setFormId(formId);
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
+                result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
             }
 
@@ -179,7 +179,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
             if (form != null && form.getData() != null) {
 
                 DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
-                Log.e(TAG, "Form schema saved in database.");
+                Log.d(TAG, "Form schema saved in database.");
 
                 //Call choices by url
                 if (form.getData().getComponents() != null &&
@@ -244,8 +244,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onFormDetailsLoadedListener(final String response) {
-        Log.e(TAG, "Form Details\n" + response);
-
         formFragment.get().hideProgressBar();
         formFragment.get().getFormDataAndParse(response);
     }

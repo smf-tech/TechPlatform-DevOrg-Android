@@ -2,8 +2,6 @@ package com.platform.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,8 @@ import com.platform.view.activities.FormActivity;
 
 import java.util.List;
 
-import static com.platform.utility.Util.getDateFromTimestamp;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings({"CanBeFinal", "unused"})
 public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapter.TMViewHolder> {
@@ -43,8 +42,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         FormResult savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
-        holder.txtCreatedAt.setText(String.format("on %s",
-                getDateFromTimestamp(savedForm.getCreatedAt())));
+        holder.txtCreatedAt.setText(String.format("on %s", savedForm.getCreatedAt()));
 
         holder.mRootView.setOnClickListener(v -> {
             Intent intent = new Intent(context, FormActivity.class);

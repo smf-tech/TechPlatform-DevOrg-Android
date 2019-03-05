@@ -3,7 +3,6 @@ package com.platform.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,6 +10,8 @@ import com.platform.R;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppSignatureHelper;
 import com.platform.utility.Util;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

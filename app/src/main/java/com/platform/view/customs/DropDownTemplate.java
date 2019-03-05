@@ -1,6 +1,5 @@
 package com.platform.view.customs;
 
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +19,8 @@ import com.platform.widgets.PlatformSpinner;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class DropDownTemplate implements AdapterView.OnItemSelectedListener {

@@ -14,7 +14,6 @@ public class Urls {
         public static final String GET_ORGANIZATION = "api/organizations";
         public static final String GET_ORGANIZATION_PROJECTS = "api/projects/%1$s";
         public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s";
-        // public static final String GET_STATES = "api/states";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
         public static final String UPLOAD_IMAGE = "api/upload-image";
     }
@@ -23,15 +22,9 @@ public class Urls {
         public static final String GET_MODULES = "api/modules/%1$s/%2$s";
     }
 
-    @SuppressWarnings({"unused", "WeakerAccess"})
-    public class Roles {
-        public static final String GET_ROLES = "api/roles/%1$s";
-    }
-
     public class PM {
         public static final String GET_PROCESS = "api/forms/schema";
         public static final String GET_PROCESS_DETAILS = "api/forms/schema/%1$s";
-        public static final String CREATE_FORM = "api/forms/result/%1$s";
         public static final String GET_FORM = "api/forms/result/%1$s";
     }
 

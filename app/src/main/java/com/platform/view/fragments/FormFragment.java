@@ -8,11 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +50,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.app.Activity.RESULT_OK;
 import static com.platform.view.fragments.FormsFragment.viewPager;
@@ -375,9 +376,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-//                showConfirmPopUp();
-                storePartiallySavedForm();
-                getActivity().finish();
+                showConfirmPopUp();
                 break;
 
             case R.id.toolbar_edit_action:
@@ -400,9 +399,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                                 && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
                             url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
                                     formModel.getData().getMicroService().getRoute());
-                            if (url.contains("form_id")) {
-                                url = url.replace("form_id", formModel.getData().getId());
-                            }
                         }
 
                         if (mIsInEditMode) {
@@ -441,7 +437,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.setFormCategory(formData.getCategory().getName());
         result.setFormName(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getCurrentTimeStamp());
+        result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName();
@@ -493,8 +489,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
-                (dialog, which) -> getActivity().finish());
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
+            storePartiallySavedForm();
+            getActivity().finish();
+        });
 
         // Showing Alert Message
         alertDialog.show();
@@ -505,7 +503,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
         result.setFormName(formData.getName());
-        result.setCreatedAt(Util.getCurrentTimeStamp());
+        result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
 
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
@@ -521,7 +519,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
         String locallySavedFormID = UUID.randomUUID().toString();
         result.set_id(locallySavedFormID);
-        result.setFormId(formData.getId());
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
             JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());

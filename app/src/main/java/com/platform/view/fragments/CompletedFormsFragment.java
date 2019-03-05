@@ -1,12 +1,7 @@
 package com.platform.view.fragments;
 
-
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +10,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -32,18 +26,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
-import static com.platform.utility.Util.getCurrentTimeStamp;
+import static com.platform.utility.Constants.DATE_FORMAT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,7 +72,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
      *
      * @return A new instance of fragment CompletedFormsFragment.
      */
-    public static CompletedFormsFragment newInstance() {
+    static CompletedFormsFragment newInstance() {
         return new CompletedFormsFragment();
     }
 
@@ -120,12 +123,15 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onFailureListener(String message) {
-        Log.e(TAG, "onFailureListener: " + message);
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener: " + error.getMessage());
+        Util.showToast(error.getMessage(), getContext());
     }
 
     @Override
@@ -179,23 +185,17 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
                 for (int i = 0; i < values.length(); i++) {
 
-                    FormResult formResult;
-                    try {
-                        formResult = new Gson()
-                                .fromJson(String.valueOf(values.get(i)), FormResult.class);
-                    } catch (JsonSyntaxException | JSONException | NumberFormatException e) {
-                        e.printStackTrace();
-                        continue;
-                    }
+                    FormResult formResult = new Gson().fromJson(String.valueOf(values.get(i)), FormResult.class);
 
-                    long date = formResult.updatedDateTime;
-                    if (date == 0) {
+                    String date = formResult.updatedDateTime;
+                    if (date == null) {
                         JSONObject object = new JSONObject(response);
                         JSONObject metadata = (JSONObject) object.getJSONArray("metadata").get(0);
                         if (metadata != null && metadata.getJSONObject("form") != null) {
-                            date = (long) metadata.getJSONObject("form").get("createdDateTime");
+                            date = (String) metadata.getJSONObject("form").get("createdDateTime");
+                            date = Util.getFormattedDate(date);
                         } else {
-                            date = getCurrentTimeStamp();
+                            date = Util.getFormattedDate(new Date().toString());
                         }
                     }
 
@@ -229,7 +229,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     }
                 }
             } else {
-                list.add(new ProcessDemoObject("No Forms available", "0", getCurrentTimeStamp(), ""));
+                list.add(new ProcessDemoObject("No Forms available", "0", "", ""));
             }
 
             for (final ProcessData data : mDataList) {
@@ -271,7 +271,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                 formID = formResult.formID;
 
-                if (formResult.updatedDateTime != 0) {
+                if (formResult.updatedDateTime != null) {
                     if (isFormOneMonthOld(formResult.updatedDateTime)) {
                         continue;
                     }
@@ -300,7 +300,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
-    private boolean isFormOneMonthOld(final long updatedAt) {
+    private boolean isFormOneMonthOld(final String updatedAt) {
         /*if (Build.VERSION.SDK_INT >= 26) {
             LocalDate formDate = LocalDate.parse(updatedAt);
             LocalDate days30 = LocalDate.now().minusDays(30);
@@ -310,27 +310,34 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         }*/
 
         Date eventStartDate;
-        eventStartDate = new Timestamp(updatedAt);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -30);
-        Date days30 = calendar.getTime();
-        return eventStartDate.before(days30);
+        DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        try {
+            eventStartDate = inputFormat.parse(updatedAt);
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, -30);
+            Date days30 = calendar.getTime();
+            return eventStartDate.before(days30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public static class ProcessDemoObject {
         String name;
         String id;
         String formTitle;
-        long date;
+        String date;
 
-        private ProcessDemoObject(String name, String id, final long date, String formTitle) {
+        private ProcessDemoObject(String name, String id, final String date, String formTitle) {
             this.name = name;
             this.id = id;
             this.date = date;
             this.formTitle = formTitle;
         }
 
-        public long getDate() {
+        public String getDate() {
             return date;
         }
 
@@ -355,6 +362,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String formID;
 
         @SerializedName("updatedDateTime")
-        long updatedDateTime;
+        String updatedDateTime;
     }
 }

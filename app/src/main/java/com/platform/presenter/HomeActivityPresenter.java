@@ -1,5 +1,6 @@
 package com.platform.presenter;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -18,7 +19,7 @@ import java.lang.ref.WeakReference;
 @SuppressWarnings("CanBeFinal")
 public class HomeActivityPresenter implements UserRequestCallListener {
 
-    private final String TAG = ProfileActivityPresenter.class.getName();
+    private final String TAG = HomeActivityPresenter.class.getName();
     private WeakReference<HomeFragment> homeFragment;
 
     public HomeActivityPresenter(HomeFragment activity) {
@@ -41,7 +42,6 @@ public class HomeActivityPresenter implements UserRequestCallListener {
 
     @Override
     public void onSuccessListener(String response) {
-        Log.i(TAG, "Success: " + response);
         Home models = new Gson().fromJson(response, Home.class);
         homeFragment.get().showNextScreen(models);
     }
@@ -58,11 +58,14 @@ public class HomeActivityPresenter implements UserRequestCallListener {
 
     @Override
     public void onFailureListener(String message) {
-        Log.i(TAG, "Fail: " + message);
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "Error: " + error);
+        Log.e(TAG, "onErrorListener :" + error);
+        Util.showToast(error.getMessage(), homeFragment.get().getActivity());
     }
 }

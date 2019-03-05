@@ -8,14 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +26,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.navigation.NavigationView;
 import com.platform.R;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
@@ -48,6 +41,14 @@ import com.platform.view.fragments.TMFragment;
 
 import java.io.File;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -122,6 +123,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
+        if (!TextUtils.isEmpty(profileUrl)) {
+            requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+        }
         loadFromSDCard(userPic, profileUrl);
         Glide.with(this)
                 .load(profileUrl)
@@ -400,24 +404,24 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         alertDialog.show();
     }
 
-    private void showPendingFormsPopUp() {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name_ss));
-        // Setting Dialog Message
-        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
-        // Setting CANCEL Button
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-                (dialog, which) -> alertDialog.dismiss());
-        // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> logOutUser());
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
+//    private void showPendingFormsPopUp() {
+//        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+//        // Setting Dialog Title
+//        alertDialog.setTitle(getString(R.string.app_name_ss));
+//        // Setting Dialog Message
+//        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
+//        // Setting Icon to Dialog
+//        alertDialog.setIcon(R.mipmap.app_logo);
+//        // Setting CANCEL Button
+//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+//                (dialog, which) -> alertDialog.dismiss());
+//        // Setting OK Button
+//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+//                (dialog, which) -> logOutUser());
+//
+//        // Showing Alert Message
+//        alertDialog.show();
+//    }
 
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
@@ -457,40 +461,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
-
-//    private void callUsDialog() {
-//        final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_phone)};
-//        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
-//
-//        dialog.setItems(items, (dialogInterface, position) -> {
-//            dialogInterface.dismiss();
-//
-//            switch (position) {
-//                case 0:
-//                    try {
-//                        Uri uri = Uri.parse(Constants.hangoutLink);
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                        startActivity(intent);
-//                    } catch (Exception e) {
-//                        Log.e("Calling Hangout", "" + e.getMessage());
-//                    }
-//                    break;
-//
-//                case 1:
-//                    try {
-//                        Intent dial = new Intent();
-//                        dial.setAction("android.intent.action.DIAL");
-//                        dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
-//                        startActivity(dial);
-//                    } catch (Exception e) {
-//                        Log.e("Calling Phone", "" + e.getMessage());
-//                    }
-//                    break;
-//            }
-//        });
-//
-//        dialog.show();
-//    }
 
     private void rateTheApp() {
         try {

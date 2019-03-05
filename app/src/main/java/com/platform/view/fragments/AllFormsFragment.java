@@ -2,9 +2,6 @@ package com.platform.view.fragments;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,12 +96,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onFailureListener(String message) {
-        Log.e(TAG, "onFailureListener: " + message);
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener: " + error.getMessage());
+        Util.showToast(error.getMessage(), getContext());
     }
 
     @Override
@@ -135,10 +139,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mChildList.put(categoryName, processData);
             }
 
-
             ProcessData processData = DatabaseManager.getDBInstance(
                     Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getProcessData(data.getId());
+
             String submitCount = processData.getSubmitCount();
             if (!TextUtils.isEmpty(submitCount)) {
                 mCountList.put(data.getId(), submitCount);
@@ -192,5 +196,4 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             mNoRecordsView.setVisibility(View.GONE);
         }
     }
-
 }

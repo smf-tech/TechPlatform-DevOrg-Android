@@ -1,6 +1,5 @@
 package com.platform.request;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -20,6 +19,8 @@ import com.platform.utility.Util;
 
 import org.json.JSONObject;
 
+import androidx.annotation.NonNull;
+
 public class TMRequestCall {
 
     private TMRequestCallListener listener;
@@ -34,11 +35,12 @@ public class TMRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "getAllPendingRequests - Resp: " + res);
                     listener.onPendingRequestsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -68,11 +70,12 @@ public class TMRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "approveRejectRequest - Resp: " + res);
                     listener.onRequestStatusChanged(res, pendingRequest);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
