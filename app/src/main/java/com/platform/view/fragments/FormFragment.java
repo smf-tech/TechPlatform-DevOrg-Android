@@ -58,6 +58,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.app.Activity.RESULT_OK;
+import static com.platform.view.fragments.FormsFragment.viewPager;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
@@ -389,7 +390,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
                 } else {
-                    saveFormToLocalDatabase();
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
 
@@ -413,6 +413,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null, formModel.getData().getId(), null);
                             }
+
+                            saveFormToLocalDatabase();
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
@@ -458,7 +460,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         if (mIsPartiallySaved) {
             String processId = getArguments().getString(Constants.PM.PROCESS_ID);
             FormResult form = DatabaseManager.getDBInstance(getActivity()).getPartiallySavedForm(processId);
-            result.set_id(form.get_id());
+            if (form != null) {
+                result.set_id(form.get_id());
+            }
             DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
         } else {
             DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
@@ -466,6 +470,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+        if (viewPager != null) {
+            viewPager.getAdapter().getItemPosition(null);
+            viewPager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     private void showConfirmPopUp() {

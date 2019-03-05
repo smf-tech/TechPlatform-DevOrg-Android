@@ -101,8 +101,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             String requestObject = form.getRequestObject();
 
-            JSONObject object = new JSONObject();
-            object.put("response", new JSONObject(requestObject));
+            JSONObject object = new JSONObject(requestObject);
+//            object.put("response", new JSONObject(requestObject));
 
             OutputStream out = new BufferedOutputStream(connection.getOutputStream());
             writeStream(object.toString(), out);

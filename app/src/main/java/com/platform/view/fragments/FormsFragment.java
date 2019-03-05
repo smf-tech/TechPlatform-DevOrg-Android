@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import androidx.viewpager.widget.ViewPager;
 public class FormsFragment extends Fragment {
 
     private View formsFragmentView;
+    @SuppressLint("StaticFieldLeak")
+    public static ViewPager viewPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class FormsFragment extends Fragment {
     }
 
     private void initTabView() {
-        ViewPager viewPager = formsFragmentView.findViewById(R.id.view_pager);
+        viewPager = formsFragmentView.findViewById(R.id.view_pager);
         viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
 
         TabLayout tabs = formsFragmentView.findViewById(R.id.tab_layout);
@@ -113,6 +116,11 @@ public class FormsFragment extends Fragment {
             }
 
             return title.toUpperCase();
+        }
+
+        @Override
+        public int getItemPosition(@NonNull final Object object) {
+            return POSITION_NONE;
         }
 
         @NonNull

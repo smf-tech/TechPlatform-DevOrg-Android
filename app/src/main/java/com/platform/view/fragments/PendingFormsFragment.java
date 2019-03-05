@@ -74,8 +74,6 @@ public class PendingFormsFragment extends Fragment {
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mSavedForms = new ArrayList<>();
-
         getPendingFormsFromDB();
 
         IntentFilter filter = new IntentFilter();
@@ -89,10 +87,8 @@ public class PendingFormsFragment extends Fragment {
             public void onReceive(final Context context, final Intent intent) {
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
-
                     updateAdapter(context);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
-
                     updateAdapter(context);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
                     Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
@@ -107,29 +103,29 @@ public class PendingFormsFragment extends Fragment {
 
     private void updateAdapter(final Context context) {
         try {
-            if (mPendingFormCategoryAdapter == null) {
-                mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
-            }
-            if (mSavedForms == null) {
+            if (mSavedForms == null || mSavedForms.isEmpty()) {
                 mSavedForms = new ArrayList<>();
+                if (mPendingFormCategoryAdapter != null)
+                    mPendingFormCategoryAdapter =
+                            new PendingFormCategoryAdapter(getContext(), mSavedForms);
             }
 
-            List<FormResult> list = DatabaseManager.getDBInstance(context).getAllPartiallySavedForms();
-            if (!list.isEmpty()) {
-                mSavedForms.clear();
-            }
+            List<FormResult> list = DatabaseManager.getDBInstance(context)
+                    .getAllPartiallySavedForms();
+
+            mSavedForms.clear();
             mSavedForms.addAll(list);
 
             if (mSavedForms != null && !mSavedForms.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
+                if (mPendingFormCategoryAdapter != null) {
+                    mPendingFormCategoryAdapter.notifyDataSetChanged();
+                }
             } else {
                 mRecyclerView.setVisibility(View.GONE);
                 mNoRecordsView.setVisibility(View.VISIBLE);
             }
 
-            if (mPendingFormCategoryAdapter != null) {
-                mPendingFormCategoryAdapter.notifyDataSetChanged();
-            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("PendingForms", e.getMessage() + "");
@@ -140,9 +136,9 @@ public class PendingFormsFragment extends Fragment {
         List<FormResult> partialSavedForms = DatabaseManager.getDBInstance(getContext())
                 .getAllPartiallySavedForms();
         if (partialSavedForms != null) {
-            mSavedForms.addAll(partialSavedForms);
+            mSavedForms = new ArrayList<>(partialSavedForms);
 
-            if (mSavedForms != null && !mSavedForms.isEmpty()) {
+            if (!mSavedForms.isEmpty()) {
                 mPendingFormCategoryAdapter = new PendingFormCategoryAdapter(getContext(), mSavedForms);
                 mRecyclerView.setAdapter(mPendingFormCategoryAdapter);
                 mNoRecordsView.setVisibility(View.GONE);
