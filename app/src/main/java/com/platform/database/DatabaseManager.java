@@ -1,6 +1,5 @@
 package com.platform.database;
 
-import androidx.room.Room;
 import android.content.Context;
 import android.util.Log;
 
@@ -19,6 +18,11 @@ import com.platform.utility.Constants;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 public class DatabaseManager {
     private static final String TAG = DatabaseManager.class.getSimpleName();
     private static AppDatabase appDatabase;
@@ -26,9 +30,10 @@ public class DatabaseManager {
 
     public static DatabaseManager getDBInstance(Context context) {
         if (appDatabase == null) {
-            appDatabase = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, Constants.App.DATABASE_NAME)
+            appDatabase = Room.databaseBuilder(context.getApplicationContext(),
+                    AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_OLD_TO_NEW)
                     .build();
         }
 
@@ -38,6 +43,13 @@ public class DatabaseManager {
 
         return databaseManager;
     }
+
+    private static final Migration MIGRATION_OLD_TO_NEW = new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // Since we didn't alter the table, there's nothing else to do here.
+        }
+    };
 
     public List<FormResult> getNonSyncedPendingForms() {
         FormResultDao formResultDao = appDatabase.formResultDao();

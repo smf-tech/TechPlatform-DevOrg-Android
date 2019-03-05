@@ -1,6 +1,5 @@
 package com.platform.utility;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -19,6 +18,8 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class GsonRequestFactory<T> extends JsonRequest<T> {
 

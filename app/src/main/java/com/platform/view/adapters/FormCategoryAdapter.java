@@ -1,16 +1,13 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
@@ -21,6 +18,10 @@ import com.platform.view.fragments.CompletedFormsFragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
@@ -102,7 +103,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
             data.setId(object.getId());
             data.setFormTitle(object.getFormTitle());
             Microservice microservice = new Microservice();
-            microservice.setUpdatedAt(Util.getDateFromTimestamp(object.getDate()));
+            microservice.setUpdatedAt(object.getDate());
             data.setMicroservice(microservice);
             dataList.add(data);
         }

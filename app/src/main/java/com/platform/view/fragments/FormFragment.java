@@ -8,11 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.FileProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +50,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -434,7 +435,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.setFormCategory(formData.getCategory().getName());
         result.setFormName(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getCurrentTimeStamp());
+        result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName();
@@ -493,7 +494,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
         result.setFormName(formData.getName());
-        result.setCreatedAt(Util.getCurrentTimeStamp());
+        result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
 
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 

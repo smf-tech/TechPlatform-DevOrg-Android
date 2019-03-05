@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import androidx.core.app.NotificationCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,6 +15,9 @@ import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.view.activities.SplashActivity;
+
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {

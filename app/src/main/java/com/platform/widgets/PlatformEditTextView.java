@@ -1,8 +1,9 @@
 package com.platform.widgets;
 
 import android.content.Context;
-import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 public class PlatformEditTextView extends AppCompatEditText {
 

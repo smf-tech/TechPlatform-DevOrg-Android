@@ -2,8 +2,6 @@ package com.platform.view.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +14,9 @@ import com.platform.view.activities.TMActivity;
 import com.platform.view.activities.TMUserProfileListActivity;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class TMAdapter extends RecyclerView.Adapter<TMAdapter.TMViewHolder> {

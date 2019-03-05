@@ -2,7 +2,6 @@ package com.platform;
 
 import android.app.Application;
 import android.os.Environment;
-import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -18,6 +17,7 @@ import com.platform.utility.Util;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import io.fabric.sdk.android.Fabric;
 
 public class Platform extends Application {
