@@ -32,11 +32,12 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "generateOtp - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -69,11 +70,12 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "resendOtp - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -101,13 +103,13 @@ public class LoginRequestCall {
         Response.Listener<JSONObject> loginSuccessListener = response -> {
             try {
                 if (response != null) {
-                     String res = response.toString();
-                    // Login loginData = new Gson().fromJson(res, Login.class);
-                     listener.onSuccessListener(res);
+                    String res = response.toString();
+                    Log.d(TAG, "getToken - Resp: " + res);
+                    listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(response.toString());
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -137,11 +139,12 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "getUserProfile - Resp: " + res);
                     listener.onUserProfileSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(response.toString());
+                listener.onFailureListener(e.getMessage());
             }
         };
 

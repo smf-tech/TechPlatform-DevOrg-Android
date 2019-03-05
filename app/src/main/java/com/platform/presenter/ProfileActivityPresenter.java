@@ -69,14 +69,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         requestCall.getOrganizationRoles(orgId);
     }
 
-//    public void getStates() {
-//        ProfileRequestCall requestCall = new ProfileRequestCall();
-//        requestCall.setListener(this);
-//
-//        profileActivity.get().showProgressBar();
-//        requestCall.getStates();
-//    }
-
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
@@ -102,14 +94,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     }
 
-//    public void uploadProfileImage(Bitmap bitmap) {
-//        ProfileRequestCall requestCall = new ProfileRequestCall();
-//        requestCall.setListener(this);
-//
-//        profileActivity.get().showProgressBar();
-//        requestCall.uploadBitmap(bitmap);
-//    }
-          
+
     @Override
     public void onProfileUpdated(String response) {
         User user = new Gson().fromJson(response, User.class);
@@ -161,8 +146,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
                     && !jurisdictionLevelResponse.getData().isEmpty()
                     && jurisdictionLevelResponse.getData().size() > 0) {
 
-//                Util.saveUserLocationJurisdictionLevel(level);
-//                Util.saveJurisdictionLevelData(response);
                 profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
             }
         }
@@ -202,14 +185,12 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     @Override
     public void onFailureListener(String message) {
-        Log.i(TAG, "Fail" + message);
         profileActivity.get().hideProgressBar();
         profileActivity.get().showErrorMessage(message);
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "Error: " + error);
         profileActivity.get().hideProgressBar();
 
         if (error != null) {

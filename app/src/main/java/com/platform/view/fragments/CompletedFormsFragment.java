@@ -2,11 +2,7 @@ package com.platform.view.fragments;
 
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +37,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Util.getCurrentTimeStamp;
@@ -120,12 +122,15 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onFailureListener(String message) {
-        Log.e(TAG, "onFailureListener: " + message);
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener: " + error.getMessage());
+        Util.showToast(error.getMessage(), getContext());
     }
 
     @Override

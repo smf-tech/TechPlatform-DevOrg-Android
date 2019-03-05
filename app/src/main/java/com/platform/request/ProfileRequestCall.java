@@ -44,11 +44,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Org Response:" + res);
+                    Log.d(TAG, "getOrganizations - Resp: " + res);
                     listener.onOrganizationsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -74,11 +75,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Org projects Response:" + res);
+                    Log.d(TAG, "getOrganizationProjects - Resp: " + res);
                     listener.onOrganizationProjectsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -106,11 +108,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Org roles Response:" + res);
+                    Log.d(TAG, "getOrganizationRoles - Resp: " + res);
                     listener.onOrganizationRolesFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -138,11 +141,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Jurisdiction Response:" + res);
+                    Log.d(TAG, "getJurisdictionLevelData - Resp: " + res);
                     listener.onJurisdictionFetched(res, levelName);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -170,12 +174,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API submit profile Response:" + res);
+                    Log.d(TAG, "submitUserProfile - Resp: " + res);
                     listener.onProfileUpdated(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -198,61 +202,6 @@ public class ProfileRequestCall {
         gsonRequest.setBodyParams(createBodyParams(userInfo));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
-
-//    public void uploadBitmap(final Bitmap bitmap) {
-//        VolleyEntity volleyMultipartRequest = new VolleyEntity(Request.Method.POST,
-//                BuildConfig.BASE_URL + Urls.Profile.UPLOAD_IMAGE,
-//
-//                response -> {
-//                    try {
-//                        JSONObject obj = new JSONObject(new String(response.data));
-//                        Log.e(TAG, "onResponse: " + obj.getString("message"));
-//                    } catch (JSONException e) {
-//                        Log.e(TAG, e.getMessage());
-//                    }
-//                },
-//                error -> Log.e(TAG, "onResponse#error: " + error.getMessage())) {
-//
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "multipart/form-data");
-//
-//                Login loginObj = getLoginObjectFromPref();
-//                if (loginObj != null && loginObj.getLoginData() != null &&
-//                        loginObj.getLoginData().getAccessToken() != null) {
-//                    params.put(Constants.Login.AUTHORIZATION,
-//                            "Bearer " + loginObj.getLoginData().getAccessToken());
-//                }
-//                return params;
-//            }
-//
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("type", "profile");
-//                return params;
-//            }
-//
-//            @Override
-//            protected Map<String, DataPart> getByteData() {
-//                Map<String, DataPart> params = new HashMap<>();
-//                long imageName = System.currentTimeMillis();
-//                params.put("image", new DataPart(imageName + ".png",
-//                        getFileDataFromDrawable(bitmap), "multipart/form-data"));
-//                return params;
-//            }
-//        };
-//
-//        volleyMultipartRequest.setHeaderParams(getHeaders());
-//        Platform.getInstance().getVolleyRequestQueue().add(volleyMultipartRequest);
-//    }
-
-//    private byte[] getFileDataFromDrawable(Bitmap bitmap) {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-//        return byteArrayOutputStream.toByteArray();
-//    }
 
     private JsonObject createBodyParams(UserInfo userInfo) {
         JsonObject body = new JsonObject();
@@ -337,17 +286,4 @@ public class ProfileRequestCall {
         return body;
     }
 
-//    private static Map<String, String> getHeaders() {
-//        Map<String, String> headers = new HashMap<>();
-//        headers.put("Content-Type", "multipart/form-data");
-//
-//        Login loginObj = getLoginObjectFromPref();
-//        if (loginObj != null && loginObj.getLoginData() != null &&
-//                loginObj.getLoginData().getAccessToken() != null) {
-//            headers.put(Constants.Login.AUTHORIZATION,
-//                    "Bearer " + loginObj.getLoginData().getAccessToken());
-//        }
-//
-//        return headers;
-//    }
 }
