@@ -123,6 +123,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
+        if (!TextUtils.isEmpty(profileUrl)) {
+            requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+        }
         loadFromSDCard(userPic, profileUrl);
         Glide.with(this)
                 .load(profileUrl)

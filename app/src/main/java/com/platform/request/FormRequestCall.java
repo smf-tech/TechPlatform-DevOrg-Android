@@ -40,11 +40,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "createFormResponse - Resp: " + res);
                     listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -75,11 +76,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "updateFormResponse - Resp: " + res);
                     listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -89,7 +91,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                postUrl/* + "/" + formId + "/" + oid*/,
+                postUrl + "/" + formId + "/" + oid,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -108,12 +110,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getChoicesByUrl - Resp: " + res);
+                    Log.d(TAG, "getChoicesByUrl - Resp: " + res);
                     listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, formData);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -142,12 +144,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getProcessDetails - Resp: " + res);
+                    Log.d(TAG, "getProcessDetails - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -178,11 +180,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "getFormResults - Resp: " + res);
                     listener.onFormDetailsLoadedListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 

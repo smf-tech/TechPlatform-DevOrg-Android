@@ -31,7 +31,7 @@ public class FormStatusRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getSubmittedForms - Resp: " + res);
+                    Log.d(TAG, "getSubmittedForms - Resp: " + res);
                     listener.onMastersFormsLoaded(res, formID);
                 }
             } catch (Exception e) {
@@ -67,7 +67,7 @@ public class FormStatusRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getProcesses - Resp: " + res);
+                    Log.d(TAG, "getProcesses - Resp: " + res);
                     listener.onFormsLoaded(res);
                 }
             } catch (Exception e) {

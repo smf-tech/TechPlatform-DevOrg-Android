@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,12 +123,15 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onFailureListener(String message) {
-        Log.e(TAG, "onFailureListener: " + message);
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener: " + error.getMessage());
+        Util.showToast(error.getMessage(), getContext());
     }
 
     @Override

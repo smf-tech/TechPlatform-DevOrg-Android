@@ -96,12 +96,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onFailureListener(String message) {
-        Log.e(TAG, "onFailureListener: " + message);
+        if (!TextUtils.isEmpty(message)) {
+            Log.e(TAG, "onFailureListener :" + message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener: " + error.getMessage());
+        Util.showToast(error.getMessage(), getContext());
     }
 
     @Override

@@ -35,11 +35,12 @@ public class TMRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "getAllPendingRequests - Resp: " + res);
                     listener.onPendingRequestsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -69,11 +70,12 @@ public class TMRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "approveRejectRequest - Resp: " + res);
                     listener.onRequestStatusChanged(res, pendingRequest);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
