@@ -7,16 +7,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncStatusObserver;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
@@ -33,6 +29,11 @@ import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;

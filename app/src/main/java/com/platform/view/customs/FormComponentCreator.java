@@ -3,7 +3,6 @@ package com.platform.view.customs;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -20,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;

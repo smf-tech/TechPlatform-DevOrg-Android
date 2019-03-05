@@ -1,12 +1,12 @@
 package com.platform.models.forms;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 @Entity
 @SuppressWarnings("unused")
@@ -45,7 +45,7 @@ public class FormResult {
     private String requestObject;
 
     @ColumnInfo(name = "created_at")
-    private long createdAt;
+    private String createdAt;
 
     @NonNull
     public String get_id() {
@@ -96,11 +96,11 @@ public class FormResult {
         this.requestObject = requestObject;
     }
 
-    public long getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final long createdAt) {
+    public void setCreatedAt(final String createdAt) {
         this.createdAt = createdAt;
     }
 

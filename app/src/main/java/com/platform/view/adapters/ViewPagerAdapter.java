@@ -1,11 +1,11 @@
 package com.platform.view.adapters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
 

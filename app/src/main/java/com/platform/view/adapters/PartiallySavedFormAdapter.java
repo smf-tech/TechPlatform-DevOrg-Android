@@ -3,8 +3,6 @@ package com.platform.view.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,15 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.models.forms.FormResult;
 import com.platform.utility.Constants;
-import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static com.platform.utility.Constants.FORM_DATE_FORMAT;
+import static com.platform.utility.Util.getFormattedDate;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormAdapter.ViewHolder> {
@@ -67,8 +70,9 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);
             viewHolder.mName.setText(savedForm.getFormName());
-            if (!TextUtils.isEmpty(Util.getDateFromTimestamp(savedForm.getCreatedAt()))) {
-                String formattedDate = Util.getDateFromTimestamp(savedForm.getCreatedAt());
+
+            if (!TextUtils.isEmpty(savedForm.getCreatedAt())) {
+                String formattedDate = getFormattedDate(savedForm.getCreatedAt(), FORM_DATE_FORMAT);
                 viewHolder.mDate.setText(String.format("on %s", formattedDate));
             }
         }

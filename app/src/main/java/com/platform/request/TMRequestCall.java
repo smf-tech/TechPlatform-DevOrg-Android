@@ -1,6 +1,5 @@
 package com.platform.request;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -19,6 +18,8 @@ import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
 import org.json.JSONObject;
+
+import androidx.annotation.NonNull;
 
 public class TMRequestCall {
 

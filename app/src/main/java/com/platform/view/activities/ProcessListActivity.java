@@ -2,12 +2,12 @@ package com.platform.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.presenter.ProcessListActivityPresenter;

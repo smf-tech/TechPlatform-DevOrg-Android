@@ -1,8 +1,9 @@
 package com.platform.widgets;
 
 import android.content.Context;
-import androidx.appcompat.widget.AppCompatSpinner;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatSpinner;
 
 public class PlatformSpinner extends AppCompatSpinner {
     public PlatformSpinner(Context context) {

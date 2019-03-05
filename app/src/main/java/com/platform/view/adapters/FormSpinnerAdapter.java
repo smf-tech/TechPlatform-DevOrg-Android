@@ -2,8 +2,6 @@ package com.platform.view.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,9 @@ import com.platform.R;
 import com.platform.models.forms.Choice;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
 

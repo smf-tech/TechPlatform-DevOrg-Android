@@ -1,14 +1,15 @@
 package com.platform.view.activities;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 
 import com.platform.R;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.FormFragment;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
 public class FormActivity extends BaseActivity {
 
