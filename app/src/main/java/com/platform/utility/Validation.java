@@ -10,15 +10,15 @@ public class Validation {
         if (validator.getMinValue() != null) {
             double fieldIntValue = Double.parseDouble(fieldValue);
             if ((fieldIntValue <= validator.getMinValue())) {
-                if (!TextUtils.isEmpty(validator.getText())) {
-                    return validator.getText();
+                if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                    return validator.getText().getLocaleValue();
                 } else {
                     return fieldName + " value should not be less than " + validator.getMinValue();
                 }
             } else if (validator.getMaxValue() != null) {
                 if (fieldIntValue >= validator.getMaxValue()) {
-                    if (!TextUtils.isEmpty(validator.getText())) {
-                        return validator.getText();
+                    if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                        return validator.getText().getLocaleValue();
                     } else {
                         return fieldName + " value should not be greater than " + validator.getMaxValue();
                     }
@@ -31,16 +31,16 @@ public class Validation {
     public static String editTextMinMaxLengthValidation(String fieldName, String fieldValue, Validator validator) {
         if (validator.getMinLength() != null) {
             if ((fieldValue.length() < validator.getMinLength())) {
-                if (!TextUtils.isEmpty(validator.getText())) {
-                    return validator.getText();
+                if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                    return validator.getText().getLocaleValue();
                 } else {
                     return fieldName + " length should not be less than " + validator.getMinLength();
                 }
             }
         } else if (validator.getMaxLength() != null) {
             if (fieldValue.length() > validator.getMaxLength()) {
-                if (!TextUtils.isEmpty(validator.getText())) {
-                    return validator.getText();
+                if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                    return validator.getText().getLocaleValue();
                 } else {
                     return fieldName + " value should not be greater than " + validator.getMaxLength();
                 }
