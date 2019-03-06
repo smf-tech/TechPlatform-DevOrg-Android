@@ -50,6 +50,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import static com.platform.utility.Constants.Notification.NOTIFICATION;
+
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -118,7 +120,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
-        loadHomePage();
+        boolean notificationClicked = getIntent()
+                .getBooleanExtra(NOTIFICATION, false);
+        if (notificationClicked) {
+            loadTeamsPage();
+        } else {
+            loadHomePage();
+        }
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {

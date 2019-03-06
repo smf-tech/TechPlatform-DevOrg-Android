@@ -173,6 +173,10 @@ public class Constants {
         public static final String IMAGE_TYPE_PROFILE = "profile";
     }
 
+    public class Notification {
+        public static final String NOTIFICATION = "notificationClicked";
+    }
+
     public class FormDynamicKeys {
         public static final String FORM_ID = "form_id";
         public static final String FORM_TITLE = "form_title";
