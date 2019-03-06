@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,6 +126,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
         if (!TextUtils.isEmpty(profileUrl)) {
             requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            userPic.setLayoutParams(params);
         }
         loadFromSDCard(userPic, profileUrl);
         Glide.with(this)

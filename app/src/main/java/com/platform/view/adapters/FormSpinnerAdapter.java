@@ -44,7 +44,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.text.setText(objects.get(position).getText());
+        viewHolder.text.setText(objects.get(position).getText().getLocaleValue());
 
         ViewGroup.LayoutParams p = convertView.getLayoutParams();
         p.height = 100; // set the height
@@ -67,7 +67,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.text.setText(objects.get(position).getText());
+        viewHolder.text.setText(objects.get(position).getText().getLocaleValue());
 
         ViewGroup.LayoutParams p = convertView.getLayoutParams();
         p.height = 100; // set the height

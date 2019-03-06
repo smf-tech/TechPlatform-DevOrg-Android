@@ -2,6 +2,7 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.LocaleData;
 
 @SuppressWarnings("unused")
 public class Validator {
@@ -10,7 +11,7 @@ public class Validator {
     private String type;
     @SerializedName("text")
     @Expose
-    private String text;
+    private LocaleData text;
     @SerializedName("minValue")
     @Expose
     private Integer minValue;
@@ -35,11 +36,11 @@ public class Validator {
         this.type = type;
     }
 
-    public String getText() {
+    public LocaleData getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(LocaleData text) {
         this.text = text;
     }
 

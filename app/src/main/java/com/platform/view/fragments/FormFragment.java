@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
+import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
@@ -166,7 +167,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @SuppressLint("ClickableViewAccessibility")
     private void initViews() {
-        setActionbar(formModel.getData().getName());
+        setActionbar(formModel.getData().getName().getLocaleValue());
         progressBarLayout = formFragmentView.findViewById(R.id.gen_frag_progress_bar);
         progressBar = formFragmentView.findViewById(R.id.pb_gen_form_fragment);
 
@@ -325,7 +326,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
         try {
             List<Choice> choiceValues = new ArrayList<>();
-            String text = "";
+            LocaleData text = null;
             String value = "";
             JSONObject outerObj = new JSONObject(result);
             JSONArray dataArray = outerObj.getJSONArray(Constants.RESPONSE_DATA);
@@ -336,12 +337,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
                         StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
                         JSONObject obj = innerObj.getJSONObject(titleTokenizer.nextToken());
-                        text = obj.getString(titleTokenizer.nextToken());
+                        text = (LocaleData) obj.get(titleTokenizer.nextToken());
                         //Ignore first value of valueToken
                         valueTokenizer.nextToken();
                         value = obj.getString(valueTokenizer.nextToken());
                     } else {
-                        text = innerObj.getString(elements.getChoicesByUrl().getTitleName());
+                        text = (LocaleData) innerObj.get(elements.getChoicesByUrl().getTitleName());
                         value = innerObj.getString(elements.getChoicesByUrl().getValueName());
                     }
                 }
@@ -435,7 +436,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.set_id(UUID.randomUUID().toString());
         result.setFormId(formData.getId());
         result.setFormCategory(formData.getCategory().getName());
-        result.setFormName(formData.getName());
+        result.setFormName(formData.getName().getLocaleValue());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
         result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
 
@@ -502,7 +503,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormData formData = formModel.getData();
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
-        result.setFormName(formData.getName());
+        result.setFormName(formData.getName().getLocaleValue());
         result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
 
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
