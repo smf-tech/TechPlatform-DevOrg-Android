@@ -977,19 +977,22 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
                     List<String> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
-                    boolean[] selectedValues = new boolean[this.talukas.size()];
-                    for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
-                        for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
-                            if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex))) {
-                                selectedValues[talukaIndex] = true;
-                                break;
-                            } else {
-                                selectedValues[talukaIndex] = false;
+                    if (talukaIds != null && talukaIds.size() > 0) {
+                        boolean[] selectedValues = new boolean[this.talukas.size()];
+                        for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
+                            for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
+                                if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex))) {
+                                    selectedValues[talukaIndex] = true;
+                                    break;
+                                } else {
+                                    selectedValues[talukaIndex] = false;
+                                }
                             }
                         }
+
+                        spTaluka.setSelectedValues(selectedValues);
+                        spTaluka.setPreFilledText();
                     }
-                    spTaluka.setSelectedValues(selectedValues);
-                    spTaluka.setPreFilledText();
                 }
                 break;
 
