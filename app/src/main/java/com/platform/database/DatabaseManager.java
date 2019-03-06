@@ -149,6 +149,11 @@ public class DatabaseManager {
         formResultDao.deleteAllFormResults();
     }
 
+    public void deleteAllSyncedFormResults() {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        formResultDao.deleteAllSyncedFormResults(SyncAdapterUtils.FormStatus.SYNCED);
+    }
+
     public List<Modules> getAllModules() {
         ModuleDao modulesDao = appDatabase.homeDao();
         return modulesDao.getAllModules();

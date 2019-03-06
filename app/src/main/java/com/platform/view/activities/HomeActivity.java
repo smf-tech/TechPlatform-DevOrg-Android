@@ -426,7 +426,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
-        Util.removeDatabaseRecords();
+        Util.removeDatabaseRecords(false);
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);

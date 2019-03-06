@@ -34,7 +34,7 @@ public interface FormResultDao {
     void deleteAllFormResults();
 
     @Query("DELETE FROM formresult where form_status = :sync")
-    void deleteAllNonSyncedFormResults(int sync);
+    void deleteAllSyncedFormResults(int sync);
 
     @Query("SELECT * FROM formresult WHERE form_status = :sync and result_id = :formId")
     FormResult getPartialForm(int sync, String formId);

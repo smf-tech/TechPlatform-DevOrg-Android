@@ -440,10 +440,15 @@ public class Util {
         }
     }
 
-    public static void removeDatabaseRecords() {
+    public static void removeDatabaseRecords(final boolean refreshData) {
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
-        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
-        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
+
+        if (refreshData) {
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllSyncedFormResults();
+        } else {
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
+        }
     }
 }
