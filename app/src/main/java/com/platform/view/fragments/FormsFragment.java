@@ -22,7 +22,7 @@ public class FormsFragment extends Fragment {
 
     private View formsFragmentView;
     @SuppressLint("StaticFieldLeak")
-    public static ViewPager viewPager;
+    static ViewPager viewPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +86,8 @@ public class FormsFragment extends Fragment {
                     break;
 
                 case 2:
-                    fragment = CompletedFormsFragment.newInstance();
+//                    fragment = CompletedFormsFragment.newInstance();
+                    fragment = SubmittedFormsFragment.newInstance();
                     break;
             }
 

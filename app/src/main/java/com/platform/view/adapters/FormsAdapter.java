@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
-class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
+public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     private Context mContext;
     private List<ProcessData> mProcessData;
@@ -42,7 +41,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
         TextView mName;
         TextView mDate;
         View indicatorView;
-        ImageButton mPinButton;
         ImageView mFormImage;
 
         ViewHolder(@NonNull View itemView) {
@@ -50,7 +48,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
             mRootView = itemView;
             mName = itemView.findViewById(R.id.form_title);
             mDate = itemView.findViewById(R.id.form_date);
-            mPinButton = itemView.findViewById(R.id.pin_button);
             indicatorView = itemView.findViewById(R.id.form_status_indicator);
             mFormImage = itemView.findViewById(R.id.form_image);
         }
@@ -66,8 +63,6 @@ class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-
-        viewHolder.mPinButton.setVisibility(View.GONE);
 
         // Set Indicator and icon
         Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
