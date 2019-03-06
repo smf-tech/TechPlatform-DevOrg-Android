@@ -5,11 +5,8 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformRequestCallListener;
-import com.platform.models.LocaleAdapter;
-import com.platform.models.LocaleData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
