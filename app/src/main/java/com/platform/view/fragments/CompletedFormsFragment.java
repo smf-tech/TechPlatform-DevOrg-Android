@@ -234,7 +234,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
             for (final ProcessData data : mDataList) {
                 if (data.getId().equals(formID)) {
-                    mFormList.put(data.getName(), list);
+                    mFormList.put(data.getName().getLocaleValue(), list);
                 }
             }
 
@@ -283,7 +283,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
             for (final ProcessData data : mDataList) {
                 if (data.getId().equals(formID)) {
-                    mFormList.put(data.getName(), list);
+                    mFormList.put(data.getName().getLocaleValue(), list);
                 }
             }
 

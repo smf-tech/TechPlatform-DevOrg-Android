@@ -116,7 +116,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
 
         if (convertView != null) {
             TextView processName = convertView.findViewById(R.id.pm_process_name_text);
-            processName.setText(process.getName());
+            processName.setText(process.getName().getLocaleValue());
             processName.setOnClickListener(view ->
                 listener.onProcessListItemClickListener(process));
         }

@@ -117,7 +117,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         if (processData != null) {
             ProcessData data = processData.get(childPosition);
 
-            ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().trim());
+            ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue().trim());
 
             if (groupPosition < mCountList.size()) {
                 String count = mCountList.get(data.getId());

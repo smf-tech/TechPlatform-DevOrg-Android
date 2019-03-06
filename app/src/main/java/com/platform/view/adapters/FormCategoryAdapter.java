@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
+import com.platform.models.LocaleData;
 import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
 import com.platform.syncAdapter.SyncAdapterUtils;
@@ -99,7 +100,9 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
         for (CompletedFormsFragment.ProcessDemoObject object : list) {
             ProcessData data = new ProcessData();
-            data.setName(object.getName());
+            LocaleData localeData = new LocaleData();
+            localeData.setLocaleValue(object.getName());
+            data.setName(localeData);
             data.setId(object.getId());
             data.setFormTitle(object.getFormTitle());
             Microservice microservice = new Microservice();

@@ -144,7 +144,7 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
             try {
                 Intent intent = new Intent(this, ProcessListActivity.class);
                 intent.putExtra(Constants.PM.PROCESS_ID, processData.getId());
-                intent.putExtra(Constants.PM.PROCESS_NAME, processData.getName());
+                intent.putExtra(Constants.PM.PROCESS_NAME, processData.getName().getLocaleValue());
                 startActivity(intent);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
