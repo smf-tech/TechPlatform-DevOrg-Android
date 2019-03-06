@@ -34,6 +34,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.customs.FormComponentCreator;
@@ -433,6 +434,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
+                            AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
+                                    formModel.getData().getName()));
+
                             Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
                             Objects.requireNonNull(getActivity()).onBackPressed();
@@ -504,6 +508,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
+            AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
             storePartiallySavedForm();
             getActivity().finish();
         });

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.utility.AppEvents;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
@@ -30,6 +31,8 @@ public class TMUserApprovalsFragment extends Fragment {
             ((HomeActivity) context).setActionBarTitle(title);
             ((HomeActivity) context).setSyncButtonVisibility(false);
         }
+
+        AppEvents.trackAppEvent(getString(R.string.event_approvals_screen_visit));
     }
 
     @Override

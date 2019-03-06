@@ -8,6 +8,9 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 import com.platform.BuildConfig;
+import com.platform.Platform;
+import com.platform.R;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -41,8 +44,14 @@ public class SmsReceiver extends BroadcastReceiver {
                             }
                         }
                     }
+                } else {
+                    AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
                 }
+            } else {
+                AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
             }
+        } else {
+            AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
         }
     }
 

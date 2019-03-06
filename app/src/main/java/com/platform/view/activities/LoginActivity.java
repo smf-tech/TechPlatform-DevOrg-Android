@@ -21,6 +21,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.LoginActivityPresenter;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
@@ -48,6 +49,8 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
         loginInfo = new LoginInfo();
         loginPresenter = new LoginActivityPresenter(this);
+
+        AppEvents.trackAppEvent(getString(R.string.event_login_screen_visit));
     }
 
     private void initViews() {
@@ -188,6 +191,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     public <T> void showNextScreen(T data) {
         if (data != null && ((Login) data).getLoginData() != null) {
             loginInfo.setOneTimePassword(String.valueOf(((Login) data).getLoginData().getOtp()));
+            AppEvents.trackAppEvent(getString(R.string.event_login_success));
 
             try {
                 Intent intent = new Intent(this, OtpActivity.class);
@@ -202,6 +206,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public void showErrorMessage(String result) {
         Util.showToast(result, this);
+        AppEvents.trackAppEvent(getString(R.string.event_login_failure));
     }
 
     private String getUserMobileNumber() {

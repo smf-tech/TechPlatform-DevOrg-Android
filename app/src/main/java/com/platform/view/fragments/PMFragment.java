@@ -23,6 +23,7 @@ import com.platform.models.forms.FormResult;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
@@ -65,6 +66,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         if (getActivity() != null) {
             ((HomeActivity) getActivity()).setSyncButtonVisibility(true);
         }
+
+        AppEvents.trackAppEvent(getString(R.string.event_forms_screen_visit));
     }
 
     @Override

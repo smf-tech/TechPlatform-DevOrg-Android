@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.platform.utility.Config;
 import com.platform.utility.Constants;
@@ -24,7 +25,9 @@ public class Platform extends Application {
 
     private final String TAG = Platform.class.getName();
     private static Platform mPlatformInstance;
+
     private RequestQueue mRequestQueue;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public static Platform getInstance() {
         return mPlatformInstance;
@@ -67,6 +70,13 @@ public class Platform extends Application {
         }
 
         return mRequestQueue;
+    }
+
+    public FirebaseAnalytics getFirebaseAnalyticsInstance() {
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        }
+        return mFirebaseAnalytics;
     }
 
     public String getAppMode() {
