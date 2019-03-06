@@ -140,13 +140,18 @@
     <string name="view_all_reports">View All Reports</string>
 
     <!--Team Management-->
+    <string name="cat_pending">Pending</string>
+    <string name="cat_approved">Approved</string>
+    <string name="cat_rejected">Rejected</string>
+    <string name="approvals">Approvals</string>
+    <string name="who_working">"Who's Working"</string>
     <string name="team_user_approval">User Approval</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>
-    <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>
+    <string name="msg_error_in_photo_gallery">Problem in taking photo from gallery, please use camera to take photo.</string>
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
-    <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
+    <string name="msg_take_photo_error">App do not have permission to take a photo, please allow it.</string>
 
     <!--Forms-->
     <string name="category_title">Category Title</string>

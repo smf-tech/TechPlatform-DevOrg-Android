@@ -35,4 +35,7 @@
     <color name="tab_disable">#DDDDDD</color>
     <color name="tab_disable_bg">#E3E3E3</color>
     <color name="partial_form_color">#9F9BFF</color>
+
+    <color name="approvals_tabs">#646262</color>
+    <color name="approvals_tabs_sel">#547AC4</color>
 </resources>

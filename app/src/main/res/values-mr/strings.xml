@@ -140,6 +140,11 @@
     <string name="view_all_reports">सर्व अहवाल पहा</string>
 
     <!--Team Management-->
+    <string name="cat_pending">प्रलंबित</string>
+    <string name="cat_approved">मंजूर</string>
+    <string name="cat_rejected">नाकारले</string>
+    <string name="approvals">मंजूरी</string>
+    <string name="who_working">कोण कार्यरत आहे</string>
     <string name="team_user_approval">वापरकर्ता मंजूरी</string>
 
     <!--App Error Message-->

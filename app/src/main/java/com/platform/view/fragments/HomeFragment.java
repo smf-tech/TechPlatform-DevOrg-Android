@@ -137,6 +137,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+            viewPager.setOffscreenPageLimit(3);
             setupViewPager(viewPager);
 
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
@@ -199,6 +200,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+            viewPager.setOffscreenPageLimit(3);
             setupViewPager(viewPager);
 
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);

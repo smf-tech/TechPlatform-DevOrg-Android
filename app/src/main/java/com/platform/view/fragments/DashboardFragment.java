@@ -107,6 +107,7 @@ public class DashboardFragment extends Fragment {
 
     private void initViews() {
         ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(4);
         setupViewPager(viewPager);
 
         tabLayout = dashboardView.findViewById(R.id.tabs);
@@ -136,7 +137,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(new TMFragment());
+                    adapter.addFragment(new TMUserPendingFragment());
                     break;
 
                 case Constants.Home.REPORTS:

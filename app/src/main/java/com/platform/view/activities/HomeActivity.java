@@ -33,11 +33,11 @@ import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
+import com.platform.view.fragments.TMUserApprovalsFragment;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.MeetingsFragment;
 import com.platform.view.fragments.ReportsFragment;
-import com.platform.view.fragments.TMFragment;
 
 import java.io.File;
 import java.util.List;
@@ -187,7 +187,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadTeamsPage() {
-        Util.launchFragment(new TMFragment(), this, getString(R.string.team_management));
+        Util.launchFragment(new TMUserApprovalsFragment(), this, getString(R.string.approvals));
     }
 
     private void loadReportsPage() {
