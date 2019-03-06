@@ -27,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -156,10 +155,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             String id = data.getId();
             mDataList.add(data);
 
-            List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
+            List<String> response = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext())
+                    .getApplicationContext())
                     .getAllFormResults(id, SyncAdapterUtils.FormStatus.SYNCED);
-            response.addAll(DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext())
+
+            response.addAll(DatabaseManager.getDBInstance(Objects.requireNonNull(getContext())
+                    .getApplicationContext())
                     .getAllFormResults(id, SyncAdapterUtils.FormStatus.UN_SYNCED));
+
             if (!response.isEmpty()) {
                 processFormResultResponse(response);
             } else {
@@ -176,7 +179,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     private void processFormResultResponse(final String response) {
-
         ArrayList<ProcessDemoObject> list = new ArrayList<>();
         String formID = "";
 
@@ -209,23 +211,25 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
 
                     JSONObject obj = (JSONObject) values.get(i);
-                    if (obj == null) return;
-
+                    if (obj == null) {
+                        return;
+                    }
 
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
                             .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
+
                     if (!localFormResults.contains(obj.toString())) {
                         result.setResult(obj.toString());
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
                     }
-
                 }
 
                 if (formID == null) {
                     JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
                     if (metadata != null && metadata.length() > 0) {
                         JSONObject metadataObj = metadata.getJSONObject(0);
-                        formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.FORM_ID);
+                        formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                                .getString(Constants.FormDynamicKeys.FORM_ID);
                     }
                 }
             } else {
@@ -295,20 +299,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             } else {
                 mNoRecordsView.setVisibility(View.VISIBLE);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
     private boolean isFormOneMonthOld(final String updatedAt) {
-        /*if (Build.VERSION.SDK_INT >= 26) {
-            LocalDate formDate = LocalDate.parse(updatedAt);
-            LocalDate days30 = LocalDate.now().minusDays(30);
-
-            return formDate.isBefore(days30);
-
-        }*/
-
         Date eventStartDate;
         DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         try {
@@ -317,8 +313,8 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
             calendar.add(Calendar.DAY_OF_MONTH, -30);
             Date days30 = calendar.getTime();
             return eventStartDate.before(days30);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
 
         return false;

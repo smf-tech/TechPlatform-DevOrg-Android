@@ -34,11 +34,11 @@ import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
-import com.platform.view.fragments.TMUserApprovalsFragment;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.MeetingsFragment;
 import com.platform.view.fragments.ReportsFragment;
+import com.platform.view.fragments.TMUserApprovalsFragment;
 
 import java.io.File;
 import java.util.List;

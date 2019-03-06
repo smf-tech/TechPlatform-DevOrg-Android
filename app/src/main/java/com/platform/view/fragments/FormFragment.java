@@ -126,9 +126,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     List<String> formResults;
                     if (mIsPartiallySaved) {
                         String formId = getArguments().getString(Constants.PM.FORM_ID);
-                        formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(formId, SyncAdapterUtils.FormStatus.PARTIAL);
+                        formResults = DatabaseManager.getDBInstance(getActivity())
+                                .getAllFormResults(formId, SyncAdapterUtils.FormStatus.PARTIAL);
                     } else {
-                        formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId, SyncAdapterUtils.FormStatus.SYNCED);
+                        formResults = DatabaseManager.getDBInstance(getActivity())
+                                .getAllFormResults(processId, SyncAdapterUtils.FormStatus.SYNCED);
                     }
                     if (formResults != null && !formResults.isEmpty()) {
                         getFormDataAndParse(formResults);
@@ -172,7 +174,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         progressBar = formFragmentView.findViewById(R.id.pb_gen_form_fragment);
 
         Components components = formModel.getData().getComponents();
-        if (components == null) return;
+        if (components == null) {
+            return;
+        }
 
         formDataArrayList = components.getPages().get(0).getElements();
 
@@ -305,7 +309,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         initViews();
 
         if (mIsInEditMode) {
-            List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);
+            List<String> formResults = DatabaseManager.getDBInstance(getActivity())
+                    .getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);
+
             if (formResults != null && !formResults.isEmpty()) {
                 getFormDataAndParse(formResults);
             } else {
@@ -330,8 +336,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             String value = "";
             JSONObject outerObj = new JSONObject(result);
             JSONArray dataArray = outerObj.getJSONArray(Constants.RESPONSE_DATA);
+
             for (int index = 0; index < dataArray.length(); index++) {
                 JSONObject innerObj = dataArray.getJSONObject(index);
+
                 if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
                     if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
                         StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
@@ -366,9 +374,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     }
                 }
             }
+
             elements.setChoices(choiceValues);
             formComponentCreator.updateDropDownValues(elements, choiceValues);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
     }
@@ -403,16 +412,20 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         }
 
                         if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url, formModel.getData().getId(), oid);
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url,
+                                    formModel.getData().getId(), oid);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url, formModel.getData().getId(), null);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
+                                    formModel.getData().getId(), null);
                         }
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null, formModel.getData().getId(), null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
+                                        null, formModel.getData().getId(), null);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null, formModel.getData().getId(), null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
+                                        null, formModel.getData().getId(), null);
                             }
 
                             saveFormToLocalDatabase();
