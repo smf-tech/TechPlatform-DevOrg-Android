@@ -41,10 +41,6 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
     public void onSuccessListener(String response) {
         Log.i(TAG, "Success: " + response);
         fragmentWeakReference.get().hideProgressBar();
-//        GsonBuilder builder = new GsonBuilder();
-//        builder.registerTypeAdapter(LocaleData.class, new LocaleAdapter());
-//        Gson gson = builder.create();
-
         Processes data = new Gson().fromJson(response, Processes.class);
         fragmentWeakReference.get().showNextScreen(data);
     }
