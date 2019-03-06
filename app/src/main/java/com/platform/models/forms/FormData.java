@@ -3,6 +3,7 @@ package com.platform.models.forms;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
@@ -26,10 +27,11 @@ public class FormData {
     @Expose
     private String id = "";
 
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    private String name;
+    private LocaleData name;
 
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "components")
@@ -93,11 +95,11 @@ public class FormData {
         this.id = id;
     }
 
-    public String getName() {
+    public LocaleData getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LocaleData name) {
         this.name = name;
     }
 

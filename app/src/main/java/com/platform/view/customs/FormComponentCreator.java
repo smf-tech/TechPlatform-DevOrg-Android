@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
+import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Validator;
@@ -71,14 +72,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         RadioGroup radioGroupForm = radioTemplateView.findViewById(R.id.rg_form_template);
         TextView txtRadioGroupName = radioTemplateView.findViewById(R.id.txt_form_radio_group_name);
-        if (!TextUtils.isEmpty(formData.getTitle())) {
-            if (!TextUtils.isEmpty(formData.getTitle())) {
+        if (formData.getTitle() != null) {
+            if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
                 if (formData.isRequired() != null) {
                     txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
+                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(formData.isRequired())));
                 } else {
                     txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle(), setFieldAsMandatory(false)));
+                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(false)));
                 }
             }
         }
@@ -86,7 +87,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
-                radioButtonForm.setText(formData.getChoices().get(index).getText());
+                radioButtonForm.setText(formData.getChoices().get(index).getText().getLocaleValue());
                 radioButtonForm.setId(index);
                 radioGroupForm.addView(radioButtonForm);
 
@@ -186,8 +187,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 textInputField.setText(formData.getAnswer());
             }
 
-            if (!TextUtils.isEmpty(formData.getTitle())) {
-                textInputField.setTag(formData.getTitle());
+            if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
+                textInputField.setTag(formData.getTitle().getLocaleValue());
             }
 
             if (!TextUtils.isEmpty(formData.getInputType())) {
@@ -224,9 +225,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
             if (formData.isRequired() != null) {
-                textInputLayout.setHint(formData.getTitle() + setFieldAsMandatory(formData.isRequired()));
+                textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(formData.isRequired()));
             } else {
-                textInputLayout.setHint(formData.getTitle() + setFieldAsMandatory(false));
+                textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(false));
             }
         }
         return textTemplateView;
@@ -276,13 +277,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         imageView.setOnClickListener(v -> onAddImageClick(v, formData.getName()));
 
         TextView txtFileName = fileTemplateView.findViewById(R.id.txt_file_name);
-        if (!TextUtils.isEmpty(formData.getTitle())) {
-            if (formData.isRequired() != null) {
-                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                        formData.getTitle(), setFieldAsMandatory(formData.isRequired())));
-            } else {
-                txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                        formData.getTitle(), setFieldAsMandatory(false)));
+        if (formData.getTitle() != null) {
+            if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
+                if (formData.isRequired() != null) {
+                    txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(formData.isRequired())));
+                } else {
+                    txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
+                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(false)));
+                }
             }
         }
 
@@ -362,7 +365,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.isRequired() != null) {
 
                 if (dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) {
-                    errorMsg = Validation.requiredValidation(formData.getTitle(),
+                    errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
                             "", formData.isRequired());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
@@ -431,7 +434,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                                             !TextUtils.isEmpty(parentInnerObj.getString(parentElementName)) &&
                                             dependentInnerObj.getString(parentElementName).equals(parentInnerObj.getString(parentElementName))) {
 
-                                        String choiceText = "";
+                                        LocaleData choiceText = null;
                                         String choiceValue = "";
 
                                         if (parentElement.getChoicesByUrl() != null &&
@@ -452,20 +455,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                                                 String valueStrNext = valueTokenizer.nextToken();
                                                 if (dObj.getString(valueStrNext).equals(value)) {
-                                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                                    choiceText = (LocaleData) dependentInnerObj.get(dependentElement.getChoicesByUrl().getTitleName());
                                                     choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
                                                 }
                                             } else {
                                                 String valueStr = dependentInnerObj.getString(parentElement.getChoicesByUrl().getValueName());
 
                                                 if (valueStr.equals(value)) {
-                                                    choiceText = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getTitleName());
+                                                    choiceText = (LocaleData) dependentInnerObj.get(dependentElement.getChoicesByUrl().getTitleName());
                                                     choiceValue = dependentInnerObj.getString(dependentElement.getChoicesByUrl().getValueName());
                                                 }
                                             }
                                         }
 
-                                        if (!TextUtils.isEmpty(choiceText)) {
+                                        if (!TextUtils.isEmpty(choiceValue)) {
                                             Choice choice = new Choice();
                                             choice.setText(choiceText);
                                             choice.setValue(choiceValue);
