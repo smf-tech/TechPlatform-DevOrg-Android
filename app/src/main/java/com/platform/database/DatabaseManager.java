@@ -132,6 +132,11 @@ public class DatabaseManager {
         return formResultDao.getAllFormResults(formId, formStatus);
     }
 
+    public List<String> getAllFormResults(String formId) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        return formResultDao.getAllFormResults(formId);
+    }
+
     public void insertFormResult(FormResult result) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         formResultDao.insertAll(result);

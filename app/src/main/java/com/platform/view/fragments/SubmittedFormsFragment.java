@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
+import com.platform.models.LocaleData;
 import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
@@ -118,13 +119,16 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             processMap.put(SyncAdapterUtils.SYNCING_PENDING, list);
             processCategoryList.add(SyncAdapterUtils.SYNCING_PENDING);
-        } else {
+        }
+        /*else {
             // FIXME: 06-03-2019 Remove this code block
             List<ProcessData> list = new ArrayList<>();
             ProcessData object = new ProcessData();
             object.setId(UUID.randomUUID().toString());
             object.setFormTitle("Title 1");
-            object.setName("Title 1");
+            LocaleData name = new LocaleData();
+            name.setLocaleValue("Title 1");
+            object.setName(name);
             Microservice microservice = new Microservice();
             microservice.setUpdatedAt(Util.getFormattedDate(new Date().toString()));
             object.setMicroservice(microservice);
@@ -132,7 +136,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             processMap.put(SyncAdapterUtils.SYNCING_PENDING, list);
             processCategoryList.add(SyncAdapterUtils.SYNCING_PENDING);
-        }
+        }*/
     }
 
     private void populateData(Processes process) {
@@ -162,7 +166,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
 
-
             for (int index = 0; index < processMap.size(); index++) {
                 if (processMap != null && !TextUtils.isEmpty(processCategoryList.get(index)) &&
                         processMap.get(processCategoryList.get(index)) != null) {
@@ -190,7 +193,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             ProcessData object = new ProcessData();
                             object.setId(formResult.formID);
                             object.setFormTitle(formResult.formTitle);
-                            object.setName(formResult.formTitle);
+                            LocaleData localeData = new LocaleData();
+                            localeData.setLocaleValue(formResult.formTitle);
+                            object.setName(localeData);
                             Microservice microservice = new Microservice();
                             microservice.setUpdatedAt(formResult.updatedDateTime);
                             object.setMicroservice(microservice);
@@ -262,7 +267,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         ImageView formImage = view.findViewById(R.id.form_image);
         formImage.setImageTintList(tintColor);
         view.findViewById(R.id.form_status_indicator).setBackground(drawable);
-        ((TextView) view.findViewById(R.id.form_title)).setText(data.getName());
+        ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue());
 
         view.setOnClickListener(v -> {
             if (categoryName.equals(SyncAdapterUtils.SYNCING_PENDING)) return;

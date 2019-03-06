@@ -59,6 +59,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.app.Activity.RESULT_OK;
 import static com.platform.view.fragments.FormsFragment.viewPager;
+import static com.soundcloud.android.crop.Crop.REQUEST_CROP;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
@@ -166,7 +167,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @SuppressLint("ClickableViewAccessibility")
     private void initViews() {
-        setActionbar(formModel.getData().getName());
+        setActionbar(formModel.getData().getName().getLocaleValue());
         progressBarLayout = formFragmentView.findViewById(R.id.gen_frag_progress_bar);
         progressBar = formFragmentView.findViewById(R.id.pb_gen_form_fragment);
 
@@ -688,7 +689,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                Crop.of(outputUri, finalUri).asSquare().start(getActivity(), REQUEST_CROP);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -700,12 +701,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                    Crop.of(outputUri, finalUri).asSquare().start(getActivity(), REQUEST_CROP);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));

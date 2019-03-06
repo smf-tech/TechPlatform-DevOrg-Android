@@ -65,7 +65,7 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
 
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);
-            viewHolder.mName.setText(savedForm.getFormName());
+            viewHolder.mName.setText(savedForm.getFormName().getLocaleValue());
 
             if (!TextUtils.isEmpty(savedForm.getCreatedAt())) {
                 String formattedDate = getFormattedDate(savedForm.getCreatedAt(), FORM_DATE_FORMAT);

@@ -185,16 +185,19 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     @Override
     public void onFailureListener(String message) {
-        profileActivity.get().hideProgressBar();
-        profileActivity.get().showErrorMessage(message);
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            profileActivity.get().showErrorMessage(message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        profileActivity.get().hideProgressBar();
-
-        if (error != null) {
-            profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            if (error != null) {
+                profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+            }
         }
     }
 

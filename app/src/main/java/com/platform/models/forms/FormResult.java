@@ -2,11 +2,14 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity
 @SuppressWarnings("unused")
@@ -32,8 +35,9 @@ public class FormResult {
     @ColumnInfo(name = "result")
     private String result;
 
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "form_name")
-    private String formName;
+    private LocaleData formName;
 
     @ColumnInfo(name = "form_status")
     private int mFormStatus;
@@ -72,11 +76,11 @@ public class FormResult {
         this.result = result;
     }
 
-    public String getFormName() {
+    public LocaleData getFormName() {
         return formName;
     }
 
-    public void setFormName(final String formName) {
+    public void setFormName(final LocaleData formName) {
         this.formName = formName;
     }
 
