@@ -122,7 +122,7 @@
     <string name="locked">Locked</string>
 
     <!--Home-->
-    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_dashboard">Home</string>
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
