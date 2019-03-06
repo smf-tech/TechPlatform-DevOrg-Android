@@ -2,6 +2,7 @@ package com.platform.database;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.platform.models.LocaleData;
 import com.platform.models.common.Category;
 import com.platform.models.common.Microservice;
 import com.platform.models.forms.Components;
@@ -77,6 +78,30 @@ public class DataConverter implements Serializable {
         Type type = new TypeToken<Microservice>() {
         }.getType();
         return gson.fromJson(microservice, type);
+    }
+
+    @TypeConverter // note this annotation
+    public String fromLocaleData(LocaleData localeData) {
+        if (localeData == null) {
+            return (null);
+        }
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<LocaleData>() {
+        }.getType();
+        return gson.toJson(localeData, type);
+    }
+
+    @TypeConverter // note this annotation
+    public LocaleData toLocaleData(String localeData) {
+        if (localeData == null) {
+            return (null);
+        }
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<LocaleData>() {
+        }.getType();
+        return gson.fromJson(localeData, type);
     }
 
 }

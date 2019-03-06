@@ -75,9 +75,9 @@ public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> 
         viewHolder.indicatorView.setBackground(drawable);
 
         ProcessData processData = mProcessData.get(i);
-        viewHolder.mName.setText(processData.getName());
+        viewHolder.mName.setText(processData.getName().getLocaleValue());
 
-        if (!processData.getName().equals(mContext.getString(R.string.forms_are_not_available))) {
+        if (!processData.getName().getLocaleValue().equals(mContext.getString(R.string.forms_are_not_available))) {
             if (processData.getMicroservice() != null
                     && processData.getMicroservice().getUpdatedAt() != null) {
                 String formattedDate = Util.getFormattedDate(processData.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
@@ -95,7 +95,7 @@ public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> 
                 return;
             }
 
-            formID = mProcessData.get(i).getName();
+            formID = mProcessData.get(i).getName().getLocaleValue();
             processID = mProcessData.get(i).getId();
 
             Intent intent = new Intent(mContext, FormActivity.class);

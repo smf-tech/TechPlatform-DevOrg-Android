@@ -228,9 +228,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
         for (ProcessData data : childList) {
-            if (!TextUtils.isEmpty(data.getName())) {
+            if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
                 View formTypeView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
-                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().trim());
+                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().getLocaleValue().trim());
 
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
