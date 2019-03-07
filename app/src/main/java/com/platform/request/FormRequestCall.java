@@ -91,7 +91,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                postUrl + "/" + formId + "/" + oid,
+                postUrl + "/" + oid,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
