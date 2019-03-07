@@ -56,16 +56,20 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (pendingFragmentPresenter == null) {
+            pendingFragmentPresenter = new PendingFragmentPresenter(this);
+        }
+
+        pendingFragmentPresenter.getAllPendingRequests();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pendingFragmentPresenter = new PendingFragmentPresenter(this);
-        pendingFragmentPresenter.getAllPendingRequests();
-
-        init();
-    }
-
-    private void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);

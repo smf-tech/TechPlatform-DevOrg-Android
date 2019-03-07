@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.TMApprovedRequestCallListener;
+import com.platform.listeners.TMRejectedRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
@@ -21,22 +21,22 @@ import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 
-public class TMApprovedRequestCall {
+public class TMRejectedRequestCall {
 
-    private TMApprovedRequestCallListener listener;
-    private final String TAG = TMApprovedRequestCall.class.getName();
+    private TMRejectedRequestCallListener listener;
+    private final String TAG = TMRejectedRequestCall.class.getName();
 
-    public void setListener(TMApprovedRequestCallListener listener) {
+    public void setListener(TMRejectedRequestCallListener listener) {
         this.listener = listener;
     }
 
-    public void getAllApprovedRequests() {
+    public void getAllRejectedRequests() {
         Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getAllRejectedRequests - Resp: " + res);
-                    listener.onApprovedRequestsFetched(res);
+                    listener.onRejectedRequestsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -47,7 +47,7 @@ public class TMApprovedRequestCall {
         Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_APPROVED_REQUESTS;
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_REJECTED_REQUESTS;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

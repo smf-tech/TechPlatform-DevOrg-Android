@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.tm.PendingRequest;
-import com.platform.presenter.ApprovedFragmentPresenter;
+import com.platform.presenter.RejectedFragmentPresenter;
 import com.platform.utility.Constants;
 
 import java.util.List;
@@ -17,17 +17,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
-public class TMApprovedAdapter extends RecyclerView.Adapter<TMApprovedAdapter.ApprovedRequestViewHolder> {
+public class TMRejectedAdapter extends RecyclerView.Adapter<TMRejectedAdapter.RejectedRequestViewHolder> {
 
     private List<PendingRequest> pendingRequestList;
-    private ApprovedFragmentPresenter approvedFragmentPresenter;
+    private RejectedFragmentPresenter rejectedFragmentPresenter;
 
-    class ApprovedRequestViewHolder extends RecyclerView.ViewHolder {
+    class RejectedRequestViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtRequestTitle, txtRequestCreatedAt;
         ImageView ivApprove, ivReject;
 
-        ApprovedRequestViewHolder(View view) {
+        RejectedRequestViewHolder(View view) {
             super(view);
 
             txtRequestTitle = view.findViewById(R.id.txt_pending_request_title);
@@ -37,39 +37,39 @@ public class TMApprovedAdapter extends RecyclerView.Adapter<TMApprovedAdapter.Ap
         }
     }
 
-    public TMApprovedAdapter(List<PendingRequest> pendingRequestList, ApprovedFragmentPresenter presenter) {
+    public TMRejectedAdapter(List<PendingRequest> pendingRequestList, RejectedFragmentPresenter presenter) {
         this.pendingRequestList = pendingRequestList;
-        this.approvedFragmentPresenter = presenter;
+        this.rejectedFragmentPresenter = presenter;
     }
 
     @NonNull
     @Override
-    public ApprovedRequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RejectedRequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_pending_requests_card_view, parent, false);
 
-        return new ApprovedRequestViewHolder(itemView);
+        return new RejectedRequestViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ApprovedRequestViewHolder approvedRequestViewHolder, int position) {
+    public void onBindViewHolder(@NonNull RejectedRequestViewHolder rejectedRequestViewHolder, int position) {
 
         PendingRequest pendingRequest = pendingRequestList.get(position);
 
-        approvedRequestViewHolder.txtRequestTitle.setText(String.format("%s",
+        rejectedRequestViewHolder.txtRequestTitle.setText(String.format("%s",
                 pendingRequest.getEntity().getUserInfo().getUserName()));
 
-        approvedRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s",
+        rejectedRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s",
                 pendingRequest.getCreatedDateTime()));
 
-        approvedRequestViewHolder.ivApprove.setVisibility(View.GONE);
-        approvedRequestViewHolder.ivApprove.setOnClickListener(
-                v -> approvedFragmentPresenter
+        rejectedRequestViewHolder.ivApprove.setVisibility(View.GONE);
+        rejectedRequestViewHolder.ivApprove.setOnClickListener(
+                v -> rejectedFragmentPresenter
                         .approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
 
-        approvedRequestViewHolder.ivReject.setVisibility(View.GONE);
-        approvedRequestViewHolder.ivReject.setOnClickListener(
-                v -> approvedFragmentPresenter
+        rejectedRequestViewHolder.ivReject.setVisibility(View.GONE);
+        rejectedRequestViewHolder.ivReject.setOnClickListener(
+                v -> rejectedFragmentPresenter
                         .approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
     }
 
