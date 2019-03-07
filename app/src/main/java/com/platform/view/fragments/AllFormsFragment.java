@@ -128,7 +128,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
 
         for (ProcessData data : json.getData()) {
-            String categoryName = data.getCategory().getName();
+            String categoryName = data.getCategory().getName().getLocaleValue();
             if (mChildList.containsKey(categoryName)) {
                 List<ProcessData> processData = mChildList.get(categoryName);
                 if (processData != null) {

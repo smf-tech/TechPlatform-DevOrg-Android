@@ -30,7 +30,6 @@ public class FormData {
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "name")
     @SerializedName("name")
-    @TypeConverters(DataConverter.class)
     @Expose
     private LocaleData name;
 

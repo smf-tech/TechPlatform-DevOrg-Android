@@ -100,7 +100,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
         for (CompletedFormsFragment.ProcessDemoObject object : list) {
             ProcessData data = new ProcessData();
-            LocaleData localeData = new LocaleData();
+            LocaleData localeData = new LocaleData(object.getName());
             localeData.setLocaleValue(object.getName());
             data.setName(localeData);
             data.setId(object.getId());

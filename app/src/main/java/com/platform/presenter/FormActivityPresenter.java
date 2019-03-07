@@ -12,6 +12,7 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.listeners.ImageRequestCallListener;
+import com.platform.models.LocaleData;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
@@ -22,6 +23,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import org.json.JSONException;
@@ -180,7 +182,11 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onSuccessListener(String response) {
         if (!TextUtils.isEmpty(response)) {
-            Form form = new Gson().fromJson(response, Form.class);
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+            Gson gson = builder.create();
+
+            Form form = gson.fromJson(response, Form.class);
             if (form != null && form.getData() != null) {
 
                 DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());

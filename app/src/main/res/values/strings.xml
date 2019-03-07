@@ -178,6 +178,7 @@
 
 
     <!--App Events-->
+    <string name="event_title" translatable="false">Event_Title</string>
     <string name="event_login_success" translatable="false">Login Success</string>
     <string name="event_login_failure" translatable="false">Login Failure</string>
     <string name="event_auto_read_success" translatable="false">SMS auto read success</string>

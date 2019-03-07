@@ -186,7 +186,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
             for (ProcessData data : process.getData()) {
                 if (data != null && data.getCategory() != null) {
-                    String categoryName = data.getCategory().getName();
+                    String categoryName = data.getCategory().getName().getLocaleValue();
                     if (!TextUtils.isEmpty(categoryName)) {
                         if (processMap.containsKey(categoryName)) {
                             List<ProcessData> processData = processMap.get(categoryName);

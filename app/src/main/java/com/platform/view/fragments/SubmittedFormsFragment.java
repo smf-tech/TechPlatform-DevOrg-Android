@@ -40,7 +40,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -110,7 +109,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 ProcessData object = new ProcessData();
                 object.setId(formResult.getFormId());
                 object.setFormTitle(formResult.getFormTitle());
-                object.setName(formResult.getFormName());
+                object.setName(new LocaleData(formResult.getFormName()));
                 Microservice microservice = new Microservice();
                 microservice.setUpdatedAt(formResult.getCreatedAt());
                 object.setMicroservice(microservice);
@@ -147,8 +146,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             setPendingForms();
 
             for (ProcessData data : process.getData()) {
-                if (data != null && data.getCategory() != null && !TextUtils.isEmpty(data.getCategory().getName())) {
-                    String categoryName = data.getCategory().getName();
+                if (data != null && data.getCategory() != null && !TextUtils.isEmpty(data.getCategory().getName().getLocaleValue())) {
+                    String categoryName = data.getCategory().getName().getLocaleValue();
                     if (processMap.containsKey(categoryName) && processMap.get(categoryName) != null) {
                         List<ProcessData> processData = processMap.get(categoryName);
                         processData.add(data);
@@ -193,9 +192,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             ProcessData object = new ProcessData();
                             object.setId(formResult.formID);
                             object.setFormTitle(formResult.formTitle);
-                            LocaleData localeData = new LocaleData();
-                            localeData.setLocaleValue(formResult.formTitle);
-                            object.setName(localeData);
+                            object.setName(new LocaleData(formResult.formTitle));
                             Microservice microservice = new Microservice();
                             microservice.setUpdatedAt(formResult.updatedDateTime);
                             object.setMicroservice(microservice);
@@ -280,7 +277,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             getContext().startActivity(intent);
         });
 
-        if (!data.getName().equals(getContext().getString(R.string.forms_are_not_available))) {
+        if (!data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
             if (data.getMicroservice() != null
                     && data.getMicroservice().getUpdatedAt() != null) {
                 String formattedDate = Util.getFormattedDate(

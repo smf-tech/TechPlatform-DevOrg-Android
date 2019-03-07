@@ -79,7 +79,7 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
             childList.clear();
 
             for (ProcessData data : process.getData()) {
-                String categoryName = data.getCategory().getName();
+                String categoryName = data.getCategory().getName().getLocaleValue();
                 if (childList.containsKey(categoryName)) {
                     List<ProcessData> processData = childList.get(categoryName);
                     if (processData != null) {

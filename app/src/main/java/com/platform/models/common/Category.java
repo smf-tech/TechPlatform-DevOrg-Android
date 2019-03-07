@@ -2,6 +2,10 @@ package com.platform.models.common;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
+
+import androidx.room.TypeConverters;
 
 @SuppressWarnings("unused")
 public class Category {
@@ -9,9 +13,11 @@ public class Category {
     @SerializedName("_id")
     @Expose
     private String id;
+
+    @TypeConverters(DataConverter.class)
     @SerializedName("name")
     @Expose
-    private String name;
+    private LocaleData name;
 
     public String getId() {
         return id;
@@ -21,11 +27,11 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
+    public LocaleData getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LocaleData name) {
         this.name = name;
     }
 }
