@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.TMPendingRequestCallListener;
+import com.platform.listeners.TMApprovedRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
@@ -21,22 +21,22 @@ import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 
-public class TMRequestCall {
+public class TMApprovedRequestCall {
 
-    private TMPendingRequestCallListener listener;
-    private final String TAG = TMRequestCall.class.getName();
+    private TMApprovedRequestCallListener listener;
+    private final String TAG = TMApprovedRequestCall.class.getName();
 
-    public void setListener(TMPendingRequestCallListener listener) {
+    public void setListener(TMApprovedRequestCallListener listener) {
         this.listener = listener;
     }
 
-    public void getAllPendingRequests() {
+    public void getAllApprovedRequests() {
         Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "getAllPendingRequests - Resp: " + res);
-                    listener.onPendingRequestsFetched(res);
+                    Log.d(TAG, "getAllApprovedRequests - Resp: " + res);
+                    listener.onApprovedRequestsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -47,7 +47,7 @@ public class TMRequestCall {
         Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_PENDING_REQUESTS;
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_APPROVED_REQUESTS;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

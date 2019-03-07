@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.platform.listeners.TMPendingRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
-import com.platform.request.TMRequestCall;
+import com.platform.request.TMPendingRequestCall;
 import com.platform.view.fragments.TMUserPendingFragment;
 
 import java.lang.ref.WeakReference;
@@ -24,7 +24,7 @@ public class PendingFragmentPresenter implements TMPendingRequestCallListener {
     }
 
     public void getAllPendingRequests() {
-        TMRequestCall requestCall = new TMRequestCall();
+        TMPendingRequestCall requestCall = new TMPendingRequestCall();
         requestCall.setListener(this);
 
         fragmentWeakReference.get().showProgressBar();
@@ -32,7 +32,7 @@ public class PendingFragmentPresenter implements TMPendingRequestCallListener {
     }
 
     public void approveRejectRequest(String requestStatus, PendingRequest pendingRequest) {
-        TMRequestCall requestCall = new TMRequestCall();
+        TMPendingRequestCall requestCall = new TMPendingRequestCall();
         requestCall.setListener(this);
 
         fragmentWeakReference.get().showProgressBar();

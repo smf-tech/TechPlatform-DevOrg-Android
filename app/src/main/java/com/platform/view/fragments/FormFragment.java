@@ -341,7 +341,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         try {
             Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
             List<Choice> choiceValues = new ArrayList<>();
-            LocaleData text = null;
+            LocaleData text;
             String value = "";
 
             GsonBuilder builder = new GsonBuilder();
@@ -358,10 +358,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
                         JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
 
+                        String title = titleTokenizer.nextToken();
                         try {
-                            text = gson.fromJson(obj.get(titleTokenizer.nextToken()).getAsString(), LocaleData.class);
+                            text = gson.fromJson(obj.get(title).getAsString(), LocaleData.class);
                         } catch (Exception e) {
-                            text = new LocaleData(obj.get(titleTokenizer.nextToken()).getAsString());
+                            text = new LocaleData(obj.get(title).getAsString());
                         }
                         //Ignore first value of valueToken
                         valueTokenizer.nextToken();
@@ -372,31 +373,30 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         } catch (Exception e) {
                             text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
                         }
-                        value = innerObj.get(elements.getChoicesByUrl().getValueName()).getAsString();
                     }
-                }
 
-                Choice choice = new Choice();
-                choice.setText(text);
-                choice.setValue(value);
+                    Choice choice = new Choice();
+                    choice.setText(text);
+                    choice.setValue(value);
 
-                if (choiceValues.size() == 0) {
-                    choiceValues.add(choice);
-                } else {
-                    boolean isFound = false;
-                    for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
-                        if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
-                            isFound = true;
-                            break;
+                    if (choiceValues.size() == 0) {
+                        choiceValues.add(choice);
+                    } else {
+                        boolean isFound = false;
+                        for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                            if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                                isFound = true;
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            choiceValues.add(choice);
                         }
                     }
-                    if (!isFound) {
-                        choiceValues.add(choice);
-                    }
                 }
+                elements.setChoices(choiceValues);
+                formComponentCreator.updateDropDownValues(elements, choiceValues);
             }
-            elements.setChoices(choiceValues);
-            formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()");
         }
@@ -655,7 +655,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
 
-    private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
+    private void parseSchemaAndFormDetails(final JSONObject object,
+                                           final List<Elements> elements) {
         if (object == null || elements == null || elements.size() == 0) return;
 
         HashMap<String, String> requestedObject = new HashMap<>();
