@@ -201,9 +201,8 @@ public class DashboardFragment extends Fragment {
 
             RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
-            tabOne.setText(tabNames.get(i).getName().getLocaleValue());
             TextView tabView = tabOne.findViewById(R.id.tab);
-            tabView.setText(tabNames.get(i).getName());
+            tabView.setText(tabNames.get(i).getName().getLocaleValue());
 
             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
 
@@ -214,10 +213,10 @@ public class DashboardFragment extends Fragment {
             } else {
                 pendingActionsCountView.setVisibility(View.VISIBLE);
                 int resId = tabIcons[0];
-                switch (tabNames.get(i).getName().getLocaleValue()) {
                 int resColor = tabThemeColor[0];
                 int pendingActionCount = 0;
-                switch (tabNames.get(i).getName()) {
+
+                switch (tabNames.get(i).getName().getLocaleValue()) {
                     case Constants.Home.FORMS:
                         resId = tabIcons[0];
                         resColor = tabThemeColor[0];
