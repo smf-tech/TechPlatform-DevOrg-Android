@@ -292,24 +292,6 @@ public class Util {
         editor.apply();
     }
 
-/*
-    public static String getFormCategoryForSyncFromPref() {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        return preferences.getString(Constants.App.SYNC_FORM_CATEGORY, "");
-    }
-
-    public static void saveFormCategoryForSync(String category) {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
-        editor.apply();
-    }
-*/
-
 //    public static void clearAllUserData() {
 //        try {
 //            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
@@ -440,10 +422,37 @@ public class Util {
         }
     }
 
-    public static void removeDatabaseRecords() {
+    public static void removeDatabaseRecords(final boolean refreshData) {
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
-        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
-        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
+
+        if (refreshData) {
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllSyncedFormResults();
+        } else {
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
+        }
+    }
+
+    public static int getUnreadNotificationsCount() {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.App.UNREAD_NOTIFICATION_COUNT, Context.MODE_PRIVATE);
+
+        return preferences.getInt(Constants.App.UNREAD_NOTIFICATION_COUNT, 0);
+    }
+
+    public static void updateNotificationsCount(boolean clearNotifications) {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.App.UNREAD_NOTIFICATION_COUNT, Context.MODE_PRIVATE);
+
+        int count = preferences.getInt(Constants.App.UNREAD_NOTIFICATION_COUNT, 0);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        if (clearNotifications) {
+            editor.putInt(Constants.App.UNREAD_NOTIFICATION_COUNT, 0);
+        } else {
+            editor.putInt(Constants.App.UNREAD_NOTIFICATION_COUNT, ++count);
+        }
+        editor.apply();
     }
 }

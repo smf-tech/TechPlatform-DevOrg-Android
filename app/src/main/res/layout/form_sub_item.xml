@@ -6,19 +6,6 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/pin_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dimen_20dp"
-        android:backgroundTint="@android:color/white"
-        android:src="@android:drawable/ic_secure"
-        android:visibility="gone"
-        app:fabSize="mini"
-        tools:ignore="RelativeOverlap" />
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -47,7 +34,7 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_menu_forms"
-                android:tint="@android:color/darker_gray" />
+                android:tint="@color/green" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

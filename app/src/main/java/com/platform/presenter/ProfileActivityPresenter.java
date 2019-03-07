@@ -108,7 +108,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
                 if (!TextUtils.isEmpty(newRoles) && !newRoles.equals(roleIds)) {
                     Log.d(TAG, "Deleting old records." + roleIds);
-                    Util.removeDatabaseRecords();
+                    Util.removeDatabaseRecords(false);
                 }
             }
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
@@ -183,16 +183,19 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     @Override
     public void onFailureListener(String message) {
-        profileActivity.get().hideProgressBar();
-        profileActivity.get().showErrorMessage(message);
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            profileActivity.get().showErrorMessage(message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        profileActivity.get().hideProgressBar();
-
-        if (error != null) {
-            profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            if (error != null) {
+                profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+            }
         }
     }
 

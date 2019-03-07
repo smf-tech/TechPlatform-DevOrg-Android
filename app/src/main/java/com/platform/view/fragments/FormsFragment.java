@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,7 +90,8 @@ public class FormsFragment extends Fragment {
                     break;
 
                 case 2:
-                    fragment = CompletedFormsFragment.newInstance();
+//                    fragment = CompletedFormsFragment.newInstance();
+                    fragment = SubmittedFormsFragment.newInstance();
                     break;
             }
 
@@ -105,21 +107,21 @@ public class FormsFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             String title = "";
             try {
-            switch (position) {
-                case 0:
-                    title = getResources().getString(R.string.new_forms);
-                    break;
+                switch (position) {
+                    case 0:
+                        title = getResources().getString(R.string.new_forms);
+                        break;
 
-                case 1:
-                    title = getResources().getString(R.string.saved_forms);
-                    break;
+                    case 1:
+                        title = getResources().getString(R.string.saved_forms);
+                        break;
 
-                case 2:
-                    title = getResources().getString(R.string.submitted_forms);
-                    break;
-            }
-            } catch (Exception e) {
-                Log.e("TAG", e.getMessage());
+                    case 2:
+                        title = getResources().getString(R.string.submitted_forms);
+                        break;
+                }
+            } catch (Resources.NotFoundException | IllegalStateException e) {
+                e.printStackTrace();
             }
 
             return title.toUpperCase();

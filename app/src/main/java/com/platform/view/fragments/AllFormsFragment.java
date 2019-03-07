@@ -18,6 +18,7 @@ import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.ExpandableAdapter;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,7 +62,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
      *
      * @return A new instance of fragment AllFormsFragment.
      */
-    public static AllFormsFragment newInstance() {
+    static AllFormsFragment newInstance() {
         return new AllFormsFragment();
     }
 
@@ -143,11 +145,20 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getProcessData(data.getId());
 
+
             String submitCount = processData.getSubmitCount();
             if (!TextUtils.isEmpty(submitCount)) {
                 mCountList.put(data.getId(), submitCount);
-            } else if (Util.isConnected(getContext())) {
-                presenter.getSubmittedForms(data.getId());
+
+                List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                        .getAllFormResults(data.getId());
+                if (localFormResults == null || localFormResults.isEmpty()) {
+                    presenter.getSubmittedForms(data.getId());
+                }
+            } else {
+                if (Util.isConnected(getContext())) {
+                    presenter.getSubmittedForms(data.getId());
+                }
             }
         }
 
@@ -163,10 +174,11 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onMastersFormsLoaded(final String response, final String formId) {
         try {
             String count;
+            JSONObject metadataObj;
             if (new JSONObject(response).has(Constants.FormDynamicKeys.METADATA)) {
                 JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
                 if (metadata != null && metadata.length() > 0) {
-                    JSONObject metadataObj = metadata.getJSONObject(0);
+                    metadataObj = metadata.getJSONObject(0);
                     count = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.SUBMIT_COUNT);
                     String formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.FORM_ID);
                     mCountList.put(formID, count);
@@ -177,6 +189,35 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
                             .getApplicationContext()).updateProcessSubmitCount(formId, String.valueOf(0));
                 }
+            }
+            if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
+                JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
+                for (int i = 0; i < values.length(); i++) {
+
+                    SubmittedFormsFragment.FormResult formResult = new Gson().fromJson(String.valueOf(values.get(i)),
+                            SubmittedFormsFragment.FormResult.class);
+
+                    String uuid = UUID.randomUUID().toString();
+                    final String formID = formResult.formID;
+
+                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
+                    result.set_id(uuid);
+                    result.setFormId(formID);
+                    result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                    result.setCreatedAt(formResult.updatedDateTime);
+
+                    JSONObject obj = (JSONObject) values.get(i);
+                    if (obj == null) return;
+
+                    List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                            .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
+                    if (!localFormResults.contains(obj.toString())) {
+                        result.setResult(obj.toString());
+                        DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                    }
+
+                }
+
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());

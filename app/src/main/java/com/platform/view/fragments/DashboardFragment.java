@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
+import com.platform.models.forms.FormResult;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
 import com.platform.utility.AppEvents;
@@ -37,10 +40,17 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_yellow,
             R.drawable.bg_circle_green
     };
+    private final int[] tabThemeColor = {
+            R.color.pink,
+            R.color.orange,
+            R.color.yellow,
+            R.color.green
+    };
     private final int[] disableTabIcons = {
             R.drawable.bg_circle_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
+    public static int mApprovalCount = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,6 +92,41 @@ public class DashboardFragment extends Fragment {
         }
 
         initViews();
+
+        /*IntentFilter filter = new IntentFilter();
+        filter.addAction(EVENT_APPROVALS_FETCHED);
+
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_APPROVALS_FETCHED)) {
+                    Log.e("PendingForms", "Sync failed!");
+                    Toast.makeText(context, "User approvals fetched.", Toast.LENGTH_SHORT).show();
+
+                    mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
+
+                    for (final Modules modules : tabNames) {
+                        if (modules.getName().equals(getString(R.string.approvals))) {
+                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(context)
+                                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
+                            TextView tabView = tabOne.findViewById(R.id.tab);
+                            tabView.setText(modules.getName());
+                            tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[2], 0, 0);
+                            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
+                            pendingActionsCountView.setText(String.valueOf(mApprovalCount));
+                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[2],
+                                    getContext().getTheme()));
+
+                            TabLayout.Tab tab = tabLayout.getTabAt(2);
+                            if (tab != null) {
+                                tab.setCustomView(tabOne);
+                            }
+                        }
+                    }
+                }
+            }
+        }, filter);*/
+
     }
 
     private void setMenuResourceId() {
@@ -152,33 +197,56 @@ public class DashboardFragment extends Fragment {
 
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
-            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
+            if (getContext() == null) continue;
+
+            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
-            tabOne.setText(tabNames.get(i).getName());
+            TextView tabView = tabOne.findViewById(R.id.tab);
+            tabView.setText(tabNames.get(i).getName());
+
+            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
 
             if (!tabNames.get(i).isActive()) {
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+                ((TextView) tabOne.findViewById(R.id.tab))
+                        .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+                pendingActionsCountView.setVisibility(View.GONE);
             } else {
+                pendingActionsCountView.setVisibility(View.VISIBLE);
                 int resId = tabIcons[0];
+                int resColor = tabThemeColor[0];
+                int pendingActionCount = 0;
                 switch (tabNames.get(i).getName()) {
                     case Constants.Home.FORMS:
                         resId = tabIcons[0];
+                        resColor = tabThemeColor[0];
+                        pendingActionCount = getFormsPendingActionCount();
                         break;
 
                     case Constants.Home.MEETINGS:
                         resId = tabIcons[1];
+                        resColor = tabThemeColor[1];
                         break;
 
                     case Constants.Home.APPROVALS:
                         resId = tabIcons[2];
+                        resColor = tabThemeColor[2];
+                        pendingActionCount = mApprovalCount;
                         break;
 
                     case Constants.Home.REPORTS:
                         resId = tabIcons[3];
+                        resColor = tabThemeColor[3];
                         break;
                 }
 
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+                tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+                if (pendingActionCount != 0) {
+                    pendingActionsCountView.setText(String.valueOf(pendingActionCount));
+                    pendingActionsCountView.setTextColor(getResources().getColor(resColor,
+                            getContext().getTheme()));
+                } else {
+                    pendingActionsCountView.setVisibility(View.GONE);
+                }
             }
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
@@ -212,6 +280,29 @@ public class DashboardFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private int getFormsPendingActionCount() {
+        DatabaseManager dbInstance = DatabaseManager.getDBInstance(getContext());
+        int count = 0;
+
+        List<FormResult> partiallySavedForms = dbInstance.getAllPartiallySavedForms();
+
+/*
+        List<FormResult> nonSyncedForms = dbInstance.getNonSyncedPendingForms();
+        if (nonSyncedForms != null) count += nonSyncedForms.size();
+*/
+
+        if (partiallySavedForms != null) count = partiallySavedForms.size();
+
+        return count;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setupTabIcons();
     }
 
     class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {
