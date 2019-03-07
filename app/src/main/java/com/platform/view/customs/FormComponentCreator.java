@@ -180,8 +180,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                         formData.getMaxLength())});
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 Validator validator = formData.getValidators().get(0);
-                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                        validator.getMaxLength())});
+                if (validator.getMaxLength() != null) {
+                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                            validator.getMaxLength())});
+                }
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
