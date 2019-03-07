@@ -40,6 +40,10 @@ public class Platform extends Application {
         FirebaseApp.initializeApp(this);
         initFireBase();
 
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        }
+
         mPlatformInstance = this;
         Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image");
     }
