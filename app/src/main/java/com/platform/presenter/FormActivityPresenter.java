@@ -244,13 +244,13 @@ public class FormActivityPresenter implements FormRequestCallListener,
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
                         .insertFormResult(getSavedForm());
-                Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
+                Objects.requireNonNull(formFragment.get().getActivity()).finish();
                 break;
 
             case Constants.OFFLINE_UPDATE_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
                         .updateFormResult(getSavedForm());
-                Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
+                Objects.requireNonNull(formFragment.get().getActivity()).finish();
                 break;
         }
     }

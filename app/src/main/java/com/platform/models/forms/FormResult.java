@@ -47,6 +47,9 @@ public class FormResult {
     @ColumnInfo(name = "created_at")
     private String createdAt;
 
+    @ColumnInfo(name = "oid")
+    private String oid;
+
     @NonNull
     public String get_id() {
         return _id;
@@ -118,5 +121,13 @@ public class FormResult {
 
     public void setFormTitle(String formTitle) {
         this.formTitle = formTitle;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(final String oid) {
+        this.oid = oid;
     }
 }
