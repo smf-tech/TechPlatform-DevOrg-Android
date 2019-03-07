@@ -2,6 +2,7 @@ package com.platform.models.common;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.user.UserInfo;
 
 @SuppressWarnings("unused")
 public class Entity {
@@ -24,6 +25,9 @@ public class Entity {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("user")
+    @Expose
+    private UserInfo userInfo;
 
     public String getId() {
         return id;
@@ -71,5 +75,13 @@ public class Entity {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

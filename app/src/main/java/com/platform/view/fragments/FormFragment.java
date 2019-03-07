@@ -339,64 +339,68 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public void showChoicesByUrl(String result, Elements elements) {
-        Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
-        List<Choice> choiceValues = new ArrayList<>();
-        LocaleData text = null;
-        String value = "";
+        try {
+            Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
+            List<Choice> choiceValues = new ArrayList<>();
+            LocaleData text;
+            String value = "";
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
-        Gson gson = builder.create();
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+            Gson gson = builder.create();
 
-        JsonObject outerObj = gson.fromJson(result, JsonObject.class);
-        JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
-        for (int index = 0; index < dataArray.size(); index++) {
-            JsonObject innerObj = dataArray.get(index).getAsJsonObject();
-            if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
-                if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
-                    StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                    StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
-                    JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
+            JsonObject outerObj = gson.fromJson(result, JsonObject.class);
+            JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
+            for (int index = 0; index < dataArray.size(); index++) {
+                JsonObject innerObj = dataArray.get(index).getAsJsonObject();
+                if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
+                    if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                        StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
 
-                    try {
-                        text = gson.fromJson(obj.get(titleTokenizer.nextToken()).getAsString(), LocaleData.class);
-                    } catch (Exception e) {
-                        text = new LocaleData(obj.get(titleTokenizer.nextToken()).getAsString());
+                        String title = titleTokenizer.nextToken();
+                        try {
+                            text = gson.fromJson(obj.get(title).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(obj.get(title).getAsString());
+                        }
+                        //Ignore first value of valueToken
+                        valueTokenizer.nextToken();
+                        value = obj.get(valueTokenizer.nextToken()).getAsString();
+                    } else {
+                        try {
+                            text = gson.fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
+                        }
                     }
-                    //Ignore first value of valueToken
-                    valueTokenizer.nextToken();
-                    value = obj.get(valueTokenizer.nextToken()).getAsString();
-                } else {
-                    try {
-                        text = gson.fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
-                    } catch (Exception e) {
-                        text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
+
+                    Choice choice = new Choice();
+                    choice.setText(text);
+                    choice.setValue(value);
+
+                    if (choiceValues.size() == 0) {
+                        choiceValues.add(choice);
+                    } else {
+                        boolean isFound = false;
+                        for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                            if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                                isFound = true;
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            choiceValues.add(choice);
+                        }
                     }
-                    value = innerObj.get(elements.getChoicesByUrl().getValueName()).getAsString();
                 }
+                elements.setChoices(choiceValues);
+                formComponentCreator.updateDropDownValues(elements, choiceValues);
             }
-
-            Choice choice = new Choice();
-            choice.setText(text);
-            choice.setValue(value);
-
-            if (choiceValues.size() == 0) {
-                choiceValues.add(choice);
-            } else {
-                boolean isFound = false;
-                for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
-                    if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
-                        isFound = true;
-                        break;
-                    }
-                }
-                if (!isFound) {
-                    choiceValues.add(choice);
-                }
-            }
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in showChoicesByUrl()");
         }
-        elements.setChoices(choiceValues);
-        formComponentCreator.updateDropDownValues(elements, choiceValues);
     }
 
     @Override
@@ -652,7 +656,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
 
-    private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
+    private void parseSchemaAndFormDetails(final JSONObject object,
+                                           final List<Elements> elements) {
         if (object == null || elements == null || elements.size() == 0) return;
 
         HashMap<String, String> requestedObject = new HashMap<>();

@@ -42,7 +42,7 @@ public class Validation {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " value should not be greater than " + validator.getMaxLength();
+                    return fieldName + " length should not be greater than " + validator.getMaxLength();
                 }
             }
 

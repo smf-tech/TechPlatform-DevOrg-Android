@@ -69,7 +69,8 @@ public class FormRequestCall {
     }
 
     public void updateFormResponse(final HashMap<String, String> requestObjectMap,
-                                   final Map<String, String> uploadedImageUrlList, String postUrl, final String formId, String oid) {
+                                   final Map<String, String> uploadedImageUrlList, String postUrl,
+                                   final String formId, String oid) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
@@ -91,7 +92,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                postUrl + "/" + formId + "/" + oid,
+                postUrl + "/" + oid,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -105,7 +106,9 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex, final FormData formData) {
+    public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex,
+                                final FormData formData) {
+
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {
                 if (response != null) {
@@ -114,7 +117,7 @@ public class FormRequestCall {
                     listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, formData);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, "Exception in getChoicesByUrl()");
                 listener.onFailureListener(e.getMessage());
             }
         };
