@@ -1,6 +1,6 @@
 package com.platform.view.fragments;
 
-import android.content.Intent;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,10 +25,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
 import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
 
-public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener {
+public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener, NewTMAdapter.OnRequestItemClicked {
 
     private View tmFragmentView;
     private TextView txtNoData;
@@ -45,8 +44,9 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
-            if (TextUtils.isEmpty(title))
+            if (TextUtils.isEmpty(title)) {
                 title = getString(R.string.approvals);
+            }
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
@@ -120,29 +120,20 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
-
         if (!pendingRequestList.isEmpty()) {
-
             mApprovalCount = pendingRequestList.size();
-
-            new DashboardFragment().onResume();
-
-            /*
-            Intent intent = new Intent(EVENT_APPROVALS_FETCHED);
-            intent.putExtra(EXTRA_APPROVALS_COUNT, pendingRequestList.size());
-            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-            */
+            //new DashboardFragment().onResume();
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
+
             this.pendingRequestList = pendingRequestList;
-            newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter);
+            newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this);
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);
             rvPendingRequests.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -157,5 +148,30 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onItemClicked(int pos) {
+        PendingRequest pendingRequest = pendingRequestList.get(pos);
+        showActionPopUp(pendingRequest);
+    }
+
+    private void showActionPopUp(final PendingRequest pendingRequest) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        // Setting Dialog Title
+        alertDialog.setTitle("Approve Request");
+        // Setting Dialog Message
+        alertDialog.setMessage("Approve request for " + pendingRequest.getEntity().getUserInfo().getUserName());
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Reject",
+                (dialog, which) -> newTMAdapter.rejectUserRequest(pendingRequest));
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Approve",
+                (dialog, which) -> newTMAdapter.approveUserRequest(pendingRequest));
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 }

@@ -14,19 +14,26 @@ import com.platform.utility.Constants;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingRequestViewHolder> {
+
+    private OnRequestItemClicked clickListener;
     private List<PendingRequest> pendingRequestList;
     private PendingFragmentPresenter pendingFragmentPresenter;
 
     class PendingRequestViewHolder extends RecyclerView.ViewHolder {
+
+        CardView cardView;
         TextView txtRequestTitle, txtRequestCreatedAt;
         ImageView ivApprove, ivReject;
 
         PendingRequestViewHolder(View view) {
             super(view);
+
+            cardView = view.findViewById(R.id.cv_pending_requests);
             txtRequestTitle = view.findViewById(R.id.txt_pending_request_title);
             txtRequestCreatedAt = view.findViewById(R.id.txt_pending_request_created_at);
             ivApprove = view.findViewById(R.id.iv_approve_request);
@@ -34,9 +41,12 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
         }
     }
 
-    public NewTMAdapter(List<PendingRequest> pendingRequestList, PendingFragmentPresenter pendingFragmentPresenter) {
+    public NewTMAdapter(List<PendingRequest> pendingRequestList,
+                        PendingFragmentPresenter pendingFragmentPresenter, OnRequestItemClicked clickListener) {
+
         this.pendingRequestList = pendingRequestList;
         this.pendingFragmentPresenter = pendingFragmentPresenter;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -49,20 +59,32 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PendingRequestViewHolder pendingRequestViewHolder, int position) {
+    public void onBindViewHolder(@NonNull PendingRequestViewHolder holder, int position) {
+
         PendingRequest pendingRequest = pendingRequestList.get(position);
-        pendingRequestViewHolder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
-        pendingRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedDateTime()));
+        holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
+        holder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedDateTime()));
+        holder.cardView.setOnClickListener(view1 -> clickListener.onItemClicked(holder.getAdapterPosition()));
 
-        pendingRequestViewHolder.ivApprove.setOnClickListener(
-                v -> pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
+        holder.ivApprove.setOnClickListener(v -> approveUserRequest(pendingRequest));
 
-        pendingRequestViewHolder.ivReject.setOnClickListener(
-                v -> pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
+        holder.ivReject.setOnClickListener(v -> rejectUserRequest(pendingRequest));
+    }
+
+    public void approveUserRequest(PendingRequest pendingRequest) {
+        pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest);
+    }
+
+    public void rejectUserRequest(PendingRequest pendingRequest) {
+        pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
     }
 
     @Override
     public int getItemCount() {
         return pendingRequestList.size();
+    }
+
+    public interface OnRequestItemClicked {
+        void onItemClicked(int pos);
     }
 }
