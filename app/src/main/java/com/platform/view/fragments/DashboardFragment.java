@@ -50,6 +50,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
+    public static int mApprovalCount = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -91,6 +92,41 @@ public class DashboardFragment extends Fragment {
         }
 
         initViews();
+
+        /*IntentFilter filter = new IntentFilter();
+        filter.addAction(EVENT_APPROVALS_FETCHED);
+
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_APPROVALS_FETCHED)) {
+                    Log.e("PendingForms", "Sync failed!");
+                    Toast.makeText(context, "User approvals fetched.", Toast.LENGTH_SHORT).show();
+
+                    mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
+
+                    for (final Modules modules : tabNames) {
+                        if (modules.getName().equals(getString(R.string.approvals))) {
+                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(context)
+                                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
+                            TextView tabView = tabOne.findViewById(R.id.tab);
+                            tabView.setText(modules.getName());
+                            tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[2], 0, 0);
+                            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
+                            pendingActionsCountView.setText(String.valueOf(mApprovalCount));
+                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[2],
+                                    getContext().getTheme()));
+
+                            TabLayout.Tab tab = tabLayout.getTabAt(2);
+                            if (tab != null) {
+                                tab.setCustomView(tabOne);
+                            }
+                        }
+                    }
+                }
+            }
+        }, filter);*/
+
     }
 
     private void setMenuResourceId() {
@@ -161,19 +197,21 @@ public class DashboardFragment extends Fragment {
 
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
-            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getActivity())
+            if (getContext() == null) continue;
+
+            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
             TextView tabView = tabOne.findViewById(R.id.tab);
             tabView.setText(tabNames.get(i).getName());
 
             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-            pendingActionsCountView.setText("2");
 
             if (!tabNames.get(i).isActive()) {
                 ((TextView) tabOne.findViewById(R.id.tab))
                         .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
                 pendingActionsCountView.setVisibility(View.GONE);
             } else {
+                pendingActionsCountView.setVisibility(View.VISIBLE);
                 int resId = tabIcons[0];
                 int resColor = tabThemeColor[0];
                 int pendingActionCount = 0;
@@ -192,6 +230,7 @@ public class DashboardFragment extends Fragment {
                     case Constants.Home.APPROVALS:
                         resId = tabIcons[2];
                         resColor = tabThemeColor[2];
+                        pendingActionCount = mApprovalCount;
                         break;
 
                     case Constants.Home.REPORTS:
@@ -203,7 +242,8 @@ public class DashboardFragment extends Fragment {
                 tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
                 if (pendingActionCount != 0) {
                     pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                    pendingActionsCountView.setTextColor(resColor);
+                    pendingActionsCountView.setTextColor(getResources().getColor(resColor,
+                            getContext().getTheme()));
                 } else {
                     pendingActionsCountView.setVisibility(View.GONE);
                 }
@@ -256,6 +296,13 @@ public class DashboardFragment extends Fragment {
         if (partiallySavedForms != null) count = partiallySavedForms.size();
 
         return count;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setupTabIcons();
     }
 
     class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {

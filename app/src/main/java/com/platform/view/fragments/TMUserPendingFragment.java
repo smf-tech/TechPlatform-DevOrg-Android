@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,6 +24,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
+import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
 
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener {
 
@@ -116,7 +120,19 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
-        if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
+
+        if (!pendingRequestList.isEmpty()) {
+
+            mApprovalCount = pendingRequestList.size();
+
+            new DashboardFragment().onResume();
+
+            /*
+            Intent intent = new Intent(EVENT_APPROVALS_FETCHED);
+            intent.putExtra(EXTRA_APPROVALS_COUNT, pendingRequestList.size());
+            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+            */
+
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
             this.pendingRequestList = pendingRequestList;
@@ -126,6 +142,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             txtNoData.setVisibility(View.VISIBLE);
             rvPendingRequests.setVisibility(View.GONE);
         }
+
     }
 
     @Override
