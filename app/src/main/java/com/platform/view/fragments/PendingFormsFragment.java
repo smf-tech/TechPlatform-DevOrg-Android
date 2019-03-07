@@ -56,7 +56,7 @@ public class PendingFormsFragment extends Fragment {
      *
      * @return A new instance of fragment CompletedFormsFragment.
      */
-    public static PendingFormsFragment newInstance() {
+    static PendingFormsFragment newInstance() {
         return new PendingFormsFragment();
     }
 

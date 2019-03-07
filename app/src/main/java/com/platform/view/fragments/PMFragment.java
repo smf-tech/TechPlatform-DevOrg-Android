@@ -230,7 +230,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
-        for (ProcessData data : childList) {
+        for (int i = 0; i < childList.size(); i++) {
+            final ProcessData data = childList.get(i);
+            if (i >= 2) break;
+
             if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
                 View formTypeView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().getLocaleValue().trim());

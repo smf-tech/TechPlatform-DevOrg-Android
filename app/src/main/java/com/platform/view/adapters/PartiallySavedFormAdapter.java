@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -40,14 +39,12 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         TextView mName;
         TextView mDate;
         View indicatorView;
-        ImageButton mPinButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             mRootView = itemView;
             mName = itemView.findViewById(R.id.form_title);
             mDate = itemView.findViewById(R.id.form_date);
-            mPinButton = itemView.findViewById(R.id.pin_button);
             indicatorView = itemView.findViewById(R.id.form_status_indicator);
         }
     }
@@ -65,7 +62,6 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
 
         Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
         viewHolder.indicatorView.setBackground(drawable);
-        viewHolder.mPinButton.setVisibility(View.GONE);
 
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);

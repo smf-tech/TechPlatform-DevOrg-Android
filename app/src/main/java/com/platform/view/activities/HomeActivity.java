@@ -52,6 +52,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import static com.platform.utility.Constants.Notification.NOTIFICATION;
+
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -102,6 +104,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
+        findViewById(R.id.home_bell_icon).setOnClickListener(this);
+        findViewById(R.id.unread_notification_count).setOnClickListener(this);
+
         NavigationView navigationView = findViewById(R.id.home_menu_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -120,7 +125,18 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
-        loadHomePage();
+        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
+        if (notificationClicked) {
+            loadTeamsPage();
+        } else {
+            loadHomePage();
+        }
+    }
+
+    private void updateUnreadNotificationsCount() {
+        int notificationsCount = Util.getUnreadNotificationsCount();
+        ((TextView)findViewById(R.id.unread_notification_count))
+                .setText(String.valueOf(notificationsCount));
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
@@ -172,6 +188,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadHomePage() {
+        findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
+        findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_page_container, new HomeFragment(), "homeFragment");
@@ -196,6 +215,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadReportsPage() {
         Util.launchFragment(new ReportsFragment(), this, getString(R.string.reports));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        updateUnreadNotificationsCount();
     }
 
     @Override
@@ -439,7 +465,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
-        Util.removeDatabaseRecords();
+        Util.removeDatabaseRecords(false);
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
@@ -496,6 +522,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 AppEvents.trackAppEvent(getString(R.string.event_menu_profile_click));
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                break;
+
+            case R.id.home_bell_icon:
+            case R.id.unread_notification_count:
+                findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
+                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
+                loadTeamsPage();
                 break;
 
             case R.id.home_sync_icon:

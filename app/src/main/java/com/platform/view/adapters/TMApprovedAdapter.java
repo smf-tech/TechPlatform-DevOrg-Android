@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.tm.PendingRequest;
-import com.platform.presenter.PendingFragmentPresenter;
+import com.platform.presenter.ApprovedFragmentPresenter;
 import com.platform.utility.Constants;
 
 import java.util.List;
@@ -17,9 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
-public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingRequestViewHolder> {
+public class TMApprovedAdapter extends RecyclerView.Adapter<TMApprovedAdapter.PendingRequestViewHolder> {
+
     private List<PendingRequest> pendingRequestList;
-    private PendingFragmentPresenter pendingFragmentPresenter;
+    private ApprovedFragmentPresenter approvedFragmentPresenter;
 
     class PendingRequestViewHolder extends RecyclerView.ViewHolder {
         TextView txtRequestTitle, txtRequestCreatedAt;
@@ -34,9 +35,9 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
         }
     }
 
-    public NewTMAdapter(List<PendingRequest> pendingRequestList, PendingFragmentPresenter pendingFragmentPresenter) {
+    public TMApprovedAdapter(List<PendingRequest> pendingRequestList, ApprovedFragmentPresenter presenter) {
         this.pendingRequestList = pendingRequestList;
-        this.pendingFragmentPresenter = pendingFragmentPresenter;
+        this.approvedFragmentPresenter = presenter;
     }
 
     @NonNull
@@ -50,15 +51,22 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
 
     @Override
     public void onBindViewHolder(@NonNull PendingRequestViewHolder pendingRequestViewHolder, int position) {
+
         PendingRequest pendingRequest = pendingRequestList.get(position);
-        pendingRequestViewHolder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
-        pendingRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedDateTime()));
 
+        pendingRequestViewHolder.txtRequestTitle.setText(String.format("%s",
+                pendingRequest.getEntity().getUserInfo().getUserName()));
+
+        pendingRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s",
+                pendingRequest.getCreatedDateTime()));
+
+        pendingRequestViewHolder.ivApprove.setVisibility(View.GONE);
         pendingRequestViewHolder.ivApprove.setOnClickListener(
-                v -> pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
+                v -> approvedFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
 
+        pendingRequestViewHolder.ivReject.setVisibility(View.GONE);
         pendingRequestViewHolder.ivReject.setOnClickListener(
-                v -> pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
+                v -> approvedFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
     }
 
     @Override
