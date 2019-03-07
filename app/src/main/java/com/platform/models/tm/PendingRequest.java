@@ -1,6 +1,8 @@
 package com.platform.models.tm;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.common.Entity;
 
 import java.util.List;
 
@@ -56,6 +58,31 @@ public class PendingRequest {
 
     @SerializedName("created_at")
     private String createdAt;
+
+    @SerializedName("entity_id")
+    @Expose
+    private String entityId;
+    @SerializedName("entity_type")
+    @Expose
+    private String entityType;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("reason")
+    @Expose
+    private Object reason;
+    @SerializedName("createdDateTime")
+    @Expose
+    private String createdDateTime;
+    @SerializedName("updatedDateTime")
+    @Expose
+    private String updatedDateTime;
+    @SerializedName("entity")
+    @Expose
+    private Entity entity;
 
     public String getId() {
         return id;
@@ -191,5 +218,69 @@ public class PendingRequest {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Object getReason() {
+        return reason;
+    }
+
+    public void setReason(Object reason) {
+        this.reason = reason;
+    }
+
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public String getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    public void setUpdatedDateTime(String updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 }

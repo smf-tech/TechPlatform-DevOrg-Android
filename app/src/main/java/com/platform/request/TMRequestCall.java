@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.TMRequestCallListener;
+import com.platform.listeners.TMPendingRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
@@ -23,10 +23,10 @@ import androidx.annotation.NonNull;
 
 public class TMRequestCall {
 
-    private TMRequestCallListener listener;
+    private TMPendingRequestCallListener listener;
     private final String TAG = TMRequestCall.class.getName();
 
-    public void setListener(TMRequestCallListener listener) {
+    public void setListener(TMPendingRequestCallListener listener) {
         this.listener = listener;
     }
 
@@ -83,7 +83,7 @@ public class TMRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String approveRejectUrl = BuildConfig.BASE_URL + String.format(Urls.TM.APPROVE_REJECT_REQUEST,
-                pendingRequest.getRequesterPhone());
+                pendingRequest.getId());
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,

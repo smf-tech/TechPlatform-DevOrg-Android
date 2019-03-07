@@ -104,6 +104,7 @@ public class FormsFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             String title = "";
+            try {
             switch (position) {
                 case 0:
                     title = getResources().getString(R.string.new_forms);
@@ -116,6 +117,9 @@ public class FormsFragment extends Fragment {
                 case 2:
                     title = getResources().getString(R.string.submitted_forms);
                     break;
+            }
+            } catch (Exception e) {
+                Log.e("TAG", e.getMessage());
             }
 
             return title.toUpperCase();

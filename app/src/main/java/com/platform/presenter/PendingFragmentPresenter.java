@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.TMRequestCallListener;
+import com.platform.listeners.TMPendingRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMRequestCall;
@@ -14,7 +14,7 @@ import com.platform.view.fragments.TMUserPendingFragment;
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class PendingFragmentPresenter implements TMRequestCallListener {
+public class PendingFragmentPresenter implements TMPendingRequestCallListener {
 
     private final String TAG = this.getClass().getName();
     private WeakReference<TMUserPendingFragment> fragmentWeakReference;
