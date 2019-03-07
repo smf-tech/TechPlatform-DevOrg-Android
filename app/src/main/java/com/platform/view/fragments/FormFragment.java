@@ -357,10 +357,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
                     JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
 
+                    String title = titleTokenizer.nextToken();
                     try {
-                        text = gson.fromJson(obj.get(titleTokenizer.nextToken()).getAsString(), LocaleData.class);
+                        text = gson.fromJson(obj.get(title).getAsString(), LocaleData.class);
                     } catch (Exception e) {
-                        text = new LocaleData(obj.get(titleTokenizer.nextToken()).getAsString());
+                        text = new LocaleData(obj.get(title).getAsString());
                     }
                     //Ignore first value of valueToken
                     valueTokenizer.nextToken();
