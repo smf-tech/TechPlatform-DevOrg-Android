@@ -40,6 +40,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.FormActivity;
 import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.customs.FormComponentCreator;
 import com.soundcloud.android.crop.Crop;
@@ -68,7 +69,7 @@ import static com.platform.view.fragments.FormsFragment.viewPager;
 import static com.soundcloud.android.crop.Crop.REQUEST_CROP;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
+public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener, FormActivity.DeviceBackButtonListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -774,5 +775,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
         return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+    @Override
+    public void onDeviceBackButtonPressed() {
+        showConfirmPopUp();
     }
 }

@@ -69,6 +69,12 @@ public class FormActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        if (fragment != null) {
+            fragment.onDeviceBackButtonPressed();
+        }
+    }
+
+    public interface DeviceBackButtonListener {
+        void onDeviceBackButtonPressed();
     }
 }
