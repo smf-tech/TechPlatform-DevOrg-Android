@@ -66,10 +66,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.app.Activity.RESULT_OK;
 import static com.platform.view.fragments.FormsFragment.viewPager;
-import static com.soundcloud.android.crop.Crop.REQUEST_CROP;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener, FormActivity.DeviceBackButtonListener {
+public class FormFragment extends Fragment implements FormDataTaskListener,
+        View.OnClickListener, FormActivity.DeviceBackButtonListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -530,7 +530,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
             AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
-            storePartiallySavedForm();
+            View editFormView = formFragmentView.findViewById(R.id.btn_submit);
+            if (editFormView.getVisibility() == View.VISIBLE)
+                storePartiallySavedForm();
             getActivity().finish();
         });
 
@@ -729,7 +731,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).asSquare().start(getActivity(), REQUEST_CROP);
+                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -741,12 +743,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    Crop.of(outputUri, finalUri).asSquare().start(getActivity(), REQUEST_CROP);
+                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        } else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
