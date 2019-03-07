@@ -101,6 +101,11 @@ public class DatabaseManager {
         processDataDao.updateSubmitCount(processId, count);
     }
 
+    public String getProcessSubmitCount(final String processId) {
+        ProcessDataDao processDataDao = appDatabase.processDataDao();
+        return processDataDao.getSubmitCount(processId);
+    }
+
     public List<ProcessData> getAllProcesses() {
         ProcessDataDao processDataDao = appDatabase.processDataDao();
         return processDataDao.getAllProcesses();

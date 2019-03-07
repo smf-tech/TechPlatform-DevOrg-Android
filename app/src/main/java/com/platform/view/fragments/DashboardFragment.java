@@ -68,7 +68,7 @@ public class DashboardFragment extends Fragment {
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
                     for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
-                            if (tabName.getName().equalsIgnoreCase(module.getName())) {
+                            if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
                                 tabName.setActive(true);
                             }
                         }
@@ -86,7 +86,7 @@ public class DashboardFragment extends Fragment {
 
     private void setMenuResourceId() {
         for (int i = 0; i < tabNames.size(); i++) {
-            switch (tabNames.get(i).getName()) {
+            switch (tabNames.get(i).getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
                     tabNames.get(i).setResId(R.id.action_menu_forms);
                     break;
@@ -124,7 +124,7 @@ public class DashboardFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
-            switch (modules.getName()) {
+            switch (modules.getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
                     Bundle b = new Bundle();
                     b.putBoolean("NEED_SYNC", isSyncRequired);
@@ -154,13 +154,13 @@ public class DashboardFragment extends Fragment {
         for (int i = 0; i < tabNames.size(); i++) {
             TextView tabOne = (TextView) LayoutInflater.from(getActivity())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
-            tabOne.setText(tabNames.get(i).getName());
+            tabOne.setText(tabNames.get(i).getName().getLocaleValue());
 
             if (!tabNames.get(i).isActive()) {
                 tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
             } else {
                 int resId = tabIcons[0];
-                switch (tabNames.get(i).getName()) {
+                switch (tabNames.get(i).getName().getLocaleValue()) {
                     case Constants.Home.FORMS:
                         resId = tabIcons[0];
                         break;

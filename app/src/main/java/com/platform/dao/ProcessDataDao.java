@@ -18,6 +18,9 @@ public interface ProcessDataDao {
     @Query("SELECT * FROM processdata")
     List<ProcessData> getAllProcesses();
 
+    @Query("SELECT submit_count FROM processdata where id = :processId")
+    String getSubmitCount(String processId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(ProcessData... processData);
 
