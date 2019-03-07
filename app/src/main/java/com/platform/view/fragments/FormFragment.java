@@ -65,7 +65,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.app.Activity.RESULT_OK;
 import static com.platform.view.fragments.FormsFragment.viewPager;
-import static com.soundcloud.android.crop.Crop.REQUEST_CROP;
 
 @SuppressWarnings("ConstantConditions")
 public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
@@ -441,6 +440,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         }
                     } else {
                         if (formModel.getData() != null) {
+
+                            saveFormToLocalDatabase();
+
                             if (mIsInEditMode) {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
                                         null, formModel.getData().getId(), null);
@@ -448,8 +450,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
                                         null, formModel.getData().getId(), null);
                             }
-
-                            saveFormToLocalDatabase();
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
@@ -730,7 +730,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).asSquare().start(getActivity(), REQUEST_CROP);
+                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -742,12 +742,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    Crop.of(outputUri, finalUri).asSquare().start(getActivity(), REQUEST_CROP);
+                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        } else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
@@ -776,5 +776,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
         return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+    public void onDeviceBackButtonPressed() {
+        showConfirmPopUp();
     }
 }
