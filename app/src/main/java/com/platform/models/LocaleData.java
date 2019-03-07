@@ -17,18 +17,6 @@ public class LocaleData {
     @Expose
     private String hi;
 
-    String getEn() {
-        return en;
-    }
-
-    String getMr() {
-        return mr;
-    }
-
-    String getHi() {
-        return hi;
-    }
-
     public String getLocaleValue() {
         if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
             return mr;

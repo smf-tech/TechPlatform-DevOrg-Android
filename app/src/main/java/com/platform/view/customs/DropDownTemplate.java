@@ -75,7 +75,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
         spinner = baseLayout.findViewById(R.id.sp_single_select);
 
-        String label = formData.getTitle() + mandatory;
+        String label = formData.getTitle().getLocaleValue() + mandatory;
         ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
 
         FormSpinnerAdapter adapter = new FormSpinnerAdapter(context.get().getContext(),
@@ -101,7 +101,8 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
             if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
                 for (int index = 0; index < formData.getChoices().size(); index++) {
                     if (!TextUtils.isEmpty(formData.getAnswer()) &&
-                            !TextUtils.isEmpty(formData.getChoices().get(index).getText()) &&
+                            formData.getChoices().get(index).getText() != null &&
+                            !TextUtils.isEmpty(formData.getChoices().get(index).getText().getLocaleValue()) &&
                             formData.getAnswer().equals(formData.getChoices().get(index).getValue())) {
                         this.setSelectedItem(index);
                     }

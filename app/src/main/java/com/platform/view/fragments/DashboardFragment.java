@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
@@ -107,6 +108,7 @@ public class DashboardFragment extends Fragment {
 
     private void initViews() {
         ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(4);
         setupViewPager(viewPager);
 
         tabLayout = dashboardView.findViewById(R.id.tabs);
@@ -136,7 +138,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(new TMFragment());
+                    adapter.addFragment(new TMUserPendingFragment());
                     break;
 
                 case Constants.Home.REPORTS:
@@ -187,7 +189,28 @@ public class DashboardFragment extends Fragment {
 
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setEnabled(tabNames.get(i).isActive());
+            View child = tabStrip.getChildAt(i);
+            child.setId(i);
+            child.setEnabled(tabNames.get(i).isActive());
+            child.setOnClickListener(view -> {
+                switch (view.getId()) {
+                    case 0:
+                        AppEvents.trackAppEvent(getString(R.string.event_forms_tab_click));
+                        break;
+
+                    case 1:
+                        AppEvents.trackAppEvent(getString(R.string.event_meetings_tab_click));
+                        break;
+
+                    case 2:
+                        AppEvents.trackAppEvent(getString(R.string.event_approvals_tab_click));
+                        break;
+
+                    case 3:
+                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
+                        break;
+                }
+            });
         }
     }
 

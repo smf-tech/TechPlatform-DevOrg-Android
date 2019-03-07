@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.utility.AppEvents;
 import com.platform.view.activities.HomeActivity;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,8 @@ public class FormsFragment extends Fragment {
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
         }
+
+        AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));
     }
 
     @Override

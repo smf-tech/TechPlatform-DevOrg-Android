@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.platform.R;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 
@@ -24,6 +25,8 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
         }
+
+        AppEvents.trackAppEvent(getString(R.string.event_meetings_screen_visit));
     }
 
     @Override

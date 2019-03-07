@@ -122,7 +122,7 @@
     <string name="locked">Locked</string>
 
     <!--Home-->
-    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_dashboard">Home</string>
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
@@ -140,13 +140,18 @@
     <string name="view_all_reports">View All Reports</string>
 
     <!--Team Management-->
+    <string name="cat_pending">Pending</string>
+    <string name="cat_approved">Approved</string>
+    <string name="cat_rejected">Rejected</string>
+    <string name="approvals">Approvals</string>
+    <string name="who_working">"Who's Working"</string>
     <string name="team_user_approval">User Approval</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>
-    <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>
+    <string name="msg_error_in_photo_gallery">Problem in taking photo from gallery, please use camera to take photo.</string>
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
-    <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
+    <string name="msg_take_photo_error">App do not have permission to take a photo, please allow it.</string>
 
     <!--Forms-->
     <string name="category_title">Category Title</string>
@@ -170,5 +175,46 @@
     <string name="form_field_mandatory">%1$s%2$s</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
+
+
+    <!--App Events-->
+    <string name="event_login_success" translatable="false">Login Success</string>
+    <string name="event_login_failure" translatable="false">Login Failure</string>
+    <string name="event_auto_read_success" translatable="false">SMS auto read success</string>
+    <string name="event_auto_read_failure" translatable="false">SMS auto read failure</string>
+    <string name="event_resend_opt_click" translatable="false">Resend OTP clicked</string>
+    <string name="event_sync_button_click" translatable="false">Sync button clicked</string>
+    <string name="event_update_profile_success" translatable="false">Profile update success</string>
+    <string name="event_update_profile_fail" translatable="false">Profile update fail</string>
+    <string name="event_report_click" translatable="false">Report \"%1$s\" clicked</string>
+    <string name="event_form_saved" translatable="false">Form \"%1$s\" saved success</string>
+    <string name="event_form_saved_offline" translatable="false">Form \"%1$s\" saved offline</string>
+    <string name="event_form_submitted_success" translatable="false">Form \"%1$s\" submitted success</string>
+    <string name="event_form_submitted_fail" translatable="false">Form \"%1$s\" submitted fail</string>
+
+    <string name="event_menu_profile_click" translatable="false">Menu Profile clicked</string>
+    <string name="event_menu_home_click" translatable="false">Menu Home clicked</string>
+    <string name="event_menu_forms_click" translatable="false">Menu Forms clicked</string>
+    <string name="event_menu_meeting_click" translatable="false">Menu Meetings clicked</string>
+    <string name="event_menu_teams_click" translatable="false">Menu Teams clicked</string>
+    <string name="event_menu_reports_click" translatable="false">Menu Reports clicked</string>
+    <string name="event_menu_change_lang_click" translatable="false">Menu Change Language clicked</string>
+    <string name="event_menu_rate_us_click" translatable="false">Menu Rate Us clicked</string>
+    <string name="event_menu_call_us_click" translatable="false">Menu Call Us clicked</string>
+    <string name="event_menu_logout_click" translatable="false">Menu Logout clicked</string>
+
+    <string name="event_login_screen_visit" translatable="false">Login screen visited</string>
+    <string name="event_otp_screen_visit" translatable="false">OTP screen visited</string>
+    <string name="event_home_screen_visit" translatable="false">Home screen visited</string>
+    <string name="event_forms_screen_visit" translatable="false">Forms screen visited</string>
+    <string name="event_all_forms_screen_visit" translatable="false">All forms screen visited</string>
+    <string name="event_meetings_screen_visit" translatable="false">Meetings screen visited</string>
+    <string name="event_approvals_screen_visit" translatable="false">Approvals screen visited</string>
+    <string name="event_reports_screen_visit" translatable="false">Reports screen visited</string>
+
+    <string name="event_forms_tab_click" translatable="false">Form tab clicked</string>
+    <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
+    <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
+    <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
 
 </resources>

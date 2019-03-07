@@ -2,21 +2,22 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.LocaleData;
 
 @SuppressWarnings("unused")
 public class Choice {
     @SerializedName("text")
     @Expose
-    private String text;
+    private LocaleData text;
     @SerializedName("value")
     @Expose
     private String value;
 
-    public String getText() {
+    public LocaleData getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(LocaleData text) {
         this.text = text;
     }
 

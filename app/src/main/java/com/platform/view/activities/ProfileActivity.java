@@ -41,6 +41,7 @@ import com.platform.models.profile.OrganizationRole;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.ProfileActivityPresenter;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
@@ -806,9 +807,16 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public <T> void showNextScreen(T data) {
+        AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showErrorMessage(String result) {
+        AppEvents.trackAppEvent(getString(R.string.event_update_profile_fail));
+        runOnUiThread(() -> Util.showToast(result, this));
     }
 
     @Override
@@ -1081,11 +1089,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             default:
                 break;
         }
-    }
-
-    @Override
-    public void showErrorMessage(String result) {
-        runOnUiThread(() -> Util.showToast(result, this));
     }
 
     @Override

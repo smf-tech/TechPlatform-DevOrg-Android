@@ -19,6 +19,7 @@ import com.platform.models.forms.FormResult;
 import com.platform.request.FormRequestCall;
 import com.platform.request.ImageRequestCall;
 import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
@@ -132,11 +133,13 @@ public class FormActivityPresenter implements FormRequestCallListener,
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
+        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
+        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
         Util.showToast(error.getMessage(), formFragment.get().getActivity());
     }
 
@@ -144,6 +147,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
+        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success));
 
         try {
             JSONObject outerObject = new JSONObject(message);
@@ -235,6 +239,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         .insertFormResult(getSavedForm());
                 Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
                 break;
+
             case Constants.OFFLINE_UPDATE_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
                         .updateFormResult(getSavedForm());

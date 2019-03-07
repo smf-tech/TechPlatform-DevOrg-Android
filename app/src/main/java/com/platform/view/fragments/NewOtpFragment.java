@@ -25,6 +25,7 @@ import com.platform.models.login.LoginInfo;
 import com.platform.models.user.User;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.receivers.SmsReceiver;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
@@ -97,6 +98,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AppEvents.trackAppEvent(getString(R.string.event_otp_screen_visit));
 
         tvOtpMessage = view.findViewById(R.id.enter_mobile_label);
 
@@ -309,6 +311,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                     registerOtpSmsReceiver();
                 }
 
+                AppEvents.trackAppEvent(getString(R.string.event_resend_opt_click));
                 if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
                     sLoginInfo.setOneTimePassword("");
                     isResendOtpRequest = true;
@@ -335,6 +338,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             }
 
             hideProgressBar();
+            AppEvents.trackAppEvent(getString(R.string.event_auto_read_success));
             tvOtpMessage.setText(getResources().getString(R.string.msg_verify_otp_text));
             tvOtpTimer.setVisibility(View.GONE);
         } catch (Exception e) {

@@ -27,6 +27,7 @@ public class FormData {
     @Expose
     private String id = "";
 
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @TypeConverters(DataConverter.class)

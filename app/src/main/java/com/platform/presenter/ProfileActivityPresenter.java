@@ -91,9 +91,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
                 return null;
             }
         }.execute();
-
     }
-
 
     @Override
     public void onProfileUpdated(String response) {

@@ -23,6 +23,7 @@ import com.platform.models.user.UserInfo;
 import com.platform.presenter.HomeActivityPresenter;
 import com.platform.syncAdapter.GenericAccountService;
 import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
@@ -61,6 +62,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
         }
 
         dialogNotApproved = new AlertDialog.Builder(context).create();
+        AppEvents.trackAppEvent(getString(R.string.event_home_screen_visit));
     }
 
     @Override
@@ -137,6 +139,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+            viewPager.setOffscreenPageLimit(3);
             setupViewPager(viewPager);
 
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
@@ -199,6 +202,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+            viewPager.setOffscreenPageLimit(3);
             setupViewPager(viewPager);
 
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);

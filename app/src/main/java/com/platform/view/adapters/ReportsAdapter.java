@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.reports.ReportData;
+import com.platform.utility.AppEvents;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ReportsAdapter.ViewHolder viewHolder, int i) {
         ReportData reportData = mListDataChild.get(i);
         viewHolder.title.setText(reportData.getName());
-        viewHolder.container.setOnClickListener(v -> startWebView(reportData.getUrl()));
+        viewHolder.container.setOnClickListener(v -> startWebView(reportData.getName(), reportData.getUrl()));
     }
 
     @Override
@@ -68,12 +69,13 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
     }
 
     @SuppressWarnings("deprecation")
-    private void startWebView(String url) {
+    private void startWebView(String name, String url) {
         Uri uri = Uri.parse(url);
         if (uri == null) {
             return;
         }
 
+        AppEvents.trackAppEvent(mContext.getString(R.string.event_report_click, name));
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
         customTabsIntent.intent.setData(uri);
         customTabsIntent.intent.putExtra(EXTRA_CUSTOM_TABS_TOOLBAR_COLOR,
