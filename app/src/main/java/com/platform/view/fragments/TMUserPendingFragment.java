@@ -21,12 +21,13 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
-import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
+import static com.platform.utility.Constants.UserApprovals.EXTRA_APPROVALS_COUNT;
 
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener {
 
@@ -123,15 +124,11 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
         if (!pendingRequestList.isEmpty()) {
 
-            mApprovalCount = pendingRequestList.size();
+            int approvalCount = pendingRequestList.size();
 
-            new DashboardFragment().onResume();
-
-            /*
             Intent intent = new Intent(EVENT_APPROVALS_FETCHED);
-            intent.putExtra(EXTRA_APPROVALS_COUNT, pendingRequestList.size());
+            intent.putExtra(EXTRA_APPROVALS_COUNT, approvalCount);
             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-            */
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
