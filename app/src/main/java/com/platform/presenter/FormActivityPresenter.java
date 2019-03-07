@@ -146,7 +146,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onFormCreatedUpdated(String message, String requestObjectString, String formId) {
+    public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
         AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success));
@@ -172,10 +172,15 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
 
-                String countStr = DatabaseManager.getDBInstance(Objects.requireNonNull(formFragment.get().getContext())).getProcessSubmitCount(formId);
-                if (!TextUtils.isEmpty(countStr)) {
-                    int count = Integer.parseInt(countStr);
-                    DatabaseManager.getDBInstance(Objects.requireNonNull(formFragment.get().getContext())).updateProcessSubmitCount(formId, String.valueOf(++count));
+                switch (callType) {
+                    case Constants.ONLINE_SUBMIT_FORM_TYPE:
+                        String countStr = DatabaseManager.getDBInstance(Objects.requireNonNull(formFragment.get().getContext())).getProcessSubmitCount(formId);
+                        if (!TextUtils.isEmpty(countStr)) {
+                            int count = Integer.parseInt(countStr);
+                            DatabaseManager.getDBInstance(Objects.requireNonNull(formFragment.get().getContext())).updateProcessSubmitCount(formId, String.valueOf(++count));
+                        }
+                        break;
+
                 }
             }
 
@@ -240,11 +245,11 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId);
+                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
-                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid);
+                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:

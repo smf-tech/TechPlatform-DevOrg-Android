@@ -34,14 +34,14 @@ public class FormRequestCall {
     }
 
     public void createFormResponse(final HashMap<String, String> requestObjectMap, final Map<String,
-            String> uploadedImageUrlList, String postUrl, final String formId) {
+            String> uploadedImageUrlList, String postUrl, final String formId, String callType) {
         JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "createFormResponse - Resp: " + res);
-                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId);
+                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId, callType);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -70,7 +70,7 @@ public class FormRequestCall {
 
     public void updateFormResponse(final HashMap<String, String> requestObjectMap,
                                    final Map<String, String> uploadedImageUrlList, String postUrl,
-                                   final String formId, String oid) {
+                                   final String formId, String oid, String callType) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
@@ -78,7 +78,7 @@ public class FormRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "updateFormResponse - Resp: " + res);
-                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId);
+                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId, callType);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
