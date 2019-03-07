@@ -125,8 +125,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
-        boolean notificationClicked = getIntent()
-                .getBooleanExtra(NOTIFICATION, false);
+        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
         if (notificationClicked) {
             loadTeamsPage();
         } else {

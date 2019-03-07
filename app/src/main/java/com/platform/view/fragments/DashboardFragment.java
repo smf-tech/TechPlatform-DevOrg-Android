@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
+import com.platform.models.forms.FormResult;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
 import com.platform.utility.AppEvents;
@@ -36,6 +39,12 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_orange,
             R.drawable.bg_circle_yellow,
             R.drawable.bg_circle_green
+    };
+    private final int[] tabThemeColor = {
+            R.color.pink,
+            R.color.orange,
+            R.color.yellow,
+            R.color.green
     };
     private final int[] disableTabIcons = {
             R.drawable.bg_circle_lock
@@ -152,33 +161,52 @@ public class DashboardFragment extends Fragment {
 
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
-            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
+            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getActivity())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
-            tabOne.setText(tabNames.get(i).getName());
+            TextView tabView = tabOne.findViewById(R.id.tab);
+            tabView.setText(tabNames.get(i).getName());
+
+            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
+            pendingActionsCountView.setText("2");
 
             if (!tabNames.get(i).isActive()) {
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+                ((TextView) tabOne.findViewById(R.id.tab))
+                        .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+                pendingActionsCountView.setVisibility(View.GONE);
             } else {
                 int resId = tabIcons[0];
+                int resColor = tabThemeColor[0];
+                int pendingActionCount = 0;
                 switch (tabNames.get(i).getName()) {
                     case Constants.Home.FORMS:
                         resId = tabIcons[0];
+                        resColor = tabThemeColor[0];
+                        pendingActionCount = getFormsPendingActionCount();
                         break;
 
                     case Constants.Home.MEETINGS:
                         resId = tabIcons[1];
+                        resColor = tabThemeColor[1];
                         break;
 
                     case Constants.Home.APPROVALS:
                         resId = tabIcons[2];
+                        resColor = tabThemeColor[2];
                         break;
 
                     case Constants.Home.REPORTS:
                         resId = tabIcons[3];
+                        resColor = tabThemeColor[3];
                         break;
                 }
 
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+                tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+                if (pendingActionCount != 0) {
+                    pendingActionsCountView.setText(String.valueOf(pendingActionCount));
+                    pendingActionsCountView.setTextColor(resColor);
+                } else {
+                    pendingActionsCountView.setVisibility(View.GONE);
+                }
             }
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
@@ -212,6 +240,22 @@ public class DashboardFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private int getFormsPendingActionCount() {
+        DatabaseManager dbInstance = DatabaseManager.getDBInstance(getContext());
+        int count = 0;
+
+        List<FormResult> partiallySavedForms = dbInstance.getAllPartiallySavedForms();
+
+/*
+        List<FormResult> nonSyncedForms = dbInstance.getNonSyncedPendingForms();
+        if (nonSyncedForms != null) count += nonSyncedForms.size();
+*/
+
+        if (partiallySavedForms != null) count = partiallySavedForms.size();
+
+        return count;
     }
 
     class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {
