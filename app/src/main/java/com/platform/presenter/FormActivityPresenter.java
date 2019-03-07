@@ -161,8 +161,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 requestObject.put(Constants.FormDynamicKeys._ID, idObject);
                 requestObject.put(Constants.FormDynamicKeys.FORM_TITLE, dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
-
-                Log.d(TAG, "Result saved " + requestObject.toString());
+                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME, dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME, dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                 FormResult result = new FormResult();
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
@@ -171,6 +171,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.setResult(requestObject.toString());
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+
+                String countStr = DatabaseManager.getDBInstance(Objects.requireNonNull(formFragment.get().getContext())).getProcessSubmitCount(formId);
+                if (!TextUtils.isEmpty(countStr)) {
+                    int count = Integer.parseInt(countStr);
+                    DatabaseManager.getDBInstance(Objects.requireNonNull(formFragment.get().getContext())).updateProcessSubmitCount(formId, String.valueOf(++count));
+                }
             }
 
         } catch (JSONException e) {
