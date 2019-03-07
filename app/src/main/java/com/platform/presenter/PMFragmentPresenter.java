@@ -5,11 +5,14 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.models.LocaleData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
+import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.fragments.PMFragment;
 
 import java.lang.ref.WeakReference;
@@ -41,7 +44,12 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
     public void onSuccessListener(String response) {
         Log.i(TAG, "Success: " + response);
         fragmentWeakReference.get().hideProgressBar();
-        Processes data = new Gson().fromJson(response, Processes.class);
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        Processes data = gson.fromJson(response, Processes.class);
         fragmentWeakReference.get().showNextScreen(data);
     }
 

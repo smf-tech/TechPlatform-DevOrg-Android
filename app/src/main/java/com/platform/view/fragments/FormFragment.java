@@ -22,6 +22,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
@@ -37,6 +40,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.customs.FormComponentCreator;
 import com.soundcloud.android.crop.Crop;
 
@@ -306,7 +310,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public <T> void showNextScreen(T data) {
-        formModel = new Gson().fromJson((String) data, Form.class);
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        formModel = gson.fromJson((String) data, Form.class);
         initViews();
 
         if (mIsInEditMode) {
@@ -331,56 +339,63 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     @Override
     public void showChoicesByUrl(String result, Elements elements) {
         Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
-        try {
-            List<Choice> choiceValues = new ArrayList<>();
-            LocaleData text = null;
-            String value = "";
-            JSONObject outerObj = new JSONObject(result);
-            JSONArray dataArray = outerObj.getJSONArray(Constants.RESPONSE_DATA);
+        List<Choice> choiceValues = new ArrayList<>();
+        LocaleData text = null;
+        String value = "";
 
-            for (int index = 0; index < dataArray.length(); index++) {
-                JSONObject innerObj = dataArray.getJSONObject(index);
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
 
-                if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
-                    if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
-                        StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                        StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
-                        JSONObject obj = innerObj.getJSONObject(titleTokenizer.nextToken());
-                        text = (LocaleData) obj.get(titleTokenizer.nextToken());
-                        //Ignore first value of valueToken
-                        valueTokenizer.nextToken();
-                        value = obj.getString(valueTokenizer.nextToken());
-                    } else {
-                        text = (LocaleData) innerObj.get(elements.getChoicesByUrl().getTitleName());
-                        value = innerObj.getString(elements.getChoicesByUrl().getValueName());
+        JsonObject outerObj = gson.fromJson(result, JsonObject.class);
+        JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
+        for (int index = 0; index < dataArray.size(); index++) {
+            JsonObject innerObj = dataArray.get(index).getAsJsonObject();
+            if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
+                if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                    StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                    StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                    JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
+
+                    try {
+                        text = gson.fromJson(obj.get(titleTokenizer.nextToken()).getAsString(), LocaleData.class);
+                    } catch (Exception e) {
+                        text = new LocaleData(obj.get(titleTokenizer.nextToken()).getAsString());
                     }
-                }
-
-                Choice choice = new Choice();
-                choice.setText(text);
-                choice.setValue(value);
-
-                if (choiceValues.size() == 0) {
-                    choiceValues.add(choice);
+                    //Ignore first value of valueToken
+                    valueTokenizer.nextToken();
+                    value = obj.get(valueTokenizer.nextToken()).getAsString();
                 } else {
-                    boolean isFound = false;
-                    for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
-                        if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
-                            isFound = true;
-                            break;
-                        }
+                    try {
+                        text = gson.fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                    } catch (Exception e) {
+                        text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
                     }
-                    if (!isFound) {
-                        choiceValues.add(choice);
-                    }
+                    value = innerObj.get(elements.getChoicesByUrl().getValueName()).getAsString();
                 }
             }
 
-            elements.setChoices(choiceValues);
-            formComponentCreator.updateDropDownValues(elements, choiceValues);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Choice choice = new Choice();
+            choice.setText(text);
+            choice.setValue(value);
+
+            if (choiceValues.size() == 0) {
+                choiceValues.add(choice);
+            } else {
+                boolean isFound = false;
+                for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                    if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (!isFound) {
+                    choiceValues.add(choice);
+                }
+            }
         }
+        elements.setChoices(choiceValues);
+        formComponentCreator.updateDropDownValues(elements, choiceValues);
     }
 
     @Override
@@ -452,13 +467,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormResult result = new FormResult();
         result.set_id(UUID.randomUUID().toString());
         result.setFormId(formData.getId());
-        result.setFormCategory(formData.getCategory().getName());
+        result.setFormCategory(formData.getCategory().getName().getLocaleValue());
         result.setFormName(formData.getName().getLocaleValue());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
         result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
 
         if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName();
+            String category = formData.getCategory().getName().getLocaleValue();
             if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
                 result.setFormCategory(category);
             }
@@ -527,7 +542,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName();
+            String category = formData.getCategory().getName().getLocaleValue();
             if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
                 result.setFormCategory(category);
             }
