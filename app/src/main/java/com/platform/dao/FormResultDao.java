@@ -21,6 +21,9 @@ public interface FormResultDao {
     @Query("SELECT result FROM formresult where form_id = :formId and form_status = :sync")
     List<String> getAllFormResults(String formId, int sync);
 
+    @Query("SELECT result FROM formresult where form_id = :formId")
+    List<String> getAllFormResults(String formId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormResult result);
 
@@ -34,7 +37,7 @@ public interface FormResultDao {
     void deleteAllFormResults();
 
     @Query("DELETE FROM formresult where form_status = :sync")
-    void deleteAllNonSyncedFormResults(int sync);
+    void deleteAllSyncedFormResults(int sync);
 
     @Query("SELECT * FROM formresult WHERE form_status = :sync and result_id = :formId")
     FormResult getPartialForm(int sync, String formId);

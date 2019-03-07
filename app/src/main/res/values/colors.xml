@@ -38,4 +38,6 @@
 
     <color name="approvals_tabs">#646262</color>
     <color name="approvals_tabs_sel">#547AC4</color>
+    <color name="sync_pending_form_color">#6286cc</color>
+    <color name="submitted_form_color">#47A713</color>
 </resources>

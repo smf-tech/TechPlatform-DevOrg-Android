@@ -48,6 +48,8 @@ public class Constants {
         public static final String LANGUAGE_MARATHI = "mr";
         public static final String LANGUAGE_HINDI = "hi";
         public static final String LANGUAGE_DEFAULT = "default";
+
+        static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
     }
 
     public static class AssociatesType {
@@ -174,6 +176,10 @@ public class Constants {
         public static final String IMAGE_TYPE_PROFILE = "profile";
     }
 
+    public class Notification {
+        public static final String NOTIFICATION = "notificationClicked";
+    }
+
     public class FormDynamicKeys {
         public static final String FORM_ID = "form_id";
         public static final String FORM_TITLE = "form_title";
@@ -189,5 +195,12 @@ public class Constants {
         public static final String VILLAGE = "village";
         public static final String _ID = "_id";
         public static final String OID = "$oid";
+        public static final String CREATED_DATE_TIME = "createdDateTime";
+    }
+
+    public class UserApprovals {
+        public static final String EVENT_APPROVALS_FETCHED = "approvalsFetched";
+        public static final String EXTRA_APPROVALS_COUNT = "approvalsCount";
+
     }
 }
