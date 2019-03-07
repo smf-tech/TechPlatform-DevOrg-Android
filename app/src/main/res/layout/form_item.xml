@@ -16,7 +16,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="-18dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
-        android:backgroundTint="@android:color/holo_red_dark"
+        app:backgroundTint="@android:color/holo_red_dark"
         android:src="@android:drawable/ic_input_add"
         android:visibility="gone"
         app:fabSize="mini" />
@@ -30,7 +30,7 @@
         android:layout_marginTop="-18dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
         android:layout_toStartOf="@+id/add_button"
-        android:backgroundTint="@android:color/holo_red_dark"
+        app:backgroundTint="@android:color/holo_red_dark"
         android:src="@android:drawable/stat_notify_sync"
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />

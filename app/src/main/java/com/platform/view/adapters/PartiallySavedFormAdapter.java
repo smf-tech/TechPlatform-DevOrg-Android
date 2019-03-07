@@ -2,11 +2,13 @@ package com.platform.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -39,10 +41,12 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         TextView mName;
         TextView mDate;
         View indicatorView;
+        ImageView formImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             mRootView = itemView;
+            formImage = itemView.findViewById(R.id.form_image);
             mName = itemView.findViewById(R.id.form_title);
             mDate = itemView.findViewById(R.id.form_date);
             indicatorView = itemView.findViewById(R.id.form_status_indicator);
@@ -62,6 +66,7 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
 
         Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
         viewHolder.indicatorView.setBackground(drawable);
+        viewHolder.formImage.setImageTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.partial_form_color)));
 
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);
