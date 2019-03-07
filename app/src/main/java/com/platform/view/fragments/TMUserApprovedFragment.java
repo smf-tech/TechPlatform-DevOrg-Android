@@ -27,7 +27,7 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
     private View tmFragmentView;
     private TextView txtNoData;
     private RecyclerView rvApprovedRequests;
-    private ApprovedFragmentPresenter pendingFragmentPresenter;
+    private ApprovedFragmentPresenter presenter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -42,8 +42,8 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pendingFragmentPresenter = new ApprovedFragmentPresenter(this);
-        pendingFragmentPresenter.getAllApprovedRequests();
+        presenter = new ApprovedFragmentPresenter(this);
+        presenter.getAllApprovedRequests();
 
         init();
     }
@@ -65,7 +65,7 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
             txtNoData.setVisibility(View.GONE);
             rvApprovedRequests.setVisibility(View.VISIBLE);
 
-            TMApprovedAdapter newTMAdapter = new TMApprovedAdapter(pendingRequestList, pendingFragmentPresenter);
+            TMApprovedAdapter newTMAdapter = new TMApprovedAdapter(pendingRequestList, presenter);
             rvApprovedRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);
