@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
     private TextView txtNoData;
     private RecyclerView rvApprovedRequests;
     private ApprovedFragmentPresenter presenter;
+
+    private boolean isVisible;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -57,6 +60,27 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
         rvApprovedRequests.setItemAnimator(new DefaultItemAnimator());
 
         tmFragmentView.findViewById(R.id.txt_view_all_approvals).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isVisible = true;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser && isVisible) {
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                if (presenter == null) {
+                    presenter = new ApprovedFragmentPresenter(TMUserApprovedFragment.this);
+                }
+                presenter.getAllApprovedRequests();
+            }, 100);
+        }
     }
 
     @Override

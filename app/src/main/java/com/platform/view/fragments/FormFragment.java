@@ -529,7 +529,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
             AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
-            storePartiallySavedForm();
+            if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+                storePartiallySavedForm();
+            }
             getActivity().finish();
         });
 
