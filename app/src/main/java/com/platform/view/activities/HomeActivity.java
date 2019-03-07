@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.platform.R;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
@@ -38,7 +39,7 @@ import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.MeetingsFragment;
 import com.platform.view.fragments.ReportsFragment;
-import com.platform.view.fragments.TMFragment;
+import com.platform.view.fragments.TMUserApprovalsFragment;
 
 import java.io.File;
 import java.util.List;
@@ -190,7 +191,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadTeamsPage() {
-        Util.launchFragment(new TMFragment(), this, getString(R.string.team_management));
+        Util.launchFragment(new TMUserApprovalsFragment(), this, getString(R.string.approvals));
     }
 
     private void loadReportsPage() {
@@ -234,6 +235,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (menuId) {
             case R.id.action_menu_home:
                 loadHomePage();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_home_click));
                 break;
 
             case R.id.action_menu_community:
@@ -241,14 +243,17 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.action_menu_forms:
                 loadFormsPage();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_forms_click));
                 break;
 
             case R.id.action_menu_teams:
                 loadTeamsPage();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_teams_click));
                 break;
 
             case R.id.action_menu_calendar:
                 loadMeetingsPage();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_meeting_click));
                 break;
 
             case R.id.action_menu_assets:
@@ -256,6 +261,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.action_menu_reports:
                 loadReportsPage();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_reports_click));
                 break;
 
             case R.id.action_menu_connect:
@@ -275,10 +281,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.action_menu_change_language:
                 showLanguageChangeDialog();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_change_lang_click));
                 break;
 
             case R.id.action_menu_rate_us:
                 rateTheApp();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_rate_us_click));
                 break;
 
             case R.id.action_menu_call_us:
@@ -290,6 +298,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 } catch (Exception e) {
                     Log.e("Calling Phone", "" + e.getMessage());
                 }
+                AppEvents.trackAppEvent(getString(R.string.event_menu_call_us_click));
                 break;
 
             case R.id.action_menu_settings:
@@ -297,6 +306,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.action_menu_logout:
                 showLogoutPopUp();
+                AppEvents.trackAppEvent(getString(R.string.event_menu_logout_click));
                 break;
         }
 
@@ -483,13 +493,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (view.getId()) {
             case R.id.menu_user_profile_layout:
                 showProfileScreen();
-
+                AppEvents.trackAppEvent(getString(R.string.event_menu_profile_click));
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
 
             case R.id.home_sync_icon:
                 showUpdateDataPopup();
+                AppEvents.trackAppEvent(getString(R.string.event_sync_button_click));
                 break;
         }
     }

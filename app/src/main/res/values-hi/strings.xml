@@ -122,7 +122,7 @@
     <string name="locked">बंद</string>
 
     <!--Home-->
-    <string name="tab_dashboard">डैशबोर्ड</string>
+    <string name="tab_dashboard">होम</string>
     <string name="tab_connect">जुडिये</string>
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
@@ -140,6 +140,11 @@
     <string name="view_all_reports">सभी रिपोर्ट देखें</string>
 
     <!--Team Management-->
+    <string name="cat_pending">अपूर्ण</string>
+    <string name="cat_approved">मंजूर</string>
+    <string name="cat_rejected">अस्वीकृत</string>
+    <string name="approvals">स्वीकृति</string>
+    <string name="who_working">कौन काम कर रहा है</string>
     <string name="team_user_approval">उपयोगकर्ता स्वीकृति</string>
 
     <!--App Error Message-->

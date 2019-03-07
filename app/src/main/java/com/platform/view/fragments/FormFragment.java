@@ -37,6 +37,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.LocaleDataAdapter;
@@ -130,9 +131,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                     List<String> formResults;
                     if (mIsPartiallySaved) {
                         String formId = getArguments().getString(Constants.PM.FORM_ID);
-                        formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(formId, SyncAdapterUtils.FormStatus.PARTIAL);
+                        formResults = DatabaseManager.getDBInstance(getActivity())
+                                .getAllFormResults(formId, SyncAdapterUtils.FormStatus.PARTIAL);
                     } else {
-                        formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId, SyncAdapterUtils.FormStatus.SYNCED);
+                        formResults = DatabaseManager.getDBInstance(getActivity())
+                                .getAllFormResults(processId, SyncAdapterUtils.FormStatus.SYNCED);
                     }
                     if (formResults != null && !formResults.isEmpty()) {
                         getFormDataAndParse(formResults);
@@ -176,7 +179,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         progressBar = formFragmentView.findViewById(R.id.pb_gen_form_fragment);
 
         Components components = formModel.getData().getComponents();
-        if (components == null) return;
+        if (components == null) {
+            return;
+        }
 
         formDataArrayList = components.getPages().get(0).getElements();
 
@@ -313,7 +318,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         initViews();
 
         if (mIsInEditMode) {
-            List<String> formResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);
+            List<String> formResults = DatabaseManager.getDBInstance(getActivity())
+                    .getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);
+
             if (formResults != null && !formResults.isEmpty()) {
                 getFormDataAndParse(formResults);
             } else {
@@ -421,22 +428,29 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         }
 
                         if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url, formModel.getData().getId(), oid);
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url,
+                                    formModel.getData().getId(), oid);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url, formModel.getData().getId(), null);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
+                                    formModel.getData().getId(), null);
                         }
                     } else {
                         if (formModel.getData() != null) {
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE, null, formModel.getData().getId(), null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
+                                        null, formModel.getData().getId(), null);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE, null, formModel.getData().getId(), null);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
+                                        null, formModel.getData().getId(), null);
                             }
 
                             saveFormToLocalDatabase();
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+                            AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
+                                    formModel.getData().getName()));
 
                             Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
@@ -509,6 +523,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
+            AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
             storePartiallySavedForm();
             getActivity().finish();
         });

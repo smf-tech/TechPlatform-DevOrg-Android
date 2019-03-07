@@ -125,9 +125,7 @@ public class PendingFormsFragment extends Fragment {
                 mRecyclerView.setVisibility(View.GONE);
                 mNoRecordsView.setVisibility(View.VISIBLE);
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
             Log.e("PendingForms", e.getMessage() + "");
         }
     }

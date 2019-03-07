@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.tm.PendingRequest;
-import com.platform.presenter.TMFragmentPresenter;
+import com.platform.presenter.PendingFragmentPresenter;
 import com.platform.utility.Constants;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 @SuppressWarnings("CanBeFinal")
 public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingRequestViewHolder> {
     private List<PendingRequest> pendingRequestList;
-    private TMFragmentPresenter tmFragmentPresenter;
+    private PendingFragmentPresenter pendingFragmentPresenter;
 
     class PendingRequestViewHolder extends RecyclerView.ViewHolder {
         TextView txtRequestTitle, txtRequestCreatedAt;
@@ -34,9 +34,9 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
         }
     }
 
-    public NewTMAdapter(List<PendingRequest> pendingRequestList, TMFragmentPresenter tmFragmentPresenter) {
+    public NewTMAdapter(List<PendingRequest> pendingRequestList, PendingFragmentPresenter pendingFragmentPresenter) {
         this.pendingRequestList = pendingRequestList;
-        this.tmFragmentPresenter = tmFragmentPresenter;
+        this.pendingFragmentPresenter = pendingFragmentPresenter;
     }
 
     @NonNull
@@ -55,10 +55,10 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
         pendingRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedAt()));
 
         pendingRequestViewHolder.ivApprove.setOnClickListener(
-                v -> tmFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
+                v -> pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
 
         pendingRequestViewHolder.ivReject.setOnClickListener(
-                v -> tmFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
+                v -> pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
     }
 
     @Override

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.listeners.TMTaskListener;
 import com.platform.models.tm.PendingRequest;
-import com.platform.presenter.TMFragmentPresenter;
+import com.platform.presenter.PendingFragmentPresenter;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.NewTMAdapter;
@@ -23,12 +23,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TMFragment extends Fragment implements View.OnClickListener, TMTaskListener {
+public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener {
 
     private View tmFragmentView;
     private TextView txtNoData;
     private RecyclerView rvPendingRequests;
-    private TMFragmentPresenter tmFragmentPresenter;
+    private PendingFragmentPresenter pendingFragmentPresenter;
     private NewTMAdapter newTMAdapter;
     private boolean mShowAllApprovalsText = true;
 
@@ -59,8 +59,8 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tmFragmentPresenter = new TMFragmentPresenter(this);
-        tmFragmentPresenter.getAllPendingRequests();
+        pendingFragmentPresenter = new PendingFragmentPresenter(this);
+        pendingFragmentPresenter.getAllPendingRequests();
 
         init();
     }
@@ -86,7 +86,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
-                Util.launchFragment(new TMFragment(), getContext(), getString(R.string.team_management));
+                Util.launchFragment(new TMUserApprovalsFragment(), getContext(), getString(R.string.approvals));
                 break;
         }
     }
@@ -117,7 +117,7 @@ public class TMFragment extends Fragment implements View.OnClickListener, TMTask
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
             this.pendingRequestList = pendingRequestList;
-            newTMAdapter = new NewTMAdapter(this.pendingRequestList, tmFragmentPresenter);
+            newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter);
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);

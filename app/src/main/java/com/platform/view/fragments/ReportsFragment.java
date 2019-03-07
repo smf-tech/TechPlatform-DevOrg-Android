@@ -12,6 +12,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
 import com.platform.presenter.ReportsFragmentPresenter;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ReportCategoryAdapter;
@@ -48,6 +49,8 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
 
             mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }
+
+        AppEvents.trackAppEvent(getString(R.string.event_reports_screen_visit));
     }
 
     @Override

@@ -9,17 +9,17 @@ import com.platform.listeners.TMRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMRequestCall;
-import com.platform.view.fragments.TMFragment;
+import com.platform.view.fragments.TMUserPendingFragment;
 
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class TMFragmentPresenter implements TMRequestCallListener {
+public class PendingFragmentPresenter implements TMRequestCallListener {
 
     private final String TAG = this.getClass().getName();
-    private WeakReference<TMFragment> fragmentWeakReference;
+    private WeakReference<TMUserPendingFragment> fragmentWeakReference;
 
-    public TMFragmentPresenter(TMFragment tmFragment) {
+    public PendingFragmentPresenter(TMUserPendingFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
 
