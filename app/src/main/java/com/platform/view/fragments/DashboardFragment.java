@@ -215,6 +215,7 @@ public class DashboardFragment extends Fragment {
                 int resId = tabIcons[0];
                 int resColor = tabThemeColor[0];
                 int pendingActionCount = 0;
+
                 switch (tabNames.get(i).getName()) {
                     case Constants.Home.FORMS:
                         resId = tabIcons[0];
