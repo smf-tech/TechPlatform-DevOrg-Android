@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.utility.AppEvents;
+import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
@@ -28,6 +30,9 @@ public class TMUserApprovalsFragment extends Fragment {
         if (getActivity() != null && getArguments() != null) {
             Context context = getActivity();
             String title = (String) getArguments().getSerializable("TITLE");
+            if (TextUtils.isEmpty(title))
+                title = getString(R.string.approvals);
+
             ((HomeActivity) context).setActionBarTitle(title);
             ((HomeActivity) context).setSyncButtonVisibility(false);
         }
@@ -52,6 +57,12 @@ public class TMUserApprovalsFragment extends Fragment {
 
         TabLayout tabLayout = approvalsFragmentView.findViewById(R.id.approvals_tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Util.updateNotificationsCount(true);
     }
 
     private void setupViewPager(ViewPager viewPager) {

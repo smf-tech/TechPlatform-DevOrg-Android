@@ -107,8 +107,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         findViewById(R.id.home_bell_icon).setOnClickListener(this);
         findViewById(R.id.unread_notification_count).setOnClickListener(this);
 
-        ((TextView)findViewById(R.id.unread_notification_count)).setText("0");
-
         NavigationView navigationView = findViewById(R.id.home_menu_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -134,6 +132,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } else {
             loadHomePage();
         }
+    }
+
+    private void updateUnreadNotificationsCount() {
+        int notificationsCount = Util.getUnreadNotificationsCount();
+        ((TextView)findViewById(R.id.unread_notification_count))
+                .setText(String.valueOf(notificationsCount));
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
@@ -212,6 +216,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadReportsPage() {
         Util.launchFragment(new ReportsFragment(), this, getString(R.string.reports));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        updateUnreadNotificationsCount();
     }
 
     @Override
@@ -512,6 +523,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 AppEvents.trackAppEvent(getString(R.string.event_menu_profile_click));
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                break;
+
+            case R.id.home_bell_icon:
+            case R.id.unread_notification_count:
+                findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
+                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
+                loadTeamsPage();
                 break;
 
             case R.id.home_sync_icon:

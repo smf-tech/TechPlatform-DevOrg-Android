@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
+            if (TextUtils.isEmpty(title))
+                title = getString(R.string.approvals);
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 

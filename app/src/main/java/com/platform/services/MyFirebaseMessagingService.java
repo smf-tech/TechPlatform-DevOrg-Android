@@ -36,6 +36,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             try {
                 remoteMessageId = remoteMessage.getData().get("Id");
 
+                Util.updateNotificationsCount(false);
+
                 sendNotification(remoteMessage.getData().get("Title"),
                         remoteMessage.getData().get("Description"));
 

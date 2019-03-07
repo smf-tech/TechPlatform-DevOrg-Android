@@ -47,6 +47,8 @@ public class Constants {
         public static final String LANGUAGE_ENGLISH = "en";
         public static final String LANGUAGE_MARATHI = "mr";
         public static final String LANGUAGE_HINDI = "hi";
+
+        static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
     }
 
     public static class AssociatesType {
