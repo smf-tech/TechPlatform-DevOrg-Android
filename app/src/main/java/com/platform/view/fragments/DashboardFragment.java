@@ -215,49 +215,7 @@ public class DashboardFragment extends Fragment {
 
             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
 
-            if (!tabNames.get(i).isActive()) {
-                ((TextView) tabOne.findViewById(R.id.tab))
-                        .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
-                pendingActionsCountView.setVisibility(View.GONE);
-            } else {
-                pendingActionsCountView.setVisibility(View.VISIBLE);
-                int resId = tabIcons[0];
-                int resColor = tabThemeColor[0];
-                int pendingActionCount = 0;
-
-                switch (tabNames.get(i).getName().getLocaleValue()) {
-                    case Constants.Home.FORMS:
-                        resId = tabIcons[0];
-                        resColor = tabThemeColor[0];
-                        pendingActionCount = getFormsPendingActionCount();
-                        break;
-
-                    case Constants.Home.MEETINGS:
-                        resId = tabIcons[1];
-                        resColor = tabThemeColor[1];
-                        break;
-
-                    case Constants.Home.APPROVALS:
-                        resId = tabIcons[2];
-                        resColor = tabThemeColor[2];
-                        pendingActionCount = mApprovalCount;
-                        break;
-
-                    case Constants.Home.REPORTS:
-                        resId = tabIcons[3];
-                        resColor = tabThemeColor[3];
-                        break;
-                }
-
-                tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
-                if (pendingActionCount != 0) {
-                    pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                    pendingActionsCountView.setTextColor(getResources().getColor(resColor,
-                            getContext().getTheme()));
-                } else {
-                    pendingActionsCountView.setVisibility(View.GONE);
-                }
-            }
+            drawTabCount(i, tabOne, tabView, pendingActionsCountView);
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -292,6 +250,53 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    private void drawTabCount(int i, View tabOne, TextView tabView, TextView pendingActionsCountView) {
+        if (getContext() == null) return;
+        if (!tabNames.get(i).isActive()) {
+            ((TextView) tabOne.findViewById(R.id.tab))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+            pendingActionsCountView.setVisibility(View.GONE);
+        } else {
+            pendingActionsCountView.setVisibility(View.VISIBLE);
+            int resId = tabIcons[0];
+            int resColor = tabThemeColor[0];
+            int pendingActionCount = 0;
+
+            switch (tabNames.get(i).getName().getLocaleValue()) {
+                case Constants.Home.FORMS:
+                    resId = tabIcons[0];
+                    resColor = tabThemeColor[0];
+                    pendingActionCount = getFormsPendingActionCount();
+                    break;
+
+                case Constants.Home.MEETINGS:
+                    resId = tabIcons[1];
+                    resColor = tabThemeColor[1];
+                    break;
+
+                case Constants.Home.APPROVALS:
+                    resId = tabIcons[2];
+                    resColor = tabThemeColor[2];
+                    pendingActionCount = mApprovalCount;
+                    break;
+
+                case Constants.Home.REPORTS:
+                    resId = tabIcons[3];
+                    resColor = tabThemeColor[3];
+                    break;
+            }
+
+            tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+            if (pendingActionCount != 0) {
+                pendingActionsCountView.setText(String.valueOf(pendingActionCount));
+                pendingActionsCountView.setTextColor(getResources().getColor(resColor,
+                        getContext().getTheme()));
+            } else {
+                pendingActionsCountView.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private int getFormsPendingActionCount() {
         DatabaseManager dbInstance = DatabaseManager.getDBInstance(getContext());
         int count = 0;
@@ -321,49 +326,7 @@ public class DashboardFragment extends Fragment {
 
                     TextView pendingActionsCountView = tabCustomView.findViewById(R.id.pending_action_count);
 
-                    if (!tabNames.get(i).isActive()) {
-                        ((TextView) tabCustomView.findViewById(R.id.tab))
-                                .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
-                        pendingActionsCountView.setVisibility(View.GONE);
-                    } else {
-                        pendingActionsCountView.setVisibility(View.VISIBLE);
-                        int resId = tabIcons[0];
-                        int resColor = tabThemeColor[0];
-                        int pendingActionCount = 0;
-
-                        switch (tabNames.get(i).getName().getLocaleValue()) {
-                            case Constants.Home.FORMS:
-                                resId = tabIcons[0];
-                                resColor = tabThemeColor[0];
-                                pendingActionCount = getFormsPendingActionCount();
-                                break;
-
-                            case Constants.Home.MEETINGS:
-                                resId = tabIcons[1];
-                                resColor = tabThemeColor[1];
-                                break;
-
-                            case Constants.Home.APPROVALS:
-                                resId = tabIcons[2];
-                                resColor = tabThemeColor[2];
-                                pendingActionCount = mApprovalCount;
-                                break;
-
-                            case Constants.Home.REPORTS:
-                                resId = tabIcons[3];
-                                resColor = tabThemeColor[3];
-                                break;
-                        }
-
-                        tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
-                        if (pendingActionCount != 0) {
-                            pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                            pendingActionsCountView.setTextColor(getResources().getColor(resColor,
-                                    getContext().getTheme()));
-                        } else {
-                            pendingActionsCountView.setVisibility(View.GONE);
-                        }
-                    }
+                    drawTabCount(i, tabCustomView, tabView, pendingActionsCountView);
                 }
             }
         }
