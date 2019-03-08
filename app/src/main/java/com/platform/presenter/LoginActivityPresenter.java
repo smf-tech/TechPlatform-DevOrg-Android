@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.Platform;
+import com.platform.R;
 import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
@@ -61,7 +63,7 @@ public class LoginActivityPresenter implements UserRequestCallListener {
 
         if (message != null) {
             Log.e(TAG, "Request failed :" + message);
-            loginActivity.get().showErrorMessage(message);
+            loginActivity.get().showErrorMessage(Platform.getInstance().getString(R.string.msg_auth_fail));
         }
     }
 

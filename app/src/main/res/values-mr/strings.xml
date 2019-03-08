@@ -34,6 +34,7 @@
     <string name="msg_waiting_for_otp_text">आपल्या मोबाइल नंबरवर OTP पाठविण्याची प्रतीक्षा करत आहे.</string>
     <string name="msg_verify_otp_text">आपला मोबाइल नंबर सत्यापित करण्यासाठी सत्यापित बटणावर क्लिक करा.</string>
     <string name="msg_logout">आपण बाहेर पडू इच्छिता?</string>
+    <string name="msg_auth_fail">सर्व्हर समस्या, कृपया नंतर पुन्हा प्रयत्न करा.</string>
 
     <!--Registration-->
     <string name="registration_title">नोंदणी</string>
