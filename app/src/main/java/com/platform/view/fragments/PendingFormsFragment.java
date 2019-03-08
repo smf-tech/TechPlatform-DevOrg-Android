@@ -54,7 +54,7 @@ public class PendingFormsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment CompletedFormsFragment.
+     * @return A new instance of fragment PendingFormsFragment.
      */
     static PendingFormsFragment newInstance() {
         return new PendingFormsFragment();

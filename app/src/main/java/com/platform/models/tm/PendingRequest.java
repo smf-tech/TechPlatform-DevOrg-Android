@@ -76,10 +76,10 @@ public class PendingRequest {
     private Object reason;
     @SerializedName("createdDateTime")
     @Expose
-    private String createdDateTime;
+    private Long createdDateTime;
     @SerializedName("updatedDateTime")
     @Expose
-    private String updatedDateTime;
+    private Long updatedDateTime;
     @SerializedName("entity")
     @Expose
     private Entity entity;
@@ -260,19 +260,19 @@ public class PendingRequest {
         this.reason = reason;
     }
 
-    public String getCreatedDateTime() {
+    public Long getCreatedDateTime() {
         return createdDateTime;
     }
 
-    public void setCreatedDateTime(String createdDateTime) {
+    public void setCreatedDateTime(Long createdDateTime) {
         this.createdDateTime = createdDateTime;
     }
 
-    public String getUpdatedDateTime() {
+    public Long getUpdatedDateTime() {
         return updatedDateTime;
     }
 
-    public void setUpdatedDateTime(String updatedDateTime) {
+    public void setUpdatedDateTime(Long updatedDateTime) {
         this.updatedDateTime = updatedDateTime;
     }
 

@@ -21,10 +21,10 @@ public class Entity {
     private Boolean isActive;
     @SerializedName("updated_at")
     @Expose
-    private String updatedAt;
+    private Long updatedAt;
     @SerializedName("created_at")
     @Expose
-    private String createdAt;
+    private Long createdAt;
     @SerializedName("user")
     @Expose
     private UserInfo userInfo;
@@ -61,19 +61,19 @@ public class Entity {
         isActive = active;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 

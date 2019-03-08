@@ -477,7 +477,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         result.setFormCategory(formData.getCategory().getName().getLocaleValue());
         result.setFormName(formData.getName().getLocaleValue());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
+        result.setCreatedAt(Util.getCurrentTimeStamp());
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName().getLocaleValue();
@@ -547,7 +547,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         FormResult result = new FormResult();
         result.setFormId(formData.getId());
         result.setFormName(formData.getName().getLocaleValue());
-        result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
+        result.setCreatedAt(Util.getCurrentTimeStamp());
 
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 

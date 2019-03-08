@@ -90,7 +90,6 @@ public class FormsFragment extends Fragment {
                     break;
 
                 case 2:
-//                    fragment = CompletedFormsFragment.newInstance();
                     fragment = SubmittedFormsFragment.newInstance();
                     break;
             }

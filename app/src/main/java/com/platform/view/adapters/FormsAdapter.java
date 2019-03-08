@@ -20,8 +20,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.utility.Constants.FORM_DATE_FORMAT;
-
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {
 
@@ -78,11 +76,8 @@ public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> 
         viewHolder.mName.setText(processData.getName().getLocaleValue());
 
         if (!processData.getName().getLocaleValue().equals(mContext.getString(R.string.forms_are_not_available))) {
-            if (processData.getMicroservice() != null
-                    && processData.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = Util.getFormattedDate(processData.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
-                viewHolder.mDate.setText(String.format("on %s", formattedDate));
-            }
+            String formattedDate = Util.getDateFromTimestamp(Util.getCurrentTimeStamp());
+            viewHolder.mDate.setText(String.format("on %s", formattedDate));
         } else {
             viewHolder.mDate.setVisibility(View.GONE);
         }
