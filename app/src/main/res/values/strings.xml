@@ -24,7 +24,6 @@
     <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
     <string name="label_mobile_no">Mobile Number *</string>
-    <string name="label_forget_your_pass">Forgot your password?</string>
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>

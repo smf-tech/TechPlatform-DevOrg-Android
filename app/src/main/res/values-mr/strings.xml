@@ -24,7 +24,6 @@
     <string name="msg_mobile_number_is_invalid">वैध मोबाइल नंबर नाही</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
     <string name="label_mobile_no">मोबाइल नंबर *</string>
-    <string name="label_forget_your_pass">तुमचा पासवर्ड विसरलात?</string>
     <string name="label_login">लॉगइन</string>
     <string name="label_time">वेळ</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>

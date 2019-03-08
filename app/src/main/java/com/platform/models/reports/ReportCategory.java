@@ -3,6 +3,7 @@ package com.platform.models.reports;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class ReportCategory {
 
     @SerializedName("_id")

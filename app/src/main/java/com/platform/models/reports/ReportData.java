@@ -3,7 +3,6 @@ package com.platform.models.reports;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.database.DataConverter;
-import com.platform.models.common.Category;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

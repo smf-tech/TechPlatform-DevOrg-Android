@@ -1,6 +1,7 @@
 package com.platform.presenter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
@@ -160,6 +161,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         try {
             JSONObject outerObject = new JSONObject(message);
             JSONObject requestObject = new JSONObject(requestObjectString);
+
             if (outerObject.has(Constants.RESPONSE_DATA)) {
                 JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
@@ -167,21 +169,27 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 requestObject.put(Constants.FormDynamicKeys._ID, idObject);
                 requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
                         dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+
                 requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
                 requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
                         dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+
                 requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
                         dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                 if (oid != null) {
                     FormResult formResult = DatabaseManager
                             .getDBInstance(formFragment.get().getContext()).getFormResult(oid);
+
                     if (formResult != null) {
                         DatabaseManager.getDBInstance(formFragment.get().getContext())
                                 .deleteFormResult(formResult);
 
                         Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
-                        LocalBroadcastManager.getInstance(formFragment.get().getContext()).sendBroadcast(intent);
+                        Context context = formFragment.get().getContext();
+                        if (context != null) {
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                        }
                     }
                 }
 
