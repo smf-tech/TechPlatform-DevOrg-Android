@@ -315,7 +315,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             getContext().startActivity(intent);
         });
 
-        if (getContext() != null &&
+        if (getContext() != null && data.getName().getLocaleValue() != null &&
                 !data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {

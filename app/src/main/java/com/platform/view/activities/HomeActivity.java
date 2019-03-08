@@ -57,17 +57,17 @@ import static com.platform.utility.Constants.Notification.NOTIFICATION;
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
     private boolean doubleBackToExitPressedOnce = false;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         initMenuView();
     }
@@ -135,7 +135,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void updateUnreadNotificationsCount() {
         int notificationsCount = Util.getUnreadNotificationsCount();
-        ((TextView)findViewById(R.id.unread_notification_count))
+        ((TextView) findViewById(R.id.unread_notification_count))
                 .setText(String.valueOf(notificationsCount));
     }
 
@@ -221,6 +221,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onResume() {
         super.onResume();
 
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+
         updateUnreadNotificationsCount();
     }
 
@@ -233,17 +235,24 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     @Override
-    public void onUpdateNeeded(String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+    public void onUpdateNeeded(final String updateUrl, boolean forcefulUpdate) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_new_version_available))
-                .setMessage(getString(R.string.msg_update_app))
                 .setPositiveButton(getString(R.string.update),
-                        (dialog1, which) -> redirectStore(updateUrl))
-                .setNegativeButton(getString(R.string.no_thanks),
-                        (dialog12, which) -> {
-                        })
-                .create();
+                        (dialog1, which) -> redirectStore(updateUrl));
 
+        if (forcefulUpdate) {
+            dialog.setMessage(getString(R.string.msg_need_force_update));
+            dialog.setCancelable(false);
+        } else {
+            dialog.setMessage(getString(R.string.msg_update_app));
+            dialog.setCancelable(true);
+            dialog.setNegativeButton(getString(R.string.no_thanks),
+                    (dialog12, which) -> {
+                    });
+        }
+
+        dialog.create();
         dialog.show();
     }
 

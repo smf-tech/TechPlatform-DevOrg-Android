@@ -189,7 +189,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
         ImageView editButton = formFragmentView.findViewById(R.id.toolbar_edit_action);
         boolean isFormEditable = Boolean.parseBoolean(formModel.getData().getEditable());
-        if (mIsInEditMode) {
+
+        if (mIsInEditMode && !mIsPartiallySaved) {
             if (mIsPartiallySaved || isFormEditable) {
                 editButton.setVisibility(View.VISIBLE);
                 editButton.setOnClickListener(this);
@@ -523,7 +524,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         alertDialog.setIcon(R.mipmap.app_logo);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
-                (dialog, which) -> alertDialog.dismiss());
+                (dialogInterface, i) -> getActivity().finish());
+
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
             if (formModel != null && formModel.getData() != null) {

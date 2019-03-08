@@ -14,9 +14,10 @@ import com.platform.view.fragments.NewOtpFragment;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("CanBeFinal")
 public class OtpFragmentPresenter implements UserRequestCallListener {
 
-    @SuppressWarnings("CanBeFinal")
+    private boolean isOtpVerifyCall;
     private WeakReference<NewOtpFragment> otpFragment;
 
     public OtpFragmentPresenter(NewOtpFragment otpFragment) {
@@ -28,6 +29,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
             return;
         }
 
+        isOtpVerifyCall = false;
         LoginRequestCall loginRequestCall = new LoginRequestCall();
         loginRequestCall.setListener(this);
 
@@ -39,6 +41,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         if (otpFragment.get().isAllFieldsValid()) {
             loginInfo.setOneTimePassword(otp);
 
+            isOtpVerifyCall = true;
             LoginRequestCall loginRequestCall = new LoginRequestCall();
             loginRequestCall.setListener(this);
 
@@ -60,10 +63,15 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
             otpFragment.get().deRegisterOtpSmsReceiver();
         }
 
-        LoginRequestCall loginRequestCall = new LoginRequestCall();
-        loginRequestCall.setListener(this);
-        // Get User Profile
-        loginRequestCall.getUserProfile();
+        if (isOtpVerifyCall) {
+            LoginRequestCall loginRequestCall = new LoginRequestCall();
+            loginRequestCall.setListener(this);
+            // Get User Profile
+            loginRequestCall.getUserProfile();
+        } else {
+            otpFragment.get().hideProgressBar();
+            otpFragment.get().showNextScreen(null);
+        }
     }
 
     @Override
@@ -73,6 +81,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
 
+        isOtpVerifyCall = false;
         otpFragment.get().hideProgressBar();
         otpFragment.get().showNextScreen(user);
     }

@@ -15,6 +15,7 @@
     <!--App Update-->
     <string name="title_new_version_available">नया संस्करण उपलब्ध है</string>
     <string name="msg_update_app">जारी रखने के लिए कृपया नए संस्करण में एप्लिकेशन अपडेट करें।</string>
+    <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>
@@ -163,7 +164,7 @@
     <string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>
     <string name="reports">रिपोर्ट</string>
     <string name="submitted_form_count">प्रस्तुत प्रपत्रों की कुल गणना : %1$s</string>
-    <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को छोड़ना चाहते हैं?</string>
+    <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को सहेजना चाहते हैं?</string>
     <string name="form_saved_offline">आप ऑफ़लाइन हैं, फ़ॉर्म ऑफ़लाइन सहेजे गए हैं।</string>
     <string name="form_submit_success">फॉर्म सफलतापूर्वक सबमिट किया गया!</string>
     <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
@@ -173,6 +174,7 @@
     <string name="saved_forms">बचाया</string>
     <string name="submitted_forms">प्रस्तुत</string>
     <string name="form_field_mandatory">%1$s%2$s</string>
+    <string name="msg_no_pending_req">अनुमोदन के लिए कोई लंबित अनुरोध नहीं हैं।</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
 

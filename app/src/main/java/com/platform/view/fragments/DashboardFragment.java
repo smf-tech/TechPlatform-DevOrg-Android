@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
@@ -18,7 +19,6 @@ import com.platform.database.DatabaseManager;
 import com.platform.models.forms.FormResult;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
-import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.view.activities.HomeActivity;
@@ -60,8 +60,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
-
-    public int mApprovalCount = 0;
+    public static int mApprovalCount = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -104,71 +103,39 @@ public class DashboardFragment extends Fragment {
 
         initViews();
 
-        broadcastReceiver();
-
-    }
-
-    private void broadcastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_APPROVALS_FETCHED);
-        filter.addAction(SyncAdapterUtils.PARTIAL_FORM_ADDED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_APPROVALS_FETCHED)) {
+                    Toast.makeText(context, "User approvals fetched.", Toast.LENGTH_SHORT).show();
 
                     mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
 
                     for (final Modules modules : tabNames) {
-                        if (getContext() == null) continue;
-
-                        if (modules.getName().getLocaleValue().equals(getContext().getString(R.string.approvals))) {
-                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
+                        if (modules.getName().getLocaleValue().equals(getString(R.string.approvals))) {
+                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(context)
                                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
                             TextView tabView = tabOne.findViewById(R.id.tab);
                             tabView.setText(modules.getName().getLocaleValue());
                             tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[2], 0, 0);
                             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
                             pendingActionsCountView.setText(String.valueOf(mApprovalCount));
-                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[2], getContext().getTheme()));
+                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[2],
+                                    getContext().getTheme()));
 
                             TabLayout.Tab tab = tabLayout.getTabAt(2);
                             if (tab != null) {
                                 tab.setCustomView(tabOne);
                             }
-
-                            break;
                         }
                     }
                 }
-                /*if (Objects.requireNonNull(intent.getAction()).equals(SyncAdapterUtils.PARTIAL_FORM_ADDED)) {
-                    mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
-
-                    for (final Modules modules : tabNames) {
-                        if (modules.getName().equals(getContext().getString(R.string.forms))) {
-                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
-                                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
-                            TextView tabView = tabOne.findViewById(R.id.tab);
-                            tabView.setText(modules.getName().getLocaleValue());
-                            tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[0], 0, 0);
-                            int pendingActionCount = getFormsPendingActionCount();
-
-                            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-                            pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[0], getContext().getTheme()));
-
-                            TabLayout.Tab tab = tabLayout.getTabAt(0);
-                            if (tab != null) {
-                                tab.setCustomView(tabOne);
-                            }
-
-                            break;
-                        }
-                    }
-                }*/
             }
         }, filter);
+
     }
 
     private void setMenuResourceId() {
@@ -248,44 +215,7 @@ public class DashboardFragment extends Fragment {
 
             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
 
-            if (!tabNames.get(i).isActive()) {
-                ((TextView) tabOne.findViewById(R.id.tab))
-                        .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
-                pendingActionsCountView.setVisibility(View.GONE);
-            } else {
-                pendingActionsCountView.setVisibility(View.VISIBLE);
-                int resId = tabIcons[0];
-                int resColor = getResources().getColor(R.color.black, getContext().getTheme());
-                int pendingActionCount = 0;
-
-                switch (tabNames.get(i).getName().getLocaleValue()) {
-                    case Constants.Home.FORMS:
-                        resId = tabIcons[0];
-                        pendingActionCount = getFormsPendingActionCount();
-                        break;
-
-                    case Constants.Home.MEETINGS:
-                        resId = tabIcons[1];
-                        break;
-
-                    case Constants.Home.APPROVALS:
-                        resId = tabIcons[2];
-                        pendingActionCount = mApprovalCount;
-                        break;
-
-                    case Constants.Home.REPORTS:
-                        resId = tabIcons[3];
-                        break;
-                }
-
-                tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
-                if (pendingActionCount != 0) {
-                    pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                    pendingActionsCountView.setTextColor(resColor);
-                } else {
-                    pendingActionsCountView.setVisibility(View.GONE);
-                }
-            }
+            drawTabCount(i, tabOne, tabView, pendingActionsCountView);
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -320,17 +250,58 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    private void drawTabCount(int i, View tabOne, TextView tabView, TextView pendingActionsCountView) {
+        if (getContext() == null) return;
+        if (!tabNames.get(i).isActive()) {
+            ((TextView) tabOne.findViewById(R.id.tab))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+            pendingActionsCountView.setVisibility(View.GONE);
+        } else {
+            pendingActionsCountView.setVisibility(View.VISIBLE);
+            int resId = tabIcons[0];
+            int resColor = tabThemeColor[0];
+            int pendingActionCount = 0;
+
+            switch (tabNames.get(i).getName().getLocaleValue()) {
+                case Constants.Home.FORMS:
+                    resId = tabIcons[0];
+                    resColor = tabThemeColor[0];
+                    pendingActionCount = getFormsPendingActionCount();
+                    break;
+
+                case Constants.Home.MEETINGS:
+                    resId = tabIcons[1];
+                    resColor = tabThemeColor[1];
+                    break;
+
+                case Constants.Home.APPROVALS:
+                    resId = tabIcons[2];
+                    resColor = tabThemeColor[2];
+                    pendingActionCount = mApprovalCount;
+                    break;
+
+                case Constants.Home.REPORTS:
+                    resId = tabIcons[3];
+                    resColor = tabThemeColor[3];
+                    break;
+            }
+
+            tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+            if (pendingActionCount != 0) {
+                pendingActionsCountView.setText(String.valueOf(pendingActionCount));
+                pendingActionsCountView.setTextColor(getResources().getColor(resColor,
+                        getContext().getTheme()));
+            } else {
+                pendingActionsCountView.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private int getFormsPendingActionCount() {
         DatabaseManager dbInstance = DatabaseManager.getDBInstance(getContext());
         int count = 0;
 
         List<FormResult> partiallySavedForms = dbInstance.getAllPartiallySavedForms();
-
-/*
-        List<FormResult> nonSyncedForms = dbInstance.getNonSyncedPendingForms();
-        if (nonSyncedForms != null) count += nonSyncedForms.size();
-*/
-
         if (partiallySavedForms != null) count = partiallySavedForms.size();
 
         return count;
@@ -339,8 +310,26 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        updateBadgeCount();
+    }
 
-        setupTabIcons();
+    private void updateBadgeCount() {
+        for (int i = 0; i < tabNames.size(); i++) {
+            if (getContext() == null) continue;
+
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                View tabCustomView = tab.getCustomView();
+                if (tabCustomView != null) {
+                    TextView tabView = tabCustomView.findViewById(R.id.tab);
+                    tabView.setText(tabNames.get(i).getName().getLocaleValue());
+
+                    TextView pendingActionsCountView = tabCustomView.findViewById(R.id.pending_action_count);
+
+                    drawTabCount(i, tabCustomView, tabView, pendingActionsCountView);
+                }
+            }
+        }
     }
 
     class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {

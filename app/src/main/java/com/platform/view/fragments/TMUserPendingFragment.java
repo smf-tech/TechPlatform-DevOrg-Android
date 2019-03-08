@@ -1,7 +1,6 @@
 package com.platform.view.fragments;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,13 +21,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
-import static com.platform.utility.Constants.UserApprovals.EXTRA_APPROVALS_COUNT;
+import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
 
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener, NewTMAdapter.OnRequestItemClicked {
 
@@ -124,12 +121,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     @Override
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
-
-            int approvalCount = pendingRequestList.size();
-
-            Intent intent = new Intent(EVENT_APPROVALS_FETCHED);
-            intent.putExtra(EXTRA_APPROVALS_COUNT, approvalCount);
-            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+            mApprovalCount = pendingRequestList.size();
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
@@ -139,6 +131,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);
+            txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);
         }
     }
@@ -154,6 +147,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         } else {
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
+            txtNoData.setText(getString(R.string.msg_no_pending_req));
         }
     }
 
