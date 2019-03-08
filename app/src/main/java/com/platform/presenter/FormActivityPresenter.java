@@ -1,6 +1,7 @@
 package com.platform.presenter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,6 +36,8 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class FormActivityPresenter implements FormRequestCallListener,
@@ -142,12 +145,14 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
-        Util.showToast(error.getMessage(), formFragment.get().getActivity());
+        if (formFragment != null && formFragment.get() != null) {
+            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+            Util.showToast(error.getMessage(), formFragment.get().getActivity());
+        }
     }
 
     @Override
-    public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType) {
+    public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType, String oid) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
         AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success));
@@ -167,6 +172,18 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
                 requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
                         dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
+
+                if (oid != null) {
+                    FormResult formResult = DatabaseManager
+                            .getDBInstance(formFragment.get().getContext()).getFormResult(oid);
+                    if (formResult != null) {
+                        DatabaseManager.getDBInstance(formFragment.get().getContext())
+                                .deleteFormResult(formResult);
+
+                        Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
+                        LocalBroadcastManager.getInstance(formFragment.get().getContext()).sendBroadcast(intent);
+                    }
+                }
 
                 FormResult result = new FormResult();
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
@@ -268,7 +285,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, submitType);
+                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:

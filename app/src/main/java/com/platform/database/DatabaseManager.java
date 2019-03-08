@@ -158,6 +158,11 @@ public class DatabaseManager {
         Log.d(TAG, "insertFormResult");
     }
 
+    public void deleteFormResult(FormResult result) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        formResultDao.delete(result);
+    }
+
     public void updateFormResult(FormResult result) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         formResultDao.update(result);

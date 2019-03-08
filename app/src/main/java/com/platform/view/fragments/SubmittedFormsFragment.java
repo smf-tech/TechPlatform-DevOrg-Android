@@ -1,6 +1,9 @@
 package com.platform.view.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -41,12 +44,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
@@ -92,6 +101,33 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         lnrOuter = view.findViewById(R.id.lnr_dashboard_forms_category);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
 
+        getProcessData();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(EVENT_SYNC_COMPLETED);
+        filter.addAction(EVENT_SYNC_FAILED);
+        filter.addAction(EVENT_FORM_ADDED);
+        filter.addAction(PARTIAL_FORM_REMOVED);
+
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
+                    Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
+                    getProcessData();
+                } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
+                    getProcessData();
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_REMOVED)) {
+                    getProcessData();
+                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
+                    Log.e("PendingForms", "Sync failed!");
+                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, filter);
+    }
+
+    private void getProcessData() {
         List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
         if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
             Processes processes = new Processes();
@@ -180,7 +216,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                             formID = formResult.formID;
                             ProcessData object = new ProcessData();
-                            object.setId(formResult.mOID.oid);
+                            if (formResult.mOID != null && formResult.mOID.oid != null)
+                                object.setId(formResult.mOID.oid);
                             object.setFormTitle(formResult.formTitle);
                             object.setName(new LocaleData(formResult.formTitle));
                             Microservice microservice = new Microservice();
@@ -204,13 +241,15 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             return;
         }
 
+        lnrOuter.removeAllViews();
+
         View formTitleView = getLayoutInflater().inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
         ArrayList<ProcessData> dataList = new ArrayList<>(childList);
         for (final ProcessData data : dataList) {
-            if (formID == null) {
+            if (formID == null && map != null) {
                 String oid = null;
                 for (final Map.Entry<String, ProcessData> entry : map.entrySet()) {
                     if (entry.getValue() == data) {
@@ -256,8 +295,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             getContext().startActivity(intent);
         });
 
-        if (getContext() != null &&
-                !data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
+        if (getContext() != null  && data.getName() != null
+                && data.getName().getLocaleValue() != null && !data.getName().getLocaleValue()
+                .equals(getString(R.string.forms_are_not_available))) {
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
                 String formattedDate = Util.getFormattedDate(
@@ -275,7 +315,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     private void addOfflineFormItem(final View formTitleView,
-                             final LinearLayout lnrInner, final ProcessData data, final String oid) {
+                                    final LinearLayout lnrInner, final ProcessData data, final String oid) {
 
         if (getContext() == null) {
             return;

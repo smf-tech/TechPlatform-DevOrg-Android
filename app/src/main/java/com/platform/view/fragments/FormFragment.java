@@ -435,7 +435,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                                     formModel.getData().getId(), processId);
                         } else {
                             formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
-                                    formModel.getData().getId(), null);
+                                    formModel.getData().getId(), processId);
                         }
                     } else {
                         if (formModel.getData() != null) {
@@ -652,8 +652,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
 
-    private void parseSchemaAndFormDetails(final JSONObject object,
-                                           final List<Elements> elements) {
+    private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
         if (object == null || elements == null || elements.size() == 0) return;
 
         HashMap<String, String> requestedObject = new HashMap<>();
