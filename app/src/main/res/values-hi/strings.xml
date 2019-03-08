@@ -132,7 +132,6 @@
     <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
-    <string name="pending_forms">लंबित प्रपत्र</string>
     <string name="saved_forms_cat">सहेजे गए फ़ॉर्म</string>
     <string name="submit">जमा करें</string>
     <string name="no_data_available">डेटा उपलब्ध नहीं है</string>

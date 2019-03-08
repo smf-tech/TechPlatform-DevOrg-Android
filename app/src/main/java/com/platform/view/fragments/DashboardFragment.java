@@ -1,9 +1,5 @@
 package com.platform.view.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
@@ -26,17 +21,12 @@ import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
-import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
-import static com.platform.utility.Constants.UserApprovals.EXTRA_APPROVALS_COUNT;
 
 @SuppressWarnings("WeakerAccess")
 public class DashboardFragment extends Fragment {
@@ -102,40 +92,6 @@ public class DashboardFragment extends Fragment {
         }
 
         initViews();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(EVENT_APPROVALS_FETCHED);
-
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_APPROVALS_FETCHED)) {
-                    Toast.makeText(context, "User approvals fetched.", Toast.LENGTH_SHORT).show();
-
-                    mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
-
-                    for (final Modules modules : tabNames) {
-                        if (modules.getName().getLocaleValue().equals(getString(R.string.approvals))) {
-                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(context)
-                                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
-                            TextView tabView = tabOne.findViewById(R.id.tab);
-                            tabView.setText(modules.getName().getLocaleValue());
-                            tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[2], 0, 0);
-                            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-                            pendingActionsCountView.setText(String.valueOf(mApprovalCount));
-                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[2],
-                                    getContext().getTheme()));
-
-                            TabLayout.Tab tab = tabLayout.getTabAt(2);
-                            if (tab != null) {
-                                tab.setCustomView(tabOne);
-                            }
-                        }
-                    }
-                }
-            }
-        }, filter);
-
     }
 
     private void setMenuResourceId() {

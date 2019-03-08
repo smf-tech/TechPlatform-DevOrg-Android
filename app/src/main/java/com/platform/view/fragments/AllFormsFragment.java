@@ -145,20 +145,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getProcessData(data.getId());
 
-
             String submitCount = processData.getSubmitCount();
             if (!TextUtils.isEmpty(submitCount)) {
                 mCountList.put(data.getId(), submitCount);
+            }
 
-                List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                        .getAllFormResults(data.getId());
-                if (localFormResults == null || localFormResults.isEmpty()) {
-                    presenter.getSubmittedForms(data.getId());
-                }
-            } else {
-                if (Util.isConnected(getContext())) {
-                    presenter.getSubmittedForms(data.getId());
-                }
+            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                    .getAllFormResults(data.getId());
+            if (Util.isConnected(getContext()) && (localFormResults == null || localFormResults.isEmpty())) {
+                presenter.getSubmittedForms(data.getId());
             }
         }
 
@@ -201,7 +196,12 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     final String formID = formResult.formID;
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(uuid);
+                    if (formResult.mOID.oid != null) {
+                        result.set_id(formResult.mOID.oid);
+                        result.setOid(formResult.mOID.oid);
+                    } else {
+                        result.set_id(uuid);
+                    }
                     result.setFormId(formID);
                     result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                     result.setCreatedAt(formResult.updatedDateTime);

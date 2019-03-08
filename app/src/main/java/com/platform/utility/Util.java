@@ -425,6 +425,7 @@ public class Util {
     public static void removeDatabaseRecords(final boolean refreshData) {
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();
 
         if (refreshData) {
             DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllSyncedFormResults();

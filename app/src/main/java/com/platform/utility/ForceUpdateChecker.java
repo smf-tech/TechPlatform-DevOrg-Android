@@ -16,7 +16,7 @@ public class ForceUpdateChecker {
     public static final String KEY_UPDATE_REQUIRED = "Platform_force_update_required";
     public static final String KEY_CURRENT_VERSION = "Platform_force_update_current_version";
     public static final String KEY_UPDATE_URL = "Platform_force_update_store_url";
-    public static final String KEY_MIN_REQUIRED_VERSION = "Platform_minimum_required_app_version";
+    private static final String KEY_MIN_REQUIRED_VERSION = "Platform_minimum_required_app_version";
 
     private OnUpdateNeededListener onUpdateNeededListener;
     private Context context;
