@@ -343,7 +343,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
             List<Choice> choiceValues = new ArrayList<>();
             LocaleData text;
-            String value = "";
+            String value;
 
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
@@ -374,6 +374,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         } catch (Exception e) {
                             text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
                         }
+                        value = innerObj.get(elements.getChoicesByUrl().getValueName()).getAsString();
                     }
 
                     Choice choice = new Choice();
@@ -395,9 +396,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         }
                     }
                 }
-                elements.setChoices(choiceValues);
-                formComponentCreator.updateDropDownValues(elements, choiceValues);
             }
+            elements.setChoices(choiceValues);
+            formComponentCreator.updateDropDownValues(elements, choiceValues);
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()");
         }
