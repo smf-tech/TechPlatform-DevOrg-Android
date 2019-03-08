@@ -14,10 +14,10 @@ public class Validator {
     private LocaleData text;
     @SerializedName("minValue")
     @Expose
-    private Integer minValue;
+    private Double minValue;
     @SerializedName("maxValue")
     @Expose
-    private Integer maxValue;
+    private Double maxValue;
     @SerializedName("minLength")
     @Expose
     private Integer minLength;
@@ -52,19 +52,19 @@ public class Validator {
         isDigitAllowed = digitAllowed;
     }
 
-    public Integer getMinValue() {
+    public Double getMinValue() {
         return minValue;
     }
 
-    public void setMinValue(Integer minValue) {
+    public void setMinValue(Double minValue) {
         this.minValue = minValue;
     }
 
-    public Integer getMaxValue() {
+    public Double getMaxValue() {
         return maxValue;
     }
 
-    public void setMaxValue(Integer maxValue) {
+    public void setMaxValue(Double maxValue) {
         this.maxValue = maxValue;
     }
 
