@@ -67,7 +67,7 @@ public class FormActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    boolean isOfflineSaved;
+    private boolean isOfflineSaved;
     public void closeScreen(boolean flag) {
         isOfflineSaved = flag;
     }
@@ -79,5 +79,10 @@ public class FormActivity extends BaseActivity {
         } else {
             finish();
         }
+    }
+
+    @SuppressWarnings("unused")
+    public interface DeviceBackButtonListener {
+        void onDeviceBackButtonPressed();
     }
 }

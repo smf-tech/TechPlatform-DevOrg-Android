@@ -132,6 +132,11 @@ public class DatabaseManager {
         return formDataDao.getAllReports();
     }
 
+    public void deleteAllReports() {
+        ReportsDataDao formDataDao = appDatabase.reportDao();
+        formDataDao.deleteAllReports();
+    }
+
     public List<String> getAllFormResults(String formId, int formStatus) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         return formResultDao.getAllFormResults(formId, formStatus);
@@ -142,10 +147,20 @@ public class DatabaseManager {
         return formResultDao.getAllFormResults(formId);
     }
 
+    public FormResult getFormResult(String formId) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        return formResultDao.getFormResult(formId);
+    }
+
     public void insertFormResult(FormResult result) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         formResultDao.insertAll(result);
         Log.d(TAG, "insertFormResult");
+    }
+
+    public void deleteFormResult(FormResult result) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        formResultDao.delete(result);
     }
 
     public void updateFormResult(FormResult result) {

@@ -52,7 +52,7 @@ import static com.platform.utility.Constants.DATE_FORMAT;
  * Use the {@link CompletedFormsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class CompletedFormsFragment extends Fragment implements FormStatusCallListener {
     private static final String TAG = CompletedFormsFragment.class.getSimpleName();
 
@@ -71,7 +71,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
      *
      * @return A new instance of fragment CompletedFormsFragment.
      */
-    static CompletedFormsFragment newInstance() {
+    private static CompletedFormsFragment newInstance() {
         return new CompletedFormsFragment();
     }
 
@@ -356,6 +356,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
+    @SuppressWarnings("unused")
     static class FormResult {
         @SerializedName("form_title")
         String formTitle;

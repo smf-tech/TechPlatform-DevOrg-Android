@@ -455,25 +455,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         alertDialog.show();
     }
 
-//    private void showPendingFormsPopUp() {
-//        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-//        // Setting Dialog Title
-//        alertDialog.setTitle(getString(R.string.app_name_ss));
-//        // Setting Dialog Message
-//        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
-//        // Setting Icon to Dialog
-//        alertDialog.setIcon(R.mipmap.app_logo);
-//        // Setting CANCEL Button
-//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-//                (dialog, which) -> alertDialog.dismiss());
-//        // Setting OK Button
-//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-//                (dialog, which) -> logOutUser());
-//
-//        // Showing Alert Message
-//        alertDialog.show();
-//    }
-
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 

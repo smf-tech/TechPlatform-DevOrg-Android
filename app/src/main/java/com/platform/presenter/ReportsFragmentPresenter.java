@@ -39,7 +39,9 @@ public class ReportsFragmentPresenter implements PlatformRequestCallListener {
 
     @Override
     public void onFailureListener(String message) {
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -47,8 +49,10 @@ public class ReportsFragmentPresenter implements PlatformRequestCallListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+            Util.showToast(error.getMessage(), fragmentWeakReference.get().getContext());
+        }
         Log.e(TAG, "onErrorListener :" + error);
-        Util.showToast(error.getMessage(), fragmentWeakReference.get().getContext());
     }
 }

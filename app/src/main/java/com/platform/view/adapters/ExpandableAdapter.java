@@ -132,7 +132,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
             view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, FormActivity.class);
-                intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
+                intent.putExtra(Constants.PM.FORM_ID, data.getId());
                 mContext.startActivity(intent);
             });
         }

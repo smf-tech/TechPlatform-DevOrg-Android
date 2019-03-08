@@ -20,6 +20,7 @@ public class SyncAdapterUtils {
     public static final String EXTRA_TEXT = "SyncStatus";
     public static final String SYNCING_PENDING = "Syncing Pending";
     public static final String PARTIAL_FORM_ADDED = "PartialFormAdded";
+    public static final String PARTIAL_FORM_REMOVED = "PartialFormRemoved";
 
     public class FormStatus {
         public static final int SYNCED = 1;

@@ -20,6 +20,9 @@ public interface ReportsDataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(ReportData... formData);
 
+    @Query("DELETE FROM reportdata")
+    void deleteAllReports();
+
     @Update
     void update(ReportData formData);
 

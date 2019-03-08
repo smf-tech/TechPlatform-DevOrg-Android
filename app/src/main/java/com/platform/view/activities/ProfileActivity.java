@@ -594,49 +594,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-//    File saveBitmapToFile(File dir, String fileName, Bitmap bm) {
-//
-//        File imageFile = new File(dir, fileName);
-//        if (!imageFile.exists()) {
-//            try {
-//                if (!imageFile.createNewFile()) {
-//                    Log.e("app", "Failed to create new file");
-//                }
-//            } catch (IOException e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(imageFile);
-//            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//            fos.close();
-//            return imageFile;
-//        } catch (IOException e) {
-//            Log.e("app", e.getMessage());
-//            if (fos != null) {
-//                try {
-//                    fos.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        }
-//        return null;
-//    }
-
-//    private void bitmapToFile(final Bitmap bitmap) {
-//        FileOutputStream fos;
-//        try {
-//            mImageFile = File.createTempFile("profile_image", ".jpg", getFilesDir());
-//            fos = new FileOutputStream(mImageFile);
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//            fos.close();
-//        } catch (IOException e) {
-//            Log.e(TAG, e.getMessage());
-//        }
-//    }
-
     public void onImageUploaded(String uploadedImageUrl) {
         mImageUploaded = true;
         mUploadedImageUrl = uploadedImageUrl;

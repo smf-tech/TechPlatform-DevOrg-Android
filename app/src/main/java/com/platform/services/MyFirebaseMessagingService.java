@@ -82,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    public Intent getIntent() {
+    private Intent getIntent() {
         Intent intent;
 
         try {
