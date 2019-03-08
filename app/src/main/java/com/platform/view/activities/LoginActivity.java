@@ -190,7 +190,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public <T> void showNextScreen(T data) {
         if (data != null && ((Login) data).getLoginData() != null) {
-            loginInfo.setOneTimePassword(String.valueOf(((Login) data).getLoginData().getOtp()));
+            loginInfo.setOneTimePassword(((Login) data).getLoginData().getOtp());
             AppEvents.trackAppEvent(getString(R.string.event_login_success));
 
             try {

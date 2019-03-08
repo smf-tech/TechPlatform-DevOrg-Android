@@ -34,6 +34,7 @@
     <string name="msg_waiting_for_otp_text">आपके मोबाइल नंबर पर भेजे गए ओटीपी का इंतजार है।</string>
     <string name="msg_verify_otp_text">अपना मोबाइल नंबर सत्यापित करने के लिए सत्यापन बटन पर क्लिक करें।</string>
     <string name="msg_logout">क्या आप लॉगआउट करना चाहते हैं?</string>
+    <string name="msg_auth_fail">सर्वर समस्या, कृपया बाद में पुनः प्रयास करें।</string>
 
     <!--Registration-->
     <string name="registration_title">पंजीकरण</string>

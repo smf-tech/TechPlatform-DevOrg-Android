@@ -34,6 +34,7 @@
     <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your mobile number.</string>
     <string name="msg_verify_otp_text">Click on verify button to verify your mobile number.</string>
     <string name="msg_logout">Do you want to Logout?</string>
+    <string name="msg_auth_fail">Server issue, please try again later.</string>
 
     <!--Profile-->
     <string name="registration_title">Registration</string>
