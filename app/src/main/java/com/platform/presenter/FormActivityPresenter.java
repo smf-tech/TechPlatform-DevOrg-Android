@@ -201,6 +201,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         FormActivity activity = (FormActivity) formFragment.get().getActivity();
         if (activity != null) {
             activity.closeScreen(true);
+            activity.onBackPressed();
         }
     }
 

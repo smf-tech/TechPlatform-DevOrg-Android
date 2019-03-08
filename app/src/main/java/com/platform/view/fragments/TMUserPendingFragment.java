@@ -122,7 +122,6 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
             mApprovalCount = pendingRequestList.size();
-            //new DashboardFragment().onResume();
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
@@ -132,6 +131,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);
+            txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);
         }
     }
@@ -147,6 +147,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         } else {
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
+            txtNoData.setText(getString(R.string.msg_no_pending_req));
         }
     }
 
