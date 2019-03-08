@@ -15,6 +15,7 @@
     <!--App Update-->
     <string name="title_new_version_available">नवीन आवृत्ती उपलब्ध</string>
     <string name="msg_update_app">कृपया सुरु ठेवण्यासाठी अॅपला नवीन आवृत्तीवर अद्यतनित करा.</string>
+    <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाइल नंबर प्रविष्ट करा!</string>
@@ -163,7 +164,7 @@
     <string name="forms_are_not_available">फॉर्म उपलब्ध नाहीत</string>
     <string name="reports">अहवाल</string>
     <string name="submitted_form_count">सबमिट केलेल्या फॉर्मची एकूण संख्या : %1$s</string>
-    <string name="msg_confirm">आपणास खात्री आहे की आपण हा फॉर्म सोडू इच्छिता?</string>
+    <string name="msg_confirm">आपणास खात्री आहे की आपण हा फॉर्म जतन करू इच्छिता?</string>
     <string name="form_saved_offline">आपण ऑफलाइन आहात, फॉर्म ऑफलाइन जतन केला आहे.</string>
     <string name="form_submit_success">फॉर्म यशस्वीरित्या सबमिट केला!</string>
     <string name="image_upload_success">प्रतिमा यशस्वीरित्या अपलोड केली!</string>
@@ -173,6 +174,7 @@
     <string name="saved_forms">जतन</string>
     <string name="submitted_forms">सबमिट केलेले</string>
     <string name="form_field_mandatory">%1$s%2$s</string>
+    <string name="msg_no_pending_req">मंजूरीसाठी कोणत्याही प्रलंबित विनंत्या नाहीत.</string>
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
 

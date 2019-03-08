@@ -60,6 +60,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private Button mBtnVerify;
     private TextView tvOtpTimer;
     private TextView tvOtpMessage;
+    private TextView tvResendOtp;
     private EditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
@@ -263,8 +264,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             }
         });
 
-        TextView tvResendOtp = view.findViewById(R.id.tv_resend_otp);
-        tvResendOtp.setVisibility(View.VISIBLE);
+        tvResendOtp = view.findViewById(R.id.tv_resend_otp);
+        tvResendOtp.setVisibility(View.GONE);
         tvResendOtp.setOnClickListener(this);
 
         tvOtpTimer = view.findViewById(R.id.tv_otp_timer);
@@ -377,8 +378,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (timer != null) {
             timer.cancel();
             tvOtpTimer.setText("");
+
             showProgressBar();
             tvOtpTimer.setVisibility(View.GONE);
+            tvResendOtp.setVisibility(View.GONE);
             timer = null;
         }
 
@@ -399,6 +402,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             public void onFinish() {
                 if (getActivity() != null) {
                     if (isSmsPermissionNotDenied) {
+                        tvResendOtp.setVisibility(View.VISIBLE);
                         tvOtpMessage.setText(R.string.msg_otp_verification_timeout);
                     }
                     resetTimer();

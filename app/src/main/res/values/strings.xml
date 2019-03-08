@@ -15,6 +15,7 @@
     <!--App Update-->
     <string name="title_new_version_available">New version available</string>
     <string name="msg_update_app">Please, update app to new version to continue.</string>
+    <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
@@ -163,7 +164,7 @@
     <string name="forms_are_not_available">Forms are not available</string>
     <string name="reports">Reports</string>
     <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
-    <string name="msg_confirm">Are you sure you want to leave this form?</string>
+    <string name="msg_confirm">Are you sure you want to save this form?</string>
     <string name="form_saved_offline">You are offline, form saved offline.</string>
     <string name="form_submit_success">Form submitted successfully!</string>
     <string name="image_upload_success">Image uploaded successfully!</string>
@@ -173,6 +174,7 @@
     <string name="saved_forms">Saved</string>
     <string name="submitted_forms">Submitted</string>
     <string name="form_field_mandatory">%1$s%2$s</string>
+    <string name="msg_no_pending_req">There are no pending requests for approvals.</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
 
