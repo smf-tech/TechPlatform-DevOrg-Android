@@ -18,6 +18,9 @@ public interface FormResultDao {
     @Query("SELECT * FROM formresult WHERE form_status = :sync")
     List<FormResult> getAllFormResults(int sync);
 
+    @Query("SELECT * FROM formresult")
+    List<FormResult> getAllFormResults();
+
     @Query("SELECT result FROM formresult where form_id = :formId and form_status = :sync")
     List<String> getAllFormResults(String formId, int sync);
 
