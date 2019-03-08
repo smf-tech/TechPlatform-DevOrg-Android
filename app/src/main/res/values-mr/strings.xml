@@ -132,7 +132,6 @@
     <string name="team_management">संघ व्यवस्थापन</string>
 
     <!--Program management-->
-    <string name="pending_forms">प्रलंबित फॉर्म</string>
     <string name="saved_forms_cat">जतन केलेले फॉर्म</string>
     <string name="submit">सबमिट</string>
     <string name="no_data_available">माहिती उपलब्ध नाही</string>

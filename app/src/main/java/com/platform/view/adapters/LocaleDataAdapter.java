@@ -15,7 +15,7 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
         LocaleData localeData = null;
         try {
             reader.beginObject();
-            String fieldname = null;
+            String fieldname;
 
             while (reader.hasNext()) {
                 JsonToken token = reader.peek();

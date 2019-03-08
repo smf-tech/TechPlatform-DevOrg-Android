@@ -38,7 +38,7 @@ import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
  * Use the {@link PendingFormsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class PendingFormsFragment extends Fragment {
 
     private TextView mNoRecordsView;

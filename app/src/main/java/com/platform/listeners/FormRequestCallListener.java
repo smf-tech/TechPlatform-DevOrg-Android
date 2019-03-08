@@ -16,6 +16,7 @@ public interface FormRequestCallListener {
 
     void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData);
 
+    @SuppressWarnings("unused")
     void onSubmitClick(String submitType, String url, String formId, String oid);
 
     void onFormDetailsLoadedListener(String response);

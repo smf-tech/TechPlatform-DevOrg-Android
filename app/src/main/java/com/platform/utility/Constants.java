@@ -199,9 +199,4 @@ public class Constants {
         public static final String CREATED_DATE_TIME = "createdDateTime";
     }
 
-    public class UserApprovals {
-        public static final String EVENT_APPROVALS_FETCHED = "approvalsFetched";
-        public static final String EXTRA_APPROVALS_COUNT = "approvalsCount";
-
-    }
 }

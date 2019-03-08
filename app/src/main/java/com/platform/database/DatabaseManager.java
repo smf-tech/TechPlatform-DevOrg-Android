@@ -132,6 +132,11 @@ public class DatabaseManager {
         return formDataDao.getAllReports();
     }
 
+    public void deleteAllReports() {
+        ReportsDataDao formDataDao = appDatabase.reportDao();
+        formDataDao.deleteAllReports();
+    }
+
     public List<String> getAllFormResults(String formId, int formStatus) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         return formResultDao.getAllFormResults(formId, formStatus);

@@ -380,20 +380,25 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     static class FormResult {
+        @SuppressWarnings("unused")
         @SerializedName("form_title")
         String formTitle;
 
+        @SuppressWarnings("unused")
         @SerializedName("form_id")
         String formID;
 
+        @SuppressWarnings("unused")
         @SerializedName("updatedDateTime")
         String updatedDateTime;
 
+        @SuppressWarnings("unused")
         @SerializedName("_id")
         OID mOID;
     }
 
     static class OID {
+        @SuppressWarnings("unused")
         @SerializedName("$oid")
         String oid;
     }
