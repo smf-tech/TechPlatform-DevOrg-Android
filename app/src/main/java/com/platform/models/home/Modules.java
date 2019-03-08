@@ -2,6 +2,8 @@ package com.platform.models.home;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 
 import java.io.Serializable;
 
@@ -9,6 +11,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @SuppressWarnings("unused")
 @Entity
@@ -24,10 +27,11 @@ public class Modules implements Serializable {
     @Expose
     private String moduleId;
 
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    private String name;
+    private LocaleData name;
 
     @ColumnInfo(name = "module")
     @Expose
@@ -46,11 +50,11 @@ public class Modules implements Serializable {
         this.moduleId = id;
     }
 
-    public String getName() {
+    public LocaleData getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LocaleData name) {
         this.name = name;
     }
 

@@ -67,10 +67,17 @@ public class FormActivity extends BaseActivity {
         super.onDestroy();
     }
 
+    boolean isOfflineSaved;
+    public void closeScreen(boolean flag) {
+        isOfflineSaved = flag;
+    }
+
     @Override
     public void onBackPressed() {
-        if (fragment != null) {
+        if (fragment != null && !isOfflineSaved) {
             fragment.onDeviceBackButtonPressed();
+        } else {
+            finish();
         }
     }
 

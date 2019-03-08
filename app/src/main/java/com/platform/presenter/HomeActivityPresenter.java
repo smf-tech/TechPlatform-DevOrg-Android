@@ -5,13 +5,16 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.platform.listeners.UserRequestCallListener;
+import com.platform.models.LocaleData;
 import com.platform.models.home.Home;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.HomeRequestCall;
 import com.platform.request.LoginRequestCall;
 import com.platform.utility.Util;
+import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.fragments.HomeFragment;
 
 import java.lang.ref.WeakReference;
@@ -42,7 +45,11 @@ public class HomeActivityPresenter implements UserRequestCallListener {
 
     @Override
     public void onSuccessListener(String response) {
-        Home models = new Gson().fromJson(response, Home.class);
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        Home models = gson.fromJson(response, Home.class);
         homeFragment.get().showNextScreen(models);
     }
 

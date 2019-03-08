@@ -119,23 +119,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             processMap.put(SyncAdapterUtils.SYNCING_PENDING, list);
             processCategoryList.add(SyncAdapterUtils.SYNCING_PENDING);
         }
-        /*else {
-            // FIXME: 06-03-2019 Remove this code block
-            List<ProcessData> list = new ArrayList<>();
-            ProcessData object = new ProcessData();
-            object.setId(UUID.randomUUID().toString());
-            object.setFormTitle("Title 1");
-            LocaleData name = new LocaleData();
-            name.setLocaleValue("Title 1");
-            object.setName(name);
-            Microservice microservice = new Microservice();
-            microservice.setUpdatedAt(Util.getFormattedDate(new Date().toString()));
-            object.setMicroservice(microservice);
-            list.add(object);
-
-            processMap.put(SyncAdapterUtils.SYNCING_PENDING, list);
-            processCategoryList.add(SyncAdapterUtils.SYNCING_PENDING);
-        }*/
     }
 
     private void populateData(Processes process) {
@@ -150,26 +133,25 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     String categoryName = data.getCategory().getName().getLocaleValue();
                     if (processMap.containsKey(categoryName) && processMap.get(categoryName) != null) {
                         List<ProcessData> processData = processMap.get(categoryName);
-                        processData.add(data);
+                        if (processData != null) {
+                            processData.add(data);
+                        }
                         processMap.put(categoryName, processData);
-
-//                        addProcessDataInDatabase(data);
                     } else {
                         List<ProcessData> processData = new ArrayList<>();
                         processData.add(data);
                         processMap.put(categoryName, processData);
                         processCategoryList.add(categoryName);
-
-//                        addProcessDataInDatabase(data);
                     }
                 }
             }
 
             for (int index = 0; index < processMap.size(); index++) {
-                if (processMap != null && !TextUtils.isEmpty(processCategoryList.get(index)) &&
-                        processMap.get(processCategoryList.get(index)) != null) {
 
-                    ProcessData data = processMap.get(processCategoryList.get(index)).get(0);
+                List<ProcessData> pData = processMap.get(processCategoryList.get(index));
+                if (!TextUtils.isEmpty(processCategoryList.get(index)) && pData != null) {
+
+                    ProcessData data = pData.get(0);
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
                             .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
 
@@ -200,19 +182,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             processData.add(object);
                         }
 
-                    /*// FIXME: 06-03-2019 Remove below code block
-                    if (processCategoryList.get(index).equals(SyncAdapterUtils.SYNCING_PENDING)) {
-                        processData.clear();
-                        ProcessData object = new ProcessData();
-                        object.setId(UUID.randomUUID().toString());
-                        object.setFormTitle("Title 1");
-                        object.setName("Title 1");
-                        Microservice microservice = new Microservice();
-                        microservice.setUpdatedAt(Util.getFormattedDate(new Date().toString()));
-                        object.setMicroservice(microservice);
-                        processData.add(object);
-                    }*/
-
                         createCategoryLayout(processCategoryList.get(index), processData);
                     }
                 }
@@ -225,10 +194,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
-        if (childList == null) return;
+        if (childList == null) {
+            return;
+        }
 
         ArrayList<ProcessData> dataList = new ArrayList<>(childList);
-
         for (final ProcessData data : dataList) {
             addFormItem(categoryName, formTitleView, lnrInner, data);
         }
@@ -238,19 +208,27 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void addFormItem(final String categoryName, final View formTitleView,
                              final LinearLayout lnrInner, final ProcessData data) {
+
+        if (getContext() == null) {
+            return;
+        }
+
         View view = LayoutInflater.from(getContext()).inflate(R.layout.form_sub_item,
                 lnrInner, false);
 
         ColorStateList tintColor = ColorStateList.valueOf(getContext().getResources()
-                .getColor(R.color.submitted_form_color, getActivity().getTheme()));
+                .getColor(R.color.submitted_form_color, getContext().getTheme()));
+
         Drawable drawable = getContext().getDrawable(R.drawable.form_status_indicator_completed);
         FloatingActionButton syncButton = formTitleView.findViewById(R.id.sync_button);
 
         if (categoryName.equals(SyncAdapterUtils.SYNCING_PENDING)) {
             tintColor = ColorStateList.valueOf(getContext().getResources()
-                    .getColor(R.color.red, getActivity().getTheme()));
+                    .getColor(R.color.red, getContext().getTheme()));
+
             drawable = getContext().getDrawable(R.drawable.form_status_indicator_pending_forms);
             syncButton.setVisibility(View.VISIBLE);
+
             syncButton.setOnClickListener(v -> {
                 if (Util.isConnected(getContext())) {
                     Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
@@ -263,6 +241,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         ImageView formImage = view.findViewById(R.id.form_image);
         formImage.setImageTintList(tintColor);
+
         view.findViewById(R.id.form_status_indicator).setBackground(drawable);
         ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue());
 
@@ -277,19 +256,21 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             getContext().startActivity(intent);
         });
 
-        if (!data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
-            if (data.getMicroservice() != null
-                    && data.getMicroservice().getUpdatedAt() != null) {
+        if (getContext() != null &&
+                !data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
+
+            if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
                 String formattedDate = Util.getFormattedDate(
                         data.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
+
                 ((TextView) view.findViewById(R.id.form_date))
                         .setText(String.format("on %s", formattedDate));
             }
         } else {
             String formattedDate = Util.getFormattedDate(new Date().toString(), FORM_DATE_FORMAT);
-            ((TextView) view.findViewById(R.id.form_date))
-                    .setText(String.format("on %s", formattedDate));
+            ((TextView) view.findViewById(R.id.form_date)).setText(String.format("on %s", formattedDate));
         }
+
         lnrInner.addView(view);
     }
 
@@ -310,179 +291,20 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     public void onFormsLoaded(String response) {
         Processes json = new Gson().fromJson(response, Processes.class);
         if (json != null && json.getData() != null && !json.getData().isEmpty()) {
-            for (ProcessData processData :
-                    json.getData()) {
+            for (ProcessData processData : json.getData()) {
                 DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
             }
 
             populateData(json);
-
         }
     }
-
-/*
-    private void processResponse(final Processes json) {
-        mFormList.clear();
-        mDataList.clear();
-
-        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-        for (ProcessData data : json.getData()) {
-
-            String id = data.getId();
-            mDataList.add(data);
-
-            DatabaseManager dbInstance = DatabaseManager.getDBInstance(Objects.requireNonNull(getContext()).getApplicationContext());
-            List<String> response = dbInstance.getAllFormResults(id, SyncAdapterUtils.FormStatus.SYNCED);
-            response.addAll(dbInstance.getAllFormResults(id, SyncAdapterUtils.FormStatus.UN_SYNCED));
-            if (!response.isEmpty()) {
-                processFormResultResponse(response);
-            } else {
-                if (Util.isConnected(getContext())) {
-                    presenter.getSubmittedForms(id);
-                }
-            }
-        }
-    }
-*/
 
     @Override
     public void onMastersFormsLoaded(final String response, final String formId) {
-//        processFormResultResponse(response);
+
     }
-
-/*
-    private void processFormResultResponse(final String response) {
-
-        ArrayList<ProcessDemoObject> list = new ArrayList<>();
-        String formID = "";
-
-        try {
-            if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
-                JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
-                for (int i = 0; i < values.length(); i++) {
-
-                    FormResult formResult = new Gson().fromJson(String.valueOf(values.get(i)),
-                            FormResult.class);
-
-                    String date = formResult.updatedDateTime;
-                    if (date == null) {
-                        JSONObject object = new JSONObject(response);
-                        JSONObject metadata = (JSONObject) object.getJSONArray("metadata").get(0);
-                        if (metadata != null && metadata.getJSONObject("form") != null) {
-                            date = (String) metadata.getJSONObject("form").get("createdDateTime");
-                            date = Util.getFormattedDate(date);
-                        } else {
-                            date = Util.getFormattedDate(new Date().toString());
-                        }
-                    }
-
-                    String uuid = UUID.randomUUID().toString();
-                    formID = formResult.formID;
-                    list.add(new ProcessDemoObject(uuid, formID, date, formResult.formTitle));
-
-                    com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(uuid);
-                    result.setFormId(formID);
-                    result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
-
-                    JSONObject obj = (JSONObject) values.get(i);
-                    if (obj == null) return;
-
-
-                    List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
-                    if (!localFormResults.contains(obj.toString())) {
-                        result.setResult(obj.toString());
-                        DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
-                    }
-
-                }
-
-                if (formID == null) {
-                    JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
-                    if (metadata != null && metadata.length() > 0) {
-                        JSONObject metadataObj = metadata.getJSONObject(0);
-                        formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.FORM_ID);
-                    }
-                }
-            } else {
-                list.add(new ProcessDemoObject("No Forms available", "0", "", ""));
-            }
-
-            for (final ProcessData data : mDataList) {
-                if (data.getId().equals(formID)) {
-                    mFormList.put(data.getName(), list);
-                }
-            }
-
-            if (!mFormList.isEmpty()) {
-                adapter.notifyDataSetChanged();
-                mNoRecordsView.setVisibility(View.GONE);
-            } else {
-                mNoRecordsView.setVisibility(View.VISIBLE);
-            }
-
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    private void processFormResultResponse(final List<String> response) {
-
-        ArrayList<ProcessDemoObject> list = new ArrayList<>();
-        String formID = "";
-
-        try {
-            for (final String s : response) {
-                JSONObject obj = new JSONObject(s);
-                FormResult formResult = new Gson()
-                        .fromJson(String.valueOf(obj), FormResult.class);
-                com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                String uuid = UUID.randomUUID().toString();
-                result.set_id(uuid);
-                result.setFormId(formResult.formID);
-                result.setFormTitle(formResult.formTitle);
-                result.setResult(obj.toString());
-
-                formID = formResult.formID;
-
-                if (formResult.updatedDateTime != null) {
-                    if (isFormOneMonthOld(formResult.updatedDateTime)) {
-                        continue;
-                    }
-                }
-
-                list.add(new ProcessDemoObject(uuid,
-                        formID, formResult.updatedDateTime, formResult.formTitle));
-            }
-
-            for (final ProcessData data : mDataList) {
-                if (data.getId().equals(formID)) {
-                    mFormList.put(data.getName(), list);
-                }
-            }
-
-            if (!mFormList.isEmpty()) {
-                adapter.notifyDataSetChanged();
-                mNoRecordsView.setVisibility(View.GONE);
-            } else {
-                mNoRecordsView.setVisibility(View.VISIBLE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-*/
 
     private boolean isFormOneMonthOld(final String updatedAt) {
-        /*if (Build.VERSION.SDK_INT >= 26) {
-            LocalDate formDate = LocalDate.parse(updatedAt);
-            LocalDate days30 = LocalDate.now().minusDays(30);
-
-            return formDate.isBefore(days30);
-
-        }*/
-
         Date eventStartDate;
         DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         try {
@@ -492,43 +314,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             Date days30 = calendar.getTime();
             return eventStartDate.before(days30);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         return false;
     }
-
-/*
-    public static class ProcessDemoObject {
-        String name;
-        String id;
-        String formTitle;
-        String date;
-
-        private ProcessDemoObject(String name, String id, final String date, String formTitle) {
-            this.name = name;
-            this.id = id;
-            this.date = date;
-            this.formTitle = formTitle;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getFormTitle() {
-            return formTitle;
-        }
-    }
-*/
 
     static class FormResult {
         @SerializedName("form_title")

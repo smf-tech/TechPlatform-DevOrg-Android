@@ -180,8 +180,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                         formData.getMaxLength())});
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 Validator validator = formData.getValidators().get(0);
-                textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                        validator.getMaxLength())});
+                if (validator.getMaxLength() != null) {
+                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                            validator.getMaxLength())});
+                }
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
@@ -454,8 +456,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                                             JsonObject dObj = dependentInnerObj.getAsJsonObject(title);
 
                                             //Ignore first value of valueToken
-                                            String valueStr = valueTokenizer.nextToken();
-                                            Log.e(TAG, valueStr);
+                                            valueTokenizer.nextToken();
 
                                             String valueStrNext = valueTokenizer.nextToken();
                                             if (dObj.get(valueStrNext).getAsString().equals(value)) {
@@ -505,6 +506,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                         }
                     }
                 }
+                dependentElement.setChoices(choiceValues);
+                dropDownTemplate.setFormData(dependentElement);
                 dropDownTemplate.setListData(choiceValues);
             }
         }
@@ -520,9 +523,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         String key = "{" + parentElement.getName() + "} notempty";
         if (dependencyMap.get(key) != null) {
             DropDownTemplate dropDownTemplate = dependencyMap.get(key);
+            Elements dependentElement = dropDownTemplate.getFormData();
             List<Choice> choiceValues = new ArrayList<>();
+            dependentElement.setChoices(choiceValues);
+            dropDownTemplate.setFormData(dependentElement);
             dropDownTemplate.setListData(choiceValues);
         }
+
+        requestObjectMap.remove(parentElement.getName());
     }
 
     private void showDateDialog(Context context, final EditText editText) {

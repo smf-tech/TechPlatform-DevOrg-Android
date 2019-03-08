@@ -7,7 +7,9 @@ import com.google.gson.annotations.SerializedName;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 
-public class LocaleData {
+import java.io.Serializable;
+
+public class LocaleData implements Serializable {
 
     @SerializedName("default")
     @Expose

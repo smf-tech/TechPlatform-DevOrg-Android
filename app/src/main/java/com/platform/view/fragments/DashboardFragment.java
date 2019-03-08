@@ -89,7 +89,7 @@ public class DashboardFragment extends Fragment {
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
                     for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
-                            if (tabName.getName().equalsIgnoreCase(module.getName())) {
+                            if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
                                 tabName.setActive(true);
                             }
                         }
@@ -171,7 +171,7 @@ public class DashboardFragment extends Fragment {
 
     private void setMenuResourceId() {
         for (int i = 0; i < tabNames.size(); i++) {
-            switch (tabNames.get(i).getName()) {
+            switch (tabNames.get(i).getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
                     tabNames.get(i).setResId(R.id.action_menu_forms);
                     break;
@@ -209,7 +209,7 @@ public class DashboardFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
-            switch (modules.getName()) {
+            switch (modules.getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
                     Bundle b = new Bundle();
                     b.putBoolean("NEED_SYNC", isSyncRequired);
@@ -242,7 +242,7 @@ public class DashboardFragment extends Fragment {
             RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
             TextView tabView = tabOne.findViewById(R.id.tab);
-            tabView.setText(tabNames.get(i).getName());
+            tabView.setText(tabNames.get(i).getName().getLocaleValue());
 
             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
 
@@ -255,7 +255,8 @@ public class DashboardFragment extends Fragment {
                 int resId = tabIcons[0];
                 int resColor = getResources().getColor(R.color.black, getContext().getTheme());
                 int pendingActionCount = 0;
-                switch (tabNames.get(i).getName()) {
+
+                switch (tabNames.get(i).getName().getLocaleValue()) {
                     case Constants.Home.FORMS:
                         resId = tabIcons[0];
                         pendingActionCount = getFormsPendingActionCount();

@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,9 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
     private View tmFragmentView;
     private TextView txtNoData;
     private RecyclerView rvApprovedRequests;
-    private ApprovedFragmentPresenter pendingFragmentPresenter;
+    private ApprovedFragmentPresenter presenter;
+
+    private boolean isVisible;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -42,8 +45,8 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pendingFragmentPresenter = new ApprovedFragmentPresenter(this);
-        pendingFragmentPresenter.getAllApprovedRequests();
+        presenter = new ApprovedFragmentPresenter(this);
+        presenter.getAllApprovedRequests();
 
         init();
     }
@@ -60,12 +63,33 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        isVisible = true;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser && isVisible) {
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                if (presenter == null) {
+                    presenter = new ApprovedFragmentPresenter(TMUserApprovedFragment.this);
+                }
+                presenter.getAllApprovedRequests();
+            }, 100);
+        }
+    }
+
+    @Override
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
             txtNoData.setVisibility(View.GONE);
             rvApprovedRequests.setVisibility(View.VISIBLE);
 
-            TMApprovedAdapter newTMAdapter = new TMApprovedAdapter(pendingRequestList, pendingFragmentPresenter);
+            TMApprovedAdapter newTMAdapter = new TMApprovedAdapter(pendingRequestList, presenter);
             rvApprovedRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);

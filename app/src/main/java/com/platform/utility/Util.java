@@ -93,9 +93,7 @@ public class Util {
         SharedPreferences preferences = Platform.getInstance()
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
-        String languageCode = preferences.getString(Constants.App.LANGUAGE_CODE, "");
-        Log.i(TAG, "App language code: " + languageCode);
-        return languageCode;
+        return preferences.getString(Constants.App.LANGUAGE_CODE, "");
     }
 
     public static void setLocaleLanguageCode(String languageCode) {
@@ -394,12 +392,14 @@ public class Util {
 //        return timestamp.getTime();
 //    }
 //
-//    public static String getDateFromTimestamp(long date) {
-//        try {
-//            Date d = new Timestamp(date);
-//            return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
-//        } catch (Exception e) {
-//            Log.e(TAG, e.getMessage());
+//    public static String getDateFromTimestamp(Long date) {
+//        if (date != null) {
+//            try {
+//                Date d = new Timestamp(date);
+//                return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
 //        }
 //        return "";
 //    }

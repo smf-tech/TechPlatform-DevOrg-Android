@@ -23,6 +23,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.FormActivity;
 import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.fragments.FormFragment;
 
@@ -146,7 +147,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onFormCreatedUpdated(String message, String requestObjectString, String formId) {
+    public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
         AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success));
@@ -159,10 +160,13 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
 
                 requestObject.put(Constants.FormDynamicKeys._ID, idObject);
-                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE, dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
+                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
-
-                Log.d(TAG, "Result saved " + requestObject.toString());
+                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
+                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
+                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                 FormResult result = new FormResult();
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
@@ -171,13 +175,33 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.setResult(requestObject.toString());
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+
+                switch (callType) {
+                    case Constants.ONLINE_SUBMIT_FORM_TYPE:
+
+                        String countStr = DatabaseManager.getDBInstance(
+                                Objects.requireNonNull(formFragment.get().getContext()))
+                                .getProcessSubmitCount(formId);
+
+                        if (!TextUtils.isEmpty(countStr)) {
+                            int count = Integer.parseInt(countStr);
+                            DatabaseManager.getDBInstance(
+                                    Objects.requireNonNull(formFragment.get().getContext()))
+                                    .updateProcessSubmitCount(formId, String.valueOf(++count));
+                        }
+                        break;
+
+                }
             }
 
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
 
-        Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
+        FormActivity activity = (FormActivity) formFragment.get().getActivity();
+        if (activity != null) {
+            activity.closeScreen(true);
+        }
     }
 
     @Override
@@ -197,14 +221,19 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 if (form.getData().getComponents() != null &&
                         form.getData().getComponents().getPages() != null &&
                         !form.getData().getComponents().getPages().isEmpty()) {
+
                     for (int pageIndex = 0; pageIndex < form.getData().getComponents().getPages().size(); pageIndex++) {
+
                         if (form.getData().getComponents().getPages().get(pageIndex).getElements() != null &&
                                 !form.getData().getComponents().getPages().get(pageIndex).getElements().isEmpty()) {
+
                             for (int elementIndex = 0; elementIndex < form.getData().getComponents().getPages().get(pageIndex).getElements().size(); elementIndex++) {
+
                                 if (form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex) != null
                                         && form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl() != null &&
                                         !TextUtils.isEmpty(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl()) &&
                                         !TextUtils.isEmpty(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
+
                                     getChoicesByUrl(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex), pageIndex, elementIndex, form.getData());
                                 }
                             }
@@ -234,23 +263,31 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId);
+                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
-                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid);
+                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
                         .insertFormResult(getSavedForm());
-                Objects.requireNonNull(formFragment.get().getActivity()).finish();
+
+                FormActivity activity = (FormActivity) formFragment.get().getActivity();
+                if (activity != null) {
+                    activity.closeScreen(true);
+                }
                 break;
 
             case Constants.OFFLINE_UPDATE_FORM_TYPE:
                 DatabaseManager.getDBInstance(formFragment.get().getActivity())
                         .updateFormResult(getSavedForm());
-                Objects.requireNonNull(formFragment.get().getActivity()).finish();
+
+                activity = (FormActivity) formFragment.get().getActivity();
+                if (activity != null) {
+                    activity.closeScreen(true);
+                }
                 break;
         }
     }

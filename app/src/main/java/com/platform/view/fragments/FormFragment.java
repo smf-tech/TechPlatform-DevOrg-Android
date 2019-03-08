@@ -442,6 +442,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         }
                     } else {
                         if (formModel.getData() != null) {
+
+                            saveFormToLocalDatabase();
+
                             if (mIsInEditMode) {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
                                         null, formModel.getData().getId(), null);
@@ -449,8 +452,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
                                         null, formModel.getData().getId(), null);
                             }
-
-                            saveFormToLocalDatabase();
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
@@ -530,9 +531,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
             AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
-            View editFormView = formFragmentView.findViewById(R.id.btn_submit);
-            if (editFormView.getVisibility() == View.VISIBLE)
+            if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
                 storePartiallySavedForm();
+            }
             getActivity().finish();
         });
 

@@ -121,7 +121,7 @@ public class FormsFragment extends Fragment {
                         break;
                 }
             } catch (Resources.NotFoundException | IllegalStateException e) {
-                e.printStackTrace();
+                Log.e("TAG", e.getMessage());
             }
 
             return title.toUpperCase();

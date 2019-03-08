@@ -16,9 +16,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="-18dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
-        app:backgroundTint="@android:color/holo_red_dark"
         android:src="@android:drawable/ic_input_add"
         android:visibility="gone"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:fabSize="mini" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,8 +30,8 @@
         android:layout_marginTop="-18dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
         android:layout_toStartOf="@+id/add_button"
-        app:backgroundTint="@android:color/holo_red_dark"
         android:src="@android:drawable/stat_notify_sync"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
 

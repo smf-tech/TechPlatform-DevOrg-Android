@@ -105,6 +105,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 presenter.getAllProcesses();
             }
         }
+
+        if (!mFormList.isEmpty()) {
+            mNoRecordsView.setVisibility(View.GONE);
+        } else {
+            mNoRecordsView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setPendingForms() {

@@ -45,6 +45,7 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             mRootView = itemView;
             formImage = itemView.findViewById(R.id.form_image);
             mName = itemView.findViewById(R.id.form_title);
@@ -61,12 +62,14 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         return new ViewHolder(v);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
         Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
         viewHolder.indicatorView.setBackground(drawable);
-        viewHolder.formImage.setImageTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.partial_form_color)));
+        viewHolder.formImage.setImageTintList(
+                ColorStateList.valueOf(mContext.getResources().getColor(R.color.partial_form_color)));
 
         if (!mSavedForms.isEmpty()) {
             FormResult savedForm = mSavedForms.get(i);
@@ -93,7 +96,6 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
                 intent.putExtra(Constants.PM.PARTIAL_FORM, true);
                 mContext.startActivity(intent);
             }
-
         });
     }
 
