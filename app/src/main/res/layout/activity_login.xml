@@ -106,18 +106,6 @@
                         tools:ignore="UnusedAttribute" />
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/forgot_password_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_15dp"
-                    android:gravity="center_horizontal"
-                    android:onClick="@{()->activity.onForgotClick()}"
-                    android:text="@string/label_forget_your_pass"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/text_size_16"
-                    android:visibility="gone" />
-
                 <Button
                     android:id="@+id/btn_login"
                     android:layout_width="fill_parent"
@@ -128,7 +116,6 @@
                     android:singleLine="true"
                     android:text="@string/label_login"
                     android:textAllCaps="true"
-
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_20" />
 
