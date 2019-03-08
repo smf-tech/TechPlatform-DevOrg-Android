@@ -201,7 +201,12 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     final String formID = formResult.formID;
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
-                    result.set_id(uuid);
+                    if (formResult.mOID.oid != null) {
+                        result.set_id(formResult.mOID.oid);
+                        result.setOid(formResult.mOID.oid);
+                    } else {
+                        result.set_id(uuid);
+                    }
                     result.setFormId(formID);
                     result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                     result.setCreatedAt(formResult.updatedDateTime);

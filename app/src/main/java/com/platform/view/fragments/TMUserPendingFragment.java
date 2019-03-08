@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
 import static com.platform.utility.Constants.UserApprovals.EXTRA_APPROVALS_COUNT;
-import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
 
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener, NewTMAdapter.OnRequestItemClicked {
 

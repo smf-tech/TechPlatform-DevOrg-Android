@@ -151,6 +151,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 List<ProcessData> pData = processMap.get(processCategoryList.get(index));
                 if (!TextUtils.isEmpty(processCategoryList.get(index)) && pData != null) {
 
+                    String formID = null;
                     ProcessData data = pData.get(0);
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
                             .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
@@ -171,8 +172,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 }
                             }
 
+                            formID = formResult.formID;
                             ProcessData object = new ProcessData();
-                            object.setId(formResult.formID);
+                            object.setId(formResult.mOID.oid);
                             object.setFormTitle(formResult.formTitle);
                             object.setName(new LocaleData(formResult.formTitle));
                             Microservice microservice = new Microservice();
@@ -182,14 +184,14 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             processData.add(object);
                         }
 
-                        createCategoryLayout(processCategoryList.get(index), processData);
+                        createCategoryLayout(processCategoryList.get(index), processData, formID);
                     }
                 }
             }
         }
     }
 
-    private void createCategoryLayout(String categoryName, List<ProcessData> childList) {
+    private void createCategoryLayout(String categoryName, List<ProcessData> childList, final String formID) {
         View formTitleView = getLayoutInflater().inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
@@ -200,14 +202,14 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         ArrayList<ProcessData> dataList = new ArrayList<>(childList);
         for (final ProcessData data : dataList) {
-            addFormItem(categoryName, formTitleView, lnrInner, data);
+            addFormItem(categoryName, formTitleView, lnrInner, data, formID);
         }
 
         lnrOuter.addView(lnrInner);
     }
 
     private void addFormItem(final String categoryName, final View formTitleView,
-                             final LinearLayout lnrInner, final ProcessData data) {
+                             final LinearLayout lnrInner, final ProcessData data, final String formID) {
 
         if (getContext() == null) {
             return;
@@ -250,7 +252,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             Intent intent = new Intent(getContext(), FormActivity.class);
             intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
-            intent.putExtra(Constants.PM.FORM_ID, data.getId());
+            intent.putExtra(Constants.PM.FORM_ID, formID);
             intent.putExtra(Constants.PM.EDIT_MODE, true);
             intent.putExtra(Constants.PM.PARTIAL_FORM, false);
             getContext().startActivity(intent);
@@ -329,5 +331,14 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         @SerializedName("updatedDateTime")
         String updatedDateTime;
+
+        @SerializedName("_id")
+        OID mOID;
     }
+
+    static class OID {
+        @SerializedName("$oid")
+        String oid;
+    }
+
 }

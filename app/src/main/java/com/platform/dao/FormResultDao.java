@@ -24,6 +24,9 @@ public interface FormResultDao {
     @Query("SELECT result FROM formresult where form_id = :formId")
     List<String> getAllFormResults(String formId);
 
+    @Query("SELECT * FROM formresult where result_id = :formId")
+    FormResult getFormResult(String formId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormResult result);
 

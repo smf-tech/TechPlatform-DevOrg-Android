@@ -174,6 +174,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
 
                 switch (callType) {
@@ -198,9 +199,13 @@ public class FormActivityPresenter implements FormRequestCallListener,
             Log.e(TAG, e.getMessage());
         }
 
-        FormActivity activity = (FormActivity) formFragment.get().getActivity();
-        if (activity != null) {
-            activity.closeScreen(true);
+        if (formFragment.get() != null) {
+            FormActivity activity = (FormActivity) formFragment.get().getActivity();
+            if (activity != null) {
+                activity.closeScreen(true);
+            }
+
+            Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
         }
     }
 

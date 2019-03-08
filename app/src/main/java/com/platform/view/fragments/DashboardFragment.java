@@ -121,11 +121,13 @@ public class DashboardFragment extends Fragment {
                     mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
 
                     for (final Modules modules : tabNames) {
-                        if (modules.getName().equals(getContext().getString(R.string.approvals))) {
+                        if (getContext() == null) continue;
+
+                        if (modules.getName().getLocaleValue().equals(getContext().getString(R.string.approvals))) {
                             RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
                                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
                             TextView tabView = tabOne.findViewById(R.id.tab);
-                            tabView.setText(modules.getName());
+                            tabView.setText(modules.getName().getLocaleValue());
                             tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[2], 0, 0);
                             TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
                             pendingActionsCountView.setText(String.valueOf(mApprovalCount));
@@ -140,7 +142,7 @@ public class DashboardFragment extends Fragment {
                         }
                     }
                 }
-                if (Objects.requireNonNull(intent.getAction()).equals(SyncAdapterUtils.PARTIAL_FORM_ADDED)) {
+                /*if (Objects.requireNonNull(intent.getAction()).equals(SyncAdapterUtils.PARTIAL_FORM_ADDED)) {
                     mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
 
                     for (final Modules modules : tabNames) {
@@ -148,7 +150,7 @@ public class DashboardFragment extends Fragment {
                             RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
                                     .inflate(R.layout.layout_custom_tab, tabLayout, false);
                             TextView tabView = tabOne.findViewById(R.id.tab);
-                            tabView.setText(modules.getName());
+                            tabView.setText(modules.getName().getLocaleValue());
                             tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[0], 0, 0);
                             int pendingActionCount = getFormsPendingActionCount();
 
@@ -164,7 +166,7 @@ public class DashboardFragment extends Fragment {
                             break;
                         }
                     }
-                }
+                }*/
             }
         }, filter);
     }
