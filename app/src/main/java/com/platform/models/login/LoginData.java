@@ -8,7 +8,7 @@ public class LoginData {
 
     @SerializedName("otp")
     @Expose
-    private Integer otp;
+    private String otp;
     @SerializedName("token_type")
     @Expose
     private String tokenType;
@@ -22,11 +22,11 @@ public class LoginData {
     @Expose
     private String refreshToken;
 
-    public Integer getOtp() {
+    public String getOtp() {
         return otp;
     }
 
-    public void setOtp(Integer otp) {
+    public void setOtp(String otp) {
         this.otp = otp;
     }
 

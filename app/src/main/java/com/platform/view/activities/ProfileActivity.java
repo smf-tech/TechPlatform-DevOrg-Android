@@ -946,21 +946,24 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
-                    List<String> districtIds = Util.getUserObjectFromPref().getUserLocation().getDistrictIds();
-                    boolean[] selectedValues = new boolean[this.districts.size()];
-                    for (int districtIndex = 0; districtIndex < this.districts.size(); districtIndex++) {
-                        for (int districtIdIndex = 0; districtIdIndex < districtIds.size(); districtIdIndex++) {
-                            if (this.districts.get(districtIndex).getId().equals(districtIds.get(districtIdIndex))) {
-                                selectedValues[districtIndex] = true;
-                                break;
-                            } else {
-                                selectedValues[districtIndex] = false;
+                    if (Util.getUserObjectFromPref().getUserLocation() != null) {
+                        List<String> districtIds = Util.getUserObjectFromPref().getUserLocation().getDistrictIds();
+                        if (districtIds != null && districtIds.size() > 0) {
+                            boolean[] selectedValues = new boolean[this.districts.size()];
+                            for (int districtIndex = 0; districtIndex < this.districts.size(); districtIndex++) {
+                                for (int districtIdIndex = 0; districtIdIndex < districtIds.size(); districtIdIndex++) {
+                                    if (this.districts.get(districtIndex).getId().equals(districtIds.get(districtIdIndex))) {
+                                        selectedValues[districtIndex] = true;
+                                        break;
+                                    } else {
+                                        selectedValues[districtIndex] = false;
+                                    }
+                                }
                             }
+                            spDistrict.setSelectedValues(selectedValues);
+                            spDistrict.setPreFilledText();
                         }
                     }
-                    spDistrict.setSelectedValues(selectedValues);
-                    spDistrict.setPreFilledText();
-
                 }
                 break;
 
@@ -984,22 +987,24 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
-                    List<String> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
-                    if (talukaIds != null && talukaIds.size() > 0) {
-                        boolean[] selectedValues = new boolean[this.talukas.size()];
-                        for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
-                            for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
-                                if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex))) {
-                                    selectedValues[talukaIndex] = true;
-                                    break;
-                                } else {
-                                    selectedValues[talukaIndex] = false;
+                    if (Util.getUserObjectFromPref().getUserLocation() != null) {
+                        List<String> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
+                        if (talukaIds != null && talukaIds.size() > 0) {
+                            boolean[] selectedValues = new boolean[this.talukas.size()];
+                            for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
+                                for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
+                                    if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex))) {
+                                        selectedValues[talukaIndex] = true;
+                                        break;
+                                    } else {
+                                        selectedValues[talukaIndex] = false;
+                                    }
                                 }
                             }
-                        }
 
-                        spTaluka.setSelectedValues(selectedValues);
-                        spTaluka.setPreFilledText();
+                            spTaluka.setSelectedValues(selectedValues);
+                            spTaluka.setPreFilledText();
+                        }
                     }
                 }
                 break;
@@ -1028,20 +1033,24 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spVillage.setItems(villages, getString(R.string.village), this);
 
-                    List<String> villageIds = Util.getUserObjectFromPref().getUserLocation().getVillageIds();
-                    boolean[] selectedValues = new boolean[this.villages.size()];
-                    for (int villageIndex = 0; villageIndex < this.villages.size(); villageIndex++) {
-                        for (int villageIdIndex = 0; villageIdIndex < villageIds.size(); villageIdIndex++) {
-                            if (this.villages.get(villageIndex).getId().equals(villageIds.get(villageIdIndex))) {
-                                selectedValues[villageIndex] = true;
-                                break;
-                            } else {
-                                selectedValues[villageIndex] = false;
+                    if (Util.getUserObjectFromPref().getUserLocation() != null) {
+                        List<String> villageIds = Util.getUserObjectFromPref().getUserLocation().getVillageIds();
+                        if (villageIds != null && villageIds.size() > 0) {
+                            boolean[] selectedValues = new boolean[this.villages.size()];
+                            for (int villageIndex = 0; villageIndex < this.villages.size(); villageIndex++) {
+                                for (int villageIdIndex = 0; villageIdIndex < villageIds.size(); villageIdIndex++) {
+                                    if (this.villages.get(villageIndex).getId().equals(villageIds.get(villageIdIndex))) {
+                                        selectedValues[villageIndex] = true;
+                                        break;
+                                    } else {
+                                        selectedValues[villageIndex] = false;
+                                    }
+                                }
                             }
+                            spVillage.setSelectedValues(selectedValues);
+                            spVillage.setPreFilledText();
                         }
                     }
-                    spVillage.setSelectedValues(selectedValues);
-                    spVillage.setPreFilledText();
                 }
                 break;
 
@@ -1069,20 +1078,24 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 
-                    List<String> clusterIds = Util.getUserObjectFromPref().getUserLocation().getClusterIds();
-                    boolean[] selectedValues = new boolean[this.clusters.size()];
-                    for (int clusterIndex = 0; clusterIndex < this.clusters.size(); clusterIndex++) {
-                        for (int clusterIdIndex = 0; clusterIdIndex < clusterIds.size(); clusterIdIndex++) {
-                            if (this.clusters.get(clusterIndex).getId().equals(clusterIds.get(clusterIdIndex))) {
-                                selectedValues[clusterIndex] = true;
-                                break;
-                            } else {
-                                selectedValues[clusterIndex] = false;
+                    if (Util.getUserObjectFromPref().getUserLocation() != null) {
+                        List<String> clusterIds = Util.getUserObjectFromPref().getUserLocation().getClusterIds();
+                        if (clusterIds != null && clusterIds.size() > 0) {
+                            boolean[] selectedValues = new boolean[this.clusters.size()];
+                            for (int clusterIndex = 0; clusterIndex < this.clusters.size(); clusterIndex++) {
+                                for (int clusterIdIndex = 0; clusterIdIndex < clusterIds.size(); clusterIdIndex++) {
+                                    if (this.clusters.get(clusterIndex).getId().equals(clusterIds.get(clusterIdIndex))) {
+                                        selectedValues[clusterIndex] = true;
+                                        break;
+                                    } else {
+                                        selectedValues[clusterIndex] = false;
+                                    }
+                                }
                             }
+                            spCluster.setSelectedValues(selectedValues);
+                            spCluster.setPreFilledText();
                         }
                     }
-                    spCluster.setSelectedValues(selectedValues);
-                    spCluster.setPreFilledText();
                 }
                 break;
 
