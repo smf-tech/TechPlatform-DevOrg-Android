@@ -1,9 +1,5 @@
 package com.platform.view.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
@@ -26,17 +21,12 @@ import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
-import static com.platform.utility.Constants.UserApprovals.EVENT_APPROVALS_FETCHED;
-import static com.platform.utility.Constants.UserApprovals.EXTRA_APPROVALS_COUNT;
 
 @SuppressWarnings("WeakerAccess")
 public class DashboardFragment extends Fragment {
@@ -49,12 +39,6 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_orange,
             R.drawable.bg_circle_yellow,
             R.drawable.bg_circle_green
-    };
-    private final int[] tabThemeColor = {
-            R.color.pink,
-            R.color.orange,
-            R.color.yellow,
-            R.color.green
     };
     private final int[] disableTabIcons = {
             R.drawable.bg_circle_lock
@@ -102,40 +86,6 @@ public class DashboardFragment extends Fragment {
         }
 
         initViews();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(EVENT_APPROVALS_FETCHED);
-
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_APPROVALS_FETCHED)) {
-                    Toast.makeText(context, "User approvals fetched.", Toast.LENGTH_SHORT).show();
-
-                    mApprovalCount = intent.getIntExtra(EXTRA_APPROVALS_COUNT, 0);
-
-                    for (final Modules modules : tabNames) {
-                        if (modules.getName().getLocaleValue().equals(getString(R.string.approvals))) {
-                            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(context)
-                                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
-                            TextView tabView = tabOne.findViewById(R.id.tab);
-                            tabView.setText(modules.getName().getLocaleValue());
-                            tabView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[2], 0, 0);
-                            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-                            pendingActionsCountView.setText(String.valueOf(mApprovalCount));
-                            pendingActionsCountView.setTextColor(getResources().getColor(tabThemeColor[2],
-                                    getContext().getTheme()));
-
-                            TabLayout.Tab tab = tabLayout.getTabAt(2);
-                            if (tab != null) {
-                                tab.setCustomView(tabOne);
-                            }
-                        }
-                    }
-                }
-            }
-        }, filter);
-
     }
 
     private void setMenuResourceId() {
@@ -162,10 +112,16 @@ public class DashboardFragment extends Fragment {
 
     private void initViews() {
         ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
-        viewPager.setOffscreenPageLimit(4);
+        int pageLimit = 4;
+        if (tabNames.size()<pageLimit) {
+            pageLimit = tabNames.size();
+        }
+        viewPager.setOffscreenPageLimit(pageLimit);
         setupViewPager(viewPager);
 
         tabLayout = dashboardView.findViewById(R.id.tabs);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
@@ -259,37 +215,32 @@ public class DashboardFragment extends Fragment {
         } else {
             pendingActionsCountView.setVisibility(View.VISIBLE);
             int resId = tabIcons[0];
-            int resColor = tabThemeColor[0];
             int pendingActionCount = 0;
 
             switch (tabNames.get(i).getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
                     resId = tabIcons[0];
-                    resColor = tabThemeColor[0];
                     pendingActionCount = getFormsPendingActionCount();
                     break;
 
                 case Constants.Home.MEETINGS:
                     resId = tabIcons[1];
-                    resColor = tabThemeColor[1];
                     break;
 
                 case Constants.Home.APPROVALS:
                     resId = tabIcons[2];
-                    resColor = tabThemeColor[2];
                     pendingActionCount = mApprovalCount;
                     break;
 
                 case Constants.Home.REPORTS:
                     resId = tabIcons[3];
-                    resColor = tabThemeColor[3];
                     break;
             }
 
             tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                pendingActionsCountView.setTextColor(getResources().getColor(resColor,
+                pendingActionsCountView.setTextColor(getResources().getColor(R.color.black,
                         getContext().getTheme()));
             } else {
                 pendingActionsCountView.setVisibility(View.GONE);

@@ -24,7 +24,6 @@
     <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
     <string name="label_mobile_no">Mobile Number *</string>
-    <string name="label_forget_your_pass">Forgot your password?</string>
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
@@ -70,6 +69,7 @@
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
+    <string name="update_profile_pic">Update profile picture</string>
     <string name="update_data_string">Do you want to Update Data?</string>
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
@@ -132,7 +132,6 @@
     <string name="team_management">Team Management</string>
 
     <!--Program management-->
-    <string name="pending_forms">Pending Forms</string>
     <string name="saved_forms_cat">Saved Forms</string>
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
@@ -220,5 +219,10 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
+
+    <string name="notifications">Notifications</string>
+    <string name="msg_rejection_reason">Are you sure you want to reject this request?</string>
+    <string name="msg_rejection_comment">Reason for rejection</string>
+    <string name="msg_error_rejection_comment_needed">Rejection reason needed</string>
 
 </resources>

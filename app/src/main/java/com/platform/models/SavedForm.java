@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+@SuppressWarnings("unused")
 @Entity
 public class SavedForm {
     @PrimaryKey(autoGenerate = true)

@@ -99,10 +99,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             connection.setChunkedStreamingMode(0);
             connection.connect();
 
-            String requestObject = form.getRequestObject();
+            String requestObject = form.getResult();
 
             JSONObject object = new JSONObject(requestObject);
-//            object.put("response", new JSONObject(requestObject));
 
             OutputStream out = new BufferedOutputStream(connection.getOutputStream());
             writeStream(object.toString(), out);
@@ -118,7 +117,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 String response = readStream(in);
 
-                updateForm(form);
+                updateForm(form, response);
 
                 Log.i(TAG, "Response \n" + response);
                 Log.i(TAG, "Form Synced");
@@ -148,11 +147,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return url;
     }
 
-    private void updateForm(final FormResult form) {
-        form.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
-        DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
+    private void updateForm(final FormResult form, final String response) {
+        try {
 
-        sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+            JSONObject outerObject = new JSONObject(response);
+            if (outerObject.has(Constants.RESPONSE_DATA)) {
+                JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
+                JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
+                form.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                form.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+
+                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
+                sendBroadCast(form.getFormId(),SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendBroadCast(final String form, final String syncEvent) {

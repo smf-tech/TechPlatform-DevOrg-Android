@@ -120,6 +120,7 @@ public class Constants {
 
     public static class TM {
         public static final String UPDATE_STATUS = "update_status";
+        public static final String REJECTION_REASON = "reason";
     }
 
     public static class RequestStatus {
@@ -199,9 +200,4 @@ public class Constants {
         public static final String CREATED_DATE_TIME = "createdDateTime";
     }
 
-    public class UserApprovals {
-        public static final String EVENT_APPROVALS_FETCHED = "approvalsFetched";
-        public static final String EXTRA_APPROVALS_COUNT = "approvalsCount";
-
-    }
 }

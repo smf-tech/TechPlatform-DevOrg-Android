@@ -25,22 +25,6 @@ public class LocaleData implements Serializable {
         this.en = defaultValue;
     }
 
-    String getEn() {
-        return en;
-    }
-
-    String getMr() {
-        return mr;
-    }
-
-    String getHi() {
-        return hi;
-    }
-
-    public void setEn(String en) {
-        this.en = en;
-    }
-
     public void setMr(String mr) {
         this.mr = mr;
     }

@@ -326,6 +326,7 @@
                 android:src="@drawable/add_img" />
 
             <TextView
+                android:id="@+id/user_profile_pic_label"
                 style="@style/FormLabel"
                 android:layout_gravity="center"
                 android:layout_marginTop="0dp"

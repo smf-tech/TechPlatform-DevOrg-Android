@@ -5,7 +5,6 @@ import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
-import com.platform.dao.SavedFormDao;
 import com.platform.models.SavedForm;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
@@ -19,8 +18,6 @@ import androidx.room.RoomDatabase;
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class, ProcessData.class}, version = 1)
 
 public abstract class AppDatabase extends RoomDatabase {
-
-    public abstract SavedFormDao formDao();
 
     public abstract ProcessDataDao processDataDao();
 

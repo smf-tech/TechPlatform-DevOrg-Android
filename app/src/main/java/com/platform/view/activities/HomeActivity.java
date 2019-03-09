@@ -38,6 +38,7 @@ import com.platform.utility.Util;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.MeetingsFragment;
+import com.platform.view.fragments.NotificationsFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserApprovalsFragment;
 
@@ -66,8 +67,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         initMenuView();
     }
@@ -117,7 +116,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         UserInfo user = Util.getUserObjectFromPref();
         if (user != null) {
-            loadProfileImage(userPic, user.getProfilePic());
+            if (!TextUtils.isEmpty(user.getProfilePic())) {
+                loadProfileImage(userPic, user.getProfilePic());
+            }
             userName.setText(String.format("%s", user.getUserName()));
         }
         profileView.setOnClickListener(this);
@@ -135,18 +136,24 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void updateUnreadNotificationsCount() {
         int notificationsCount = Util.getUnreadNotificationsCount();
-        ((TextView) findViewById(R.id.unread_notification_count))
-                .setText(String.valueOf(notificationsCount));
+        if (notificationsCount > 0) {
+            findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.unread_notification_count))
+                    .setText(String.valueOf(notificationsCount));
+        }
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_profile);
         if (!TextUtils.isEmpty(profileUrl)) {
             requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             userPic.setLayoutParams(params);
         }
+
         loadFromSDCard(userPic, profileUrl);
+
         Glide.with(this)
                 .load(profileUrl)
                 .apply(requestOptions)
@@ -171,12 +178,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFromSDCard(final ImageView userPic, final String profileUrl) {
-        if (TextUtils.isEmpty(profileUrl)) return;
+        if (TextUtils.isEmpty(profileUrl)) {
+            return;
+        }
 
         String[] split = profileUrl.split("/");
         String url = split[split.length - 1];
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/MV/Image/profile");
+
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/profile");
         if (!dir.exists()) {
             Log.e(TAG, "Failed to load image from SD card");
             return;
@@ -189,7 +198,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadHomePage() {
         findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
-        findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+        findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
 
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -452,25 +461,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         alertDialog.show();
     }
 
-//    private void showPendingFormsPopUp() {
-//        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-//        // Setting Dialog Title
-//        alertDialog.setTitle(getString(R.string.app_name_ss));
-//        // Setting Dialog Message
-//        alertDialog.setMessage("Pending forms are not synced! Please sync all pending forms to continue logout.");
-//        // Setting Icon to Dialog
-//        alertDialog.setIcon(R.mipmap.app_logo);
-//        // Setting CANCEL Button
-//        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
-//                (dialog, which) -> alertDialog.dismiss());
-//        // Setting OK Button
-//        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-//                (dialog, which) -> logOutUser());
-//
-//        // Showing Alert Message
-//        alertDialog.show();
-//    }
-
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
 
@@ -537,7 +527,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.unread_notification_count:
                 findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
                 findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
-                loadTeamsPage();
+
+                Util.launchFragment(NotificationsFragment.newInstance(), this,
+                        getString(R.string.notifications));
+
                 break;
 
             case R.id.home_sync_icon:

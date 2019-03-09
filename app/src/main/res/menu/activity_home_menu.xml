@@ -16,15 +16,18 @@
         <item
             android:id="@+id/action_menu_forms"
             android:icon="@drawable/ic_menu_forms"
-            android:title="@string/menu_forms" />
+            android:title="@string/menu_forms"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_calendar"
             android:icon="@drawable/ic_menu_calendar"
-            android:title="@string/menu_calendar" />
+            android:title="@string/menu_calendar"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_teams"
             android:icon="@drawable/ic_menu_teams"
-            android:title="@string/menu_teams" />
+            android:title="@string/menu_teams"
+            android:visible="false" />
         <item
             android:id="@+id/action_menu_assets"
             android:icon="@drawable/ic_menu_assets"
@@ -33,7 +36,8 @@
         <item
             android:id="@+id/action_menu_reports"
             android:icon="@drawable/ic_menu_reports"
-            android:title="@string/menu_reports" />
+            android:title="@string/menu_reports"
+            android:visible="false" />
     </group>
 
     <group

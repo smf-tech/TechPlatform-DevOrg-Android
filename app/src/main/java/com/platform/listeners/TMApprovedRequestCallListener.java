@@ -7,7 +7,8 @@ public interface TMApprovedRequestCallListener {
 
     void onApprovedRequestsFetched(String response);
 
-    void onRequestStatusChanged(String response, PendingRequest pendingRequest);
+    @SuppressWarnings("EmptyMethod")
+    void onRequestStatusChanged(@SuppressWarnings("unused") String response, @SuppressWarnings("unused") PendingRequest pendingRequest);
 
     void onFailureListener(String message);
 

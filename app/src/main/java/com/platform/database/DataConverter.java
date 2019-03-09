@@ -6,6 +6,7 @@ import com.platform.models.LocaleData;
 import com.platform.models.common.Category;
 import com.platform.models.common.Microservice;
 import com.platform.models.forms.Components;
+import com.platform.models.reports.ReportCategory;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -104,4 +105,25 @@ public class DataConverter implements Serializable {
         return gson.fromJson(localeData, type);
     }
 
+    @TypeConverter // note this annotation
+    public String fromReportCategory(ReportCategory category) {
+        if (category == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<ReportCategory>() {
+        }.getType();
+        return gson.toJson(category, type);
+    }
+
+    @TypeConverter // note this annotation
+    public ReportCategory toReportCategory(String category) {
+        if (category == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<ReportCategory>() {
+        }.getType();
+        return gson.fromJson(category, type);
+    }
 }

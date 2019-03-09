@@ -15,22 +15,22 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
         LocaleData localeData = null;
         try {
             reader.beginObject();
-            String fieldname = null;
+            String fieldName;
 
             while (reader.hasNext()) {
                 JsonToken token = reader.peek();
 
                 if (token.equals(JsonToken.NAME)) {
                     //get the current token
-                    fieldname = reader.nextName();
+                    fieldName = reader.nextName();
 
-                    if (Constants.App.LANGUAGE_DEFAULT.equals(fieldname)) {
+                    if (Constants.App.LANGUAGE_DEFAULT.equals(fieldName)) {
                         //move to next token
                         String en = (reader.nextString());
                         localeData = new LocaleData(en);
                     }
 
-                    if (Constants.App.LANGUAGE_HINDI.equals(fieldname)) {
+                    if (Constants.App.LANGUAGE_HINDI.equals(fieldName)) {
                         //move to next token
                         String hi = (reader.nextString());
                         if (localeData != null) {
@@ -38,7 +38,7 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
                         }
                     }
 
-                    if (Constants.App.LANGUAGE_MARATHI.equals(fieldname)) {
+                    if (Constants.App.LANGUAGE_MARATHI.equals(fieldName)) {
                         //move to next token
                         String mr = (reader.nextString());
                         if (localeData != null) {
@@ -64,5 +64,4 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
             writer.value(localeData.getLocaleValue());
         }
     }
-
 }

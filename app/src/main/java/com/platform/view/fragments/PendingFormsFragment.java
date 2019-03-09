@@ -32,13 +32,14 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PendingFormsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class PendingFormsFragment extends Fragment {
 
     private TextView mNoRecordsView;
@@ -81,6 +82,7 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(EVENT_SYNC_FAILED);
         filter.addAction(EVENT_FORM_ADDED);
         filter.addAction(PARTIAL_FORM_ADDED);
+        filter.addAction(PARTIAL_FORM_REMOVED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
@@ -89,6 +91,8 @@ public class PendingFormsFragment extends Fragment {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
                     updateAdapter(context);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
+                    updateAdapter(context);
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_REMOVED)) {
                     updateAdapter(context);
                 } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
                     Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();

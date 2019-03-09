@@ -1,9 +1,16 @@
 package com.platform.view.adapters;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -23,6 +30,7 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
     private OnRequestItemClicked clickListener;
     private List<PendingRequest> pendingRequestList;
     private PendingFragmentPresenter pendingFragmentPresenter;
+    private Context mContext;
 
     class PendingRequestViewHolder extends RecyclerView.ViewHolder {
 
@@ -42,11 +50,12 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
     }
 
     public NewTMAdapter(List<PendingRequest> pendingRequestList,
-                        PendingFragmentPresenter pendingFragmentPresenter, OnRequestItemClicked clickListener) {
+                        PendingFragmentPresenter pendingFragmentPresenter, OnRequestItemClicked clickListener, final Context context) {
 
         this.pendingRequestList = pendingRequestList;
         this.pendingFragmentPresenter = pendingFragmentPresenter;
         this.clickListener = clickListener;
+        mContext = context;
     }
 
     @NonNull
@@ -76,7 +85,57 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
     }
 
     public void rejectUserRequest(PendingRequest pendingRequest) {
-        pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
+        showReasonPopUp(pendingRequest);
+    }
+
+    private void showReasonPopUp(final PendingRequest pendingRequest) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        alertDialog.setTitle(mContext.getString(R.string.app_name_ss));
+        alertDialog.setMessage(mContext.getString(R.string.msg_rejection_reason));
+        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setCancelable(false);
+
+        EditText comment = new EditText(mContext);
+        comment.setHint(R.string.msg_rejection_comment);
+        comment.setInputType(InputType.TYPE_CLASS_TEXT);
+        comment.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 40));
+
+        alertDialog.setView(comment);
+
+        alertDialog.setPositiveButton(android.R.string.yes, null);
+        alertDialog.setNegativeButton(android.R.string.no, null);
+
+//        alertDialog.setNegativeButton(mContext.getString(R.string.no),
+//                (dialogInterface, i) -> );
+
+        /*alertDialog.setPositiveButton(mContext.getString(R.string.yes),
+                (dialogInterface, i) -> {
+                    if (comment.getText().toString().trim().isEmpty()) {
+                        comment.setError(mContext.getString(R.string.msg_error_rejection_comment_needed));
+                        dialogInterface.cancel();
+                    } else {
+                        pendingRequest.setReason(comment.getText().toString());
+                        dialogInterface.dismiss();
+                        pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
+                    }
+                });*/
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.setOnShowListener(dialogInterface -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+                if (comment.getText().toString().trim().isEmpty()) {
+                    comment.setError(mContext.getString(R.string.msg_error_rejection_comment_needed));
+                } else {
+                    dialogInterface.dismiss();
+                    pendingRequest.setReason(comment.getText().toString());
+                    pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
+                }
+            });
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> {
+                dialogInterface.dismiss();
+            });
+        });
+        dialog.show();
     }
 
     @Override

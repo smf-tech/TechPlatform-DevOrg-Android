@@ -18,11 +18,17 @@ public interface FormResultDao {
     @Query("SELECT * FROM formresult WHERE form_status = :sync")
     List<FormResult> getAllFormResults(int sync);
 
+    @Query("SELECT * FROM formresult")
+    List<FormResult> getAllFormResults();
+
     @Query("SELECT result FROM formresult where form_id = :formId and form_status = :sync")
     List<String> getAllFormResults(String formId, int sync);
 
     @Query("SELECT result FROM formresult where form_id = :formId")
     List<String> getAllFormResults(String formId);
+
+    @Query("SELECT * FROM formresult where result_id = :formId")
+    FormResult getFormResult(String formId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormResult result);
