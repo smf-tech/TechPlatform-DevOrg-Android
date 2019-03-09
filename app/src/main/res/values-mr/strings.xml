@@ -177,5 +177,8 @@
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
     <string name="notifications">अधिसूचना</string>
+    <string name="msg_rejection_reason">आपणास खात्री आहे की आपण ही विनंती नाकारू इच्छिता??</string>
+    <string name="msg_rejection_comment">नाकारण्याचे कारण</string>
+    <string name="msg_error_rejection_comment_needed">अस्वीकार कारण आवश्यक</string>
 
 </resources>

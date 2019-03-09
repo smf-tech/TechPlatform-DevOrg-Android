@@ -96,16 +96,24 @@ public class TMPendingRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getRequestStatusObject(requestStatus));
+        if (requestStatus.equals(Constants.RequestStatus.REJECTED)) {
+            gsonRequest.setBodyParams(getRequestStatusObject(requestStatus,
+                    (String) pendingRequest.getReason()));
+        } else {
+            gsonRequest.setBodyParams(getRequestStatusObject(requestStatus, null));
+        }
         gsonRequest.setShouldCache(false);
 
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
     @NonNull
-    private JsonObject getRequestStatusObject(String requestStatus) {
+    private JsonObject getRequestStatusObject(String requestStatus, String reason) {
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty(Constants.TM.UPDATE_STATUS, requestStatus);
+        if (reason != null) {
+            requestObject.addProperty(Constants.TM.REJECTION_REASON, reason);
+        }
         return requestObject;
     }
 }
