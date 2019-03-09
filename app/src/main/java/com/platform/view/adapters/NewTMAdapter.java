@@ -2,15 +2,12 @@ package com.platform.view.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -49,13 +46,13 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
         }
     }
 
-    public NewTMAdapter(List<PendingRequest> pendingRequestList,
-                        PendingFragmentPresenter pendingFragmentPresenter, OnRequestItemClicked clickListener, final Context context) {
+    public NewTMAdapter(List<PendingRequest> pendingRequestList, PendingFragmentPresenter presenter,
+                        OnRequestItemClicked clickListener, final Context context) {
 
         this.pendingRequestList = pendingRequestList;
-        this.pendingFragmentPresenter = pendingFragmentPresenter;
+        this.pendingFragmentPresenter = presenter;
         this.clickListener = clickListener;
-        mContext = context;
+        this.mContext = context;
     }
 
     @NonNull
@@ -105,21 +102,6 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
         alertDialog.setPositiveButton(android.R.string.yes, null);
         alertDialog.setNegativeButton(android.R.string.no, null);
 
-//        alertDialog.setNegativeButton(mContext.getString(R.string.no),
-//                (dialogInterface, i) -> );
-
-        /*alertDialog.setPositiveButton(mContext.getString(R.string.yes),
-                (dialogInterface, i) -> {
-                    if (comment.getText().toString().trim().isEmpty()) {
-                        comment.setError(mContext.getString(R.string.msg_error_rejection_comment_needed));
-                        dialogInterface.cancel();
-                    } else {
-                        pendingRequest.setReason(comment.getText().toString());
-                        dialogInterface.dismiss();
-                        pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
-                    }
-                });*/
-
         AlertDialog dialog = alertDialog.create();
         dialog.setOnShowListener(dialogInterface -> {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
@@ -131,9 +113,7 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
                     pendingFragmentPresenter.approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest);
                 }
             });
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> {
-                dialogInterface.dismiss();
-            });
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(view -> dialogInterface.dismiss());
         });
         dialog.show();
     }

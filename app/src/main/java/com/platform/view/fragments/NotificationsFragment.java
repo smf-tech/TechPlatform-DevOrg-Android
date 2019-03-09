@@ -7,11 +7,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.utility.AppEvents;
-import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.NotificationsAdapter;
 
