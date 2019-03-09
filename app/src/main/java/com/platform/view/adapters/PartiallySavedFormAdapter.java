@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.utility.Constants.FORM_DATE_FORMAT;
-import static com.platform.utility.Util.getFormattedDate;
+import static com.platform.utility.Util.getDateFromTimestamp;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormAdapter.ViewHolder> {
@@ -75,8 +73,8 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
             FormResult savedForm = mSavedForms.get(i);
             viewHolder.mName.setText(savedForm.getFormName());
 
-            if (!TextUtils.isEmpty(savedForm.getCreatedAt())) {
-                String formattedDate = getFormattedDate(savedForm.getCreatedAt(), FORM_DATE_FORMAT);
+            if (savedForm.getCreatedAt() != null) {
+                String formattedDate = getDateFromTimestamp(savedForm.getCreatedAt());
                 viewHolder.mDate.setText(String.format("on %s", formattedDate));
             }
         }

@@ -45,7 +45,7 @@ public class FormResult {
     private String requestObject;
 
     @ColumnInfo(name = "created_at")
-    private String createdAt;
+    private Long createdAt;
 
     @ColumnInfo(name = "oid")
     private String oid;
@@ -99,11 +99,11 @@ public class FormResult {
         this.requestObject = requestObject;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final String createdAt) {
+    public void setCreatedAt(final Long createdAt) {
         this.createdAt = createdAt;
     }
 

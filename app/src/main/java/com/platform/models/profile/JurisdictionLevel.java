@@ -20,10 +20,10 @@ public class JurisdictionLevel {
     private String jurisdictionLevelName;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Long updatedAt;
 
     @SerializedName("created_at")
-    private String createdAt;
+    private Long createdAt;
 
     public String getDistrictId() {
         return districtId;
@@ -57,19 +57,19 @@ public class JurisdictionLevel {
         this.id = id;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 

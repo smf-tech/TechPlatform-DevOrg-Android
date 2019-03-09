@@ -195,15 +195,14 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
 
                     FormResult formResult = new Gson().fromJson(String.valueOf(values.get(i)), FormResult.class);
 
-                    String date = formResult.updatedDateTime;
+                    Long date = formResult.updatedDateTime;
                     if (date == null) {
                         JSONObject object = new JSONObject(response);
                         JSONObject metadata = (JSONObject) object.getJSONArray("metadata").get(0);
                         if (metadata != null && metadata.getJSONObject("form") != null) {
-                            date = (String) metadata.getJSONObject("form").get("createdDateTime");
-                            date = Util.getFormattedDate(date);
+                            date = (Long) metadata.getJSONObject("form").get("createdDateTime");
                         } else {
-                            date = Util.getFormattedDate(new Date().toString());
+                            date = Util.getCurrentTimeStamp();
                         }
                     }
 
@@ -239,7 +238,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                     }
                 }
             } else {
-                list.add(new ProcessDemoObject("No Forms available", "0", "", ""));
+                list.add(new ProcessDemoObject("No Forms available", "0", null, ""));
             }
 
             for (final ProcessData data : mDataList) {
@@ -310,19 +309,20 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
-    private boolean isFormOneMonthOld(final String updatedAt) {
-        Date eventStartDate;
-        DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-        try {
-            eventStartDate = inputFormat.parse(updatedAt);
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, -30);
-            Date days30 = calendar.getTime();
-            return eventStartDate.before(days30);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+    private boolean isFormOneMonthOld(final Long updatedAt) {
+        if (updatedAt != null) {
+            Date eventStartDate;
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            try {
+                eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, -30);
+                Date days30 = calendar.getTime();
+                return eventStartDate.before(days30);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
-
         return false;
     }
 
@@ -330,16 +330,16 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String name;
         String id;
         String formTitle;
-        String date;
+        Long date;
 
-        private ProcessDemoObject(String name, String id, final String date, String formTitle) {
+        private ProcessDemoObject(String name, String id, final Long date, String formTitle) {
             this.name = name;
             this.id = id;
             this.date = date;
             this.formTitle = formTitle;
         }
 
-        public String getDate() {
+        public Long getDate() {
             return date;
         }
 
@@ -365,6 +365,6 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         String formID;
 
         @SerializedName("updatedDateTime")
-        String updatedDateTime;
+        Long updatedDateTime;
     }
 }

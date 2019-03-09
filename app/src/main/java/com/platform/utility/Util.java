@@ -32,6 +32,7 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +45,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
+import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
 
@@ -353,7 +355,7 @@ public class Util {
         }
     }
 
-    public static String getFormattedDate(String date) {
+    private static String getFormattedDate(String date) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -387,22 +389,22 @@ public class Util {
         return date;
     }
 
-//    public static long getCurrentTimeStamp() {
-//        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//        return timestamp.getTime();
-//    }
-//
-//    public static String getDateFromTimestamp(Long date) {
-//        if (date != null) {
-//            try {
-//                Date d = new Timestamp(date);
-//                return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-//        return "";
-//    }
+    public static long getCurrentTimeStamp() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.getTime();
+    }
+
+    public static String getDateFromTimestamp(Long date) {
+        if (date != null) {
+            try {
+                Date d = new Timestamp(date);
+                return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return "";
+    }
 
     public static void launchFragment(Fragment fragment, Context context, String titleName) {
         try {

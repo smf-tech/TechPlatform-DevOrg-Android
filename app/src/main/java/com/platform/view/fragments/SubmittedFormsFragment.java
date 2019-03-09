@@ -25,7 +25,6 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.LocaleData;
-import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
@@ -82,7 +81,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment CompletedFormsFragment.
+     * @return A new instance of fragment SubmittedFormsFragment.
      */
     static SubmittedFormsFragment newInstance() {
         return new SubmittedFormsFragment();
@@ -151,9 +150,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 object.setId(formResult.getFormId());
                 object.setFormTitle(formResult.getFormTitle());
                 object.setName(new LocaleData(formResult.getFormName()));
-                Microservice microservice = new Microservice();
-                microservice.setUpdatedAt(formResult.getCreatedAt());
-                object.setMicroservice(microservice);
                 list.add(object);
                 map.put(formResult.get_id(), object);
             }
@@ -220,9 +216,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 object.setId(formResult.mOID.oid);
                             object.setFormTitle(formResult.formTitle);
                             object.setName(new LocaleData(formResult.formTitle));
-                            Microservice microservice = new Microservice();
-                            microservice.setUpdatedAt(formResult.updatedDateTime);
-                            object.setMicroservice(microservice);
 
                             processData.add(object);
                         }
@@ -357,14 +350,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         if (getContext() != null && data.getName().getLocaleValue() != null &&
                 !data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
+            String formattedDate = Util.getDateFromTimestamp(
+                    Util.getCurrentTimeStamp());
 
-            if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = Util.getFormattedDate(
-                        data.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
-
-                ((TextView) view.findViewById(R.id.form_date))
-                        .setText(String.format("on %s", formattedDate));
-            }
+            ((TextView) view.findViewById(R.id.form_date))
+                    .setText(String.format("on %s", formattedDate));
         } else {
             String formattedDate = Util.getFormattedDate(new Date().toString(), FORM_DATE_FORMAT);
             ((TextView) view.findViewById(R.id.form_date)).setText(String.format("on %s", formattedDate));
@@ -403,17 +393,19 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     }
 
-    private boolean isFormOneMonthOld(final String updatedAt) {
-        Date eventStartDate;
-        DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
-        try {
-            eventStartDate = inputFormat.parse(updatedAt);
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, -30);
-            Date days30 = calendar.getTime();
-            return eventStartDate.before(days30);
-        } catch (ParseException e) {
-            Log.e(TAG, e.getMessage());
+    private boolean isFormOneMonthOld(final Long updatedAt) {
+        if (updatedAt != null) {
+            Date eventStartDate;
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            try {
+                eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, -30);
+                Date days30 = calendar.getTime();
+                return eventStartDate.before(days30);
+            } catch (ParseException e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
 
         return false;
@@ -430,7 +422,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         @SuppressWarnings("unused")
         @SerializedName("updatedDateTime")
-        String updatedDateTime;
+        Long updatedDateTime;
 
         @SuppressWarnings("unused")
         @SerializedName("_id")
@@ -442,5 +434,4 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         @SerializedName("$oid")
         String oid;
     }
-
 }

@@ -477,7 +477,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         result.setFormCategory(formData.getCategory().getName().getLocaleValue());
         result.setFormName(formData.getName().getLocaleValue());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getFormattedDate(formData.getMicroService().getCreatedAt()));
+        result.setCreatedAt(Util.getCurrentTimeStamp());
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName().getLocaleValue();
@@ -551,6 +551,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     private void saveFormToLocalDatabase() {
         FormData formData = formModel.getData();
+
         FormResult result;
         if (mIsPartiallySaved || mIsInEditMode) {
             result = DatabaseManager.getDBInstance(getActivity()) .getFormResult(processId);
@@ -560,7 +561,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             result = new FormResult();
             result.setFormId(formData.getId());
             result.setFormName(formData.getName().getLocaleValue());
-            result.setCreatedAt(Util.getFormattedDate(new Date().toString()));
+            result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
         }
