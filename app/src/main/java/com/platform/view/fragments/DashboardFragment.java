@@ -40,12 +40,6 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_yellow,
             R.drawable.bg_circle_green
     };
-    private final int[] tabThemeColor = {
-            R.color.pink,
-            R.color.orange,
-            R.color.yellow,
-            R.color.green
-    };
     private final int[] disableTabIcons = {
             R.drawable.bg_circle_lock
     };
@@ -118,10 +112,16 @@ public class DashboardFragment extends Fragment {
 
     private void initViews() {
         ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
-        viewPager.setOffscreenPageLimit(4);
+        int pageLimit = 4;
+        if (tabNames.size()<pageLimit) {
+            pageLimit = tabNames.size();
+        }
+        viewPager.setOffscreenPageLimit(pageLimit);
         setupViewPager(viewPager);
 
         tabLayout = dashboardView.findViewById(R.id.tabs);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
@@ -215,37 +215,32 @@ public class DashboardFragment extends Fragment {
         } else {
             pendingActionsCountView.setVisibility(View.VISIBLE);
             int resId = tabIcons[0];
-            int resColor = tabThemeColor[0];
             int pendingActionCount = 0;
 
             switch (tabNames.get(i).getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
                     resId = tabIcons[0];
-                    resColor = tabThemeColor[0];
                     pendingActionCount = getFormsPendingActionCount();
                     break;
 
                 case Constants.Home.MEETINGS:
                     resId = tabIcons[1];
-                    resColor = tabThemeColor[1];
                     break;
 
                 case Constants.Home.APPROVALS:
                     resId = tabIcons[2];
-                    resColor = tabThemeColor[2];
                     pendingActionCount = mApprovalCount;
                     break;
 
                 case Constants.Home.REPORTS:
                     resId = tabIcons[3];
-                    resColor = tabThemeColor[3];
                     break;
             }
 
             tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                pendingActionsCountView.setTextColor(getResources().getColor(resColor,
+                pendingActionsCountView.setTextColor(getResources().getColor(R.color.black,
                         getContext().getTheme()));
             } else {
                 pendingActionsCountView.setVisibility(View.GONE);

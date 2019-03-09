@@ -262,6 +262,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         Glide.with(this)
                                 .load(userInfo.getProfilePic())
                                 .into(imgUserProfilePic);
+
+                        ((TextView) findViewById(R.id.user_profile_pic_label))
+                                .setText(getString(R.string.update_profile_pic));
                     }
                 }
             }
@@ -436,13 +439,17 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             msg = getString(R.string.msg_select_role);
         } else if (selectedStates == null || selectedStates.size() == 0) {
             msg = getString(R.string.msg_select_state);
-        } else if ((spDistrict.getVisibility() == View.VISIBLE) && (selectedDistricts == null || selectedDistricts.size() == 0)) {
+        } else if ((spDistrict.getVisibility() == View.VISIBLE) &&
+                (selectedDistricts == null || selectedDistricts.size() == 0)) {
             msg = getString(R.string.msg_select_district);
-        } else if ((spTaluka.getVisibility() == View.VISIBLE) && (selectedTalukas == null || selectedTalukas.size() == 0)) {
+        } else if ((spTaluka.getVisibility() == View.VISIBLE) &&
+                (selectedTalukas == null || selectedTalukas.size() == 0)) {
             msg = getString(R.string.msg_select_taluka);
-        } else if ((spCluster.getVisibility() == View.VISIBLE) && (selectedClusters == null || selectedClusters.size() == 0)) {
+        } else if ((spCluster.getVisibility() == View.VISIBLE) &&
+                (selectedClusters == null || selectedClusters.size() == 0)) {
             msg = getString(R.string.msg_select_cluster);
-        } else if ((spVillage.getVisibility() == View.VISIBLE) && (selectedVillages == null || selectedVillages.size() == 0)) {
+        } else if ((spVillage.getVisibility() == View.VISIBLE) &&
+                (selectedVillages == null || selectedVillages.size() == 0)) {
             msg = getString(R.string.msg_select_village);
         }
 

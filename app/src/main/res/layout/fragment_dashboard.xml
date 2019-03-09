@@ -11,7 +11,7 @@
         android:layout_height="@dimen/dimen_120dp"
         android:background="@color/white"
         android:paddingTop="@dimen/dimen_15dp"
-        app:tabGravity="fill"
+        app:tabGravity="center"
         app:tabIndicatorColor="@color/white"
         app:tabMode="fixed" />
 

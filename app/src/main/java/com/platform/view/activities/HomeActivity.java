@@ -67,8 +67,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
-
         initMenuView();
     }
 
@@ -117,7 +115,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         UserInfo user = Util.getUserObjectFromPref();
         if (user != null) {
-            loadProfileImage(userPic, user.getProfilePic());
+            if (!TextUtils.isEmpty(user.getProfilePic())) {
+                loadProfileImage(userPic, user.getProfilePic());
+            }
             userName.setText(String.format("%s", user.getUserName()));
         }
         profileView.setOnClickListener(this);
@@ -135,8 +135,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void updateUnreadNotificationsCount() {
         int notificationsCount = Util.getUnreadNotificationsCount();
-        ((TextView) findViewById(R.id.unread_notification_count))
-                .setText(String.valueOf(notificationsCount));
+        if (notificationsCount > 0) {
+            findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.unread_notification_count))
+                    .setText(String.valueOf(notificationsCount));
+        }
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
@@ -174,12 +177,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFromSDCard(final ImageView userPic, final String profileUrl) {
-        if (TextUtils.isEmpty(profileUrl)) return;
+        if (TextUtils.isEmpty(profileUrl)) {
+            return;
+        }
 
         String[] split = profileUrl.split("/");
         String url = split[split.length - 1];
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/MV/Image/profile");
+
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/profile");
         if (!dir.exists()) {
             Log.e(TAG, "Failed to load image from SD card");
             return;
@@ -192,7 +197,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadHomePage() {
         findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
-        findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+        findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
 
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

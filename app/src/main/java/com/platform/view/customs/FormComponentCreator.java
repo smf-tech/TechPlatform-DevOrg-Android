@@ -50,6 +50,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
 
+    private View mImageView;
+    private String mImageName;
+
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
@@ -626,12 +629,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     private void onAddImageClick(final View view, final String name) {
-        if (Permissions.isCameraPermissionGranted(fragment.get().getActivity(), this)) {
-            showPictureDialog(view, name);
+        this.mImageView = view;
+        this.mImageName = name;
+
+        if (Permissions.isCameraPermissionGranted(fragment.get().getActivity(), fragment.get())) {
+            showPictureDialog();
         }
     }
 
-    private void showPictureDialog(final View view, final String name) {
+    public void showPictureDialog() {
         Context context = fragment.get().getContext();
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(context.getString(R.string.title_choose_picture));
@@ -640,11 +646,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         dialog.setItems(items, (dialog1, which) -> {
             switch (which) {
                 case 0:
-                    fragment.get().choosePhotoFromGallery(view, name);
+                    fragment.get().choosePhotoFromGallery(mImageView, mImageName);
                     break;
 
                 case 1:
-                    fragment.get().takePhotoFromCamera(view, name);
+                    fragment.get().takePhotoFromCamera(mImageView, mImageName);
                     break;
             }
         });

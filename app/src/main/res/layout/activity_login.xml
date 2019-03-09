@@ -24,7 +24,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_50dp"
                 android:contentDescription="@string/content_description"
-                android:src="@mipmap/app_logo" />
+                android:src="@drawable/ic_splash" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -758,6 +758,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.e(TAG, "Camera Permission Granted");
+        formComponentCreator.showPictureDialog();
+    }
+
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
