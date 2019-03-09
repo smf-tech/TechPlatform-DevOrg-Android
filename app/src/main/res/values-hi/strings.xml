@@ -177,5 +177,8 @@
     <string name="msg_no_pending_req">अनुमोदन के लिए कोई लंबित अनुरोध नहीं हैं।</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
-
+    <string name="notifications">सूचनाएं</string>
+    <string name="msg_rejection_reason">क्या आप वाकई इस अनुरोध को अस्वीकार करना चाहते हैं??</string>
+    <string name="msg_rejection_comment">अस्वीकृति का कारण</string>
+    <string name="msg_error_rejection_comment_needed">अस्वीकृति कारण की आवश्यकता</string>
 </resources>

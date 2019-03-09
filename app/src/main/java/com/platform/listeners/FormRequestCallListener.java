@@ -4,6 +4,8 @@ import com.android.volley.VolleyError;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.FormData;
 
+import java.util.Map;
+
 import androidx.annotation.Nullable;
 
 public interface FormRequestCallListener {
@@ -20,7 +22,7 @@ public interface FormRequestCallListener {
     void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData);
 
     @SuppressWarnings("unused")
-    void onSubmitClick(String submitType, String url, String formId, String oid);
+    void onSubmitClick(String submitType, String url, String formId, String oid, final Map<String, String> imageUrlList);
 
     void onFormDetailsLoadedListener(String response);
 }

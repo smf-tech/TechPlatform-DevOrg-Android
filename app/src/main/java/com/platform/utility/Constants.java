@@ -120,6 +120,7 @@ public class Constants {
 
     public static class TM {
         public static final String UPDATE_STATUS = "update_status";
+        public static final String REJECTION_REASON = "reason";
     }
 
     public static class RequestStatus {

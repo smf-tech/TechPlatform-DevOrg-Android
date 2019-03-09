@@ -220,4 +220,9 @@
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
 
+    <string name="notifications">Notifications</string>
+    <string name="msg_rejection_reason">Are you sure you want to reject this request?</string>
+    <string name="msg_rejection_comment">Reason for rejection</string>
+    <string name="msg_error_rejection_comment_needed">Rejection reason needed</string>
+
 </resources>

@@ -127,7 +127,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             rvPendingRequests.setVisibility(View.VISIBLE);
 
             this.pendingRequestList = pendingRequestList;
-            newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this);
+            newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this, getContext());
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);

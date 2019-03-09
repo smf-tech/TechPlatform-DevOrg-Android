@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -95,6 +96,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private Uri finalUri;
     private ImageView mFileImageView;
     private String mFormName;
+    private Map<String, String> mUploadedImageUrlList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -433,10 +435,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                         if (mIsInEditMode && !mIsPartiallySaved) {
                             formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url,
-                                    formModel.getData().getId(), processId);
+                                    formModel.getData().getId(), processId, mUploadedImageUrlList);
                         } else {
                             formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
-                                    formModel.getData().getId(), processId);
+                                    formModel.getData().getId(), processId, mUploadedImageUrlList);
                         }
                     } else {
                         if (formModel.getData() != null) {
@@ -445,10 +447,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                             if (mIsInEditMode) {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
-                                        null, formModel.getData().getId(), processId);
+                                        null, formModel.getData().getId(), processId, mUploadedImageUrlList);
                             } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
-                                        null, formModel.getData().getId(), null);
+                                        null, formModel.getData().getId(), null, mUploadedImageUrlList);
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
@@ -485,12 +487,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        }
-
-        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
             JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
             if (obj != null) {
+                if (mUploadedImageUrlList != null && !mUploadedImageUrlList.isEmpty()) {
+                    try {
+                        for (Map.Entry<String, String> entry : mUploadedImageUrlList.entrySet()) {
+                            obj.put(entry.getKey(), entry.getValue());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 result.setResult(obj.toString());
             }
         }
@@ -579,8 +586,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
         }
-
-        // TODO: 01-03-2019 Update submitted count also
     }
 
     public void setErrorMsg(String errorMsg) {
@@ -783,5 +788,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     @Override
     public void onDeviceBackButtonPressed() {
         showConfirmPopUp();
+    }
+
+    public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
+        mUploadedImageUrlList = uploadedImageUrlList;
     }
 }

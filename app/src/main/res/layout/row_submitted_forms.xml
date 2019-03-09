@@ -26,7 +26,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/dimen_05dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
-            android:backgroundTint="@color/sync_pending_form_color"
+            app:backgroundTint="@color/sync_pending_form_color"
             android:src="@android:drawable/stat_notify_sync"
             app:fabSize="mini"
             android:visibility="gone"

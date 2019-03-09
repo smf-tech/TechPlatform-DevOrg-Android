@@ -49,7 +49,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
     private FormResult savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
-    private Map<String, String> mUploadedImageUrlList;
 
     private FormResult getSavedForm() {
         return savedForm;
@@ -70,7 +69,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public FormActivityPresenter(FormFragment fragment) {
         this.formFragment = new WeakReference<>(fragment);
         this.gson = new GsonBuilder().serializeNulls().create();
-        mUploadedImageUrlList = new HashMap<>();
     }
 
     public void getProcessDetails(String processId) {
@@ -125,8 +123,10 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 JSONObject data = new JSONObject(response).getJSONObject("data");
                 String url = (String) data.get("url");
                 Log.e(TAG, "onPostExecute: Url: " + url);
+                Map<String, String> mUploadedImageUrlList = new HashMap<>();
                 mUploadedImageUrlList.put(formName, url);
 
+                formFragment.get().onImageUploaded(mUploadedImageUrlList);
             } else {
                 Log.e(TAG, "onPostExecute: Invalid response");
             }
@@ -287,17 +287,17 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onSubmitClick(String submitType, String url, String formId, String oid) {
+    public void onSubmitClick(String submitType, String url, String formId, String oid, final Map<String, String> imageUrlList) {
         FormRequestCall formRequestCall = new FormRequestCall();
         formRequestCall.setListener(this);
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
-                formRequestCall.createFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid, submitType);
+                formRequestCall.createFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
-                formRequestCall.updateFormResponse(getRequestedObject(), mUploadedImageUrlList, url, formId, oid, submitType);
+                formRequestCall.updateFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
