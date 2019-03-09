@@ -38,6 +38,7 @@ import com.platform.utility.Util;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.MeetingsFragment;
+import com.platform.view.fragments.NotificationsFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserApprovalsFragment;
 
@@ -521,7 +522,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.unread_notification_count:
                 findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
                 findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
-                loadTeamsPage();
+
+                Util.launchFragment(NotificationsFragment.newInstance(), this,
+                        getString(R.string.notifications));
+
                 break;
 
             case R.id.home_sync_icon:

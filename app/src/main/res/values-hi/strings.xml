@@ -176,5 +176,6 @@
     <string name="msg_no_pending_req">अनुमोदन के लिए कोई लंबित अनुरोध नहीं हैं।</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
+    <string name="notifications">सूचनाएं</string>
 
 </resources>
