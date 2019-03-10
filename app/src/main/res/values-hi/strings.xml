@@ -12,6 +12,9 @@
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन करें</string>
 
+    <!--Error Messages-->
+    <string name="msg_failure">ऑपरेशन करते समय कुछ गड़बड़ हो गई थी, कृपया बाद में पुनः प्रयास करें।</string>
+
     <!--App Update-->
     <string name="title_new_version_available">नया संस्करण उपलब्ध है</string>
     <string name="msg_update_app">जारी रखने के लिए कृपया नए संस्करण में एप्लिकेशन अपडेट करें।</string>

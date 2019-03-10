@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
+import com.platform.R;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
@@ -49,7 +50,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -80,7 +81,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -113,7 +114,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -146,7 +147,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -179,7 +180,7 @@ public class ProfileRequestCall {
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 

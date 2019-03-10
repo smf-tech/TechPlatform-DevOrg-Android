@@ -12,6 +12,9 @@
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन</string>
 
+    <!--Error Messages-->
+    <string name="msg_failure">ऑपरेशन्स करताना काहीतरी चूक झाली, कृपया नंतर पुन्हा प्रयत्न करा.</string>
+
     <!--App Update-->
     <string name="title_new_version_available">नवीन आवृत्ती उपलब्ध</string>
     <string name="msg_update_app">कृपया सुरु ठेवण्यासाठी अॅपला नवीन आवृत्तीवर अद्यतनित करा.</string>

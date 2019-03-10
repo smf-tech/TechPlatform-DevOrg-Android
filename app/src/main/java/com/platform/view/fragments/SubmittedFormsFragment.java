@@ -293,8 +293,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 .equals(getString(R.string.forms_are_not_available))) {
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = Util.getFormattedDate(
-                        data.getMicroservice().getUpdatedAt(), FORM_DATE_FORMAT);
+                String formattedDate = Util.getDateFromTimestamp(
+                        data.getMicroservice().getUpdatedAt());
 
                 ((TextView) view.findViewById(R.id.form_date))
                         .setText(String.format("on %s", formattedDate));
