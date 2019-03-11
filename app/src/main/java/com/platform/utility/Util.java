@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -23,7 +24,9 @@ import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
+import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
+import com.platform.models.pm.ProcessData;
 import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
@@ -36,8 +39,11 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -409,8 +415,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.US);
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
@@ -488,5 +494,37 @@ public class Util {
             editor.putInt(Constants.App.UNREAD_NOTIFICATION_COUNT, ++count);
         }
         editor.apply();
+    }
+
+    public static boolean isSubmittedFormsLoaded() {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, Context.MODE_PRIVATE);
+
+        return preferences.getBoolean(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, false);
+    }
+
+    public static void setSubmittedFormsLoaded(final boolean loaded) {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, loaded);
+        editor.apply();
+    }
+
+    public static void sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
+        } else {
+            Collections.sort(savedForms, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+        }
+    }
+
+    public static void sortProcessDataListByCreatedDate(final List<ProcessData> savedForms) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
+        } else {
+            Collections.sort(savedForms, (o1, o2) -> o2.getMicroservice().getUpdatedAt().compareTo(o1.getMicroservice().getUpdatedAt()));
+        }
     }
 }

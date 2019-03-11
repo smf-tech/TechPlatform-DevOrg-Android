@@ -25,6 +25,7 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
 import com.platform.models.LocaleData;
+import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
@@ -154,6 +155,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 map.put(formResult.get_id(), object);
             }
 
+            Util.sortProcessDataListByCreatedDate(list);
             createCategoryLayout(SyncAdapterUtils.SYNCING_PENDING, list, null, map);
         }
     }
@@ -162,6 +164,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         if (process != null) {
             processCategoryList.clear();
             processMap.clear();
+
+            lnrOuter.removeAllViews();
 
             setPendingForms();
 
@@ -193,22 +197,32 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
                             .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
 
-                    if (localFormResults == null || localFormResults.isEmpty()) {
+                    ProcessData pd = DatabaseManager.getDBInstance(
+                            Objects.requireNonNull(getActivity()).getApplicationContext())
+                            .getProcessData(data.getId());
+
+                    String submitCount = pd.getSubmitCount();
+
+                    if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
                         if (Util.isConnected(getContext())) {
                             new FormStatusFragmentPresenter(this)
                                     .getSubmittedForms(data.getId());
                         }
                     } else {
+
+                        if (localFormResults == null || localFormResults.isEmpty()) continue;
+
                         showNoDataText = false;
+
                         List<ProcessData> processData = new ArrayList<>();
                         for (final String result : localFormResults) {
 
                             FormResult formResult = new Gson().fromJson(result, FormResult.class);
-                            if (formResult.updatedDateTime != null) {
-                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
-                                    continue;
-                                }
-                            }
+//                            if (formResult.updatedDateTime != null) {
+//                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
+//                                    continue;
+//                                }
+//                            }
 
                             formID = formResult.formID;
                             ProcessData object = new ProcessData();
@@ -216,10 +230,13 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 object.setId(formResult.mOID.oid);
                             object.setFormTitle(formResult.formTitle);
                             object.setName(new LocaleData(formResult.formTitle));
-
+                            Microservice microservice = new Microservice();
+                            microservice.setUpdatedAt(formResult.updatedDateTime);
+                            object.setMicroservice(microservice);
                             processData.add(object);
                         }
 
+                        Util.sortProcessDataListByCreatedDate(processData);
                         createCategoryLayout(processCategoryList.get(index), processData, formID, null);
                     }
                 }
@@ -229,12 +246,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
-    private void createCategoryLayout(String categoryName, List<ProcessData> childList, String formID, final Map<String, ProcessData> map) {
+    private void createCategoryLayout(String categoryName, List<ProcessData> childList,
+                                      String formID, final Map<String, ProcessData> map) {
         if (childList == null) {
             return;
         }
-
-        lnrOuter.removeAllViews();
 
         View formTitleView = getLayoutInflater().inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
@@ -288,20 +304,21 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             getContext().startActivity(intent);
         });
 
-        if (getContext() != null  && data.getName() != null
+        if (getContext() != null && data.getName() != null
                 && data.getName().getLocaleValue() != null && !data.getName().getLocaleValue()
                 .equals(getString(R.string.forms_are_not_available))) {
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = Util.getDateFromTimestamp(
-                        data.getMicroservice().getUpdatedAt());
+                String formattedDate = Util
+                        .getDateFromTimestamp(data.getMicroservice().getUpdatedAt());
 
                 ((TextView) view.findViewById(R.id.form_date))
                         .setText(String.format("on %s", formattedDate));
             }
         } else {
             String formattedDate = Util.getFormattedDate(new Date().toString(), FORM_DATE_FORMAT);
-            ((TextView) view.findViewById(R.id.form_date)).setText(String.format("on %s", formattedDate));
+            ((TextView) view.findViewById(R.id.form_date))
+                    .setText(String.format("on %s", formattedDate));
         }
 
         lnrInner.addView(view);
@@ -396,7 +413,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private boolean isFormOneMonthOld(final Long updatedAt) {
         if (updatedAt != null) {
             Date eventStartDate;
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
             try {
                 eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
                 Calendar calendar = Calendar.getInstance();

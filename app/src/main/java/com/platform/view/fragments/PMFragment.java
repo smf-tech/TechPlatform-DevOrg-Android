@@ -167,6 +167,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private void getPartiallySavedForms() {
         mSavedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
+
+            Util.sortFormResultListByCreatedDate(mSavedForms);
+
             rltPendingForms.setVisibility(View.VISIBLE);
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);

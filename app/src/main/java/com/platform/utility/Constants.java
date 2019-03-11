@@ -144,9 +144,7 @@ public class Constants {
 
     public static class Form {
         public static final String EXTRA_FORM_ID = "form_id";
-        // public static final String FORM_STATUS_ALL = "all";
-        // public static final String FORM_STATUS_PENDING = "pending";
-        // public static final String FORM_STATUS_COMPLETED = "completed";
+        static final String GET_SUBMITTED_FORMS_FIRST_TIME = "firstTime";
     }
 
     public class MultiSelectSpinnerType {

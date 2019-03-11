@@ -156,9 +156,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
                 form.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
                 form.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                form.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                form.setCreatedAt(dataObject.getLong(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                 DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
-                sendBroadCast(form.getFormId(),SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+
+                sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);
             }
         } catch (JSONException e) {
             e.printStackTrace();
