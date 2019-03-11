@@ -24,6 +24,10 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
         }
 
         AppEvents.trackAppEvent(getString(R.string.event_meetings_screen_visit));

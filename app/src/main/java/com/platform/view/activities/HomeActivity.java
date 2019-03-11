@@ -60,6 +60,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
+    private ActionBarDrawerToggle toggle;
     private boolean doubleBackToExitPressedOnce = false;
     private final String TAG = this.getClass().getSimpleName();
 
@@ -76,6 +77,22 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         if (toolbar != null) {
             TextView title = toolbar.findViewById(R.id.home_toolbar_title);
             title.setText(name);
+        }
+    }
+
+    public void showBackArrow() {
+        if (toggle!= null) {
+            toggle.setDrawerIndicatorEnabled(false);
+            toolbar.setNavigationIcon(R.drawable.ic_back_white);
+            toolbar.setNavigationOnClickListener(view -> {
+                if (toggle.isDrawerIndicatorEnabled()) {
+                    DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
+                    drawer.openDrawer(GravityCompat.START);
+                } else {
+                    onBackPressed();
+                    toggle.setDrawerIndicatorEnabled(true);
+                }
+            });
         }
     }
 
@@ -97,7 +114,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         setActionBarTitle(getResources().getString(R.string.app_name_ss));
 
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -515,6 +532,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
                     updateUnreadNotificationsCount();
                 }
+            }
+
+            if (!toggle.isDrawerIndicatorEnabled()) {
+                toggle.setDrawerIndicatorEnabled(true);
             }
         }
     }

@@ -47,6 +47,10 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
+
             mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }
 

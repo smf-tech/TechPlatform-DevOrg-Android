@@ -33,6 +33,7 @@ import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.fragments.HomeFragment;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -453,6 +454,11 @@ public class Util {
             Bundle b = new Bundle();
             b.putSerializable("TITLE", titleName);
             b.putBoolean("SHOW_ALL", false);
+            if (fragment instanceof HomeFragment) {
+                b.putBoolean("SHOW_BACK", false);
+            } else {
+                b.putBoolean("SHOW_BACK", true);
+            }
             fragment.setArguments(b);
 
             FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
