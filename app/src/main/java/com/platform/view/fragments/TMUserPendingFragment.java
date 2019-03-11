@@ -93,7 +93,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
-                Util.launchFragment(new TMUserApprovalsFragment(), getContext(), getString(R.string.approvals));
+                Util.launchFragment(new TMUserApprovalsFragment(), getContext(),
+                        getString(R.string.approvals), true);
                 break;
         }
     }

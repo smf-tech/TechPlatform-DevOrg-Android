@@ -447,7 +447,8 @@ public class Util {
         return "";
     }
 
-    public static void launchFragment(Fragment fragment, Context context, String titleName) {
+    public static void launchFragment(Fragment fragment, Context context, String titleName,
+                                      final boolean addToBackStack) {
         try {
             Bundle b = new Bundle();
             b.putSerializable("TITLE", titleName);
@@ -459,6 +460,8 @@ public class Util {
                     .getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_page_container, fragment, titleName);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            if (addToBackStack)
+                fragmentTransaction.addToBackStack(fragment.getTag());
             fragmentTransaction.commit();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());

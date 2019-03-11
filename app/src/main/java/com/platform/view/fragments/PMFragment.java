@@ -143,6 +143,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         mSavedForms.clear();
         List<FormResult> partiallySavedForms = DatabaseManager.getDBInstance(getContext())
                 .getAllPartiallySavedForms();
+
+        Util.sortFormResultListByCreatedDate(partiallySavedForms);
+
         mSavedForms.addAll(partiallySavedForms);
 
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
@@ -266,7 +269,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_forms:
-                Util.launchFragment(new FormsFragment(), getContext(), getString(R.string.forms));
+                Util.launchFragment(new FormsFragment(), getContext(),
+                        getString(R.string.forms), true);
                 break;
         }
     }

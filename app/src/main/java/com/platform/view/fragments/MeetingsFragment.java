@@ -40,7 +40,8 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
-                Util.launchFragment(new MeetingsFragment(), getContext(), getString(R.string.meetings));
+                Util.launchFragment(new MeetingsFragment(), getContext(),
+                        getString(R.string.meetings), true);
                 break;
         }
     }
