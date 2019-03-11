@@ -312,14 +312,18 @@ public class Util {
 //    }
 
     public static <T> void showToast(String msg, T context) {
-        if (TextUtils.isEmpty(msg)) {
-            msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
-        }
+        try {
+            if (TextUtils.isEmpty(msg)) {
+                msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
+            }
 
-        if (context instanceof Fragment) {
-            Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
+            if (context instanceof Fragment) {
+                Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
