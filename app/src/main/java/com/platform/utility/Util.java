@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -41,7 +40,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -375,7 +373,6 @@ public class Util {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date date = sdf.parse(dateString);
-
             return date.getTime();
 
         } catch (ParseException e) {
@@ -385,7 +382,7 @@ public class Util {
         return 0L;
     }
 
-    public static String getLongDateInString(Long date, String dateFormat) {
+    public static String getLongDateInString(long date, String dateFormat) {
         if (date > 0) {
             try {
                 Date d = new Timestamp(date);
@@ -436,9 +433,13 @@ public class Util {
         return timestamp.getTime();
     }
 
-    public static String getDateFromTimestamp(Long date) {
-        if (date != null) {
+    public static String getDateFromTimestamp(long date) {
+        if (date > 0) {
             try {
+                int length = (int) (Math.log10(date) + 1);
+                if (length == 10) {
+                    date = date * 1000;
+                }
                 Date d = new Timestamp(date);
                 return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
             } catch (Exception e) {
@@ -525,19 +526,21 @@ public class Util {
         editor.apply();
     }
 
-    public static void sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
-        } else {
+    public static List<FormResult> sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
+//        } else {
             Collections.sort(savedForms, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
-        }
+//        }
+
+        return savedForms;
     }
 
     public static void sortProcessDataListByCreatedDate(final List<ProcessData> savedForms) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
-        } else {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
+//        } else {
             Collections.sort(savedForms, (o1, o2) -> o2.getMicroservice().getUpdatedAt().compareTo(o1.getMicroservice().getUpdatedAt()));
-        }
+//        }
     }
 }

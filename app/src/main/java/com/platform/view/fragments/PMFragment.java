@@ -144,7 +144,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         List<FormResult> partiallySavedForms = DatabaseManager.getDBInstance(getContext())
                 .getAllPartiallySavedForms();
 
-        Util.sortFormResultListByCreatedDate(partiallySavedForms);
+        partiallySavedForms = Util.sortFormResultListByCreatedDate(partiallySavedForms);
 
         mSavedForms.addAll(partiallySavedForms);
 
@@ -171,7 +171,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         mSavedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
 
-            Util.sortFormResultListByCreatedDate(mSavedForms);
+            mSavedForms = Util.sortFormResultListByCreatedDate(mSavedForms);
 
             rltPendingForms.setVisibility(View.VISIBLE);
             rltPendingForms.setVisibility(View.VISIBLE);
