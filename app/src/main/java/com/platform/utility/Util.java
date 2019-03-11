@@ -458,4 +458,20 @@ public class Util {
         }
         editor.apply();
     }
+
+    public static boolean isSubmittedFormsLoaded() {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, Context.MODE_PRIVATE);
+
+        return preferences.getBoolean(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, false);
+    }
+
+    public static void setSubmittedFormsLoaded() {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, true);
+        editor.apply();
+    }
 }
