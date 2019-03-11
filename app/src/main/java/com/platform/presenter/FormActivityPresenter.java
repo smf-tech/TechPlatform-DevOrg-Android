@@ -282,7 +282,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         if (!TextUtils.isEmpty(response) && formData != null) {
             formData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponse(response);
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(formData);
-            formFragment.get().showChoicesByUrl(response, elements);
+            formFragment.get().showChoicesByUrlAsync(response, elements);
         }
     }
 

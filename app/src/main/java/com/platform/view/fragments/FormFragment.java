@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -133,7 +134,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                 if (mIsInEditMode) {
                     FormResult formResult = DatabaseManager.getDBInstance(getActivity())
-                                .getFormResult(processId);
+                            .getFormResult(processId);
                     if (formResult != null) {
                         getFormDataAndParse(formResult);
                     } else {
@@ -143,6 +144,33 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     }
                 }
             }
+
+        }
+    }
+
+    private class GetDataFromDB extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+            Gson gson = builder.create();
+
+            showChoicesByUrl(params[0], gson.fromJson(params[1], Elements.class));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideProgressBar();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressBar();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
         }
     }
 
@@ -258,7 +286,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
                             if (elements.getChoicesByUrlResponse() != null) {
-                                showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                                showChoicesByUrlAsync(elements.getChoicesByUrlResponse(), elements);
                             }
                         }
                         break;
@@ -299,7 +327,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     @Override
     public void hideProgressBar() {
         getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
                 progressBar.setVisibility(View.GONE);
                 progressBarLayout.setVisibility(View.GONE);
             }
@@ -338,10 +366,18 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     @Override
-    public void showChoicesByUrl(String result, Elements elements) {
+    public void showChoicesByUrlAsync(String result, Elements elements) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        new GetDataFromDB().execute(result, gson.toJson(elements));
+    }
+
+    private void showChoicesByUrl(String result, Elements elements) {
+        Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
+        List<Choice> choiceValues = new ArrayList<>();
         try {
-            Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
-            List<Choice> choiceValues = new ArrayList<>();
             LocaleData text;
             String value;
 
@@ -397,11 +433,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     }
                 }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in showChoicesByUrl()" + result);
+        }
+        getActivity().runOnUiThread(() -> {
             elements.setChoices(choiceValues);
             formComponentCreator.updateDropDownValues(elements, choiceValues);
-        } catch (Exception e) {
-            Log.e(TAG, "Exception in showChoicesByUrl()");
-        }
+        });
+
     }
 
     @Override
@@ -554,7 +593,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
         FormResult result;
         if (mIsPartiallySaved || mIsInEditMode) {
-            result = DatabaseManager.getDBInstance(getActivity()) .getFormResult(processId);
+            result = DatabaseManager.getDBInstance(getActivity()).getFormResult(processId);
             result.setFormStatus(mIsPartiallySaved ?
                     SyncAdapterUtils.FormStatus.PARTIAL : SyncAdapterUtils.FormStatus.UN_SYNCED);
         } else {

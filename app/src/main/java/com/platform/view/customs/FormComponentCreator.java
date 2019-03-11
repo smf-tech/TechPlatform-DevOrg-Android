@@ -149,6 +149,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return view;
     }
 
+    synchronized
     public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
         for (int index = 0; index < dropDowns.size(); index++) {
             if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) &&
