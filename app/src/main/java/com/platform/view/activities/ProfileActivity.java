@@ -225,7 +225,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         etUserFirstName.setText(userName);
                     }
 
-                    etUserBirthDate.setText(userInfo.getUserBirthDate());
+                    etUserBirthDate.setText(Util.getLongDateInString(userInfo.getUserBirthDate(), "yyyy-MM-dd"));
                     etUserMobileNumber.setText(userInfo.getUserMobileNumber());
                     etUserEmailId.setText(userInfo.getUserEmailId());
 
@@ -345,7 +345,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             userInfo.setUserFirstName(String.valueOf(etUserFirstName.getText()).trim());
             userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
             userInfo.setUserLastName(String.valueOf(etUserLastName.getText()).trim());
-            userInfo.setUserBirthDate(String.valueOf(etUserBirthDate.getText()).trim());
+            userInfo.setUserBirthDate(Util.getDateInLong(String.valueOf(etUserBirthDate.getText()).trim()));
             userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);

@@ -18,12 +18,12 @@ public class ReportCategory {
     @SerializedName("created_by")
     @Expose
     private String createdBy;
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     @Expose
-    private String updatedAt;
-    @SerializedName("created_at")
+    private Long updatedAt;
+    @SerializedName("createdDateTime")
     @Expose
-    private String createdAt;
+    private Long createdAt;
 
     public String getId() {
         return id;
@@ -57,19 +57,19 @@ public class ReportCategory {
         this.createdBy = createdBy;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 }

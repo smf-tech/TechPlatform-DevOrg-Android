@@ -2,6 +2,8 @@ package com.platform.presenter;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.Platform;
+import com.platform.R;
 import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginFail;
@@ -95,8 +97,12 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         otpFragment.get().hideProgressBar();
         otpFragment.get().deRegisterOtpSmsReceiver();
 
-        LoginFail loginFail = new Gson().fromJson(response, LoginFail.class);
-        otpFragment.get().showErrorMessage(loginFail.getMessage());
+        try {
+            LoginFail loginFail = new Gson().fromJson(response, LoginFail.class);
+            otpFragment.get().showErrorMessage(loginFail.getMessage());
+        } catch (Exception e) {
+            otpFragment.get().showErrorMessage(Platform.getInstance().getString(R.string.msg_failure));
+        }
     }
 
     @Override

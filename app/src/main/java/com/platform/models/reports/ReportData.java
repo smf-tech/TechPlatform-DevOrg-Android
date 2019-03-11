@@ -40,10 +40,10 @@ public class ReportData {
     @SerializedName("active")
     @Expose
     private String active;
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     @Expose
     private Long updatedAt;
-    @SerializedName("created_at")
+    @SerializedName("createdDateTime")
     @Expose
     private Long createdAt;
 
