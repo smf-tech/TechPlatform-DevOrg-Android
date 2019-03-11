@@ -18,6 +18,7 @@ import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
+import com.platform.view.customs.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class DashboardFragment extends Fragment {
     private View dashboardView;
     private TabLayout tabLayout;
     private boolean isSyncRequired;
+    private boolean isUserApproved;
     private final int[] tabIcons = {
             R.drawable.bg_circle_pink,
             R.drawable.bg_circle_orange,
@@ -69,6 +71,7 @@ public class DashboardFragment extends Fragment {
                 if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                         homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 
+                    isUserApproved = false;
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
                     for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
@@ -78,6 +81,7 @@ public class DashboardFragment extends Fragment {
                         }
                     }
                 } else {
+                    isUserApproved = true;
                     for (int i = 0; i < tabNames.size(); i++) {
                         tabNames.get(i).setActive(true);
                     }
@@ -111,12 +115,13 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initViews() {
-        ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
+        CustomViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
         int pageLimit = 4;
         if (tabNames.size()<pageLimit) {
             pageLimit = tabNames.size();
         }
         viewPager.setOffscreenPageLimit(pageLimit);
+        viewPager.disableScroll(isUserApproved);
         setupViewPager(viewPager);
 
         tabLayout = dashboardView.findViewById(R.id.tabs);

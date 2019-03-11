@@ -290,23 +290,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_verify:
-                if (timer != null) {
-                    timer.cancel();
-                }
-
-                tvOtpTimer.setText("");
-                tvOtpTimer.setVisibility(View.GONE);
-
-                String otp = getOtp();
-                otpPresenter.getLoginToken(sLoginInfo, otp);
+                verifyUser();
                 break;
 
             case R.id.tv_resend_otp:
                 clearOtp();
-
-                if (timer != null) {
-                    timer.start();
-                }
+                startOtpTimer();
 
                 if (!isSmsReceiverRegistered) {
                     registerOtpSmsReceiver();
@@ -320,6 +309,18 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
                 break;
         }
+    }
+
+    private void verifyUser() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        tvOtpTimer.setText("");
+        tvOtpTimer.setVisibility(View.GONE);
+
+        String otp = getOtp();
+        otpPresenter.getLoginToken(sLoginInfo, otp);
     }
 
     private void setOtp(final String msg) {
@@ -339,9 +340,14 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             }
 
             hideProgressBar();
+
             AppEvents.trackAppEvent(getString(R.string.event_auto_read_success));
             tvOtpMessage.setText(getResources().getString(R.string.msg_verify_otp_text));
             tvOtpTimer.setVisibility(View.GONE);
+
+            // Verify user automatically once OTP received
+            verifyUser();
+
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -377,10 +383,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
-            tvOtpTimer.setText("");
+            //tvOtpTimer.setText("");
 
             showProgressBar();
-            tvOtpTimer.setVisibility(View.GONE);
+            tvOtpTimer.setVisibility(View.VISIBLE);
             tvResendOtp.setVisibility(View.GONE);
             timer = null;
         }
