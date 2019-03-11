@@ -19,10 +19,10 @@ public class Entity {
     @SerializedName("is_active")
     @Expose
     private Boolean isActive;
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     @Expose
     private Long updatedAt;
-    @SerializedName("created_at")
+    @SerializedName("createdDateTime")
     @Expose
     private Long createdAt;
     @SerializedName("user")

@@ -42,10 +42,10 @@ public class Location {
     @SerializedName("created_by")
     @Expose
     private String createdBy;
-    @SerializedName("created_at")
+    @SerializedName("createdDateTime")
     @Expose
     private Long createdAt;
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     @Expose
     private Long updatedAt;
 

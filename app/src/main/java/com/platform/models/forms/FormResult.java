@@ -44,7 +44,7 @@ public class FormResult {
     @ColumnInfo(name = "request_object")
     private String requestObject;
 
-    @ColumnInfo(name = "created_at")
+    @ColumnInfo(name = "createdDateTime")
     private Long createdAt;
 
     @ColumnInfo(name = "oid")

@@ -19,10 +19,10 @@ public class Jurisdiction {
     @SerializedName("levelName")
     private String levelName;
 
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     private Long updatedAt;
 
-    @SerializedName("created_at")
+    @SerializedName("createdDateTime")
     private Long createdAt;
 
     public String getStateId() {

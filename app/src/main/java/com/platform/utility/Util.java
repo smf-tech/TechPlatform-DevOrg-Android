@@ -34,6 +34,7 @@ import com.platform.view.activities.HomeActivity;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -353,6 +354,36 @@ public class Util {
             inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    public static Long getDateInLong(String dateString) {
+        if (TextUtils.isEmpty(dateString)) {
+            return getDateInLong(new Date().toString());
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = sdf.parse(dateString);
+
+            return date.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 0L;
+    }
+
+    public static String getLongDateInString(Long date, String dateFormat) {
+        if (date != null) {
+            try {
+                Date d = new Timestamp(date);
+                return getFormattedDate(d.toString(), dateFormat);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return "";
     }
 
     private static String getFormattedDate(String date) {

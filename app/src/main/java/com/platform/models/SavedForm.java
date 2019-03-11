@@ -26,8 +26,8 @@ public class SavedForm {
     @ColumnInfo(name = "request_object")
     private String requestObject;
 
-    @ColumnInfo(name = "created_at")
-    private String createdAt;
+    @ColumnInfo(name = "createdDateTime")
+    private Long createdAt;
 
     public Boolean isSynced() {
         return isSynced;
@@ -69,11 +69,11 @@ public class SavedForm {
         this.formName = formName;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 }
