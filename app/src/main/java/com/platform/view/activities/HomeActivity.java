@@ -51,7 +51,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
@@ -140,6 +140,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.unread_notification_count))
                     .setText(String.valueOf(notificationsCount));
+        } else {
+            findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
         }
     }
 
@@ -197,33 +199,37 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadHomePage() {
-        findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
-        findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
-
-        try {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container, new HomeFragment(), "homeFragment");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-        } catch (Exception e) {
-            Log.e(TAG, "Exception :: FormActivity : addFragment");
+        if (findViewById(R.id.home_bell_icon).getVisibility() == View.GONE) {
+            findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
+            updateUnreadNotificationsCount();
         }
+
+        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+            getSupportFragmentManager().popBackStack();
+        }
+
+        Util.launchFragment(new HomeFragment(), this,
+                getString(R.string.app_name_ss), false);
     }
 
     private void loadFormsPage() {
-        Util.launchFragment(new FormsFragment(), this, getString(R.string.forms));
+        Util.launchFragment(new FormsFragment(), this,
+                getString(R.string.forms), true);
     }
 
     private void loadMeetingsPage() {
-        Util.launchFragment(new MeetingsFragment(), this, getString(R.string.meetings));
+        Util.launchFragment(new MeetingsFragment(), this,
+                getString(R.string.meetings), true);
     }
 
     private void loadTeamsPage() {
-        Util.launchFragment(new TMUserApprovalsFragment(), this, getString(R.string.approvals));
+        Util.launchFragment(new TMUserApprovalsFragment(), this,
+                getString(R.string.approvals), true);
     }
 
     private void loadReportsPage() {
-        Util.launchFragment(new ReportsFragment(), this, getString(R.string.reports));
+        Util.launchFragment(new ReportsFragment(), this,
+                getString(R.string.reports), true);
     }
 
     @Override
@@ -478,26 +484,39 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
 
-            try {
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addCategory(Intent.CATEGORY_HOME);
-                startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(startMain);
-                System.exit(0);
-            } catch (Exception e) {
-                Log.e(TAG, "Exception :: LoginActivity : onBackPressed");
+                try {
+                    Intent startMain = new Intent(Intent.ACTION_MAIN);
+                    startMain.addCategory(Intent.CATEGORY_HOME);
+                    startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(startMain);
+                    System.exit(0);
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception :: LoginActivity : onBackPressed");
+                }
+
+                finish();
+                return;
             }
 
-            finish();
-            return;
-        }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+        } else {
+            getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            String tag = getSupportFragmentManager().getFragments().get(0).getTag();
+            setActionBarTitle(tag);
 
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+            if (tag != null && tag.equals(getString(R.string.app_name_ss))) {
+                if (findViewById(R.id.home_bell_icon).getVisibility() == View.GONE) {
+                    findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
+                    updateUnreadNotificationsCount();
+                }
+            }
+        }
     }
 
     private void rateTheApp() {
@@ -526,10 +545,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.home_bell_icon:
             case R.id.unread_notification_count:
                 findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
-                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
+                updateUnreadNotificationsCount();
 
                 Util.launchFragment(NotificationsFragment.newInstance(), this,
-                        getString(R.string.notifications));
+                        getString(R.string.notifications), true);
 
                 break;
 

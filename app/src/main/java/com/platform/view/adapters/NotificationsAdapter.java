@@ -47,7 +47,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.mTextView.setText("Notifications appear here!");
         holder.mTextView.setOnClickListener(v ->
                 Util.launchFragment(new TMUserApprovalsFragment(), mContext,
-                        mContext.getString(R.string.approvals)));
+                        mContext.getString(R.string.approvals), true));
     }
 
     @Override
