@@ -220,7 +220,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                         result.setResult(obj.toString());
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
 
-                        Util.setSubmittedFormsLoaded();
+                        Util.setSubmittedFormsLoaded(true);
                     }
 
                 }

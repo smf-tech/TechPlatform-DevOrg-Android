@@ -133,7 +133,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                 if (mIsInEditMode) {
                     FormResult formResult = DatabaseManager.getDBInstance(getActivity())
-                                .getFormResult(processId);
+                            .getFormResult(processId);
                     if (formResult != null) {
                         getFormDataAndParse(formResult);
                     } else {
@@ -473,6 +473,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         FormData formData = formModel.getData();
         FormResult result = new FormResult();
         result.set_id(UUID.randomUUID().toString());
+
         result.setFormId(formData.getId());
         result.setFormCategory(formData.getCategory().getName().getLocaleValue());
         result.setFormName(formData.getName().getLocaleValue());
@@ -554,7 +555,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
         FormResult result;
         if (mIsPartiallySaved || mIsInEditMode) {
-            result = DatabaseManager.getDBInstance(getActivity()) .getFormResult(processId);
+            result = DatabaseManager.getDBInstance(getActivity()).getFormResult(processId);
         } else {
             result = new FormResult();
             result.setFormId(formData.getId());
