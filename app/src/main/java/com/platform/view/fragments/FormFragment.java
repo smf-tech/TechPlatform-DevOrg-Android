@@ -555,8 +555,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         FormResult result;
         if (mIsPartiallySaved || mIsInEditMode) {
             result = DatabaseManager.getDBInstance(getActivity()) .getFormResult(processId);
-            result.setFormStatus(mIsPartiallySaved ?
-                    SyncAdapterUtils.FormStatus.PARTIAL : SyncAdapterUtils.FormStatus.UN_SYNCED);
         } else {
             result = new FormResult();
             result.setFormId(formData.getId());
@@ -565,6 +563,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
         }
+        result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
             String category = formData.getCategory().getName().getLocaleValue();

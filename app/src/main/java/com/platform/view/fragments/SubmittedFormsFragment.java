@@ -163,6 +163,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             processCategoryList.clear();
             processMap.clear();
 
+            lnrOuter.removeAllViews();
+
             setPendingForms();
 
             for (ProcessData data : process.getData()) {
@@ -191,15 +193,25 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     String formID = null;
                     ProcessData data = pData.get(0);
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
+                            .getAllFormResults(data.getId());
 
-                    if (localFormResults == null || localFormResults.isEmpty()) {
+                    ProcessData pd = DatabaseManager.getDBInstance(
+                            Objects.requireNonNull(getActivity()).getApplicationContext())
+                            .getProcessData(data.getId());
+
+                    String submitCount = pd.getSubmitCount();
+
+                    if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
                         if (Util.isConnected(getContext())) {
                             new FormStatusFragmentPresenter(this)
                                     .getSubmittedForms(data.getId());
                         }
                     } else {
+
+                        if (localFormResults == null || localFormResults.isEmpty()) continue;
+
                         showNoDataText = false;
+
                         List<ProcessData> processData = new ArrayList<>();
                         for (final String result : localFormResults) {
 
@@ -233,8 +245,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         if (childList == null) {
             return;
         }
-
-        lnrOuter.removeAllViews();
 
         View formTitleView = getLayoutInflater().inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
@@ -294,7 +304,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
                 String formattedDate = Util.getDateFromTimestamp(
-                        data.getMicroservice().getUpdatedAt());
+                        Long.valueOf(data.getMicroservice().getUpdatedAt()));
 
                 ((TextView) view.findViewById(R.id.form_date))
                         .setText(String.format("on %s", formattedDate));
