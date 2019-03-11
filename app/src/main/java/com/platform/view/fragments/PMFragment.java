@@ -143,6 +143,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         mSavedForms.clear();
         List<FormResult> partiallySavedForms = DatabaseManager.getDBInstance(getContext())
                 .getAllPartiallySavedForms();
+
+        Util.sortFormResultListByCreatedDate(partiallySavedForms);
+
         mSavedForms.addAll(partiallySavedForms);
 
         if (mSavedForms != null && !mSavedForms.isEmpty()) {
