@@ -374,14 +374,14 @@ public class Util {
             return date.getTime();
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         return 0L;
     }
 
     public static String getLongDateInString(Long date, String dateFormat) {
-        if (date != null) {
+        if (date > 0) {
             try {
                 Date d = new Timestamp(date);
                 return getFormattedDate(d.toString(), dateFormat);

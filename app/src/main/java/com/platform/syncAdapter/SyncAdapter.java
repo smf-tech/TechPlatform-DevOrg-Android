@@ -164,7 +164,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
