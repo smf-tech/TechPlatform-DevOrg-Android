@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.models.forms.FormResult;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
@@ -42,7 +43,8 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         FormResult savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
-        holder.txtCreatedAt.setText(String.format("on %s", savedForm.getCreatedAt()));
+        holder.txtCreatedAt.setText(String.format("on %s",
+                Util.getDateFromTimestamp(savedForm.getCreatedAt())));
 
         holder.mRootView.setOnClickListener(v -> {
             Intent intent = new Intent(context, FormActivity.class);

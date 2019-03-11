@@ -255,6 +255,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
         if (presenter != null && Util.isConnected(context)) {
             isSyncRequired = true;
             Util.removeDatabaseRecords(true);
+            Util.setSubmittedFormsLoaded(false);
             presenter.getUserProfile();
         }
     }
