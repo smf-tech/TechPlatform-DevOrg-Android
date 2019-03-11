@@ -398,8 +398,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);

@@ -312,7 +312,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private boolean isFormOneMonthOld(final Long updatedAt) {
         if (updatedAt != null) {
             Date eventStartDate;
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
             try {
                 eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
                 Calendar calendar = Calendar.getInstance();
