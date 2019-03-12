@@ -200,6 +200,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
                     this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 
                 Util.removeDatabaseRecords(false);
+                Util.setSubmittedFormsLoaded(false);
 
                 showApprovedDialog();
             }
