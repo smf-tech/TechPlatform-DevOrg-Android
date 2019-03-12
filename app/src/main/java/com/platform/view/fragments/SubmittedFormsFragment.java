@@ -34,10 +34,15 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -212,11 +217,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         for (final String result : localFormResults) {
 
                             FormResult formResult = new Gson().fromJson(result, FormResult.class);
-//                            if (formResult.updatedDateTime != null) {
-//                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
-//                                    continue;
-//                                }
-//                            }
+                            if (formResult.updatedDateTime != null) {
+                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
+                                    continue;
+                                }
+                            }
 
                             formID = formResult.formID;
                             ProcessData object = new ProcessData();
@@ -404,23 +409,23 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     }
 
-//    private boolean isFormOneMonthOld(final Long updatedAt) {
-//        if (updatedAt != null) {
-//            Date eventStartDate;
-//            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-//            try {
-//                eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.add(Calendar.DAY_OF_MONTH, -30);
-//                Date days30 = calendar.getTime();
-//                return eventStartDate.before(days30);
-//            } catch (ParseException e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-//
-//        return false;
-//    }
+    private boolean isFormOneMonthOld(final Long updatedAt) {
+        if (updatedAt != null) {
+            Date eventStartDate;
+            DateFormat inputFormat = new SimpleDateFormat(FORM_DATE_FORMAT, Locale.getDefault());
+            try {
+                eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, -30);
+                Date days30 = calendar.getTime();
+                return eventStartDate.before(days30);
+            } catch (ParseException e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        return false;
+    }
 
     static class FormResult {
         @SuppressWarnings("unused")
