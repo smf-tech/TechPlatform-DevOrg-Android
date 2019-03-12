@@ -266,7 +266,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             return;
         }
 
-        View formTitleView = getLayoutInflater().inflate(R.layout.row_submitted_forms, lnrOuter, false);
+        View formTitleView = LayoutInflater.from(getContext().getApplicationContext())
+                .inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
