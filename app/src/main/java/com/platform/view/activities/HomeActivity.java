@@ -487,6 +487,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void logOutUser() {
         Util.saveLoginObjectInPref("");
+        Util.setSubmittedFormsLoaded(false);
 
         Util.removeDatabaseRecords(false);
 

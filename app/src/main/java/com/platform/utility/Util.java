@@ -527,20 +527,17 @@ public class Util {
     }
 
     public static List<FormResult> sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
-//        } else {
-            Collections.sort(savedForms, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
-//        }
+        Collections.sort(savedForms, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
 
         return savedForms;
     }
 
     public static void sortProcessDataListByCreatedDate(final List<ProcessData> savedForms) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
-//        } else {
-            Collections.sort(savedForms, (o1, o2) -> o2.getMicroservice().getUpdatedAt().compareTo(o1.getMicroservice().getUpdatedAt()));
-//        }
+        Collections.sort(savedForms, (o1, o2) -> {
+            if (o2.getMicroservice().getUpdatedAt() != null && o1.getMicroservice().getUpdatedAt() != null)
+                return o2.getMicroservice().getUpdatedAt().compareTo(o1.getMicroservice().getUpdatedAt());
+
+            return 0;
+        });
     }
 }

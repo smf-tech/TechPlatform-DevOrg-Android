@@ -145,6 +145,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private void setPendingForms() {
         List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
         if (savedForms != null && !savedForms.isEmpty()) {
+
+            showNoDataText = false;
+
             List<ProcessData> list = new ArrayList<>();
             Map<String, ProcessData> map = new HashMap<>();
             for (com.platform.models.forms.FormResult formResult : savedForms) {
@@ -264,7 +267,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             return;
         }
 
-        View formTitleView = getLayoutInflater().inflate(R.layout.row_submitted_forms, lnrOuter, false);
+        View formTitleView = LayoutInflater.from(getContext().getApplicationContext())
+                .inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 

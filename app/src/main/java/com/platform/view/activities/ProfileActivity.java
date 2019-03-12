@@ -51,6 +51,7 @@ import com.soundcloud.android.crop.Crop;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -918,6 +919,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
+                    Collections.sort(districts);
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
@@ -958,6 +960,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             }
                         }
                     }
+
+                    Collections.sort(talukas);
 
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
@@ -1005,6 +1009,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
+                    Collections.sort(villages);
+
                     spVillage.setItems(villages, getString(R.string.village), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
@@ -1049,6 +1055,8 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             }
                         }
                     }
+
+                    Collections.sort(clusters);
 
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 

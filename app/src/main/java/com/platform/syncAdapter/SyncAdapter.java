@@ -16,6 +16,7 @@ import com.platform.models.common.Microservice;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
+import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
 
 import org.json.JSONException;
@@ -151,21 +152,54 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
 
             JSONObject outerObject = new JSONObject(response);
+
             if (outerObject.has(Constants.RESPONSE_DATA)) {
                 JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
-                form.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
-                form.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
-                form.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
-                form.setCreatedAt(dataObject.getLong(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
-                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
+                FormResult result = new FormResult();
+                result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
+                result.setFormId(form.getFormId());
+                String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                dataObject.put("form_id", form.getFormId());
+                result.setResult(dataObject.toString());
 
-                sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+                result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
             }
+
+            DatabaseManager.getDBInstance(getContext()).deleteFormResult(form);
+
+            updateFormSubmittedCount(form);
+
+            sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    private void updateFormSubmittedCount(final FormResult form) {
+        ProcessData processData = DatabaseManager.getDBInstance(getContext())
+                .getProcessData(form.getFormId());
+        String submitCount = processData.getSubmitCount();
+        int count = 0;
+        if (!TextUtils.isEmpty(submitCount)) {
+            count = Integer.parseInt(submitCount);
+        }
+
+        count++;
+        List<String> formResults = DatabaseManager.getDBInstance(getContext())
+                .getAllFormResults(processData.getId());
+        if (count == formResults.size()) {
+            submitCount = String.valueOf(count);
+        } else {
+            submitCount = String.valueOf(formResults.size());
+        }
+        DatabaseManager.getDBInstance(getContext())
+                .updateProcessSubmitCount(processData.getId(), submitCount);
     }
 
     private void sendBroadCast(final String form, final String syncEvent) {
