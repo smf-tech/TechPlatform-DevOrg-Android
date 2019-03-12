@@ -56,7 +56,6 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
-import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 /**
@@ -144,6 +143,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private void setPendingForms() {
         List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
         if (savedForms != null && !savedForms.isEmpty()) {
+
+            showNoDataText = false;
+
             List<ProcessData> list = new ArrayList<>();
             Map<String, ProcessData> map = new HashMap<>();
             for (com.platform.models.forms.FormResult formResult : savedForms) {
@@ -218,11 +220,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         for (final String result : localFormResults) {
 
                             FormResult formResult = new Gson().fromJson(result, FormResult.class);
-//                            if (formResult.updatedDateTime != null) {
-//                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
-//                                    continue;
-//                                }
-//                            }
+                            if (formResult.updatedDateTime != null) {
+                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
+                                    continue;
+                                }
+                            }
 
                             formID = formResult.formID;
                             ProcessData object = new ProcessData();
@@ -413,7 +415,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private boolean isFormOneMonthOld(final Long updatedAt) {
         if (updatedAt != null) {
             Date eventStartDate;
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(FORM_DATE_FORMAT, Locale.getDefault());
             try {
                 eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
                 Calendar calendar = Calendar.getInstance();

@@ -40,6 +40,7 @@ import com.platform.view.fragments.FormFragment;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -155,6 +156,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) &&
                     dropDowns.get(index).getTag().equals(elements.getName())) {
                 dropDowns.get(index).setFormData(elements);
+
+                Collections.sort(choiceValues, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
                 dropDowns.get(index).setListData(choiceValues);
                 break;
             }
