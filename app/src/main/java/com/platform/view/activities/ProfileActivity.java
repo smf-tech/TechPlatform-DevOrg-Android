@@ -919,7 +919,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
-                    Collections.sort(districts);
+                    //Collections.sort(districts);
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
@@ -961,7 +961,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
-                    Collections.sort(talukas);
+                    //Collections.sort(talukas);
 
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
@@ -1009,7 +1009,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
-                    Collections.sort(villages);
+                    //Collections.sort(villages);
 
                     spVillage.setItems(villages, getString(R.string.village), this);
 
@@ -1056,7 +1056,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                     }
 
-                    Collections.sort(clusters);
+                    //Collections.sort(clusters);
 
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 

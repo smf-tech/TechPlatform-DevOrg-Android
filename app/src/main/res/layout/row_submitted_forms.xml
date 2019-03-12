@@ -43,6 +43,4 @@
             android:layout_marginEnd="@dimen/dimen_70dp"
             android:gravity="start" />
     </RelativeLayout>
-
-
 </LinearLayout>
