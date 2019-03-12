@@ -13,5 +13,6 @@ public interface FormDataTaskListener {
 
     void showErrorMessage(String result);
 
-    void showChoicesByUrl(String result, Elements elements);
+    void showChoicesByUrlAsync(String result, Elements elements);
+
 }
