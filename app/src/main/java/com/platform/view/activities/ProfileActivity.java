@@ -622,18 +622,28 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private void hideJurisdictionLevel() {
         spState.setVisibility(View.GONE);
         findViewById(R.id.txt_state).setVisibility(View.GONE);
+        states.clear();
+        selectedStates.clear();
 
         spDistrict.setVisibility(View.GONE);
         findViewById(R.id.txt_district).setVisibility(View.GONE);
+        districts.clear();
+        selectedDistricts.clear();
 
         spTaluka.setVisibility(View.GONE);
         findViewById(R.id.txt_taluka).setVisibility(View.GONE);
+        talukas.clear();
+        selectedTalukas.clear();
 
         spCluster.setVisibility(View.GONE);
         findViewById(R.id.txt_cluster).setVisibility(View.GONE);
+        clusters.clear();
+        selectedClusters.clear();
 
         spVillage.setVisibility(View.GONE);
         findViewById(R.id.txt_village).setVisibility(View.GONE);
+        villages.clear();
+        selectedVillages.clear();
     }
 
     @Override
