@@ -97,7 +97,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private Uri finalUri;
     private ImageView mFileImageView;
     private String mFormName;
-    private Map<String, String> mUploadedImageUrlList;
+    private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -464,7 +464,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility()==View.VISIBLE) {
+                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
                     showConfirmPopUp();
                 } else {
                     getActivity().finish();
@@ -507,10 +507,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                             if (mIsInEditMode) {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
-                                        null, formModel.getData().getId(), processId, mUploadedImageUrlList);
+                                        null, formModel.getData().getId(), processId, null);
                             } else {
                                 formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
-                                        null, formModel.getData().getId(), null, mUploadedImageUrlList);
+                                        null, formModel.getData().getId(), null, null);
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
@@ -552,8 +552,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             if (obj != null) {
                 if (mUploadedImageUrlList != null && !mUploadedImageUrlList.isEmpty()) {
                     try {
-                        for (Map.Entry<String, String> entry : mUploadedImageUrlList.entrySet()) {
-                            obj.put(entry.getKey(), entry.getValue());
+                        for (final Map<String, String> map : mUploadedImageUrlList) {
+                            for (Map.Entry<String, String> entry : map.entrySet()) {
+                                obj.put(entry.getKey(), entry.getValue());
+                            }
                         }
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
@@ -852,6 +854,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
-        mUploadedImageUrlList = uploadedImageUrlList;
+        mUploadedImageUrlList.add(uploadedImageUrlList);
     }
 }

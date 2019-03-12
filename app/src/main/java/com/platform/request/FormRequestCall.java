@@ -20,6 +20,7 @@ import com.platform.utility.Util;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -33,8 +34,7 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(final HashMap<String, String> requestObjectMap, final Map<String,
-            String> uploadedImageUrlList, String postUrl, final String formId, final String oId, String callType) {
+    public void createFormResponse(final HashMap<String, String> requestObjectMap, final List<Map<String, String>> uploadedImageUrlList, String postUrl, final String formId, final String oId, String callType) {
         JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
@@ -69,7 +69,7 @@ public class FormRequestCall {
     }
 
     public void updateFormResponse(final HashMap<String, String> requestObjectMap,
-                                   final Map<String, String> uploadedImageUrlList, String postUrl,
+                                   final List<Map<String, String>> uploadedImageUrlList, String postUrl,
                                    final String formId, String oid, String callType) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
@@ -214,7 +214,7 @@ public class FormRequestCall {
     }
 
     @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final Map<String, String> imageUrls) {
+    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final List<Map<String, String>> imageUrls) {
         JsonObject requestObject = new JsonObject();
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
@@ -223,10 +223,12 @@ public class FormRequestCall {
         }
 
         if (imageUrls != null && !imageUrls.isEmpty()) {
-            for (final Map.Entry<String, String> entry : imageUrls.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                requestObject.addProperty(key, value);
+            for (final Map<String, String> map : imageUrls) {
+                for (final Map.Entry<String, String> entry : map.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    requestObject.addProperty(key, value);
+                }
             }
         }
 

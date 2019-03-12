@@ -232,7 +232,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void createCategoryLayout(String categoryName, List<ProcessData> childList) {
-        View formTitleView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category, lnrOuter, false);
+        View formTitleView = LayoutInflater.from(getContext().getApplicationContext())
+                .inflate(R.layout.row_dashboard_forms_category, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
@@ -241,7 +242,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             if (i >= 2) break;
 
             if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
-                View formTypeView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
+                View formTypeView = LayoutInflater.from(getContext().getApplicationContext()).inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
                 ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().getLocaleValue().trim());
 
                 if (!TextUtils.isEmpty(data.getId())) {

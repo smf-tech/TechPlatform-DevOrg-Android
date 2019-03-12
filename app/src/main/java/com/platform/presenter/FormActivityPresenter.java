@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -295,7 +296,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onSubmitClick(String submitType, String url, String formId, String oid, final Map<String, String> imageUrlList) {
+    public void onSubmitClick(String submitType, String url, String formId, String oid, final List<Map<String, String>> imageUrlList) {
         FormRequestCall formRequestCall = new FormRequestCall();
         formRequestCall.setListener(this);
 
