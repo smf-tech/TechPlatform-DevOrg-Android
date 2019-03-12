@@ -87,12 +87,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
         requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, formData);
     }
 
-    public void getFormResults(String processId) {
+    public void getFormResults(String url) {
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getFormResults(processId);
+        requestCall.getFormResults(url);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -137,6 +137,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onFailureListener(String message) {
+        formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -146,6 +147,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
+        formFragment.get().hideProgressBar();
         if (formFragment != null && formFragment.get() != null) {
             AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
             Util.showToast(error.getMessage(), formFragment.get().getActivity());
@@ -155,6 +157,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType, String oid) {
         Log.e(TAG, "Request succeed " + message);
+        formFragment.get().hideProgressBar();
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
 
         try {
@@ -283,6 +286,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData) {
+        formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null) {
             formData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponse(response);
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(formData);
