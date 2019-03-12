@@ -47,6 +47,10 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
+
             mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }
 
@@ -168,7 +172,8 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
-                Util.launchFragment(new ReportsFragment(), getContext(), getString(R.string.reports));
+                Util.launchFragment(new ReportsFragment(), getContext(),
+                        getString(R.string.reports), true);
                 break;
         }
     }

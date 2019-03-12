@@ -29,7 +29,7 @@ public class Approver {
     private Long createdAt;
     @SerializedName("dob")
     @Expose
-    private Boolean dob;
+    private Long dob;
     @SerializedName("firebase_id")
     @Expose
     private String firebaseId;
@@ -102,11 +102,11 @@ public class Approver {
         this.createdAt = createdAt;
     }
 
-    public Boolean getDob() {
+    public Long getDob() {
         return dob;
     }
 
-    public void setDob(Boolean dob) {
+    public void setDob(Long dob) {
         this.dob = dob;
     }
 

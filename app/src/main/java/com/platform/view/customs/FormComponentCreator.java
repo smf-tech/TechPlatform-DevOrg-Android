@@ -2,6 +2,7 @@ package com.platform.view.customs;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -38,6 +39,7 @@ import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -248,6 +250,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     textInputField.setClickable(false);
                     textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
                     textInputField.setOnClickListener(view -> showDateDialog(fragment.get().getContext(), textInputField));
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_TIME:
+                    textInputField.setFocusable(false);
+                    textInputField.setClickable(false);
+                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
+                    textInputField.setOnClickListener(view -> showTimeDialog(fragment.get().getContext(), textInputField));
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_NUMBER:
@@ -613,6 +622,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
+    }
+
+    private void showTimeDialog(Context context, final EditText editText) {
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+
+        TimePickerDialog timePicker = new TimePickerDialog(context,
+                (timePicker1, selectedHour, selectedMinute) -> editText.setText(
+                        MessageFormat.format("{0}:{1}", selectedHour, selectedMinute)),
+                hour, minute, false);
+        timePicker.setTitle("Select Time");
+        timePicker.show();
     }
 
     public void clearOldComponents() {

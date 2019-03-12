@@ -535,7 +535,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             obj.put(entry.getKey(), entry.getValue());
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                     }
                 }
                 result.setResult(obj.toString());

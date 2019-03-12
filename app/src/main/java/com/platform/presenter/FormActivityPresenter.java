@@ -156,7 +156,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType, String oid) {
         Log.e(TAG, "Request succeed " + message);
         Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
-        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success));
 
         try {
             JSONObject outerObject = new JSONObject(message);
@@ -197,11 +196,15 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                 result.setFormId(formId);
                 String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                result.setCreatedAt(Long.parseLong(date));
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
                 DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+
+                AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success,
+                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
                 switch (callType) {
                     case Constants.ONLINE_SUBMIT_FORM_TYPE:

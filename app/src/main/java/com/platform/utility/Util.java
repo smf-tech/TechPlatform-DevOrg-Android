@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -33,6 +32,7 @@ import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.fragments.HomeFragment;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -40,7 +40,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -312,14 +311,18 @@ public class Util {
 //    }
 
     public static <T> void showToast(String msg, T context) {
-        if (TextUtils.isEmpty(msg)) {
-            msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
-        }
+        try {
+            if (TextUtils.isEmpty(msg)) {
+                msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
+            }
 
-        if (context instanceof Fragment) {
-            Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
+            if (context instanceof Fragment) {
+                Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -370,18 +373,17 @@ public class Util {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date date = sdf.parse(dateString);
-
             return date.getTime();
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         return 0L;
     }
 
-    public static String getLongDateInString(Long date, String dateFormat) {
-        if (date != null) {
+    public static String getLongDateInString(long date, String dateFormat) {
+        if (date > 0) {
             try {
                 Date d = new Timestamp(date);
                 return getFormattedDate(d.toString(), dateFormat);
@@ -398,8 +400,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
@@ -431,9 +433,13 @@ public class Util {
         return timestamp.getTime();
     }
 
-    public static String getDateFromTimestamp(Long date) {
-        if (date != null) {
+    public static String getDateFromTimestamp(long date) {
+        if (date > 0) {
             try {
+                int length = (int) (Math.log10(date) + 1);
+                if (length == 10) {
+                    date = date * 1000;
+                }
                 Date d = new Timestamp(date);
                 return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
             } catch (Exception e) {
@@ -443,11 +449,17 @@ public class Util {
         return "";
     }
 
-    public static void launchFragment(Fragment fragment, Context context, String titleName) {
+    public static void launchFragment(Fragment fragment, Context context, String titleName,
+                                      final boolean addToBackStack) {
         try {
             Bundle b = new Bundle();
             b.putSerializable("TITLE", titleName);
             b.putBoolean("SHOW_ALL", false);
+            if (fragment instanceof HomeFragment) {
+                b.putBoolean("SHOW_BACK", false);
+            } else {
+                b.putBoolean("SHOW_BACK", true);
+            }
             fragment.setArguments(b);
 
             FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
@@ -455,6 +467,8 @@ public class Util {
                     .getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_page_container, fragment, titleName);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            if (addToBackStack)
+                fragmentTransaction.addToBackStack(fragment.getTag());
             fragmentTransaction.commit();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -512,19 +526,21 @@ public class Util {
         editor.apply();
     }
 
-    public static void sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
-        } else {
+    public static List<FormResult> sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
+//        } else {
             Collections.sort(savedForms, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
-        }
+//        }
+
+        return savedForms;
     }
 
     public static void sortProcessDataListByCreatedDate(final List<ProcessData> savedForms) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
-        } else {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
+//        } else {
             Collections.sort(savedForms, (o1, o2) -> o2.getMicroservice().getUpdatedAt().compareTo(o1.getMicroservice().getUpdatedAt()));
-        }
+//        }
     }
 }

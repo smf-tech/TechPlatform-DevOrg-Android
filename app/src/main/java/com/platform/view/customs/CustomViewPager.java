@@ -1,5 +1,6 @@
 package com.platform.view.customs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -23,13 +24,14 @@ public class CustomViewPager extends ViewPager {
         return this.disable && super.onInterceptTouchEvent(event);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return this.disable && super.onTouchEvent(event);
     }
 
     public void disableScroll(Boolean disable) {
-        //When disable = true not work the scroll and when disble = false work the scroll
+        //When disable = true not work the scroll and when disable = false work the scroll
         this.disable = disable;
     }
 }

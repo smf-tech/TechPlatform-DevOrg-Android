@@ -24,6 +24,10 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
         }
 
         AppEvents.trackAppEvent(getString(R.string.event_meetings_screen_visit));
@@ -40,7 +44,8 @@ public class MeetingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_approvals:
-                Util.launchFragment(new MeetingsFragment(), getContext(), getString(R.string.meetings));
+                Util.launchFragment(new MeetingsFragment(), getContext(),
+                        getString(R.string.meetings), true);
                 break;
         }
     }

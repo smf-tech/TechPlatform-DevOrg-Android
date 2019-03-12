@@ -121,11 +121,7 @@ public class PendingFormsFragment extends Fragment {
             List<FormResult> list = DatabaseManager.getDBInstance(context)
                     .getAllPartiallySavedForms();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                list.sort(Comparator.comparing(FormResult::getCreatedAt));
-            } else {
-                Collections.sort(list, (o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
-            }
+            list = Util.sortFormResultListByCreatedDate(list);
 
             mSavedForms.clear();
             mSavedForms.addAll(list);
@@ -150,7 +146,7 @@ public class PendingFormsFragment extends Fragment {
         if (partialSavedForms != null) {
             mSavedForms = new ArrayList<>(partialSavedForms);
 
-            Util.sortFormResultListByCreatedDate(mSavedForms);
+            mSavedForms = Util.sortFormResultListByCreatedDate(mSavedForms);
 
             if (!mSavedForms.isEmpty()) {
                 mPendingFormCategoryAdapter = new PendingFormCategoryAdapter(getContext(), mSavedForms);
