@@ -211,7 +211,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 .getProcessData(data.getId());
 
                         String submitCount = pd.getSubmitCount();
-
                         if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
                             if (Util.isConnected(getContext())) {
                                 String url;

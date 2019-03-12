@@ -46,7 +46,6 @@ import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.customs.FormComponentCreator;
 import com.soundcloud.android.crop.Crop;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,7 +85,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private FormActivityPresenter formPresenter;
 
     private String errorMsg = "";
-    private JSONObject mFormJSONObject = null;
+    private JsonObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
     private boolean mIsInEditMode;
     private String processId;
@@ -667,19 +666,23 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
-        try {
-            JSONObject object = new JSONObject(response);
-            JSONArray values = object.getJSONArray("values");
-            for (int i = 0; i < values.length(); i++) {
-                mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
-                oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (oid.equals(formId)) {
-                    Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
-                    break;
-                }
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        JsonObject object = gson.fromJson(response, JsonObject.class);
+        JsonArray values = object.getAsJsonArray("values");
+        for (int i = 0; i < values.size(); i++) {
+            mFormJSONObject = gson.fromJson(String.valueOf(values.get(i)), JsonObject.class);
+            try {
+                oid = mFormJSONObject.get("_id").getAsJsonObject().get("$oid").getAsString();
+            } catch (Exception e) {
+                oid = mFormJSONObject.get("_id").getAsString();
             }
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            if (oid.equals(formId)) {
+                Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
+                break;
+            }
         }
 
         if (formComponentCreator != null)
@@ -707,39 +710,40 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        mFormJSONObject = gson.fromJson(response.getResult(), JsonObject.class);
+
         try {
-            mFormJSONObject = new JSONObject(response.getResult());
-            oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-            if (oid.equals(formId)) {
-                Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            oid = mFormJSONObject.get("_id").getAsJsonObject().get("$oid").getAsString();
+        } catch (Exception e) {
+            oid = mFormJSONObject.get("_id").getAsString();
+        }
+        if (oid.equals(formId)) {
+            Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
         }
 
         if (formComponentCreator != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
 
-    private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
+    private void parseSchemaAndFormDetails(final JsonObject object, final List<Elements> elements) {
         if (object == null || elements == null || elements.size() == 0) return;
 
         HashMap<String, String> requestedObject = new HashMap<>();
         for (final Elements element : elements) {
             if (object.has(element.getName())) {
-                try {
-                    String type = element.getType();
-                    switch (type) {
-                        case Constants.FormsFactory.TEXT_TEMPLATE:
-                        case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
-                        case Constants.FormsFactory.FILE_TEMPLATE:
-                            element.setAnswer(object.getString(element.getName()));
-                            requestedObject.put(element.getName(), element.getAnswer());
-                            break;
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage());
+                String type = element.getType();
+                switch (type) {
+                    case Constants.FormsFactory.TEXT_TEMPLATE:
+                    case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                    case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                    case Constants.FormsFactory.FILE_TEMPLATE:
+                        element.setAnswer(object.get(element.getName()).getAsString());
+                        requestedObject.put(element.getName(), element.getAnswer());
+                        break;
                 }
             }
         }
