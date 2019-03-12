@@ -173,15 +173,34 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mCountList.put(data.getId(), submitCount);
             }
 
-            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                    .getAllFormResults(data.getId());
+            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+
+            String url;
+
             if (Util.isConnected(getContext()) && ((submitCount != null &&
                     !submitCount.equals("0")) && localFormResults.isEmpty())) {
+
                 presenter.getSubmittedForms(data.getId());
+//                if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+//                        && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+//
+//                    url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+//                            data.getMicroservice().getRoute());
+//                    presenter.getSubmittedForms(data.getId());
+//                }
             } else if ((submitCount == null || submitCount.equals("0")) &&
                     (localFormResults == null || localFormResults.isEmpty())) {
-                if (!Util.isSubmittedFormsLoaded())
+
+                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
+//                    if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+//                            && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+//
+//                        url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+//                                data.getMicroservice().getRoute());
+//                        presenter.getSubmittedForms(data.getId());
+//                    }
                     presenter.getSubmittedForms(data.getId());
+                }
             }
         }
 
@@ -215,8 +234,14 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
             if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
+
+//                GsonBuilder builder = new GsonBuilder();
+//                builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+//                Gson gson = builder.create();
+
                 for (int i = 0; i < values.length(); i++) {
 
+//                    SubmittedFormsFragment.FormResult formResult = gson.fromJson(String.valueOf(values.get(i)),
                     SubmittedFormsFragment.FormResult formResult = new Gson().fromJson(String.valueOf(values.get(i)),
                             SubmittedFormsFragment.FormResult.class);
 

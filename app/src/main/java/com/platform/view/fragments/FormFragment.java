@@ -139,6 +139,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         getFormDataAndParse(formResult);
                     } else {
                         if (Util.isConnected(getContext()) && !mIsPartiallySaved && !TextUtils.isEmpty(processId)) {
+//                            String url;
+//                            if (formModel.getData() != null && formModel.getData().getMicroService() != null
+//                                    && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
+//                                    && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+//                                url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
+//                                        formModel.getData().getMicroService().getRoute());
+//
+//                                formPresenter.getFormResults(url);
+//                            }
                             formPresenter.getFormResults(processId);
                         }
                     }
@@ -148,6 +157,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetDataFromDB extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -354,6 +364,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 getFormDataAndParse(formResult);
             } else {
                 if (Util.isConnected(getContext())) {
+//                    String url;
+//                    if (formModel.getData() != null && formModel.getData().getMicroService() != null
+//                            && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
+//                            && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+//                        url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
+//                                formModel.getData().getMicroService().getRoute());
+//
+//                        formPresenter.getFormResults(url);
+//                    }
                     formPresenter.getFormResults(formModel.getData().getId());
                 }
             }
@@ -447,7 +466,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                showConfirmPopUp();
+                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility()==View.VISIBLE) {
+                    showConfirmPopUp();
+                } else {
+                    getActivity().finish();
+                }
                 break;
 
             case R.id.toolbar_edit_action:
@@ -535,7 +558,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             obj.put(entry.getKey(), entry.getValue());
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                     }
                 }
                 result.setResult(obj.toString());

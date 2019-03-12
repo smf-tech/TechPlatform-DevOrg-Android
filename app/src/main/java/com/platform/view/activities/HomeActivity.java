@@ -91,6 +91,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 } else {
                     onBackPressed();
                     toggle.setDrawerIndicatorEnabled(true);
+                    setSyncButtonVisibility(true);
                 }
             });
         }
@@ -537,6 +538,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             if (!toggle.isDrawerIndicatorEnabled()) {
                 toggle.setDrawerIndicatorEnabled(true);
+                setSyncButtonVisibility(true);
             }
         }
     }

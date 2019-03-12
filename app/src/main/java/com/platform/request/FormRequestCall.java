@@ -196,7 +196,6 @@ public class FormRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getProcessUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_FORM, processId);
-
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getProcessUrl,

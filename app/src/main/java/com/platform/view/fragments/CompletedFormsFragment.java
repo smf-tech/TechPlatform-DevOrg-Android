@@ -173,6 +173,15 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 processFormResultResponse(response);
             } else {
                 if (Util.isConnected(getContext())) {
+//                    String url;
+//                    if (data.getMicroservice() != null
+//                            && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+//                            && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+//                        url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+//                                data.getMicroservice().getRoute());
+//
+//                        presenter.getSubmittedForms(id, url);
+//                    }
                     presenter.getSubmittedForms(id);
                 }
             }
@@ -312,7 +321,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     private boolean isFormOneMonthOld(final Long updatedAt) {
         if (updatedAt != null) {
             Date eventStartDate;
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
             try {
                 eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
                 Calendar calendar = Calendar.getInstance();

@@ -23,9 +23,9 @@ public class Urls {
     }
 
     public class PM {
+        public static final String GET_FORM = "api/forms/result/%1$s";
         public static final String GET_PROCESS = "api/forms/schema";
         public static final String GET_PROCESS_DETAILS = "api/forms/schema/%1$s";
-        public static final String GET_FORM = "api/forms/result/%1$s";
     }
 
     public class TM {

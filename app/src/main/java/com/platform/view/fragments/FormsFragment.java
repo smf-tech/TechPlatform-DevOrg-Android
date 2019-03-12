@@ -34,6 +34,10 @@ public class FormsFragment extends Fragment {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
         }
 
         AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));

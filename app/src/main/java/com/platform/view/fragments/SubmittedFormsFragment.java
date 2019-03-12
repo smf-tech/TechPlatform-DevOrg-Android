@@ -207,8 +207,16 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                     if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
                         if (Util.isConnected(getContext())) {
-                            new FormStatusFragmentPresenter(this)
-                                    .getSubmittedForms(data.getId());
+//                            String url;
+//                            if (data.getMicroservice() != null
+//                                    && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+//                                    && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+//                                url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+//                                        data.getMicroservice().getRoute());
+//
+//                                new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
+//                            }
+                            new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId());
                         }
                     } else {
 
@@ -217,8 +225,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         showNoDataText = false;
 
                         List<ProcessData> processData = new ArrayList<>();
-                        for (final String result : localFormResults) {
 
+//                        GsonBuilder builder = new GsonBuilder();
+//                        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+
+                        for (final String result : localFormResults) {
                             FormResult formResult = new Gson().fromJson(result, FormResult.class);
                             if (formResult.updatedDateTime != null) {
                                 if (isFormOneMonthOld(formResult.updatedDateTime)) {
@@ -228,8 +239,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                             formID = formResult.formID;
                             ProcessData object = new ProcessData();
-                            if (formResult.mOID != null && formResult.mOID.oid != null)
+                            if (formResult.mOID != null && formResult.mOID.oid != null) {
                                 object.setId(formResult.mOID.oid);
+                            }
                             object.setFormTitle(formResult.formTitle);
                             object.setName(new LocaleData(formResult.formTitle));
                             Microservice microservice = new Microservice();
@@ -448,9 +460,17 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         OID mOID;
     }
 
-    static class OID {
+    public static class OID {
         @SuppressWarnings("unused")
         @SerializedName("$oid")
         String oid;
+
+        public OID(String defaultValue) {
+            this.oid = defaultValue;
+        }
+
+        public String getOID() {
+            return oid;
+        }
     }
 }

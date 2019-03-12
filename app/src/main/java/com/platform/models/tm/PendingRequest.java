@@ -53,12 +53,6 @@ public class PendingRequest {
     @SerializedName("approve_status")
     private String approveStatus;
 
-    @SerializedName("updatedDateTime")
-    private Long updatedAt;
-
-    @SerializedName("createdDateTime")
-    private Long createdAt;
-
     @SerializedName("entity_id")
     @Expose
     private String entityId;
@@ -202,22 +196,6 @@ public class PendingRequest {
 
     public void setApproveStatus(String approveStatus) {
         this.approveStatus = approveStatus;
-    }
-
-    public Long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getEntityId() {
