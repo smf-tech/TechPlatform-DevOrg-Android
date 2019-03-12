@@ -19,11 +19,11 @@ public class FormStatusFragmentPresenter {
         requestCall.getProcesses();
     }
 
-    public void getSubmittedForms(String formId, String url) {
+    public void getSubmittedForms(String formId) {
         FormStatusRequestCall requestCall = new FormStatusRequestCall();
         requestCall.setListener(listener);
 
-        requestCall.getSubmittedForms(formId, url);
+        requestCall.getSubmittedForms(formId);
     }
 
     public void setListener(FormStatusCallListener listener) {

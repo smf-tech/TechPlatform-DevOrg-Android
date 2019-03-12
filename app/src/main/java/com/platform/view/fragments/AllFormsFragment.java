@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
@@ -23,7 +22,6 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.ExpandableAdapter;
-import com.platform.view.adapters.OIDAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -159,24 +157,26 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             if (Util.isConnected(getContext()) && ((submitCount != null &&
                     !submitCount.equals("0")) && localFormResults.isEmpty())) {
 
-                if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-                        && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
-
-                    url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
-                            data.getMicroservice().getRoute());
-                    presenter.getSubmittedForms(data.getId(), url);
-                }
+                presenter.getSubmittedForms(data.getId());
+//                if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+//                        && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+//
+//                    url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+//                            data.getMicroservice().getRoute());
+//                    presenter.getSubmittedForms(data.getId());
+//                }
             } else if ((submitCount == null || submitCount.equals("0")) &&
                     (localFormResults == null || localFormResults.isEmpty())) {
 
-                if (!Util.isSubmittedFormsLoaded()&& Util.isConnected(getContext())) {
-                    if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-                            && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
-
-                        url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
-                                data.getMicroservice().getRoute());
-                        presenter.getSubmittedForms(data.getId(), url);
-                    }
+                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
+//                    if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+//                            && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+//
+//                        url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+//                                data.getMicroservice().getRoute());
+//                        presenter.getSubmittedForms(data.getId());
+//                    }
+                    presenter.getSubmittedForms(data.getId());
                 }
             }
         }
@@ -212,13 +212,14 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
 
-                GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-                Gson gson = builder.create();
+//                GsonBuilder builder = new GsonBuilder();
+//                builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+//                Gson gson = builder.create();
 
                 for (int i = 0; i < values.length(); i++) {
 
-                    SubmittedFormsFragment.FormResult formResult = gson.fromJson(String.valueOf(values.get(i)),
+//                    SubmittedFormsFragment.FormResult formResult = gson.fromJson(String.valueOf(values.get(i)),
+                    SubmittedFormsFragment.FormResult formResult = new Gson().fromJson(String.valueOf(values.get(i)),
                             SubmittedFormsFragment.FormResult.class);
 
                     String uuid = UUID.randomUUID().toString();

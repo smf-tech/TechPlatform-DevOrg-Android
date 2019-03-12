@@ -178,7 +178,7 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getFormResults(String url) {
+    public void getFormResults(String processId) {
         Response.Listener<JSONObject> processResponseListener = response -> {
             try {
                 if (response != null) {
@@ -195,10 +195,10 @@ public class FormRequestCall {
         Response.ErrorListener processErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-
+        final String getProcessUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_FORM, processId);
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
-                url,
+                getProcessUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
