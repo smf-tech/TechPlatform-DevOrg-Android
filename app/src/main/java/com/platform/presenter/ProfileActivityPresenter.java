@@ -109,6 +109,8 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
                 if (!TextUtils.isEmpty(newRoles) && !newRoles.equals(roleIds)) {
                     Log.d(TAG, "Deleting old records." + roleIds);
                     Util.removeDatabaseRecords(false);
+
+                    Util.setSubmittedFormsLoaded(false);
                 }
             }
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
