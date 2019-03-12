@@ -1,6 +1,10 @@
 package com.platform.view.fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +41,9 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +90,22 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
         expandableListView.setAdapter(adapter);
 
+        getProcessData();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(EVENT_FORM_ADDED);
+
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
+                    getProcessData();
+                }
+            }
+        }, filter);
+    }
+
+    private void getProcessData() {
         List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
         if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
             Processes processes = new Processes();
