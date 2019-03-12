@@ -229,9 +229,10 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                         GsonBuilder builder = new GsonBuilder();
                         builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+                        Gson gson = builder.create();
 
                         for (final String result : localFormResults) {
-                            FormResult formResult = new Gson().fromJson(result, FormResult.class);
+                            FormResult formResult = gson.fromJson(result, FormResult.class);
                             if (formResult.updatedDateTime != null) {
                                 if (isFormOneMonthOld(formResult.updatedDateTime)) {
                                     continue;
