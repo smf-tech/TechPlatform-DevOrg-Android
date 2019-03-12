@@ -150,15 +150,19 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mCountList.put(data.getId(), submitCount);
             }
 
-            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                    .getAllFormResults(data.getId());
+            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+
             if (Util.isConnected(getContext()) && ((submitCount != null &&
                     !submitCount.equals("0")) && localFormResults.isEmpty())) {
+
                 presenter.getSubmittedForms(data.getId());
+
             } else if ((submitCount == null || submitCount.equals("0")) &&
                     (localFormResults == null || localFormResults.isEmpty())) {
-                if (!Util.isSubmittedFormsLoaded())
+
+                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
                     presenter.getSubmittedForms(data.getId());
+                }
             }
         }
 

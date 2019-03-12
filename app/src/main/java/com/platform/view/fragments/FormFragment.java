@@ -408,7 +408,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                showConfirmPopUp();
+                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility()==View.VISIBLE) {
+                    showConfirmPopUp();
+                } else {
+                    getActivity().finish();
+                }
                 break;
 
             case R.id.toolbar_edit_action:
