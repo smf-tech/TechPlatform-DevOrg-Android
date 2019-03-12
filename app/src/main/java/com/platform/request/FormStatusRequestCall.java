@@ -26,7 +26,7 @@ public class FormStatusRequestCall {
         this.listener = listener;
     }
 
-    public void getSubmittedForms(final String formID) {
+    public void getSubmittedForms(final String formID, String url) {
         Response.Listener<JSONObject> processDetailsResponseListener = response -> {
             try {
                 if (response != null) {
@@ -43,11 +43,10 @@ public class FormStatusRequestCall {
         Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getProcessUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_FORM, formID);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
-                getProcessUrl,
+                url,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,

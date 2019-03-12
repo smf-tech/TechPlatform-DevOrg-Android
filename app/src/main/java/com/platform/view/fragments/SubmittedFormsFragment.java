@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -33,6 +34,7 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.adapters.OIDAdapter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -204,16 +206,15 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                     if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
                         if (Util.isConnected(getContext())) {
-//                            String url;
-//                            if (data.getMicroservice() != null
-//                                    && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-//                                    && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
-//                                url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
-//                                        data.getMicroservice().getRoute());
-//
-//                                new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
-//                            }
-                            new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId());
+                            String url;
+                            if (data.getMicroservice() != null
+                                    && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+                                    && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+                                url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+                                        data.getMicroservice().getRoute());
+
+                                new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
+                            }
                         }
                     } else {
 
@@ -223,8 +224,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                         List<ProcessData> processData = new ArrayList<>();
 
-//                        GsonBuilder builder = new GsonBuilder();
-//                        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+                        GsonBuilder builder = new GsonBuilder();
+                        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
 
                         for (final String result : localFormResults) {
                             FormResult formResult = new Gson().fromJson(result, FormResult.class);

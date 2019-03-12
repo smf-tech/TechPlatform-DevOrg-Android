@@ -24,7 +24,7 @@ public class OIDAdapter extends TypeAdapter<SubmittedFormsFragment.OID> {
                     //get the current token
                     fieldName = reader.nextName();
 
-                    if (Constants.FormDynamicKeys._ID.equals(fieldName)) {
+                    if (Constants.FormDynamicKeys.OID.equals(fieldName)) {
                         //move to next token
                         String id = (reader.nextString());
                         oid = new SubmittedFormsFragment.OID(id);
