@@ -100,7 +100,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         // Save response
         if (response != null && user.getUserInfo() != null) {
 
-            UserInfo oldUserInfo = Util.getUserObjectFromPref();
+            /*UserInfo oldUserInfo = Util.getUserObjectFromPref();
             if (oldUserInfo != null) {
                 String roleIds = oldUserInfo.getRoleIds();
                 String newRoles = user.getUserInfo().getRoleIds();
@@ -112,7 +112,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
                     Util.setSubmittedFormsLoaded(false);
                 }
-            }
+            }*/
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
 

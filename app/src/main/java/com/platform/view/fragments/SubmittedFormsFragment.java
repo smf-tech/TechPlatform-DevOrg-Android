@@ -201,63 +201,65 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 if (!TextUtils.isEmpty(processCategoryList.get(index)) && pData != null) {
 
                     String formID = null;
-                    ProcessData data = pData.get(0);
-                    List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
+                    for (final ProcessData data : pData) {
 
-                    ProcessData pd = DatabaseManager.getDBInstance(
-                            Objects.requireNonNull(getActivity()).getApplicationContext())
-                            .getProcessData(data.getId());
+                        List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                                .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
 
-                    String submitCount = pd.getSubmitCount();
+                        ProcessData pd = DatabaseManager.getDBInstance(
+                                Objects.requireNonNull(getActivity()).getApplicationContext())
+                                .getProcessData(data.getId());
 
-                    if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
-                        if (Util.isConnected(getContext())) {
-                            String url;
-                            if (data.getMicroservice() != null
-                                    && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-                                    && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
-                                url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
-                                        data.getMicroservice().getRoute());
+                        String submitCount = pd.getSubmitCount();
+                        if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
+                            if (Util.isConnected(getContext())) {
+                                String url;
+                                if (data.getMicroservice() != null
+                                        && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
+                                        && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+                                    url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+                                            data.getMicroservice().getRoute());
 
-                                new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
-                            }
-                        }
-                    } else {
-
-                        if (localFormResults == null || localFormResults.isEmpty()) continue;
-
-                        showNoDataText = false;
-
-                        List<ProcessData> processData = new ArrayList<>();
-
-                        GsonBuilder builder = new GsonBuilder();
-                        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-                        Gson gson = builder.create();
-
-                        for (final String result : localFormResults) {
-                            FormResult formResult = gson.fromJson(result, FormResult.class);
-                            if (formResult.updatedDateTime != null) {
-                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
-                                    continue;
+                                    new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
                                 }
                             }
+                        } else {
 
-                            formID = formResult.formID;
-                            ProcessData object = new ProcessData();
-                            if (formResult.mOID != null && formResult.mOID.oid != null) {
-                                object.setId(formResult.mOID.oid);
+                            if (localFormResults == null || localFormResults.isEmpty()) continue;
+
+                            showNoDataText = false;
+
+                            List<ProcessData> processData = new ArrayList<>();
+
+                            GsonBuilder builder = new GsonBuilder();
+                            builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+                            Gson gson = builder.create();
+
+                            for (final String result : localFormResults) {
+                                FormResult formResult = gson.fromJson(result, FormResult.class);
+                                if (formResult.updatedDateTime != null) {
+                                    if (isFormOneMonthOld(formResult.updatedDateTime)) {
+                                        continue;
+                                    }
+                                }
+
+                                formID = formResult.formID;
+                                ProcessData object = new ProcessData();
+                                if (formResult.mOID != null && formResult.mOID.oid != null) {
+                                    object.setId(formResult.mOID.oid);
+                                }
+                                object.setFormTitle(data.getName().getLocaleValue());
+                                object.setName(new LocaleData(formResult.formTitle));
+                                Microservice microservice = new Microservice();
+                                microservice.setUpdatedAt(formResult.updatedDateTime);
+                                object.setMicroservice(microservice);
+                                processData.add(object);
                             }
-                            object.setFormTitle(formResult.formTitle);
-                            object.setName(new LocaleData(formResult.formTitle));
-                            Microservice microservice = new Microservice();
-                            microservice.setUpdatedAt(formResult.updatedDateTime);
-                            object.setMicroservice(microservice);
-                            processData.add(object);
-                        }
 
-                        Util.sortProcessDataListByCreatedDate(processData);
-                        createCategoryLayout(processCategoryList.get(index), processData, formID, null);
+                            Util.sortProcessDataListByCreatedDate(processData);
+                            createCategoryLayout(processData.get(0).getFormTitle(), processData,
+                                    formID, null);
+                        }
                     }
                 }
             }
