@@ -1,23 +1,43 @@
 package com.platform.view.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.utility.AppEvents;
 import com.platform.view.activities.HomeActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class FormsFragment extends Fragment {
 
     private View formsFragmentView;
+    @SuppressLint("StaticFieldLeak")
+    static ViewPager viewPager;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+        }
+
+        AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -31,15 +51,11 @@ public class FormsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getActivity()!=null) {
-            ((HomeActivity) getActivity()).setActionBarTitle(getActivity().getResources().getString(R.string.forms));
-        }
-
         initTabView();
     }
 
     private void initTabView() {
-        ViewPager viewPager = formsFragmentView.findViewById(R.id.view_pager);
+        viewPager = formsFragmentView.findViewById(R.id.view_pager);
         viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
 
         TabLayout tabs = formsFragmentView.findViewById(R.id.tab_layout);
@@ -47,12 +63,10 @@ public class FormsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onDestroy() {
+        if (formsFragmentView != null) {
+            formsFragmentView = null;
+        }
         super.onDestroy();
     }
 
@@ -62,9 +76,10 @@ public class FormsFragment extends Fragment {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = null;
+            Fragment fragment = AllFormsFragment.newInstance();
             switch (position) {
                 case 0:
                     fragment = AllFormsFragment.newInstance();
@@ -75,7 +90,7 @@ public class FormsFragment extends Fragment {
                     break;
 
                 case 2:
-                    fragment = CompletedFormsFragment.newInstance();
+                    fragment = SubmittedFormsFragment.newInstance();
                     break;
             }
 
@@ -90,21 +105,43 @@ public class FormsFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             String title = "";
-            switch (position) {
-                case 0:
-                    title = "All";
-                    break;
+            try {
+                switch (position) {
+                    case 0:
+                        title = getResources().getString(R.string.new_forms);
+                        break;
 
-                case 1:
-                    title = "Pending";
-                    break;
+                    case 1:
+                        title = getResources().getString(R.string.saved_forms);
+                        break;
 
-                case 2:
-                    title = "Completed";
-                    break;
+                    case 2:
+                        title = getResources().getString(R.string.submitted_forms);
+                        break;
+                }
+            } catch (Resources.NotFoundException | IllegalStateException e) {
+                Log.e("TAG", e.getMessage());
             }
 
             return title.toUpperCase();
+        }
+
+        @Override
+        public int getItemPosition(@NonNull final Object object) {
+            return POSITION_NONE;
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
+            Log.i("TAG", "instantiateItem");
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            Log.i("TAG", "notifyDataSetChanged");
         }
     }
 }

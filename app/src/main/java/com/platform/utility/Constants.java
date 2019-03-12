@@ -8,9 +8,8 @@ public class Constants {
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
-    public static final String PENDING = "pending";
-    public static final String REJECTED = "rejected";
-    public static final String RESULT_CODE = "ResultCode";
+    public static final String RESPONSE_DATA = "data";
+    public static final String KEY_SEPARATOR = ".";
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
@@ -23,12 +22,15 @@ public class Constants {
     public static final String ONLINE_UPDATE_FORM_TYPE = "OnlineUpdate";
     public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
-    public static final String LIST_DATE_FORMAT = "dd MMM yyyy";
+    public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
+    static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
 
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
+        public static final String DATABASE_NAME = "TechPlatform";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
@@ -39,14 +41,15 @@ public class Constants {
         static final String FIRST_TIME_KEY = "FirstTimeKey";
         static final String FIRST_TIME_CODE = "FirstTimeCode";
 
-        static final String SYNC_FORM_CATEGORY = "formCategory";
-
         static final String LANGUAGE_LOCALE = "LanguageLocale";
         static final String LANGUAGE_CODE = "languageCode";
 
         public static final String LANGUAGE_ENGLISH = "en";
         public static final String LANGUAGE_MARATHI = "mr";
         public static final String LANGUAGE_HINDI = "hi";
+        public static final String LANGUAGE_DEFAULT = "default";
+
+        static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
     }
 
     public static class AssociatesType {
@@ -58,6 +61,9 @@ public class Constants {
         static final String USER_MOBILE_NO = "userMobile";
         static final String LOGIN_OBJ = "loginObj";
         static final String USER_OBJ = "userObj";
+        static final String USER_ORG = "userOrgObj";
+        static final String USER_ROLE = "userRoleObj";
+        static final String USER_PROJECT = "userProjectsObj";
 
         public static final String AUTHORIZATION = "Authorization";
 
@@ -71,8 +77,10 @@ public class Constants {
         public static final String USER_ROLE_ID = "role_id";
         public static final String USER_ORG_ID = "org_id";
         public static final String USER_ASSOCIATE_TYPE = "type";
-        public static final String USER_PROJECTS = "projects";
+        public static final String USER_PROJECTS = "project_id";
         public static final String USER_LOCATION = "location";
+        public static final String USER_FIREBASE_ID = "firebase_id";
+        public static final String USER_PROFILE_PIC = "profile_pic";
 
         public static final String ACTION = "action";
         public static final String ACTION_EDIT = "edit";
@@ -106,19 +114,21 @@ public class Constants {
         public static final String PROCESS_NAME = "processName";
         public static final String PROCESS_ID = "processId";
         public static final String FORM_ID = "formId";
-        public static final String RESPONSE = "response";
         public static final String EDIT_MODE = "editMode";
+        public static final String PARTIAL_FORM = "partialForm";
     }
 
     public static class TM {
         public static final String UPDATE_STATUS = "update_status";
+        public static final String REJECTION_REASON = "reason";
     }
 
-    @SuppressWarnings("unused")
     public static class RequestStatus {
         public static final String PENDING = "pending";
         public static final String APPROVED = "approved";
         public static final String REJECTED = "rejected";
+        public static final String APPROVED_MODULE = "approved";
+        public static final String DEFAULT_MODULE = "default";
     }
 
     public static class FormsFactory {
@@ -129,15 +139,12 @@ public class Constants {
     }
 
     public static final String callUsNumber = "+9120-660-50226";
-    public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
-    public static final String playStoreLink = "https://play.google.com/store/apps/details?" +
-            "id=com.bjs.ss&hl=en";
+    // public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
+    public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 
-    @SuppressWarnings("unused")
     public static class Form {
-        public static final String FORM_STATUS_ALL = "all";
-        public static final String FORM_STATUS_PENDING = "pending";
-        public static final String FORM_STATUS_COMPLETED = "completed";
+        public static final String EXTRA_FORM_ID = "form_id";
+        static final String GET_SUBMITTED_FORMS_FIRST_TIME = "firstTime";
     }
 
     public class MultiSelectSpinnerType {
@@ -152,17 +159,43 @@ public class Constants {
     public class FormInputType {
         public static final String INPUT_TYPE_DATE = "date";
         public static final String INPUT_TYPE_NUMBER = "number";
+        public static final String INPUT_TYPE_TELEPHONE = "tel";
         public static final String INPUT_TYPE_NUMERIC = "numeric";
+        public static final String INPUT_TYPE_DECIMAL = "decimal";
+        public static final String INPUT_TYPE_ALPHABETS = "alphabets";
+        public static final String INPUT_TYPE_TEXT = "text";
     }
 
-    public class ChoicesType {
-        public static final String CHOICE_STRUCTURE_CODE = "structure_code";
-        public static final String CHOICE_MACHINE_CODE = "machine_code";
-        public static final String CHOICE_LOCATION_STATE = "state";
-        public static final String CHOICE_LOCATION_DISTRICT = "district";
-        public static final String CHOICE_LOCATION_TALUKA = "taluka";
-        public static final String CHOICE_LOCATION_CLUSTER = "cluster";
-        public static final String CHOICE_LOCATION_VILLAGE = "village";
-        public static final String CHOICE_DEFAULT = "default";
+    public class Image {
+        public static final String FILE_SEP = "/";
+        public static final String IMAGE_PREFIX = "picture_";
+        public static final String IMAGE_SUFFIX = ".jpg";
+        public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+        public static final String IMAGE_TYPE_FILE = "form";
+        public static final String IMAGE_TYPE_PROFILE = "profile";
     }
+
+    public class Notification {
+        public static final String NOTIFICATION = "notificationClicked";
+    }
+
+    public class FormDynamicKeys {
+        public static final String FORM_ID = "form_id";
+        public static final String FORM_TITLE = "form_title";
+        public static final String METADATA = "metadata";
+        public static final String FORM = "form";
+        public static final String SUBMIT_COUNT = "submit_count";
+        public static final String VALUES = "values";
+        public static final String NEW_STRUCTURE_CODE = "new_structure_code";
+        public static final String OLD_STRUCTURE_CODE = "old_structure_code";
+        public static final String STRUCTURE_CODE = "structure_code";
+        public static final String MOVED_FROM = "moved_from_village";
+        public static final String MOVED_TO = "moved_to_village";
+        public static final String VILLAGE = "village";
+        public static final String _ID = "_id";
+        public static final String OID = "$oid";
+        public static final String UPDATED_DATE_TIME = "updatedDateTime";
+        public static final String CREATED_DATE_TIME = "createdDateTime";
+    }
+
 }

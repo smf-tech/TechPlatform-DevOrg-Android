@@ -1,6 +1,5 @@
 package com.platform.request;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -14,7 +13,6 @@ import com.platform.Platform;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.FormData;
-import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -23,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class FormRequestCall {
 
@@ -33,28 +33,28 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(String formId, HashMap<String, String> requestObjectMap) {
-
+    public void createFormResponse(final HashMap<String, String> requestObjectMap, final Map<String,
+            String> uploadedImageUrlList, String postUrl, final String formId, final String oId, String callType) {
+        JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onFormCreated(res);
+                    Log.d(TAG, "createFormResponse - Resp: " + res);
+                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId, callType, oId);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
         Response.ErrorListener createFormErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String createFormUrl = BuildConfig.BASE_URL
-                + String.format(Urls.PM.CREATE_FORM, formId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(Request.Method.POST,
-                createFormUrl,
+                postUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -63,34 +63,36 @@ public class FormRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap));
+        gsonRequest.setBodyParams(requestObject);
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void updateFormResponse(String formId, HashMap<String, String> requestObjectMap) {
+    public void updateFormResponse(final HashMap<String, String> requestObjectMap,
+                                   final Map<String, String> uploadedImageUrlList, String postUrl,
+                                   final String formId, String oid, String callType) {
 
+        JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    listener.onFormCreated(res);
+                    Log.d(TAG, "updateFormResponse - Resp: " + res);
+                    listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId, callType, null);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
         Response.ErrorListener createFormErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String createFormUrl = BuildConfig.BASE_URL
-                + String.format(Urls.PM.CREATE_FORM, formId);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
-                createFormUrl,
+                postUrl + "/" + oid,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -99,22 +101,24 @@ public class FormRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(getFormRequest(requestObjectMap));
+        gsonRequest.setBodyParams(requestObject);
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex, final FormData formData) {
+    public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex,
+                                final FormData formData) {
+
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getChoicesByUrl - Resp: " + res);
+                    Log.d(TAG, "getChoicesByUrl - Resp: " + res);
                     listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, formData);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                Log.e(TAG, "Exception in getChoicesByUrl()");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -143,12 +147,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "getProcessDetails - Resp: " + res);
+                    Log.d(TAG, "getProcessDetails - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -179,11 +183,12 @@ public class FormRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "getFormResults - Resp: " + res);
                     listener.onFormDetailsLoadedListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -210,17 +215,22 @@ public class FormRequestCall {
     }
 
     @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap) {
-        JsonObject jsonObject = new JsonObject();
+    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final Map<String, String> imageUrls) {
+        JsonObject requestObject = new JsonObject();
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            Log.d(TAG, "Request object key " + key + " value " + value);
-            jsonObject.addProperty(key, value);
+            requestObject.addProperty(key, value);
         }
 
-        JsonObject response = new JsonObject();
-        response.add(Constants.PM.RESPONSE, jsonObject);
-        return response;
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            for (final Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                requestObject.addProperty(key, value);
+            }
+        }
+
+        return requestObject;
     }
 }

@@ -24,9 +24,9 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private Map<String, List<ProcessData>> mFormsData;
-    private List<String> mCountList;
+    private Map<String, String> mCountList;
 
-    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData, final List<String> countList) {
+    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData, final Map<String, String> countList) {
         this.mContext = context;
         mFormsData = formsData;
         mCountList = countList;
@@ -112,20 +112,27 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);
-        List<ProcessData> processData = mFormsData.get(cat);
 
+        List<ProcessData> processData = mFormsData.get(cat);
         if (processData != null) {
             ProcessData data = processData.get(childPosition);
-            ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().trim());
+
+            ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue().trim());
+
             if (groupPosition < mCountList.size()) {
-                String count = mCountList.get(groupPosition);
+                String count = mCountList.get(data.getId());
+                if (count == null) count = "0";
+
                 ((TextView) view.findViewById(R.id.submitted_count_label))
-                        .setText(String.format("Submitted Count: %s", count));
+                        .setText(mContext.getString(R.string.submitted_form_count, count));
+            } else {
+                ((TextView) view.findViewById(R.id.submitted_count_label))
+                        .setText(mContext.getString(R.string.submitted_form_count, "0"));
             }
 
             view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, FormActivity.class);
-                intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
+                intent.putExtra(Constants.PM.FORM_ID, data.getId());
                 mContext.startActivity(intent);
             });
         }

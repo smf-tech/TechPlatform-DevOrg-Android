@@ -2,24 +2,27 @@ package com.platform.utility;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
+import androidx.annotation.NonNull;
 
 @SuppressWarnings("CanBeFinal")
 public class ForceUpdateChecker {
 
     private static final String TAG = ForceUpdateChecker.class.getSimpleName();
-    public static final String KEY_UPDATE_REQUIRED = "SS_force_update_required";
-    public static final String KEY_CURRENT_VERSION = "SS_force_update_current_version";
-    public static final String KEY_UPDATE_URL = "SS_force_update_store_url";
+
+    public static final String KEY_UPDATE_REQUIRED = "Platform_force_update_required";
+    public static final String KEY_CURRENT_VERSION = "Platform_force_update_current_version";
+    public static final String KEY_UPDATE_URL = "Platform_force_update_store_url";
+    private static final String KEY_MIN_REQUIRED_VERSION = "Platform_minimum_required_app_version";
 
     private OnUpdateNeededListener onUpdateNeededListener;
     private Context context;
 
     public interface OnUpdateNeededListener {
-        void onUpdateNeeded(String updateUrl);
+        void onUpdateNeeded(String updateUrl, boolean isForcefulUpdate);
     }
 
     public static Builder with(@NonNull Context context) {
@@ -39,7 +42,9 @@ public class ForceUpdateChecker {
             String currentVersion = remoteConfig.getString(KEY_CURRENT_VERSION);
             String appVersion = getAppVersion(context);
             String updateUrl = remoteConfig.getString(KEY_UPDATE_URL);
-            float appV = 0, currentV = 0;
+            String minVersion = remoteConfig.getString(KEY_MIN_REQUIRED_VERSION);
+
+            float appV = 0, currentV = 0, minimumV = 0;
 
             if (appVersion != null && appVersion.length() != 0) {
                 appV = Float.parseFloat(appVersion);
@@ -49,8 +54,16 @@ public class ForceUpdateChecker {
                 currentV = Float.parseFloat(currentVersion);
             }
 
+            if (minVersion != null && minVersion.length() != 0) {
+                minimumV = Float.parseFloat(minVersion);
+            }
+
             if (appV < currentV && onUpdateNeededListener != null) {
-                onUpdateNeededListener.onUpdateNeeded(updateUrl);
+                if (appV < minimumV) {
+                    onUpdateNeededListener.onUpdateNeeded(updateUrl, true);
+                } else {
+                    onUpdateNeededListener.onUpdateNeeded(updateUrl, false);
+                }
             }
         }
     }

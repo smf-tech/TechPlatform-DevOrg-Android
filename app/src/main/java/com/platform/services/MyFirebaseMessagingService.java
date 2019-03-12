@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -16,7 +14,15 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
-import com.platform.view.activities.SplashActivity;
+import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.LoginActivity;
+import com.platform.view.activities.ProfileActivity;
+
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -29,6 +35,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             try {
                 remoteMessageId = remoteMessage.getData().get("Id");
+
+                Util.updateNotificationsCount(false);
 
                 sendNotification(remoteMessage.getData().get("Title"),
                         remoteMessage.getData().get("Description"));
@@ -45,7 +53,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String messageTitle, String messageBody) {
         Intent intent = null;
         if (TextUtils.isEmpty(remoteMessageId)) {
-            intent = new Intent(this, SplashActivity.class);
+            intent = getIntent();
         } else {
             Log.i(TAG, "Create message" + messageTitle + messageBody);
         }
@@ -72,6 +80,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationManager.notify(0, notificationBuilder.build());
             }
         }
+    }
+
+    private Intent getIntent() {
+        Intent intent;
+
+        try {
+            // Check user has registered mobile number or not
+            if (Util.getLoginObjectFromPref() == null ||
+                    Util.getLoginObjectFromPref().getLoginData() == null ||
+                    TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
+                intent = new Intent(getApplicationContext(), LoginActivity.class);
+            } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
+                intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            } else {
+                intent = new Intent(getApplicationContext(), HomeActivity.class);
+            }
+
+            intent.putExtra(NOTIFICATION, true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            intent = new Intent(getApplicationContext(), HomeActivity.class);
+        }
+        return intent;
     }
 
     @Override

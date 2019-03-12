@@ -1,26 +1,27 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
-import com.platform.models.common.Microservice;
+import com.platform.models.LocaleData;
 import com.platform.models.pm.ProcessData;
+import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.Util;
 import com.platform.view.fragments.CompletedFormsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.platform.utility.Constants.Form.FORM_STATUS_COMPLETED;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapter.ViewHolder> {
@@ -48,7 +49,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
             addButton = itemView.findViewById(R.id.add_button);
             categoryName = itemView.findViewById(R.id.form_title);
             recyclerView = itemView.findViewById(R.id.forms);
-
         }
     }
 
@@ -63,9 +63,6 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
     @Override
     public void onBindViewHolder(@NonNull FormCategoryAdapter.ViewHolder viewHolder, int i) {
 
-        viewHolder.syncButton.setOnClickListener(v ->
-                Toast.makeText(mContext, "Sync clicked!", Toast.LENGTH_SHORT).show());
-
         viewHolder.syncButton.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setRippleColor(mContext.getResources().getColor(R.color.red));
         viewHolder.syncButton.setImageDrawable(mContext.getResources().getDrawable(
@@ -78,6 +75,23 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         objects1 = mFormData.keySet().toArray(objects1);
         String category = objects1[i];
 
+        boolean pendingFormCategory = false;
+        if (category.equals(SyncAdapterUtils.SYNCING_PENDING)) {
+            pendingFormCategory = true;
+            viewHolder.syncButton.show();
+            viewHolder.syncButton.setOnClickListener(v -> {
+                if (Util.isConnected(mContext)) {
+                    Toast.makeText(mContext, "Sync started...", Toast.LENGTH_SHORT).show();
+                    SyncAdapterUtils.manualRefresh();
+                } else {
+                    Toast.makeText(mContext, "Internet is not available!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            viewHolder.syncButton.hide();
+        }
+
         List<CompletedFormsFragment.ProcessDemoObject> list = mFormData.get(category);
         ArrayList<ProcessData> dataList = new ArrayList<>();
 
@@ -85,19 +99,17 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
 
         for (CompletedFormsFragment.ProcessDemoObject object : list) {
             ProcessData data = new ProcessData();
-            data.setName(object.getName());
+            LocaleData localeData = new LocaleData(object.getName());
+            localeData.setLocaleValue(object.getName());
+            data.setName(localeData);
             data.setId(object.getId());
-            Microservice microservice = new Microservice();
-            microservice.setUpdatedAt(object.getDate());
-            data.setMicroservice(microservice);
+            data.setFormTitle(object.getFormTitle());
             dataList.add(data);
         }
 
         viewHolder.categoryName.setText(category);
-        viewHolder.adapter = new FormsAdapter(mContext, FORM_STATUS_COMPLETED, dataList);
-//        viewHolder.adapter = new FormsAdapter(mContext, mFormData);
+        viewHolder.adapter = new FormsAdapter(mContext, dataList, pendingFormCategory);
         viewHolder.addButton.hide();
-        viewHolder.syncButton.hide();
         viewHolder.recyclerView.setAdapter(viewHolder.adapter);
     }
 

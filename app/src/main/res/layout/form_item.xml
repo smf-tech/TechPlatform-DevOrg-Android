@@ -8,7 +8,7 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,12 +16,12 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="-18dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
-        android:backgroundTint="@android:color/holo_red_dark"
         android:src="@android:drawable/ic_input_add"
         android:visibility="gone"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:fabSize="mini" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/sync_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,12 +30,12 @@
         android:layout_marginTop="-18dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
         android:layout_toStartOf="@+id/add_button"
-        android:backgroundTint="@android:color/holo_red_dark"
         android:src="@android:drawable/stat_notify_sync"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/form_content_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,11 +57,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/category_title" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/forms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_15dp" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

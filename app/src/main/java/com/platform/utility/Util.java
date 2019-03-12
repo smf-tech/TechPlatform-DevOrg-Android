@@ -2,18 +2,15 @@ package com.platform.utility;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -26,19 +23,36 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
+import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
+import com.platform.models.pm.ProcessData;
+import com.platform.models.profile.OrganizationProjectsResponse;
+import com.platform.models.profile.OrganizationResponse;
+import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import static com.platform.utility.Constants.DATE_FORMAT;
+import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
 
@@ -88,9 +102,7 @@ public class Util {
         SharedPreferences preferences = Platform.getInstance()
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
-        String languageCode = preferences.getString(Constants.App.LANGUAGE_CODE, "");
-        Log.i(TAG, "App language code: " + languageCode);
-        return languageCode;
+        return preferences.getString(Constants.App.LANGUAGE_CODE, "");
     }
 
     public static void setLocaleLanguageCode(String languageCode) {
@@ -217,14 +229,64 @@ public class Util {
         editor.apply();
     }
 
-    @SuppressWarnings("unused")
-    public static UserLocation getUserLocationFromPref() {
+    public static OrganizationResponse getUserOrgFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_ORG, "{}");
 
-        String obj = preferences.getString(Constants.App.USER_LOC_OBJ, "{}");
-        return new Gson().fromJson(obj, UserLocation.class);
+        return new Gson().fromJson(obj, OrganizationResponse.class);
     }
+
+    public static void saveUserOrgInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_ORG, userData);
+        editor.apply();
+    }
+
+    public static OrganizationRolesResponse getUserRoleFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_ROLE, "{}");
+
+        return new Gson().fromJson(obj, OrganizationRolesResponse.class);
+    }
+
+    public static void saveUserRoleInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_ROLE, userData);
+        editor.apply();
+    }
+
+    public static OrganizationProjectsResponse getUserProjectsFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_PROJECT, "{}");
+
+        return new Gson().fromJson(obj, OrganizationProjectsResponse.class);
+    }
+
+    public static void saveUserProjectsInPref(String userData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_PROJECT, userData);
+        editor.apply();
+    }
+
+//    public static UserLocation getUserLocationFromPref() {
+//        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+//                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+//
+//        String obj = preferences.getString(Constants.App.USER_LOC_OBJ, "{}");
+//        return new Gson().fromJson(obj, UserLocation.class);
+//    }
 
     public static void saveUserLocationInPref(UserLocation location) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
@@ -237,33 +299,17 @@ public class Util {
         editor.apply();
     }
 
-    public static String getFormCategoryForSyncFromPref() {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        return preferences.getString(Constants.App.SYNC_FORM_CATEGORY, "");
-    }
-
-    public static void saveFormCategoryForSync(String category) {
-        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.SYNC_FORM_CATEGORY, category);
-        editor.apply();
-    }
-
-    public static void clearAllUserData() {
-        try {
-            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
+//    public static void clearAllUserData() {
+//        try {
+//            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+//                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.clear();
+//            editor.apply();
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
+//    }
 
     public static <T> void showToast(String msg, T context) {
         if (TextUtils.isEmpty(msg)) {
@@ -316,45 +362,169 @@ public class Util {
         }
     }
 
-    @NonNull
-    public static String getFormattedDate(String date) {
+    public static Long getDateInLong(String dateString) {
+        if (TextUtils.isEmpty(dateString)) {
+            return getDateInLong(new Date().toString());
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = sdf.parse(dateString);
+
+            return date.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 0L;
+    }
+
+    public static String getLongDateInString(Long date, String dateFormat) {
+        if (date != null) {
+            try {
+                Date d = new Timestamp(date);
+                return getFormattedDate(d.toString(), dateFormat);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return "";
+    }
+
+    private static String getFormattedDate(String date) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
 
         try {
             DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.US);
-            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.US);
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         return date;
     }
 
-    public static void start(Context context, Class activity, Bundle bundle) {
-        try {
-            Intent starter = new Intent(context, activity);
-            if (!bundle.isEmpty())
-                starter.putExtra("bundle", bundle);
-            context.startActivity(starter);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static String getFormattedDate(String date, String dateFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
         }
+
+        try {
+            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+
+            Date date1 = inputFormat.parse(date);
+            return outputFormat.format(date1);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return date;
     }
 
-    public static void launchFragment(Fragment fragment, Context context, String name) {
+    public static long getCurrentTimeStamp() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.getTime();
+    }
+
+    public static String getDateFromTimestamp(Long date) {
+        if (date != null) {
+            try {
+                Date d = new Timestamp(date);
+                return getFormattedDate(d.toString(), FORM_DATE_FORMAT);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return "";
+    }
+
+    public static void launchFragment(Fragment fragment, Context context, String titleName) {
         try {
+            Bundle b = new Bundle();
+            b.putSerializable("TITLE", titleName);
+            b.putBoolean("SHOW_ALL", false);
+            fragment.setArguments(b);
+
             FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
                     .requireNonNull(context))
                     .getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.home_page_container, fragment, name);
+            fragmentTransaction.replace(R.id.home_page_container, fragment, titleName);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public static void removeDatabaseRecords(final boolean refreshData) {
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();
+
+        if (refreshData) {
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllSyncedFormResults();
+        } else {
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
+        }
+    }
+
+    public static int getUnreadNotificationsCount() {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.App.UNREAD_NOTIFICATION_COUNT, Context.MODE_PRIVATE);
+
+        return preferences.getInt(Constants.App.UNREAD_NOTIFICATION_COUNT, 0);
+    }
+
+    public static void updateNotificationsCount(boolean clearNotifications) {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.App.UNREAD_NOTIFICATION_COUNT, Context.MODE_PRIVATE);
+
+        int count = preferences.getInt(Constants.App.UNREAD_NOTIFICATION_COUNT, 0);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        if (clearNotifications) {
+            editor.putInt(Constants.App.UNREAD_NOTIFICATION_COUNT, 0);
+        } else {
+            editor.putInt(Constants.App.UNREAD_NOTIFICATION_COUNT, ++count);
+        }
+        editor.apply();
+    }
+
+    public static boolean isSubmittedFormsLoaded() {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, Context.MODE_PRIVATE);
+
+        return preferences.getBoolean(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, false);
+    }
+
+    public static void setSubmittedFormsLoaded(final boolean loaded) {
+        SharedPreferences preferences = Platform.getInstance()
+                .getSharedPreferences(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.Form.GET_SUBMITTED_FORMS_FIRST_TIME, loaded);
+        editor.apply();
+    }
+
+    public static void sortFormResultListByCreatedDate(final List<FormResult> savedForms) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            savedForms.sort(Comparator.comparing(FormResult::getCreatedAt));
+        } else {
+            Collections.sort(savedForms, (o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+        }
+    }
+
+    public static void sortProcessDataListByCreatedDate(final List<ProcessData> savedForms) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            savedForms.sort(Comparator.comparing(processData -> processData.getMicroservice().getUpdatedAt()));
+        } else {
+            Collections.sort(savedForms, (o1, o2) -> o2.getMicroservice().getUpdatedAt().compareTo(o1.getMicroservice().getUpdatedAt()));
         }
     }
 }

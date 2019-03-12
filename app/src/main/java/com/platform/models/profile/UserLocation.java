@@ -2,63 +2,63 @@ package com.platform.models.profile;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class UserLocation {
 
     @SerializedName("state")
-    private ArrayList<String> stateId;
+    private List<String> stateId;
 
     @SerializedName("district")
-    private ArrayList<String> districtIds;
+    private List<String> districtIds;
 
     @SerializedName("taluka")
-    private ArrayList<String> talukaIds;
+    private List<String> talukaIds;
 
     @SerializedName("cluster")
-    private ArrayList<String> clusterIds;
+    private List<String> clusterIds;
 
     @SerializedName("village")
-    private ArrayList<String> villageIds;
+    private List<String> villageIds;
 
-    public ArrayList<String> getStateId() {
+    public List<String> getStateId() {
         return stateId;
     }
 
-    public void setStateId(ArrayList<String> stateId) {
+    public void setStateId(List<String> stateId) {
         this.stateId = stateId;
     }
 
-    public ArrayList<String> getDistrictIds() {
+    public List<String> getDistrictIds() {
         return districtIds;
     }
 
-    public void setDistrictIds(ArrayList<String> districtIds) {
+    public void setDistrictIds(List<String> districtIds) {
         this.districtIds = districtIds;
     }
 
-    public ArrayList<String> getTalukaIds() {
+    public List<String> getTalukaIds() {
         return talukaIds;
     }
 
-    public void setTalukaIds(ArrayList<String> talukaIds) {
+    public void setTalukaIds(List<String> talukaIds) {
         this.talukaIds = talukaIds;
     }
 
-    public ArrayList<String> getClusterIds() {
+    public List<String> getClusterIds() {
         return clusterIds;
     }
 
-    public void setClusterIds(ArrayList<String> clusterIds) {
+    public void setClusterIds(List<String> clusterIds) {
         this.clusterIds = clusterIds;
     }
 
-    public ArrayList<String> getVillageIds() {
+    public List<String> getVillageIds() {
         return villageIds;
     }
 
-    public void setVillageIds(ArrayList<String> villageIds) {
+    public void setVillageIds(List<String> villageIds) {
         this.villageIds = villageIds;
     }
 }

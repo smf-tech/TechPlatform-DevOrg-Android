@@ -2,6 +2,7 @@ package com.platform.models.common;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.user.UserInfo;
 
 @SuppressWarnings("unused")
 public class Entity {
@@ -18,12 +19,15 @@ public class Entity {
     @SerializedName("is_active")
     @Expose
     private Boolean isActive;
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     @Expose
-    private String updatedAt;
-    @SerializedName("created_at")
+    private Long updatedAt;
+    @SerializedName("createdDateTime")
     @Expose
-    private String createdAt;
+    private Long createdAt;
+    @SerializedName("user")
+    @Expose
+    private UserInfo userInfo;
 
     public String getId() {
         return id;
@@ -57,19 +61,27 @@ public class Entity {
         isActive = active;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

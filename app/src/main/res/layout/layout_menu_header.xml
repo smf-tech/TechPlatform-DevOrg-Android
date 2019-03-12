@@ -8,6 +8,7 @@
     tools:ignore="UseCompoundDrawables">
 
     <LinearLayout
+        android:id="@+id/menu_user_profile_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_20dp"
@@ -39,12 +40,12 @@
                 android:id="@+id/menu_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_22"
+                android:textSize="@dimen/text_size_16"
                 android:textStyle="bold" />
 
             <TextView

@@ -2,6 +2,7 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.LocaleData;
 
 import java.util.List;
 
@@ -10,16 +11,16 @@ public class Components {
 
     @SerializedName("title")
     @Expose
-    private String title;
+    private LocaleData title;
     @SerializedName("pages")
     @Expose
     private List<Page> pages = null;
 
-    public String getTitle() {
+    public LocaleData getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(LocaleData title) {
         this.title = title;
     }
 

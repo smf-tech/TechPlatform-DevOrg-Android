@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -20,10 +20,10 @@ import org.json.JSONObject;
 
 public class LoginRequestCall {
 
-    private PlatformRequestCallListener listener;
+    private UserRequestCallListener listener;
     private final String TAG = LoginRequestCall.class.getName();
 
-    public void setListener(PlatformRequestCallListener listener) {
+    public void setListener(UserRequestCallListener listener) {
         this.listener = listener;
     }
 
@@ -32,11 +32,12 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "generateOtp - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -69,12 +70,12 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    // Login loginData = new Gson().fromJson(res, Login.class);
+                    Log.d(TAG, "resendOtp - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -103,12 +104,12 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    // Login loginData = new Gson().fromJson(res, Login.class);
+                    Log.d(TAG, "getToken - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(e.getMessage());
             }
         };
 
@@ -129,6 +130,40 @@ public class LoginRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(false));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+    public void getUserProfile() {
+        Response.Listener<JSONObject> userProfileSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "getUserProfile - Resp: " + res);
+                    listener.onUserProfileSuccessListener(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
+            }
+        };
+
+        Response.ErrorListener userProfileErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String getProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getProfileUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                userProfileSuccessListener,
+                userProfileErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }

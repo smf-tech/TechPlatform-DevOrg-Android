@@ -1,11 +1,12 @@
 package com.platform.models.forms;
 
-import android.arch.persistence.room.ColumnInfo;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.LocaleData;
 
 import java.util.List;
+
+import androidx.room.ColumnInfo;
 
 @SuppressWarnings("unused")
 public class Elements {
@@ -21,13 +22,22 @@ public class Elements {
     private String name;
     @SerializedName("title")
     @Expose
-    private String title;
+    private LocaleData title;
     @SerializedName("inputType")
     @Expose
     private String inputType;
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
+    @SerializedName("maxLength")
+    @Expose
+    private Integer maxLength;
+    @SerializedName("enableIf")
+    @Expose
+    private String enableIf;
+    @SerializedName("visibleIf")
+    @Expose
+    private String visibleIf;
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
@@ -44,6 +54,30 @@ public class Elements {
 
     public void setChoicesByUrlResponse(String choicesByUrlResponse) {
         this.choicesByUrlResponse = choicesByUrlResponse;
+    }
+
+    public String getEnableIf() {
+        return enableIf;
+    }
+
+    public void setEnableIf(String enableIf) {
+        this.enableIf = enableIf;
+    }
+
+    public String getVisibleIf() {
+        return visibleIf;
+    }
+
+    public void setVisibleIf(String visibleIf) {
+        this.visibleIf = visibleIf;
+    }
+
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
     }
 
     public String getInputType() {
@@ -70,11 +104,11 @@ public class Elements {
         this.name = name;
     }
 
-    public String getTitle() {
+    public LocaleData getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(LocaleData title) {
         this.title = title;
     }
 

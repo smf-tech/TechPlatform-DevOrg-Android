@@ -2,55 +2,104 @@ package com.platform.models.pm;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
 import com.platform.models.common.Project;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 @SuppressWarnings("unused")
+@androidx.room.Entity
 public class ProcessData {
 
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
     @SerializedName("_id")
     @Expose
-    private String id;
+    private String id = "";
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    private String name;
+    private LocaleData name;
+
+    @ColumnInfo(name = "form_title")
+    @SerializedName("form_title")
+    @Expose
+    private String formTitle;
+
+    @ColumnInfo(name = "active")
     @SerializedName("active")
     @Expose
     private String active;
+
+    @ColumnInfo(name = "editable")
     @SerializedName("editable")
     @Expose
     private String editable;
+
+    @ColumnInfo(name = "multiple_entry")
     @SerializedName("multiple_entry")
     @Expose
     private String multipleEntry;
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "microservice")
     @SerializedName("microservice")
     @Expose
     private Microservice microservice;
+
+    @Ignore
     @SerializedName("project")
     @Expose
     private Project project;
+
+    @ColumnInfo(name = "submit_count")
+    @Expose
+    private String submitCount;
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "category")
     @SerializedName("category")
     @Expose
     private Category category;
+
+    @Ignore
     @SerializedName("entity")
     @Expose
     private Entity entity;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
-    public String getName() {
+    public String getSubmitCount() {
+        return submitCount;
+    }
+
+    public void setSubmitCount(String submitCount) {
+        this.submitCount = submitCount;
+    }
+
+    public LocaleData getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LocaleData name) {
         this.name = name;
     }
 
@@ -108,5 +157,13 @@ public class ProcessData {
 
     public void setEntity(Entity entity) {
         this.entity = entity;
+    }
+
+    public String getFormTitle() {
+        return formTitle;
+    }
+
+    public void setFormTitle(String formTitle) {
+        this.formTitle = formTitle;
     }
 }

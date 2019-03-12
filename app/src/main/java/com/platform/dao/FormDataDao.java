@@ -1,21 +1,20 @@
 package com.platform.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
-
 import com.platform.models.forms.FormData;
 
-import java.util.List;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
 
-@SuppressWarnings("unused")
 @Dao
 public interface FormDataDao {
     @Query("SELECT * FROM formdata where id = :formId")
-    List<FormData> getFormSchema(String formId);
+    FormData getFormSchema(String formId);
+
+    @Query("DELETE FROM formdata")
+    void deleteAllFormSchema();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(FormData... formData);
@@ -23,6 +22,4 @@ public interface FormDataDao {
     @Update
     void update(FormData formData);
 
-    @Delete
-    void delete(FormData formData);
 }

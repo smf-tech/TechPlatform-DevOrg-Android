@@ -4,16 +4,19 @@ import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.platform.BuildConfig;
+import com.platform.R;
 import com.platform.database.DatabaseManager;
-import com.platform.models.SavedForm;
+import com.platform.models.common.Microservice;
+import com.platform.models.forms.FormData;
+import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
 import com.platform.utility.Constants;
-import com.platform.utility.Urls;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +30,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
-import static com.platform.utility.Util.getFormCategoryForSyncFromPref;
+import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.getLoginObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
@@ -61,27 +65,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void syncSavedForms() {
-        List<SavedForm> savedForms = getAllNonSyncedSavedForms();
+        List<FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
+
         if (savedForms != null) {
-            String formSyncCategory = getFormCategoryForSyncFromPref();
-            for (final SavedForm form : savedForms) {
-                if (!form.isSynced())
-                    if (form.getFormCategory().equals(formSyncCategory) || formSyncCategory.isEmpty()) {
-                        try {
-                            submitForm(form);
-                        } catch (MalformedURLException e) {
-                            Log.e(TAG, e.getMessage());
-                        }
-                    }
+            for (final FormResult form : savedForms) {
+                if (form.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED) {
+                    submitForm(form);
+                }
             }
         }
     }
 
-    private void submitForm(final SavedForm form) throws MalformedURLException {
-        URL url = new URL(BuildConfig.BASE_URL + String.format(Urls.PM.CREATE_FORM,
-                form.getFormId()));
+    private void submitForm(final FormResult form) {
+
 
         try {
+            URL formUrl = new URL(getFormUrl(form));
 
             Login loginObj = getLoginObjectFromPref();
             if (loginObj == null || loginObj.getLoginData() == null ||
@@ -91,7 +90,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             String accessToken = "Bearer " + loginObj.getLoginData().getAccessToken();
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) formUrl.openConnection();
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Accept", "application/json, text/plain, */*");
@@ -100,10 +99,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             connection.setChunkedStreamingMode(0);
             connection.connect();
 
-            String requestObject = form.getRequestObject();
+            String requestObject = form.getResult();
 
-            JSONObject object = new JSONObject();
-            object.put("response", new JSONObject(requestObject));
+            JSONObject object = new JSONObject(requestObject);
 
             OutputStream out = new BufferedOutputStream(connection.getOutputStream());
             writeStream(object.toString(), out);
@@ -112,23 +110,69 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if (errorStream != null) {
                 String response = readStream(errorStream);
                 Log.e(TAG, "Response \n" + response);
+
+                sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_FAILED);
+
             } else {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 String response = readStream(in);
 
-                updateForm(form);
+                updateForm(form, response);
 
                 Log.i(TAG, "Response \n" + response);
                 Log.i(TAG, "Form Synced");
             }
         } catch (IOException | JSONException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage() + "");
         }
     }
 
-    private void updateForm(final SavedForm form) {
-        form.setSynced(true);
-        DatabaseManager.getDBInstance(getContext()).updateFormObject(form);
+    private String getFormUrl(final FormResult form) {
+        String formId = form.getFormId();
+        String url = null;
+
+        FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(formId);
+        if (formSchema != null && formSchema.getMicroService() != null) {
+            Microservice microService = formSchema.getMicroService();
+
+            String baseUrl = microService.getBaseUrl();
+            String route = microService.getRoute();
+            if (route.contains("form_id"))
+                route = route.replace("form_id", formSchema.getId());
+            if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
+                url = getContext().getResources().getString(R.string.form_field_mandatory,
+                        baseUrl, route);
+            }
+        }
+        return url;
+    }
+
+    private void updateForm(final FormResult form, final String response) {
+        try {
+
+            JSONObject outerObject = new JSONObject(response);
+            if (outerObject.has(Constants.RESPONSE_DATA)) {
+                JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
+                JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
+                form.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                form.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                form.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                form.setCreatedAt(dataObject.getLong(Constants.FormDynamicKeys.CREATED_DATE_TIME));
+
+                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
+
+                sendBroadCast(form.getFormId(), SyncAdapterUtils.EVENT_SYNC_COMPLETED);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendBroadCast(final String form, final String syncEvent) {
+        Intent intent = new Intent(syncEvent);
+        if (syncEvent.equals(SyncAdapterUtils.EVENT_SYNC_COMPLETED))
+            intent.putExtra(EXTRA_FORM_ID, form);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     private String readStream(final InputStream stream) throws IOException {

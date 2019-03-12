@@ -8,6 +8,7 @@
     android:paddingEnd="@dimen/dimen_15dp"
     android:singleLine="true"
     android:textAlignment="inherit"
+    android:gravity="center_vertical"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     android:textColor="@color/black"
     tools:ignore="PrivateResource" />

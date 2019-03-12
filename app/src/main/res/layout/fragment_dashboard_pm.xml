@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,35 +25,21 @@
                 android:id="@+id/rlt_pending_forms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_20dp"
+                android:layout_marginStart="@dimen/dimen_15dp"
                 android:layout_marginTop="@dimen/dimen_15dp"
-                android:layout_marginEnd="@dimen/dimen_20dp"
+                android:layout_marginEnd="@dimen/dimen_15dp"
                 android:background="@drawable/bg_rounded_rect_gray"
                 android:visibility="visible">
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/sync_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="@dimen/dimen_20dp"
-                    android:backgroundTint="@android:color/holo_red_dark"
-                    android:src="@android:drawable/stat_notify_sync"
-                    app:fabSize="mini"
-                    tools:ignore="RelativeOverlap" />
 
                 <TextView
                     android:id="@+id/txt_pending_forms"
                     style="@style/roboto_medium_light_grey_14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_12dp"
-                    android:layout_marginTop="@dimen/dimen_28dp"
-                    android:layout_marginBottom="@dimen/dimen_05dp"
-                    android:text="@string/pending_forms" />
+                    android:layout_margin="@dimen/dimen_12dp"
+                    android:text="@string/saved_forms_cat" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_dashboard_pending_forms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

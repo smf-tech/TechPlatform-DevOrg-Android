@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.Platform;
+import com.platform.R;
+import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
@@ -12,7 +14,7 @@ import com.platform.view.activities.LoginActivity;
 
 import java.lang.ref.WeakReference;
 
-public class LoginActivityPresenter implements PlatformRequestCallListener {
+public class LoginActivityPresenter implements UserRequestCallListener {
 
     private final String TAG = LoginActivityPresenter.class.getSimpleName();
     private WeakReference<LoginActivity> loginActivity;
@@ -46,6 +48,11 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
     }
 
     @Override
+    public void onUserProfileSuccessListener(String response) {
+
+    }
+
+    @Override
     public void onFailureListener(String message) {
         if (loginActivity == null || loginActivity.get() == null) {
             Log.e(TAG, "Activity returned null");
@@ -56,7 +63,7 @@ public class LoginActivityPresenter implements PlatformRequestCallListener {
 
         if (message != null) {
             Log.e(TAG, "Request failed :" + message);
-            loginActivity.get().showErrorMessage(message);
+            loginActivity.get().showErrorMessage(Platform.getInstance().getString(R.string.msg_auth_fail));
         }
     }
 

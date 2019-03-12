@@ -2,6 +2,7 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.LocaleData;
 
 @SuppressWarnings("unused")
 public class Validator {
@@ -10,19 +11,19 @@ public class Validator {
     private String type;
     @SerializedName("text")
     @Expose
-    private String text;
+    private LocaleData text;
+    @SerializedName("minValue")
+    @Expose
+    private Double minValue;
+    @SerializedName("maxValue")
+    @Expose
+    private Double maxValue;
     @SerializedName("minLength")
     @Expose
     private Integer minLength;
     @SerializedName("maxLength")
     @Expose
     private Integer maxLength;
-    @SerializedName("minValue")
-    @Expose
-    private Integer minValue;
-    @SerializedName("maxValue")
-    @Expose
-    private Integer maxValue;
     @SerializedName("allowDigits")
     @Expose
     private Boolean isDigitAllowed;
@@ -35,12 +36,36 @@ public class Validator {
         this.type = type;
     }
 
-    public String getText() {
+    public LocaleData getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(LocaleData text) {
         this.text = text;
+    }
+
+    public Boolean getDigitAllowed() {
+        return isDigitAllowed;
+    }
+
+    public void setDigitAllowed(Boolean digitAllowed) {
+        isDigitAllowed = digitAllowed;
+    }
+
+    public Double getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(Double minValue) {
+        this.minValue = minValue;
+    }
+
+    public Double getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(Double maxValue) {
+        this.maxValue = maxValue;
     }
 
     public Integer getMinLength() {
@@ -57,29 +82,5 @@ public class Validator {
 
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
-    }
-
-    public Boolean getDigitAllowed() {
-        return isDigitAllowed;
-    }
-
-    public void setDigitAllowed(Boolean digitAllowed) {
-        isDigitAllowed = digitAllowed;
-    }
-
-    public Integer getMinValue() {
-        return minValue;
-    }
-
-    public void setMinValue(Integer minValue) {
-        this.minValue = minValue;
-    }
-
-    public Integer getMaxValue() {
-        return maxValue;
-    }
-
-    public void setMaxValue(Integer maxValue) {
-        this.maxValue = maxValue;
     }
 }

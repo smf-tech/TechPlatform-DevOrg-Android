@@ -1,30 +1,41 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
+import com.platform.models.forms.FormResult;
 import com.platform.models.home.Home;
 import com.platform.models.home.Modules;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
-import com.platform.view.adapters.ViewPagerAdapter;
+import com.platform.view.activities.HomeActivity;
+import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
+import com.platform.view.customs.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
+
+@SuppressWarnings("WeakerAccess")
 public class DashboardFragment extends Fragment {
 
     private View dashboardView;
     private TabLayout tabLayout;
+    private boolean isSyncRequired;
+    private boolean isUserApproved;
     private final int[] tabIcons = {
             R.drawable.bg_circle_pink,
             R.drawable.bg_circle_orange,
@@ -35,6 +46,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
+    public static int mApprovalCount = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -50,22 +62,26 @@ public class DashboardFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
+            this.isSyncRequired = arguments.getBoolean("NEED_SYNC");
             Home homeData = (Home) arguments.getSerializable(Constants.Home.HOME_DATA);
             if (homeData != null) {
                 tabNames = homeData.getHomeData().getOnApproveModules();
+                setMenuResourceId();
 
-                if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.PENDING) ||
-                        homeData.getUserApproveStatus().equalsIgnoreCase(Constants.REJECTED)) {
+                if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+                        homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 
+                    isUserApproved = false;
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
-                    for (int i = 0; i < tabNames.size(); i++) {
+                    for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
-                            if (tabNames.get(i).getName().equalsIgnoreCase(module.getName())) {
-                                tabNames.get(i).setActive(true);
+                            if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
+                                tabName.setActive(true);
                             }
                         }
                     }
                 } else {
+                    isUserApproved = true;
                     for (int i = 0; i < tabNames.size(); i++) {
                         tabNames.get(i).setActive(true);
                     }
@@ -76,34 +92,72 @@ public class DashboardFragment extends Fragment {
         initViews();
     }
 
+    private void setMenuResourceId() {
+        for (int i = 0; i < tabNames.size(); i++) {
+            switch (tabNames.get(i).getName().getLocaleValue()) {
+                case Constants.Home.FORMS:
+                    tabNames.get(i).setResId(R.id.action_menu_forms);
+                    break;
+
+                case Constants.Home.MEETINGS:
+                    tabNames.get(i).setResId(R.id.action_menu_calendar);
+                    break;
+
+                case Constants.Home.APPROVALS:
+                    tabNames.get(i).setResId(R.id.action_menu_teams);
+                    break;
+
+                case Constants.Home.REPORTS:
+                    tabNames.get(i).setResId(R.id.action_menu_reports);
+                    break;
+            }
+        }
+    }
+
     private void initViews() {
-        ViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
+        CustomViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
+        int pageLimit = 4;
+        if (tabNames.size()<pageLimit) {
+            pageLimit = tabNames.size();
+        }
+        viewPager.setOffscreenPageLimit(pageLimit);
+        viewPager.disableScroll(isUserApproved);
         setupViewPager(viewPager);
 
         tabLayout = dashboardView.findViewById(R.id.tabs);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
+
+        if (getActivity() != null) {
+            ((HomeActivity) getActivity()).hideItem(tabNames);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
-            switch (modules.getName()) {
+            switch (modules.getName().getLocaleValue()) {
                 case Constants.Home.FORMS:
-                    adapter.addFragment(new PMFragment(), "Forms");
+                    Bundle b = new Bundle();
+                    b.putBoolean("NEED_SYNC", isSyncRequired);
+                    PMFragment fragment = new PMFragment();
+                    fragment.setArguments(b);
+                    adapter.addFragment(fragment);
                     break;
 
                 case Constants.Home.MEETINGS:
-                    adapter.addFragment(new MeetingsFragment(), "Meetings");
+                    adapter.addFragment(new MeetingsFragment());
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(TMFragment.newInstance(true), "Teams");
+                    adapter.addFragment(new TMUserPendingFragment());
                     break;
 
                 case Constants.Home.REPORTS:
-                    adapter.addFragment(ReportsFragment.newInstance(true), "Reports");
+                    adapter.addFragment(new ReportsFragment());
                     break;
             }
         }
@@ -113,15 +167,16 @@ public class DashboardFragment extends Fragment {
 
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
-            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
-                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
-            tabOne.setText(tabNames.get(i).getName());
+            if (getContext() == null) continue;
 
-            if (!tabNames.get(i).isActive()) {
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
-            } else {
-                tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
-            }
+            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
+                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
+            TextView tabView = tabOne.findViewById(R.id.tab);
+            tabView.setText(tabNames.get(i).getName().getLocaleValue());
+
+            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
+
+            drawTabCount(i, tabOne, tabView, pendingActionsCountView);
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -131,7 +186,129 @@ public class DashboardFragment extends Fragment {
 
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setEnabled(tabNames.get(i).isActive());
+            View child = tabStrip.getChildAt(i);
+            child.setId(i);
+            child.setEnabled(tabNames.get(i).isActive());
+            child.setOnClickListener(view -> {
+                switch (view.getId()) {
+                    case 0:
+                        AppEvents.trackAppEvent(getString(R.string.event_forms_tab_click));
+                        break;
+
+                    case 1:
+                        AppEvents.trackAppEvent(getString(R.string.event_meetings_tab_click));
+                        break;
+
+                    case 2:
+                        AppEvents.trackAppEvent(getString(R.string.event_approvals_tab_click));
+                        break;
+
+                    case 3:
+                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
+                        break;
+                }
+            });
+        }
+    }
+
+    private void drawTabCount(int i, View tabOne, TextView tabView, TextView pendingActionsCountView) {
+        if (getContext() == null) return;
+        if (!tabNames.get(i).isActive()) {
+            ((TextView) tabOne.findViewById(R.id.tab))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+            pendingActionsCountView.setVisibility(View.GONE);
+        } else {
+            pendingActionsCountView.setVisibility(View.VISIBLE);
+            int resId = tabIcons[0];
+            int pendingActionCount = 0;
+
+            switch (tabNames.get(i).getName().getLocaleValue()) {
+                case Constants.Home.FORMS:
+                    resId = tabIcons[0];
+                    pendingActionCount = getFormsPendingActionCount();
+                    break;
+
+                case Constants.Home.MEETINGS:
+                    resId = tabIcons[1];
+                    break;
+
+                case Constants.Home.APPROVALS:
+                    resId = tabIcons[2];
+                    pendingActionCount = mApprovalCount;
+                    break;
+
+                case Constants.Home.REPORTS:
+                    resId = tabIcons[3];
+                    break;
+            }
+
+            tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+            if (pendingActionCount != 0) {
+                pendingActionsCountView.setText(String.valueOf(pendingActionCount));
+                pendingActionsCountView.setTextColor(getResources().getColor(R.color.black,
+                        getContext().getTheme()));
+            } else {
+                pendingActionsCountView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private int getFormsPendingActionCount() {
+        DatabaseManager dbInstance = DatabaseManager.getDBInstance(getContext());
+        int count = 0;
+
+        List<FormResult> partiallySavedForms = dbInstance.getAllPartiallySavedForms();
+        if (partiallySavedForms != null) count = partiallySavedForms.size();
+
+        return count;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateBadgeCount();
+    }
+
+    private void updateBadgeCount() {
+        for (int i = 0; i < tabNames.size(); i++) {
+            if (getContext() == null) continue;
+
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                View tabCustomView = tab.getCustomView();
+                if (tabCustomView != null) {
+                    TextView tabView = tabCustomView.findViewById(R.id.tab);
+                    tabView.setText(tabNames.get(i).getName().getLocaleValue());
+
+                    TextView pendingActionsCountView = tabCustomView.findViewById(R.id.pending_action_count);
+
+                    drawTabCount(i, tabCustomView, tabView, pendingActionsCountView);
+                }
+            }
+        }
+    }
+
+    class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+
+        DashboardViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
         }
     }
 }

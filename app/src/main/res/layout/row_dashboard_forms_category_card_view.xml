@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_dashboard_form"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_46dp"
+    android:layout_height="@dimen/dimen_50dp"
     android:layout_marginStart="@dimen/dimen_12dp"
     android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_10dp"
@@ -55,4 +55,4 @@
             android:contentDescription="@string/content_description"
             android:src="@drawable/ic_plus" />
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

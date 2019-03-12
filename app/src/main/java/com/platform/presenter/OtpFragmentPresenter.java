@@ -2,9 +2,13 @@ package com.platform.presenter;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.PlatformRequestCallListener;
+import com.platform.Platform;
+import com.platform.R;
+import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
+import com.platform.models.login.LoginFail;
 import com.platform.models.login.LoginInfo;
+import com.platform.models.user.User;
 import com.platform.request.LoginRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -12,10 +16,10 @@ import com.platform.view.fragments.NewOtpFragment;
 
 import java.lang.ref.WeakReference;
 
-public class OtpFragmentPresenter implements PlatformRequestCallListener {
+@SuppressWarnings("CanBeFinal")
+public class OtpFragmentPresenter implements UserRequestCallListener {
 
-    @SuppressWarnings("CanBeFinal")
-//    private WeakReference<OtpFragment> otpFragment;
+    private boolean isOtpVerifyCall;
     private WeakReference<NewOtpFragment> otpFragment;
 
     public OtpFragmentPresenter(NewOtpFragment otpFragment) {
@@ -27,6 +31,7 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
             return;
         }
 
+        isOtpVerifyCall = false;
         LoginRequestCall loginRequestCall = new LoginRequestCall();
         loginRequestCall.setListener(this);
 
@@ -38,6 +43,7 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
         if (otpFragment.get().isAllFieldsValid()) {
             loginInfo.setOneTimePassword(otp);
 
+            isOtpVerifyCall = true;
             LoginRequestCall loginRequestCall = new LoginRequestCall();
             loginRequestCall.setListener(this);
 
@@ -54,25 +60,49 @@ public class OtpFragmentPresenter implements PlatformRequestCallListener {
 
         Login login = new Gson().fromJson(response, Login.class);
         if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
-//            otpFragment.get().startOtpTimer();
             Util.saveLoginObjectInPref(response);
         } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
             otpFragment.get().deRegisterOtpSmsReceiver();
         }
 
-        otpFragment.get().hideProgressBar();
-        otpFragment.get().showNextScreen(login);
+        if (isOtpVerifyCall) {
+            LoginRequestCall loginRequestCall = new LoginRequestCall();
+            loginRequestCall.setListener(this);
+            // Get User Profile
+            loginRequestCall.getUserProfile();
+        } else {
+            otpFragment.get().hideProgressBar();
+            otpFragment.get().showNextScreen(null);
+        }
     }
 
     @Override
-    public void onFailureListener(String message) {
+    public void onUserProfileSuccessListener(String response) {
+        User user = new Gson().fromJson(response, User.class);
+        if (response != null && user.getUserInfo() != null) {
+            Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+        }
+
+        isOtpVerifyCall = false;
+        otpFragment.get().hideProgressBar();
+        otpFragment.get().showNextScreen(user);
+    }
+
+    @Override
+    public void onFailureListener(String response) {
         if (otpFragment == null || otpFragment.get() == null) {
             return;
         }
 
         otpFragment.get().hideProgressBar();
         otpFragment.get().deRegisterOtpSmsReceiver();
-        otpFragment.get().showErrorMessage(message);
+
+        try {
+            LoginFail loginFail = new Gson().fromJson(response, LoginFail.class);
+            otpFragment.get().showErrorMessage(loginFail.getMessage());
+        } catch (Exception e) {
+            otpFragment.get().showErrorMessage(Platform.getInstance().getString(R.string.msg_failure));
+        }
     }
 
     @Override

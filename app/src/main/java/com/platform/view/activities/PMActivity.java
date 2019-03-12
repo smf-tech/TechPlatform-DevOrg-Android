@@ -2,7 +2,6 @@ package com.platform.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -21,6 +20,8 @@ import com.platform.view.adapters.PMAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @SuppressWarnings("CanBeFinal")
 public class PMActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener,
@@ -64,8 +65,6 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
             str = str.replace("\n", " ");
         }
 
-        findViewById(R.id.toolbar_more_action).setVisibility(View.GONE);
-
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
 
@@ -80,7 +79,7 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
             childList.clear();
 
             for (ProcessData data : process.getData()) {
-                String categoryName = data.getCategory().getName();
+                String categoryName = data.getCategory().getName().getLocaleValue();
                 if (childList.containsKey(categoryName)) {
                     List<ProcessData> processData = childList.get(categoryName);
                     if (processData != null) {
@@ -145,7 +144,7 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
             try {
                 Intent intent = new Intent(this, ProcessListActivity.class);
                 intent.putExtra(Constants.PM.PROCESS_ID, processData.getId());
-                intent.putExtra(Constants.PM.PROCESS_NAME, processData.getName());
+                intent.putExtra(Constants.PM.PROCESS_NAME, processData.getName().getLocaleValue());
                 startActivity(intent);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

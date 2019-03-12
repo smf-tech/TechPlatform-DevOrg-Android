@@ -11,11 +11,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
+import com.platform.R;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
@@ -43,11 +45,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Org Response:" + res);
+                    Log.d(TAG, "getOrganizations - Resp: " + res);
                     listener.onOrganizationsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -73,11 +76,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Org projects Response:" + res);
+                    Log.d(TAG, "getOrganizationProjects - Resp: " + res);
                     listener.onOrganizationProjectsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -105,11 +109,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Org roles Response:" + res);
+                    Log.d(TAG, "getOrganizationRoles - Resp: " + res);
                     listener.onOrganizationRolesFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -137,11 +142,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API Jurisdiction Response:" + res);
+                    Log.d(TAG, "getJurisdictionLevelData - Resp: " + res);
                     listener.onJurisdictionFetched(res, levelName);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -169,12 +175,12 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.i(TAG, "API submit profile Response:" + res);
+                    Log.d(TAG, "submitUserProfile - Resp: " + res);
                     listener.onProfileUpdated(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener("");
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
@@ -212,6 +218,7 @@ public class ProfileRequestCall {
                 body.addProperty(Constants.Login.USER_ORG_ID, userInfo.getOrgId());
                 body.addProperty(Constants.Login.USER_ASSOCIATE_TYPE, userInfo.getType());
                 body.addProperty(Constants.Login.USER_ROLE_ID, userInfo.getRoleIds());
+                body.addProperty(Constants.Login.USER_PROFILE_PIC, userInfo.getProfilePic());
 
                 // Add project Ids
                 JsonArray projectIdArray = new JsonArray();
@@ -267,6 +274,10 @@ public class ProfileRequestCall {
 
                 body.add(Constants.Login.USER_LOCATION, locationObj);
 
+                PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+                String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
+                body.addProperty(Constants.Login.USER_FIREBASE_ID, token);
+
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -275,4 +286,5 @@ public class ProfileRequestCall {
         Log.i(TAG, "BODY: " + body);
         return body;
     }
+
 }

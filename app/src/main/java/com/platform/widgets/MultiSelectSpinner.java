@@ -2,7 +2,6 @@ package com.platform.widgets;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -10,8 +9,10 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
+
 @SuppressWarnings("unused")
-public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinner implements
+public class MultiSelectSpinner extends androidx.appcompat.widget.AppCompatSpinner implements
         DialogInterface.OnMultiChoiceClickListener, DialogInterface.OnCancelListener {
 
     private List<String> stringList;
@@ -49,6 +50,10 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
     @Override
     public void onCancel(DialogInterface dialog) {
         // refresh text on spinner
+        setPreFilledText();
+    }
+
+    public void setPreFilledText() {
         StringBuilder spinnerSelectedText = new StringBuilder();
         for (int i = 0; i < stringList.size(); i++) {
             if (selectedValues[i]) {
@@ -95,6 +100,10 @@ public class MultiSelectSpinner extends android.support.v7.widget.AppCompatSpinn
         }
 
         return true;
+    }
+
+    public void setSelectedValues(boolean[] selectedValues) {
+        this.selectedValues = selectedValues;
     }
 
     public void setItems(List<String> items, String allText,

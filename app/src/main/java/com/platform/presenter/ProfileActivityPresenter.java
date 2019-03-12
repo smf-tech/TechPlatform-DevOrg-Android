@@ -1,10 +1,14 @@
 package com.platform.presenter;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.R;
+import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationProjectsResponse;
@@ -12,14 +16,19 @@ import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
+import com.platform.request.ImageRequestCall;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
 import com.platform.view.activities.ProfileActivity;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class ProfileActivityPresenter implements ProfileRequestCallListener {
+public class ProfileActivityPresenter implements ProfileRequestCallListener,
+        ImageRequestCallListener {
 
     private final String TAG = ProfileActivityPresenter.class.getName();
     private WeakReference<ProfileActivity> profileActivity;
@@ -60,14 +69,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
         requestCall.getOrganizationRoles(orgId);
     }
 
-//    public void getStates() {
-//        ProfileRequestCall requestCall = new ProfileRequestCall();
-//        requestCall.setListener(this);
-//
-//        profileActivity.get().showProgressBar();
-//        requestCall.getStates();
-//    }
-
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
@@ -76,12 +77,40 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
         requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
     }
 
+    @SuppressLint("StaticFieldLeak")
+    public void uploadProfileImage(File file, String type) {
+        ImageRequestCall requestCall = new ImageRequestCall();
+        requestCall.setListener(this);
+
+        profileActivity.get().showProgressBar();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, null);
+                return null;
+            }
+        }.execute();
+    }
+
     @Override
     public void onProfileUpdated(String response) {
         User user = new Gson().fromJson(response, User.class);
 
         // Save response
         if (response != null && user.getUserInfo() != null) {
+
+            UserInfo oldUserInfo = Util.getUserObjectFromPref();
+            if (oldUserInfo != null) {
+                String roleIds = oldUserInfo.getRoleIds();
+                String newRoles = user.getUserInfo().getRoleIds();
+                Log.d(TAG, "Use roles: (old, new) => " + roleIds + " " + newRoles);
+
+                if (!TextUtils.isEmpty(newRoles) && !newRoles.equals(roleIds)) {
+                    Log.d(TAG, "Deleting old records." + roleIds);
+                    Util.removeDatabaseRecords(false);
+                }
+            }
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
 
@@ -93,11 +122,12 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     public void onOrganizationsFetched(String response) {
         profileActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            OrganizationResponse organizationResponse = new Gson().fromJson(response, OrganizationResponse.class);
-            if (organizationResponse != null && organizationResponse.getData() != null
-                    && !organizationResponse.getData().isEmpty()
-                    && organizationResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizations(organizationResponse.getData());
+            Util.saveUserOrgInPref(response);
+            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
+            if (orgResponse != null && orgResponse.getData() != null
+                    && !orgResponse.getData().isEmpty()
+                    && orgResponse.getData().size() > 0) {
+                profileActivity.get().showOrganizations(orgResponse.getData());
             }
         }
     }
@@ -114,8 +144,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
                     && !jurisdictionLevelResponse.getData().isEmpty()
                     && jurisdictionLevelResponse.getData().size() > 0) {
 
-//                Util.saveUserLocationJurisdictionLevel(level);
-//                Util.saveJurisdictionLevelData(response);
                 profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
             }
         }
@@ -124,13 +152,15 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onOrganizationProjectsFetched(String response) {
         profileActivity.get().hideProgressBar();
+
         if (!TextUtils.isEmpty(response)) {
-            OrganizationProjectsResponse organizationProjectsResponse
+            Util.saveUserProjectsInPref(response);
+            OrganizationProjectsResponse projectsResponse
                     = new Gson().fromJson(response, OrganizationProjectsResponse.class);
-            if (organizationProjectsResponse != null && organizationProjectsResponse.getData() != null
-                    && !organizationProjectsResponse.getData().isEmpty()
-                    && organizationProjectsResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizationProjects(organizationProjectsResponse.getData());
+
+            if (projectsResponse != null && projectsResponse.getData() != null
+                    && !projectsResponse.getData().isEmpty() && projectsResponse.getData().size() > 0) {
+                profileActivity.get().showOrganizationProjects(projectsResponse.getData());
             }
         }
     }
@@ -138,31 +168,57 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener {
     @Override
     public void onOrganizationRolesFetched(String response) {
         profileActivity.get().hideProgressBar();
+
         if (!TextUtils.isEmpty(response)) {
-            OrganizationRolesResponse organizationRolesResponse
+            Util.saveUserRoleInPref(response);
+            OrganizationRolesResponse orgRolesResponse
                     = new Gson().fromJson(response, OrganizationRolesResponse.class);
-            if (organizationRolesResponse != null && organizationRolesResponse.getData() != null
-                    && !organizationRolesResponse.getData().isEmpty()
-                    && organizationRolesResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizationRoles(organizationRolesResponse.getData());
+
+            if (orgRolesResponse != null && orgRolesResponse.getData() != null &&
+                    !orgRolesResponse.getData().isEmpty() && orgRolesResponse.getData().size() > 0) {
+                profileActivity.get().showOrganizationRoles(orgRolesResponse.getData());
             }
         }
     }
 
     @Override
     public void onFailureListener(String message) {
-        Log.i(TAG, "Fail" + message);
-        profileActivity.get().hideProgressBar();
-        profileActivity.get().showErrorMessage(message);
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            profileActivity.get().showErrorMessage(message);
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        Log.i(TAG, "Error" + error);
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            if (error != null) {
+                profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+            }
+        }
+    }
+
+    @Override
+    public void onImageUploadedListener(final String response, final String formName) {
+
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+        profileActivity.get().runOnUiThread(() -> Util.showToast(
+                profileActivity.get().getResources().getString(R.string.image_upload_success), profileActivity.get()));
         profileActivity.get().hideProgressBar();
 
-        if (error != null) {
-            profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+
+                profileActivity.get().onImageUploaded(url);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 }

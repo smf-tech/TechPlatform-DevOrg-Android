@@ -2,13 +2,14 @@ package com.platform.view.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.platform.utility.LocaleManager;
 import com.platform.utility.Util;
 
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 

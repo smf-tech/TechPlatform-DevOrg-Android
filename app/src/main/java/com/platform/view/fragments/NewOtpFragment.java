@@ -3,11 +3,12 @@ package com.platform.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +22,20 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
+import com.platform.models.user.User;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.receivers.SmsReceiver;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,33 +44,34 @@ import com.platform.view.activities.ProfileActivity;
  */
 @SuppressWarnings("FieldCanBeLocal")
 public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
-        SmsReceiver.OtpSmsReceiverListener {
+        SmsReceiver.IOtpSmsReceiverListener {
 
     private static LoginInfo sLoginInfo;
     private long currentSec = 0;
 
+    private boolean isResendOtpRequest;
     private boolean isSmsReceiverRegistered;
-    private boolean isSmSPermissionNotDenied;
+    private boolean isSmsPermissionNotDenied;
+
+    private SmsReceiver smsReceiver;
+    private OtpFragmentPresenter otpPresenter;
 
     private CountDownTimer timer;
-    private OtpFragmentPresenter otpPresenter;
-    private SmsReceiver smsReceiver;
     private Button mBtnVerify;
     private TextView tvOtpTimer;
     private TextView tvOtpMessage;
+    private TextView tvResendOtp;
     private EditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
-
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
-    private final String TAG = NewOtpFragment.class.getSimpleName();
+
+    private StringBuilder sb;
     private String mMobileNumber;
 
-    public NewOtpFragment() {
-        // Required empty public constructor
-    }
+    private final String TAG = NewOtpFragment.class.getSimpleName();
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         smsReceiver = new SmsReceiver();
         smsReceiver.setListener(this);
@@ -90,6 +99,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AppEvents.trackAppEvent(getString(R.string.event_otp_screen_visit));
 
         tvOtpMessage = view.findViewById(R.id.enter_mobile_label);
 
@@ -100,8 +110,162 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp5 = view.findViewById(R.id.otp_5);
         mOtp6 = view.findViewById(R.id.otp_6);
 
-        TextView tvResendOtp = view.findViewById(R.id.tv_resend_otp);
-        tvResendOtp.setVisibility(View.VISIBLE);
+        sb = new StringBuilder();
+        mOtp1.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 0 & mOtp1.length() == 1) {
+                    sb.append(s);
+                    mOtp1.clearFocus();
+                    mOtp2.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 0) {
+                    mOtp1.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 0) {
+                    sb.deleteCharAt(0);
+                    mOtp1.requestFocus();
+                }
+            }
+        });
+
+        mOtp2.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 1 & mOtp2.length() == 1) {
+                    sb.append(s);
+                    mOtp2.clearFocus();
+                    mOtp3.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 1) {
+                    mOtp2.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 1) {
+                    sb.deleteCharAt(1);
+                    mOtp2.clearFocus();
+                    mOtp1.requestFocus();
+                }
+            }
+        });
+
+        mOtp3.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 2 & mOtp3.length() == 1) {
+                    sb.append(s);
+                    mOtp3.clearFocus();
+                    mOtp4.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 2) {
+                    mOtp3.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 2) {
+                    sb.deleteCharAt(2);
+                    mOtp3.clearFocus();
+                    mOtp2.requestFocus();
+                }
+            }
+        });
+
+        mOtp4.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 3 & mOtp4.length() == 1) {
+                    sb.append(s);
+                    mOtp4.clearFocus();
+                    mOtp5.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 3) {
+                    mOtp4.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 3) {
+                    sb.deleteCharAt(3);
+                    mOtp4.clearFocus();
+                    mOtp3.requestFocus();
+                }
+            }
+        });
+
+        mOtp5.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 4 & mOtp5.length() == 1) {
+                    sb.append(s);
+                    mOtp5.clearFocus();
+                    mOtp6.requestFocus();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 4) {
+                    mOtp5.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 4) {
+                    sb.deleteCharAt(4);
+                    mOtp5.clearFocus();
+                    mOtp4.requestFocus();
+                }
+            }
+        });
+
+        mOtp6.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (sb.length() == 5 & mOtp6.length() == 1) {
+                    sb.append(s);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                if (sb.length() == 5) {
+                    mOtp6.requestFocus();
+                }
+
+                if (TextUtils.isEmpty(s) && sb.length() > 5) {
+                    sb.deleteCharAt(5);
+                    mOtp6.clearFocus();
+                    mOtp5.requestFocus();
+                }
+            }
+        });
+
+        tvResendOtp = view.findViewById(R.id.tv_resend_otp);
+        tvResendOtp.setVisibility(View.GONE);
         tvResendOtp.setOnClickListener(this);
 
         tvOtpTimer = view.findViewById(R.id.tv_otp_timer);
@@ -117,25 +281,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
         if (sLoginInfo != null && !sLoginInfo.getMobileNumber().contentEquals("")) {
             mMobileNumber = sLoginInfo.getMobileNumber();
-
             tvOtpMessage.setText(getString(R.string.please_type_the_verification_code_n_sent_to, mMobileNumber));
-
-            if (!sLoginInfo.getOneTimePassword().isEmpty()) {
-                final String OTP = sLoginInfo.getOneTimePassword();
-                char[] chars = OTP.toCharArray();
-                if (chars.length == 6) {
-                    mOtp1.setText(String.valueOf(chars[0]));
-                    mOtp2.setText(String.valueOf(chars[1]));
-                    mOtp3.setText(String.valueOf(chars[2]));
-                    mOtp4.setText(String.valueOf(chars[3]));
-                    mOtp5.setText(String.valueOf(chars[4]));
-                    mOtp6.setText(String.valueOf(chars[5]));
-                }
-                tvOtpTimer.setVisibility(View.GONE);
-            } else {
-                checkSmsPermission();
-                tvOtpTimer.setVisibility(View.VISIBLE);
-            }
+            checkSmsPermission();
         }
     }
 
@@ -143,32 +290,66 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_verify:
-                if (timer != null) {
-                    timer.cancel();
-                }
-
-                tvOtpTimer.setText("");
-                tvOtpTimer.setVisibility(View.GONE);
-                String otp = getOtp();
-                otpPresenter.getLoginToken(sLoginInfo, otp);
+                verifyUser();
                 break;
 
             case R.id.tv_resend_otp:
                 clearOtp();
-
-                if (timer != null) {
-                    timer.cancel();
-                }
+                startOtpTimer();
 
                 if (!isSmsReceiverRegistered) {
                     registerOtpSmsReceiver();
                 }
 
+                AppEvents.trackAppEvent(getString(R.string.event_resend_opt_click));
                 if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
                     sLoginInfo.setOneTimePassword("");
+                    isResendOtpRequest = true;
                     otpPresenter.resendOtp(sLoginInfo);
                 }
                 break;
+        }
+    }
+
+    private void verifyUser() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        tvOtpTimer.setText("");
+        tvOtpTimer.setVisibility(View.GONE);
+
+        String otp = getOtp();
+        otpPresenter.getLoginToken(sLoginInfo, otp);
+    }
+
+    private void setOtp(final String msg) {
+        try {
+            char[] otpChars = msg.toCharArray();
+            if (otpChars.length == 6) {
+                mOtp1.setText(String.valueOf(otpChars[0]));
+                mOtp2.setText(String.valueOf(otpChars[1]));
+                mOtp3.setText(String.valueOf(otpChars[2]));
+                mOtp4.setText(String.valueOf(otpChars[3]));
+                mOtp5.setText(String.valueOf(otpChars[4]));
+                mOtp6.setText(String.valueOf(otpChars[5]));
+            }
+
+            if (timer != null) {
+                timer.cancel();
+            }
+
+            hideProgressBar();
+
+            AppEvents.trackAppEvent(getString(R.string.event_auto_read_success));
+            tvOtpMessage.setText(getResources().getString(R.string.msg_verify_otp_text));
+            tvOtpTimer.setVisibility(View.GONE);
+
+            // Verify user automatically once OTP received
+            verifyUser();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -179,6 +360,11 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp4.setText("");
         mOtp5.setText("");
         mOtp6.setText("");
+
+        mOtp1.requestFocus();
+        if (sb != null) {
+            sb = new StringBuilder();
+        }
     }
 
     private String getOtp() {
@@ -194,16 +380,15 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         return String.valueOf(getOtp()).trim().length() == 6;
     }
 
-    @Override
-    public void smsReceive(String otp) {
-
-    }
-
     private void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
-            tvOtpTimer.setText("");
-            tvOtpTimer.setVisibility(View.GONE);
+            //tvOtpTimer.setText("");
+
+            showProgressBar();
+            tvOtpTimer.setVisibility(View.VISIBLE);
+            tvResendOtp.setVisibility(View.GONE);
+            timer = null;
         }
 
         timer = new CountDownTimer(30000, 1000) {
@@ -213,7 +398,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 if (getActivity() != null) {
                     currentSec = l / 1000;
                     tvOtpTimer.setText(getString(R.string.otp_timeout_text, "" + currentSec));
-                    if (isSmSPermissionNotDenied) {
+                    if (isSmsPermissionNotDenied) {
                         tvOtpMessage.setText(R.string.msg_waiting_for_otp_text);
                     }
                 }
@@ -222,7 +407,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             @Override
             public void onFinish() {
                 if (getActivity() != null) {
-                    if (isSmSPermissionNotDenied) {
+                    if (isSmsPermissionNotDenied) {
+                        tvResendOtp.setVisibility(View.VISIBLE);
                         tvOtpMessage.setText(R.string.msg_otp_verification_timeout);
                     }
                     resetTimer();
@@ -241,9 +427,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
+                getActivity().registerReceiver(smsReceiver, new IntentFilter(Constants.SMS_RECEIVE_IDENTIFIER));
                 startOtpTimer();
-                getActivity().registerReceiver(smsReceiver,
-                        new IntentFilter(Constants.SMS_RECEIVE_IDENTIFIER));
                 isSmsReceiverRegistered = true;
             }
         } catch (Exception e) {
@@ -264,8 +449,22 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     private void checkSmsPermission() {
         if (Permissions.isSMSPermissionGranted(getActivity(), this)) {
-            isSmSPermissionNotDenied = true;
+            isSmsPermissionNotDenied = true;
             registerOtpSmsReceiver();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case Constants.SMS_RECEIVE_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isSmsPermissionNotDenied = true;
+                    registerOtpSmsReceiver();
+                }
+                break;
         }
     }
 
@@ -293,26 +492,43 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     @Override
     public <T> void showNextScreen(T data) {
-        if (data != null) {
-            try {
-                Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
+        if (isResendOtpRequest) {
+            isResendOtpRequest = false;
+            return;
+        }
 
-                OtpActivity activity = (OtpActivity) getActivity();
-                if (activity != null) {
-                    activity.startActivity(intent);
-                    activity.finish();
-                }
-            } catch (Exception e) {
-                Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");
+        User userObj = (User) data;
+        Intent intent;
+        if (userObj != null && !TextUtils.isEmpty(userObj.getUserInfo().getOrgId())) {
+            intent = new Intent(getActivity(), HomeActivity.class);
+        } else {
+            intent = new Intent(getActivity(), ProfileActivity.class);
+        }
+
+        try {
+            Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
+
+            OtpActivity activity = (OtpActivity) getActivity();
+            if (activity != null) {
+                activity.startActivity(intent);
+                activity.finish();
             }
+        } catch (Exception e) {
+            Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");
         }
     }
 
     @Override
     public void showErrorMessage(String result) {
         Util.showToast(result, this);
+    }
+
+    @Override
+    public void smsReceive(String otp) {
+        Log.d(TAG, "OTP: " + otp);
+        setOtp(otp);
     }
 }

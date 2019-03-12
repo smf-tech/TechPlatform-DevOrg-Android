@@ -2,13 +2,24 @@ package com.platform.models.reports;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @SuppressWarnings("unused")
+@Entity
 public class ReportData {
 
+    @PrimaryKey
+    @ColumnInfo(name = "id")
     @SerializedName("_id")
     @Expose
-    private String id;
+    @NonNull
+    private String id = "";
     @SerializedName("name")
     @Expose
     private String name;
@@ -18,24 +29,30 @@ public class ReportData {
     @SerializedName("url")
     @Expose
     private String url;
+    @SerializedName("category_id")
+    @Expose
+    private String categoryId;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "category")
     @SerializedName("category")
     @Expose
-    private String category;
+    private ReportCategory category;
     @SerializedName("active")
     @Expose
     private String active;
-    @SerializedName("updated_at")
+    @SerializedName("updatedDateTime")
     @Expose
-    private String updatedAt;
-    @SerializedName("created_at")
+    private Long updatedAt;
+    @SerializedName("createdDateTime")
     @Expose
-    private String createdAt;
+    private Long createdAt;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -63,11 +80,11 @@ public class ReportData {
         this.url = url;
     }
 
-    public String getCategory() {
+    public ReportCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ReportCategory category) {
         this.category = category;
     }
 
@@ -79,19 +96,27 @@ public class ReportData {
         this.active = active;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

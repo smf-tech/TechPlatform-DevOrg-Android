@@ -12,18 +12,18 @@ public class FormStatusFragmentPresenter {
         this.listener = listener;
     }
 
-    public void getAllFormMasters() {
+    public void getAllProcesses() {
         FormStatusRequestCall requestCall = new FormStatusRequestCall();
         requestCall.setListener(listener);
 
-        requestCall.getFormMasters();
+        requestCall.getProcesses();
     }
 
-    public void getSubmittedFormsOfMaster(String formId) {
+    public void getSubmittedForms(String formId) {
         FormStatusRequestCall requestCall = new FormStatusRequestCall();
         requestCall.setListener(listener);
 
-        requestCall.getSubmittedFormsOfMaster(formId);
+        requestCall.getSubmittedForms(formId);
     }
 
     public void setListener(FormStatusCallListener listener) {

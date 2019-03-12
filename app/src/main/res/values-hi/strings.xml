@@ -6,30 +6,37 @@
     <string name="select_lang">भाषा चुनें</string>
 
     <string name="ok">ओके</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
     <string name="cancel">रद्द</string>
     <string name="no_thanks">धन्यवाद</string>
     <string name="update">अद्यतन करें</string>
 
+    <!--Error Messages-->
+    <string name="msg_failure">ऑपरेशन करते समय कुछ गड़बड़ हो गई थी, कृपया बाद में पुनः प्रयास करें।</string>
+
     <!--App Update-->
     <string name="title_new_version_available">नया संस्करण उपलब्ध है</string>
     <string name="msg_update_app">जारी रखने के लिए कृपया नए संस्करण में एप्लिकेशन अपडेट करें।</string>
+    <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>
-    <string name="msg_manual_otp">यदि हम एसएमएस से स्वचालित रूप से OTP का पता लगाने में विफल रहते हैं, तो नीचे दिए गए OTP को दर्ज करें</string>
+    <!--<string name="msg_manual_otp">यदि हम एसएमएस से स्वचालित रूप से OTP का पता लगाने में विफल रहते हैं, तो नीचे दिए गए OTP को दर्ज करें</string>-->
     <string name="msg_mobile_number_is_empty">मोबाइल नंबर खाली है</string>
     <string name="msg_mobile_number_is_invalid">मान्य मोबाइल नंबर नहीं</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
     <string name="label_mobile_no">मोबाइल नंबर *</string>
-    <string name="label_forget_your_pass">क्या आप पासवर्ड भूल गए?</string>
     <string name="label_login">लॉगइन करें</string>
     <string name="label_time">पहर</string>
     <string name="resend"> <u>OTP को फिर से भेजें</u></string>
-    <string name="check_otp">कृपया OTP जांचें</string>
+    <!--<string name="check_otp">कृपया OTP जांचें</string>-->
     <string name="otp_timeout_text">समय आउट %1$s सेकंड</string>
     <string name="msg_otp_verification_timeout">OTP सत्यापन का समय समाप्त हो गया, कृपया फिरसे कोशिश करें।</string>
-    <string name="msg_waiting_for_otp_text">आपके उल्लिखित मोबाइल पर भेजे गए OTP के लिए प्रतिक्षा कर रहे हैं।</string>
+    <string name="msg_waiting_for_otp_text">आपके मोबाइल नंबर पर भेजे गए ओटीपी का इंतजार है।</string>
+    <string name="msg_verify_otp_text">अपना मोबाइल नंबर सत्यापित करने के लिए सत्यापन बटन पर क्लिक करें।</string>
     <string name="msg_logout">क्या आप लॉगआउट करना चाहते हैं?</string>
+    <string name="msg_auth_fail">सर्वर समस्या, कृपया बाद में पुनः प्रयास करें।</string>
 
     <!--Registration-->
     <string name="registration_title">पंजीकरण</string>
@@ -51,7 +58,6 @@
     <string name="mandatory_project">परियोजना *</string>
     <string name="project">परियोजना</string>
     <string name="mandatory_role">भूमिका *</string>
-    <string name="role">भूमिका</string>
     <string name="mandatory_state">राज्य *</string>
     <string name="state">राज्य</string>
     <string name="mandatory_district">जिला *</string>
@@ -66,6 +72,7 @@
     <string name="school">संरचना का नाम</string>
     <string name="profile_pic">प्रोफ़ाइल चित्र जोड़ें</string>
     <string name="update_profile">अपडेट प्रोफाइल</string>
+    <string name="update_profile_pic">प्रोफ़ाइल चित्र अपडेट करें</string>
     <string name="update_data_string">क्या आप डेटा अपडेट करना चाहते हैं?</string>
     <string name="approve_profile">आप अभी तक स्वीकृत नहीं हैं</string>
     <!--<string name="approve_profile2">आपको मंजूर होगा।</string>-->
@@ -93,7 +100,7 @@
     <string name="menu_community">मेरा समाज</string>
     <string name="menu_forms">फार्म</string>
     <string name="menu_teams">टीम</string>
-    <string name="menu_calendar">मेरा कैलेंडर</string>
+    <string name="menu_calendar">बैठक</string>
     <string name="menu_assets">संपत्ति</string>
     <string name="menu_reports">रिपोर्ट</string>
 
@@ -110,20 +117,17 @@
     <string name="menu_settings">सेटिंग्स</string>
     <string name="menu_logout">लोगआउट</string>
 
-    <string name="my_profile">मेरी प्रोफाइल</string>
-    <string name="add_location">स्थान जोड़ना</string>
-    <string name="update_user_data">डेटा को अद्यतन करें</string>
-    <string name="notification">अधिसूचना</string>
-    <string name="share_app">ऐप शेयर करें</string>
+    <!--<string name="add_location">स्थान जोड़ना</string>-->
+    <!--<string name="update_user_data">डेटा को अद्यतन करें</string>-->
+    <!--<string name="share_app">ऐप शेयर करें</string>-->
+
     <string name="drawer_open">दराज खोलें</string>
     <string name="drawer_close">दराज को बंद करें</string>
     <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="locked">बंद</string>
 
-    <string name="call_on_hangout">Hangout पर कॉल करें</string>
-    <string name="call_on_phone">फोन पर कॉल करें (10AM से 6PM)</string>
-
     <!--Home-->
+    <string name="tab_dashboard">होम</string>
     <string name="tab_connect">जुडिये</string>
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
@@ -131,7 +135,7 @@
     <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
-    <string name="pending_forms">लंबित प्रपत्र</string>
+    <string name="saved_forms_cat">सहेजे गए फ़ॉर्म</string>
     <string name="submit">जमा करें</string>
     <string name="no_data_available">डेटा उपलब्ध नहीं है</string>
 
@@ -140,6 +144,11 @@
     <string name="view_all_reports">सभी रिपोर्ट देखें</string>
 
     <!--Team Management-->
+    <string name="cat_pending">अपूर्ण</string>
+    <string name="cat_approved">मंजूर</string>
+    <string name="cat_rejected">अस्वीकृत</string>
+    <string name="approvals">स्वीकृति</string>
+    <string name="who_working">कौन काम कर रहा है</string>
     <string name="team_user_approval">उपयोगकर्ता स्वीकृति</string>
 
     <!--App Error Message-->
@@ -148,16 +157,31 @@
     <string name="msg_image_capture_not_support">वूप्स - आपका डिवाइस छवि कैप्चरिंग का समर्थन नहीं करता है!</string>
     <string name="msg_take_photo_error">ऐप में फोटो लेने की अनुमति नहीं है, कृपया इसकी अनुमति दें।</string>
 
-    <string name="action_forms">प्रपत्र</string>
+    <!--Forms-->
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">प्रपत्र</string>
     <string name="no_records_available">डेटा उपलब्ध नहीं है!</string>
-  
     <string name="verification_code">पुष्टि संख्या</string>
     <string name="verify">सत्यापित करें</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s पर भेजा गया सत्यापन कोड टाइप करें</string>
     <string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>
     <string name="reports">रिपोर्ट</string>
+    <string name="submitted_form_count">प्रस्तुत प्रपत्रों की कुल गणना : %1$s</string>
+    <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को सहेजना चाहते हैं?</string>
+    <string name="form_saved_offline">आप ऑफ़लाइन हैं, फ़ॉर्म ऑफ़लाइन सहेजे गए हैं।</string>
+    <string name="form_submit_success">फॉर्म सफलतापूर्वक सबमिट किया गया!</string>
+    <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
+    <string name="no_internet">इंटरनेट उपलब्ध नहीं है!</string>
+    <string name="status_update_success">स्थिति सफलतापूर्वक अपडेट की गई!</string>
+    <string name="new_forms">नया</string>
+    <string name="saved_forms">बचाया</string>
+    <string name="submitted_forms">प्रस्तुत</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
+    <string name="msg_no_pending_req">अनुमोदन के लिए कोई लंबित अनुरोध नहीं हैं।</string>
 
-    <string name="coming_soon">Coming Soon&#8230;</string>
+    <string name="coming_soon">जल्द आ रहा है&#8230;</string>
+    <string name="notifications">सूचनाएं</string>
+    <string name="msg_rejection_reason">क्या आप वाकई इस अनुरोध को अस्वीकार करना चाहते हैं??</string>
+    <string name="msg_rejection_comment">अस्वीकृति का कारण</string>
+    <string name="msg_error_rejection_comment_needed">अस्वीकृति कारण की आवश्यकता</string>
 </resources>

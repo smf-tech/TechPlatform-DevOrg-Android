@@ -21,7 +21,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.presenter.LoginActivityPresenter;
-import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
@@ -45,12 +45,12 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        SyncAdapterUtils.createSyncAccount(this);
-
         initViews();
 
         loginInfo = new LoginInfo();
         loginPresenter = new LoginActivityPresenter(this);
+
+        AppEvents.trackAppEvent(getString(R.string.event_login_screen_visit));
     }
 
     private void initViews() {
@@ -190,7 +190,8 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public <T> void showNextScreen(T data) {
         if (data != null && ((Login) data).getLoginData() != null) {
-            loginInfo.setOneTimePassword(String.valueOf(((Login) data).getLoginData().getOtp()));
+            loginInfo.setOneTimePassword(((Login) data).getLoginData().getOtp());
+            AppEvents.trackAppEvent(getString(R.string.event_login_success));
 
             try {
                 Intent intent = new Intent(this, OtpActivity.class);
@@ -205,6 +206,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public void showErrorMessage(String result) {
         Util.showToast(result, this);
+        AppEvents.trackAppEvent(getString(R.string.event_login_failure));
     }
 
     private String getUserMobileNumber() {
@@ -244,7 +246,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE) {
-            Util.hideKeyboard (etUserMobileNumber);
+            Util.hideKeyboard(etUserMobileNumber);
 
             if (isAllInputsValid()) {
                 goToVerifyOtpScreen();

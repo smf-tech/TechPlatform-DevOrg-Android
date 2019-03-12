@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.fragments.CompletedFormsFragment">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/no_records_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:text="@string/no_records_available"
         android:textColor="@android:color/black" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/forms_list"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/lnr_dashboard_forms_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_16dp"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:layout_marginBottom="@dimen/dimen_05dp"
+            android:orientation="vertical" />
+    </ScrollView>
 </RelativeLayout>

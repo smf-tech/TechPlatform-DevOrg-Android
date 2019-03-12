@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +13,13 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.reports.ReportData;
+import com.platform.utility.AppEvents;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHolder> {
@@ -37,7 +39,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         TextView title;
         RelativeLayout container;
 
-        public ViewHolder(@NonNull final View itemView) {
+        ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.tv_report_title);
@@ -58,7 +60,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ReportsAdapter.ViewHolder viewHolder, int i) {
         ReportData reportData = mListDataChild.get(i);
         viewHolder.title.setText(reportData.getName());
-        viewHolder.container.setOnClickListener(v -> startWebView(reportData.getUrl()));
+        viewHolder.container.setOnClickListener(v -> startWebView(reportData.getName(), reportData.getUrl()));
     }
 
     @Override
@@ -67,12 +69,13 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
     }
 
     @SuppressWarnings("deprecation")
-    private void startWebView(String url) {
+    private void startWebView(String name, String url) {
         Uri uri = Uri.parse(url);
         if (uri == null) {
             return;
         }
 
+        AppEvents.trackAppEvent(mContext.getString(R.string.event_report_click, name));
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
         customTabsIntent.intent.setData(uri);
         customTabsIntent.intent.putExtra(EXTRA_CUSTOM_TABS_TOOLBAR_COLOR,

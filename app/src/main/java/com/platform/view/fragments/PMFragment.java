@@ -1,12 +1,10 @@
 package com.platform.view.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,22 +17,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.models.SavedForm;
+import com.platform.models.forms.FormResult;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.PMFragmentPresenter;
-import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.PendingFormsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-import static com.platform.utility.Util.saveFormCategoryForSync;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 
 @SuppressWarnings("CanBeFinal")
 public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
@@ -45,7 +56,19 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private LinearLayout lnrOuter;
     private RecyclerView rvPendingForms;
     private RelativeLayout rltPendingForms;
-    private final String TAG = PMFragment.class.getName();
+    private PendingFormsAdapter pendingFormsAdapter;
+    private List<FormResult> mSavedForms;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null) {
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(true);
+        }
+
+        AppEvents.trackAppEvent(getString(R.string.event_forms_screen_visit));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -59,10 +82,77 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        boolean isSyncRequired = false;
+        if (getArguments() != null) {
+            isSyncRequired = getArguments().getBoolean("NEED_SYNC");
+        }
+
         init();
 
-        PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-        pmFragmentPresenter.getAllProcess();
+        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+        if (processDataArrayList != null && !processDataArrayList.isEmpty() && !isSyncRequired) {
+            Processes processes = new Processes();
+            processes.setData(processDataArrayList);
+
+            populateData(processes);
+
+        } else {
+            if (Util.isConnected(getContext())) {
+                PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
+                pmFragmentPresenter.getAllProcess();
+            }
+        }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(EVENT_SYNC_COMPLETED);
+        filter.addAction(EVENT_SYNC_FAILED);
+        filter.addAction(PARTIAL_FORM_ADDED);
+
+        SyncAdapterBroadCastReceiver(filter);
+    }
+
+    private void SyncAdapterBroadCastReceiver(final IntentFilter filter) {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
+                    Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
+
+                    updateAdapter();
+                } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
+                    updateAdapter();
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
+                    Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
+                    updateAdapter();
+                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
+                    Log.e("PendingForms", "Sync failed!");
+                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, filter);
+    }
+
+    private void updateAdapter() {
+        if (pendingFormsAdapter == null) {
+            pendingFormsAdapter = (PendingFormsAdapter) rvPendingForms.getAdapter();
+        }
+        if (mSavedForms == null) {
+            mSavedForms = new ArrayList<>();
+        }
+
+        mSavedForms.clear();
+        List<FormResult> partiallySavedForms = DatabaseManager.getDBInstance(getContext())
+                .getAllPartiallySavedForms();
+        mSavedForms.addAll(partiallySavedForms);
+
+        if (mSavedForms != null && !mSavedForms.isEmpty()) {
+            rltPendingForms.setVisibility(View.VISIBLE);
+            if (pendingFormsAdapter != null) {
+                pendingFormsAdapter.notifyDataSetChanged();
+            }
+        } else {
+            rltPendingForms.setVisibility(View.GONE);
+        }
     }
 
     private void init() {
@@ -74,32 +164,22 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         txtViewAllForms.setOnClickListener(this);
     }
 
-    private void setPendingForms() {
-        List<SavedForm> savedForms = PMFragmentPresenter.getAllNonSyncedSavedForms();
-        if (savedForms != null && !savedForms.isEmpty()) {
+    private void getPartiallySavedForms() {
+        mSavedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
+        if (mSavedForms != null && !mSavedForms.isEmpty()) {
+
+            Util.sortFormResultListByCreatedDate(mSavedForms);
+
+            rltPendingForms.setVisibility(View.VISIBLE);
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
-            pmFragmentView.findViewById(R.id.sync_button).setOnClickListener(v -> {
-                if (Util.isConnected(getContext())) {
-                    Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
-                    // TODO: 14-02-2019 Category is not known for syncing
-                    saveFormCategoryForSync("");
-                    SyncAdapterUtils.manualRefresh();
-                } else {
-                    Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            PendingFormsAdapter pendingFormsAdapter = new PendingFormsAdapter(getActivity(), savedForms);
+            pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
         } else {
             pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.GONE);
             rltPendingForms.setVisibility(View.GONE);
         }
-
-        //List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema();
-        Log.e(TAG, "Form schema fetched from database.");
     }
 
     private void populateData(Processes process) {
@@ -109,19 +189,23 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
             for (ProcessData data : process.getData()) {
                 if (data != null && data.getCategory() != null) {
-                    String categoryName = data.getCategory().getName();
+                    String categoryName = data.getCategory().getName().getLocaleValue();
                     if (!TextUtils.isEmpty(categoryName)) {
                         if (processMap.containsKey(categoryName)) {
                             List<ProcessData> processData = processMap.get(categoryName);
                             if (processData != null) {
                                 processData.add(data);
                                 processMap.put(categoryName, processData);
+
+                                addProcessDataInDatabase(data);
                             }
                         } else {
                             List<ProcessData> processData = new ArrayList<>();
                             processData.add(data);
                             processMap.put(categoryName, processData);
                             processCategoryList.add(categoryName);
+
+                            addProcessDataInDatabase(data);
                         }
                     }
                 }
@@ -140,21 +224,28 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         }
     }
 
+    private void addProcessDataInDatabase(final ProcessData data) {
+        DatabaseManager.getDBInstance(getContext()).insertProcessData(data);
+    }
+
     private void createCategoryLayout(String categoryName, List<ProcessData> childList) {
         View formTitleView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
-        for (ProcessData data : childList) {
-            if (!TextUtils.isEmpty(data.getName())) {
+        for (int i = 0; i < childList.size(); i++) {
+            final ProcessData data = childList.get(i);
+            if (i >= 2) break;
+
+            if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
                 View formTypeView = getLayoutInflater().inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
-                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().trim());
+                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().getLocaleValue().trim());
 
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
                     imgCreateForm.setOnClickListener(v -> {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
+                        intent.putExtra(Constants.PM.FORM_ID, data.getId());
                         startActivity(intent);
                     });
                 }
@@ -168,14 +259,14 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void onResume() {
         super.onResume();
 
-        setPendingForms();
+        getPartiallySavedForms();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_view_all_forms:
-                Util.launchFragment(new FormsFragment(), getContext(), "formsFragment");
+                Util.launchFragment(new FormsFragment(), getContext(), getString(R.string.forms));
                 break;
         }
     }
@@ -199,4 +290,5 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void showErrorMessage(String result) {
 
     }
+
 }

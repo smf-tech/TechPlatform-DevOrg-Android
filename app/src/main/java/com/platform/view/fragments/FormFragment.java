@@ -1,9 +1,14 @@
 package com.platform.view.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,39 +19,59 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
-import com.platform.models.SavedForm;
-import com.platform.models.forms.ChoicesByUrlMCResponse;
-import com.platform.models.forms.ChoicesByUrlSCResponse;
+import com.platform.models.LocaleData;
+import com.platform.models.forms.Choice;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
-import com.platform.models.forms.MachineCode;
-import com.platform.models.forms.StructureCode;
-import com.platform.models.profile.JurisdictionLevelResponse;
-import com.platform.models.profile.Location;
+import com.platform.models.forms.FormResult;
 import com.platform.presenter.FormActivityPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.FormActivity;
+import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.customs.FormComponentCreator;
+import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
+import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import static android.app.Activity.RESULT_OK;
+import static com.platform.view.fragments.FormsFragment.viewPager;
 
 @SuppressWarnings("ConstantConditions")
-public class FormFragment extends Fragment implements FormDataTaskListener, View.OnClickListener {
+public class FormFragment extends Fragment implements FormDataTaskListener,
+        View.OnClickListener, FormActivity.DeviceBackButtonListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -63,8 +88,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private String errorMsg = "";
     private JSONObject mFormJSONObject = null;
     private List<Elements> mElementsListFromDB;
-    boolean mIsInEditMode;
-    //private ChoicesByUrlMCResponse choicesByUrlMCResponse;
+    private boolean mIsInEditMode;
+    private String processId;
+    private boolean mIsPartiallySaved;
+    private String oid;
+
+    private Uri outputUri;
+    private Uri finalUri;
+    private ImageView mFileImageView;
+    private String mFormName;
+    private Map<String, String> mUploadedImageUrlList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -81,38 +114,142 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         formPresenter = new FormActivityPresenter(this);
 
         if (getArguments() != null) {
-            String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
+            processId = getArguments().getString(Constants.PM.PROCESS_ID);
+            mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
+            String formId = getArguments().getString(Constants.PM.FORM_ID);
+            FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
+            mIsPartiallySaved = getArguments().getBoolean(Constants.PM.PARTIAL_FORM);
+            if (mIsPartiallySaved) {
+                formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
+            }
 
-            if (formDataList == null || formDataList.isEmpty()) {
-                formPresenter.getProcessDetails(processId);
+            if (formData == null) {
+                if (Util.isConnected(getContext())) {
+                    formPresenter.getProcessDetails(formId);
+                }
             } else {
                 formModel = new Form();
-                formModel.setData(formDataList.get(0));
+                formModel.setData(formData);
                 initViews();
+
+                if (mIsInEditMode) {
+                    FormResult formResult = DatabaseManager.getDBInstance(getActivity())
+                            .getFormResult(processId);
+                    if (formResult != null) {
+                        getFormDataAndParse(formResult);
+                    } else {
+                        if (Util.isConnected(getContext()) && !mIsPartiallySaved && !TextUtils.isEmpty(processId)) {
+                            formPresenter.getFormResults(processId);
+                        }
+                    }
+                }
             }
 
-            mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
-            if (mIsInEditMode) {
-                formPresenter.getFormResults(processId);
-            }
         }
     }
 
+    private class GetDataFromDB extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+            Gson gson = builder.create();
+
+            showChoicesByUrl(params[0], gson.fromJson(params[1], Elements.class));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideProgressBar();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressBar();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (formDataArrayList != null) {
+            formDataArrayList.clear();
+            formDataArrayList = null;
+        }
+
+        if (mElementsListFromDB != null) {
+            mElementsListFromDB.clear();
+            mElementsListFromDB = null;
+        }
+
+        if (formPresenter != null) {
+            formPresenter = null;
+        }
+
+        if (formComponentCreator != null) {
+            formComponentCreator = null;
+        }
+
+        super.onDestroy();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     private void initViews() {
-        setActionbar(formModel.getData().getName());
+        setActionbar(formModel.getData().getName().getLocaleValue());
         progressBarLayout = formFragmentView.findViewById(R.id.gen_frag_progress_bar);
         progressBar = formFragmentView.findViewById(R.id.pb_gen_form_fragment);
 
         Components components = formModel.getData().getComponents();
+        if (components == null) {
+            return;
+        }
+
         formDataArrayList = components.getPages().get(0).getElements();
 
         if (formDataArrayList != null) {
             formComponentCreator = new FormComponentCreator(this);
-            renderFormView();
+            if (!mIsInEditMode) {
+                renderFormView(formDataArrayList);
+            }
         }
 
+        ImageView editButton = formFragmentView.findViewById(R.id.toolbar_edit_action);
+        boolean isFormEditable = Boolean.parseBoolean(formModel.getData().getEditable());
+
+        if (mIsInEditMode && !mIsPartiallySaved) {
+            if (mIsPartiallySaved || isFormEditable) {
+                editButton.setVisibility(View.VISIBLE);
+                editButton.setOnClickListener(this);
+            } else {
+                editButton.setVisibility(View.GONE);
+                editButton.setOnClickListener(null);
+            }
+
+            View layer = formFragmentView.findViewById(R.id.read_only_view);
+            layer.setVisibility(View.VISIBLE);
+            layer.setOnClickListener(this);
+
+            layer.setOnTouchListener((v, event) -> {
+                ScrollView root = formFragmentView.findViewById(R.id.sv_form_view);
+                root.onTouchEvent(event);
+                return true;
+            });
+        } else {
+            enableEditMode();
+        }
+    }
+
+    private void enableEditMode() {
+        View layer = formFragmentView.findViewById(R.id.read_only_view);
+        layer.setVisibility(View.GONE);
+        layer.setOnClickListener(null);
+
         Button submit = formFragmentView.findViewById(R.id.btn_submit);
+        submit.setVisibility(View.VISIBLE);
         submit.setOnClickListener(this);
     }
 
@@ -125,47 +262,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         img_back.setOnClickListener(this);
     }
 
-    private void renderFormView() {
-        customFormView = formFragmentView.findViewById(R.id.ll_form_container);
-
-        getActivity().runOnUiThread(() -> customFormView.removeAllViews());
-
-        for (Elements elements : formDataArrayList) {
-            if (elements != null && !elements.getType().equals("")) {
-
-                String formDataType = elements.getType();
-                switch (formDataType) {
-                    case Constants.FormsFactory.TEXT_TEMPLATE:
-                        Log.d(TAG, "TEXT_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.textInputTemplate(elements));
-                        break;
-
-                    case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        if (elements.getChoicesByUrl() == null) {
-                            Log.d(TAG, "DROPDOWN_TEMPLATE");
-                            formComponentCreator.setChoicesByUrlSCResponse(null);
-                            Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT);
-                            addViewToMainContainer((View) objects[0]);
-                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
-                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
-                        }
-                        break;
-
-                    case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
-                        Log.d(TAG, "RADIO_GROUP_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.radioGroupTemplate(elements));
-                        break;
-
-                    case Constants.FormsFactory.FILE_TEMPLATE:
-                        Log.d(TAG, "FILE_TEMPLATE");
-                        addViewToMainContainer(formComponentCreator.fileTemplate(elements));
-                        break;
-                }
-            }
-        }
-    }
-
-    private void renderFilledFormView(final List<Elements> formDataArrayList) {
+    private void renderFormView(final List<Elements> formDataArrayList) {
         customFormView = formFragmentView.findViewById(R.id.ll_form_container);
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
@@ -183,12 +280,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
-                            Log.d(TAG, "DROPDOWN_TEMPLATE");
-                            formComponentCreator.setChoicesByUrlSCResponse(null);
-                            Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_DEFAULT);
-                            addViewToMainContainer((View) objects[0]);
-                        } else if (elements.getChoicesByUrl() != null && elements.getChoicesByUrlResponse() != null) {
-                            showChoicesByUrl(elements.getChoicesByUrlResponse(), elements);
+                            Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
+                        } else if (elements.getChoicesByUrl() != null) {
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            if (elements.getChoicesByUrlResponse() != null) {
+                                showChoicesByUrlAsync(elements.getChoicesByUrlResponse(), elements);
+                            }
                         }
                         break;
 
@@ -206,6 +305,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
+    synchronized
     private void addViewToMainContainer(final View view) {
         getActivity().runOnUiThread(() -> {
             if (view != null) {
@@ -227,7 +327,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     @Override
     public void hideProgressBar() {
         getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
                 progressBar.setVisibility(View.GONE);
                 progressBarLayout.setVisibility(View.GONE);
             }
@@ -236,129 +336,171 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
     @Override
     public <T> void showNextScreen(T data) {
-        formModel = new Gson().fromJson((String) data, Form.class);
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        formModel = gson.fromJson((String) data, Form.class);
         initViews();
 
-        if (mFormJSONObject != null && mElementsListFromDB != null)
-            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
-    }
+        if (mIsInEditMode) {
+            FormResult formResult = DatabaseManager.getDBInstance(getActivity())
+                    .getFormResult(processId);
+            /*List<String> formResults = DatabaseManager.getDBInstance(getActivity())
+                    .getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);*/
 
-    @Override
-    public void showErrorMessage(String result) {
-
-    }
-
-    @Override
-    public void showChoicesByUrl(String result, Elements elements) {
-        Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-        switch (elements.getName()) {
-            case Constants.ChoicesType.CHOICE_STRUCTURE_CODE:
-                ChoicesByUrlSCResponse choicesByUrlSCResponse = new Gson().fromJson(result, ChoicesByUrlSCResponse.class);
-                if (choicesByUrlSCResponse != null && choicesByUrlSCResponse.getData() != null &&
-                        !choicesByUrlSCResponse.getData().isEmpty()) {
-                    List<StructureCode> structureCodeList = choicesByUrlSCResponse.getData();
-
-                    if (structureCodeList != null && !structureCodeList.isEmpty()) {
-                        formComponentCreator.setChoicesByUrlSCResponse(choicesByUrlSCResponse);
-                        formComponentCreator.setJurisdictionLevelResponse(null);
-                        formComponentCreator.setChoicesByUrlMCResponse(null);
-                        Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_STRUCTURE_CODE);
-                        addViewToMainContainer((View) objects[0]);
-                    }
+//            if (formResults != null && !formResults.isEmpty()) {
+            if (formResult != null) {
+                getFormDataAndParse(formResult);
+            } else {
+                if (Util.isConnected(getContext())) {
+                    formPresenter.getFormResults(formModel.getData().getId());
                 }
-                break;
-
-            case Constants.ChoicesType.CHOICE_MACHINE_CODE:
-                ChoicesByUrlMCResponse choicesByUrlMCResponse = new Gson().fromJson(result, ChoicesByUrlMCResponse.class);
-                if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
-                        !choicesByUrlMCResponse.getData().isEmpty()) {
-                    List<MachineCode> machineCodeList = choicesByUrlMCResponse.getData();
-
-                    if (machineCodeList != null && !machineCodeList.isEmpty()) {
-                        formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
-                        formComponentCreator.setJurisdictionLevelResponse(null);
-                        formComponentCreator.setChoicesByUrlSCResponse(null);
-                        Object[] objects = formComponentCreator.dropDownTemplate(elements, Constants.ChoicesType.CHOICE_MACHINE_CODE);
-                        addViewToMainContainer((View) objects[0]);
-                    }
-                }
-                break;
-
-            case Constants.ChoicesType.CHOICE_LOCATION_STATE:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_STATE);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_DISTRICT:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_DISTRICT);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_TALUKA:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_TALUKA);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_CLUSTER:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_CLUSTER);
-                break;
-            case Constants.ChoicesType.CHOICE_LOCATION_VILLAGE:
-                setLevelData(result, elements, Constants.ChoicesType.CHOICE_LOCATION_VILLAGE);
-                break;
-        }
-
-    }
-
-    private void setLevelData(String result, Elements formData, String type) {
-        JurisdictionLevelResponse jurisdictionLevelResponse = new Gson().fromJson(result, JurisdictionLevelResponse.class);
-        if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null &&
-                !jurisdictionLevelResponse.getData().isEmpty()) {
-            List<Location> locationList = jurisdictionLevelResponse.getData();
-
-            if (locationList != null && !locationList.isEmpty()) {
-                formComponentCreator.setChoicesByUrlSCResponse(null);
-                formComponentCreator.setChoicesByUrlMCResponse(null);
-                formComponentCreator.setJurisdictionLevelResponse(jurisdictionLevelResponse);
-                Object[] objects = formComponentCreator.dropDownTemplate(formData, type);
-                addViewToMainContainer((View) objects[0]);
             }
         }
     }
 
     @Override
-    public void showMachineCodes(Elements formData, String response) {
-//        if (choicesByUrlMCResponse != null && choicesByUrlMCResponse.getData() != null &&
-//                !choicesByUrlMCResponse.getData().isEmpty()) {
-//            formComponentCreator.setChoicesByUrlMCResponse(choicesByUrlMCResponse);
-//            formComponentCreator.setJurisdictionLevelResponse(null);
-//            Object[] objects = formComponentCreator.dropDownTemplate(formData, Constants.ChoicesType.CHOICE_MACHINE_CODE);
-//            addViewToMainContainer((View) objects[0]);
-//        }
+    public void showErrorMessage(String result) {
+        Log.d(TAG, "FORM_FRAGMENT_ERROR:" + result);
+    }
+
+    @Override
+    public void showChoicesByUrlAsync(String result, Elements elements) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        Gson gson = builder.create();
+
+        new GetDataFromDB().execute(result, gson.toJson(elements));
+    }
+
+    private void showChoicesByUrl(String result, Elements elements) {
+        Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
+        List<Choice> choiceValues = new ArrayList<>();
+        try {
+            LocaleData text;
+            String value;
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+            Gson gson = builder.create();
+
+            JsonObject outerObj = gson.fromJson(result, JsonObject.class);
+            JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
+            for (int index = 0; index < dataArray.size(); index++) {
+                JsonObject innerObj = dataArray.get(index).getAsJsonObject();
+                if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
+                    if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                        StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
+
+                        String title = titleTokenizer.nextToken();
+                        try {
+                            text = gson.fromJson(obj.get(title).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(obj.get(title).getAsString());
+                        }
+                        //Ignore first value of valueToken
+                        valueTokenizer.nextToken();
+                        value = obj.get(valueTokenizer.nextToken()).getAsString();
+                    } else {
+                        try {
+                            text = gson.fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
+                        }
+                        value = innerObj.get(elements.getChoicesByUrl().getValueName()).getAsString();
+                    }
+
+                    Choice choice = new Choice();
+                    choice.setText(text);
+                    choice.setValue(value);
+
+                    if (choiceValues.size() == 0) {
+                        choiceValues.add(choice);
+                    } else {
+                        boolean isFound = false;
+                        for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
+                            if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
+                                isFound = true;
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            choiceValues.add(choice);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in showChoicesByUrl()" + result);
+        }
+        getActivity().runOnUiThread(() -> {
+            elements.setChoices(choiceValues);
+            formComponentCreator.updateDropDownValues(elements, choiceValues);
+        });
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                getActivity().finish();
+                showConfirmPopUp();
+                break;
+
+            case R.id.toolbar_edit_action:
+                enableEditMode();
+                break;
+
+            case R.id.read_only_view:
                 break;
 
             case R.id.btn_submit:
                 if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
                 } else {
-                    saveFormToLocalDatabase();
                     if (Util.isConnected(getActivity())) {
-                        formPresenter.setFormId(formModel.getData().getId());
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
-                        if (mIsInEditMode) {
-                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE);
+
+                        String url = null;
+                        if (formModel.getData() != null && formModel.getData().getMicroService() != null
+                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
+                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+                            url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
+                                    formModel.getData().getMicroService().getRoute());
+                        }
+
+                        if (mIsInEditMode && !mIsPartiallySaved) {
+                            formPresenter.onSubmitClick(Constants.ONLINE_UPDATE_FORM_TYPE, url,
+                                    formModel.getData().getId(), processId, mUploadedImageUrlList);
                         } else {
-                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE);
+                            formPresenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
+                                    formModel.getData().getId(), processId, mUploadedImageUrlList);
                         }
                     } else {
                         if (formModel.getData() != null) {
+
+                            saveFormToLocalDatabase();
+
                             if (mIsInEditMode) {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_UPDATE_FORM_TYPE,
+                                        null, formModel.getData().getId(), processId, mUploadedImageUrlList);
                             } else {
-                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE);
+                                formPresenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
+                                        null, formModel.getData().getId(), null, mUploadedImageUrlList);
                             }
-                            Util.showToast("Form saved offline ", getActivity());
+
+                            Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
+                            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+                            AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
+                                    formModel.getData().getName()));
+
+                            Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
+                            Objects.requireNonNull(getActivity()).onBackPressed();
                         }
                     }
                 }
@@ -366,23 +508,124 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
         }
     }
 
-    private void saveFormToLocalDatabase() {
-        SavedForm savedForm = new SavedForm();
-        savedForm.setFormId(formModel.getData().getId());
-        savedForm.setFormName(formModel.getData().getName());
-        savedForm.setSynced(false);
+    private void storePartiallySavedForm() {
+        FormData formData = formModel.getData();
+        FormResult result = new FormResult();
+        result.set_id(UUID.randomUUID().toString());
 
-        if (formModel.getData().getCategory() != null &&
-                !TextUtils.isEmpty(formModel.getData().getCategory().getName())) {
-            savedForm.setFormCategory(formModel.getData().getCategory().getName());
+        result.setFormId(formData.getId());
+        result.setFormCategory(formData.getCategory().getName().getLocaleValue());
+        result.setFormName(formData.getName().getLocaleValue());
+        result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
+        result.setCreatedAt(Util.getCurrentTimeStamp());
+
+        if (formData.getCategory() != null) {
+            String category = formData.getCategory().getName().getLocaleValue();
+            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
+                result.setFormCategory(category);
+            }
         }
 
-        savedForm.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
-        SimpleDateFormat createdDateFormat =
-                new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
-        savedForm.setCreatedAt(createdDateFormat.format(new Date()));
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            if (obj != null) {
+                if (mUploadedImageUrlList != null && !mUploadedImageUrlList.isEmpty()) {
+                    try {
+                        for (Map.Entry<String, String> entry : mUploadedImageUrlList.entrySet()) {
+                            obj.put(entry.getKey(), entry.getValue());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                result.setResult(obj.toString());
+            }
+        }
 
-        formPresenter.setSavedForm(savedForm);
+        if (mIsPartiallySaved) {
+            String processId = getArguments().getString(Constants.PM.PROCESS_ID);
+            FormResult form = DatabaseManager.getDBInstance(getActivity()).getPartiallySavedForm(processId);
+            if (form != null) {
+                result.set_id(form.get_id());
+            }
+            DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
+        } else {
+            DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+        }
+
+        Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+        if (viewPager != null) {
+            viewPager.getAdapter().getItemPosition(null);
+            viewPager.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    private void showConfirmPopUp() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name_ss));
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.msg_confirm));
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.mipmap.app_logo);
+        // Setting CANCEL Button
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
+                (dialogInterface, i) -> getActivity().finish());
+
+        // Setting OK Button
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
+            if (formModel != null && formModel.getData() != null) {
+                AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
+                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+                    storePartiallySavedForm();
+                }
+            }
+            getActivity().finish();
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void saveFormToLocalDatabase() {
+        FormData formData = formModel.getData();
+
+        FormResult result;
+        if (mIsPartiallySaved || mIsInEditMode) {
+            result = DatabaseManager.getDBInstance(getActivity()).getFormResult(processId);
+        } else {
+            result = new FormResult();
+            result.setFormId(formData.getId());
+            result.setFormName(formData.getName().getLocaleValue());
+            result.setCreatedAt(Util.getCurrentTimeStamp());
+            String locallySavedFormID = UUID.randomUUID().toString();
+            result.set_id(locallySavedFormID);
+        }
+        result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
+
+        if (formData.getCategory() != null) {
+            String category = formData.getCategory().getName().getLocaleValue();
+            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
+                result.setFormCategory(category);
+            }
+        }
+
+        if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
+            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+
+            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            if (obj != null) {
+                result.setResult(obj.toString());
+                formPresenter.setSavedForm(result);
+                if (mIsPartiallySaved || mIsInEditMode) {
+                    DatabaseManager.getDBInstance(getActivity()).updateFormResult(result);
+                } else {
+                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                }
+            }
+        }
     }
 
     public void setErrorMsg(String errorMsg) {
@@ -394,13 +637,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
 
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
-        List<FormData> formDataList = DatabaseManager.getDBInstance(getActivity()).getFormSchema(processId);
-        if (formDataList == null || formDataList.isEmpty()) {
-            formPresenter.getProcessDetails(processId);
-            return;
-        }
+        FormData formData = DatabaseManager.getDBInstance(
+                Objects.requireNonNull(getActivity()).getApplicationContext())
+                .getFormSchema(processId);
 
-        mElementsListFromDB = formDataList.get(0).getComponents().getPages().get(0).getElements();
+        mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
         try {
@@ -408,14 +649,49 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
             JSONArray values = object.getJSONArray("values");
             for (int i = 0; i < values.length(); i++) {
                 mFormJSONObject = new JSONObject(String.valueOf(values.get(i)));
-                String id = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
-                if (id.equals(formId)) {
+                oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+                if (oid.equals(formId)) {
                     Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
                     break;
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
+        }
+
+        if (formComponentCreator != null)
+            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
+    }
+
+    private void getFormDataAndParse(final FormResult response) {
+        String formId = getArguments().getString(Constants.PM.FORM_ID);
+        FormData formData;
+        if (formModel.getData() != null) {
+
+            formData = DatabaseManager.getDBInstance(
+                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    .getFormSchema(formId);
+            if (formData == null || formData.getComponents() == null) {
+                if (Util.isConnected(getContext())) {
+                    formPresenter.getProcessDetails(formId);
+                }
+                return;
+            }
+        } else {
+            formData = formModel.getData();
+        }
+
+        mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
+        Log.e(TAG, "Form schema fetched from database.");
+
+        try {
+            mFormJSONObject = new JSONObject(response.getResult());
+            oid = (String) mFormJSONObject.getJSONObject("_id").get("$oid");
+            if (oid.equals(formId)) {
+                Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
         }
 
         if (formComponentCreator != null)
@@ -425,6 +701,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
     private void parseSchemaAndFormDetails(final JSONObject object, final List<Elements> elements) {
         if (object == null || elements == null || elements.size() == 0) return;
 
+        HashMap<String, String> requestedObject = new HashMap<>();
         for (final Elements element : elements) {
             if (object.has(element.getName())) {
                 try {
@@ -433,16 +710,127 @@ public class FormFragment extends Fragment implements FormDataTaskListener, View
                         case Constants.FormsFactory.TEXT_TEMPLATE:
                         case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
+                        case Constants.FormsFactory.FILE_TEMPLATE:
                             element.setAnswer(object.getString(element.getName()));
+                            requestedObject.put(element.getName(), element.getAnswer());
                             break;
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                 }
             }
         }
 
-        renderFilledFormView(elements);
+        formComponentCreator.setRequestObject(requestedObject);
+        renderFormView(elements);
     }
 
+    public void choosePhotoFromGallery(final View view, final String name) {
+        mFileImageView = (ImageView) view;
+        mFormName = name;
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_error_in_photo_gallery), this);
+        }
+    }
+
+    public void takePhotoFromCamera(final View view, final String name) {
+        mFileImageView = (ImageView) view;
+        mFormName = name;
+        try {
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/MV/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_image_capture_not_support), this);
+        } catch (SecurityException e) {
+            Util.showToast(getString(R.string.msg_take_photo_error), this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) return;
+
+                finalUri = Util.getUri(imageFilePath);
+                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) return;
+
+                    outputUri = data.getData();
+                    finalUri = Util.getUri(imageFilePath);
+                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            try {
+                mFileImageView.setImageURI(finalUri);
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+
+                if (Util.isConnected(getContext())) {
+                    formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                } else {
+                    Util.showToast(getResources().getString(R.string.no_internet), this);
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.e(TAG, "Camera Permission Granted");
+        formComponentCreator.showPictureDialog();
+    }
+
+    private String getImageName() {
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+    @Override
+    public void onDeviceBackButtonPressed() {
+        showConfirmPopUp();
+    }
+
+    public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
+        mUploadedImageUrlList = uploadedImageUrlList;
+    }
 }

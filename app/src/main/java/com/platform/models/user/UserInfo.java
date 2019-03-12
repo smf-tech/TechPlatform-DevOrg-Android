@@ -39,21 +39,24 @@ public class UserInfo implements Parcelable {
     @SerializedName("name")
     @Expose
     private String userName;
-    @SerializedName("dob")
-    @Expose
-    private String userBirthDate;
-    @SerializedName("phone")
-    @Expose
-    private String userMobileNumber;
     @SerializedName("email")
     @Expose
     private String userEmailId;
-    @SerializedName("gender")
+    @SerializedName("phone")
     @Expose
-    private String userGender;
+    private String userMobileNumber;
     @SerializedName("approve_status")
     @Expose
     private String approveStatus;
+    @SerializedName("updatedDateTime")
+    @Expose
+    private Long updatedAt;
+    @SerializedName("createdDateTime")
+    @Expose
+    private Long createdAt;
+    @SerializedName("dob")
+    @Expose
+    private Long userBirthDate;
     @SerializedName("org_id")
     @Expose
     private String orgId;
@@ -66,9 +69,21 @@ public class UserInfo implements Parcelable {
     @SerializedName("location")
     @Expose
     private UserLocation userLocation;
-    @SerializedName("projects")
+    @SerializedName("firebase_id")
+    @Expose
+    private String firebaseId;
+    @SerializedName("project_id")
     @Expose
     private ArrayList<String> projectIds;
+    @SerializedName("profile_pic")
+    @Expose
+    private String profilePic;
+    @SerializedName("gender")
+    @Expose
+    private String userGender;
+    @SerializedName("approvers")
+    @Expose
+    private ArrayList<Approver> approvers = null;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
@@ -115,6 +130,38 @@ public class UserInfo implements Parcelable {
         this.projectIds = projectIds;
     }
 
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
+
+    public ArrayList<Approver> getApprovers() {
+        return approvers;
+    }
+
+    public void setApprovers(ArrayList<Approver> approvers) {
+        this.approvers = approvers;
+    }
+
     public UserInfo() {
 
     }
@@ -125,11 +172,12 @@ public class UserInfo implements Parcelable {
         userMiddleName = in.readString();
         userLastName = in.readString();
         userName = in.readString();
-        userBirthDate = in.readString();
+        userBirthDate = in.readLong();
         userMobileNumber = in.readString();
         userEmailId = in.readString();
         userGender = in.readString();
         approveStatus = in.readString();
+        profilePic = in.readString();
     }
 
     public String getId() {
@@ -172,11 +220,11 @@ public class UserInfo implements Parcelable {
         this.userName = userName;
     }
 
-    public String getUserBirthDate() {
+    public Long getUserBirthDate() {
         return userBirthDate;
     }
 
-    public void setUserBirthDate(String userBirthDate) {
+    public void setUserBirthDate(Long userBirthDate) {
         this.userBirthDate = userBirthDate;
     }
 
@@ -224,10 +272,19 @@ public class UserInfo implements Parcelable {
         parcel.writeString(userMiddleName);
         parcel.writeString(userLastName);
         parcel.writeString(userName);
-        parcel.writeString(userBirthDate);
+        parcel.writeLong(userBirthDate);
         parcel.writeString(userMobileNumber);
         parcel.writeString(userEmailId);
         parcel.writeString(userGender);
         parcel.writeString(approveStatus);
+        parcel.writeString(profilePic);
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
     }
 }

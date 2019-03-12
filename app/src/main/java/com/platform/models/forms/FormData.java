@@ -1,14 +1,9 @@
 package com.platform.models.forms;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 import com.platform.models.common.Category;
 import com.platform.models.common.Entity;
 import com.platform.models.common.Microservice;
@@ -16,8 +11,14 @@ import com.platform.models.common.Project;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 @SuppressWarnings("unused")
-@android.arch.persistence.room.Entity
+@androidx.room.Entity
 public class FormData {
     @PrimaryKey
     @ColumnInfo(name = "id")
@@ -26,10 +27,11 @@ public class FormData {
     @Expose
     private String id = "";
 
+    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    private String name;
+    private LocaleData name;
 
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "components")
@@ -52,12 +54,19 @@ public class FormData {
     @Expose
     private String multipleEntry;
 
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "category")
+    @SerializedName("category")
+    @Expose
+    private Category category;
+
     @Ignore
     @SerializedName("assigned_roles")
     @Expose
     private List<String> assignedRoles = null;
 
-    @Ignore
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "microservice")
     @SerializedName("microservice")
     @Expose
     private Microservice microService;
@@ -68,14 +77,14 @@ public class FormData {
     private Project project;
 
     @Ignore
-    @SerializedName("category")
-    @Expose
-    private Category category;
-
-    @Ignore
     @SerializedName("entity")
     @Expose
     private Entity entity;
+
+    @Ignore
+    @SerializedName("form_keys")
+    @Expose
+    private List<String> formKeys;
 
     @NonNull
     public String getId() {
@@ -86,11 +95,11 @@ public class FormData {
         this.id = id;
     }
 
-    public String getName() {
+    public LocaleData getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LocaleData name) {
         this.name = name;
     }
 
@@ -165,4 +174,13 @@ public class FormData {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
+
+    public List<String> getFormKeys() {
+        return formKeys;
+    }
+
+    public void setFormKeys(final List<String> formKeys) {
+        this.formKeys = formKeys;
+    }
+
 }

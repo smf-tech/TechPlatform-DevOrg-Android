@@ -7,7 +7,7 @@
     <color name="dark_grey">#3E3E3E</color>
     <color name="light_grey">#909090</color>
     <color name="lighter_grey">#EBEBEB</color>
-    <color name="lightest_grey">#EDEDED</color>
+    <!--<color name="lightest_grey">#EDEDED</color>-->
     <color name="medium_grey">#676767</color>
 
     <color name="light_black">#313131</color>
@@ -26,12 +26,18 @@
     <color name="medium_blue">#75A2CE</color>
     <color name="dark_blue">#75194779</color>
     <color name="darkest_blue">#4271CB</color>
-    <color name="blue_theme_color">#1a305b</color>
+    <color name="blue_theme_color">#1A305B</color>
     <color name="lightest_blue">#EFF3FC</color>
 
-    <color name="card_gray_bg">#efefef</color>
-    <color name="form_tab_bg">#f0f0f0</color>
+    <color name="card_gray_bg">#EFEFEF</color>
+    <color name="form_tab_bg">#F0F0F0</color>
     <color name="tab_selector">#1A4B98</color>
     <color name="tab_disable">#DDDDDD</color>
     <color name="tab_disable_bg">#E3E3E3</color>
+    <color name="partial_form_color">#9F9BFF</color>
+
+    <color name="approvals_tabs">#646262</color>
+    <color name="approvals_tabs_sel">#547AC4</color>
+    <color name="sync_pending_form_color">#6286cc</color>
+    <color name="submitted_form_color">#47A713</color>
 </resources>

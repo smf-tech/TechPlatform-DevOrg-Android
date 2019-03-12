@@ -1,21 +1,18 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.reports.ReportData;
 import com.platform.models.reports.Reports;
 import com.platform.presenter.ReportsFragmentPresenter;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ReportCategoryAdapter;
@@ -25,33 +22,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 @SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
-    private boolean mShowAllReportsText;
     private View reportFragmentView;
     private ReportCategoryAdapter adapter;
+    private boolean mShowAllReportsText = true;
+
     private List<String> reportsHeaderList = new ArrayList<>();
     private Map<String, List<ReportData>> reportsList = new HashMap<>();
-
-    public ReportsFragment() {
-    }
-
-    public static ReportsFragment newInstance(boolean showAllReportsText) {
-        Bundle args = new Bundle();
-        args.putBoolean("showAllReportsText", showAllReportsText);
-        ReportsFragment fragment = new ReportsFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mShowAllReportsText = getArguments().getBoolean("showAllReportsText", true);
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+
+            mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }
+
+        AppEvents.trackAppEvent(getString(R.string.event_reports_screen_visit));
     }
 
     @Override
@@ -66,14 +65,21 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getActivity() != null) {
-            ((HomeActivity) getActivity()).setActionBarTitle(
-                    getActivity().getResources().getString(R.string.reports));
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
         }
 
         init();
-        ReportsFragmentPresenter presenter = new ReportsFragmentPresenter(this);
-        presenter.getAllReports();
+
+        List<ReportData> allReports = DatabaseManager.getDBInstance(getContext()).getAllReports();
+        if (allReports.isEmpty()) {
+            ReportsFragmentPresenter presenter = new ReportsFragmentPresenter(this);
+            presenter.getAllReports();
+        } else {
+            setAdapter(allReports);
+        }
+
     }
 
     private void init() {
@@ -112,37 +118,44 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public <T> void showNextScreen(T data) {
         if (data != null) {
             List<ReportData> reportData = ((Reports) data).getData();
-            reportsHeaderList.clear();
-            reportsList.clear();
+            setAdapter(reportData);
+        }
+    }
 
-            for (int i = 0; i < reportData.size(); i++) {
-                ReportData temp = new ReportData();
-                temp.setId(reportData.get(i).getId());
-                temp.setName(reportData.get(i).getName());
-                temp.setDescription(reportData.get(i).getDescription());
-                temp.setUrl(reportData.get(i).getUrl());
+    private void setAdapter(final List<ReportData> reportData) {
+        reportsHeaderList.clear();
+        reportsList.clear();
 
-                if (reportsList.containsKey(reportData.get(i).getCategory())) {
-                    List<ReportData> item = reportsList.get(reportData.get(i).getCategory());
-                    if (item != null) {
-                        item.add(temp);
-                        reportsList.put(reportData.get(i).getCategory(), item);
-                    }
-                } else {
-                    List<ReportData> item = new ArrayList<>();
+        for (int i = 0; i < reportData.size(); i++) {
+            ReportData temp = new ReportData();
+            temp.setId(reportData.get(i).getId());
+            temp.setName(reportData.get(i).getName());
+            temp.setDescription(reportData.get(i).getDescription());
+            temp.setUrl(reportData.get(i).getUrl());
+            temp.setCategory(reportData.get(i).getCategory());
+
+            DatabaseManager.getDBInstance(getContext()).insertReportData(temp);
+
+            if (reportsList.containsKey(reportData.get(i).getCategory().getName())) {
+                List<ReportData> item = reportsList.get(reportData.get(i).getCategory().getName());
+                if (item != null) {
                     item.add(temp);
-                    reportsList.put(reportData.get(i).getCategory(), item);
-                    reportsHeaderList.add(reportData.get(i).getCategory());
+                    reportsList.put(reportData.get(i).getCategory().getName(), item);
                 }
-            }
-
-            adapter.notifyDataSetChanged();
-
-            if (reportsList == null || reportsList.isEmpty()) {
-                reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
             } else {
-                reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
+                List<ReportData> item = new ArrayList<>();
+                item.add(temp);
+                reportsList.put(reportData.get(i).getCategory().getName(), item);
+                reportsHeaderList.add(reportData.get(i).getCategory().getName());
             }
+        }
+
+        adapter.notifyDataSetChanged();
+
+        if (reportsList == null || reportsList.isEmpty()) {
+            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
+        } else {
+            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
         }
     }
 
@@ -155,7 +168,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_view_all_reports:
-                Util.launchFragment(ReportsFragment.newInstance(false), getContext(), "reportsFragment");
+                Util.launchFragment(new ReportsFragment(), getContext(), getString(R.string.reports));
                 break;
         }
     }

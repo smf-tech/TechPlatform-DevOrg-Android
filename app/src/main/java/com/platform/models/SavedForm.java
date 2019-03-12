@@ -1,9 +1,10 @@
 package com.platform.models;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@SuppressWarnings("unused")
 @Entity
 public class SavedForm {
     @PrimaryKey(autoGenerate = true)
@@ -25,8 +26,8 @@ public class SavedForm {
     @ColumnInfo(name = "request_object")
     private String requestObject;
 
-    @ColumnInfo(name = "created_at")
-    private String createdAt;
+    @ColumnInfo(name = "createdDateTime")
+    private Long createdAt;
 
     public Boolean isSynced() {
         return isSynced;
@@ -68,11 +69,11 @@ public class SavedForm {
         this.formName = formName;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 }

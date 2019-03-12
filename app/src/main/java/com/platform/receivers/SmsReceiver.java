@@ -5,48 +5,61 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
+import com.platform.BuildConfig;
+import com.platform.Platform;
+import com.platform.R;
+import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 
 public class SmsReceiver extends BroadcastReceiver {
 
-    private OtpSmsReceiverListener listener;
+    private IOtpSmsReceiverListener listener;
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null && intent.getAction() != null && intent.getAction().contentEquals(
-                Constants.SMS_RECEIVE_IDENTIFIER)) {
+
+        if (intent != null && intent.getAction() != null &&
+                intent.getAction().contentEquals(Constants.SMS_RECEIVE_IDENTIFIER)) {
 
             Bundle data = intent.getExtras();
             if (data != null) {
-                Object[] objects = (Object[]) data.get("get_msg");
-                if (objects != null) {
-                    final String MESSAGE_TEMPLATE = "";
-                    for (Object obj : objects) {
-                        SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) obj);
+                Object[] pdus = (Object[]) data.get("pdus");
+                if (pdus != null) {
+                    final String MESSAGE_TEMPLATE = "<#> The password is:";
+
+                    for (Object pdu : pdus) {
+                        SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu, "3gpp");
                         String message = smsMessage.getDisplayMessageBody();
-                        if (message.contains(MESSAGE_TEMPLATE)) {
+                        Log.d("TAG", "SMS: " + message);
+
+                        if (message.contains(MESSAGE_TEMPLATE) &&
+                                message.contains(BuildConfig.SMS_VERIFICATION_CODE)) {
+
+                            String otp = message.replaceAll("[^0-9]+", "");
                             if (listener != null) {
-                                listener.smsReceive(message);
+                                listener.smsReceive(otp.substring(0, 6));
                                 return;
                             }
                         }
                     }
+                } else {
+                    AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
                 }
+            } else {
+                AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
             }
+        } else {
+            AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
         }
     }
 
-    public void setListener(OtpSmsReceiverListener listener) {
+    public void setListener(IOtpSmsReceiverListener listener) {
         this.listener = listener;
     }
 
-    public void deRegisterListener() {
-        this.listener = null;
-    }
-
-    public interface OtpSmsReceiverListener {
+    public interface IOtpSmsReceiverListener {
         void smsReceive(String otp);
     }
 }

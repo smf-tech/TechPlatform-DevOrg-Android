@@ -6,30 +6,37 @@
     <string name="select_lang">Select Language</string>
 
     <string name="ok">OK</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
     <string name="cancel">Cancel</string>
     <string name="no_thanks">No, thanks</string>
     <string name="update">Update</string>
 
+    <!--Error Messages-->
+    <string name="msg_failure">Something went wrong while doing the operations, please try again later.</string>
+
     <!--App Update-->
     <string name="title_new_version_available">New version available</string>
     <string name="msg_update_app">Please, update app to new version to continue.</string>
+    <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
-    <string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>
+    <!--<string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>-->
     <string name="msg_mobile_number_is_empty">Mobile Number is empty</string>
     <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
     <string name="hint_enter_otp">_ _ _ _ _ _</string>
     <string name="label_mobile_no">Mobile Number *</string>
-    <string name="label_forget_your_pass">Forgot your password?</string>
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
-    <string name="check_otp">Please check OTP</string>
+    <!--<string name="check_otp">Please check OTP</string>-->
     <string name="otp_timeout_text">Time out in %1$s sec</string>
     <string name="msg_otp_verification_timeout">OTP verification time out, please try again.</string>
-    <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your above mobile number.</string>
+    <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your mobile number.</string>
+    <string name="msg_verify_otp_text">Click on verify button to verify your mobile number.</string>
     <string name="msg_logout">Do you want to Logout?</string>
+    <string name="msg_auth_fail">Server issue, please try again later.</string>
 
     <!--Profile-->
     <string name="registration_title">Registration</string>
@@ -51,7 +58,6 @@
     <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
-    <string name="role">Role</string>
     <string name="mandatory_state">State *</string>
     <string name="state">State </string>
     <string name="mandatory_district">District *</string>
@@ -66,6 +72,7 @@
     <string name="school">Structure Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
+    <string name="update_profile_pic">Update profile picture</string>
     <string name="update_data_string">Do you want to Update Data?</string>
     <string name="approve_profile">You are not approved yet.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
@@ -93,7 +100,7 @@
     <string name="menu_community">My Community</string>
     <string name="menu_forms">Forms</string>
     <string name="menu_teams">Teams</string>
-    <string name="menu_calendar">My Calendar</string>
+    <string name="menu_calendar">Meetings</string>
     <string name="menu_assets">Assets</string>
     <string name="menu_reports">Reports</string>
 
@@ -110,22 +117,17 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_logout">Logout</string>
 
-    <string name="my_profile">My Profile</string>
-    <string name="add_location">Add Location</string>
-    <string name="update_user_data">Update Data</string>
-    <string name="action_forms">Forms</string>
-    <string name="notification">Notification</string>
-    <string name="share_app">Share App</string>
+    <!--<string name="add_location">Add Location</string>-->
+    <!--<string name="update_user_data">Update Data</string>-->
+    <!--<string name="share_app">Share App</string>-->
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="app_version">App Version</string>
     <string name="locked">Locked</string>
 
-    <string name="call_on_hangout">Call on Hangout</string>
-    <string name="call_on_phone">Call on Phone (10AM to 6PM)</string>
-
     <!--Home-->
+    <string name="tab_dashboard">Home</string>
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
@@ -133,7 +135,7 @@
     <string name="team_management">Team Management</string>
 
     <!--Program management-->
-    <string name="pending_forms">Pending Forms</string>
+    <string name="saved_forms_cat">Saved Forms</string>
     <string name="submit">Submit</string>
     <string name="no_data_available">No data available</string>
 
@@ -142,14 +144,20 @@
     <string name="view_all_reports">View All Reports</string>
 
     <!--Team Management-->
+    <string name="cat_pending">Pending</string>
+    <string name="cat_approved">Approved</string>
+    <string name="cat_rejected">Rejected</string>
+    <string name="approvals">Approvals</string>
+    <string name="who_working">"Who's Working"</string>
     <string name="team_user_approval">User Approval</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>
-    <string name="msg_error_in_photo_gallery">"Problem in taking photo from gallery, please use camera to take photo."</string>
+    <string name="msg_error_in_photo_gallery">Problem in taking photo from gallery, please use camera to take photo.</string>
     <string name="msg_image_capture_not_support">"Whoops - your device doesn't support image capturing!"</string>
-    <string name="msg_take_photo_error">"App do not have permission to take a photo, please allow it."</string>
+    <string name="msg_take_photo_error">App do not have permission to take a photo, please allow it.</string>
 
+    <!--Forms-->
     <string name="category_title">Category Title</string>
     <string name="forms">Forms</string>
     <string name="no_records_available">Data is not available!</string>
@@ -158,6 +166,66 @@
     <string name="please_type_the_verification_code_n_sent_to">Please type the verification code\nsent to %1$s</string>
     <string name="forms_are_not_available">Forms are not available</string>
     <string name="reports">Reports</string>
+    <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
+    <string name="msg_confirm">Are you sure you want to save this form?</string>
+    <string name="form_saved_offline">You are offline, form saved offline.</string>
+    <string name="form_submit_success">Form submitted successfully!</string>
+    <string name="image_upload_success">Image uploaded successfully!</string>
+    <string name="no_internet">Internet is not available!</string>
+    <string name="status_update_success">Status updated successfully!</string>
+    <string name="new_forms">New</string>
+    <string name="saved_forms">Saved</string>
+    <string name="submitted_forms">Submitted</string>
+    <string name="form_field_mandatory">%1$s%2$s</string>
+    <string name="msg_no_pending_req">There are no pending requests for approvals.</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
+
+
+    <!--App Events-->
+    <string name="event_title" translatable="false">Event_Title</string>
+    <string name="event_login_success" translatable="false">Login Success</string>
+    <string name="event_login_failure" translatable="false">Login Failure</string>
+    <string name="event_auto_read_success" translatable="false">SMS auto read success</string>
+    <string name="event_auto_read_failure" translatable="false">SMS auto read failure</string>
+    <string name="event_resend_opt_click" translatable="false">Resend OTP clicked</string>
+    <string name="event_sync_button_click" translatable="false">Sync button clicked</string>
+    <string name="event_update_profile_success" translatable="false">Profile update success</string>
+    <string name="event_update_profile_fail" translatable="false">Profile update fail</string>
+    <string name="event_report_click" translatable="false">Report \"%1$s\" clicked</string>
+    <string name="event_form_saved" translatable="false">Form \"%1$s\" saved success</string>
+    <string name="event_form_saved_offline" translatable="false">Form \"%1$s\" saved offline</string>
+    <string name="event_form_submitted_success" translatable="false">Form \"%1$s\" submitted success</string>
+    <string name="event_form_submitted_fail" translatable="false">Form \"%1$s\" submitted fail</string>
+
+    <string name="event_menu_profile_click" translatable="false">Menu Profile clicked</string>
+    <string name="event_menu_home_click" translatable="false">Menu Home clicked</string>
+    <string name="event_menu_forms_click" translatable="false">Menu Forms clicked</string>
+    <string name="event_menu_meeting_click" translatable="false">Menu Meetings clicked</string>
+    <string name="event_menu_teams_click" translatable="false">Menu Teams clicked</string>
+    <string name="event_menu_reports_click" translatable="false">Menu Reports clicked</string>
+    <string name="event_menu_change_lang_click" translatable="false">Menu Change Language clicked</string>
+    <string name="event_menu_rate_us_click" translatable="false">Menu Rate Us clicked</string>
+    <string name="event_menu_call_us_click" translatable="false">Menu Call Us clicked</string>
+    <string name="event_menu_logout_click" translatable="false">Menu Logout clicked</string>
+
+    <string name="event_login_screen_visit" translatable="false">Login screen visited</string>
+    <string name="event_otp_screen_visit" translatable="false">OTP screen visited</string>
+    <string name="event_home_screen_visit" translatable="false">Home screen visited</string>
+    <string name="event_forms_screen_visit" translatable="false">Forms screen visited</string>
+    <string name="event_all_forms_screen_visit" translatable="false">All forms screen visited</string>
+    <string name="event_meetings_screen_visit" translatable="false">Meetings screen visited</string>
+    <string name="event_approvals_screen_visit" translatable="false">Approvals screen visited</string>
+    <string name="event_reports_screen_visit" translatable="false">Reports screen visited</string>
+
+    <string name="event_forms_tab_click" translatable="false">Form tab clicked</string>
+    <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
+    <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
+    <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
+
+    <string name="notifications">Notifications</string>
+    <string name="msg_rejection_reason">Are you sure you want to reject this request?</string>
+    <string name="msg_rejection_comment">Reason for rejection</string>
+    <string name="msg_error_rejection_comment_needed">Rejection reason needed</string>
+
 </resources>

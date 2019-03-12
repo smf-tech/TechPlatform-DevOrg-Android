@@ -1,37 +1,55 @@
 package com.platform.view.fragments;
 
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.platform.R;
-import com.platform.models.SavedForm;
+import com.platform.database.DatabaseManager;
+import com.platform.models.forms.FormResult;
+import com.platform.utility.Util;
 import com.platform.view.adapters.PendingFormCategoryAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
-import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PendingFormsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class PendingFormsFragment extends Fragment {
 
     private TextView mNoRecordsView;
     private RecyclerView mRecyclerView;
+    private PendingFormCategoryAdapter mPendingFormCategoryAdapter;
+    private List<FormResult> mSavedForms;
 
     public PendingFormsFragment() {
         // Required empty public constructor
@@ -41,16 +59,16 @@ public class PendingFormsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment CompletedFormsFragment.
+     * @return A new instance of fragment PendingFormsFragment.
      */
-    public static PendingFormsFragment newInstance() {
+    static PendingFormsFragment newInstance() {
         return new PendingFormsFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_form_status, container, false);
+        return inflater.inflate(R.layout.fragment_saved_forms, container, false);
     }
 
     @Override
@@ -65,36 +83,82 @@ public class PendingFormsFragment extends Fragment {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
+        filter.addAction(EVENT_SYNC_FAILED);
+        filter.addAction(EVENT_FORM_ADDED);
+        filter.addAction(PARTIAL_FORM_ADDED);
+        filter.addAction(PARTIAL_FORM_REMOVED);
 
-        /*LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
-
-                    if (mPendingFormCategoryAdapter == null) {
-                        mPendingFormCategoryAdapter = (PendingFormCategoryAdapter) mRecyclerView.getAdapter();
-                    }
-
-                    mSavedForms = getAllNonSyncedSavedForms();
-                    mPendingFormCategoryAdapter.notifyDataSetChanged();
+                    updateAdapter(context);
+                } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
+                    updateAdapter(context);
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_REMOVED)) {
+                    updateAdapter(context);
+                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
+                    Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
+                    updateAdapter(context);
+                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
+                    Log.e("PendingForms", "Sync failed!");
+                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
                 }
             }
-        }, filter);*/
+        }, filter);
     }
 
-    /**
-     * This method fetches all the pending forms from DB
-     */
-    private void getPendingFormsFromDB() {
-        final List<SavedForm> savedForms = getAllNonSyncedSavedForms();
-        if (savedForms != null && !savedForms.isEmpty()) {
-            final PendingFormCategoryAdapter pendingFormCategoryAdapter = new PendingFormCategoryAdapter(getContext(), savedForms);
-            mRecyclerView.setAdapter(pendingFormCategoryAdapter);
-            mNoRecordsView.setVisibility(View.GONE);
-        } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
+    private void updateAdapter(final Context context) {
+        try {
+            if (mSavedForms == null || mSavedForms.isEmpty()) {
+                mSavedForms = new ArrayList<>();
+                if (mPendingFormCategoryAdapter != null)
+                    mPendingFormCategoryAdapter =
+                            new PendingFormCategoryAdapter(getContext(), mSavedForms);
+            }
+
+            List<FormResult> list = DatabaseManager.getDBInstance(context)
+                    .getAllPartiallySavedForms();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                list.sort(Comparator.comparing(FormResult::getCreatedAt));
+            } else {
+                Collections.sort(list, (o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
+            }
+
+            mSavedForms.clear();
+            mSavedForms.addAll(list);
+
+            if (mSavedForms != null && !mSavedForms.isEmpty()) {
+                mNoRecordsView.setVisibility(View.GONE);
+                if (mPendingFormCategoryAdapter != null) {
+                    mPendingFormCategoryAdapter.notifyDataSetChanged();
+                }
+            } else {
+                mRecyclerView.setVisibility(View.GONE);
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            Log.e("PendingForms", e.getMessage() + "");
         }
     }
 
+    private void getPendingFormsFromDB() {
+        List<FormResult> partialSavedForms = DatabaseManager.getDBInstance(getContext())
+                .getAllPartiallySavedForms();
+        if (partialSavedForms != null) {
+            mSavedForms = new ArrayList<>(partialSavedForms);
+
+            Util.sortFormResultListByCreatedDate(mSavedForms);
+
+            if (!mSavedForms.isEmpty()) {
+                mPendingFormCategoryAdapter = new PendingFormCategoryAdapter(getContext(), mSavedForms);
+                mRecyclerView.setAdapter(mPendingFormCategoryAdapter);
+                mNoRecordsView.setVisibility(View.GONE);
+            } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 }
