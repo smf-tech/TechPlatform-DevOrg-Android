@@ -129,16 +129,20 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     private void getProcessData() {
-        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
-        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
-            Processes processes = new Processes();
-            processes.setData(processDataArrayList);
-            populateData(processes);
-        } else {
-            if (Util.isConnected(getContext())) {
-                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-                presenter.getAllProcesses();
+        try {
+            List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+            if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+                Processes processes = new Processes();
+                processes.setData(processDataArrayList);
+                populateData(processes);
+            } else {
+                if (Util.isConnected(getContext())) {
+                    FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                    presenter.getAllProcesses();
+                }
             }
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
         }
     }
 
@@ -267,7 +271,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             return;
         }
 
-        View formTitleView = LayoutInflater.from(getContext().getApplicationContext())
+        View formTitleView = LayoutInflater.from(getContext())
                 .inflate(R.layout.row_submitted_forms, lnrOuter, false);
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);

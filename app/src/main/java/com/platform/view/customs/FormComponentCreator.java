@@ -159,7 +159,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     dropDowns.get(index).getTag().equals(elements.getName())) {
                 dropDowns.get(index).setFormData(elements);
 
-                Collections.sort(choiceValues, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+                Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
 
                 dropDowns.get(index).setListData(choiceValues);
                 break;
