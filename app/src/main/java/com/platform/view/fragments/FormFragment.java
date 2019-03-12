@@ -717,15 +717,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
         mFormJSONObject = gson.fromJson(response.getResult(), JsonObject.class);
 
-        try {
-            oid = mFormJSONObject.get("_id").getAsJsonObject().get("$oid").getAsString();
-        } catch (Exception e) {
-            oid = mFormJSONObject.get("_id").getAsString();
-        }
-        if (oid.equals(formId)) {
-            Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
-        }
-
         if (formComponentCreator != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
     }
