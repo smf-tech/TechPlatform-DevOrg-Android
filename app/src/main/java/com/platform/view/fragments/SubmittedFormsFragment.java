@@ -245,7 +245,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 if (formResult.mOID != null && formResult.mOID.oid != null) {
                                     object.setId(formResult.mOID.oid);
                                 }
-                                object.setFormTitle(formResult.formTitle);
+                                object.setFormTitle(data.getName().getLocaleValue());
                                 object.setName(new LocaleData(formResult.formTitle));
                                 Microservice microservice = new Microservice();
                                 microservice.setUpdatedAt(formResult.updatedDateTime);
@@ -254,7 +254,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             }
 
                             Util.sortProcessDataListByCreatedDate(processData);
-                            createCategoryLayout(processCategoryList.get(index), processData, formID, null);
+                            createCategoryLayout(processData.get(0).getFormTitle(), processData,
+                                    formID, null);
                         }
                     }
                 }
