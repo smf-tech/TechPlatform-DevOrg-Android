@@ -136,13 +136,14 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         if (pendingFormsAdapter == null) {
             pendingFormsAdapter = (PendingFormsAdapter) rvPendingForms.getAdapter();
         }
+
         if (mSavedForms == null) {
             mSavedForms = new ArrayList<>();
         }
 
         mSavedForms.clear();
-        List<FormResult> partiallySavedForms = DatabaseManager.getDBInstance(getContext())
-                .getAllPartiallySavedForms();
+        List<FormResult> partiallySavedForms = DatabaseManager
+                .getDBInstance(getContext()).getAllPartiallySavedForms();
 
         partiallySavedForms = Util.sortFormResultListByCreatedDate(partiallySavedForms);
 
@@ -232,8 +233,13 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void createCategoryLayout(String categoryName, List<ProcessData> childList) {
+        if (getContext() == null) {
+            return;
+        }
+
         View formTitleView = LayoutInflater.from(getContext().getApplicationContext())
                 .inflate(R.layout.row_dashboard_forms_category, lnrOuter, false);
+
         ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
         LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
 
@@ -242,8 +248,11 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             if (i >= 2) break;
 
             if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
-                View formTypeView = LayoutInflater.from(getContext().getApplicationContext()).inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
-                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title)).setText(data.getName().getLocaleValue().trim());
+                View formTypeView = LayoutInflater.from(getContext().getApplicationContext())
+                        .inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
+
+                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title))
+                        .setText(data.getName().getLocaleValue().trim());
 
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
@@ -295,5 +304,4 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void showErrorMessage(String result) {
 
     }
-
 }

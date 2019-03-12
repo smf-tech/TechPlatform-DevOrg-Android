@@ -69,7 +69,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import static android.app.Activity.RESULT_OK;
 import static com.platform.view.fragments.FormsFragment.viewPager;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "CanBeFinal"})
 public class FormFragment extends Fragment implements FormDataTaskListener,
         View.OnClickListener, FormActivity.DeviceBackButtonListener {
 
@@ -91,7 +91,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private boolean mIsInEditMode;
     private String processId;
     private boolean mIsPartiallySaved;
-    private String oid;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -675,6 +674,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         JsonArray values = object.getAsJsonArray("values");
         for (int i = 0; i < values.size(); i++) {
             mFormJSONObject = gson.fromJson(String.valueOf(values.get(i)), JsonObject.class);
+            String oid;
             try {
                 oid = mFormJSONObject.get("_id").getAsJsonObject().get("$oid").getAsString();
             } catch (Exception e) {
