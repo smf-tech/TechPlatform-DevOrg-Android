@@ -226,10 +226,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                         GsonBuilder builder = new GsonBuilder();
                         builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-                        Gson gson = builder.create();
 
                         for (final String result : localFormResults) {
-
                             FormResult formResult = new Gson().fromJson(result, FormResult.class);
                             if (formResult.updatedDateTime != null) {
                                 if (isFormOneMonthOld(formResult.updatedDateTime)) {
@@ -239,8 +237,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                             formID = formResult.formID;
                             ProcessData object = new ProcessData();
-                            if (formResult.mOID != null && formResult.mOID.oid != null)
+                            if (formResult.mOID != null && formResult.mOID.oid != null) {
                                 object.setId(formResult.mOID.oid);
+                            }
                             object.setFormTitle(formResult.formTitle);
                             object.setName(new LocaleData(formResult.formTitle));
                             Microservice microservice = new Microservice();
