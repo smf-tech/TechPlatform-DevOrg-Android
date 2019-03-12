@@ -43,6 +43,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 import com.platform.view.adapters.LocaleDataAdapter;
+import com.platform.view.adapters.OIDAdapter;
 import com.platform.view.customs.FormComponentCreator;
 import com.soundcloud.android.crop.Crop;
 
@@ -667,7 +668,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         Log.e(TAG, "Form schema fetched from database.");
 
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
         Gson gson = builder.create();
 
         JsonObject object = gson.fromJson(response, JsonObject.class);
@@ -711,7 +712,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         Log.e(TAG, "Form schema fetched from database.");
 
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
+        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
         Gson gson = builder.create();
 
         mFormJSONObject = gson.fromJson(response.getResult(), JsonObject.class);
