@@ -10,6 +10,7 @@ import com.platform.R;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.RejectedFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class TMRejectedAdapter extends RecyclerView.Adapter<TMRejectedAdapter.Re
                 pendingRequest.getEntity().getUserInfo().getUserName()));
 
         rejectedRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s",
-                pendingRequest.getCreatedDateTime()));
+                Util.getDateFromTimestamp(pendingRequest.getUpdatedDateTime())));
 
         rejectedRequestViewHolder.ivApprove.setVisibility(View.GONE);
         rejectedRequestViewHolder.ivApprove.setOnClickListener(

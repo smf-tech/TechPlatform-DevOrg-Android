@@ -14,6 +14,7 @@ import com.platform.R;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.PendingFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 
 import java.util.List;
 
@@ -69,7 +70,8 @@ public class NewTMAdapter extends RecyclerView.Adapter<NewTMAdapter.PendingReque
 
         PendingRequest pendingRequest = pendingRequestList.get(position);
         holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
-        holder.txtRequestCreatedAt.setText(String.format("On %s", pendingRequest.getCreatedDateTime()));
+        holder.txtRequestCreatedAt.setText(String.format("On %s",
+                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));
         holder.cardView.setOnClickListener(view1 -> clickListener.onItemClicked(holder.getAdapterPosition()));
 
         holder.ivApprove.setOnClickListener(v -> approveUserRequest(pendingRequest));

@@ -10,6 +10,7 @@ import com.platform.R;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.ApprovedFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class TMApprovedAdapter extends RecyclerView.Adapter<TMApprovedAdapter.Ap
                 pendingRequest.getEntity().getUserInfo().getUserName()));
 
         approvedRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s",
-                pendingRequest.getCreatedDateTime()));
+                Util.getDateFromTimestamp(pendingRequest.getUpdatedDateTime())));
 
         approvedRequestViewHolder.ivApprove.setVisibility(View.GONE);
         approvedRequestViewHolder.ivApprove.setOnClickListener(

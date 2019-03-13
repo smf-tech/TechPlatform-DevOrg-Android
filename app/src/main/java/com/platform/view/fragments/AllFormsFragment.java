@@ -216,7 +216,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onMastersFormsLoaded(final String response, final String formId) {
         try {
             String count;
-            JSONObject metadataObj;
+            JSONObject metadataObj = null;
             if (new JSONObject(response).has(Constants.FormDynamicKeys.METADATA)) {
                 JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
                 if (metadata != null && metadata.length() > 0) {
@@ -245,7 +245,13 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                             SubmittedFormsFragment.FormResult.class);
 
                     String uuid = UUID.randomUUID().toString();
-                    final String formID = formResult.formID;
+                    String formID = formResult.formID;
+                    if (TextUtils.isEmpty(formID)) {
+                        if (metadataObj != null) {
+                            formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                                    .getString(Constants.FormDynamicKeys.FORM_ID);
+                        }
+                    }
 
                     com.platform.models.forms.FormResult result = new com.platform.models.forms.FormResult();
                     if (formResult.mOID.oid != null) {
