@@ -269,7 +269,7 @@ public class DashboardFragment extends Fragment {
         updateBadgeCount();
     }
 
-    private void updateBadgeCount() {
+    public void updateBadgeCount() {
         for (int i = 0; i < tabNames.size(); i++) {
             if (getContext() == null) continue;
 
