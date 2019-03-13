@@ -27,7 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
 
-public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener, NewTMAdapter.OnRequestItemClicked {
+public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
+        TMTaskListener, NewTMAdapter.OnRequestItemClicked {
 
     private View tmFragmentView;
     private TextView txtNoData;

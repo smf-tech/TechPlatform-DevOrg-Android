@@ -48,6 +48,15 @@
         android:textSize="@dimen/text_size_20"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/no_offline_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:text="@string/msg_no_form_offline"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"
         android:layout_width="match_parent"
