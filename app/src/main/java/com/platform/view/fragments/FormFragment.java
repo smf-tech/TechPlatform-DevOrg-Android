@@ -111,12 +111,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         super.onViewCreated(view, savedInstanceState);
 
         formPresenter = new FormActivityPresenter(this);
+        view.findViewById(R.id.no_offline_form).setVisibility(View.GONE);
 
         if (getArguments() != null) {
             processId = getArguments().getString(Constants.PM.PROCESS_ID);
             mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
             String formId = getArguments().getString(Constants.PM.FORM_ID);
             FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
+
             mIsPartiallySaved = getArguments().getBoolean(Constants.PM.PARTIAL_FORM);
             if (mIsPartiallySaved) {
                 formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
@@ -125,6 +127,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             if (formData == null) {
                 if (Util.isConnected(getContext())) {
                     formPresenter.getProcessDetails(formId);
+                } else {
+                    view.findViewById(R.id.no_offline_form).setVisibility(View.VISIBLE);
+                    setActionbar("");
                 }
             } else {
                 formModel = new Form();
@@ -352,12 +357,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         initViews();
 
         if (mIsInEditMode) {
-            FormResult formResult = DatabaseManager.getDBInstance(getActivity())
-                    .getFormResult(processId);
-            /*List<String> formResults = DatabaseManager.getDBInstance(getActivity())
-                    .getAllFormResults(processId, SyncAdapterUtils.FormStatus.UN_SYNCED);*/
-
-//            if (formResults != null && !formResults.isEmpty()) {
+            FormResult formResult = DatabaseManager.getDBInstance(getActivity()).getFormResult(processId);
             if (formResult != null) {
                 getFormDataAndParse(formResult);
             } else {
@@ -366,6 +366,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     if (formModel.getData() != null && formModel.getData().getMicroService() != null
                             && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
                             && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+
                         url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
                                 formModel.getData().getMicroService().getRoute());
 
@@ -846,7 +847,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public void onDeviceBackButtonPressed() {
-        showConfirmPopUp();
+        if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE) {
+            getActivity().finish();
+        } else {
+            showConfirmPopUp();
+        }
     }
 
     public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
