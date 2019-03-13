@@ -132,6 +132,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this, getContext());
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
+            mApprovalCount = 0;
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);
@@ -145,8 +146,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         newTMAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
+            mApprovalCount = this.pendingRequestList.size();
             txtNoData.setVisibility(View.GONE);
         } else {
+            mApprovalCount = 0;
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
