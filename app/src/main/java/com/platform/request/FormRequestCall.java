@@ -44,7 +44,6 @@ public class FormRequestCall {
                     listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId, callType, oId);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }
         };
@@ -81,7 +80,6 @@ public class FormRequestCall {
                     listener.onFormCreatedUpdated(res, new Gson().toJson(requestObject), formId, callType, null);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }
         };
@@ -151,7 +149,6 @@ public class FormRequestCall {
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }
         };
@@ -187,7 +184,6 @@ public class FormRequestCall {
                     listener.onFormDetailsLoadedListener(res);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }
         };

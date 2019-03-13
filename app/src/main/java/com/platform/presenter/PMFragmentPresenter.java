@@ -43,25 +43,32 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
     @Override
     public void onSuccessListener(String response) {
         Log.i(TAG, "Success: " + response);
-        fragmentWeakReference.get().hideProgressBar();
 
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
         Gson gson = builder.create();
 
         Processes data = gson.fromJson(response, Processes.class);
-        fragmentWeakReference.get().showNextScreen(data);
+
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+            fragmentWeakReference.get().showNextScreen(data);
+        }
     }
 
     @Override
     public void onFailureListener(String message) {
         Log.i(TAG, "Fail: " + message);
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.i(TAG, "Error: " + error);
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
     }
 }
