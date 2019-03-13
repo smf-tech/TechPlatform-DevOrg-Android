@@ -167,7 +167,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
 
             ProcessData processData = DatabaseManager.getDBInstance(
-                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    Objects.requireNonNull(getContext()))
                     .getProcessData(data.getId());
 
             String submitCount = processData.getSubmitCount();

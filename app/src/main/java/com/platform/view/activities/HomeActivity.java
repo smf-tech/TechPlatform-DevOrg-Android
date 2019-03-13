@@ -51,6 +51,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
@@ -526,7 +527,17 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
         } else {
             getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            String tag = getSupportFragmentManager().getFragments().get(0).getTag();
+            String tag = null;
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                for (final Fragment fragment : getSupportFragmentManager().getFragments()) {
+                    if (fragment instanceof HomeFragment) {
+                        tag = fragment.getTag();
+                    }
+                }
+                if (TextUtils.isEmpty(tag)) {
+                    tag = getString(R.string.app_name_ss);
+                }
+            }
             setActionBarTitle(tag);
 
             if (tag != null && tag.equals(getString(R.string.app_name_ss))) {

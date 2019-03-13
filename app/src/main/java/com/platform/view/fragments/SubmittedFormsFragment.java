@@ -142,7 +142,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
         } catch (Exception e) {
-            Log.e("TAG", e.getMessage());
+            Log.e("TAG", e.getMessage() + "");
         }
     }
 
@@ -159,6 +159,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 object.setId(formResult.getFormId());
                 object.setFormTitle(formResult.getFormTitle());
                 object.setName(new LocaleData(formResult.getFormName()));
+                Microservice microservice = new Microservice();
+                microservice.setUpdatedAt(formResult.getCreatedAt());
+                object.setMicroservice(microservice);
                 list.add(object);
                 map.put(formResult.get_id(), object);
             }
@@ -384,19 +387,18 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             intent.putExtra(Constants.PM.PROCESS_ID, oid);
             intent.putExtra(Constants.PM.FORM_ID, data.getId());
             intent.putExtra(Constants.PM.EDIT_MODE, true);
-            intent.putExtra(Constants.PM.PARTIAL_FORM, false);
+            intent.putExtra(Constants.PM.PARTIAL_FORM, true);
             getContext().startActivity(intent);
         });
 
         if (getContext() != null && data.getName().getLocaleValue() != null &&
                 !data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
-            String formattedDate = Util.getDateFromTimestamp(
-                    Util.getCurrentTimeStamp());
+            String formattedDate = Util.getDateFromTimestamp(data.getMicroservice().getUpdatedAt());
 
             ((TextView) view.findViewById(R.id.form_date))
                     .setText(String.format("on %s", formattedDate));
         } else {
-            String formattedDate = Util.getFormattedDate(new Date().toString(), FORM_DATE_FORMAT);
+            String formattedDate = Util.getDateFromTimestamp(Util.getCurrentTimeStamp());
             ((TextView) view.findViewById(R.id.form_date)).setText(String.format("on %s", formattedDate));
         }
 
