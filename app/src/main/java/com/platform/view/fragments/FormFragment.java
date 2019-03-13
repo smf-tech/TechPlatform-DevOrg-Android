@@ -334,6 +334,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public void hideProgressBar() {
+        if (getActivity() == null) return;
+
         getActivity().runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
                 progressBar.setVisibility(View.GONE);

@@ -19,6 +19,7 @@ import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
+import com.platform.models.pm.ProcessData;
 import com.platform.request.FormRequestCall;
 import com.platform.request.ImageRequestCall;
 import com.platform.syncAdapter.SyncAdapterUtils;
@@ -255,6 +256,13 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
                 Log.d(TAG, "Form schema saved in database.");
 
+                updateFormSubmittedCount(form.getData().getId());
+                Log.d(TAG, "Form schema submitted count incremented.");
+
+                Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
+                LocalBroadcastManager.getInstance(formFragment.get().getActivity())
+                        .sendBroadcast(intent);
+
                 //Call choices by url
                 if (form.getData().getComponents() != null &&
                         form.getData().getComponents().getPages() != null &&
@@ -336,4 +344,26 @@ public class FormActivityPresenter implements FormRequestCallListener,
         formFragment.get().hideProgressBar();
         formFragment.get().getFormDataAndParse(response);
     }
+
+    private void updateFormSubmittedCount(final String formId) {
+        ProcessData processData = DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                .getProcessData(formId);
+        String submitCount = processData.getSubmitCount();
+        int count = 0;
+        if (!TextUtils.isEmpty(submitCount)) {
+            count = Integer.parseInt(submitCount);
+        }
+
+        count++;
+        List<String> formResults = DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                .getAllFormResults(processData.getId());
+        if (count == formResults.size()) {
+            submitCount = String.valueOf(count);
+        } else {
+            submitCount = String.valueOf(formResults.size());
+        }
+        DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                .updateProcessSubmitCount(processData.getId(), submitCount);
+    }
+
 }
