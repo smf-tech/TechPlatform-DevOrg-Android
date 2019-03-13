@@ -51,6 +51,7 @@ import com.soundcloud.android.crop.Crop;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -879,6 +880,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     this.states.clear();
                     List<String> stateNames = new ArrayList<>();
+
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
+
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                         stateNames.add(location.getState().getName());
@@ -911,6 +915,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     this.districts.clear();
                     List<String> districts = new ArrayList<>();
+
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
+
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
@@ -920,8 +927,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             }
                         }
                     }
-
-                    //Collections.sort(districts);
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
@@ -949,6 +954,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     this.talukas.clear();
                     List<String> talukas = new ArrayList<>();
+
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
@@ -962,9 +970,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             }
                         }
                     }
-
-                    //Collections.sort(talukas);
-
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
@@ -993,6 +998,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     this.villages.clear();
                     List<String> villages = new ArrayList<>();
+
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
+
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
@@ -1010,9 +1018,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             }
                         }
                     }
-
-                    //Collections.sort(villages);
-
                     spVillage.setItems(villages, getString(R.string.village), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
@@ -1040,6 +1045,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     this.clusters.clear();
                     List<String> clusters = new ArrayList<>();
+
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
+
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
@@ -1057,9 +1065,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                             }
                         }
                     }
-
-                    //Collections.sort(clusters);
-
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {

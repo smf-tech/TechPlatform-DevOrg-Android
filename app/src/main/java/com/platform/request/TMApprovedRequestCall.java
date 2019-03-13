@@ -35,7 +35,7 @@ public class TMApprovedRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "getAllRejectedRequests - Resp: " + res);
+                    Log.d(TAG, "getAllApprovedRequests - Resp: " + res);
                     listener.onApprovedRequestsFetched(res);
                 }
             } catch (Exception e) {

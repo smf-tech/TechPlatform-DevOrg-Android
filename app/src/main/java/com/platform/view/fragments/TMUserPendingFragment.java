@@ -27,7 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
 
-public class TMUserPendingFragment extends Fragment implements View.OnClickListener, TMTaskListener, NewTMAdapter.OnRequestItemClicked {
+public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
+        TMTaskListener, NewTMAdapter.OnRequestItemClicked {
 
     private View tmFragmentView;
     private TextView txtNoData;
@@ -131,9 +132,14 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this, getContext());
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
+            mApprovalCount = 0;
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);
+        }
+
+        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
+            ((DashboardFragment) getParentFragment()).updateBadgeCount();
         }
     }
 
@@ -144,11 +150,17 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         newTMAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
+            mApprovalCount = this.pendingRequestList.size();
             txtNoData.setVisibility(View.GONE);
         } else {
+            mApprovalCount = 0;
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
+        }
+
+        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
+            ((DashboardFragment) getParentFragment()).updateBadgeCount();
         }
     }
 
