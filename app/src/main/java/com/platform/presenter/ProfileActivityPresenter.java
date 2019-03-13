@@ -97,6 +97,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     public void onProfileUpdated(String response) {
         User user = new Gson().fromJson(response, User.class);
 
+        // Save response
+        if (response != null && user.getUserInfo() != null) {
+            Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+        }
+
         profileActivity.get().hideProgressBar();
         profileActivity.get().showNextScreen(user);
     }
