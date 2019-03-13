@@ -59,9 +59,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
+    private HashMap<ImageView, Elements> imageViewElementsHashMap = new HashMap<>();
     private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
+
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
+    private ArrayList<ImageView> photos = new ArrayList<>();
 
     public FormComponentCreator(FormFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
@@ -263,12 +266,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     textInputField.setOnClickListener(view -> showTimeDialog(fragment.get().getContext(), textInputField));
                     break;
 
-                case Constants.FormInputType.INPUT_TYPE_NUMBER:
                 case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
-                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
                     textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
 
+                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
+                case Constants.FormInputType.INPUT_TYPE_NUMBER:
                 case Constants.FormInputType.INPUT_TYPE_DECIMAL:
                     textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
                             InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -308,6 +311,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
         }
+
+        photos.add(imageView);
+        imageViewElementsHashMap.put(imageView, formData);
 
         if (!TextUtils.isEmpty(formData.getAnswer())) {
             Glide.with(fragment.get().getContext())
@@ -379,7 +385,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
         }
 
-        //For all edit texts
+        //For all drop downs
         for (DropDownTemplate dropDownTemplate : dropDowns) {
             Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
             if (formData.isRequired() != null) {
@@ -392,6 +398,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                         fragment.get().setErrorMsg(errorMsg);
                         return false;
                     }
+                }
+            }
+        }
+
+        //For all photos
+        for (ImageView photo : photos) {
+            Elements formData = imageViewElementsHashMap.get(photo);
+            if (formData.isRequired() != null) {
+                errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
+                        "", formData.isRequired());
+
+                if (!TextUtils.isEmpty(errorMsg)) {
+                    fragment.get().setErrorMsg(errorMsg);
+                    return false;
                 }
             }
         }
