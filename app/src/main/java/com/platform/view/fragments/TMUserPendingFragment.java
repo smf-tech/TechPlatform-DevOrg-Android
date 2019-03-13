@@ -137,6 +137,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);
         }
+
+        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
+            ((DashboardFragment) getParentFragment()).updateBadgeCount();
+        }
     }
 
     @Override
@@ -153,6 +157,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
+        }
+
+        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
+            ((DashboardFragment) getParentFragment()).updateBadgeCount();
         }
     }
 
