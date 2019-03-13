@@ -781,6 +781,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public <T> void showNextScreen(T data) {
+        Util.removeDatabaseRecords(false);
+        Util.setSubmittedFormsLoaded(false);
+
         AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
