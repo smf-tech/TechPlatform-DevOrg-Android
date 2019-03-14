@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
@@ -118,6 +119,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public void onImageUploadedListener(final String response, final String formName) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
 
+        if (formFragment == null || formFragment.get() == null) return;
+
         formFragment.get().hideProgressBar();
 
         try {
@@ -139,18 +142,20 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onFailureListener(String message) {
-        formFragment.get().hideProgressBar();
+        if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
+            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+        }
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
-        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-        formFragment.get().hideProgressBar();
         if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
             AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
             Util.showToast(error.getMessage(), formFragment.get().getActivity());
         }
@@ -159,8 +164,11 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType, String oid) {
         Log.e(TAG, "Request succeed " + message);
-        formFragment.get().hideProgressBar();
-        Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
+        if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
+
+            Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
+        }
 
         try {
             JSONObject outerObject = new JSONObject(message);
@@ -188,12 +196,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
                     if (formResult != null) {
                         DatabaseManager.getDBInstance(formFragment.get().getContext())
                                 .deleteFormResult(formResult);
-
-                        Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
-                        Context context = formFragment.get().getContext();
-                        if (context != null) {
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                        }
                     }
                 }
 
@@ -224,6 +226,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
                                     Objects.requireNonNull(formFragment.get().getContext()))
                                     .updateProcessSubmitCount(formId, String.valueOf(++count));
                         }
+
+                        Intent intent = new Intent();
+                        if (oid != null) {
+                            intent.setAction(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
+                        }
+                        intent.setAction(SyncAdapterUtils.EVENT_FORM_SUBMITTED);
+                        Context context = formFragment.get().getContext();
+                        if (context != null) {
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                        }
                         break;
 
                 }
@@ -253,15 +265,17 @@ public class FormActivityPresenter implements FormRequestCallListener,
             Form form = gson.fromJson(response, Form.class);
             if (form != null && form.getData() != null) {
 
-                DatabaseManager.getDBInstance(formFragment.get().getActivity()).insertFormSchema(form.getData());
-                Log.d(TAG, "Form schema saved in database.");
+                FragmentActivity activity = formFragment.get().getActivity();
+                if (activity != null) {
+                    DatabaseManager.getDBInstance(activity).insertFormSchema(form.getData());
+                    Log.d(TAG, "Form schema saved in database.");
 
-                updateFormSubmittedCount(form.getData().getId());
-                Log.d(TAG, "Form schema submitted count incremented.");
+                    updateFormSubmittedCount(form.getData().getId());
+                    Log.d(TAG, "Form schema submitted count incremented.");
 
-                Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
-                LocalBroadcastManager.getInstance(Objects.requireNonNull(formFragment.get().getActivity()))
-                        .sendBroadcast(intent);
+                    Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
+                    LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+                }
 
                 //Call choices by url
                 if (form.getData().getComponents() != null &&
@@ -289,14 +303,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
             }
         }
 
-        formFragment.get().hideProgressBar();
-        formFragment.get().showNextScreen(response);
+        if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
+            formFragment.get().showNextScreen(response);
+        }
     }
 
     @Override
     public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData) {
-        formFragment.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response) && formData != null) {
+        if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
             formData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponse(response);
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(formData);
             formFragment.get().showChoicesByUrlAsync(response, elements);
@@ -341,8 +357,10 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onFormDetailsLoadedListener(final String response) {
-        formFragment.get().hideProgressBar();
-        formFragment.get().getFormDataAndParse(response);
+        if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
+            formFragment.get().getFormDataAndParse(response);
+        }
     }
 
     private void updateFormSubmittedCount(final String formId) {

@@ -35,7 +35,6 @@ public class FormStatusRequestCall {
                     listener.onMastersFormsLoaded(res, formID);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }
         };
@@ -70,7 +69,6 @@ public class FormStatusRequestCall {
                     listener.onFormsLoaded(res);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }
         };

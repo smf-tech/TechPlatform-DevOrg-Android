@@ -46,6 +46,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,12 +97,17 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_FORM_ADDED);
+        filter.addAction(EVENT_FORM_SUBMITTED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
-                    getProcessData();
+                String action = Objects.requireNonNull(intent.getAction());
+                switch (action) {
+                    case EVENT_FORM_ADDED:
+                    case EVENT_FORM_SUBMITTED:
+                        getProcessData();
+                        break;
                 }
             }
         }, filter);

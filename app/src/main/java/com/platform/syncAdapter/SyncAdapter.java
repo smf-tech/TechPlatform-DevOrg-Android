@@ -37,6 +37,7 @@ import java.util.List;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.getLoginObjectFromPref;
 
@@ -215,9 +216,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void sendBroadCast(final String form, final String syncEvent) {
-        Intent intent = new Intent(syncEvent);
-        if (syncEvent.equals(SyncAdapterUtils.EVENT_SYNC_COMPLETED))
+        Intent intent = new Intent();
+        intent.setAction(syncEvent);
+        if (syncEvent.equals(SyncAdapterUtils.EVENT_SYNC_COMPLETED)) {
+            intent.setAction(EVENT_FORM_SUBMITTED);
             intent.putExtra(EXTRA_FORM_ID, form);
+        }
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
