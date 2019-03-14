@@ -1,58 +1,77 @@
 package com.platform.view.adapters;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
+import com.platform.models.tm.PendingRequest;
 import com.platform.utility.Util;
-import com.platform.view.fragments.TMUserApprovalsFragment;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
-public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
+public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.PendingRequestViewHolder> {
 
-    private Context mContext;
+    private NotificationsAdapter.OnRequestItemClicked clickListener;
+    private List<PendingRequest> pendingRequestList;
 
-    public NotificationsAdapter(Context context) {
-        this.mContext = context;
+    class PendingRequestViewHolder extends RecyclerView.ViewHolder {
+
+        CardView cardView;
+        TextView txtRequestTitle, txtRequestCreatedAt;
+        ImageView ivApprove, ivReject;
+
+        PendingRequestViewHolder(View view) {
+            super(view);
+
+            cardView = view.findViewById(R.id.cv_pending_requests);
+            txtRequestTitle = view.findViewById(R.id.txt_pending_request_title);
+            txtRequestCreatedAt = view.findViewById(R.id.txt_pending_request_created_at);
+            ivApprove = view.findViewById(R.id.iv_approve_request);
+            ivReject = view.findViewById(R.id.iv_reject_request);
+        }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-
-        ViewHolder(@NonNull final View itemView) {
-            super(itemView);
-            mTextView = itemView.findViewById(android.R.id.text1);
-        }
+    public NotificationsAdapter(List<PendingRequest> pendingRequestList, OnRequestItemClicked clickListener) {
+        this.pendingRequestList = pendingRequestList;
+        this.clickListener = clickListener;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(android.R.layout.simple_list_item_1, parent, false);
-        view.setPadding(10, 10, 10, 10);
-        view.setBackground(mContext.getDrawable(R.drawable.bg_rounded_rect_gray));
-        return new ViewHolder(view);
+    public NotificationsAdapter.PendingRequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.row_pending_requests_card_view, parent, false);
+
+        return new NotificationsAdapter.PendingRequestViewHolder(itemView);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        holder.mTextView.setText("Notifications appear here!");
-        holder.mTextView.setOnClickListener(v ->
-                Util.launchFragment(new TMUserApprovalsFragment(), mContext,
-                        mContext.getString(R.string.approvals), true));
+    public void onBindViewHolder(@NonNull NotificationsAdapter.PendingRequestViewHolder holder, int position) {
+
+        PendingRequest pendingRequest = pendingRequestList.get(position);
+        holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
+        holder.txtRequestCreatedAt.setText(String.format("On %s",
+                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));
+        holder.cardView.setOnClickListener(view1 -> clickListener.onItemClicked());
+
+        holder.ivApprove.setVisibility(View.GONE);
+        holder.ivReject.setVisibility(View.GONE);
     }
 
     @Override
     public int getItemCount() {
-        // FIXME: 3/9/2019 Remove this hardcoded count
-        return 1;
+        return pendingRequestList.size();
+    }
+
+    public interface OnRequestItemClicked {
+        void onItemClicked();
     }
 }

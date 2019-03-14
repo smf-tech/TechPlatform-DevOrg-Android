@@ -580,7 +580,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.home_bell_icon:
             case R.id.unread_notification_count:
                 findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
-                updateUnreadNotificationsCount();
+                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
 
                 Util.launchFragment(NotificationsFragment.newInstance(), this,
                         getString(R.string.notifications), true);
