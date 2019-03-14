@@ -196,12 +196,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
                     if (formResult != null) {
                         DatabaseManager.getDBInstance(formFragment.get().getContext())
                                 .deleteFormResult(formResult);
-
-                        Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
-                        Context context = formFragment.get().getContext();
-                        if (context != null) {
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                        }
                     }
                 }
 
@@ -231,6 +225,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
                             DatabaseManager.getDBInstance(
                                     Objects.requireNonNull(formFragment.get().getContext()))
                                     .updateProcessSubmitCount(formId, String.valueOf(++count));
+                        }
+
+                        Intent intent = new Intent();
+                        if (oid != null) {
+                            intent.setAction(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
+                        }
+                        intent.setAction(SyncAdapterUtils.EVENT_FORM_SUBMITTED);
+                        Context context = formFragment.get().getContext();
+                        if (context != null) {
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                         }
                         break;
 

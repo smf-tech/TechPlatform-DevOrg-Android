@@ -516,7 +516,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             }
 
                             Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
-                            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+                            LocalBroadcastManager.getInstance(getContext().getApplicationContext())
+                                    .sendBroadcast(intent);
 
                             AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
                                     formModel.getData().getName()));
