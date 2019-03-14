@@ -35,7 +35,6 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
-import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 
 /**
  * A simple {@link Fragment} subclass.
