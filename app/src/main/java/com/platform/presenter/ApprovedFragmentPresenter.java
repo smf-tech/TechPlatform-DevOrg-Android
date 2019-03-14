@@ -62,7 +62,10 @@ public class ApprovedFragmentPresenter implements TMApprovedRequestCallListener 
 
     @Override
     public void onFailureListener(String message) {
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
+
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -76,6 +79,8 @@ public class ApprovedFragmentPresenter implements TMApprovedRequestCallListener 
             Log.i(TAG, "Error: " + message);
         }
 
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
     }
 }
