@@ -10,6 +10,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
@@ -154,15 +155,21 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-        if (formFragment != null && formFragment.get() != null) {
-            formFragment.get().hideProgressBar();
+        formFragment.get().hideProgressBar();
+
+        if (error.networkResponse.statusCode == 400) {
+            Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                    formFragment.get().getActivity());
+        } else if (formFragment != null && formFragment.get() != null) {
             AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
             Util.showToast(error.getMessage(), formFragment.get().getActivity());
         }
     }
 
     @Override
-    public void onFormCreatedUpdated(String message, String requestObjectString, String formId, String callType, String oid) {
+    public void onFormCreatedUpdated(String message, String requestObjectString, String formId,
+                                     String callType, String oid) {
+
         Log.e(TAG, "Request succeed " + message);
         if (formFragment != null && formFragment.get() != null) {
             formFragment.get().hideProgressBar();

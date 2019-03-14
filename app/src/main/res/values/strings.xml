@@ -179,6 +179,7 @@
     <string name="form_field_mandatory">%1$s%2$s</string>
     <string name="msg_no_pending_req">There are no pending requests for approvals.</string>
     <string name="msg_no_form_offline">This form is not available in offline. To use this form in offline, please use it once in network.</string>
+    <string name="msg_form_duplicate_error">Duplicate entries are not allowed.</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
 
