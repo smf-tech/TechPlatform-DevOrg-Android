@@ -45,6 +45,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
@@ -405,7 +406,21 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         //For all photos
         for (ImageView photo : photos) {
             Elements formData = imageViewElementsHashMap.get(photo);
-            if (formData.isRequired() != null) {
+
+            String imgUrl = "";
+            if (TextUtils.isEmpty(formData.getAnswer())) {
+                List<Map<String, String>> uploadedImages = fragment.get().getUploadedImages();
+                for (Map<String, String> imageObj : uploadedImages) {
+                    if (imageObj.containsKey(formData.getName())) {
+                        imgUrl = imageObj.get(formData.getName());
+                        break;
+                    }
+                }
+            } else {
+                imgUrl = formData.getAnswer();
+            }
+
+            if (formData.isRequired() != null && TextUtils.isEmpty(imgUrl)) {
                 errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
                         "", formData.isRequired());
 

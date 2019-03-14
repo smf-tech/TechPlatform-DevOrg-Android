@@ -119,7 +119,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 String response = readStream(in);
 
-                updateForm(form, response);
+                updateForm(form, response, requestObject);
 
                 Log.i(TAG, "Response \n" + response);
                 Log.i(TAG, "Form Synced");
@@ -149,14 +149,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return url;
     }
 
-    private void updateForm(final FormResult form, final String response) {
+    private void updateForm(final FormResult form, final String response, final String requestObjectString) {
         try {
 
             JSONObject outerObject = new JSONObject(response);
+            JSONObject requestObject = new JSONObject(requestObjectString);
 
             if (outerObject.has(Constants.RESPONSE_DATA)) {
                 JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
+
+                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
+                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
+                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+
+                requestObject.put(Constants.FormDynamicKeys.FORM_ID, form.getFormId());
+                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
+                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+
+                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
+                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                 FormResult result = new FormResult();
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
@@ -164,7 +176,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 dataObject.put("form_id", form.getFormId());
-                result.setResult(dataObject.toString());
+                result.setResult(requestObject.toString());
 
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));

@@ -114,16 +114,20 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     }
 
     private void getProcessData() {
-        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
-        if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
-            Processes processes = new Processes();
-            processes.setData(processDataArrayList);
-            processResponse(processes);
-        } else {
-            if (Util.isConnected(getContext())) {
-                FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
-                presenter.getAllProcesses();
+        try {
+            List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+            if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+                Processes processes = new Processes();
+                processes.setData(processDataArrayList);
+                processResponse(processes);
+            } else {
+                if (Util.isConnected(getContext())) {
+                    FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                    presenter.getAllProcesses();
+                }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "EXCEPTION : getProcessData()");
         }
     }
 
@@ -142,13 +146,17 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onFormsLoaded(String response) {
-        Processes json = new Gson().fromJson(response, Processes.class);
-        if (json != null && json.getData() != null && !json.getData().isEmpty()) {
-            for (ProcessData processData :
-                    json.getData()) {
-                DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
+        try {
+            Processes json = new Gson().fromJson(response, Processes.class);
+            if (json != null && json.getData() != null && !json.getData().isEmpty()) {
+                for (ProcessData processData :
+                        json.getData()) {
+                    DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
+                }
+                processResponse(json);
             }
-            processResponse(json);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -272,6 +280,10 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
                     JSONObject obj = (JSONObject) values.get(i);
                     if (obj == null) return;
+
+                    if (!obj.has(Constants.FormDynamicKeys.FORM_ID)) {
+                        obj.put(Constants.FormDynamicKeys.FORM_ID, formID);
+                    }
 
                     List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
                             .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);

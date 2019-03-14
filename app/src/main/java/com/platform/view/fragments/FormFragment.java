@@ -850,11 +850,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public void onDeviceBackButtonPressed() {
-        if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE) {
+        if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE ||
+                formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE) {
             getActivity().finish();
         } else {
             showConfirmPopUp();
         }
+    }
+
+    public List<Map<String, String>> getUploadedImages() {
+        return mUploadedImageUrlList;
     }
 
     public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
