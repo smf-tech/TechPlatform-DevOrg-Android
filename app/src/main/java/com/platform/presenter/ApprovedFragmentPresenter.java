@@ -65,6 +65,7 @@ public class ApprovedFragmentPresenter implements TMApprovedRequestCallListener 
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
         }
+
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
