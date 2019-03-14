@@ -26,10 +26,12 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     private Map<String, List<ProcessData>> mFormsData;
     private Map<String, String> mCountList;
 
-    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData, final Map<String, String> countList) {
+    public ExpandableAdapter(Context context, final Map<String, List<ProcessData>> formsData,
+                             final Map<String, String> countList) {
+
         this.mContext = context;
-        mFormsData = formsData;
-        mCountList = countList;
+        this.mFormsData = formsData;
+        this.mCountList = countList;
     }
 
     @Override

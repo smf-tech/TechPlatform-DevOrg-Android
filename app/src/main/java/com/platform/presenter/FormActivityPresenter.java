@@ -260,7 +260,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 Log.d(TAG, "Form schema submitted count incremented.");
 
                 Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
-                LocalBroadcastManager.getInstance(formFragment.get().getActivity())
+                LocalBroadcastManager.getInstance(Objects.requireNonNull(formFragment.get().getActivity()))
                         .sendBroadcast(intent);
 
                 //Call choices by url
