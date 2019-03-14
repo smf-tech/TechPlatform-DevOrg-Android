@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
@@ -84,23 +85,33 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(EVENT_FORM_ADDED);
         filter.addAction(PARTIAL_FORM_ADDED);
         filter.addAction(PARTIAL_FORM_REMOVED);
+        filter.addAction(EVENT_FORM_SUBMITTED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
-                    Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
-                    updateAdapter(context);
-                } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
-                    updateAdapter(context);
-                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_REMOVED)) {
-                    updateAdapter(context);
-                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
-                    Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
-                    updateAdapter(context);
-                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
-                    Log.e("PendingForms", "Sync failed!");
-                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                String action = Objects.requireNonNull(intent.getAction());
+                switch (action) {
+                    case EVENT_SYNC_COMPLETED:
+                        Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
+                        updateAdapter(context);
+                        break;
+
+                    case PARTIAL_FORM_ADDED:
+                        updateAdapter(context);
+                        Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case EVENT_FORM_ADDED:
+                    case PARTIAL_FORM_REMOVED:
+                    case EVENT_FORM_SUBMITTED:
+                        updateAdapter(context);
+                        break;
+
+                    case EVENT_SYNC_FAILED:
+                        Log.e("PendingForms", "Sync failed!");
+                        Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         }, filter);

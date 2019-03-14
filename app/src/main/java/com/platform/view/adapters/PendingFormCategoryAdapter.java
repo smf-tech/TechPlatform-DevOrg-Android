@@ -85,6 +85,12 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
 
     @Override
     public int getItemCount() {
+        mCategoryList.clear();
+        for (final FormResult form : mData) {
+            if (!mCategoryList.contains(form.getFormCategory())) {
+                mCategoryList.add(form.getFormCategory());
+            }
+        }
         return mCategoryList.size();
     }
 

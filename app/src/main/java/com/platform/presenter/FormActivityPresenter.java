@@ -326,10 +326,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
+                formFragment.get().showProgressBar();
                 formRequestCall.createFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
+                formFragment.get().showProgressBar();
                 formRequestCall.updateFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
                 break;
 
