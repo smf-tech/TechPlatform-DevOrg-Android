@@ -44,8 +44,13 @@ public class NotificationsFragment extends Fragment {
         if (getActivity() != null && getArguments() != null) {
             Context context = getActivity();
             String title = (String) getArguments().getSerializable("TITLE");
-            if (TextUtils.isEmpty(title))
+            if (TextUtils.isEmpty(title)) {
                 title = getString(R.string.notifications);
+            }
+
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
 
             ((HomeActivity) context).setActionBarTitle(title);
             ((HomeActivity) context).setSyncButtonVisibility(false);
