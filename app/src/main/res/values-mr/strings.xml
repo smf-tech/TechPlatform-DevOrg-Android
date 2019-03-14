@@ -179,8 +179,10 @@
     <string name="form_field_mandatory">%1$s%2$s</string>
     <string name="msg_no_pending_req">मंजूरीसाठी कोणत्याही प्रलंबित विनंत्या नाहीत.</string>
     <string name="msg_no_form_offline">हा फॉर्म ऑफलाइन उपलब्ध नाही. हे फॉर्म ऑफलाइन वापरण्यासाठी, कृपया नेटवर्कमध्ये एकदा त्याचा वापर करा.</string>
+    <string name="msg_form_duplicate_error">डुप्लीकेट नोंदी परवानगी नाही.</string>
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
+
     <string name="notifications">अधिसूचना</string>
     <string name="msg_rejection_reason">आपणास खात्री आहे की आपण ही विनंती नाकारू इच्छिता??</string>
     <string name="msg_rejection_comment">नाकारण्याचे कारण</string>

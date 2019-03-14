@@ -46,7 +46,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
-    public static int mApprovalCount = 0;
+    private static int mApprovalCount = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -234,7 +234,7 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.APPROVALS:
                     resId = tabIcons[2];
-                    pendingActionCount = mApprovalCount;
+                    pendingActionCount = getApprovalCount();
                     break;
 
                 case Constants.Home.REPORTS:
@@ -286,6 +286,14 @@ public class DashboardFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public static int getApprovalCount() {
+        return DashboardFragment.mApprovalCount;
+    }
+
+    public static void setApprovalCount(int mApprovalCount) {
+        DashboardFragment.mApprovalCount = mApprovalCount;
     }
 
     class DashboardViewPagerAdapter extends SmartFragmentStatePagerAdapter {

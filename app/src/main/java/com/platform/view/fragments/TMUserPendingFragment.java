@@ -25,8 +25,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
-
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
         TMTaskListener, NewTMAdapter.OnRequestItemClicked {
 
@@ -123,7 +121,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     @Override
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
-            mApprovalCount = pendingRequestList.size();
+            DashboardFragment.setApprovalCount(pendingRequestList.size());
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
@@ -132,7 +130,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this, getContext());
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
-            mApprovalCount = 0;
+            DashboardFragment.setApprovalCount(0);
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);
@@ -150,10 +148,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         newTMAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
-            mApprovalCount = this.pendingRequestList.size();
+            DashboardFragment.setApprovalCount(this.pendingRequestList.size());
             txtNoData.setVisibility(View.GONE);
         } else {
-            mApprovalCount = 0;
+            DashboardFragment.setApprovalCount(0);
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));

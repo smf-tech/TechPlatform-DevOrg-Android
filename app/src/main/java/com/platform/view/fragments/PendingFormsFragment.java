@@ -35,6 +35,7 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,8 +94,8 @@ public class PendingFormsFragment extends Fragment {
                 String action = Objects.requireNonNull(intent.getAction());
                 switch (action) {
                     case EVENT_SYNC_COMPLETED:
-                        Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
                         updateAdapter(context);
+                        Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
                         break;
 
                     case PARTIAL_FORM_ADDED:
