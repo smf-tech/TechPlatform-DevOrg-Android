@@ -1,25 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_50dp"
-    android:layout_centerInParent="true"
+    android:layout_height="@dimen/dimen_70dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
         android:layout_toStartOf="@+id/form_image"
-        android:paddingStart="@dimen/dimen_10dp"
-        android:paddingEnd="0dp"  android:orientation="vertical">
+        android:layout_centerVertical="true"
+        android:padding="@dimen/dimen_10dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/form_title"
             style="@style/FormLabel.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@string/category_title"

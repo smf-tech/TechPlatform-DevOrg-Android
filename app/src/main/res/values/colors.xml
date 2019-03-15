@@ -30,6 +30,7 @@
     <color name="lightest_blue">#EFF3FC</color>
 
     <color name="card_gray_bg">#EFEFEF</color>
+    <color name="add_form_gray_bg">#E8E8E8</color>
     <color name="form_tab_bg">#F0F0F0</color>
     <color name="tab_selector">#1A4B98</color>
     <color name="tab_disable">#DDDDDD</color>
@@ -40,4 +41,6 @@
     <color name="approvals_tabs_sel">#547AC4</color>
     <color name="sync_pending_form_color">#6286cc</color>
     <color name="submitted_form_color">#47A713</color>
+
+    <color name="freq_used_form_color">#4A9BD6</color>
 </resources>

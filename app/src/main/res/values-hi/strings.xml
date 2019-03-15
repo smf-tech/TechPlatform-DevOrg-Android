@@ -189,5 +189,6 @@
     <string name="msg_error_rejection_comment_needed">अस्वीकृति कारण की आवश्यकता</string>
 
     <string name="form_count">%1$d फ़ॉर्म</string>
+    <string name="frequently_used_forms">Frequently used forms</string>
 
 </resources>

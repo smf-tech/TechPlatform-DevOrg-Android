@@ -19,6 +19,12 @@
         <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 
+    <style name="roboto_medium_light_grey_16">
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
     <!-- Roboto regular fonts -->
     <style name="roboto_regular_light_grey_11">
         <item name="android:textColor">@color/light_grey</item>

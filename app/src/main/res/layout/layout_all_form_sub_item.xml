@@ -9,7 +9,7 @@
         android:layout_width="@dimen/dimen_05dp"
         android:layout_height="@dimen/dimen_60dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/form_status_indicator_all" />
+        android:background="@color/freq_used_form_color" />
 
     <TextView
         android:id="@+id/form_title"
@@ -81,7 +81,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dimen_10dp"
-        android:background="@drawable/bg_circle_profile"
+        android:background="@drawable/bg_circle_grey"
+        android:tint="@color/medium_grey"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_plus" />
 </RelativeLayout>

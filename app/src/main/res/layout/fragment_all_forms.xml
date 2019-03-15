@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/dimen_10dp"
+        android:dividerHeight="1dp"
         android:groupIndicator="@null"
         android:padding="@dimen/dimen_15dp"
         android:scrollbars="none"

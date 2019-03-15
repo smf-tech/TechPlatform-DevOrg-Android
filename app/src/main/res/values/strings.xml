@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
     <string name="app_name_ss">Sujalam Suphalam</string>
     <string name="content_description">Description</string>
@@ -231,5 +231,6 @@
     <string name="msg_error_rejection_comment_needed">Rejection reason needed</string>
 
     <string name="form_count">%1$d Forms</string>
+    <string name="frequently_used_forms">Frequently used forms</string>
 
 </resources>

@@ -189,5 +189,6 @@
     <string name="msg_error_rejection_comment_needed">अस्वीकार कारण आवश्यक</string>
 
     <string name="form_count">%1$d फॉर्म</string>
+    <string name="frequently_used_forms">Frequently used forms</string>
 
 </resources>
