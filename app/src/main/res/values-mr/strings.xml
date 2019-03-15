@@ -188,4 +188,6 @@
     <string name="msg_rejection_comment">नाकारण्याचे कारण</string>
     <string name="msg_error_rejection_comment_needed">अस्वीकार कारण आवश्यक</string>
 
+    <string name="form_count">%1$d फॉर्म</string>
+
 </resources>

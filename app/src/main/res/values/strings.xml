@@ -230,4 +230,6 @@
     <string name="msg_rejection_comment">Reason for rejection</string>
     <string name="msg_error_rejection_comment_needed">Rejection reason needed</string>
 
+    <string name="form_count">%1$d Forms</string>
+
 </resources>

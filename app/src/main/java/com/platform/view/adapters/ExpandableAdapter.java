@@ -144,7 +144,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(final int groupPosition, final int childPosition) {
-        return true;
+        return false;
     }
 
     private void rotate(float degree, ImageView image) {

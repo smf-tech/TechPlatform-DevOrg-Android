@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_50dp"
     android:layout_centerInParent="true"
-    android:background="@drawable/bg_rounded_rect_gray"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
@@ -12,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/form_image"
-        android:orientation="vertical">
+        android:paddingStart="@dimen/dimen_10dp"
+        android:paddingEnd="0dp"  android:orientation="vertical">
 
         <TextView
             android:id="@+id/form_title"
@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@string/category_title"
-            android:textColor="@color/pink" />
+            android:textColor="@color/light_black" />
 
         <TextView
             android:id="@+id/form_count"
@@ -31,8 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_05dp"
-            android:text="@string/content_description"
-            android:visibility="gone" />
+            android:text="@string/form_count"/>
     </LinearLayout>
 
     <ImageView
