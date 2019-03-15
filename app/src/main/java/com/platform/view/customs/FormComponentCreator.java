@@ -630,21 +630,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     //Ignore first value of valueToken
                     parentValueTokenizer.nextToken();
                     pValue = parentValueTokenizer.nextToken();
-
+                    byParentSelection = innerDependentObject -> innerDependentObject.get(finalParentElementName).getAsJsonObject().get(pValue).getAsString().equals(value);
                 }
                 //If parent has string in choicesByUrl
                 else {
                     pValue = parentElement.getChoicesByUrl().getValueName();
-                }
-
-                try {
-                    byParentSelection = innerDependentObject -> innerDependentObject.getAsJsonObject(finalParentElementName).get(pValue).getAsString().equals(value);
-                } catch (Exception e) {
                     byParentSelection = innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value);
                 }
 
                 List<JsonObject> filteredDependentObjects = Stream.of(dependentObjectsList).filter(byParentSelection).collect(Collectors.toList());
-
 //                List<JsonObject> filteredDependentObjects = dependentObjectsList.stream().filter(byParentSelection).collect(Collectors.toList());
 
                 String dTitle, dValue;
