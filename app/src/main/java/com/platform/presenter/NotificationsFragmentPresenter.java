@@ -33,7 +33,9 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
 
     @Override
     public void onPendingRequestsFetched(String response) {
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
         if (!TextUtils.isEmpty(response)) {
             PendingRequestsResponse pendingRequestsResponse
                     = new Gson().fromJson(response, PendingRequestsResponse.class);
@@ -47,7 +49,9 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
 
     @Override
     public void onRequestStatusChanged(String response, PendingRequest pendingRequest) {
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
         if (!TextUtils.isEmpty(response)) {
             fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
         }
@@ -55,7 +59,9 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
 
     @Override
     public void onFailureListener(String message) {
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -70,7 +76,8 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
             String message = error.getMessage();
             Log.i(TAG, "Error: " + message);
         }
-
-        fragmentWeakReference.get().hideProgressBar();
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+        }
     }
 }
