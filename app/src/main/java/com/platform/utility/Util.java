@@ -552,7 +552,7 @@ public class Util {
 
     public static String encrypt(String cleartext) throws Exception {
         byte[] rawKey = getRawKey();
-        byte[] result = encrypt(rawKey, cleartext.getBytes());
+        byte[] result = encrypt(rawKey, cleartext.getBytes("utf-8"));
         return Base64.encodeToString(result, Base64.DEFAULT);
     }
 

@@ -27,14 +27,6 @@ public class SplashActivity extends AppCompatActivity {
 
         Util.setApplicationLocale();
 
-        String sourceStr = "123456";
-        try {
-            String encrypted = Util.encrypt(sourceStr);
-            Log.d("TEST", "encrypted:" + encrypted);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-
         new AppSignatureHelper(this);
 
         new Handler().postDelayed(() -> {
