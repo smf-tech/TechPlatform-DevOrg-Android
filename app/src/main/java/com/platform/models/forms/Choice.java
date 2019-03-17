@@ -4,8 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.models.LocaleData;
 
-import java.util.Objects;
-
 @SuppressWarnings("unused")
 public class Choice {
     @SerializedName("text")
@@ -30,21 +28,4 @@ public class Choice {
     public void setValue(String value) {
         this.value = value;
     }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (o == this) return true;
-        if (!(o instanceof Choice)) {
-            return false;
-        }
-        Choice choice = (Choice) o;
-        return Objects.equals(value, choice.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(text, value);
-    }
-
 }

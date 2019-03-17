@@ -115,7 +115,6 @@ dependencies {
         transitive = true
     }
     implementation 'androidx.room:room-runtime:2.1.0-alpha04'
-    implementation 'com.annimon:stream:1.0.1'
     annotationProcessor "androidx.room:room-compiler:2.1.0-alpha04"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
