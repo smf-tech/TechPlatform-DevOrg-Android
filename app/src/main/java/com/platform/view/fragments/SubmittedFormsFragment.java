@@ -259,9 +259,13 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 processData.add(object);
                             }
 
-                            Util.sortProcessDataListByCreatedDate(processData);
-                            createCategoryLayout(processData.get(0).getFormTitle(), processData,
-                                    formID, null);
+                            if (!processData.isEmpty()) {
+                                Util.sortProcessDataListByCreatedDate(processData);
+                                createCategoryLayout(processData.get(0).getFormTitle(), processData,
+                                        formID, null);
+                            } else {
+                                showNoDataText = true;
+                            }
                         }
                     }
                 }
