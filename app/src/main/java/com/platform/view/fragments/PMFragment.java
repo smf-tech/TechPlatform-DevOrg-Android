@@ -263,6 +263,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                     });
                 }
                 lnrInner.addView(formTypeView);
+
+                if (childList.size() == 1 || i == 1) {
+                    formTypeView.findViewById(R.id.dashboard_category_item_divider).setVisibility(View.GONE);
+                }
             }
         }
         lnrOuter.addView(lnrInner);
