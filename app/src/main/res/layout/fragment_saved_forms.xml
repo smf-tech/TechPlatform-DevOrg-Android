@@ -15,9 +15,15 @@
         android:text="@string/no_records_available"
         android:textColor="@android:color/black" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ExpandableListView
+        android:id="@+id/saved_forms_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--<androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/forms_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 
 </RelativeLayout>

@@ -58,6 +58,7 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
+import static com.platform.syncAdapter.SyncAdapterUtils.SUBMITTED_AND_SYNCED;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 /**
@@ -275,6 +276,94 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
+    private void populateData2(Processes process) {
+        if (process != null) {
+            processCategoryList.clear();
+            processMap.clear();
+
+            lnrOuter.removeAllViews();
+
+            setPendingForms();
+
+            for (ProcessData data : process.getData()) {
+                if (data != null && data.getCategory() != null && !TextUtils.isEmpty(data.getCategory().getName().getLocaleValue())) {
+                    String categoryName = data.getCategory().getName().getLocaleValue();
+                    if (processMap.containsKey(categoryName) && processMap.get(categoryName) != null) {
+                        List<ProcessData> processData = processMap.get(categoryName);
+                        if (processData != null) {
+                            processData.add(data);
+                        }
+                        processMap.put(categoryName, processData);
+                    } else {
+                        List<ProcessData> processData = new ArrayList<>();
+                        processData.add(data);
+                        processMap.put(categoryName, processData);
+                        processCategoryList.add(categoryName);
+                    }
+                }
+            }
+
+            List<ProcessData> processData = new ArrayList<>();
+
+            for (int index = 0; index < processMap.size(); index++) {
+
+                List<ProcessData> pData = processMap.get(processCategoryList.get(index));
+                if (!TextUtils.isEmpty(processCategoryList.get(index)) && pData != null) {
+
+                    String formID = null;
+                    for (final ProcessData data : pData) {
+
+                        List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                                .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
+
+                        if (localFormResults == null || localFormResults.isEmpty()) continue;
+
+                        showNoDataText = false;
+
+
+                        GsonBuilder builder = new GsonBuilder();
+                        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
+                        Gson gson = builder.create();
+
+                        for (final String result : localFormResults) {
+                            FormResult formResult = gson.fromJson(result, FormResult.class);
+                            if (formResult.updatedDateTime != null) {
+                                if (isFormOneMonthOld(formResult.updatedDateTime)) {
+                                    continue;
+                                }
+                            }
+
+                            formID = formResult.formID;
+                            ProcessData object = new ProcessData();
+                            if (formResult.mOID != null && formResult.mOID.oid != null) {
+                                object.setId(formResult.mOID.oid);
+                            }
+                            object.setFormTitle(data.getName().getLocaleValue());
+                            object.setName(new LocaleData(formResult.formTitle));
+                            Microservice microservice = new Microservice();
+                            microservice.setUpdatedAt(formResult.updatedDateTime);
+                            object.setMicroservice(microservice);
+                            processData.add(object);
+
+                        }
+
+                    }
+
+                    if (!processData.isEmpty()) {
+                        Util.sortProcessDataListByCreatedDate(processData);
+                    } else {
+                        showNoDataText = true;
+                    }
+                }
+            }
+
+            createCategoryLayout(SUBMITTED_AND_SYNCED, processData,
+                            null, null);
+
+            mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
+        }
+    }
+
     private void createCategoryLayout(String categoryName, List<ProcessData> childList,
                                       String formID, final Map<String, ProcessData> map) {
         if (childList == null) {
@@ -312,7 +401,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.form_sub_item,
-                lnrInner, false);
+                null, false);
 
         ColorStateList tintColor = ColorStateList.valueOf(getContext().getResources()
                 .getColor(R.color.submitted_form_color, getContext().getTheme()));
