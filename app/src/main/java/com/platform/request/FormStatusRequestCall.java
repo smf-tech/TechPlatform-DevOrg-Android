@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class FormStatusRequestCall {
 
     private FormStatusCallListener listener;
-    private final String TAG = FormStatusRequestCall.class.getName();
+    private final String TAG = FormStatusRequestCall.class.getSimpleName();
 
     public void setListener(FormStatusCallListener listener) {
         this.listener = listener;
