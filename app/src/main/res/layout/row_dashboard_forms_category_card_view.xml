@@ -4,15 +4,16 @@
     android:id="@+id/cv_dashboard_form"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dimen_12dp"
+    android:layout_marginStart="@dimen/dimen_20dp"
     android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_10dp"
     android:orientation="vertical"
     tools:keep="@layout/row_dashboard_forms_category_card_view">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_35dp"
+        android:layout_height="@dimen/dimen_40dp"
         tools:ignore="UselessParent">
 
         <View
@@ -62,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_01dp"
         android:layout_marginStart="@dimen/dimen_15dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
-        android:background="@color/lighter_grey" />
+        android:background="@color/lighter_grey"
+        android:visibility="gone" />
 </LinearLayout>

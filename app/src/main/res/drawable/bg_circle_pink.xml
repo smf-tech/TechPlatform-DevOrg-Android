@@ -13,7 +13,7 @@
             <stroke
                 android:width="3dp"
                 android:color="@android:color/transparent" />
-            <solid android:color="@color/pink" />
+            <solid android:color="@color/selector_tab" />
             <size
                 android:width="@dimen/circle_size"
                 android:height="@dimen/circle_size" />

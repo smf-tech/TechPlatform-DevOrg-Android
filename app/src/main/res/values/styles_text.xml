@@ -14,19 +14,19 @@
     </style>
 
     <style name="roboto_medium_pink_16">
-        <item name="android:textColor">@color/pink</item>
+        <item name="android:textColor">@color/black_green</item>
         <item name="android:textSize">@dimen/text_size_16</item>
         <!--<item name="android:fontFamily">@font/roboto_medium</item>-->
     </style>
 
-    <style name="medium_grey_21">
-        <item name="android:textColor">@color/medium_grey</item>
-        <item name="android:textSize">@dimen/text_size_21</item>
+    <style name="medium_grey_12">
+        <item name="android:textColor">@color/semi_black</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
     </style>
 
-    <style name="medium_grey_18">
-        <item name="android:textColor">@color/pink</item>
-        <item name="android:textSize">@dimen/text_size_18</item>
+    <style name="medium_grey_16">
+        <item name="android:textColor">@color/black_green</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
     </style>
 
     <style name="roboto_medium_light_grey_16">

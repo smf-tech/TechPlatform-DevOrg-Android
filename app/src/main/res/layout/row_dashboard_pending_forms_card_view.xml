@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/partial_saved_list_item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_46dp"
-    android:layout_marginStart="@dimen/dimen_10dp"
-    android:layout_marginTop="@dimen/dimen_05dp"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="@dimen/form_item_status_indicator_width"
+    android:orientation="vertical"
     tools:keep="@layout/row_dashboard_pending_forms_card_view">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_46dp"
         tools:ignore="UselessParent">
 
         <View
@@ -28,12 +25,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:visibility="gone"
             android:layout_centerVertical="true"
-            android:tint="@color/partial_form_color"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:contentDescription="@string/content_description"
-            android:src="@drawable/ic_forms" />
+            android:src="@drawable/ic_forms"
+            android:tint="@color/partial_form_color"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
