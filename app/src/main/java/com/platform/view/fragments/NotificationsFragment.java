@@ -129,6 +129,8 @@ public class NotificationsFragment extends Fragment implements TMTaskListener,
 
     @Override
     public void showProgressBar() {
+        if (getActivity() == null) return;
+
         getActivity().runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
                 progressBar.setVisibility(View.VISIBLE);

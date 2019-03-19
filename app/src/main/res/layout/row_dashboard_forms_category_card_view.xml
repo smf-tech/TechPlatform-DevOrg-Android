@@ -8,8 +8,7 @@
     android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
-    android:orientation="vertical"
-    tools:keep="@layout/row_dashboard_forms_category_card_view">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -54,8 +53,7 @@
             android:layout_marginEnd="@dimen/dimen_10dp"
             android:background="@drawable/bg_circle_grey"
             android:contentDescription="@string/content_description"
-            android:src="@drawable/ic_plus"
-            android:tint="@color/medium_grey" />
+            android:src="@drawable/ic_plus" />
     </RelativeLayout>
 
     <View

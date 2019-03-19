@@ -25,8 +25,8 @@
     <!--<string name="msg_manual_otp">यदि हम एसएमएस से स्वचालित रूप से OTP का पता लगाने में विफल रहते हैं, तो नीचे दिए गए OTP को दर्ज करें</string>-->
     <string name="msg_mobile_number_is_empty">मोबाइल नंबर खाली है</string>
     <string name="msg_mobile_number_is_invalid">मान्य मोबाइल नंबर नहीं</string>
-    <string name="hint_enter_otp">_ _ _ _ _ _</string>
-    <string name="label_mobile_no">मोबाइल नंबर *</string>
+    <!--<string name="hint_enter_otp">_ _ _ _ _ _</string>-->
+    <!--<string name="label_mobile_no">मोबाइल नंबर *</string>-->
     <string name="label_login">लॉगइन करें</string>
     <string name="label_time">पहर</string>
     <string name="resend"> <u>OTP को फिर से भेजें</u></string>

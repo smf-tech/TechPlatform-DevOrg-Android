@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,20 +18,20 @@
         android:id="@+id/pending_forms_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_15dp"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
         android:orientation="vertical"
-        android:padding="@dimen/dimen_05dp">
+        android:visibility="gone">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/sync_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_35dp"
+            android:layout_height="@dimen/dimen_35dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dimen_10dp"
+            android:background="@drawable/bg_circle_grey"
+            android:contentDescription="@string/content_description"
             android:src="@drawable/ic_sync"
-            app:backgroundTint="@color/darkest_blue"
-            app:fabSize="mini"
             tools:ignore="RelativeOverlap" />
 
         <TextView
@@ -40,18 +39,30 @@
             style="@style/roboto_medium_light_grey_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_15dp"
             android:layout_marginEnd="@dimen/dimen_50dp"
-            android:gravity="start" />
+            android:gravity="start"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/text_size_14" />
 
         <LinearLayout
             android:id="@+id/pending_forms_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/pending_form_category_name"
-            android:layout_marginTop="@dimen/dimen_25dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
             android:layout_marginBottom="@dimen/dimen_05dp"
             android:orientation="vertical" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/submitted_forms_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_01dp"
+        android:layout_above="@id/submitted_form_category_name"
+        android:layout_marginTop="@dimen/dimen_25dp"
+        android:background="@color/lighter_grey"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/submitted_form_category_name"
@@ -59,11 +70,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/pending_forms_view"
-        android:layout_marginStart="@dimen/dimen_16dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_05dp"
-        android:gravity="start" />
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:gravity="start"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/text_size_14" />
 
     <ExpandableListView
         android:id="@+id/forms_expandable_list"
@@ -71,9 +84,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/submitted_form_category_name"
         android:divider="@android:color/transparent"
-        android:dividerHeight="1dp"
+        android:dividerHeight="@dimen/dimen_05dp"
         android:groupIndicator="@null"
-        android:padding="@dimen/dimen_15dp"
         android:scrollbars="none"
         android:transitionGroup="true" />
 </RelativeLayout>

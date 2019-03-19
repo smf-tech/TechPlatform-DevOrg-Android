@@ -97,7 +97,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
         ImageView v = view.findViewById(R.id.form_image);
         if (isExpanded) {
-            Util.rotateImage(90f, v);
+            Util.rotateImage(180f, v);
         } else {
             Util.rotateImage(0f, v);
         }

@@ -25,8 +25,8 @@
     <!--<string name="msg_manual_otp">आम्ही स्वयंचलितपणे एसएमएसवरून ओटीपी शोधण्यात अयशस्वी झालो तर खालील ओटीपी प्रविष्ट करा</string>-->
     <string name="msg_mobile_number_is_empty">मोबाइल नंबर रिक्त आहे</string>
     <string name="msg_mobile_number_is_invalid">वैध मोबाइल नंबर नाही</string>
-    <string name="hint_enter_otp">_ _ _ _ _ _</string>
-    <string name="label_mobile_no">मोबाइल नंबर *</string>
+    <!--<string name="hint_enter_otp">_ _ _ _ _ _</string>-->
+    <!--<string name="label_mobile_no">मोबाइल नंबर *</string>-->
     <string name="label_login">लॉगइन</string>
     <string name="label_time">वेळ</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>

@@ -38,6 +38,5 @@
         android:gravity="center_horizontal"
         android:text="@string/view_all_approvals"
         android:textAllCaps="true"
-        android:textColor="@color/yellow"
         android:textStyle="bold" />
 </RelativeLayout>

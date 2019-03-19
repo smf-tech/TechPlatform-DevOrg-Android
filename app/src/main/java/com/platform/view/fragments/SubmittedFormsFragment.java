@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -82,6 +80,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private RelativeLayout mPendingFormsView;
     private LinearLayout mPendingFormsContainer;
     private TextView mSubmittedFormsTitleView;
+    private View dividerView;
 
     public SubmittedFormsFragment() {
         // Required empty public constructor
@@ -110,8 +109,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 //        lnrOuter = view.findViewById(R.id.lnr_dashboard_forms_category);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
-        mExpandableListView.setGroupIndicator(null);
 
+        dividerView = view.findViewById(R.id.submitted_forms_divider);
         mPendingFormsView = view.findViewById(R.id.pending_forms_view);
         mPendingFormsContainer = view.findViewById(R.id.pending_forms_container);
 
@@ -180,6 +179,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             mPendingFormsContainer.removeAllViews();
             mPendingFormsView.setVisibility(View.VISIBLE);
+            dividerView.setVisibility(View.VISIBLE);
 
             showNoDataText = false;
 
@@ -204,13 +204,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 ((TextView) formView.findViewById(R.id.form_date))
                         .setText(Util.getDateFromTimestamp(object.getMicroservice().getUpdatedAt()));
 
-                Drawable drawable = getContext().getDrawable(R.drawable.form_status_indicator_pending_forms);
-                ColorStateList tintColor = ColorStateList.valueOf(getContext().getResources()
-                        .getColor(R.color.red));
+                int bgColor = getResources().getColor(R.color.red);
+                formView.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
 
-                ImageView formImage = formView.findViewById(R.id.form_image);
-                formImage.setImageTintList(tintColor);
-                formView.findViewById(R.id.form_status_indicator).setBackground(drawable);
                 formView.setOnClickListener(v -> {
                     Intent intent = new Intent(getActivity(), FormActivity.class);
                     intent.putExtra(Constants.PM.FORM_ID, object.getId());
@@ -227,6 +223,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 //            createCategoryLayout(SyncAdapterUtils.SYNCING_PENDING, list, null, map);
         } else {
             mPendingFormsView.setVisibility(View.GONE);
+            dividerView.setVisibility(View.GONE);
         }
     }
 
@@ -626,7 +623,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
-                Util.rotateImage(90f, v);
+                Util.rotateImage(180f, v);
             } else {
                 Util.rotateImage(0f, v);
             }
@@ -635,7 +632,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
 
         @Override
-        public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
+        public View getChildView(final int groupPosition, final int childPosition,
+                                 final boolean isLastChild, final View convertView, final ViewGroup parent) {
+
             View view = LayoutInflater.from(mContext).inflate(R.layout.form_sub_item,
                     parent, false);
 
@@ -675,21 +674,13 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             });
 
-            ColorStateList tintColor = ColorStateList.valueOf(mContext.getResources()
-                    .getColor(R.color.submitted_form_color));
-
-            Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
-
+            int bgColor = mContext.getResources().getColor(R.color.submitted_form_color);
             if (cat.equals(SyncAdapterUtils.SYNCING_PENDING)) {
-                drawable = mContext.getDrawable(R.drawable.form_status_indicator_pending_forms);
-                tintColor = ColorStateList.valueOf(mContext.getResources()
-                        .getColor(R.color.red));
+                bgColor = mContext.getResources().getColor(R.color.red);
             }
 
-            ImageView formImage = view.findViewById(R.id.form_image);
-            formImage.setImageTintList(tintColor);
-            view.findViewById(R.id.form_status_indicator).setBackground(drawable);
-
+//            view.setPadding(20,0,0,0);
+            view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
             return view;
         }
 

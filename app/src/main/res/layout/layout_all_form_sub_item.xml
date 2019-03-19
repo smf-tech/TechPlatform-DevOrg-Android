@@ -82,7 +82,6 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:background="@drawable/bg_circle_grey"
-        android:tint="@color/medium_grey"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_plus" />
 </RelativeLayout>

@@ -25,8 +25,8 @@
     <!--<string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>-->
     <string name="msg_mobile_number_is_empty">Mobile Number is empty</string>
     <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
-    <string name="hint_enter_otp">_ _ _ _ _ _</string>
-    <string name="label_mobile_no">Mobile Number *</string>
+    <!--<string name="hint_enter_otp">_ _ _ _ _ _</string>-->
+    <!--<string name="label_mobile_no">Mobile Number *</string>-->
     <string name="label_login">Login</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>

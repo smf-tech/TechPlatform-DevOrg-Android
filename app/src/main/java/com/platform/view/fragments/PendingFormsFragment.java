@@ -138,8 +138,10 @@ public class PendingFormsFragment extends Fragment {
                     mFormResultMap.put(form.getFormCategory(), forms);
                 } else {
                     List<FormResult> formResults = mFormResultMap.get(form.getFormCategory());
-                    formResults.add(form);
-                    mFormResultMap.put(form.getFormCategory(), formResults);
+                    if (formResults != null) {
+                        formResults.add(form);
+                        mFormResultMap.put(form.getFormCategory(), formResults);
+                    }
                 }
             }
 
@@ -173,8 +175,10 @@ public class PendingFormsFragment extends Fragment {
                     mFormResultMap.put(form.getFormCategory(), forms);
                 } else {
                     List<FormResult> formResults = mFormResultMap.get(form.getFormCategory());
-                    formResults.add(form);
-                    mFormResultMap.put(form.getFormCategory(), formResults);
+                    if (formResults != null) {
+                        formResults.add(form);
+                        mFormResultMap.put(form.getFormCategory(), formResults);
+                    }
                 }
             }
 
@@ -242,8 +246,11 @@ public class PendingFormsFragment extends Fragment {
         }
 
         @Override
-        public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item, parent, false);
+        public View getGroupView(final int groupPosition, final boolean isExpanded,
+                                 final View convertView, final ViewGroup parent) {
+            
+            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
+                    parent, false);
 
             ArrayList<String> list = new ArrayList<>(mMap.keySet());
             String cat = list.get(groupPosition);
@@ -259,7 +266,7 @@ public class PendingFormsFragment extends Fragment {
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
-                Util.rotateImage(90f, v);
+                Util.rotateImage(180f, v);
             } else {
                 Util.rotateImage(0f, v);
             }
@@ -268,7 +275,9 @@ public class PendingFormsFragment extends Fragment {
         }
 
         @Override
-        public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
+        public View getChildView(final int groupPosition, final int childPosition,
+                                 final boolean isLastChild, final View convertView, final ViewGroup parent) {
+
             View view = LayoutInflater.from(mContext).inflate(R.layout.form_sub_item,
                     parent, false);
 
