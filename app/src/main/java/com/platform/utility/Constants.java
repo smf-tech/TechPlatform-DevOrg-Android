@@ -82,6 +82,9 @@ public class Constants {
         public static final String USER_FIREBASE_ID = "firebase_id";
         public static final String USER_PROFILE_PIC = "profile_pic";
 
+        public static final String USER_PHONE = "phone";
+        public static final String USER_OTP = "otp";
+
         public static final String ACTION = "action";
         public static final String ACTION_EDIT = "edit";
     }

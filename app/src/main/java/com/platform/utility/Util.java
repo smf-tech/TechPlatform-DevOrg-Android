@@ -48,10 +48,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -547,24 +543,14 @@ public class Util {
         });
     }
 
-    private static final byte[] keyValue =
-            new byte[]{'m', 'u', 't', 't', 'h', 'a', 'f', 'o', 'u', 'n', 'd', 'a', 't', 'i', 'o', 'n'};
+    public static String encrypt(String rowString) {
+        try {
+            String encodedStr = Base64.encodeToString(rowString.getBytes("UTF-8"), Base64.DEFAULT);
+            return encodedStr.replace("\n", "");
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
 
-    public static String encrypt(String cleartext) throws Exception {
-        byte[] rawKey = getRawKey();
-        byte[] result = encrypt(rawKey, cleartext.getBytes("utf-8"));
-        return Base64.encodeToString(result, Base64.DEFAULT);
-    }
-
-    private static byte[] getRawKey() {
-        SecretKey key = new SecretKeySpec(keyValue, "AES");
-        return key.getEncoded();
-    }
-
-    private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
-        SecretKey skeySpec = new SecretKeySpec(raw, "AES");
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-        return cipher.doFinal(clear);
+        return "";
     }
 }

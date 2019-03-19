@@ -12,6 +12,7 @@ import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.LoginInfo;
+import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -116,11 +117,10 @@ public class LoginRequestCall {
         Response.ErrorListener loginErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getTokenUrl = BuildConfig.BASE_URL + String.format(Urls.Login.GENERATE_TOKEN,
-                loginInfo.getMobileNumber(), loginInfo.getOneTimePassword());
+        final String getTokenUrl = BuildConfig.BASE_URL + Urls.Login.GENERATE_TOKEN;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
+                Request.Method.POST,
                 getTokenUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
@@ -130,8 +130,24 @@ public class LoginRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(false));
+        gsonRequest.setBodyParams(createBodyParams(loginInfo));
         gsonRequest.setShouldCache(false);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+    private JsonObject createBodyParams(LoginInfo loginInfo) {
+        JsonObject body = new JsonObject();
+        if (loginInfo != null) {
+            try {
+                body.addProperty(Constants.Login.USER_PHONE, loginInfo.getMobileNumber());
+                body.addProperty(Constants.Login.USER_OTP, loginInfo.getOneTimePassword());
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        Log.i(TAG, "AUTH_BODY: " + body);
+        return body;
     }
 
     public void getUserProfile() {

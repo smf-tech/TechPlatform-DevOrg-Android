@@ -526,8 +526,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
-                Crop.of(outputUri, finalUri).asSquare().start(this);
+                Crop.of(outputUri, finalUri).start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -539,8 +538,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    // FIXME: 22-02-2019 Replace Crop lib with Android STD lib
-                    Crop.of(outputUri, finalUri).asSquare().start(this);
+                    Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
