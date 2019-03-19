@@ -15,7 +15,6 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormRequestCallListener;
 import com.platform.listeners.ImageRequestCallListener;
-import com.platform.models.LocaleData;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
@@ -26,9 +25,9 @@ import com.platform.request.ImageRequestCall;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
-import com.platform.view.adapters.LocaleDataAdapter;
 import com.platform.view.fragments.FormFragment;
 
 import org.json.JSONException;
@@ -169,8 +168,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId,
                                      String callType, String oid) {
-
-        Log.e(TAG, "Request succeed " + message);
         if (formFragment != null && formFragment.get() != null) {
             formFragment.get().hideProgressBar();
 
@@ -244,8 +241,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
                             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                         }
                         break;
-
                 }
+
             }
 
         } catch (JSONException e) {
@@ -265,11 +262,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onSuccessListener(String response) {
         if (!TextUtils.isEmpty(response)) {
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
-            Gson gson = builder.create();
 
-            Form form = gson.fromJson(response, Form.class);
+            Form form = PlatformGson.getPlatformGsonInstance().fromJson(response, Form.class);
             if (form != null && form.getData() != null) {
 
                 FragmentActivity activity = formFragment.get().getActivity();

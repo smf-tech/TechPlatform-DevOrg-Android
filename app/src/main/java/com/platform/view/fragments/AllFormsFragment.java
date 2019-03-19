@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
@@ -25,9 +24,9 @@ import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.adapters.ExpandableAdapter;
-import com.platform.view.adapters.OIDAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -249,13 +248,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
 
-                GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-                Gson gson = builder.create();
-
                 for (int i = 0; i < values.length(); i++) {
-
-                    SubmittedFormsFragment.FormResult formResult = gson.fromJson(String.valueOf(values.get(i)),
+                    SubmittedFormsFragment.FormResult formResult = PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)),
                             SubmittedFormsFragment.FormResult.class);
 
                     String uuid = UUID.randomUUID().toString();

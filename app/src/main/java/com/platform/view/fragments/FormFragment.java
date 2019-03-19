@@ -23,7 +23,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.platform.R;
@@ -40,10 +39,9 @@ import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
-import com.platform.view.adapters.LocaleDataAdapter;
-import com.platform.view.adapters.OIDAdapter;
 import com.platform.view.customs.FormComponentCreator;
 import com.soundcloud.android.crop.Crop;
 
@@ -165,11 +163,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private class GetDataFromDB extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
-            Gson gson = builder.create();
-
-            showChoicesByUrl(params[0], gson.fromJson(params[1], Elements.class));
+            showChoicesByUrl(params[0], PlatformGson.getPlatformGsonInstance().fromJson(params[1], Elements.class));
             return null;
         }
 
@@ -296,12 +290,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
-
-                            List<Choice> choices = elements.getChoices();
-                            Collections.sort(choices, (o1, o2) -> o1.getText().getLocaleValue()
-                                    .compareTo(o2.getText().getLocaleValue()));
-
-                            formComponentCreator.updateDropDownValues(elements, choices);
+                            Collections.sort(elements.getChoices(), (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
                             if (elements.getChoicesByUrlResponse() != null) {
@@ -357,11 +347,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public <T> void showNextScreen(T data) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
-        Gson gson = builder.create();
-
-        formModel = gson.fromJson((String) data, Form.class);
+        formModel = PlatformGson.getPlatformGsonInstance().fromJson((String) data, Form.class);
         initViews();
 
         if (mIsInEditMode) {
@@ -392,11 +378,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public void showChoicesByUrlAsync(String result, Elements elements) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
-        Gson gson = builder.create();
-
-        new GetDataFromDB().execute(result, gson.toJson(elements));
+        new GetDataFromDB().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
     private void showChoicesByUrl(String result, Elements elements) {
@@ -406,11 +388,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             LocaleData text;
             String value;
 
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(LocaleData.class, new LocaleDataAdapter());
-            Gson gson = builder.create();
-
-            JsonObject outerObj = gson.fromJson(result, JsonObject.class);
+            JsonObject outerObj = PlatformGson.getPlatformGsonInstance().fromJson(result, JsonObject.class);
             JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
             for (int index = 0; index < dataArray.size(); index++) {
                 JsonObject innerObj = dataArray.get(index).getAsJsonObject();
@@ -422,7 +400,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                         String title = titleTokenizer.nextToken();
                         try {
-                            text = gson.fromJson(obj.get(title).getAsString(), LocaleData.class);
+                            text = PlatformGson.getPlatformGsonInstance().fromJson(obj.get(title).getAsString(), LocaleData.class);
                         } catch (Exception e) {
                             text = new LocaleData(obj.get(title).getAsString());
                         }
@@ -431,7 +409,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         value = obj.get(valueTokenizer.nextToken()).getAsString();
                     } else {
                         try {
-                            text = gson.fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                            text = PlatformGson.getPlatformGsonInstance().fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
                         } catch (Exception e) {
                             text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
                         }
@@ -442,33 +420,24 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     choice.setText(text);
                     choice.setValue(value);
 
-                    if (choiceValues.size() == 0) {
+                    if (!choiceValues.contains(choice)) {
                         choiceValues.add(choice);
-                    } else {
-                        boolean isFound = false;
-                        for (int choiceIndex = 0; choiceIndex < choiceValues.size(); choiceIndex++) {
-                            if (choiceValues.get(choiceIndex).getValue().equals(choice.getValue())) {
-                                isFound = true;
-                                break;
-                            }
-                        }
-                        if (!isFound) {
-                            choiceValues.add(choice);
-                        }
                     }
+
                 }
             }
+
+            Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                elements.setChoices(choiceValues);
+                formComponentCreator.updateDropDownValues(elements, choiceValues);
+            });
+        }
 
-        Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
-                .compareTo(o2.getText().getLocaleValue()));
-
-        getActivity().runOnUiThread(() -> {
-            elements.setChoices(choiceValues);
-            formComponentCreator.updateDropDownValues(elements, choiceValues);
-        });
     }
 
     @Override
@@ -679,14 +648,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-        Gson gson = builder.create();
-
-        JsonObject object = gson.fromJson(response, JsonObject.class);
+        JsonObject object = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
         JsonArray values = object.getAsJsonArray("values");
         for (int i = 0; i < values.size(); i++) {
-            mFormJSONObject = gson.fromJson(String.valueOf(values.get(i)), JsonObject.class);
+            mFormJSONObject = PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)), JsonObject.class);
             String oid;
             try {
                 oid = mFormJSONObject.get("_id").getAsJsonObject().get("$oid").getAsString();
@@ -724,11 +689,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
         Log.e(TAG, "Form schema fetched from database.");
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-        Gson gson = builder.create();
-
-        mFormJSONObject = gson.fromJson(response.getResult(), JsonObject.class);
+        mFormJSONObject = PlatformGson.getPlatformGsonInstance().fromJson(response.getResult(), JsonObject.class);
 
         if (formComponentCreator != null)
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
