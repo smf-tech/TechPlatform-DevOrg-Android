@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,21 +11,69 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:visibility="gone"
         android:text="@string/no_records_available"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:visibility="gone" />
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/pending_forms_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_15dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_05dp">
 
-        <LinearLayout
-            android:id="@+id/lnr_dashboard_forms_category"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sync_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:src="@drawable/ic_sync"
+            app:backgroundTint="@color/darkest_blue"
+            app:fabSize="mini"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/pending_form_category_name"
+            style="@style/roboto_medium_light_grey_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_16dp"
-            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:layout_marginEnd="@dimen/dimen_50dp"
+            android:gravity="start" />
+
+        <LinearLayout
+            android:id="@+id/pending_forms_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pending_form_category_name"
+            android:layout_marginTop="@dimen/dimen_25dp"
             android:layout_marginBottom="@dimen/dimen_05dp"
             android:orientation="vertical" />
-    </ScrollView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/submitted_form_category_name"
+        style="@style/roboto_medium_light_grey_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pending_forms_view"
+        android:layout_marginStart="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_05dp"
+        android:gravity="start" />
+
+    <ExpandableListView
+        android:id="@+id/forms_expandable_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/submitted_form_category_name"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="1dp"
+        android:groupIndicator="@null"
+        android:padding="@dimen/dimen_15dp"
+        android:scrollbars="none"
+        android:transitionGroup="true" />
 </RelativeLayout>

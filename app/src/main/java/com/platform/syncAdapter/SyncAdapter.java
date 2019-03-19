@@ -149,7 +149,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return url;
     }
 
-    private void updateForm(final FormResult form, final String response, final String requestObjectString) {
+    private synchronized void updateForm(final FormResult form, final String response, final String requestObjectString) {
         try {
 
             JSONObject outerObject = new JSONObject(response);
@@ -171,19 +171,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                 FormResult result = new FormResult();
+                result.setFormName(form.getFormName());
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                 result.setFormId(form.getFormId());
                 String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
-                dataObject.put("form_id", form.getFormId());
                 result.setResult(requestObject.toString());
 
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+
                 DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
+
+                form.setFormStatus(SyncAdapterUtils.FormStatus.DELETED);
+                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
             }
 
-            DatabaseManager.getDBInstance(getContext()).deleteFormResult(form);
 
             updateFormSubmittedCount(form);
 

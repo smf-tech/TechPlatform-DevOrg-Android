@@ -53,7 +53,6 @@ public class PendingFormsFragment extends Fragment {
     private TextView mNoRecordsView;
     private ExpandableListView mExpandableListView;
     private Map<String, List<FormResult>> mFormResultMap;
-    private SavedFormsListAdapter mAdapter;
 
     public PendingFormsFragment() {
         // Required empty public constructor
@@ -126,17 +125,10 @@ public class PendingFormsFragment extends Fragment {
 
     private void updateAdapter(final Context context) {
         try {
-            if (mFormResultMap == null || mFormResultMap.isEmpty()) {
-                mFormResultMap = new HashMap<>();
-                if (mAdapter != null)
-                    mAdapter = new SavedFormsListAdapter(getContext(), mFormResultMap);
-            }
-
             List<FormResult> list = DatabaseManager.getDBInstance(context)
                     .getAllPartiallySavedForms();
 
-            list = Util.sortFormResultListByCreatedDate(list);
-
+            mFormResultMap = new HashMap<>();
             List<String> categoryList = new ArrayList<>();
             for (final FormResult form : list) {
                 List<FormResult> forms = new ArrayList<>();
@@ -151,11 +143,10 @@ public class PendingFormsFragment extends Fragment {
                 }
             }
 
-            if (mFormResultMap != null && !mFormResultMap.isEmpty()) {
+            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap));
+
+            if (!mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
-                if (mAdapter != null) {
-                    mAdapter.notifyDataSetChanged();
-                }
             } else {
                 mNoRecordsView.setVisibility(View.VISIBLE);
             }
@@ -265,6 +256,13 @@ public class PendingFormsFragment extends Fragment {
 
             ((TextView) view.findViewById(R.id.form_title)).setText(cat);
             ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
+
+            ImageView v = view.findViewById(R.id.form_image);
+            if (isExpanded) {
+                Util.rotateImage(90f, v);
+            } else {
+                Util.rotateImage(0f, v);
+            }
 
             return view;
         }
