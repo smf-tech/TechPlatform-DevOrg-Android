@@ -70,16 +70,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //TODO: For testing only
-        String sourceStr = "123456";
-        try {
-            String encrypted = Util.encrypt(sourceStr);
-            Log.d("TEST", "encrypted:" + encrypted);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-        ////////////////////////
-
         initMenuView();
     }
 

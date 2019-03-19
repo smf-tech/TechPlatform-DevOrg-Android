@@ -320,7 +320,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         tvOtpTimer.setVisibility(View.GONE);
 
         String otp = getOtp();
-        otpPresenter.getLoginToken(sLoginInfo, otp);
+        otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
     }
 
     private void setOtp(final String msg) {
@@ -340,6 +340,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             }
 
             hideProgressBar();
+            tvResendOtp.setVisibility(View.VISIBLE);
 
             AppEvents.trackAppEvent(getString(R.string.event_auto_read_success));
             tvOtpMessage.setText(getResources().getString(R.string.msg_verify_otp_text));
