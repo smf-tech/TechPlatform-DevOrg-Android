@@ -465,10 +465,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
                 .compareTo(o2.getText().getLocaleValue()));
 
-        getActivity().runOnUiThread(() -> {
-            elements.setChoices(choiceValues);
-            formComponentCreator.updateDropDownValues(elements, choiceValues);
-        });
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                elements.setChoices(choiceValues);
+                formComponentCreator.updateDropDownValues(elements, choiceValues);
+            });
+        }
     }
 
     @Override
