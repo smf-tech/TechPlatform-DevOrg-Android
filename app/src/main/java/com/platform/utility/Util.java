@@ -16,8 +16,10 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -412,7 +414,7 @@ public class Util {
         return date;
     }
 
-    public static String getFormattedDate(String date, String dateFormat) {
+    private static String getFormattedDate(String date, String dateFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -552,5 +554,15 @@ public class Util {
         }
 
         return "";
+    }
+
+    public static void rotateImage(float degree, ImageView image) {
+        final RotateAnimation rotateAnim = new RotateAnimation(0.0f, degree,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+        rotateAnim.setDuration(0);
+        rotateAnim.setFillAfter(true);
+        image.startAnimation(rotateAnim);
     }
 }

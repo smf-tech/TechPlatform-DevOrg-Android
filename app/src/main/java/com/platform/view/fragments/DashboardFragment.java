@@ -245,8 +245,7 @@ public class DashboardFragment extends Fragment {
             tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
-                pendingActionsCountView.setTextColor(getResources().getColor(R.color.black,
-                        getContext().getTheme()));
+                pendingActionsCountView.setTextColor(getResources().getColor(R.color.black));
             } else {
                 pendingActionsCountView.setVisibility(View.GONE);
             }

@@ -678,8 +678,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 Objects.requireNonNull(getActivity()).getApplicationContext())
                 .getFormSchema(processId);
 
-        mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
-        Log.e(TAG, "Form schema fetched from database.");
+        if (formData != null) {
+            mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
+            Log.e(TAG, "Form schema fetched from database.");
+        }
 
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());

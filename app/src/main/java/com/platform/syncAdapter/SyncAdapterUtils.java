@@ -19,6 +19,7 @@ public class SyncAdapterUtils {
     public static final String EVENT_FORM_ADDED = "formAdded";
     public static final String EXTRA_TEXT = "SyncStatus";
     public static final String SYNCING_PENDING = "Syncing Pending";
+    public static final String SUBMITTED_AND_SYNCED = "Submitted & Synced";
     public static final String PARTIAL_FORM_ADDED = "PartialFormAdded";
     public static final String PARTIAL_FORM_REMOVED = "PartialFormRemoved";
     public static final String EVENT_FORM_SUBMITTED = "formSubmitted";
@@ -27,6 +28,7 @@ public class SyncAdapterUtils {
         public static final int SYNCED = 1;
         public static final int UN_SYNCED = 0;
         public static final int PARTIAL = 2;
+        public static final int DELETED = -1;
     }
 
     /**

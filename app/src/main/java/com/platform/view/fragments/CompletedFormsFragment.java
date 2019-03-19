@@ -41,8 +41,6 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.DATE_FORMAT;
@@ -85,12 +83,12 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final RecyclerView recyclerView = view.findViewById(R.id.forms_list);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*final RecyclerView recyclerView = view.findViewById(R.id.forms_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));*/
 
         adapter = new FormCategoryAdapter(getContext(), mFormList);
-        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(adapter);
 
         setPendingForms();
 

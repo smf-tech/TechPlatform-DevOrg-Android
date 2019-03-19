@@ -3,6 +3,7 @@ package com.platform.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
@@ -30,7 +31,12 @@ public class SmsReceiver extends BroadcastReceiver {
                     final String MESSAGE_TEMPLATE = "<#> The password is:";
 
                     for (Object pdu : pdus) {
-                        SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu, "3gpp");
+                        SmsMessage smsMessage;
+                        if (Build.VERSION.SDK_INT >= 23)
+                            smsMessage = SmsMessage.createFromPdu((byte[]) pdu, "3gpp");
+                        else
+                            smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
+
                         String message = smsMessage.getDisplayMessageBody();
                         Log.d("TAG", "SMS: " + message);
 
