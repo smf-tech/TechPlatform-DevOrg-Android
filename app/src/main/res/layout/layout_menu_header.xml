@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/colorPrimary"
+    android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     tools:ignore="UseCompoundDrawables">
 
@@ -27,7 +27,8 @@
                 android:layout_height="@dimen/dimen_35dp"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_profile" />
+                android:src="@drawable/ic_profile"
+                android:tint="@color/profile" />
         </RelativeLayout>
 
         <LinearLayout
@@ -64,5 +65,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_01dp"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:background="@color/tab_selector" />
+        android:background="@color/lighter_grey" />
 </LinearLayout>
