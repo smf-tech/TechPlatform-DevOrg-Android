@@ -42,7 +42,6 @@ import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,10 +160,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         for (int index = 0; index < dropDowns.size(); index++) {
             if (!TextUtils.isEmpty(dropDowns.get(index).getTag()) &&
                     dropDowns.get(index).getTag().equals(elements.getName())) {
+
                 dropDowns.get(index).setFormData(elements);
-
-                Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
-
                 dropDowns.get(index).setListData(choiceValues);
                 break;
             }

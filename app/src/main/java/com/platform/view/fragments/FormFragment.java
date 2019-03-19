@@ -52,6 +52,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -295,7 +296,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
-                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
+
+                            List<Choice> choices = elements.getChoices();
+                            Collections.sort(choices, (o1, o2) -> o1.getText().getLocaleValue()
+                                    .compareTo(o2.getText().getLocaleValue()));
+
+                            formComponentCreator.updateDropDownValues(elements, choices);
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
                             if (elements.getChoicesByUrlResponse() != null) {
@@ -455,11 +461,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
-        getActivity().runOnUiThread(() -> {
-            elements.setChoices(choiceValues);
-            formComponentCreator.updateDropDownValues(elements, choiceValues);
-        });
 
+        Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                .compareTo(o2.getText().getLocaleValue()));
+
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                elements.setChoices(choiceValues);
+                formComponentCreator.updateDropDownValues(elements, choiceValues);
+            });
+        }
     }
 
     @Override
@@ -792,7 +803,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                Crop.of(outputUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -804,7 +815,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }

@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -540,5 +541,16 @@ public class Util {
 
             return 0;
         });
+    }
+
+    public static String encrypt(String rowString) {
+        try {
+            String encodedStr = Base64.encodeToString(rowString.getBytes("UTF-8"), Base64.DEFAULT);
+            return encodedStr.replace("\n", "");
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return "";
     }
 }
