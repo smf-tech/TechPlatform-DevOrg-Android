@@ -20,8 +20,9 @@ import android.widget.Toast;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.forms.FormResult;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.adapters.PendingFormCategoryAdapter;
+import com.platform.view.activities.FormActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,9 +51,9 @@ import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
 public class PendingFormsFragment extends Fragment {
 
     private TextView mNoRecordsView;
-    private PendingFormCategoryAdapter mPendingFormCategoryAdapter;
-    private List<FormResult> mSavedForms;
-    ExpandableListView expandableListView;
+    private ExpandableListView mExpandableListView;
+    private Map<String, List<FormResult>> mFormResultMap;
+    private SavedFormsListAdapter mAdapter;
 
     public PendingFormsFragment() {
         // Required empty public constructor
@@ -80,12 +81,10 @@ public class PendingFormsFragment extends Fragment {
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
 
-        expandableListView = view.findViewById(R.id.forms_expandable_list);
-        expandableListView.setGroupIndicator(null);
+        mExpandableListView = view.findViewById(R.id.forms_expandable_list);
+        mExpandableListView.setGroupIndicator(null);
 
         getPendingFormsFromDB();
-
-//        expandableListView.setAdapter(new SavedFormsListAdapter(getContext(), map));
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
@@ -127,11 +126,10 @@ public class PendingFormsFragment extends Fragment {
 
     private void updateAdapter(final Context context) {
         try {
-            if (mSavedForms == null || mSavedForms.isEmpty()) {
-                mSavedForms = new ArrayList<>();
-                if (mPendingFormCategoryAdapter != null)
-                    mPendingFormCategoryAdapter =
-                            new PendingFormCategoryAdapter(getContext(), mSavedForms);
+            if (mFormResultMap == null || mFormResultMap.isEmpty()) {
+                mFormResultMap = new HashMap<>();
+                if (mAdapter != null)
+                    mAdapter = new SavedFormsListAdapter(getContext(), mFormResultMap);
             }
 
             List<FormResult> list = DatabaseManager.getDBInstance(context)
@@ -139,20 +137,30 @@ public class PendingFormsFragment extends Fragment {
 
             list = Util.sortFormResultListByCreatedDate(list);
 
-            mSavedForms.clear();
-            mSavedForms.addAll(list);
+            List<String> categoryList = new ArrayList<>();
+            for (final FormResult form : list) {
+                List<FormResult> forms = new ArrayList<>();
+                if (!categoryList.contains(form.getFormCategory())) {
+                    categoryList.add(form.getFormCategory());
+                    forms.add(form);
+                    mFormResultMap.put(form.getFormCategory(), forms);
+                } else {
+                    List<FormResult> formResults = mFormResultMap.get(form.getFormCategory());
+                    formResults.add(form);
+                    mFormResultMap.put(form.getFormCategory(), formResults);
+                }
+            }
 
-            if (mSavedForms != null && !mSavedForms.isEmpty()) {
+            if (mFormResultMap != null && !mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
-                if (mPendingFormCategoryAdapter != null) {
-                    mPendingFormCategoryAdapter.notifyDataSetChanged();
+                if (mAdapter != null) {
+                    mAdapter.notifyDataSetChanged();
                 }
             } else {
-//                mRecyclerView.setVisibility(View.GONE);
                 mNoRecordsView.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e("PendingForms", e.getMessage() + "");
+            Log.e("PendingForms", e.getMessage() + "", e);
         }
     }
 
@@ -160,31 +168,28 @@ public class PendingFormsFragment extends Fragment {
         List<FormResult> partialSavedForms = DatabaseManager.getDBInstance(getContext())
                 .getAllPartiallySavedForms();
         if (partialSavedForms != null) {
-            mSavedForms = new ArrayList<>(partialSavedForms);
+            List<FormResult> savedForms = new ArrayList<>(partialSavedForms);
 
-            mSavedForms = Util.sortFormResultListByCreatedDate(mSavedForms);
+            savedForms = Util.sortFormResultListByCreatedDate(savedForms);
 
-            Map<String, List<FormResult>> map = new HashMap<>();
+            mFormResultMap = new HashMap<>();
             List<String> categoryList = new ArrayList<>();
-            for (final FormResult form : mSavedForms) {
+            for (final FormResult form : savedForms) {
                 List<FormResult> forms = new ArrayList<>();
                 if (!categoryList.contains(form.getFormCategory())) {
                     categoryList.add(form.getFormCategory());
                     forms.add(form);
-                    map.put(form.getFormCategory(), forms);
+                    mFormResultMap.put(form.getFormCategory(), forms);
                 } else {
-                    List<FormResult> formResults = map.get(form.getFormCategory());
+                    List<FormResult> formResults = mFormResultMap.get(form.getFormCategory());
                     formResults.add(form);
-                    map.put(form.getFormCategory(), formResults);
+                    mFormResultMap.put(form.getFormCategory(), formResults);
                 }
             }
 
-            expandableListView.setAdapter(new SavedFormsListAdapter(getContext(), map));
+            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap));
 
-
-            if (!mSavedForms.isEmpty()) {
-//                mPendingFormCategoryAdapter = new PendingFormCategoryAdapter(getContext(), mSavedForms);
-//                mRecyclerView.setAdapter(mPendingFormCategoryAdapter);
+            if (!mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
             } else {
                 mNoRecordsView.setVisibility(View.VISIBLE);
@@ -273,36 +278,40 @@ public class PendingFormsFragment extends Fragment {
             String cat = list.get(groupPosition);
 
             List<FormResult> processData = mMap.get(cat);
+            FormResult formResult = null;
             if (processData != null) {
-                FormResult data = processData.get(childPosition);
+                formResult = processData.get(childPosition);
 
-                ((TextView) view.findViewById(R.id.form_title)).setText(data.getFormName().trim());
-
-//                if (groupPosition < mCountList.size()) {
-//                    String count = mCountList.get(data.getId());
-//                    if (count == null) count = "0";
-//
-//                    ((TextView) view.findViewById(R.id.submitted_count_label))
-//                            .setText(mContext.getString(R.string.submitted_form_count, count));
-//                } else {
-//                ((TextView) view.findViewById(R.id.submitted_count_label))
-//                        .setText(mContext.getString(R.string.submitted_form_count, "0"));
-//                }
-
+                ((TextView) view.findViewById(R.id.form_title)).setText(formResult.getFormName().trim());
+                ((TextView) view.findViewById(R.id.form_date))
+                        .setText(Util.getDateFromTimestamp(formResult.getCreatedAt()));
             }
 
+            final FormResult finalFormResult = formResult;
+            view.setOnClickListener(v -> {
+                if (finalFormResult != null) {
+                    final String formID = finalFormResult.getFormId();
+                    final String processID = finalFormResult.get_id();
+
+                    Intent intent = new Intent(mContext, FormActivity.class);
+                    intent.putExtra(Constants.PM.PROCESS_ID, processID);
+                    intent.putExtra(Constants.PM.FORM_ID, formID);
+                    intent.putExtra(Constants.PM.EDIT_MODE, true);
+                    intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+                    mContext.startActivity(intent);
+                }
+
+            });
+
             ColorStateList tintColor = ColorStateList.valueOf(mContext.getResources()
-                    .getColor(R.color.submitted_form_color));
-
-            FormResult formResult = mSavedForms.get(childPosition);
-
-            Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_completed);
+                    .getColor(R.color.partial_form_color));
 
             ImageView formImage = view.findViewById(R.id.form_image);
             formImage.setImageTintList(tintColor);
 
+            Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
             view.findViewById(R.id.form_status_indicator).setBackground(drawable);
-            ((TextView) view.findViewById(R.id.form_title)).setText(formResult.getFormName());
+
             return view;
         }
 
