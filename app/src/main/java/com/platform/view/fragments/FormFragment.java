@@ -465,10 +465,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
                 .compareTo(o2.getText().getLocaleValue()));
 
-        getActivity().runOnUiThread(() -> {
-            elements.setChoices(choiceValues);
-            formComponentCreator.updateDropDownValues(elements, choiceValues);
-        });
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                elements.setChoices(choiceValues);
+                formComponentCreator.updateDropDownValues(elements, choiceValues);
+            });
+        }
     }
 
     @Override
@@ -803,7 +805,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 if (imageFilePath == null) return;
 
                 finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                Crop.of(outputUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -815,7 +817,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
-                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
