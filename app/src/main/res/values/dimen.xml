@@ -37,6 +37,7 @@
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_21">21sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
     <dimen name="form_item_status_indicator_width">6dp</dimen>
 </resources>
