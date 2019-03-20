@@ -1,11 +1,12 @@
 package com.platform.view.fragments;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -14,28 +15,31 @@ import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.PendingFragmentPresenter;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
-import com.platform.view.adapters.NewTMAdapter;
+import com.platform.view.adapters.PendingApprovalsListAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentTransaction;
+
+import static com.platform.utility.Constants.TM.FORM_APPROVALS;
 
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
-        TMTaskListener, NewTMAdapter.OnRequestItemClicked {
+        TMTaskListener, PendingApprovalsListAdapter.OnRequestItemClicked {
 
     private View tmFragmentView;
     private TextView txtNoData;
-    private RecyclerView rvPendingRequests;
+    private ExpandableListView rvPendingRequests;
     private PendingFragmentPresenter pendingFragmentPresenter;
-    private NewTMAdapter newTMAdapter;
     private boolean mShowAllApprovalsText = true;
-
-    private List<PendingRequest> pendingRequestList;
+    private PendingApprovalsListAdapter mAdapter;
+    private List<PendingRequest> pendingRequestList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -73,10 +77,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     private void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
-        rvPendingRequests.setLayoutManager(layoutManager);
-        rvPendingRequests.setItemAnimator(new DefaultItemAnimator());
+        rvPendingRequests.setGroupIndicator(null);
 
         final TextView viewAllApprovals = tmFragmentView.findViewById(R.id.txt_view_all_approvals);
         viewAllApprovals.setOnClickListener(this);
@@ -126,9 +128,15 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
 
-            this.pendingRequestList = pendingRequestList;
-            newTMAdapter = new NewTMAdapter(this.pendingRequestList, pendingFragmentPresenter, this, getContext());
-            rvPendingRequests.setAdapter(newTMAdapter);
+            this.pendingRequestList.clear();
+            this.pendingRequestList.addAll(pendingRequestList);
+
+            Map<String, List<PendingRequest>> map = new HashMap<>();
+            map.put(FORM_APPROVALS, pendingRequestList);
+
+            mAdapter = new PendingApprovalsListAdapter(getContext(), map,
+                    pendingFragmentPresenter, this);
+            rvPendingRequests.setAdapter(mAdapter);
         } else {
             DashboardFragment.setApprovalCount(0);
             txtNoData.setVisibility(View.VISIBLE);
@@ -145,7 +153,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     public void updateRequestStatus(String response, PendingRequest pendingRequest) {
         Util.showToast(getString(R.string.status_update_success), getActivity());
         this.pendingRequestList.remove(pendingRequest);
-        newTMAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
             DashboardFragment.setApprovalCount(this.pendingRequestList.size());
@@ -169,21 +177,49 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     }
 
     private void showActionPopUp(final PendingRequest pendingRequest) {
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-        // Setting Dialog Title
-        alertDialog.setTitle("Approve Request");
-        // Setting Dialog Message
-        alertDialog.setMessage("Approve request for " + pendingRequest.getEntity().getUserInfo().getUserName());
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
-        // Setting CANCEL Button
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Reject",
-                (dialog, which) -> newTMAdapter.rejectUserRequest(pendingRequest));
-        // Setting OK Button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Approve",
-                (dialog, which) -> newTMAdapter.approveUserRequest(pendingRequest));
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ApprovalDialogFragment approvalDialogFragment =
+                ApprovalDialogFragment.newInstance(pendingRequest, mAdapter);
+        approvalDialogFragment.show(ft, "dialog");
 
-        // Showing Alert Message
-        alertDialog.show();
+    }
+
+    public static class ApprovalDialogFragment extends DialogFragment {
+
+        private static PendingRequest sPendingRequest;
+        @SuppressLint("StaticFieldLeak")
+        private static PendingApprovalsListAdapter sAdapter;
+
+        public static ApprovalDialogFragment newInstance(PendingRequest pendingRequest, PendingApprovalsListAdapter adapter) {
+            sPendingRequest = pendingRequest;
+            sAdapter = adapter;
+            return new ApprovalDialogFragment();
+        }
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.dialog_pending_approval, container, false);
+
+            if (sPendingRequest != null) {
+                ((TextView) view.findViewById(R.id.txt_pending_request_title))
+                        .setText(sPendingRequest.getEntity().getUserInfo().getUserName());
+                ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
+                        .setText(Util.getDateFromTimestamp(sPendingRequest.getCreatedDateTime()));
+
+                view.findViewById(R.id.iv_approve_request).setOnClickListener(v1 -> {
+                    sAdapter.approveUserRequest(sPendingRequest);
+                    dismiss();
+                });
+                view.findViewById(R.id.iv_reject_request).setOnClickListener(v1 -> {
+                    sAdapter.rejectUserRequest(sPendingRequest);
+                    dismiss();
+                });
+            }
+            return view;
+        }
     }
 }

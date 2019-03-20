@@ -9,12 +9,12 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/form_tab_bg"
+        android:background="@color/tab_bg"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/tab_selector"
         app:tabIndicatorHeight="@dimen/dimen_05dp"
         app:tabMode="fixed"
-        app:tabTextColor="@color/black" />
+        app:tabTextColor="@color/white" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"

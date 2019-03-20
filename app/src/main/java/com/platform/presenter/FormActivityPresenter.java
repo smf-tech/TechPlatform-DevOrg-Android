@@ -154,14 +154,14 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-        formFragment.get().hideProgressBar();
 
-        if (error.networkResponse.statusCode == 400) {
+        if (error != null && error.networkResponse.statusCode == 400) {
             Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
                     formFragment.get().getActivity());
-        } else if (formFragment != null && formFragment.get() != null) {
-            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
             Util.showToast(error.getMessage(), formFragment.get().getActivity());
+        } else if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
+            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
         }
     }
 

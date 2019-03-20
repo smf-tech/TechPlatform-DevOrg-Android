@@ -16,8 +16,10 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -250,37 +252,37 @@ public class Util {
         editor.apply();
     }
 
-    public static OrganizationRolesResponse getUserRoleFromPref() {
+    public static OrganizationRolesResponse getUserRoleFromPref(String orgId) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-        String obj = preferences.getString(Constants.Login.USER_ROLE, "{}");
+                (Constants.Login.USER_ROLE, Context.MODE_PRIVATE);
+        String obj = preferences.getString(orgId, "{}");
 
         return new Gson().fromJson(obj, OrganizationRolesResponse.class);
     }
 
-    public static void saveUserRoleInPref(String userData) {
+    public static void saveUserRoleInPref(String orgId, String userData) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+                Constants.Login.USER_ROLE, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.Login.USER_ROLE, userData);
+        editor.putString(orgId, userData);
         editor.apply();
     }
 
-    public static OrganizationProjectsResponse getUserProjectsFromPref() {
+    public static OrganizationProjectsResponse getUserProjectsFromPref(String orgId) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-        String obj = preferences.getString(Constants.Login.USER_PROJECT, "{}");
+                (Constants.Login.USER_PROJECT, Context.MODE_PRIVATE);
+        String obj = preferences.getString(orgId, "{}");
 
         return new Gson().fromJson(obj, OrganizationProjectsResponse.class);
     }
 
-    public static void saveUserProjectsInPref(String userData) {
+    public static void saveUserProjectsInPref(String orgId, String userData) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
-                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+                Constants.Login.USER_PROJECT, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.Login.USER_PROJECT, userData);
+        editor.putString(orgId, userData);
         editor.apply();
     }
 
@@ -416,7 +418,7 @@ public class Util {
         return date;
     }
 
-    public static String getFormattedDate(String date, String dateFormat) {
+    private static String getFormattedDate(String date, String dateFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -556,6 +558,16 @@ public class Util {
         }
 
         return "";
+    }
+
+    public static void rotateImage(float degree, ImageView image) {
+        final RotateAnimation rotateAnim = new RotateAnimation(0.0f, degree,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+        rotateAnim.setDuration(0);
+        rotateAnim.setFillAfter(true);
+        image.startAnimation(rotateAnim);
     }
 
     public static String writeToInternalStorage(Context context, String fileName, String content) {

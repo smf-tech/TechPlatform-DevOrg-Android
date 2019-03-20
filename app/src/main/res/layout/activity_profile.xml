@@ -362,7 +362,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dimen_10dp"
-        android:background="@color/darkest_blue"
+        android:background="@drawable/bg_button"
         android:text="@string/btn_submit"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_22" />

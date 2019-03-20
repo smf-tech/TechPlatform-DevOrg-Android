@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -13,21 +14,21 @@ import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.RejectedFragmentPresenter;
 import com.platform.view.adapters.TMRejectedAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import static com.platform.utility.Constants.TM.USER_APPROVALS;
 
 @SuppressWarnings("WeakerAccess")
 public class TMUserRejectedFragment extends Fragment implements TMTaskListener {
 
     private View tmFragmentView;
     private TextView txtNoData;
-    private RecyclerView rvApprovedRequests;
+    private ExpandableListView elvRejectedRequests;
     private RejectedFragmentPresenter presenter;
 
     private boolean isVisible;
@@ -53,11 +54,7 @@ public class TMUserRejectedFragment extends Fragment implements TMTaskListener {
 
     private void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvApprovedRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
-        rvApprovedRequests.setLayoutManager(layoutManager);
-        rvApprovedRequests.setItemAnimator(new DefaultItemAnimator());
+        elvRejectedRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
 
         tmFragmentView.findViewById(R.id.txt_view_all_approvals).setVisibility(View.GONE);
     }
@@ -87,13 +84,15 @@ public class TMUserRejectedFragment extends Fragment implements TMTaskListener {
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
             txtNoData.setVisibility(View.GONE);
-            rvApprovedRequests.setVisibility(View.VISIBLE);
+            elvRejectedRequests.setVisibility(View.VISIBLE);
 
-            TMRejectedAdapter newTMAdapter = new TMRejectedAdapter(pendingRequestList, presenter);
-            rvApprovedRequests.setAdapter(newTMAdapter);
+            HashMap<String, List<PendingRequest>> rejectedRequestMap = new HashMap<>();
+            rejectedRequestMap.put(USER_APPROVALS, pendingRequestList);
+            TMRejectedAdapter newTMAdapter = new TMRejectedAdapter(getContext(), rejectedRequestMap, presenter);
+            elvRejectedRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);
-            rvApprovedRequests.setVisibility(View.GONE);
+            elvRejectedRequests.setVisibility(View.GONE);
         }
     }
 

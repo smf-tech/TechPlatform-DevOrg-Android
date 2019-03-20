@@ -281,6 +281,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                 String formDataType = elements.getType();
                 switch (formDataType) {
+                    case Constants.FormsFactory.COMMENT_TEMPLATE:
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Log.d(TAG, "TEXT_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.textInputTemplate(elements));
@@ -676,8 +677,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 Objects.requireNonNull(getActivity()).getApplicationContext())
                 .getFormSchema(processId);
 
-        mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
-        Log.e(TAG, "Form schema fetched from database.");
+        if (formData != null) {
+            mElementsListFromDB = formData.getComponents().getPages().get(0).getElements();
+            Log.e(TAG, "Form schema fetched from database.");
+        }
 
         JsonObject object = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
         JsonArray values = object.getAsJsonArray("values");

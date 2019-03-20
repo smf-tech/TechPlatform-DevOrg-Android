@@ -35,16 +35,15 @@
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/form_content_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_size_22"
-        android:layout_marginBottom="@dimen/dimen_05dp"
-        app:cardBackgroundColor="@color/card_gray_bg"
-        app:cardCornerRadius="3dp">
+    <!--<androidx.cardview.widget.CardView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/text_size_22"-->
+        <!--android:layout_marginBottom="@dimen/dimen_05dp"-->
+        <!--app:cardCornerRadius="3dp">-->
 
         <LinearLayout
+            android:id="@+id/form_content_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -63,5 +62,5 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_15dp" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    <!--</androidx.cardview.widget.CardView>-->
 </RelativeLayout>

@@ -47,6 +47,9 @@ public class Elements {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
+    @SerializedName("rows")
+    @Expose
+    private Integer rows;
 
     public String getChoicesByUrlResponsePath() {
         return choicesByUrlResponsePath;
@@ -152,6 +155,13 @@ public class Elements {
         this.mAnswer = answer;
     }
 
+    public Integer getRows() {
+        return rows;
+    }
+
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
 }
 
 

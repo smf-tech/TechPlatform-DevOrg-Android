@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.ArrayList;
@@ -97,9 +97,9 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
         ImageView v = view.findViewById(R.id.form_image);
         if (isExpanded) {
-            rotate(90f, v);
+            Util.rotateImage(180f, v);
         } else {
-            rotate(0f, v);
+            Util.rotateImage(0f, v);
         }
 
         return view;
@@ -144,16 +144,6 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(final int groupPosition, final int childPosition) {
-        return true;
-    }
-
-    private void rotate(float degree, ImageView image) {
-        final RotateAnimation rotateAnim = new RotateAnimation(0.0f, degree,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-
-        rotateAnim.setDuration(0);
-        rotateAnim.setFillAfter(true);
-        image.startAnimation(rotateAnim);
+        return false;
     }
 }

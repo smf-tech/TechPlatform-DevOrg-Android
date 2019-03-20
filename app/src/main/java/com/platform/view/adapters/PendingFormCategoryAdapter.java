@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-@SuppressWarnings("CanBeFinal")
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingFormCategoryAdapter.ViewHolder> {
 
     private Context mContext;
@@ -43,6 +43,7 @@ public class PendingFormCategoryAdapter extends RecyclerView.Adapter<PendingForm
         RecyclerView recyclerView;
         TextView categoryName;
 
+        @SuppressWarnings("unused")
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 

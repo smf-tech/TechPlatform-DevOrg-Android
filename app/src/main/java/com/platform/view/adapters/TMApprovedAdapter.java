@@ -1,8 +1,10 @@
 package com.platform.view.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,70 +14,129 @@ import com.platform.presenter.ApprovedFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-public class TMApprovedAdapter extends RecyclerView.Adapter<TMApprovedAdapter.ApprovedRequestViewHolder> {
+public class TMApprovedAdapter extends BaseExpandableListAdapter {
 
-    private List<PendingRequest> pendingRequestList;
+    private Context mContext;
+    private Map<String, List<PendingRequest>> mApprovedRequestMap;
     private ApprovedFragmentPresenter approvedFragmentPresenter;
 
-    class ApprovedRequestViewHolder extends RecyclerView.ViewHolder {
-
-        TextView txtRequestTitle, txtRequestCreatedAt;
-        ImageView ivApprove, ivReject;
-
-        ApprovedRequestViewHolder(View view) {
-            super(view);
-
-            txtRequestTitle = view.findViewById(R.id.txt_pending_request_title);
-            txtRequestCreatedAt = view.findViewById(R.id.txt_pending_request_created_at);
-            ivApprove = view.findViewById(R.id.iv_approve_request);
-            ivReject = view.findViewById(R.id.iv_reject_request);
-        }
-    }
-
-    public TMApprovedAdapter(List<PendingRequest> pendingRequestList, ApprovedFragmentPresenter presenter) {
-        this.pendingRequestList = pendingRequestList;
+    public TMApprovedAdapter(final Context context, final Map<String, List<PendingRequest>> approvedRequestMap, ApprovedFragmentPresenter presenter) {
+        mContext = context;
+        mApprovedRequestMap = approvedRequestMap;
         this.approvedFragmentPresenter = presenter;
     }
 
-    @NonNull
     @Override
-    public ApprovedRequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+    public int getGroupCount() {
+        return mApprovedRequestMap.size();
+    }
+
+    @Override
+    public int getChildrenCount(final int groupPosition) {
+        ArrayList<String> list = new ArrayList<>(mApprovedRequestMap.keySet());
+        String cat = list.get(groupPosition);
+
+        List<PendingRequest> processData = mApprovedRequestMap.get(cat);
+        if (processData != null) {
+            return processData.size();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Object getGroup(final int groupPosition) {
+        return null;
+    }
+
+    @Override
+    public Object getChild(final int groupPosition, final int childPosition) {
+        return null;
+    }
+
+    @Override
+    public long getGroupId(final int groupPosition) {
+        return 0;
+    }
+
+    @Override
+    public long getChildId(final int groupPosition, final int childPosition) {
+        return 0;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_pending_approvals_item, parent, false);
+
+        ArrayList<String> list = new ArrayList<>(mApprovedRequestMap.keySet());
+        String cat = list.get(groupPosition);
+
+        List<PendingRequest> processData = mApprovedRequestMap.get(cat);
+        int size = 0;
+        if (processData != null) {
+            size = processData.size();
+        }
+
+        ((TextView) view.findViewById(R.id.form_title)).setText(cat);
+        ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Requests", String.valueOf(size)));
+
+        ImageView v = view.findViewById(R.id.form_image);
+        if (isExpanded) {
+            Util.rotateImage(180f, v);
+        } else {
+            Util.rotateImage(0f, v);
+        }
+
+        return view;
+    }
+
+    @Override
+    public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
+
+        View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.row_pending_requests_card_view, parent, false);
 
-        return new ApprovedRequestViewHolder(itemView);
+        ArrayList<String> list = new ArrayList<>(mApprovedRequestMap.keySet());
+        String cat = list.get(groupPosition);
+
+        List<PendingRequest> requests = mApprovedRequestMap.get(cat);
+        if (requests != null) {
+            PendingRequest data = requests.get(childPosition);
+
+            if (data != null && data.getEntity() != null && data.getEntity().getUserInfo() != null) {
+                ((TextView) view.findViewById(R.id.txt_pending_request_title))
+                        .setText(data.getEntity().getUserInfo().getUserName());
+                ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
+                        .setText(String.format("On %s",
+                        Util.getDateFromTimestamp(data.getUpdatedDateTime())));
+            }
+
+            view.findViewById(R.id.iv_approve_request).setVisibility(View.GONE);
+            view.findViewById(R.id.iv_approve_request)
+                    .setOnClickListener(v -> approvedFragmentPresenter
+                            .approveRejectRequest(Constants.RequestStatus.APPROVED, data));
+
+            view.findViewById(R.id.iv_reject_request).setVisibility(View.GONE);
+            view.findViewById(R.id.iv_reject_request)
+                    .setOnClickListener(v -> approvedFragmentPresenter
+                            .approveRejectRequest(Constants.RequestStatus.REJECTED, data));
+        }
+
+        return view;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ApprovedRequestViewHolder approvedRequestViewHolder, int position) {
-
-        PendingRequest pendingRequest = pendingRequestList.get(position);
-
-        approvedRequestViewHolder.txtRequestTitle.setText(String.format("%s",
-                pendingRequest.getEntity().getUserInfo().getUserName()));
-
-        approvedRequestViewHolder.txtRequestCreatedAt.setText(String.format("On %s",
-                Util.getDateFromTimestamp(pendingRequest.getUpdatedDateTime())));
-
-        approvedRequestViewHolder.ivApprove.setVisibility(View.GONE);
-        approvedRequestViewHolder.ivApprove.setOnClickListener(
-                v -> approvedFragmentPresenter
-                        .approveRejectRequest(Constants.RequestStatus.APPROVED, pendingRequest));
-
-        approvedRequestViewHolder.ivReject.setVisibility(View.GONE);
-        approvedRequestViewHolder.ivReject.setOnClickListener(
-                v -> approvedFragmentPresenter
-                        .approveRejectRequest(Constants.RequestStatus.REJECTED, pendingRequest));
-    }
-
-    @Override
-    public int getItemCount() {
-        return pendingRequestList.size();
+    public boolean isChildSelectable(final int groupPosition, final int childPosition) {
+        return false;
     }
 }

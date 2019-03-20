@@ -656,7 +656,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     this.selectedOrg = organizations.get(i);
 
-                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref().getData();
+                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref(this.selectedOrg.getId()).getData();
                     if (projectData != null && projectData.size() > 0) {
                         showOrganizationProjects(projectData);
 
@@ -669,11 +669,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         spProject.setSelectedValues(selectedValues);
                         spProject.setPreFilledText();
                     } else {
-                        profilePresenter.getOrganizationProjects(organizations.get(i).getId());
+                        profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
                     }
 
                     int id = 0;
-                    List<OrganizationRole> roleData = Util.getUserRoleFromPref().getData();
+                    List<OrganizationRole> roleData = Util.getUserRoleFromPref(this.selectedOrg.getId()).getData();
                     if (roleData != null && roleData.size() > 0) {
                         showOrganizationRoles(roleData);
                         for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
@@ -683,7 +683,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                         }
                         spRole.setSelection(id);
                     } else {
-                        profilePresenter.getOrganizationRoles(organizations.get(i).getId());
+                        profilePresenter.getOrganizationRoles(this.selectedOrg.getId());
                     }
                 } else {
                     if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null

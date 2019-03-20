@@ -125,6 +125,8 @@ public class Constants {
     public static class TM {
         public static final String UPDATE_STATUS = "update_status";
         public static final String REJECTION_REASON = "reason";
+        public static final String USER_APPROVALS = "User Approvals";
+        public static final String FORM_APPROVALS = "Form Approvals";
     }
 
     public static class RequestStatus {
@@ -137,6 +139,7 @@ public class Constants {
 
     public static class FormsFactory {
         public static final String TEXT_TEMPLATE = "text";
+        public static final String COMMENT_TEMPLATE = "comment";
         public static final String DROPDOWN_TEMPLATE = "dropdown";
         public static final String RADIO_GROUP_TEMPLATE = "radiogroup";
         public static final String FILE_TEMPLATE = "file";

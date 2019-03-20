@@ -245,6 +245,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                             .getApplicationContext()).updateProcessSubmitCount(formId, String.valueOf(0));
                 }
             }
+
+            Util.setSubmittedFormsLoaded(true);
+
             if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
 
@@ -284,8 +287,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     if (!localFormResults.contains(obj.toString())) {
                         result.setResult(obj.toString());
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
-
-                        Util.setSubmittedFormsLoaded(true);
                     }
 
                 }

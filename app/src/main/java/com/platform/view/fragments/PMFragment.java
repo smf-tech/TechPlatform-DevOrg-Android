@@ -176,12 +176,12 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
             rltPendingForms.setVisibility(View.VISIBLE);
             rltPendingForms.setVisibility(View.VISIBLE);
-            pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.VISIBLE);
+            pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.VISIBLE);
             pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
         } else {
-            pmFragmentView.findViewById(R.id.view_forms_divider).setVisibility(View.GONE);
+            pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.GONE);
             rltPendingForms.setVisibility(View.GONE);
         }
     }
@@ -263,6 +263,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                     });
                 }
                 lnrInner.addView(formTypeView);
+
+                if (childList.size() == 1 || i == 1) {
+                    formTypeView.findViewById(R.id.dashboard_category_item_divider).setVisibility(View.GONE);
+                }
             }
         }
         lnrOuter.addView(lnrInner);

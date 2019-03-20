@@ -8,12 +8,11 @@
     android:focusableInTouchMode="true"
     tools:ignore="Overdraw">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ExpandableListView
         android:id="@+id/rv_dashboard_reports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:dividerHeight="@dimen/dimen_01dp"
+        android:dividerHeight="@dimen/dimen_05dp"
         android:groupIndicator="@null" />
 
     <TextView
@@ -37,6 +36,5 @@
         android:gravity="center_horizontal"
         android:text="@string/view_all_reports"
         android:textAllCaps="true"
-        android:textColor="@color/dark_green"
         android:textStyle="bold" />
 </RelativeLayout>

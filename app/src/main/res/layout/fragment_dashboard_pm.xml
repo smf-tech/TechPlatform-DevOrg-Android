@@ -25,40 +25,64 @@
                 android:id="@+id/rlt_pending_forms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_15dp"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:layout_marginEnd="@dimen/dimen_15dp"
-                android:background="@drawable/bg_rounded_rect_gray"
                 android:visibility="visible">
 
                 <TextView
                     android:id="@+id/txt_pending_forms"
-                    style="@style/roboto_medium_light_grey_14"
+                    style="@style/medium_grey_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_12dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:paddingStart="@dimen/dimen_20dp"
+                    android:paddingEnd="0dp"
                     android:text="@string/saved_forms_cat" />
+
+                <View
+                    android:id="@+id/view_forms_divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_01dp"
+                    android:layout_below="@id/txt_pending_forms"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:background="@color/medium_grey"
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_dashboard_pending_forms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_pending_forms" />
+                    android:layout_below="@+id/view_forms_divider1"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layerType="software"
+                    android:paddingStart="@dimen/dimen_20dp"
+                    android:paddingEnd="@dimen/dimen_15dp" />
             </RelativeLayout>
 
             <View
-                android:id="@+id/view_forms_divider"
+                android:id="@+id/view_forms_divider2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_01dp"
-                android:layout_margin="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@color/lighter_grey" />
+
+            <TextView
+                android:id="@+id/txt_frequently_used_forms"
+                style="@style/medium_grey_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:layout_marginEnd="@dimen/dimen_16dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:paddingStart="@dimen/dimen_20dp"
+                android:paddingEnd="0dp"
+                android:text="@string/frequently_used_forms" />
 
             <LinearLayout
                 android:id="@+id/lnr_dashboard_forms_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_16dp"
-                android:layout_marginEnd="@dimen/dimen_16dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginBottom="@dimen/dimen_05dp"
                 android:orientation="vertical" />
         </LinearLayout>

@@ -3,20 +3,21 @@
     android:id="@+id/lnr_inner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dimen_10dp"
-    android:layout_marginBottom="@dimen/dimen_10dp"
-    android:background="@drawable/bg_rounded_rect_gray"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_dashboard_form_category_name"
-        style="@style/roboto_medium_light_grey_14"
+        style="@style/medium_grey_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_12dp"
-        android:layout_marginTop="@dimen/dimen_16dp"
-        android:gravity="start" />
-
+        android:background="@color/lighter_grey"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="2"
+        android:paddingStart="@dimen/dimen_20dp"
+        android:paddingTop="@dimen/dimen_05dp"
+        android:paddingEnd="@dimen/dimen_15dp"
+        android:paddingBottom="@dimen/dimen_05dp" />
 </LinearLayout>
