@@ -50,6 +50,7 @@ public class Constants {
         public static final String LANGUAGE_DEFAULT = "default";
 
         static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
+        static final String FILE_EXTENSION = ".txt";
     }
 
     public static class AssociatesType {

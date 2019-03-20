@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.LocaleData;
@@ -42,6 +43,7 @@ import com.platform.utility.Validation;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -571,19 +573,20 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             DropDownTemplate dropDownTemplate = dependencyMap.get(key);
             Elements dependentElement = dropDownTemplate.getFormData();
             List<Choice> choiceValues = new ArrayList<>();
+            List<JsonObject> dependentObjectsList = new ArrayList<>();
 
-            String dependentResponse = dependentElement.getChoicesByUrlResponse();
+            String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
+            String response = Util.readFromInternalStorage(fragment.get().getContext(), dependentElement.getName());
 
-            if (!TextUtils.isEmpty(dependentResponse)) {
-                JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(dependentResponse, JsonObject.class);
+            if (!TextUtils.isEmpty(dependentResponse) && !TextUtils.isEmpty(response)) {
+                JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
                 JsonArray dependentDataArray = dependentOuterObj.getAsJsonArray(Constants.RESPONSE_DATA);
 
-                //Convert dependentDataArray to List
-                ArrayList<JsonObject> dependentObjectsList = new ArrayList<>();
+                //Convert dependentDataArray to List of JsonObject
                 if (dependentDataArray != null) {
-                    for (int dependentArrayIndex = 0; dependentArrayIndex < dependentDataArray.size(); dependentArrayIndex++) {
-                        dependentObjectsList.add(dependentDataArray.get(dependentArrayIndex).getAsJsonObject());
-                    }
+                    Type listType = new TypeToken<ArrayList<JsonObject>>() {
+                    }.getType();
+                    dependentObjectsList = PlatformGson.getPlatformGsonInstance().fromJson(dependentDataArray, listType);
                 }
 
                 String pValue;

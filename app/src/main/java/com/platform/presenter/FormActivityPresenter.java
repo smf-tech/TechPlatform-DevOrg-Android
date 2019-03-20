@@ -82,7 +82,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         requestCall.getProcessDetails(processId);
     }
 
-    private void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex, FormData formData) {
+    public void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex, FormData formData) {
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
@@ -312,9 +312,11 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData) {
+        formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
-            formFragment.get().hideProgressBar();
-            formData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponse(response);
+            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()), elements.getName(), response);
+
+            formData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponsePath(path);
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(formData);
             formFragment.get().showChoicesByUrlAsync(response, elements);
         }

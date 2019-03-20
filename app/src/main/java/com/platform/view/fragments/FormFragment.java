@@ -294,8 +294,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
-                            if (elements.getChoicesByUrlResponse() != null) {
-                                showChoicesByUrlAsync(elements.getChoicesByUrlResponse(), elements);
+                            if (elements.getChoicesByUrlResponsePath() != null) {
+                                String response = Util.readFromInternalStorage(this.getContext(), elements.getName());
+                                if (!TextUtils.isEmpty(response)) {
+                                    showChoicesByUrlAsync(response, elements);
+                                } else {
+                                    callChoicesAPI(elements.getName());
+                                }
                             }
                         }
                         break;
@@ -312,6 +317,30 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
         }
+    }
+
+    private void callChoicesAPI(String name) {
+        for (int pageIndex = 0; pageIndex < formModel.getData().getComponents().getPages().size(); pageIndex++) {
+
+            if (formModel.getData().getComponents().getPages().get(pageIndex).getElements() != null &&
+                    !formModel.getData().getComponents().getPages().get(pageIndex).getElements().isEmpty()) {
+
+                for (int elementIndex = 0; elementIndex < formModel.getData().getComponents().getPages().get(pageIndex).getElements().size(); elementIndex++) {
+
+                    if (formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex) != null
+                            && formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl() != null &&
+                            formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getName().equals(name) &&
+                            !TextUtils.isEmpty(formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl()) &&
+                            !TextUtils.isEmpty(formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
+
+                        formPresenter.getChoicesByUrl(formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex), pageIndex, elementIndex, formModel.getData());
+                        break;
+                    }
+                }
+
+            }
+        }
+
     }
 
     synchronized
