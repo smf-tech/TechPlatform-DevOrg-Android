@@ -77,7 +77,7 @@ public class ProfileRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getOrganizationProjects - Resp: " + res);
-                    listener.onOrganizationProjectsFetched(res);
+                    listener.onOrganizationProjectsFetched(orgId, res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -110,7 +110,7 @@ public class ProfileRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getOrganizationRoles - Resp: " + res);
-                    listener.onOrganizationRolesFetched(res);
+                    listener.onOrganizationRolesFetched(orgId, res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
