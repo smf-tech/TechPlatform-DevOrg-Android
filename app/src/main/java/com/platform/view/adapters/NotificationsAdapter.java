@@ -56,10 +56,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.PendingRequestViewHolder holder, int position) {
 
-        PendingRequest pendingRequest = pendingRequestList.get(position);
-        holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
+//        PendingRequest pendingRequest = pendingRequestList.get(position);
+        /*holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
         holder.txtRequestCreatedAt.setText(String.format("On %s",
-                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));
+                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));*/
+        holder.txtRequestTitle.setText(String.format("%s", "Shashikant"));
+        holder.txtRequestCreatedAt.setText(String.format("On %s", Util.getCurrentTimeStamp()));
         holder.cardView.setOnClickListener(view1 -> clickListener.onItemClicked());
 
         holder.ivApprove.setVisibility(View.GONE);
