@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -13,21 +14,21 @@ import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.ApprovedFragmentPresenter;
 import com.platform.view.adapters.TMApprovedAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import static com.platform.utility.Constants.TM.USER_APPROVALS;
 
 @SuppressWarnings("WeakerAccess")
 public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
 
     private View tmFragmentView;
     private TextView txtNoData;
-    private RecyclerView rvApprovedRequests;
+    private ExpandableListView rvApprovedRequests;
     private ApprovedFragmentPresenter presenter;
 
     private boolean isVisible;
@@ -53,11 +54,7 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
 
     private void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvApprovedRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
-        rvApprovedRequests.setLayoutManager(layoutManager);
-        rvApprovedRequests.setItemAnimator(new DefaultItemAnimator());
 
         tmFragmentView.findViewById(R.id.txt_view_all_approvals).setVisibility(View.GONE);
     }
@@ -89,7 +86,11 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
             txtNoData.setVisibility(View.GONE);
             rvApprovedRequests.setVisibility(View.VISIBLE);
 
-            TMApprovedAdapter newTMAdapter = new TMApprovedAdapter(pendingRequestList, presenter);
+            HashMap<String, List<PendingRequest>> approvedRequestMap = new HashMap<>();
+            approvedRequestMap.put(USER_APPROVALS, pendingRequestList);
+//            approvedRequestMap.put(FORM_APPROVALS, pendingRequestList);
+            TMApprovedAdapter newTMAdapter = new TMApprovedAdapter(getContext(),
+                    approvedRequestMap, presenter);
             rvApprovedRequests.setAdapter(newTMAdapter);
         } else {
             txtNoData.setVisibility(View.VISIBLE);

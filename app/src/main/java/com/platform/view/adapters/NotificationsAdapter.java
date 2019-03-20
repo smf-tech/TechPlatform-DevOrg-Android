@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -13,7 +14,6 @@ import com.platform.utility.Util;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
@@ -24,7 +24,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     class PendingRequestViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cardView;
+        LinearLayout cardView;
         TextView txtRequestTitle, txtRequestCreatedAt;
         ImageView ivApprove, ivReject;
 
@@ -56,12 +56,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.PendingRequestViewHolder holder, int position) {
 
-//        PendingRequest pendingRequest = pendingRequestList.get(position);
-        /*holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
+        PendingRequest pendingRequest = pendingRequestList.get(position);
+        holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUserInfo().getUserName()));
         holder.txtRequestCreatedAt.setText(String.format("On %s",
-                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));*/
-        holder.txtRequestTitle.setText(String.format("%s", "Shashikant"));
-        holder.txtRequestCreatedAt.setText(String.format("On %s", Util.getCurrentTimeStamp()));
+                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));
         holder.cardView.setOnClickListener(view1 -> clickListener.onItemClicked());
 
         holder.ivApprove.setVisibility(View.GONE);

@@ -12,10 +12,13 @@
         android:id="@+id/rv_dashboard_tm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/txt_view_all_approvals"
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
-        android:layout_above="@id/txt_view_all_approvals"
-        android:background="@drawable/bg_rounded_rect_gray" />
+        android:background="@drawable/bg_rounded_rect_gray"
+        android:divider="@android:color/white"
+        android:dividerHeight="@dimen/dimen_05dp"
+        android:groupIndicator="@null" />
 
     <TextView
         android:id="@+id/txt_no_data"

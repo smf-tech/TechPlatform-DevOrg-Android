@@ -21,7 +21,6 @@ import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.NotificationsAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -100,12 +99,6 @@ public class NotificationsFragment extends Fragment implements TMTaskListener,
 
         NotificationsFragmentPresenter presenter = new NotificationsFragmentPresenter(this);
         presenter.getAllPendingRequests();
-
-        ArrayList<PendingRequest> pendingRequestList = new ArrayList<>();
-        PendingRequest pendingRequest = new PendingRequest();
-        pendingRequestList.add(pendingRequest);
-        NotificationsAdapter newTMAdapter = new NotificationsAdapter(pendingRequestList, this);
-        rvPendingRequests.setAdapter(newTMAdapter);
     }
 
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {

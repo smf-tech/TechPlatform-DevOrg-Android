@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dimen_25dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dimen_20dp"
-        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
         android:contentDescription="@string/content_description"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_person_24px"

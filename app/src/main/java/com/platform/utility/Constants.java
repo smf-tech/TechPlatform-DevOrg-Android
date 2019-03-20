@@ -125,6 +125,8 @@ public class Constants {
     public static class TM {
         public static final String UPDATE_STATUS = "update_status";
         public static final String REJECTION_REASON = "reason";
+        public static final String USER_APPROVALS = "User Approvals";
+        public static final String FORM_APPROVALS = "Form Approvals";
     }
 
     public static class RequestStatus {

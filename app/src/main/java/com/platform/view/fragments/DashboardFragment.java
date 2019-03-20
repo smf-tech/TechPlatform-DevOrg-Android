@@ -157,8 +157,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.REPORTS:
-                    adapter.addFragment(new TMUserPendingFragment());
-//                    adapter.addFragment(new ReportsFragment());
+                    adapter.addFragment(new ReportsFragment());
                     break;
             }
         }
@@ -189,7 +188,7 @@ public class DashboardFragment extends Fragment {
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
             View child = tabStrip.getChildAt(i);
             child.setId(i);
-//            child.setEnabled(tabNames.get(i).isActive());
+            child.setEnabled(tabNames.get(i).isActive());
             child.setOnClickListener(view -> {
                 switch (view.getId()) {
                     case 0:
