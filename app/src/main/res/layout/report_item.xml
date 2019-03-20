@@ -1,61 +1,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     tools:ignore="PrivateResource">
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
+        android:id="@+id/report_list_item_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dp"
         android:layout_marginStart="@dimen/dimen_07dp"
         android:layout_marginEnd="@dimen/dimen_07dp"
         android:layout_marginBottom="@dimen/dimen_07dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="@dimen/form_item_status_indicator_width">
+        tools:ignore="UselessParent">
 
-        <RelativeLayout
-            android:id="@+id/report_list_item_view"
+        <View
+            android:id="@+id/form_status_indicator"
+            android:layout_width="@dimen/dimen_05dp"
+            android:layout_height="@dimen/dimen_60dp"
+            android:layout_centerVertical="true"
+            android:background="@color/dark_green" />
+
+        <ImageView
+            android:id="@+id/form_image"
+            android:layout_width="@dimen/dimen_30dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_reports"
+            android:tint="@color/dark_green" />
+
+        <TextView
+            android:id="@+id/tv_report_title"
+            style="@style/FormLabel.Title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/form_image"
+            android:ellipsize="end"
+            android:maxLines="2" />
 
-            <View
-                android:id="@+id/form_status_indicator"
-                android:layout_width="@dimen/form_item_status_indicator_width"
-                android:layout_height="wrap_content"
-                android:background="@drawable/form_status_indicator_completed" />
-
-            <ImageView
-                android:id="@+id/form_image"
-                android:layout_width="@dimen/dimen_30dp"
-                android:layout_height="@dimen/dimen_30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_reports"
-                android:tint="@color/green" />
-
-            <TextView
-                android:id="@+id/tv_report_title"
-                style="@style/FormLabel.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/form_image"
-                android:ellipsize="end"
-                android:maxLines="2" />
-
-            <ImageView
-                android:id="@+id/form_fav_image"
-                android:layout_width="@dimen/dimen_30dp"
-                android:layout_height="@dimen/dimen_30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:contentDescription="@string/content_description"
-                android:src="@android:drawable/btn_star"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/form_fav_image"
+            android:layout_width="@dimen/dimen_30dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:contentDescription="@string/content_description"
+            android:src="@android:drawable/btn_star"
+            android:visibility="gone" />
+    </RelativeLayout>
 </RelativeLayout>

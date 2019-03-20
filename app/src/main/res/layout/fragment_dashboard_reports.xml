@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     tools:ignore="Overdraw">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ExpandableListView
         android:id="@+id/rv_dashboard_reports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
