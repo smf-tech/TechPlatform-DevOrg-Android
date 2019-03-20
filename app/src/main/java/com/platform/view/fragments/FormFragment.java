@@ -160,7 +160,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class GetDataFromDB extends AsyncTask<String, Void, String> {
+    private class GetDataFromDBTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             showChoicesByUrl(params[0], PlatformGson.getPlatformGsonInstance().fromJson(params[1], Elements.class));
@@ -301,6 +301,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                                 } else {
                                     callChoicesAPI(elements.getName());
                                 }
+                            } else {
+                                callChoicesAPI(elements.getName());
                             }
                         }
                         break;
@@ -407,7 +409,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public void showChoicesByUrlAsync(String result, Elements elements) {
-        new GetDataFromDB().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
+        new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
     private void showChoicesByUrl(String result, Elements elements) {
@@ -700,7 +702,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private void getFormDataAndParse(final FormResult response) {
         String formId = getArguments().getString(Constants.PM.FORM_ID);
         FormData formData;
-        if (formModel.getData() != null) {
+        if (formModel.getData() == null) {
 
             formData = DatabaseManager.getDBInstance(
                     Objects.requireNonNull(getActivity()).getApplicationContext())
