@@ -50,6 +50,7 @@ public class Constants {
         public static final String LANGUAGE_DEFAULT = "default";
 
         static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
+        static final String FILE_EXTENSION = ".txt";
     }
 
     public static class AssociatesType {
@@ -190,12 +191,6 @@ public class Constants {
         public static final String FORM = "form";
         public static final String SUBMIT_COUNT = "submit_count";
         public static final String VALUES = "values";
-        public static final String NEW_STRUCTURE_CODE = "new_structure_code";
-        public static final String OLD_STRUCTURE_CODE = "old_structure_code";
-        public static final String STRUCTURE_CODE = "structure_code";
-        public static final String MOVED_FROM = "moved_from_village";
-        public static final String MOVED_TO = "moved_to_village";
-        public static final String VILLAGE = "village";
         public static final String _ID = "_id";
         public static final String OID = "$oid";
         public static final String UPDATED_DATE_TIME = "updatedDateTime";
