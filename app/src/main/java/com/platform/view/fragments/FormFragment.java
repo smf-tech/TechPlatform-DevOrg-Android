@@ -281,6 +281,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                 String formDataType = elements.getType();
                 switch (formDataType) {
+                    case Constants.FormsFactory.COMMENT_TEMPLATE:
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Log.d(TAG, "TEXT_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.textInputTemplate(elements));

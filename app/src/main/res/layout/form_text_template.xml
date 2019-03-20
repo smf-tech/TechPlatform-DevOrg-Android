@@ -27,9 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
-            android:inputType="text"
+            android:inputType="text|textMultiLine"
             android:longClickable="false"
-            android:maxLines="1"
             android:textColor="@color/colorPrimaryDark"
             tools:ignore="Autofill,LabelFor,PrivateResource" />
     </com.google.android.material.textfield.TextInputLayout>

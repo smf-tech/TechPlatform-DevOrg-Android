@@ -219,7 +219,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 setInputType(formData.getInputType(), textInputField);
             }
 
-            textInputField.setMaxLines(1);
+            if (formData.getRows() != null && formData.getRows() > 0) {
+                textInputField.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                textInputField.setMaxLines(formData.getRows());
+                textInputField.setHorizontallyScrolling(false);
+                textInputField.setVerticalScrollBarEnabled(true);
+            } else {
+                textInputField.setMaxLines(1);
+            }
 
             textInputField.addTextChangedListener(new TextWatcher() {
 
@@ -558,7 +565,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private class UpdateDropDownValuesTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            updateValues(PlatformGson.getPlatformGsonInstance().fromJson(params[0], Elements.class), params[1], params[2]);
+            try {
+                updateValues(PlatformGson.getPlatformGsonInstance().fromJson(params[0],
+                        Elements.class), params[1], params[2]);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+
             return null;
         }
 

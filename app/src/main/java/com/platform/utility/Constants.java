@@ -139,6 +139,7 @@ public class Constants {
 
     public static class FormsFactory {
         public static final String TEXT_TEMPLATE = "text";
+        public static final String COMMENT_TEMPLATE = "comment";
         public static final String DROPDOWN_TEMPLATE = "dropdown";
         public static final String RADIO_GROUP_TEMPLATE = "radiogroup";
         public static final String FILE_TEMPLATE = "file";
