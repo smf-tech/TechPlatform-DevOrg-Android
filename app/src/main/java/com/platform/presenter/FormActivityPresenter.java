@@ -277,30 +277,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
                     Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
                     LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
                 }
-
-                //Call choices by url
-                if (form.getData().getComponents() != null &&
-                        form.getData().getComponents().getPages() != null &&
-                        !form.getData().getComponents().getPages().isEmpty()) {
-
-                    for (int pageIndex = 0; pageIndex < form.getData().getComponents().getPages().size(); pageIndex++) {
-
-                        if (form.getData().getComponents().getPages().get(pageIndex).getElements() != null &&
-                                !form.getData().getComponents().getPages().get(pageIndex).getElements().isEmpty()) {
-
-                            for (int elementIndex = 0; elementIndex < form.getData().getComponents().getPages().get(pageIndex).getElements().size(); elementIndex++) {
-
-                                if (form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex) != null
-                                        && form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl() != null &&
-                                        !TextUtils.isEmpty(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl()) &&
-                                        !TextUtils.isEmpty(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
-
-                                    getChoicesByUrl(form.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex), pageIndex, elementIndex, form.getData());
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
 

@@ -486,12 +486,12 @@ public class Util {
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();
+        DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+        deleteCache(Platform.getInstance());
 
         if (refreshData) {
-            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
             DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllSyncedFormResults();
         } else {
-            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
             DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormResults();
         }
     }
@@ -588,7 +588,6 @@ public class Util {
 
     public static String readFromInternalStorage(Context context, String fileName) {
         File cacheDir = context.getCacheDir();
-
         File tempFile = new File(cacheDir.getPath() + "/" + fileName + Constants.App.FILE_EXTENSION);
 
         String nextLine;
@@ -606,5 +605,31 @@ public class Util {
         }
 
         return completeText.toString();
+    }
+
+    private static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if (dir != null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 }
