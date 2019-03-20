@@ -32,6 +32,11 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private List<Choice> valueList = new ArrayList<>();
     private DropDownValueSelectListener dropDownValueSelectListener;
     private String tag;
+    private String formId;
+
+    public String getFormId() {
+        return formId;
+    }
 
     public String getTag() {
         return tag;
@@ -41,10 +46,11 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         this.tag = tag;
     }
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener) {
+    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener, String formId) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
+        this.formId = formId;
     }
 
     public List<Choice> getValueList() {
@@ -123,7 +129,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         if (tv != null) {
             tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
         }
-        dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue());
+        dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue(), formId);
     }
 
     @Override

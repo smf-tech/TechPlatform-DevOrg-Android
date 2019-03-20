@@ -10,8 +10,8 @@ import androidx.room.ColumnInfo;
 
 @SuppressWarnings("unused")
 public class Elements {
-    @ColumnInfo(name = "choices_by_url_response")
-    private String choicesByUrlResponse;
+    @ColumnInfo(name = "choices_by_url_response_path")
+    private String choicesByUrlResponsePath;
 
     private String mAnswer;
     @SerializedName("type")
@@ -48,12 +48,12 @@ public class Elements {
     @Expose
     private List<Validator> validators = null;
 
-    public String getChoicesByUrlResponse() {
-        return choicesByUrlResponse;
+    public String getChoicesByUrlResponsePath() {
+        return choicesByUrlResponsePath;
     }
 
-    public void setChoicesByUrlResponse(String choicesByUrlResponse) {
-        this.choicesByUrlResponse = choicesByUrlResponse;
+    public void setChoicesByUrlResponsePath(String choicesByUrlResponsePath) {
+        this.choicesByUrlResponsePath = choicesByUrlResponsePath;
     }
 
     public String getEnableIf() {

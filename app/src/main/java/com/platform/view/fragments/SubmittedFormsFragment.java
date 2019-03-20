@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -32,9 +31,9 @@ import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
-import com.platform.view.adapters.OIDAdapter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -287,12 +286,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                             List<ProcessData> processData = new ArrayList<>();
 
-                            GsonBuilder builder = new GsonBuilder();
-                            builder.registerTypeAdapter(SubmittedFormsFragment.OID.class, new OIDAdapter());
-                            Gson gson = builder.create();
-
                             for (final String result : localFormResults) {
-                                FormResult formResult = gson.fromJson(result, FormResult.class);
+                                FormResult formResult = PlatformGson.getPlatformGsonInstance().fromJson(result, FormResult.class);
                                 if (formResult.updatedDateTime != null) {
                                     if (isFormOneMonthOld(formResult.updatedDateTime)) {
                                         continue;

@@ -37,7 +37,11 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.fragments.HomeFragment;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -564,5 +568,43 @@ public class Util {
         rotateAnim.setDuration(0);
         rotateAnim.setFillAfter(true);
         image.startAnimation(rotateAnim);
+    }
+
+    public static String writeToInternalStorage(Context context, String fileName, String content) {
+        File file;
+        FileOutputStream outputStream;
+        try {
+            file = new File(context.getCacheDir(), fileName + Constants.App.FILE_EXTENSION);
+
+            outputStream = new FileOutputStream(file);
+            outputStream.write(content.getBytes());
+            outputStream.close();
+            return file.getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String readFromInternalStorage(Context context, String fileName) {
+        File cacheDir = context.getCacheDir();
+
+        File tempFile = new File(cacheDir.getPath() + "/" + fileName + Constants.App.FILE_EXTENSION);
+
+        String nextLine;
+        StringBuilder completeText = new StringBuilder();
+
+        try {
+            FileReader fReader = new FileReader(tempFile);
+            BufferedReader bReader = new BufferedReader(fReader);
+
+            while ((nextLine = bReader.readLine()) != null) {
+                completeText.append(nextLine).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return completeText.toString();
     }
 }
