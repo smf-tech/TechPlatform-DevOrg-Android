@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 
 import androidx.room.TypeConverter;
 
+@SuppressWarnings("unused")
 public class DataConverter implements Serializable {
 
     @TypeConverter // note this annotation

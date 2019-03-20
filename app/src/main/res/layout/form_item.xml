@@ -35,32 +35,24 @@
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
 
-    <!--<androidx.cardview.widget.CardView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/text_size_22"-->
-        <!--android:layout_marginBottom="@dimen/dimen_05dp"-->
-        <!--app:cardCornerRadius="3dp">-->
+    <LinearLayout
+        android:id="@+id/form_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_05dp">
 
-        <LinearLayout
-            android:id="@+id/form_content_view"
+        <TextView
+            android:id="@+id/form_title"
+            style="@style/FormLabel.Title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen_05dp">
+            android:layout_height="wrap_content"
+            android:text="@string/category_title" />
 
-            <TextView
-                android:id="@+id/form_title"
-                style="@style/FormLabel.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/category_title" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/forms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_15dp" />
-        </LinearLayout>
-    <!--</androidx.cardview.widget.CardView>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/forms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_15dp" />
+    </LinearLayout>
 </RelativeLayout>

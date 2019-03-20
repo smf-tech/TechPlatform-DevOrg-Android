@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import static com.platform.utility.Constants.TM.FORM_APPROVALS;
 
+@SuppressWarnings("CanBeFinal")
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
         TMTaskListener, PendingApprovalsListAdapter.OnRequestItemClicked {
 
@@ -177,6 +178,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     }
 
     private void showActionPopUp(final PendingRequest pendingRequest) {
+        if (getFragmentManager() == null) {
+            return;
+        }
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ApprovalDialogFragment approvalDialogFragment =
                 ApprovalDialogFragment.newInstance(pendingRequest, mAdapter);
@@ -190,18 +195,15 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         @SuppressLint("StaticFieldLeak")
         private static PendingApprovalsListAdapter sAdapter;
 
-        public static ApprovalDialogFragment newInstance(PendingRequest pendingRequest, PendingApprovalsListAdapter adapter) {
+        private static ApprovalDialogFragment newInstance(PendingRequest pendingRequest,
+                                                          PendingApprovalsListAdapter adapter) {
             sPendingRequest = pendingRequest;
             sAdapter = adapter;
             return new ApprovalDialogFragment();
         }
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.dialog_pending_approval, container, false);
 
             if (sPendingRequest != null) {

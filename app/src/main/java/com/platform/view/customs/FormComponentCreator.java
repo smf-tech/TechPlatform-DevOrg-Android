@@ -155,14 +155,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
-            List<DropDownTemplate> dependentDropdowns = dependencyMap.get(formData.getEnableIf());
-            if (dependentDropdowns != null && !dependentDropdowns.isEmpty()) {
-                dependentDropdowns.add(template);
+            List<DropDownTemplate> dependentDropDowns = dependencyMap.get(formData.getEnableIf());
+            if (dependentDropDowns != null && !dependentDropDowns.isEmpty()) {
+                dependentDropDowns.add(template);
             } else {
-                dependentDropdowns = new ArrayList<>();
-                dependentDropdowns.add(template);
+                dependentDropDowns = new ArrayList<>();
+                dependentDropDowns.add(template);
             }
-            dependencyMap.put(formData.getEnableIf(), dependentDropdowns);
+            dependencyMap.put(formData.getEnableIf(), dependentDropDowns);
         }
 
         return view;

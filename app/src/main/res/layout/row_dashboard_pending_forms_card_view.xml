@@ -11,7 +11,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_46dp"
+        android:layout_height="@dimen/dimen_50dp"
         tools:ignore="UselessParent">
 
         <View

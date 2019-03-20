@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("CanBeFinal")
 public class PendingApprovalsListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
