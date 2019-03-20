@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -15,7 +16,7 @@ import com.platform.presenter.ReportsFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
-import com.platform.view.adapters.ReportCategoryAdapter;
+import com.platform.view.adapters.ReportsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,17 +26,14 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {
 
     private View reportFragmentView;
-    private ReportCategoryAdapter adapter;
     private boolean mShowAllReportsText = true;
-
-    private List<String> reportsHeaderList = new ArrayList<>();
+    private TextView mNoRecordsView;
+    private ExpandableListView mReportsListView;
     private Map<String, List<ReportData>> reportsList = new HashMap<>();
 
     @Override
@@ -47,7 +45,7 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
-            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
             }
 
@@ -87,15 +85,13 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     }
 
     private void init() {
-        RecyclerView recyclerView = reportFragmentView.findViewById(R.id.rv_dashboard_reports);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ReportCategoryAdapter(getActivity(), reportsHeaderList, reportsList);
-        recyclerView.setAdapter(adapter);
+        mNoRecordsView = reportFragmentView.findViewById(R.id.reports_no_data);
+        mReportsListView = reportFragmentView.findViewById(R.id.rv_dashboard_reports);
 
         if (reportsList == null || reportsList.isEmpty()) {
-            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
+            mNoRecordsView.setVisibility(View.VISIBLE);
         } else {
-            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
+            mNoRecordsView.setVisibility(View.GONE);
         }
 
         TextView txtViewAllForms = reportFragmentView.findViewById(R.id.txt_view_all_reports);
@@ -127,7 +123,6 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
     }
 
     private void setAdapter(final List<ReportData> reportData) {
-        reportsHeaderList.clear();
         reportsList.clear();
 
         for (int i = 0; i < reportData.size(); i++) {
@@ -150,17 +145,16 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
                 List<ReportData> item = new ArrayList<>();
                 item.add(temp);
                 reportsList.put(reportData.get(i).getCategory().getName(), item);
-                reportsHeaderList.add(reportData.get(i).getCategory().getName());
             }
         }
 
-        adapter.notifyDataSetChanged();
-
         if (reportsList == null || reportsList.isEmpty()) {
-            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.VISIBLE);
+            mNoRecordsView.setVisibility(View.VISIBLE);
         } else {
-            reportFragmentView.findViewById(R.id.reports_no_data).setVisibility(View.GONE);
+            mNoRecordsView.setVisibility(View.GONE);
         }
+
+        mReportsListView.setAdapter(new ReportsAdapter(getContext(), reportsList));
     }
 
     @Override
