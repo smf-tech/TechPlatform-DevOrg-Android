@@ -221,7 +221,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (formDataArrayList != null) {
             formComponentCreator = new FormComponentCreator(this);
             if (!mIsInEditMode) {
-                renderFormView(formDataArrayList);
+                renderFormView(formDataArrayList, formModel.getData().getId());
             }
         }
 
@@ -270,7 +270,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         img_back.setOnClickListener(this);
     }
 
-    private void renderFormView(final List<Elements> formDataArrayList) {
+    private void renderFormView(final List<Elements> formDataArrayList, String formId) {
         customFormView = formFragmentView.findViewById(R.id.ll_form_container);
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
@@ -289,13 +289,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             Collections.sort(elements.getChoices(), (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements));
+                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             if (elements.getChoicesByUrlResponsePath() != null) {
-                                String response = Util.readFromInternalStorage(this.getContext(), elements.getName());
+                                String response = Util.readFromInternalStorage(this.getContext(), formId + "_" + elements.getName());
                                 if (!TextUtils.isEmpty(response)) {
                                     showChoicesByUrlAsync(response, elements);
                                 } else {
@@ -694,7 +694,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
 
         if (formComponentCreator != null)
-            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
+            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB, formId);
     }
 
     private void getFormDataAndParse(final FormResult response) {
@@ -721,10 +721,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         mFormJSONObject = PlatformGson.getPlatformGsonInstance().fromJson(response.getResult(), JsonObject.class);
 
         if (formComponentCreator != null)
-            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB);
+            parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB, formId);
     }
 
-    private void parseSchemaAndFormDetails(final JsonObject object, final List<Elements> elements) {
+    private void parseSchemaAndFormDetails(final JsonObject object, final List<Elements> elements, String formId) {
         if (object == null || elements == null || elements.size() == 0) return;
 
         HashMap<String, String> requestedObject = new HashMap<>();
@@ -744,7 +744,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
 
         formComponentCreator.setRequestObject(requestedObject);
-        renderFormView(elements);
+        renderFormView(elements, formId);
     }
 
     public void choosePhotoFromGallery(final View view, final String name) {

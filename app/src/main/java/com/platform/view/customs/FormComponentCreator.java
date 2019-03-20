@@ -66,7 +66,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
     private HashMap<ImageView, Elements> imageViewElementsHashMap = new HashMap<>();
-    private HashMap<String, DropDownTemplate> dependencyMap = new HashMap<>();
+    private HashMap<String, List<DropDownTemplate>> dependencyMap = new HashMap<>();
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
@@ -133,13 +133,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return radioTemplateView;
     }
 
-    public synchronized View dropDownTemplate(Elements formData) {
+    public synchronized View dropDownTemplate(Elements formData, String formId) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
 
-        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this);
+        DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, formId);
 
         View view;
         if (formData.isRequired() != null) {
@@ -155,7 +155,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
-            dependencyMap.put(formData.getEnableIf(), template);
+            List<DropDownTemplate> dependentDropdowns = dependencyMap.get(formData.getEnableIf());
+            if (dependentDropdowns != null && !dependentDropdowns.isEmpty()) {
+                dependentDropdowns.add(template);
+            } else {
+                dependentDropdowns = new ArrayList<>();
+                dependentDropdowns.add(template);
+            }
+            dependencyMap.put(formData.getEnableIf(), dependentDropdowns);
         }
 
         return view;
@@ -447,8 +454,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     @Override
-    public void onDropdownValueSelected(Elements parentElement, String value) {
-        new UpdateDropDownValuesTask().execute(PlatformGson.getPlatformGsonInstance().toJson(parentElement), value);
+    public void onDropdownValueSelected(Elements parentElement, String value, String formId) {
+        new UpdateDropDownValuesTask().execute(PlatformGson.getPlatformGsonInstance().toJson(parentElement), value, formId);
         if (parentElement != null && !TextUtils.isEmpty(parentElement.getName()) && !TextUtils.isEmpty(value)) {
             requestObjectMap.put(parentElement.getName(), value);
         }
@@ -459,12 +466,17 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         //It means dependency is there
         String key = "{" + parentElement.getName() + "} notempty";
         if (dependencyMap.get(key) != null) {
-            DropDownTemplate dropDownTemplate = dependencyMap.get(key);
-            Elements dependentElement = dropDownTemplate.getFormData();
-            List<Choice> choiceValues = new ArrayList<>();
-            dependentElement.setChoices(choiceValues);
-            dropDownTemplate.setFormData(dependentElement);
-            dropDownTemplate.setListData(choiceValues);
+            List<DropDownTemplate> dropDownTemplates = dependencyMap.get(key);
+            if (dropDownTemplates != null && !dropDownTemplates.isEmpty()) {
+                for (DropDownTemplate dropDownTemplate :
+                        dropDownTemplates) {
+                    Elements dependentElement = dropDownTemplate.getFormData();
+                    List<Choice> choiceValues = new ArrayList<>();
+                    dependentElement.setChoices(choiceValues);
+                    dropDownTemplate.setFormData(dependentElement);
+                    dropDownTemplate.setListData(choiceValues);
+                }
+            }
         }
 
         requestObjectMap.remove(parentElement.getName());
@@ -546,7 +558,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private class UpdateDropDownValuesTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            updateValues(PlatformGson.getPlatformGsonInstance().fromJson(params[0], Elements.class), params[1]);
+            updateValues(PlatformGson.getPlatformGsonInstance().fromJson(params[0], Elements.class), params[1], params[2]);
             return null;
         }
 
@@ -565,114 +577,116 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
     }
 
-    private void updateValues(Elements parentElement, String value) {
+    private void updateValues(Elements parentElement, String value, String formId) {
         String key = "{" + parentElement.getName() + "} notempty";
 
         //It means dependency is there
-        if (dependencyMap.get(key) != null) {
-            DropDownTemplate dropDownTemplate = dependencyMap.get(key);
-            Elements dependentElement = dropDownTemplate.getFormData();
-            List<Choice> choiceValues = new ArrayList<>();
-            List<JsonObject> dependentObjectsList = new ArrayList<>();
+        if (dependencyMap.get(key) != null && !dependencyMap.get(key).isEmpty()) {
+            for (DropDownTemplate dropDownTemplate :
+                    dependencyMap.get(key)) {
+                Elements dependentElement = dropDownTemplate.getFormData();
+                List<Choice> choiceValues = new ArrayList<>();
+                List<JsonObject> dependentObjectsList = new ArrayList<>();
 
-            String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
-            String response = Util.readFromInternalStorage(fragment.get().getContext(), dependentElement.getName());
+                String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
+                String response = Util.readFromInternalStorage(fragment.get().getContext(), formId + "_" + dependentElement.getName());
 
-            if (!TextUtils.isEmpty(dependentResponse) && !TextUtils.isEmpty(response)) {
-                JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
-                JsonArray dependentDataArray = dependentOuterObj.getAsJsonArray(Constants.RESPONSE_DATA);
+                if (!TextUtils.isEmpty(dependentResponse) && !TextUtils.isEmpty(response)) {
+                    JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
+                    JsonArray dependentDataArray = dependentOuterObj.getAsJsonArray(Constants.RESPONSE_DATA);
 
-                //Convert dependentDataArray to List of JsonObject
-                if (dependentDataArray != null) {
-                    Type listType = new TypeToken<ArrayList<JsonObject>>() {
-                    }.getType();
-                    dependentObjectsList = PlatformGson.getPlatformGsonInstance().fromJson(dependentDataArray, listType);
-                }
+                    //Convert dependentDataArray to List of JsonObject
+                    if (dependentDataArray != null) {
+                        Type listType = new TypeToken<ArrayList<JsonObject>>() {
+                        }.getType();
+                        dependentObjectsList = PlatformGson.getPlatformGsonInstance().fromJson(dependentDataArray, listType);
+                    }
 
-                String pValue;
-                Predicate<JsonObject> byParentSelection;
-                //Apply condition to match selected value in dependentObjects
-                //If parent has object in choicesByUrl
-                if (parentElement.getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
-                    StringTokenizer parentValueTokenizer
-                            = new StringTokenizer(parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
-                    //Ignore first value of valueToken
-                    String outerObjName = parentValueTokenizer.nextToken();
-                    pValue = parentValueTokenizer.nextToken();
-                    byParentSelection = innerDependentObject -> innerDependentObject.get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value);
-                }
-                //If parent has string in choicesByUrl
-                else {
-                    pValue = parentElement.getChoicesByUrl().getValueName();
-                    byParentSelection = innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value);
-                }
+                    String pValue;
+                    Predicate<JsonObject> byParentSelection;
+                    //Apply condition to match selected value in dependentObjects
+                    //If parent has object in choicesByUrl
+                    if (parentElement.getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
+                        StringTokenizer parentValueTokenizer
+                                = new StringTokenizer(parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        //Ignore first value of valueToken
+                        String outerObjName = parentValueTokenizer.nextToken();
+                        pValue = parentValueTokenizer.nextToken();
+                        byParentSelection = innerDependentObject -> innerDependentObject.get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value);
+                    }
+                    //If parent has string in choicesByUrl
+                    else {
+                        pValue = parentElement.getChoicesByUrl().getValueName();
+                        byParentSelection = innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value);
+                    }
 
-                //Filter dependentObjects
-                List<JsonObject> filteredDependentObjects = Stream.of(dependentObjectsList).filter(byParentSelection).collect(Collectors.toList());
+                    //Filter dependentObjects
+                    List<JsonObject> filteredDependentObjects = Stream.of(dependentObjectsList).filter(byParentSelection).collect(Collectors.toList());
 //                List<JsonObject> filteredDependentObjects = dependentObjectsList.stream().filter(byParentSelection).collect(Collectors.toList());
 
-                String dTitle, dValue;
-                LocaleData choiceText;
-                String choiceValue;
-                //Fill choiceValues list with filtered object's title and value
-                for (int filteredDependentIndex = 0; filteredDependentIndex < filteredDependentObjects.size(); filteredDependentIndex++) {
+                    String dTitle, dValue;
+                    LocaleData choiceText;
+                    String choiceValue;
+                    //Fill choiceValues list with filtered object's title and value
+                    for (int filteredDependentIndex = 0; filteredDependentIndex < filteredDependentObjects.size(); filteredDependentIndex++) {
 
-                    JsonObject dependentInnerObject = filteredDependentObjects.get(filteredDependentIndex);
-                    //If dependent has object in choicesByUrl
-                    if (dependentElement.getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
+                        JsonObject dependentInnerObject = filteredDependentObjects.get(filteredDependentIndex);
+                        //If dependent has object in choicesByUrl
+                        if (dependentElement.getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
 
-                        StringTokenizer dependentTitleTokenizer
-                                = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                        StringTokenizer dependentValueTokenizer
-                                = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                            StringTokenizer dependentTitleTokenizer
+                                    = new StringTokenizer(dependentElement.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                            StringTokenizer dependentValueTokenizer
+                                    = new StringTokenizer(dependentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
 
-                        //Ignore first value of titleToken
-                        dependentTitleTokenizer.nextToken();
-                        String outerObjectName = dependentValueTokenizer.nextToken();
-                        JsonObject dObj = dependentInnerObject.get(outerObjectName).getAsJsonObject();
+                            //Ignore first value of titleToken
+                            dependentTitleTokenizer.nextToken();
+                            String outerObjectName = dependentValueTokenizer.nextToken();
+                            JsonObject dObj = dependentInnerObject.get(outerObjectName).getAsJsonObject();
 
-                        dTitle = dependentTitleTokenizer.nextToken();
-                        dValue = dependentValueTokenizer.nextToken();
+                            dTitle = dependentTitleTokenizer.nextToken();
+                            dValue = dependentValueTokenizer.nextToken();
 
-                        try {
-                            choiceText = PlatformGson.getPlatformGsonInstance().fromJson(dObj.get(dTitle).toString(), LocaleData.class);
-                        } catch (Exception e) {
-                            choiceText = new LocaleData(dObj.get(dTitle).getAsString());
+                            try {
+                                choiceText = PlatformGson.getPlatformGsonInstance().fromJson(dObj.get(dTitle).toString(), LocaleData.class);
+                            } catch (Exception e) {
+                                choiceText = new LocaleData(dObj.get(dTitle).getAsString());
+                            }
+                            choiceValue = dObj.get(dValue).getAsString();
                         }
-                        choiceValue = dObj.get(dValue).getAsString();
-                    }
-                    //If dependent has string in choicesByUrl
-                    else {
-                        dTitle = dependentElement.getChoicesByUrl().getTitleName();
-                        dValue = dependentElement.getChoicesByUrl().getValueName();
+                        //If dependent has string in choicesByUrl
+                        else {
+                            dTitle = dependentElement.getChoicesByUrl().getTitleName();
+                            dValue = dependentElement.getChoicesByUrl().getValueName();
 
-                        try {
-                            choiceText = PlatformGson.getPlatformGsonInstance().fromJson(dependentInnerObject.get(dTitle).toString(), LocaleData.class);
-                        } catch (Exception e) {
-                            choiceText = new LocaleData(dependentInnerObject.get(dTitle).getAsString());
+                            try {
+                                choiceText = PlatformGson.getPlatformGsonInstance().fromJson(dependentInnerObject.get(dTitle).toString(), LocaleData.class);
+                            } catch (Exception e) {
+                                choiceText = new LocaleData(dependentInnerObject.get(dTitle).getAsString());
+                            }
+                            choiceValue = dependentInnerObject.get(dValue).getAsString();
                         }
-                        choiceValue = dependentInnerObject.get(dValue).getAsString();
+
+                        Choice choice = new Choice();
+                        choice.setText(choiceText);
+                        choice.setValue(choiceValue);
+
+                        if (!choiceValues.contains(choice)) {
+                            choiceValues.add(choice);
+                        }
                     }
 
-                    Choice choice = new Choice();
-                    choice.setText(choiceText);
-                    choice.setValue(choiceValue);
+                    //Sort choices in ascending order
+                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
 
-                    if (!choiceValues.contains(choice)) {
-                        choiceValues.add(choice);
+                    //Update UI on UI thread
+                    if (fragment.get().getActivity() != null) {
+                        fragment.get().getActivity().runOnUiThread(() -> {
+                            dependentElement.setChoices(choiceValues);
+                            dropDownTemplate.setFormData(dependentElement);
+                            dropDownTemplate.setListData(choiceValues);
+                        });
                     }
-                }
-
-                //Sort choices in ascending order
-                Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
-
-                //Update UI on UI thread
-                if (fragment.get().getActivity() != null) {
-                    fragment.get().getActivity().runOnUiThread(() -> {
-                        dependentElement.setChoices(choiceValues);
-                        dropDownTemplate.setFormData(dependentElement);
-                        dropDownTemplate.setListData(choiceValues);
-                    });
                 }
             }
         }
