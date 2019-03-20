@@ -12,8 +12,7 @@
         android:id="@+id/rv_dashboard_reports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:dividerHeight="@dimen/dimen_01dp"
+        android:dividerHeight="@dimen/dimen_05dp"
         android:groupIndicator="@null" />
 
     <TextView

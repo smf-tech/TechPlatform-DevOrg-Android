@@ -138,11 +138,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     }
 
     @Override
-    public void onOrganizationProjectsFetched(String response) {
+    public void onOrganizationProjectsFetched(String orgId, String response) {
         profileActivity.get().hideProgressBar();
 
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserProjectsInPref(response);
+            Util.saveUserProjectsInPref(orgId, response);
             OrganizationProjectsResponse projectsResponse
                     = new Gson().fromJson(response, OrganizationProjectsResponse.class);
 
@@ -154,11 +154,11 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     }
 
     @Override
-    public void onOrganizationRolesFetched(String response) {
+    public void onOrganizationRolesFetched(String orgId, String response) {
         profileActivity.get().hideProgressBar();
 
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserRoleInPref(response);
+            Util.saveUserRoleInPref(orgId, response);
             OrganizationRolesResponse orgRolesResponse
                     = new Gson().fromJson(response, OrganizationRolesResponse.class);
 

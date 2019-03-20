@@ -77,8 +77,11 @@ public class ReportsAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item, parent, false);
+    public View getGroupView(final int groupPosition, final boolean isExpanded,
+                             final View convertView, final ViewGroup parent) {
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
+                parent, false);
 
         ArrayList<String> list = new ArrayList<>(mReportsData.keySet());
         String cat = list.get(groupPosition);
@@ -103,7 +106,8 @@ public class ReportsAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition,
+                             final boolean isLastChild, final View convertView, final ViewGroup parent) {
 
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.report_item, parent, false);
@@ -115,8 +119,8 @@ public class ReportsAdapter extends BaseExpandableListAdapter {
         if (processData != null) {
             ReportData data = processData.get(childPosition);
 
-            ((TextView) view.findViewById(R.id.tv_report_title))
-                    .setText(data.getName());
+            ((TextView) view.findViewById(R.id.tv_report_title)).setText(data.getName());
+            ((TextView) view.findViewById(R.id.tv_report_description)).setText(data.getDescription());
 
             view.setOnClickListener(v -> startWebView(data.getName(), data.getUrl(), mContext));
         }

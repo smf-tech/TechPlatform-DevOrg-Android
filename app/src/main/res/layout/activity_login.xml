@@ -96,7 +96,7 @@
                         android:id="@+id/btn_login"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/orange"
+                        android:background="@drawable/bg_button"
                         android:gravity="center_horizontal|center_vertical"
                         android:singleLine="true"
                         android:text="@string/label_login"
