@@ -3,17 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_120dp"
-        android:background="@color/white"
-        android:paddingTop="@dimen/dimen_15dp"
-        app:tabGravity="center"
-        app:tabIndicatorColor="@color/white"
-        app:tabMode="fixed" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_shadow">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_120dp"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/white"
+            app:tabMode="fixed" />
+    </LinearLayout>
 
     <com.platform.view.customs.CustomViewPager
         android:id="@+id/view_pager"
