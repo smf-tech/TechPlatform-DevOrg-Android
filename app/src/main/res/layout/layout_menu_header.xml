@@ -17,8 +17,8 @@
         android:padding="@dimen/dimen_15dp">
 
         <RelativeLayout
-            android:layout_width="@dimen/dimen_70dp"
-            android:layout_height="@dimen/dimen_70dp"
+            android:layout_width="@dimen/dimen_60dp"
+            android:layout_height="@dimen/dimen_60dp"
             android:background="@drawable/bg_circle_profile">
 
             <ImageView
@@ -27,8 +27,7 @@
                 android:layout_height="@dimen/dimen_35dp"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_profile"
-                android:tint="@color/profile" />
+                android:src="@drawable/ic_person" />
         </RelativeLayout>
 
         <LinearLayout

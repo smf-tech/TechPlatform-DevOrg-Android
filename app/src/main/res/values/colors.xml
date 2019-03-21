@@ -49,7 +49,7 @@
     <!--<color name="sync_pending_form_color">#6286cc</color>-->
     <color name="submitted_form_color">#47A713</color>
 
-    <color name="profile">#396377</color>
+    <!--<color name="profile">#396377</color>-->
     <color name="list_category">#F5F5F5</color>
     <color name="freq_used_form_color">#4A9BD6</color>
 </resources>
