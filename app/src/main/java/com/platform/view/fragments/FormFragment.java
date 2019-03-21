@@ -283,13 +283,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 switch (formDataType) {
                     case Constants.FormsFactory.COMMENT_TEMPLATE:
                     case Constants.FormsFactory.TEXT_TEMPLATE:
-                        Log.d(TAG, "TEXT_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.textInputTemplate(elements));
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
-                            Log.d(TAG, "DROPDOWN_CHOICES_TEMPLATE");
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             Collections.sort(elements.getChoices(), (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
@@ -309,12 +307,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
-                        Log.d(TAG, "RADIO_GROUP_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.radioGroupTemplate(elements));
                         break;
 
                     case Constants.FormsFactory.FILE_TEMPLATE:
-                        Log.d(TAG, "FILE_TEMPLATE");
                         addViewToMainContainer(formComponentCreator.fileTemplate(elements));
                         break;
                 }
@@ -414,7 +410,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     private void showChoicesByUrl(String result, Elements elements) {
-        Log.d(TAG, "DROPDOWN_CHOICES_BY_URL_TEMPLATE");
         List<Choice> choiceValues = new ArrayList<>();
         try {
             LocaleData text;
@@ -525,7 +520,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                                         null, formModel.getData().getId(), null, null);
                             }
 
-                            Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
+                            Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
                             LocalBroadcastManager.getInstance(getContext().getApplicationContext())
                                     .sendBroadcast(intent);
 

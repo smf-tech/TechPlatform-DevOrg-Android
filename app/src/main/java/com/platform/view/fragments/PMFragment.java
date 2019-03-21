@@ -42,7 +42,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
@@ -118,8 +117,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
 
-                    updateAdapter();
-                } else if (Objects.requireNonNull(intent.getAction()).equals(EVENT_FORM_ADDED)) {
                     updateAdapter();
                 } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
                     Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
