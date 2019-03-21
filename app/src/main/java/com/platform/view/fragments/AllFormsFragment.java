@@ -44,7 +44,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 
 /**
@@ -95,7 +94,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         getProcessData();
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(EVENT_FORM_ADDED);
         filter.addAction(EVENT_FORM_SUBMITTED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
@@ -103,7 +101,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             public void onReceive(final Context context, final Intent intent) {
                 String action = Objects.requireNonNull(intent.getAction());
                 switch (action) {
-                    case EVENT_FORM_ADDED:
                     case EVENT_FORM_SUBMITTED:
                         getProcessData();
                         break;
@@ -120,6 +117,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 processes.setData(processDataArrayList);
                 processResponse(processes);
             } else {
+                mNoRecordsView.setVisibility(View.VISIBLE);
                 if (Util.isConnected(getContext())) {
                     FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
                     presenter.getAllProcesses();
@@ -148,8 +146,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         try {
             Processes json = new Gson().fromJson(response, Processes.class);
             if (json != null && json.getData() != null && !json.getData().isEmpty()) {
-                for (ProcessData processData :
-                        json.getData()) {
+                mNoRecordsView.setVisibility(View.GONE);
+                for (ProcessData processData : json.getData()) {
                     DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
                 }
                 processResponse(json);

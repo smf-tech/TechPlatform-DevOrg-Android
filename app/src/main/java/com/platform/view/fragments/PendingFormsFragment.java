@@ -35,7 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
@@ -88,7 +87,6 @@ public class PendingFormsFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
         filter.addAction(EVENT_SYNC_FAILED);
-        filter.addAction(EVENT_FORM_ADDED);
         filter.addAction(PARTIAL_FORM_ADDED);
         filter.addAction(PARTIAL_FORM_REMOVED);
         filter.addAction(EVENT_FORM_SUBMITTED);
@@ -108,7 +106,6 @@ public class PendingFormsFragment extends Fragment {
                         Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
                         break;
 
-                    case EVENT_FORM_ADDED:
                     case PARTIAL_FORM_REMOVED:
                     case EVENT_FORM_SUBMITTED:
                         updateAdapter(context);

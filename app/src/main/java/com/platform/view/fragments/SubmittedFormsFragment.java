@@ -53,7 +53,6 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
-import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_ADDED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
@@ -130,7 +129,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_SYNC_COMPLETED);
         filter.addAction(EVENT_SYNC_FAILED);
-        filter.addAction(EVENT_FORM_ADDED);
         filter.addAction(PARTIAL_FORM_REMOVED);
         filter.addAction(EVENT_FORM_SUBMITTED);
 
@@ -141,8 +139,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 if (action.equals(EVENT_SYNC_COMPLETED)) {
                     Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
                     getProcessData();
-                } else if (action.equals(EVENT_FORM_ADDED) || action.equals(PARTIAL_FORM_REMOVED)
-                        || action.equals(EVENT_FORM_SUBMITTED)) {
+                } else if (action.equals(PARTIAL_FORM_REMOVED) || action.equals(EVENT_FORM_SUBMITTED)) {
                     getProcessData();
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
@@ -162,6 +159,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 processes.setData(processDataArrayList);
                 populateData(processes);
             } else {
+                showNoDataText = true;
                 if (Util.isConnected(getContext())) {
                     FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
                     presenter.getAllProcesses();
@@ -170,6 +168,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         } catch (Exception e) {
             Log.e("TAG", e.getMessage() + "");
         }
+
+        updateView();
     }
 
     private void setPendingForms() {
@@ -231,8 +231,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             processCategoryList.clear();
             processMap.clear();
             mProcessDataMap.clear();
-
-//            lnrOuter.removeAllViews();
 
             for (ProcessData data : process.getData()) {
                 if (data != null && data.getCategory() != null && !TextUtils.isEmpty(data.getCategory().getName().getLocaleValue())) {
@@ -323,148 +321,16 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             SubmittedFormsListAdapter adapter = new SubmittedFormsListAdapter(getContext(), mProcessDataMap);
             mExpandableListView.setAdapter(adapter);
 
-            mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
-            if (showNoDataText) {
-                mSubmittedFormsTitleView.setVisibility(View.GONE);
-            }
+            updateView();
         }
     }
 
-/*
-    private void createCategoryLayout(String categoryName, List<ProcessData> childList,
-                                      String formID, final Map<String, ProcessData> map) {
-        if (childList == null) {
-            return;
+    private void updateView() {
+        mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
+        if (showNoDataText) {
+            mSubmittedFormsTitleView.setVisibility(View.GONE);
         }
-
-        View formTitleView = LayoutInflater.from(getContext())
-                .inflate(R.layout.row_submitted_forms, lnrOuter, false);
-        ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
-        LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
-
-        ArrayList<ProcessData> dataList = new ArrayList<>(childList);
-        for (final ProcessData data : dataList) {
-            if (formID == null && map != null) {
-                String oid = null;
-                for (final Map.Entry<String, ProcessData> entry : map.entrySet()) {
-                    if (entry.getValue() == data) {
-                        oid = entry.getKey();
-                        break;
-                    }
-                }
-                addOfflineFormItem(formTitleView, lnrInner, data, oid);
-            } else {
-                addFormItem(lnrInner, data, formID);
-            }
-        }
-
-        lnrOuter.addView(lnrInner);
     }
-
-    private void addFormItem(final LinearLayout lnrInner, final ProcessData data, final String formID) {
-
-        if (getContext() == null) {
-            return;
-        }
-
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.form_sub_item,
-                lnrInner, false);
-
-        ColorStateList tintColor = ColorStateList.valueOf(getContext().getResources()
-                .getColor(R.color.submitted_form_color));
-
-        Drawable drawable = getContext().getDrawable(R.drawable.form_status_indicator_completed);
-
-        ImageView formImage = view.findViewById(R.id.form_image);
-        formImage.setImageTintList(tintColor);
-
-        view.findViewById(R.id.form_status_indicator).setBackground(drawable);
-        ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue());
-
-        view.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FormActivity.class);
-            intent.putExtra(Constants.PM.PROCESS_ID, data.getId());
-            intent.putExtra(Constants.PM.FORM_ID, formID);
-            intent.putExtra(Constants.PM.EDIT_MODE, true);
-            intent.putExtra(Constants.PM.PARTIAL_FORM, false);
-            getContext().startActivity(intent);
-        });
-
-        if (getContext() != null && data.getName() != null
-                && data.getName().getLocaleValue() != null && !data.getName().getLocaleValue()
-                .equals(getString(R.string.forms_are_not_available))) {
-
-            if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                String formattedDate = Util
-                        .getDateFromTimestamp(data.getMicroservice().getUpdatedAt());
-
-                ((TextView) view.findViewById(R.id.form_date))
-                        .setText(String.format("on %s", formattedDate));
-            }
-        } else {
-            String formattedDate = Util.getFormattedDate(new Date().toString(), FORM_DATE_FORMAT);
-            ((TextView) view.findViewById(R.id.form_date))
-                    .setText(String.format("on %s", formattedDate));
-        }
-
-        lnrInner.addView(view);
-    }
-
-    private void addOfflineFormItem(final View formTitleView,
-                                    final LinearLayout lnrInner, final ProcessData data, final String oid) {
-
-        if (getContext() == null) {
-            return;
-        }
-
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.form_sub_item,
-                lnrInner, false);
-
-        FloatingActionButton syncButton = formTitleView.findViewById(R.id.sync_button);
-        ColorStateList tintColor = ColorStateList.valueOf(getContext().getResources()
-                .getColor(R.color.red));
-
-        Drawable drawable = getContext().getDrawable(R.drawable.form_status_indicator_pending_forms);
-        syncButton.setVisibility(View.VISIBLE);
-
-        syncButton.setOnClickListener(v -> {
-            if (Util.isConnected(getContext())) {
-                Toast.makeText(getContext(), "Sync started...", Toast.LENGTH_SHORT).show();
-                SyncAdapterUtils.manualRefresh();
-            } else {
-                Toast.makeText(getContext(), "Internet is not available!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        ImageView formImage = view.findViewById(R.id.form_image);
-        formImage.setImageTintList(tintColor);
-
-        view.findViewById(R.id.form_status_indicator).setBackground(drawable);
-        ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue());
-
-        view.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FormActivity.class);
-            intent.putExtra(Constants.PM.PROCESS_ID, oid);
-            intent.putExtra(Constants.PM.FORM_ID, data.getId());
-            intent.putExtra(Constants.PM.EDIT_MODE, true);
-            intent.putExtra(Constants.PM.PARTIAL_FORM, true);
-            getContext().startActivity(intent);
-        });
-
-        if (getContext() != null && data.getName().getLocaleValue() != null &&
-                !data.getName().getLocaleValue().equals(getContext().getString(R.string.forms_are_not_available))) {
-            String formattedDate = Util.getDateFromTimestamp(data.getMicroservice().getUpdatedAt());
-
-            ((TextView) view.findViewById(R.id.form_date))
-                    .setText(String.format("on %s", formattedDate));
-        } else {
-            String formattedDate = Util.getDateFromTimestamp(Util.getCurrentTimeStamp());
-            ((TextView) view.findViewById(R.id.form_date)).setText(String.format("on %s", formattedDate));
-        }
-
-        lnrInner.addView(view);
-    }
-*/
 
     @Override
     public void onFailureListener(String message) {
@@ -483,6 +349,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     public void onFormsLoaded(String response) {
         Processes json = new Gson().fromJson(response, Processes.class);
         if (json != null && json.getData() != null && !json.getData().isEmpty()) {
+            showNoDataText = false;
+
             for (ProcessData processData : json.getData()) {
                 DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
             }
