@@ -7,6 +7,8 @@
     android:layout_marginEnd="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
     android:orientation="vertical"
+    android:paddingStart="@dimen/dimen_20dp"
+    android:paddingEnd="@dimen/dimen_10dp"
     tools:keep="@layout/row_dashboard_pending_forms_card_view">
 
     <RelativeLayout

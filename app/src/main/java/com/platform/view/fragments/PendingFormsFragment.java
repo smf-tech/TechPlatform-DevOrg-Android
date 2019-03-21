@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -142,7 +141,7 @@ public class PendingFormsFragment extends Fragment {
                 }
             }
 
-            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap));
+            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap, this));
 
             if (!mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
@@ -179,7 +178,7 @@ public class PendingFormsFragment extends Fragment {
                 }
             }
 
-            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap));
+            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap, this));
 
             if (!mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
@@ -189,14 +188,20 @@ public class PendingFormsFragment extends Fragment {
         }
     }
 
+    public void onFormDeletedListener() {
+        updateAdapter(getContext());
+    }
+
     private class SavedFormsListAdapter extends BaseExpandableListAdapter {
 
         Context mContext;
         private Map<String, List<FormResult>> mMap;
+        private PendingFormsFragment mFragment;
 
-        private SavedFormsListAdapter(final Context context, final Map<String, List<FormResult>> map) {
+        private SavedFormsListAdapter(final Context context, final Map<String, List<FormResult>> map, PendingFormsFragment fragment) {
             mContext = context;
             mMap = map;
+            mFragment = fragment;
         }
 
         @Override
@@ -275,7 +280,7 @@ public class PendingFormsFragment extends Fragment {
         public View getChildView(final int groupPosition, final int childPosition,
                                  final boolean isLastChild, final View convertView, final ViewGroup parent) {
 
-            View view = LayoutInflater.from(mContext).inflate(R.layout.form_sub_item,
+            View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
                     parent, false);
 
             ArrayList<String> list = new ArrayList<>(mMap.keySet());
@@ -286,12 +291,24 @@ public class PendingFormsFragment extends Fragment {
             if (processData != null) {
                 formResult = processData.get(childPosition);
 
-                ((TextView) view.findViewById(R.id.form_title)).setText(formResult.getFormName().trim());
-                ((TextView) view.findViewById(R.id.form_date))
+                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title)).setText(formResult.getFormName().trim());
+                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
                         .setText(Util.getDateFromTimestamp(formResult.getCreatedAt()));
             }
 
             final FormResult finalFormResult = formResult;
+
+            view.findViewById(R.id.iv_dashboard_delete_form).setOnClickListener(v -> {
+                DatabaseManager.getDBInstance(mContext).deleteFormResult(finalFormResult);
+                if (processData != null) {
+                    processData.remove(finalFormResult);
+                }
+                notifyDataSetChanged();
+                Util.showToast("Form deleted!", mContext);
+
+                mFragment.onFormDeletedListener();
+            });
+
             view.setOnClickListener(v -> {
                 if (finalFormResult != null) {
                     final String formID = finalFormResult.getFormId();
@@ -307,12 +324,6 @@ public class PendingFormsFragment extends Fragment {
 
             });
 
-            ColorStateList tintColor = ColorStateList.valueOf(mContext.getResources()
-                    .getColor(R.color.partial_form_color));
-
-            ImageView formImage = view.findViewById(R.id.form_image);
-            formImage.setImageTintList(tintColor);
-
             Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
             view.findViewById(R.id.form_status_indicator).setBackground(drawable);
 
@@ -324,4 +335,5 @@ public class PendingFormsFragment extends Fragment {
             return false;
         }
     }
+
 }
