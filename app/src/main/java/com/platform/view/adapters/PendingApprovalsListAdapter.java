@@ -30,7 +30,9 @@ public class PendingApprovalsListAdapter extends BaseExpandableListAdapter {
     private OnRequestItemClicked clickListener;
 
     public PendingApprovalsListAdapter(final Context context, final Map<String, List<PendingRequest>>
-            pendingRequestList, final PendingFragmentPresenter pendingFragmentPresenter, final OnRequestItemClicked clickListener) {
+            pendingRequestList, final PendingFragmentPresenter pendingFragmentPresenter,
+                                       final OnRequestItemClicked clickListener) {
+
         mContext = context;
         mPendingRequestMap = pendingRequestList;
         this.pendingFragmentPresenter = pendingFragmentPresenter;
@@ -81,8 +83,11 @@ public class PendingApprovalsListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_pending_approvals_item, parent, false);
+    public View getGroupView(final int groupPosition, final boolean isExpanded,
+                             final View convertView, final ViewGroup parent) {
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_pending_approvals_item,
+                parent, false);
 
         ArrayList<String> list = new ArrayList<>(mPendingRequestMap.keySet());
         String cat = list.get(groupPosition);

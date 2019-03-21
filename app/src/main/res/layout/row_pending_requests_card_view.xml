@@ -4,13 +4,14 @@
     android:id="@+id/cv_pending_requests"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dimen_07dp"
-    android:background="@color/white">
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:background="@color/white"
+    android:paddingStart="@dimen/dimen_10dp"
+    android:paddingEnd="@dimen/dimen_10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_07dp"
         tools:ignore="UselessParent">
 
         <RelativeLayout
@@ -26,7 +27,8 @@
                 style="@style/roboto_regular_dark_grey_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="2" />
+                android:ellipsize="end"
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/txt_pending_request_created_at"
@@ -43,11 +45,11 @@
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/dimen_10dp"
             android:layout_toStartOf="@+id/iv_reject_request"
-            android:contentDescription="@string/content_description"
             android:background="@drawable/bg_circle_green_filled"
+            android:contentDescription="@string/content_description"
             android:scaleType="center"
-            android:tint="@color/white"
-            android:src="@drawable/ic_approve" />
+            android:src="@drawable/ic_approve"
+            android:tint="@color/white" />
 
         <ImageView
             android:id="@+id/iv_reject_request"
@@ -56,10 +58,10 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/dimen_10dp"
-            android:contentDescription="@string/content_description"
             android:background="@drawable/bg_circle_red"
+            android:contentDescription="@string/content_description"
             android:scaleType="center"
-            android:tint="@color/white"
-            android:src="@drawable/ic_reject" />
+            android:src="@drawable/ic_reject"
+            android:tint="@color/white" />
     </RelativeLayout>
 </LinearLayout>

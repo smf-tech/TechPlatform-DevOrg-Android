@@ -842,6 +842,9 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     @Override
     public void showOrganizationRoles(List<OrganizationRole> organizationRoles) {
         if (organizationRoles != null && !organizationRoles.isEmpty()) {
+
+            Collections.sort(organizationRoles, (j1, j2) -> j1.getDisplayName().compareTo(j2.getDisplayName()));
+
             List<String> roles = new ArrayList<>();
             for (OrganizationRole organizationRole : organizationRoles) {
                 roles.add(organizationRole.getDisplayName());
