@@ -155,11 +155,20 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
 
-        if (error != null && error.networkResponse.statusCode == 400) {
-            Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
-                    formFragment.get().getActivity());
-            Util.showToast(error.getMessage(), formFragment.get().getActivity());
-        } else if (formFragment != null && formFragment.get() != null) {
+        if (error != null)
+            if (error.networkResponse.statusCode == 400) {
+                Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                        formFragment.get().getActivity());
+                Util.showToast(error.getMessage(), formFragment.get().getActivity());
+            } else {
+                if (formFragment != null && formFragment.get() != null) {
+                    Util.showToast("Unexpected error occurred.", formFragment.get().getActivity());
+                    Log.e("onErrorListener", "Unexpected response code " + error.networkResponse.statusCode);
+                    formFragment.get().hideProgressBar();
+                    AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+                }
+            }
+        else if (formFragment != null && formFragment.get() != null) {
             formFragment.get().hideProgressBar();
             AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
         }
@@ -270,12 +279,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 if (activity != null) {
                     DatabaseManager.getDBInstance(activity).insertFormSchema(form.getData());
                     Log.d(TAG, "Form schema saved in database.");
-
-                    updateFormSubmittedCount(form.getData().getId());
-                    Log.d(TAG, "Form schema submitted count incremented.");
-
-                    Intent intent = new Intent(SyncAdapterUtils.EVENT_FORM_ADDED);
-                    LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
                 }
             }
         }
