@@ -244,8 +244,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 }
             }
 
-            Util.setSubmittedFormsLoaded(true);
-
             if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
 
@@ -292,6 +290,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
+        } finally {
+            Util.setSubmittedFormsLoaded(true);
         }
 
         if (!mChildList.isEmpty()) {
