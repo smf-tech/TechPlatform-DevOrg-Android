@@ -271,7 +271,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     private void renderFormView(final List<Elements> formDataArrayList, String formId) {
-        customFormView = formFragmentView.findViewById(R.id.ll_form_container);
+            customFormView = formFragmentView.findViewById(R.id.ll_form_container);
 
         getActivity().runOnUiThread(() -> customFormView.removeAllViews());
         formComponentCreator.clearOldComponents();
