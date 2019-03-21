@@ -114,7 +114,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                         requestObjectMap.put(formData.getName(),
                                 ((RadioButton) radioGroupForm.findViewById(
-                                        radioGroup1.getCheckedRadioButtonId())).getText().toString());
+                                        radioGroup1.getCheckedRadioButtonId())).getText().toString().trim());
                     } else {
                         requestObjectMap.remove(formData.getName());
                     }
@@ -207,7 +207,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
-                textInputField.setText(formData.getAnswer());
+                if (!TextUtils.isEmpty(formData.getInputType()) &&
+                        formData.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
+                    try {
+                        textInputField.setText(Util.getLongDateInString(
+                                Long.valueOf(formData.getAnswer()), Constants.FORM_DATE));
+                    } catch (Exception e) {
+                        Log.e(TAG, "DATE ISSUE");
+                        textInputField.setText(Util.getLongDateInString(
+                                Util.getCurrentTimeStamp(), Constants.FORM_DATE));
+                    }
+                } else {
+                    textInputField.setText(formData.getAnswer());
+                }
             }
 
             if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
@@ -238,7 +250,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if (!TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
-                        requestObjectMap.put(formData.getName(), charSequence.toString());
+                        if (!TextUtils.isEmpty(formData.getInputType()) &&
+                                formData.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
+                            requestObjectMap.put(formData.getName(), ("" + Util.getDateInLong(charSequence.toString())).trim());
+                        } else {
+                            requestObjectMap.put(formData.getName(), charSequence.toString().trim());
+                        }
                     } else {
                         requestObjectMap.remove(formData.getName());
                     }
@@ -464,7 +481,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     public void onDropdownValueSelected(Elements parentElement, String value, String formId) {
         new UpdateDropDownValuesTask().execute(PlatformGson.getPlatformGsonInstance().toJson(parentElement), value, formId);
         if (parentElement != null && !TextUtils.isEmpty(parentElement.getName()) && !TextUtils.isEmpty(value)) {
-            requestObjectMap.put(parentElement.getName(), value);
+            requestObjectMap.put(parentElement.getName(), value.trim());
         }
     }
 

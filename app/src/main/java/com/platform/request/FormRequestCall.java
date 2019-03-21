@@ -34,7 +34,10 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(final HashMap<String, String> requestObjectMap, final List<Map<String, String>> uploadedImageUrlList, String postUrl, final String formId, final String oId, String callType) {
+    public void createFormResponse(final HashMap<String, String> requestObjectMap,
+                                   final List<Map<String, String>> uploadedImageUrlList,
+                                   String postUrl, final String formId, final String oId, String callType) {
+
         JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
@@ -210,7 +213,9 @@ public class FormRequestCall {
     }
 
     @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, final List<Map<String, String>> imageUrls) {
+    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap,
+                                      final List<Map<String, String>> imageUrls) {
+
         JsonObject requestObject = new JsonObject();
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {
             String key = entry.getKey();
@@ -228,6 +233,7 @@ public class FormRequestCall {
             }
         }
 
+        Log.d(TAG, "FORM_BODY" + requestObject.toString());
         return requestObject;
     }
 }
