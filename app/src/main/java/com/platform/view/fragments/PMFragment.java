@@ -47,7 +47,8 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 
 @SuppressWarnings("CanBeFinal")
-public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
+public class PMFragment extends Fragment implements View.OnClickListener,
+        PlatformTaskListener, PendingFormsAdapter.FormListener {
 
     private View pmFragmentView;
     private ArrayList<String> processCategoryList = new ArrayList<>();
@@ -174,7 +175,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             rltPendingForms.setVisibility(View.VISIBLE);
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.VISIBLE);
-            pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms);
+            pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms, this);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
         } else {
@@ -304,5 +305,13 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     @Override
     public void showErrorMessage(String result) {
 
+    }
+
+    @Override
+    public void onFormDeletedListener() {
+        updateAdapter();
+        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
+            ((DashboardFragment) getParentFragment()).updateBadgeCount();
+        }
     }
 }

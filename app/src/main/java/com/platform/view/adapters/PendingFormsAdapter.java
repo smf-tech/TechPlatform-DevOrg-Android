@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.models.forms.FormResult;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.fragments.PMFragment;
 
 import java.util.List;
 
@@ -24,10 +27,12 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     @SuppressWarnings("FieldCanBeLocal")
     private Context context;
     private List<FormResult> savedFormList;
+    private PMFragment mFragment;
 
-    public PendingFormsAdapter(Context context, List<FormResult> savedFormList) {
+    public PendingFormsAdapter(Context context, List<FormResult> savedFormList, PMFragment fragment) {
         this.context = context;
         this.savedFormList = savedFormList;
+        mFragment = fragment;
     }
 
     @NonNull
@@ -45,6 +50,15 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         holder.txtFormName.setText(savedForm.getFormName());
         holder.txtCreatedAt.setText(String.format("on %s",
                 Util.getDateFromTimestamp(savedForm.getCreatedAt())));
+
+        holder.delete.setOnClickListener(v -> {
+            DatabaseManager.getDBInstance(context).deleteFormResult(savedForm);
+            savedFormList.remove(savedForm);
+            notifyDataSetChanged();
+            Util.showToast("Form deleted!", context);
+
+            mFragment.onFormDeletedListener();
+        });
 
         holder.mRootView.setOnClickListener(v -> {
             Intent intent = new Intent(context, FormActivity.class);
@@ -65,14 +79,20 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
 
         TextView txtFormName;
         TextView txtCreatedAt;
+        ImageView delete;
         View mRootView;
 
         TMViewHolder(View view) {
             super(view);
 
             mRootView = view;
+            delete = view.findViewById(R.id.iv_dashboard_delete_form);
             txtFormName = view.findViewById(R.id.txt_dashboard_pending_form_title);
             txtCreatedAt = view.findViewById(R.id.txt_dashboard_pending_form_created_at);
         }
+    }
+
+    public interface FormListener {
+        void onFormDeletedListener();
     }
 }
