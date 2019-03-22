@@ -28,7 +28,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import static com.platform.utility.Constants.TM.FORM_APPROVALS;
+import static com.platform.utility.Constants.TM.USER_APPROVALS;
 
 @SuppressWarnings("CanBeFinal")
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
@@ -40,6 +40,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     private PendingFragmentPresenter pendingFragmentPresenter;
     private boolean mShowAllApprovalsText = true;
     private PendingApprovalsListAdapter mAdapter;
+
+    private Map<String, List<PendingRequest>> map = new HashMap<>();
     private List<PendingRequest> pendingRequestList = new ArrayList<>();
 
     @Override
@@ -78,6 +80,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     private void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
+        txtNoData.setText(getString(R.string.msg_no_pending_req));
+
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
         rvPendingRequests.setGroupIndicator(null);
 
@@ -132,8 +136,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             this.pendingRequestList.clear();
             this.pendingRequestList.addAll(pendingRequestList);
 
-            Map<String, List<PendingRequest>> map = new HashMap<>();
-            map.put(FORM_APPROVALS, pendingRequestList);
+            map.clear();
+            map.put(USER_APPROVALS, pendingRequestList);
 
             mAdapter = new PendingApprovalsListAdapter(getContext(), map,
                     pendingFragmentPresenter, this);
@@ -154,6 +158,9 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     public void updateRequestStatus(String response, PendingRequest pendingRequest) {
         Util.showToast(getString(R.string.status_update_success), getActivity());
         this.pendingRequestList.remove(pendingRequest);
+
+        map.clear();
+        map.put(USER_APPROVALS, pendingRequestList);
         mAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {

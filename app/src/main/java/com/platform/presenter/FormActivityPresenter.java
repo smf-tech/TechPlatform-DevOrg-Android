@@ -146,6 +146,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
             formFragment.get().hideProgressBar();
             AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
         }
+
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -154,22 +155,21 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
+        formFragment.get().hideProgressBar();
 
-        if (error != null)
+        if (error != null) {
             if (error.networkResponse.statusCode == 400) {
                 Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
                         formFragment.get().getActivity());
-                Util.showToast(error.getMessage(), formFragment.get().getActivity());
             } else {
                 if (formFragment != null && formFragment.get() != null) {
                     Util.showToast(formFragment.get().getString(R.string.unexpected_error_occurred), formFragment.get().getActivity());
                     Log.e("onErrorListener", "Unexpected response code " + error.networkResponse.statusCode);
-                    formFragment.get().hideProgressBar();
-                    AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
                 }
             }
-        else if (formFragment != null && formFragment.get() != null) {
-            formFragment.get().hideProgressBar();
+        }
+
+        if (formFragment != null && formFragment.get() != null) {
             AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
         }
     }
@@ -177,9 +177,9 @@ public class FormActivityPresenter implements FormRequestCallListener,
     @Override
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId,
                                      String callType, String oid) {
+
         if (formFragment != null && formFragment.get() != null) {
             formFragment.get().hideProgressBar();
-
             Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
         }
 

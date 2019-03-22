@@ -15,7 +15,7 @@
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:contentDescription="@string/content_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_person_24px"
+        android:src="@drawable/ic_person"
         android:tint="@color/black" />
 
     <LinearLayout
@@ -32,6 +32,8 @@
             style="@style/FormLabel.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@string/category_title"
@@ -43,6 +45,7 @@
             style="@style/FormLabel.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="@dimen/dimen_05dp"
             android:text="@string/form_count"
             android:textColor="@color/dark_grey"
