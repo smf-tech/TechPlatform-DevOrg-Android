@@ -55,7 +55,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
             DatabaseManager.getDBInstance(context).deleteFormResult(savedForm);
             savedFormList.remove(savedForm);
             notifyDataSetChanged();
-            Util.showToast("Form deleted!", context);
+            Util.showToast(context.getString(R.string.form_deleted), context);
 
             mFragment.onFormDeletedListener();
         });

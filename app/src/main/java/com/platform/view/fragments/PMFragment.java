@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -116,15 +115,14 @@ public class PMFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
-                    Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
-
+                    Util.showToast(getString(R.string.sync_completed), context);
                     updateAdapter();
                 } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
-                    Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
+                    Util.showToast(getString(R.string.partial_form_added), context);
                     updateAdapter();
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
-                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                    Util.showToast(getString(R.string.sync_failed), context);
                 }
             }
         }, filter);

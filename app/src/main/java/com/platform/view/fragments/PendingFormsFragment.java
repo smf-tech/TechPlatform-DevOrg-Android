@@ -14,7 +14,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -97,12 +96,12 @@ public class PendingFormsFragment extends Fragment {
                 switch (action) {
                     case EVENT_SYNC_COMPLETED:
                         updateAdapter(context);
-                        Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
+                        Util.showToast(getString(R.string.sync_completed), context);
                         break;
 
                     case PARTIAL_FORM_ADDED:
                         updateAdapter(context);
-                        Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
+                        Util.showToast(getString(R.string.partial_form_added), context);
                         break;
 
                     case PARTIAL_FORM_REMOVED:
@@ -112,7 +111,7 @@ public class PendingFormsFragment extends Fragment {
 
                     case EVENT_SYNC_FAILED:
                         Log.e("PendingForms", "Sync failed!");
-                        Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                        Util.showToast(getString(R.string.sync_failed), context);
                         break;
                 }
             }
@@ -264,7 +263,7 @@ public class PendingFormsFragment extends Fragment {
             }
 
             ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-            ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
+            ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s %s", String.valueOf(size), getString(R.string.forms)));
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
@@ -304,7 +303,7 @@ public class PendingFormsFragment extends Fragment {
                     processData.remove(finalFormResult);
                 }
                 notifyDataSetChanged();
-                Util.showToast("Form deleted!", mContext);
+                Util.showToast(mContext.getString(R.string.form_deleted), mContext);
 
                 mFragment.onFormDeletedListener();
             });

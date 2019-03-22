@@ -233,4 +233,14 @@
     <string name="form_count">%1$d Forms</string>
     <string name="frequently_used_forms">Frequently used forms</string>
 
+    <string name="syncing_pending">Syncing Pending</string>
+    <string name="submitted_and_synced">Submitted &amp; Synced</string>
+    <string name="requests">Requests</string>
+    <string name="sync_started">Sync started&#8230;</string>
+    <string name="sync_completed">Sync completed.</string>
+    <string name="sync_failed">Sync failed!</string>
+    <string name="partial_form_added">Partial Form Added.</string>
+    <string name="unexpected_error_occurred">Unexpected error occurred.</string>
+    <string name="form_deleted">Form deleted!</string>
+
 </resources>

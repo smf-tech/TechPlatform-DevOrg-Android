@@ -18,7 +18,7 @@
     <!--App Update-->
     <string name="title_new_version_available">नया संस्करण उपलब्ध है</string>
     <string name="msg_update_app">जारी रखने के लिए कृपया नए संस्करण में एप्लिकेशन अपडेट करें।</string>
-    <string name="msg_need_force_update">You need to update app to latest version.</string>
+    <string name="msg_need_force_update">आपको ऐप को नवीनतम संस्करण में अपडेट करना होगा।.</string>
 
     <!--Login screen-->
     <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>
@@ -189,6 +189,17 @@
     <string name="msg_error_rejection_comment_needed">अस्वीकृति कारण की आवश्यकता</string>
 
     <string name="form_count">%1$d फ़ॉर्म</string>
-    <string name="frequently_used_forms">Frequently used forms</string>
+    <string name="frequently_used_forms">अक्सर इस्तेमाल किए जाने वाले फॉर्म</string>
+
+    <string name="syncing_pending">सिंकिंग लंबित</string>
+    <string name="submitted_and_synced">प्रस्तुत और समन्वित</string>
+    <string name="requests">अनुरोध</string>
+    <string name="sync_started">सिंक शुरू हुआ&#8230;</string>
+    <string name="sync_completed">सिंक पूरा हुआ।</string>
+    <string name="sync_failed">सिंक विफल!</string>
+    <string name="partial_form_added">आंशिक रूप जोड़ा गया।</string>
+    <string name="unexpected_error_occurred">अनपेक्षित त्रुटि हुई।</string>
+    <string name="form_deleted">फ़ॉर्म हटाया गया!</string>
+
 
 </resources>

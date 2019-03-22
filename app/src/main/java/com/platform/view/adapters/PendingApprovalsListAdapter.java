@@ -94,7 +94,7 @@ public class PendingApprovalsListAdapter extends BaseExpandableListAdapter {
         }
 
         ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-        ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Requests", String.valueOf(size)));
+        ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s %s", String.valueOf(size), mContext.getString(R.string.requests)));
 
         ImageView v = view.findViewById(R.id.form_image);
         if (isExpanded) {
