@@ -369,7 +369,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.isRequired() != null) {
 
                 errorMsg = Validation.requiredValidation(editText.getTag().toString(),
-                        editText.getText().toString(), formData.isRequired());
+                        editText.getText().toString(), formData.isRequired(), fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -380,7 +380,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (formData.getMaxLength() != null) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
                     errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getMaxLength());
+                            editText.getText().toString(), formData.getMaxLength(), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -393,7 +393,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                     errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getValidators().get(0));
+                            editText.getText().toString(), formData.getValidators().get(0), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -406,7 +406,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                     errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getValidators().get(0));
+                            editText.getText().toString(), formData.getValidators().get(0), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -423,7 +423,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                 if (dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) {
                     errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
-                            "", formData.isRequired());
+                            "", formData.isRequired(), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -452,7 +452,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             if (formData.isRequired() != null && TextUtils.isEmpty(imgUrl)) {
                 errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
-                        "", formData.isRequired());
+                        "", formData.isRequired(), fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);

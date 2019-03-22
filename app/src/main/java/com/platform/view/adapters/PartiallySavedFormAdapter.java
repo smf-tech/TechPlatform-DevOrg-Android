@@ -75,7 +75,7 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
 
             if (savedForm.getCreatedAt() != null) {
                 String formattedDate = getDateFromTimestamp(savedForm.getCreatedAt());
-                viewHolder.mDate.setText(String.format("on %s", formattedDate));
+                viewHolder.mDate.setText(String.format("%s", formattedDate));
             }
         }
 
