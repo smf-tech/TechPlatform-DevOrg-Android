@@ -4,6 +4,12 @@ import android.text.TextUtils;
 
 import com.platform.models.forms.Validator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
 public class Validation {
 
     public static String editTextMinMaxValueValidation(String fieldName, String fieldValue, Validator validator) {
@@ -54,6 +60,56 @@ public class Validation {
         if (maxLength != null && (fieldValue.length() < maxLength)) {
             return fieldName + " length should not be less than " + maxLength;
         }
+        return "";
+    }
+
+    public static String expressionValidation(String fieldName, String field1Value, String field2Value, String inputType, Validator validator) {
+        if (validator != null && !TextUtils.isEmpty(validator.getExpression())) {
+            switch (inputType) {
+                case Constants.FormInputType.INPUT_TYPE_DATE:
+                    SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.US);
+
+                    try {
+                        Date date1 = sdf.parse(field1Value);
+                        Date date2 = sdf.parse(field2Value);
+
+                        if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS) && date1.compareTo(date2) < 0) {
+                            if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                                return validator.getText().getLocaleValue();
+                            } else {
+                                return fieldName + " not in proper format";
+                            }
+                        } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS) && date1.compareTo(date2) > 0) {
+                            if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                                return validator.getText().getLocaleValue();
+                            } else {
+                                return fieldName + " not in proper format";
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case Constants.FormInputType.INPUT_TYPE_TIME:
+                    break;
+            }
+        }
+
+        return "";
+    }
+
+    public static String regexValidation(String fieldName, String fieldValue, Validator validator) {
+        if (validator != null && !TextUtils.isEmpty(validator.getRegex())) {
+            if (!Pattern.compile(validator.getRegex()).matcher(fieldValue).matches()) {
+                if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                    return validator.getText().getLocaleValue();
+                } else {
+                    return fieldName + " not in proper format";
+                }
+            }
+        }
+
         return "";
     }
 

@@ -201,4 +201,8 @@ public class Constants {
         public static final String CREATED_DATE_TIME = "createdDateTime";
     }
 
+    class Expression {
+        static final String LESS_THAN_EQUALS = "<=";
+        static final String GREATER_THAN_EQUALS = ">=";
+    }
 }

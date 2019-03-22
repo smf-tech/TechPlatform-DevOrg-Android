@@ -12,6 +12,12 @@ public class Validator {
     @SerializedName("text")
     @Expose
     private LocaleData text;
+    @SerializedName("expression")
+    @Expose
+    private String expression;
+    @SerializedName("regex")
+    @Expose
+    private String regex;
     @SerializedName("minValue")
     @Expose
     private Double minValue;
@@ -82,5 +88,21 @@ public class Validator {
 
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getRegex() {
+        return regex;
+    }
+
+    public void setRegex(String regex) {
+        this.regex = regex;
     }
 }
