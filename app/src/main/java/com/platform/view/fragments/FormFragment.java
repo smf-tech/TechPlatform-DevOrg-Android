@@ -736,6 +736,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                     case Constants.FormsFactory.FILE_TEMPLATE:
+                    case Constants.FormsFactory.COMMENT_TEMPLATE:
                         element.setAnswer(object.get(element.getName()).getAsString());
                         requestedObject.put(element.getName(), element.getAnswer());
                         break;

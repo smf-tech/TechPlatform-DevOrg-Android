@@ -182,16 +182,14 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     .getProcessData(data.getId());
 
             String submitCount = processData.getSubmitCount();
-            if (!TextUtils.isEmpty(submitCount)) {
-                mCountList.put(data.getId(), submitCount);
-            }
 
             List<String> localFormResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+            int count = localFormResults != null ? localFormResults.size() : 0;
+            mCountList.put(data.getId(), String.valueOf(count));
 
             String url;
-
             if (Util.isConnected(getContext()) && ((submitCount != null &&
-                    !submitCount.equals("0")) && localFormResults.isEmpty())) {
+                    !submitCount.equals("0")) && localFormResults != null && localFormResults.isEmpty())) {
 
                 if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
                         && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
