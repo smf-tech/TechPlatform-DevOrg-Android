@@ -205,4 +205,9 @@ public class Constants {
         static final String LESS_THAN_EQUALS = "<=";
         static final String GREATER_THAN_EQUALS = ">=";
     }
+
+    public class ValidationType {
+        public static final String REGEX_TYPE = "regex";
+        public static final String EXPRESSION_TYPE = "expression";
+    }
 }
