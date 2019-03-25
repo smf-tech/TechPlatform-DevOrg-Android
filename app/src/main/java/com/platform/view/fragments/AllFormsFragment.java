@@ -183,7 +183,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
             String submitCount = processData.getSubmitCount();
 
-            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                    .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
             int count = localFormResults != null ? localFormResults.size() : 0;
             mCountList.put(data.getId(), String.valueOf(count));
 

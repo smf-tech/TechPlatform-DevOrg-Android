@@ -7,7 +7,7 @@
 
     <View
         android:layout_width="@dimen/dimen_05dp"
-        android:layout_height="@dimen/dimen_50dp"
+        android:layout_height="@dimen/dimen_60dp"
         android:layout_centerVertical="true"
         android:background="@color/freq_used_form_color" />
 
@@ -16,7 +16,6 @@
         style="@style/FormLabel.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_toStartOf="@id/add_form_button"
         android:ellipsize="end"
@@ -59,7 +58,6 @@
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:text="Submitted Count: 0"
-        android:visibility="gone"
         tools:ignore="HardcodedText" />
 
     <TextView
