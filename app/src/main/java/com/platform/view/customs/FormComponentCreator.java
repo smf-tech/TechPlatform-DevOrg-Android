@@ -173,6 +173,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         Predicate<DropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(elements.getName());
         List<DropDownTemplate> matchedTemplates = Stream.of(dropDowns).filter(byTag).collect(Collectors.toList());
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
+            Choice selectChoice = new Choice();
+            selectChoice.setValue("--Select--");
+            LocaleData localeData = new LocaleData("--Select--");
+            selectChoice.setText(localeData);
+            if (!choiceValues.contains(selectChoice)) {
+                choiceValues.add(0, selectChoice);
+            }
+
+            elements.setChoices(choiceValues);
             matchedTemplates.get(0).setFormData(elements);
             matchedTemplates.get(0).setListData(choiceValues);
         }
@@ -482,7 +491,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
             if (formData.isRequired() != null) {
 
-                if (dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) {
+                if ((dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) ||
+                        !(dropDownTemplate.getSelectedItem() > 0)) {
                     errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
                             "", formData.isRequired());
 
@@ -785,6 +795,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     //Update UI on UI thread
                     if (fragment.get().getActivity() != null) {
                         fragment.get().getActivity().runOnUiThread(() -> {
+                            Choice selectChoice = new Choice();
+                            selectChoice.setValue("--Select--");
+                            LocaleData localeData = new LocaleData("--Select--");
+                            selectChoice.setText(localeData);
+                            choiceValues.add(0, selectChoice);
+
                             dependentElement.setChoices(choiceValues);
                             dropDownTemplate.setFormData(dependentElement);
                             dropDownTemplate.setListData(choiceValues);
