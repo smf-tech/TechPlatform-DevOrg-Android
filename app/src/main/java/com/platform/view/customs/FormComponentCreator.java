@@ -67,6 +67,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
     private HashMap<ImageView, Elements> imageViewElementsHashMap = new HashMap<>();
     private HashMap<String, List<DropDownTemplate>> dependencyMap = new HashMap<>();
+    private HashMap<String, EditText> editTextWithNameMap = new HashMap<>();
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
@@ -269,6 +270,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             editTexts.add(textInputField);
             editTextElementsHashMap.put(textInputField, formData);
+            editTextWithNameMap.put("{" + formData.getName() + "}", textInputField);
 
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
             if (formData.isRequired() != null) {
@@ -414,6 +416,52 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     }
                 }
             }
+
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                    if (!TextUtils.isEmpty(formData.getValidators().get(0).getExpression())) {
+                        String expression = formData.getValidators().get(0).getExpression();
+                        StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=");
+                        String field1Name = expressionTokenizer.nextToken();
+                        String field2Name = expressionTokenizer.nextToken();
+
+                        String field1Value;
+                        String field2Value;
+                        if (("{" + formData.getName() + "}").equals(field1Name)) {
+                            field1Value = editText.getText().toString();
+                            field2Value = editTextWithNameMap.get(field2Name).getText().toString();
+                        } else {
+                            field1Value = editTextWithNameMap.get(field1Name).getText().toString();
+                            field2Value = editText.getText().toString();
+                        }
+
+                        if (!TextUtils.isEmpty(field2Value)) {
+                            errorMsg = Validation.expressionValidation(editText.getTag().toString(),
+                                    field1Value, field2Value, formData.getInputType(),
+                                    formData.getValidators().get(0), fragment.get().getContext());
+
+                            if (!TextUtils.isEmpty(errorMsg)) {
+                                fragment.get().setErrorMsg(errorMsg);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
+                if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                    errorMsg = Validation.regexValidation(editText.getTag().toString(),
+                            editText.getText().toString(), formData.getValidators().get(0), fragment.get().getContext());
+
+                    if (!TextUtils.isEmpty(errorMsg)) {
+                        fragment.get().setErrorMsg(errorMsg);
+                        return false;
+                    }
+                }
+            }
         }
 
         //For all drop downs
@@ -546,6 +594,18 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         dropDownElementsHashMap.clear();
         dropDownElementsHashMap = new HashMap<>();
+
+        photos.clear();
+        photos = new ArrayList<>();
+
+        imageViewElementsHashMap.clear();
+        imageViewElementsHashMap = new HashMap<>();
+
+        editTextWithNameMap.clear();
+        editTextWithNameMap = new HashMap<>();
+
+        dependencyMap.clear();
+        dependencyMap = new HashMap<>();
     }
 
     private void onAddImageClick(final View view, final String name) {

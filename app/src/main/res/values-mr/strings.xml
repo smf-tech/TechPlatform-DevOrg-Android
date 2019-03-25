@@ -205,5 +205,6 @@
     <string name="length_should_not_be_less_than"> लांबी कमी असू नये </string>
     <string name="length_should_not_be_greater_than"> लांबीपेक्षा जास्त नसावी </string>
     <string name="cant_be_empty"> रिक्त असू शकत नाही</string>
+    <string name="not_in_proper_format">योग्य स्वरूपात नाही</string>
 
 </resources>

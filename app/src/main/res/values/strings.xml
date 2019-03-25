@@ -247,5 +247,6 @@
     <string name="length_should_not_be_less_than"> length should not be less than </string>
     <string name="length_should_not_be_greater_than"> length should not be greater than </string>
     <string name="cant_be_empty"> can\'t be empty</string>
+    <string name="not_in_proper_format">not in proper format</string>
 
 </resources>
