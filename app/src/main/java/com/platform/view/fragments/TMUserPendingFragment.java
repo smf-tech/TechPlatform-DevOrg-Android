@@ -196,6 +196,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class ApprovalDialogFragment extends DialogFragment {
 
         private static PendingRequest sPendingRequest;
