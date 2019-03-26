@@ -1,9 +1,9 @@
 package com.platform.view.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -19,15 +19,17 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.tasks.Task;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.user.User;
 import com.platform.presenter.OtpFragmentPresenter;
-import com.platform.receivers.SmsReceiver;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
-import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
@@ -43,8 +45,7 @@ import androidx.fragment.app.Fragment;
  * create an instance of this fragment.
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
-        SmsReceiver.IOtpSmsReceiverListener {
+public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
     private static LoginInfo sLoginInfo;
     private long currentSec = 0;
@@ -53,8 +54,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private boolean isSmsReceiverRegistered;
     private boolean isSmsPermissionNotDenied;
 
-    private SmsReceiver smsReceiver;
     private OtpFragmentPresenter otpPresenter;
+    private BroadcastReceiver mIntentReceiver;
 
     private CountDownTimer timer;
     private Button mBtnVerify;
@@ -69,13 +70,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private String mMobileNumber;
 
     private final String TAG = NewOtpFragment.class.getSimpleName();
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        smsReceiver = new SmsReceiver();
-        smsReceiver.setListener(this);
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -296,10 +290,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             case R.id.tv_resend_otp:
                 clearOtp();
                 startOtpTimer();
-
-                if (!isSmsReceiverRegistered) {
-                    registerOtpSmsReceiver();
-                }
+                checkSmsPermission();
 
                 AppEvents.trackAppEvent(getString(R.string.event_resend_opt_click));
                 if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
@@ -384,7 +375,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void startOtpTimer() {
         if (timer != null) {
             timer.cancel();
-            //tvOtpTimer.setText("");
 
             showProgressBar();
             tvOtpTimer.setVisibility(View.VISIBLE);
@@ -428,7 +418,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private void registerOtpSmsReceiver() {
         try {
             if (getActivity() != null) {
-                getActivity().registerReceiver(smsReceiver, new IntentFilter(Constants.SMS_RECEIVE_IDENTIFIER));
+                smsRetrieval();
                 startOtpTimer();
                 isSmsReceiverRegistered = true;
             }
@@ -438,9 +428,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     public void deRegisterOtpSmsReceiver() {
-        if (getActivity() != null && smsReceiver != null && isSmsReceiverRegistered) {
+        if (getActivity() != null && isSmsReceiverRegistered) {
             try {
-                getActivity().unregisterReceiver(smsReceiver);
                 isSmsReceiverRegistered = false;
             } catch (IllegalArgumentException e) {
                 Log.e(TAG, e.getMessage());
@@ -449,24 +438,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     private void checkSmsPermission() {
-        if (Permissions.isSMSPermissionGranted(getActivity(), this)) {
-            isSmsPermissionNotDenied = true;
-            registerOtpSmsReceiver();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case Constants.SMS_RECEIVE_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isSmsPermissionNotDenied = true;
-                    registerOtpSmsReceiver();
-                }
-                break;
-        }
+        isSmsPermissionNotDenied = true;
+        registerOtpSmsReceiver();
     }
 
     @Override
@@ -527,9 +500,37 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         Util.showToast(result, this);
     }
 
+    private void smsRetrieval() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        SmsRetrieverClient client = SmsRetriever.getClient(Platform.getInstance());
+        Task<Void> task = client.startSmsRetriever();
+        task.addOnSuccessListener(aVoid -> {
+            IntentFilter intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
+            mIntentReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String msg = intent.getStringExtra("get_msg");
+                    if (msg != null && !msg.isEmpty()) {
+                        msg = msg.replace("\n", "");
+
+                        String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                        body = body.substring(0, body.lastIndexOf(" "));
+                        Log.d("PL_SMS_Receive_OTP", body);
+                        setOtp(body);
+                    }
+                }
+            };
+
+            Platform.getInstance().registerReceiver(mIntentReceiver, intentFilter);
+        });
+    }
+
     @Override
-    public void smsReceive(String otp) {
-        Log.d(TAG, "OTP: " + otp);
-        setOtp(otp);
+    public void onDestroy() {
+        Platform.getInstance().unregisterReceiver(mIntentReceiver);
+        super.onDestroy();
     }
 }

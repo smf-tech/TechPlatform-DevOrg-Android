@@ -2,7 +2,7 @@ package com.platform.utility;
 
 public class Constants {
 
-    public static final int SMS_RECEIVE_REQUEST = 1;
+//    public static final int SMS_RECEIVE_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
 
@@ -15,7 +15,7 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
+//    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
@@ -127,7 +127,7 @@ public class Constants {
         public static final String UPDATE_STATUS = "update_status";
         public static final String REJECTION_REASON = "reason";
         public static final String USER_APPROVALS = "User Approvals";
-        public static final String FORM_APPROVALS = "Form Approvals";
+//        public static final String FORM_APPROVALS = "Form Approvals";
     }
 
     public static class RequestStatus {
