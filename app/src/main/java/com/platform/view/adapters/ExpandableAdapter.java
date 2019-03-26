@@ -132,6 +132,8 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
                         .setText(mContext.getString(R.string.submitted_form_count, "0"));
             }
 
+            view.findViewById(R.id.submitted_count_label).setVisibility(View.GONE);
+
             view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, FormActivity.class);
                 intent.putExtra(Constants.PM.FORM_ID, data.getId());

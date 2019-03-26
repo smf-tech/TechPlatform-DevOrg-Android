@@ -14,6 +14,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -89,30 +90,37 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(PARTIAL_FORM_REMOVED);
         filter.addAction(EVENT_FORM_SUBMITTED);
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                String action = Objects.requireNonNull(intent.getAction());
-                switch (action) {
-                    case EVENT_SYNC_COMPLETED:
-                        updateAdapter(context);
-                        Util.showToast(getString(R.string.sync_completed), context);
-                        break;
+                if (context == null) return;
 
-                    case PARTIAL_FORM_ADDED:
-                        updateAdapter(context);
-                        Util.showToast(getString(R.string.partial_form_added), context);
-                        break;
+                try {
+                    String action = Objects.requireNonNull(intent.getAction());
+                    switch (action) {
+                        case EVENT_SYNC_COMPLETED:
+                            updateAdapter(context);
+                            Util.showToast(getString(R.string.sync_completed), context);
+                            break;
 
-                    case PARTIAL_FORM_REMOVED:
-                    case EVENT_FORM_SUBMITTED:
-                        updateAdapter(context);
-                        break;
+                        case PARTIAL_FORM_ADDED:
+                            updateAdapter(context);
+                            Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                            break;
 
-                    case EVENT_SYNC_FAILED:
-                        Log.e("PendingForms", "Sync failed!");
-                        Util.showToast(getString(R.string.sync_failed), context);
-                        break;
+                        case PARTIAL_FORM_REMOVED:
+                        case EVENT_FORM_SUBMITTED:
+                            updateAdapter(context);
+                            break;
+
+                        case EVENT_SYNC_FAILED:
+                            Log.e("PendingForms", "Sync failed!");
+                            Util.showToast(getString(R.string.sync_failed), context);
+                            break;
+                    }
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
                 }
             }
         }, filter);

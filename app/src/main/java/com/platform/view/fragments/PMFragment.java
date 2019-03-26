@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -111,18 +112,32 @@ public class PMFragment extends Fragment implements View.OnClickListener,
     }
 
     private void SyncAdapterBroadCastReceiver(final IntentFilter filter) {
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                if (Objects.requireNonNull(intent.getAction()).equals(EVENT_SYNC_COMPLETED)) {
-                    Util.showToast(getString(R.string.sync_completed), context);
-                    updateAdapter();
-                } else if (Objects.requireNonNull(intent.getAction()).equals(PARTIAL_FORM_ADDED)) {
-                    Util.showToast(getString(R.string.partial_form_added), context);
-                    updateAdapter();
-                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
-                    Log.e("PendingForms", "Sync failed!");
-                    Util.showToast(getString(R.string.sync_failed), context);
+                if (context == null) return;
+
+                try {
+                    String action = Objects.requireNonNull(intent.getAction());
+                    switch (action) {
+                        case EVENT_SYNC_COMPLETED:
+                            Util.showToast(getString(R.string.sync_completed), context);
+                            updateAdapter();
+                            break;
+
+                        case PARTIAL_FORM_ADDED:
+                            Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                            updateAdapter();
+                            break;
+
+                        case EVENT_SYNC_FAILED:
+                            Log.e("PendingForms", "Sync failed!");
+                            Util.showToast(getString(R.string.sync_failed), context);
+                            break;
+                    }
+                } catch (IllegalStateException e) {
+                    Log.e("PMFragment", "SyncAdapterBroadCastReceiver", e);
                 }
             }
         }, filter);

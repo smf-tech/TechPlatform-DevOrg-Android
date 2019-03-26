@@ -96,17 +96,22 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_FORM_SUBMITTED);
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                String action = Objects.requireNonNull(intent.getAction());
-                switch (action) {
-                    case EVENT_FORM_SUBMITTED:
-                        getProcessData();
-                        break;
-                }
-            }
-        }, filter);
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(final Context context, final Intent intent) {
+                        try {
+                            String action = Objects.requireNonNull(intent.getAction());
+                            switch (action) {
+                                case EVENT_FORM_SUBMITTED:
+                                    getProcessData();
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, filter);
     }
 
     private void getProcessData() {

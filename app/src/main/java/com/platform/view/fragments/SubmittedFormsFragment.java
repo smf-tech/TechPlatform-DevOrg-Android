@@ -136,20 +136,32 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         filter.addAction(PARTIAL_FORM_REMOVED);
         filter.addAction(EVENT_FORM_SUBMITTED);
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                String action = Objects.requireNonNull(intent.getAction());
-                if (action.equals(EVENT_SYNC_COMPLETED)) {
-                    Util.showToast(getString(R.string.sync_completed), context);
-                    getProcessData();
-                } else if (action.equals(PARTIAL_FORM_REMOVED) || action.equals(EVENT_FORM_SUBMITTED)) {
-                    getProcessData();
-                } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
-                    Log.e("PendingForms", "Sync failed!");
-                    Util.showToast(getString(R.string.sync_failed), context);
+                try {
+                    String action = Objects.requireNonNull(intent.getAction());
+                    switch (action) {
+                        case EVENT_SYNC_COMPLETED:
+                            Util.showToast(getString(R.string.sync_completed), context);
+                            getProcessData();
+                            break;
+
+                        case PARTIAL_FORM_REMOVED:
+                        case EVENT_FORM_SUBMITTED:
+                            getProcessData();
+                            break;
+
+                        case EVENT_SYNC_FAILED:
+                            Log.e("PendingForms", "Sync failed!");
+                            Util.showToast(getString(R.string.sync_failed), context);
+                            break;
+                    }
+                    setPendingForms();
+                } catch (Exception e) {
+                    Log.e("PMFragment", "SyncAdapterBroadCastReceiver", e);
                 }
-                setPendingForms();
             }
         }, filter);
     }
