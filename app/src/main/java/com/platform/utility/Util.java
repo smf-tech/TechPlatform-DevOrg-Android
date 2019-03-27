@@ -323,6 +323,10 @@ public class Util {
                 msg = Platform.getInstance().getString(R.string.msg_something_went_wrong);
             }
 
+            if (msg.contains("ConnectException")) {
+                msg = Platform.getInstance().getString(R.string.msg_no_network);
+            }
+
             if (context instanceof Fragment) {
                 Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
             } else {

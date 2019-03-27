@@ -276,7 +276,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (sLoginInfo != null && !sLoginInfo.getMobileNumber().contentEquals("")) {
             mMobileNumber = sLoginInfo.getMobileNumber();
             tvOtpMessage.setText(getString(R.string.please_type_the_verification_code_n_sent_to, mMobileNumber));
-            checkSmsPermission();
+            enableSmsReceiver();
         }
     }
 
@@ -290,7 +290,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             case R.id.tv_resend_otp:
                 clearOtp();
                 startOtpTimer();
-                checkSmsPermission();
+                enableSmsReceiver();
 
                 AppEvents.trackAppEvent(getString(R.string.event_resend_opt_click));
                 if (mMobileNumber.equalsIgnoreCase(sLoginInfo.getMobileNumber())) {
@@ -437,7 +437,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         }
     }
 
-    private void checkSmsPermission() {
+    private void enableSmsReceiver() {
         isSmsPermissionNotDenied = true;
         registerOtpSmsReceiver();
     }
