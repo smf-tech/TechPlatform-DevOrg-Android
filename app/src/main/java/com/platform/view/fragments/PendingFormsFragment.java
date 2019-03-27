@@ -276,7 +276,7 @@ public class PendingFormsFragment extends Fragment {
 
             ((TextView) view.findViewById(R.id.form_title)).setText(cat);
             ((TextView) view.findViewById(R.id.form_count))
-                    .setText(String.format("%s Forms", String.valueOf(size)));
+                    .setText(String.format("%s %s", String.valueOf(size), getString(R.string.forms)));
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
