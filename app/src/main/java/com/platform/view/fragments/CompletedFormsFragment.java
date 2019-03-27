@@ -119,7 +119,7 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
                 list.add(new ProcessDemoObject(form.get_id(),
                         form.getFormId(), form.getCreatedAt(), ""));
             }
-            mFormList.put(SyncAdapterUtils.SYNCING_PENDING, list);
+            mFormList.put(getString(R.string.syncing_pending), list);
             adapter.notifyDataSetChanged();
         }
     }

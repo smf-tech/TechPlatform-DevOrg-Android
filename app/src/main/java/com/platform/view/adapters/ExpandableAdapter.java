@@ -81,7 +81,8 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
     public View getGroupView(final int groupPosition, final boolean isExpanded,
                              final View convertView, final ViewGroup parent) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
+                parent, false);
 
         ArrayList<String> list = new ArrayList<>(mFormsData.keySet());
         String cat = list.get(groupPosition);
@@ -93,7 +94,8 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-        ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
+        ((TextView) view.findViewById(R.id.form_count))
+                .setText(String.format("%s %s", String.valueOf(size), mContext.getString(R.string.forms)));
 
         ImageView v = view.findViewById(R.id.form_image);
         if (isExpanded) {

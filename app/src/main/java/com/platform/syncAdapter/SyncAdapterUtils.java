@@ -28,7 +28,7 @@ public class SyncAdapterUtils {
         public static final int SYNCED = 1;
         public static final int UN_SYNCED = 0;
         public static final int PARTIAL = 2;
-        public static final int DELETED = -1;
+        static final int DELETED = -1;
     }
 
     /**

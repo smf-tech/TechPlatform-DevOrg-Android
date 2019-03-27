@@ -76,15 +76,15 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
         String category = objects1[i];
 
         boolean pendingFormCategory = false;
-        if (category.equals(SyncAdapterUtils.SYNCING_PENDING)) {
+        if (category.equals(mContext.getString(R.string.syncing_pending))) {
             pendingFormCategory = true;
             viewHolder.syncButton.show();
             viewHolder.syncButton.setOnClickListener(v -> {
                 if (Util.isConnected(mContext)) {
-                    Toast.makeText(mContext, "Sync started...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.sync_started, Toast.LENGTH_SHORT).show();
                     SyncAdapterUtils.manualRefresh();
                 } else {
-                    Toast.makeText(mContext, "Internet is not available!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.msg_no_network, Toast.LENGTH_SHORT).show();
                 }
             });
 

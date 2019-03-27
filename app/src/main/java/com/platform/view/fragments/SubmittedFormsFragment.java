@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -104,7 +103,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        lnrOuter = view.findViewById(R.id.lnr_dashboard_forms_category);
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
 
@@ -113,12 +111,18 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         mPendingFormsContainer = view.findViewById(R.id.pending_forms_container);
 
         ((TextView) view.findViewById(R.id.pending_form_category_name))
-                .setText(SyncAdapterUtils.SYNCING_PENDING);
+                .setText(getString(R.string.syncing_pending));
 
         mSubmittedFormsTitleView = view.findViewById(R.id.submitted_form_category_name);
-        mSubmittedFormsTitleView.setText(SyncAdapterUtils.SUBMITTED_AND_SYNCED);
+        mSubmittedFormsTitleView.setText(getString(R.string.submitted_and_synced));
 
         view.findViewById(R.id.sync_button).setOnClickListener(v -> {
+            if (Util.isConnected(getContext())) {
+                Util.showToast(getString(R.string.sync_started), getContext());
+                SyncAdapterUtils.manualRefresh();
+            } else {
+                Util.showToast(getString(R.string.msg_no_network), getContext());
+            }
             Util.showToast("Sync started!", getContext());
             SyncAdapterUtils.manualRefresh();
         });
@@ -137,13 +141,13 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             public void onReceive(final Context context, final Intent intent) {
                 String action = Objects.requireNonNull(intent.getAction());
                 if (action.equals(EVENT_SYNC_COMPLETED)) {
-                    Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
+                    Util.showToast(getString(R.string.sync_completed), context);
                     getProcessData();
                 } else if (action.equals(PARTIAL_FORM_REMOVED) || action.equals(EVENT_FORM_SUBMITTED)) {
                     getProcessData();
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
                     Log.e("PendingForms", "Sync failed!");
-                    Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
+                    Util.showToast(getString(R.string.sync_failed), context);
                 }
                 setPendingForms();
             }
@@ -216,10 +220,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 });
                 mPendingFormsContainer.addView(formView);
             }
-
-//            Util.sortProcessDataListByCreatedDate(list);
-//            mProcessDataMap.put(SyncAdapterUtils.SYNCING_PENDING, list);
-//            createCategoryLayout(SyncAdapterUtils.SYNCING_PENDING, list, null, map);
         } else {
             mPendingFormsView.setVisibility(View.GONE);
             dividerView.setVisibility(View.GONE);
@@ -233,7 +233,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             mProcessDataMap.clear();
 
             for (ProcessData data : process.getData()) {
-                if (data != null && data.getCategory() != null && !TextUtils.isEmpty(data.getCategory().getName().getLocaleValue())) {
+                if (data != null && data.getCategory() != null &&
+                        !TextUtils.isEmpty(data.getCategory().getName().getLocaleValue())) {
+
                     String categoryName = data.getCategory().getName().getLocaleValue();
                     if (processMap.containsKey(categoryName) && processMap.get(categoryName) != null) {
                         List<ProcessData> processData = processMap.get(categoryName);
@@ -307,8 +309,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             }
 
                             if (!processData.isEmpty()) {
-                                /*createCategoryLayout(processData.get(0).getFormTitle(), processData,
-                                        formID, null);*/
                                 Util.sortProcessDataListByCreatedDate(processData);
                                 mProcessDataMap.put(processData.get(0).getFormTitle(), processData);
                                 showNoDataText = false;
@@ -469,8 +469,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
 
         @Override
-        public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item, parent, false);
+        public View getGroupView(final int groupPosition, final boolean isExpanded,
+                                 final View convertView, final ViewGroup parent) {
+
+            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
+                    parent, false);
 
             ArrayList<String> list = new ArrayList<>(mMap.keySet());
             String cat = list.get(groupPosition);
@@ -482,7 +485,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             }
 
             ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-            ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
+            ((TextView) view.findViewById(R.id.form_count))
+                    .setText(String.format("%s %s", String.valueOf(size), getString(R.string.forms)));
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
@@ -527,22 +531,21 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     intent.putExtra(Constants.PM.FORM_ID, processID);
                     intent.putExtra(Constants.PM.EDIT_MODE, true);
                     intent.putExtra(Constants.PM.PARTIAL_FORM, false);
-                    if (cat.equals(SyncAdapterUtils.SYNCING_PENDING)) {
+
+                    if (cat.equals(getString(R.string.syncing_pending))) {
                         intent.putExtra(Constants.PM.FORM_ID, formID);
                         intent.putExtra(Constants.PM.PROCESS_ID, processID);
                         intent.putExtra(Constants.PM.PARTIAL_FORM, true);
                     }
                     mContext.startActivity(intent);
                 }
-
             });
 
             int bgColor = mContext.getResources().getColor(R.color.submitted_form_color);
-            if (cat.equals(SyncAdapterUtils.SYNCING_PENDING)) {
+            if (cat.equals(getString(R.string.syncing_pending))) {
                 bgColor = mContext.getResources().getColor(R.color.red);
             }
 
-//            view.setPadding(20,0,0,0);
             view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
             return view;
         }
@@ -552,5 +555,4 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             return false;
         }
     }
-
 }

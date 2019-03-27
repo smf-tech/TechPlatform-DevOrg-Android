@@ -93,7 +93,8 @@ public class ReportsAdapter extends BaseExpandableListAdapter {
         }
 
         ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-        ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
+        ((TextView) view.findViewById(R.id.form_count))
+                .setText(String.format("%s %s", String.valueOf(size), mContext.getString(R.string.forms)));
 
         ImageView v = view.findViewById(R.id.form_image);
         if (isExpanded) {

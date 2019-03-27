@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -129,7 +128,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                                     break;
 
                                 case PARTIAL_FORM_ADDED:
-                                    Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                                    Util.showToast(getString(R.string.partial_form_added), context);
                                     updateAdapter();
                                     break;
 

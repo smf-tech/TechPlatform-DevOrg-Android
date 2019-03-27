@@ -163,8 +163,10 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         formFragment.get().getActivity());
             } else {
                 if (formFragment != null && formFragment.get() != null) {
-                    Util.showToast("Unexpected error occurred.", formFragment.get().getActivity());
-                    Log.e("onErrorListener", "Unexpected response code " + error.networkResponse.statusCode);
+                    Util.showToast(formFragment.get().getString(R.string.unexpected_error_occurred),
+                            formFragment.get().getActivity());
+                    Log.e("onErrorListener",
+                            "Unexpected response code " + error.networkResponse.statusCode);
                 }
             }
         }

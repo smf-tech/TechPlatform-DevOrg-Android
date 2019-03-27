@@ -171,7 +171,6 @@
     <string name="form_saved_offline">You are offline, form saved offline.</string>
     <string name="form_submit_success">Form submitted successfully!</string>
     <string name="image_upload_success">Image uploaded successfully!</string>
-    <string name="no_internet">Internet is not available!</string>
     <string name="status_update_success">Status updated successfully!</string>
     <string name="new_forms">New</string>
     <string name="saved_forms">Saved</string>
@@ -196,8 +195,13 @@
     <string name="form_deleted">Form deleted!</string>
     <string name="msg_delete_saved_form">Are you sure you want to delete this saved form?</string>
 
-    <string name="sync_completed">Sync completed.</string>
-    <string name="sync_failed">Sync failed!</string>
+    <string name="requests">Requests</string>
+    <string name="sync_completed">Sync Completed</string>
+    <string name="sync_failed">Sync Failed</string>
+    <string name="syncing_pending">Syncing Pending</string>
+    <string name="sync_started">Sync Started</string>
+    <string name="submitted_and_synced">Submitted &amp; Synced</string>
+    <string name="unexpected_error_occurred">Unexpected error occurred.</string>
 
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>
