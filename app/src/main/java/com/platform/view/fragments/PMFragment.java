@@ -47,8 +47,8 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_ADDED;
 
 @SuppressWarnings("CanBeFinal")
-public class PMFragment extends Fragment implements View.OnClickListener,
-        PlatformTaskListener, PendingFormsAdapter.FormListener {
+public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener,
+        PendingFormsAdapter.FormListener {
 
     private View pmFragmentView;
     private ArrayList<String> processCategoryList = new ArrayList<>();
@@ -114,33 +114,35 @@ public class PMFragment extends Fragment implements View.OnClickListener,
     private void SyncAdapterBroadCastReceiver(final IntentFilter filter) {
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
                 .registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                if (context == null) return;
+                    @Override
+                    public void onReceive(final Context context, final Intent intent) {
+                        if (context == null) {
+                            return;
+                        }
 
-                try {
-                    String action = Objects.requireNonNull(intent.getAction());
-                    switch (action) {
-                        case EVENT_SYNC_COMPLETED:
-                            Util.showToast(getString(R.string.sync_completed), context);
-                            updateAdapter();
-                            break;
+                        try {
+                            String action = Objects.requireNonNull(intent.getAction());
+                            switch (action) {
+                                case EVENT_SYNC_COMPLETED:
+                                    Util.showToast(getString(R.string.sync_completed), context);
+                                    updateAdapter();
+                                    break;
 
-                        case PARTIAL_FORM_ADDED:
-                            Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
-                            updateAdapter();
-                            break;
+                                case PARTIAL_FORM_ADDED:
+                                    Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                                    updateAdapter();
+                                    break;
 
-                        case EVENT_SYNC_FAILED:
-                            Log.e("PendingForms", "Sync failed!");
-                            Util.showToast(getString(R.string.sync_failed), context);
-                            break;
+                                case EVENT_SYNC_FAILED:
+                                    Log.e("PendingForms", "Sync failed!");
+                                    Util.showToast(getString(R.string.sync_failed), context);
+                                    break;
+                            }
+                        } catch (IllegalStateException e) {
+                            Log.e("PMFragment", "SyncAdapterBroadCastReceiver", e);
+                        }
                     }
-                } catch (IllegalStateException e) {
-                    Log.e("PMFragment", "SyncAdapterBroadCastReceiver", e);
-                }
-            }
-        }, filter);
+                }, filter);
     }
 
     private void updateAdapter() {

@@ -33,7 +33,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
     public PendingFormsAdapter(Context context, List<FormResult> savedFormList, PMFragment fragment) {
         this.context = context;
         this.savedFormList = savedFormList;
-        mFragment = fragment;
+        this.mFragment = fragment;
     }
 
     @NonNull
@@ -52,9 +52,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         holder.txtCreatedAt.setText(String.format("%s",
                 Util.getDateFromTimestamp(savedForm.getCreatedAt())));
 
-        holder.delete.setOnClickListener(v -> {
-            showFormDeletePopUp(savedForm);
-        });
+        holder.delete.setOnClickListener(v -> showFormDeletePopUp(savedForm));
 
         holder.mRootView.setOnClickListener(v -> {
             Intent intent = new Intent(context, FormActivity.class);

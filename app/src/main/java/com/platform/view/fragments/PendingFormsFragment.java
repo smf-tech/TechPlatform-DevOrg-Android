@@ -95,7 +95,9 @@ public class PendingFormsFragment extends Fragment {
                 .registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                if (context == null) return;
+                if (context == null) {
+                    return;
+                }
 
                 try {
                     String action = Objects.requireNonNull(intent.getAction());
@@ -202,7 +204,7 @@ public class PendingFormsFragment extends Fragment {
 
     private class SavedFormsListAdapter extends BaseExpandableListAdapter {
 
-        Context mContext;
+        private Context mContext;
         private Map<String, List<FormResult>> mMap;
         private PendingFormsFragment mFragment;
 
@@ -260,7 +262,7 @@ public class PendingFormsFragment extends Fragment {
         @Override
         public View getGroupView(final int groupPosition, final boolean isExpanded,
                                  final View convertView, final ViewGroup parent) {
-            
+
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
                     parent, false);
 
@@ -310,9 +312,8 @@ public class PendingFormsFragment extends Fragment {
 
             final FormResult finalFormResult = formResult;
 
-            view.findViewById(R.id.iv_dashboard_delete_form).setOnClickListener(v -> {
-                showFormDeletePopUp(processData, finalFormResult);
-            });
+            view.findViewById(R.id.iv_dashboard_delete_form)
+                    .setOnClickListener(v -> showFormDeletePopUp(processData, finalFormResult));
 
             view.setOnClickListener(v -> {
                 if (finalFormResult != null) {
