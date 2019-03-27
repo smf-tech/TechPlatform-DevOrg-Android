@@ -64,6 +64,12 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private ExpandableAdapter adapter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
+    private static int mSubmittedFormsCount = 0;
+    private static int mSubmittedFormsDownloadedCount = 0;
+
+    public static void setSubmittedFormsCount() {
+        mSubmittedFormsCount += 1;
+    }
 
     public AllFormsFragment() {
         // Required empty public constructor
@@ -241,7 +247,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onMastersFormsLoaded(final String response, final String formId) {
-        hideProgressBar();
+        mSubmittedFormsDownloadedCount ++;
 
         try {
             String count;
@@ -318,6 +324,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         } else {
             mNoRecordsView.setVisibility(View.VISIBLE);
         }
+
+        if (mSubmittedFormsDownloadedCount == mSubmittedFormsCount)
+            hideProgressBar();
     }
 
     private void setAdapter(final Map<String, List<ProcessData>> data) {

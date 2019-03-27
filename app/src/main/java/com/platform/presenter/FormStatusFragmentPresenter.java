@@ -35,6 +35,8 @@ public class FormStatusFragmentPresenter {
         FormStatusRequestCall requestCall = new FormStatusRequestCall();
         requestCall.setListener(listener);
 
+        AllFormsFragment.setSubmittedFormsCount();
+
         if (mAllFormsFragment != null) {
             mAllFormsFragment.get().showProgressBar();
         }
