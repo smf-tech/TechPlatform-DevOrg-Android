@@ -21,6 +21,7 @@ public class SyncAdapterUtils {
     public static final String PARTIAL_FORM_ADDED = "PartialFormAdded";
     public static final String PARTIAL_FORM_REMOVED = "PartialFormRemoved";
     public static final String EVENT_FORM_SUBMITTED = "formSubmitted";
+    public static final String EVENT_FORM_DELETED = "formDeleted";
 
     public class FormStatus {
         public static final int SYNCED = 1;

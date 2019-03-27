@@ -35,12 +35,20 @@ public class FormStatusFragmentPresenter {
         FormStatusRequestCall requestCall = new FormStatusRequestCall();
         requestCall.setListener(listener);
 
-        AllFormsFragment.setSubmittedFormsCount();
-
         if (mAllFormsFragment != null) {
             mAllFormsFragment.get().showProgressBar();
         }
         requestCall.getSubmittedForms(formId, url);
+    }
+
+    public void deleteSubmittedForm(String recordId, String url) {
+        FormStatusRequestCall requestCall = new FormStatusRequestCall();
+        requestCall.setListener(listener);
+
+        if (mAllFormsFragment != null) {
+            mAllFormsFragment.get().showProgressBar();
+        }
+        requestCall.deleteSubmittedForm(recordId, url);
     }
 
     public void setListener(FormStatusCallListener listener) {

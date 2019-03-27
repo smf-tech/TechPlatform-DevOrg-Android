@@ -60,6 +60,40 @@ public class FormStatusRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void deleteSubmittedForm(final String recordId, String url) {
+        Response.Listener<JSONObject> processDetailsResponseListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "deleteSubmittedForm - Resp: " + res);
+                    listener.onFormResultDeleted(recordId);
+                }
+            } catch (Exception e) {
+                listener.onFailureListener(e.getMessage());
+            }
+        };
+
+        Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.DELETE,
+                url,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                processDetailsResponseListener,
+                processDetailsErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(new JsonObject());
+        gsonRequest.setShouldCache(false);
+
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void getProcesses() {
         Response.Listener<JSONObject> processDetailsResponseListener = response -> {
             try {

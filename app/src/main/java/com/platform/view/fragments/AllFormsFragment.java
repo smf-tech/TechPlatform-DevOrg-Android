@@ -47,6 +47,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_DELETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 
 /**
@@ -67,7 +68,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private static int mSubmittedFormsCount = 0;
     private static int mSubmittedFormsDownloadedCount = 0;
 
-    public static void setSubmittedFormsCount() {
+    private static void setSubmittedFormsCount() {
         mSubmittedFormsCount += 1;
     }
 
@@ -108,7 +109,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         getProcessData();
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(EVENT_FORM_SUBMITTED);
+        // TODO: 27-03-2019 Uncomment below code if submitted count text is visible
+        /*filter.addAction(EVENT_FORM_SUBMITTED);
+        filter.addAction(EVENT_FORM_DELETED);*/
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
                 .registerReceiver(new BroadcastReceiver() {
@@ -118,6 +121,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                             String action = Objects.requireNonNull(intent.getAction());
                             switch (action) {
                                 case EVENT_FORM_SUBMITTED:
+                                case EVENT_FORM_DELETED:
                                     getProcessData();
                                     break;
                             }
@@ -218,6 +222,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
                         && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
 
+                    AllFormsFragment.setSubmittedFormsCount();
+
                     url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
                             data.getMicroservice().getRoute());
                     presenter.getSubmittedForms(data.getId(), url);
@@ -228,6 +234,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
                     if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
                             && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+
+                        AllFormsFragment.setSubmittedFormsCount();
 
                         url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
                                 data.getMicroservice().getRoute());
@@ -325,8 +333,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             mNoRecordsView.setVisibility(View.VISIBLE);
         }
 
-        if (mSubmittedFormsDownloadedCount == mSubmittedFormsCount)
+        if (mSubmittedFormsDownloadedCount == mSubmittedFormsCount) {
             hideProgressBar();
+            mSubmittedFormsCount = 0;
+            mSubmittedFormsDownloadedCount = 0;
+        }
+    }
+
+    @Override
+    public void onFormResultDeleted(final String formId) {
     }
 
     private void setAdapter(final Map<String, List<ProcessData>> data) {
