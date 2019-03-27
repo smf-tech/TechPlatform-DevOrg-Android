@@ -15,7 +15,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -109,7 +108,7 @@ public class PendingFormsFragment extends Fragment {
 
                         case PARTIAL_FORM_ADDED:
                             updateAdapter(context);
-                            Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                            Util.showToast(getString(R.string.partial_form_added), context);
                             break;
 
                         case PARTIAL_FORM_REMOVED:

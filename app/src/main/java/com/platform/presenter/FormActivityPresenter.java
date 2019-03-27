@@ -163,8 +163,10 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         formFragment.get().getActivity());
             } else {
                 if (formFragment != null && formFragment.get() != null) {
-                    Util.showToast(formFragment.get().getString(R.string.unexpected_error_occurred), formFragment.get().getActivity());
-                    Log.e("onErrorListener", "Unexpected response code " + error.networkResponse.statusCode);
+                    Util.showToast(formFragment.get().getString(R.string.unexpected_error_occurred),
+                            formFragment.get().getActivity());
+                    Log.e("onErrorListener",
+                            "Unexpected response code " + error.networkResponse.statusCode);
                 }
             }
         }
@@ -302,6 +304,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(savedFormData);
 
             //Update values on UI
+            elements.setChoicesByUrlResponsePath(path);
             formFragment.get().showChoicesByUrlAsync(response, elements);
         }
     }

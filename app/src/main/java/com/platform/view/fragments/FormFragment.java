@@ -814,7 +814,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 if (Util.isConnected(getContext())) {
                     formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
                 } else {
-                    Util.showToast(getResources().getString(R.string.no_internet), this);
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
 
             } catch (Exception e) {

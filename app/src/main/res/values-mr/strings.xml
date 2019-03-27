@@ -171,7 +171,6 @@
     <string name="form_saved_offline">आपण ऑफलाइन आहात, फॉर्म ऑफलाइन जतन केला आहे.</string>
     <string name="form_submit_success">फॉर्म यशस्वीरित्या सबमिट केला!</string>
     <string name="image_upload_success">प्रतिमा यशस्वीरित्या अपलोड केली!</string>
-    <string name="no_internet">इंटरनेट उपलब्ध नाही!</string>
     <string name="status_update_success">स्थिती यशस्वीरित्या अद्यतनित केली!</string>
     <string name="new_forms">नवीन</string>
     <string name="saved_forms">जतन</string>
@@ -213,7 +212,12 @@
     <string name="form_deleted">फॉर्म हटविला!</string>
     <string name="msg_delete_saved_form">आपणास खात्री आहे की आपण हा जतन केलेला फॉर्म हटवू इच्छिता?</string>
 
-    <string name="sync_completed">संकालन पूर्ण झाले!</string>
-    <string name="sync_failed">संकालन अयशस्वी झाले!</string>
+    <string name="requests">विनंत्या</string>
+    <string name="sync_completed">संकालन पूर्ण झाले</string>
+    <string name="sync_failed">संकालन अयशस्वी झाले</string>
+    <string name="syncing_pending">संकालन करीत आहे</string>
+    <string name="sync_started">समक्रमण सुरू झाले</string>
+    <string name="submitted_and_synced">सबमिट आणि समक्रमित</string>
+    <string name="unexpected_error_occurred">अनपेक्षित त्रुटी आली.</string>
 
 </resources>
