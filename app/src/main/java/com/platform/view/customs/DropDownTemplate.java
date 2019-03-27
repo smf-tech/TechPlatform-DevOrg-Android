@@ -124,13 +124,24 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         }
     }
 
+    int getSelectedItem() {
+        if (spinner != null) {
+            return spinner.getSelectedItemPosition();
+        }
+        return 0;
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        TextView tv = (TextView) adapterView.getSelectedView();
-        if (tv != null) {
-            tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
+        if (i != 0) {
+            TextView tv = (TextView) adapterView.getSelectedView();
+            if (tv != null) {
+                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
+            }
+            dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue(), formId);
+        } else {
+            dropDownValueSelectListener.onEmptyDropdownSelected(formData);
         }
-        dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue(), formId);
     }
 
     @Override
