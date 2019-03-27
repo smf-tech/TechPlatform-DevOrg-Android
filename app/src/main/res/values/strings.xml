@@ -194,7 +194,6 @@
 
     <string name="partial_form_added">Form Saved Successfully</string>
     <string name="form_deleted">Form deleted!</string>
-    <string name="msg_delete_saved_form">Are you sure you want to delete this saved form?</string>
 
     <string name="requests">Requests</string>
     <string name="sync_completed">Sync Completed</string>
@@ -245,15 +244,6 @@
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
 
-    <string name="syncing_pending">Syncing Pending</string>
-    <string name="submitted_and_synced">Submitted &amp; Synced</string>
-    <string name="requests">Requests</string>
-    <string name="sync_started">Sync started&#8230;</string>
-    <string name="sync_completed">Sync completed.</string>
-    <string name="sync_failed">Sync failed!</string>
-    <string name="partial_form_added">Form Saved Successfully</string>
-    <string name="unexpected_error_occurred">Unexpected error occurred.</string>
-    <string name="form_deleted">Form deleted!</string>
     <string name="value_should_not_be_less_than"> value should not be less than </string>
     <string name="value_should_not_be_greater_than"> value should not be greater than </string>
     <string name="length_should_not_be_less_than"> length should not be less than </string>

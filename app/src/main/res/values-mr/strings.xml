@@ -192,15 +192,6 @@
     <string name="form_count">%1$d फॉर्म</string>
     <string name="frequently_used_forms">वारंवार वापरलेले फॉर्म</string>
 
-    <string name="syncing_pending">संकालन करीत आहे</string>
-    <string name="submitted_and_synced">सबमिट आणि समक्रमित</string>
-    <string name="requests">विनंत्या</string>
-    <string name="sync_started">समक्रमण सुरू&#8230;</string>
-    <string name="sync_completed">संकालन पूर्ण</string>
-    <string name="sync_failed">संकालन अयशस्वी झाले!</string>
-    <string name="partial_form_added">फॉर्म यशस्वीरित्या जतन केला</string>
-    <string name="unexpected_error_occurred">अनपेक्षित त्रुटी आली.</string>
-    <string name="form_deleted">फॉर्म हटविला!</string>
     <string name="value_should_not_be_less_than"> मूल्य पेक्षा कमी असू नये </string>
     <string name="value_should_not_be_greater_than"> मूल्य पेक्षा मोठे नसावे </string>
     <string name="length_should_not_be_less_than"> लांबी कमी असू नये </string>
@@ -210,7 +201,6 @@
 
     <string name="partial_form_added">फॉर्म यशस्वीरित्या जतन केला</string>
     <string name="form_deleted">फॉर्म हटविला!</string>
-    <string name="msg_delete_saved_form">आपणास खात्री आहे की आपण हा जतन केलेला फॉर्म हटवू इच्छिता?</string>
 
     <string name="requests">विनंत्या</string>
     <string name="sync_completed">संकालन पूर्ण झाले</string>
