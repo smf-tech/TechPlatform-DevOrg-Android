@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
@@ -25,6 +27,10 @@ public class FormsFragment extends Fragment {
     private View formsFragmentView;
     @SuppressLint("StaticFieldLeak")
     static ViewPager viewPager;
+    @SuppressLint("StaticFieldLeak")
+    static RelativeLayout progressBarLayout;
+    @SuppressLint("StaticFieldLeak")
+    static ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +70,10 @@ public class FormsFragment extends Fragment {
 
         TabLayout tabs = formsFragmentView.findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
+
+        progressBarLayout = formsFragmentView.findViewById(R.id.gen_frag_progress_bar);
+        progressBar = formsFragmentView.findViewById(R.id.pb_gen_form_fragment);
+
     }
 
     @Override
