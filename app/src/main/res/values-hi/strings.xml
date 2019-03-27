@@ -182,6 +182,7 @@
     <string name="msg_form_duplicate_error">डुप्लिकेट प्रविष्टियों की अनुमति नहीं है।</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
+    <string name="msg_delete_saved_form">क्या आप वाकई इस सहेजे गए फ़ॉर्म को हटाना चाहते हैं?</string>
 
     <string name="notifications">सूचनाएं</string>
     <string name="msg_rejection_reason">क्या आप वाकई इस अनुरोध को अस्वीकार करना चाहते हैं??</string>

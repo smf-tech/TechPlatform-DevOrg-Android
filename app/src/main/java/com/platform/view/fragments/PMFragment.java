@@ -167,6 +167,7 @@ public class PMFragment extends Fragment implements View.OnClickListener,
             }
         } else {
             rltPendingForms.setVisibility(View.GONE);
+            pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.GONE);
         }
     }
 

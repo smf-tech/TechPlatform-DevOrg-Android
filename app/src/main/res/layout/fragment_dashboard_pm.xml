@@ -54,9 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/view_forms_divider1"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:layerType="software"
-                    android:paddingStart="@dimen/dimen_20dp"
-                    android:paddingEnd="@dimen/dimen_15dp" />
+                    android:layerType="software" />
             </RelativeLayout>
 
             <View
