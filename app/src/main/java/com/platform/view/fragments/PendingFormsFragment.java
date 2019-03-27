@@ -1,10 +1,10 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,27 +94,35 @@ public class PendingFormsFragment extends Fragment {
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                String action = Objects.requireNonNull(intent.getAction());
-                switch (action) {
-                    case EVENT_SYNC_COMPLETED:
-                        updateAdapter(context);
-                        Toast.makeText(context, "Sync completed.", Toast.LENGTH_SHORT).show();
-                        break;
+                if (context == null) {
+                    return;
+                }
 
-                    case PARTIAL_FORM_ADDED:
-                        updateAdapter(context);
-                        Toast.makeText(context, "Partial Form Added.", Toast.LENGTH_SHORT).show();
-                        break;
+                try {
+                    String action = Objects.requireNonNull(intent.getAction());
+                    switch (action) {
+                        case EVENT_SYNC_COMPLETED:
+                            updateAdapter(context);
+                            Util.showToast(getString(R.string.sync_completed), context);
+                            break;
 
-                    case PARTIAL_FORM_REMOVED:
-                    case EVENT_FORM_SUBMITTED:
-                        updateAdapter(context);
-                        break;
+                        case PARTIAL_FORM_ADDED:
+                            updateAdapter(context);
+                            Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                            break;
 
-                    case EVENT_SYNC_FAILED:
-                        Log.e("PendingForms", "Sync failed!");
-                        Toast.makeText(context, "Sync failed!", Toast.LENGTH_SHORT).show();
-                        break;
+                        case PARTIAL_FORM_REMOVED:
+                        case EVENT_FORM_SUBMITTED:
+                            updateAdapter(context);
+                            break;
+
+                        case EVENT_SYNC_FAILED:
+                            Log.e("PendingForms", "Sync failed!");
+                            Util.showToast(getString(R.string.sync_failed), context);
+                            break;
+                    }
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
                 }
             }
         }, filter);
@@ -142,7 +150,7 @@ public class PendingFormsFragment extends Fragment {
                 }
             }
 
-            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap));
+            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap, this));
 
             if (!mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
@@ -179,7 +187,7 @@ public class PendingFormsFragment extends Fragment {
                 }
             }
 
-            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap));
+            mExpandableListView.setAdapter(new SavedFormsListAdapter(getContext(), mFormResultMap, this));
 
             if (!mFormResultMap.isEmpty()) {
                 mNoRecordsView.setVisibility(View.GONE);
@@ -189,14 +197,22 @@ public class PendingFormsFragment extends Fragment {
         }
     }
 
+    public void onFormDeletedListener() {
+        updateAdapter(getContext());
+    }
+
     private class SavedFormsListAdapter extends BaseExpandableListAdapter {
 
-        Context mContext;
+        private Context mContext;
         private Map<String, List<FormResult>> mMap;
+        private PendingFormsFragment mFragment;
 
-        private SavedFormsListAdapter(final Context context, final Map<String, List<FormResult>> map) {
+        private SavedFormsListAdapter(final Context context, final Map<String,
+                List<FormResult>> map, PendingFormsFragment fragment) {
+
             mContext = context;
             mMap = map;
+            mFragment = fragment;
         }
 
         @Override
@@ -245,7 +261,7 @@ public class PendingFormsFragment extends Fragment {
         @Override
         public View getGroupView(final int groupPosition, final boolean isExpanded,
                                  final View convertView, final ViewGroup parent) {
-            
+
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
                     parent, false);
 
@@ -259,7 +275,8 @@ public class PendingFormsFragment extends Fragment {
             }
 
             ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-            ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s Forms", String.valueOf(size)));
+            ((TextView) view.findViewById(R.id.form_count))
+                    .setText(String.format("%s Forms", String.valueOf(size)));
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
@@ -275,7 +292,7 @@ public class PendingFormsFragment extends Fragment {
         public View getChildView(final int groupPosition, final int childPosition,
                                  final boolean isLastChild, final View convertView, final ViewGroup parent) {
 
-            View view = LayoutInflater.from(mContext).inflate(R.layout.form_sub_item,
+            View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
                     parent, false);
 
             ArrayList<String> list = new ArrayList<>(mMap.keySet());
@@ -286,12 +303,17 @@ public class PendingFormsFragment extends Fragment {
             if (processData != null) {
                 formResult = processData.get(childPosition);
 
-                ((TextView) view.findViewById(R.id.form_title)).setText(formResult.getFormName().trim());
-                ((TextView) view.findViewById(R.id.form_date))
+                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title))
+                        .setText(formResult.getFormName().trim());
+                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
                         .setText(Util.getDateFromTimestamp(formResult.getCreatedAt()));
             }
 
             final FormResult finalFormResult = formResult;
+
+            view.findViewById(R.id.iv_dashboard_delete_form)
+                    .setOnClickListener(v -> showFormDeletePopUp(processData, finalFormResult));
+
             view.setOnClickListener(v -> {
                 if (finalFormResult != null) {
                     final String formID = finalFormResult.getFormId();
@@ -304,19 +326,42 @@ public class PendingFormsFragment extends Fragment {
                     intent.putExtra(Constants.PM.PARTIAL_FORM, true);
                     mContext.startActivity(intent);
                 }
-
             });
-
-            ColorStateList tintColor = ColorStateList.valueOf(mContext.getResources()
-                    .getColor(R.color.partial_form_color));
-
-            ImageView formImage = view.findViewById(R.id.form_image);
-            formImage.setImageTintList(tintColor);
 
             Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
             view.findViewById(R.id.form_status_indicator).setBackground(drawable);
 
             return view;
+        }
+
+        private void deleteSavedForm(List<FormResult> processData, FormResult finalFormResult) {
+            DatabaseManager.getDBInstance(mContext).deleteFormResult(finalFormResult);
+            if (processData != null) {
+                processData.remove(finalFormResult);
+            }
+            notifyDataSetChanged();
+            Util.showToast(mContext.getString(R.string.form_deleted), mContext);
+
+            mFragment.onFormDeletedListener();
+        }
+
+        private void showFormDeletePopUp(List<FormResult> processData, FormResult finalFormResult) {
+            AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+            // Setting Dialog Title
+            alertDialog.setTitle(getString(R.string.app_name_ss));
+            // Setting Dialog Message
+            alertDialog.setMessage(getString(R.string.msg_delete_saved_form));
+            // Setting Icon to Dialog
+            alertDialog.setIcon(R.mipmap.app_logo);
+            // Setting CANCEL Button
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                    (dialog, which) -> alertDialog.dismiss());
+            // Setting OK Button
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                    (dialog, which) -> deleteSavedForm(processData, finalFormResult));
+
+            // Showing Alert Message
+            alertDialog.show();
         }
 
         @Override

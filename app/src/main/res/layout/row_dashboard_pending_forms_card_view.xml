@@ -7,6 +7,8 @@
     android:layout_marginEnd="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
     android:orientation="vertical"
+    android:paddingStart="@dimen/dimen_20dp"
+    android:paddingEnd="@dimen/dimen_10dp"
     tools:keep="@layout/row_dashboard_pending_forms_card_view">
 
     <RelativeLayout
@@ -37,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dimen_15dp"
+            android:layout_toStartOf="@id/iv_dashboard_delete_form"
             android:layout_toEndOf="@+id/iv_dashboard_pending_form">
 
             <TextView
@@ -52,5 +55,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_dashboard_pending_form_title" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_dashboard_delete_form"
+            android:layout_width="@dimen/dimen_35dp"
+            android:layout_height="@dimen/dimen_35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/content_description"
+            android:paddingStart="@dimen/dimen_07dp"
+            android:paddingTop="@dimen/dimen_07dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="@dimen/dimen_07dp"
+            android:src="@drawable/ic_delete" />
     </RelativeLayout>
 </LinearLayout>

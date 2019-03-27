@@ -192,6 +192,13 @@
     <string name="form_count">%1$d Forms</string>
     <string name="frequently_used_forms">Frequently used forms</string>
 
+    <string name="partial_form_added">Form Saved Successfully</string>
+    <string name="form_deleted">Form deleted!</string>
+    <string name="msg_delete_saved_form">Are you sure you want to delete this saved form?</string>
+
+    <string name="sync_completed">Sync completed.</string>
+    <string name="sync_failed">Sync failed!</string>
+
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>
     <string name="event_login_success" translatable="false">Login Success</string>

@@ -192,4 +192,11 @@
     <string name="form_count">%1$d फ़ॉर्म</string>
     <string name="frequently_used_forms">Frequently used forms</string>
 
+    <string name="partial_form_added">फॉर्म सफलतापूर्वक सहेजा गया</string>
+    <string name="form_deleted">फ़ॉर्म हटाया गया!</string>
+    <string name="msg_delete_saved_form">क्या आप वाकई इस सहेजे गए फ़ॉर्म को हटाना चाहते हैं?</string>
+
+    <string name="sync_completed">सिंक पूरा हुआ।</string>
+    <string name="sync_failed">सिंक विफल!</string>
+
 </resources>

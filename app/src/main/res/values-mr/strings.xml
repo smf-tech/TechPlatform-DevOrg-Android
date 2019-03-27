@@ -192,4 +192,11 @@
     <string name="form_count">%1$d फॉर्म</string>
     <string name="frequently_used_forms">Frequently used forms</string>
 
+    <string name="partial_form_added">फॉर्म यशस्वीरित्या जतन केला</string>
+    <string name="form_deleted">फॉर्म हटविला!</string>
+    <string name="msg_delete_saved_form">आपणास खात्री आहे की आपण हा जतन केलेला फॉर्म हटवू इच्छिता?</string>
+
+    <string name="sync_completed">संकालन पूर्ण झाले!</string>
+    <string name="sync_failed">संकालन अयशस्वी झाले!</string>
+
 </resources>
