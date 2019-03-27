@@ -14,6 +14,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
+import com.platform.listeners.FormTaskListener;
 import com.platform.models.LocaleData;
 import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
@@ -52,6 +54,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
+import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_DELETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_COMPLETED;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
@@ -64,7 +67,7 @@ import static com.platform.utility.Constants.FORM_DATE_FORMAT;
  * create an instance of this fragment.
  */
 @SuppressWarnings("CanBeFinal")
-public class SubmittedFormsFragment extends Fragment implements FormStatusCallListener {
+public class SubmittedFormsFragment extends Fragment implements FormStatusCallListener, FormTaskListener {
     private static final String TAG = SubmittedFormsFragment.class.getSimpleName();
 
     //    private LinearLayout lnrOuter;
@@ -78,6 +81,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private LinearLayout mPendingFormsContainer;
     private TextView mSubmittedFormsTitleView;
     private View dividerView;
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
 
     public SubmittedFormsFragment() {
         // Required empty public constructor
@@ -102,6 +107,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        progressBarLayout = FormsFragment.progressBarLayout;
+        progressBar = FormsFragment.progressBar;
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
@@ -133,6 +141,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         filter.addAction(EVENT_SYNC_FAILED);
         filter.addAction(PARTIAL_FORM_REMOVED);
         filter.addAction(EVENT_FORM_SUBMITTED);
+        filter.addAction(EVENT_FORM_DELETED);
 
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
                 .registerReceiver(new BroadcastReceiver() {
@@ -148,6 +157,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                         case PARTIAL_FORM_REMOVED:
                         case EVENT_FORM_SUBMITTED:
+                        case EVENT_FORM_DELETED:
                             getProcessData();
                             break;
 
@@ -328,8 +338,14 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
 
-            SubmittedFormsListAdapter adapter = new SubmittedFormsListAdapter(getContext(), mProcessDataMap);
-            mExpandableListView.setAdapter(adapter);
+            if (mProcessDataMap.isEmpty()) {
+                showNoDataText = true;
+                mExpandableListView.setVisibility(View.GONE);
+            } else {
+                mExpandableListView.setVisibility(View.VISIBLE);
+                SubmittedFormsListAdapter adapter = new SubmittedFormsListAdapter(getContext(), mProcessDataMap);
+                mExpandableListView.setAdapter(adapter);
+            }
 
             updateView();
         }
@@ -344,6 +360,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onFailureListener(String message) {
+        hideProgressBar();
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -351,6 +368,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onErrorListener(VolleyError error) {
+        hideProgressBar();
         Log.e(TAG, "onErrorListener: " + error.getMessage());
         Util.showToast(error.getMessage(), getContext());
     }
@@ -374,6 +392,24 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     }
 
+    @Override
+    public void onFormResultDeleted(final String recordId) {
+        try {
+            hideProgressBar();
+
+            Util.showToast(getString(R.string.form_deleted), getContext());
+
+            DatabaseManager dbInstance = DatabaseManager.getDBInstance(getContext());
+            dbInstance.deleteFormResult(dbInstance.getFormResult(recordId));
+
+            Intent intent = new Intent();
+            intent.setAction(EVENT_FORM_DELETED);
+            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+        } catch (Exception e) {
+            Log.e(TAG, "onFormResultDeleted: ", e);
+        }
+    }
+
     private boolean isFormOneMonthOld(final Long updatedAt) {
         if (updatedAt != null) {
             Date eventStartDate;
@@ -390,6 +426,28 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
 
         return false;
+    }
+
+    @Override
+    public void showProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.getVisibility() == View.GONE) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if (getActivity() == null) return;
+
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     static class FormResult {
@@ -512,7 +570,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         public View getChildView(final int groupPosition, final int childPosition,
                                  final boolean isLastChild, final View convertView, final ViewGroup parent) {
 
-            View view = LayoutInflater.from(mContext).inflate(R.layout.form_sub_item,
+            View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
                     parent, false);
 
             ArrayList<String> list = new ArrayList<>(mMap.keySet());
@@ -523,9 +581,10 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             if (processData != null) {
                 data = processData.get(childPosition);
 
-                ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue());
+                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title))
+                        .setText(data.getName().getLocaleValue());
                 if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                    ((TextView) view.findViewById(R.id.form_date))
+                    ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
                             .setText(Util.getDateFromTimestamp(data.getMicroservice().getUpdatedAt()));
                 }
             }
@@ -551,6 +610,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             });
 
+            view.findViewById(R.id.iv_dashboard_delete_form).setOnClickListener(v ->
+                    deleteSubmittedForm(finalFormResult));
+
             int bgColor = mContext.getResources().getColor(R.color.submitted_form_color);
             if (cat.equals(getString(R.string.syncing_pending))) {
                 bgColor = mContext.getResources().getColor(R.color.red);
@@ -558,6 +620,44 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
             view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
             return view;
+        }
+
+        private void deleteSubmittedForm(final ProcessData data) {
+            if (data != null) {
+                com.platform.models.forms.FormResult result = DatabaseManager
+                        .getDBInstance(mContext).getFormResult(data.getId());
+
+                String formUrl = getFormUrl(result);
+                if (!TextUtils.isEmpty(formUrl)) {
+
+                    showProgressBar();
+                    new FormStatusFragmentPresenter(SubmittedFormsFragment.this)
+                            .deleteSubmittedForm(result.getOid(), formUrl);
+                }
+            }
+        }
+
+        private String getFormUrl(final com.platform.models.forms.FormResult form) {
+            String formId = form.getFormId();
+            String url = null;
+
+            FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(formId);
+            if (formSchema != null && formSchema.getMicroService() != null) {
+                Microservice microService = formSchema.getMicroService();
+
+                String baseUrl = microService.getBaseUrl();
+                String route = microService.getRoute();
+                if (route.contains(Constants.FormDynamicKeys.FORM_ID))
+                    route = route.replace(Constants.FormDynamicKeys.FORM_ID, formSchema.getId());
+                if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
+                    url = getContext().getResources().getString(R.string.form_field_mandatory,
+                            baseUrl, route);
+                    url = url + Constants.Image.FILE_SEP + form.getOid();
+                }
+            } else {
+                Toast.makeText(mContext, R.string.msg_no_form_offline, Toast.LENGTH_SHORT).show();
+            }
+            return url;
         }
 
         @Override

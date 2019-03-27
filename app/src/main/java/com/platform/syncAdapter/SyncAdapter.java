@@ -139,8 +139,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             String baseUrl = microService.getBaseUrl();
             String route = microService.getRoute();
-            if (route.contains("form_id"))
-                route = route.replace("form_id", formSchema.getId());
+            if (route.contains(Constants.FormDynamicKeys.FORM_ID))
+                route = route.replace(Constants.FormDynamicKeys.FORM_ID, formSchema.getId());
             if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
                 url = getContext().getResources().getString(R.string.form_field_mandatory,
                         baseUrl, route);

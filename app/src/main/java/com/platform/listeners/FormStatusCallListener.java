@@ -12,4 +12,6 @@ public interface FormStatusCallListener {
 
     void onMastersFormsLoaded(String response, String formId);
 
+    void onFormResultDeleted(String formId);
+
 }

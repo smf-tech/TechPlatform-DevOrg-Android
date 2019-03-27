@@ -190,6 +190,10 @@ public class CompletedFormsFragment extends Fragment implements FormStatusCallLi
         processFormResultResponse(response);
     }
 
+    @Override
+    public void onFormResultDeleted(final String formId) {
+    }
+
     private void processFormResultResponse(final String response) {
         ArrayList<ProcessDemoObject> list = new ArrayList<>();
         String formID = "";
