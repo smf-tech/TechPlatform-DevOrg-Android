@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -19,6 +21,7 @@ import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
+import com.platform.listeners.FormTaskListener;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
@@ -52,13 +55,21 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
  * create an instance of this fragment.
  */
 @SuppressWarnings("EmptyMethod")
-public class AllFormsFragment extends Fragment implements FormStatusCallListener {
+public class AllFormsFragment extends Fragment implements FormStatusCallListener, FormTaskListener {
 
     private static final String TAG = AllFormsFragment.class.getSimpleName();
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
     private TextView mNoRecordsView;
     private Map<String, String> mCountList;
     private ExpandableAdapter adapter;
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
+    private static int mSubmittedFormsCount = 0;
+    private static int mSubmittedFormsDownloadedCount = 0;
+
+    public static void setSubmittedFormsCount() {
+        mSubmittedFormsCount += 1;
+    }
 
     public AllFormsFragment() {
         // Required empty public constructor
@@ -86,6 +97,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mCountList = new HashMap<>();
+
+        progressBarLayout = FormsFragment.progressBarLayout;
+        progressBar = FormsFragment.progressBar;
 
         ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
@@ -124,7 +138,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             } else {
                 mNoRecordsView.setVisibility(View.VISIBLE);
                 if (Util.isConnected(getContext())) {
-                    FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                    FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this, this);
                     presenter.getAllProcesses();
                 }
             }
@@ -135,6 +149,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onFailureListener(String message) {
+        hideProgressBar();
+
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -142,6 +158,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onErrorListener(VolleyError error) {
+        hideProgressBar();
+
         Log.e(TAG, "onErrorListener: " + error.getMessage());
         Util.showToast(error.getMessage(), getContext());
     }
@@ -166,7 +184,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         mCountList.clear();
         mChildList.clear();
 
-        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this, this);
 
         for (ProcessData data : json.getData()) {
             String categoryName = data.getCategory().getName().getLocaleValue();
@@ -229,6 +247,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onMastersFormsLoaded(final String response, final String formId) {
+        mSubmittedFormsDownloadedCount ++;
+
         try {
             String count;
             JSONObject metadataObj = null;
@@ -304,6 +324,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         } else {
             mNoRecordsView.setVisibility(View.VISIBLE);
         }
+
+        if (mSubmittedFormsDownloadedCount == mSubmittedFormsCount)
+            hideProgressBar();
     }
 
     private void setAdapter(final Map<String, List<ProcessData>> data) {
@@ -312,4 +335,27 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             mNoRecordsView.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public void showProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.getVisibility() == View.GONE) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if (getActivity() == null) return;
+
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
 }

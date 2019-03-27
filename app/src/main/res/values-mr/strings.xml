@@ -183,6 +183,7 @@
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
     <string name="msg_delete_saved_form">आपणास खात्री आहे की आपण हा जतन केलेला फॉर्म हटवू इच्छिता?</string>
+    <string name="msg_no_network">नेटवर्क उपलब्ध नाही, कृपया नंतर पुन्हा प्रयत्न करा.</string>
 
     <string name="notifications">अधिसूचना</string>
     <string name="msg_rejection_reason">आपणास खात्री आहे की आपण ही विनंती नाकारू इच्छिता??</string>

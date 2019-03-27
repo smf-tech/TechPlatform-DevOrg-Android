@@ -173,6 +173,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         Predicate<DropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(elements.getName());
         List<DropDownTemplate> matchedTemplates = Stream.of(dropDowns).filter(byTag).collect(Collectors.toList());
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
+            Choice selectChoice = new Choice();
+            selectChoice.setValue("--Select--");
+            LocaleData localeData = new LocaleData("--Select--");
+            selectChoice.setText(localeData);
+            if (!choiceValues.contains(selectChoice)) {
+                choiceValues.add(0, selectChoice);
+            }
+
+            elements.setChoices(choiceValues);
             matchedTemplates.get(0).setFormData(elements);
             matchedTemplates.get(0).setListData(choiceValues);
         }
@@ -192,7 +201,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         if (formData != null) {
             if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
                 //set input type
-                setInputType(formData.getValidators().get(0).getType(), textInputField);
+                for (Validator validator :
+                        formData.getValidators()) {
+                    if (!TextUtils.isEmpty(validator.getType())) {
+                        setInputType(validator.getType(), textInputField);
+                        break;
+                    }
+                }
             }
 
             //set max length allowed
@@ -200,11 +215,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
                         formData.getMaxLength())});
             } else if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                Validator validator = formData.getValidators().get(0);
-                if (validator.getMaxLength() != null) {
-                    textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
-                            validator.getMaxLength())});
+                for (Validator validator :
+                        formData.getValidators()) {
+                    if (validator.getMaxLength() != null) {
+                        textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                                validator.getMaxLength())});
+                        break;
+                    }
                 }
+
             }
 
             if (!TextUtils.isEmpty(formData.getAnswer())) {
@@ -392,73 +411,76 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             }
 
             if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                for (Validator validator :
+                        formData.getValidators()) {
+                    if (!TextUtils.isEmpty(validator.getType())) {
+                        switch (validator.getType()) {
+                            case Constants.ValidationType.REGEX_TYPE:
+                                if (!TextUtils.isEmpty(editText.getText().toString())) {
 
-                    errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getValidators().get(0), fragment.get().getContext());
+                                    errorMsg = Validation.regexValidation(editText.getTag().toString(),
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
-                    if (!TextUtils.isEmpty(errorMsg)) {
-                        fragment.get().setErrorMsg(errorMsg);
-                        return false;
-                    }
-                }
-            }
+                                    if (!TextUtils.isEmpty(errorMsg)) {
+                                        fragment.get().setErrorMsg(errorMsg);
+                                        return false;
+                                    }
+                                }
+                                break;
 
-            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                            case Constants.ValidationType.EXPRESSION_TYPE:
+                                if (!TextUtils.isEmpty(editText.getText().toString())) {
 
-                    errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getValidators().get(0), fragment.get().getContext());
+                                    if (!TextUtils.isEmpty(validator.getExpression())) {
+                                        String expression = validator.getExpression();
+                                        StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=");
+                                        String field1Name = expressionTokenizer.nextToken();
+                                        String field2Name = expressionTokenizer.nextToken();
 
-                    if (!TextUtils.isEmpty(errorMsg)) {
-                        fragment.get().setErrorMsg(errorMsg);
-                        return false;
-                    }
-                }
-            }
+                                        String field1Value;
+                                        String field2Value;
+                                        if (("{" + formData.getName() + "}").equals(field1Name)) {
+                                            field1Value = editText.getText().toString();
+                                            field2Value = editTextWithNameMap.get(field2Name).getText().toString();
+                                        } else {
+                                            field1Value = editTextWithNameMap.get(field1Name).getText().toString();
+                                            field2Value = editText.getText().toString();
+                                        }
 
-            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                if (!TextUtils.isEmpty(editText.getText().toString())) {
+                                        if (!TextUtils.isEmpty(field2Value)) {
+                                            errorMsg = Validation.expressionValidation(editText.getTag().toString(),
+                                                    field1Value, field2Value, formData.getInputType(), validator, fragment.get().getContext());
 
-                    if (!TextUtils.isEmpty(formData.getValidators().get(0).getExpression())) {
-                        String expression = formData.getValidators().get(0).getExpression();
-                        StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=");
-                        String field1Name = expressionTokenizer.nextToken();
-                        String field2Name = expressionTokenizer.nextToken();
+                                            if (!TextUtils.isEmpty(errorMsg)) {
+                                                fragment.get().setErrorMsg(errorMsg);
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
 
-                        String field1Value;
-                        String field2Value;
-                        if (("{" + formData.getName() + "}").equals(field1Name)) {
-                            field1Value = editText.getText().toString();
-                            field2Value = editTextWithNameMap.get(field2Name).getText().toString();
-                        } else {
-                            field1Value = editTextWithNameMap.get(field1Name).getText().toString();
-                            field2Value = editText.getText().toString();
+                            default:
+                                if (!TextUtils.isEmpty(editText.getText().toString())) {
+
+                                    errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
+                                            editText.getText().toString(), validator, fragment.get().getContext());
+
+                                    if (!TextUtils.isEmpty(errorMsg)) {
+                                        fragment.get().setErrorMsg(errorMsg);
+                                        return false;
+                                    }
+
+                                    errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
+                                            editText.getText().toString(), validator, fragment.get().getContext());
+
+                                    if (!TextUtils.isEmpty(errorMsg)) {
+                                        fragment.get().setErrorMsg(errorMsg);
+                                        return false;
+                                    }
+                                }
+                                break;
                         }
-
-                        if (!TextUtils.isEmpty(field2Value)) {
-                            errorMsg = Validation.expressionValidation(editText.getTag().toString(),
-                                    field1Value, field2Value, formData.getInputType(),
-                                    formData.getValidators().get(0), fragment.get().getContext());
-
-                            if (!TextUtils.isEmpty(errorMsg)) {
-                                fragment.get().setErrorMsg(errorMsg);
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (formData.getValidators() != null && !formData.getValidators().isEmpty()) {
-                if (!TextUtils.isEmpty(editText.getText().toString())) {
-
-                    errorMsg = Validation.regexValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getValidators().get(0), fragment.get().getContext());
-
-                    if (!TextUtils.isEmpty(errorMsg)) {
-                        fragment.get().setErrorMsg(errorMsg);
-                        return false;
                     }
                 }
             }
@@ -469,7 +491,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             Elements formData = dropDownElementsHashMap.get(dropDownTemplate);
             if (formData.isRequired() != null) {
 
-                if (dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) {
+                if ((dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) ||
+                        !(dropDownTemplate.getSelectedItem() > 0)) {
                     errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
                             "", formData.isRequired(), fragment.get().getContext());
 
@@ -772,6 +795,12 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     //Update UI on UI thread
                     if (fragment.get().getActivity() != null) {
                         fragment.get().getActivity().runOnUiThread(() -> {
+                            Choice selectChoice = new Choice();
+                            selectChoice.setValue("--Select--");
+                            LocaleData localeData = new LocaleData("--Select--");
+                            selectChoice.setText(localeData);
+                            choiceValues.add(0, selectChoice);
+
                             dependentElement.setChoices(choiceValues);
                             dropDownTemplate.setFormData(dependentElement);
                             dropDownTemplate.setListData(choiceValues);

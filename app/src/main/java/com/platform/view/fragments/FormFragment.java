@@ -459,10 +459,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                elements.setChoices(choiceValues);
-                formComponentCreator.updateDropDownValues(elements, choiceValues);
-            });
+            getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
         }
 
     }
