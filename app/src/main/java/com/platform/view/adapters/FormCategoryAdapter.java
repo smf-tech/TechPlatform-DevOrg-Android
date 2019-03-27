@@ -84,7 +84,7 @@ public class FormCategoryAdapter extends RecyclerView.Adapter<FormCategoryAdapte
                     Toast.makeText(mContext, R.string.sync_started, Toast.LENGTH_SHORT).show();
                     SyncAdapterUtils.manualRefresh();
                 } else {
-                    Toast.makeText(mContext, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.msg_no_network, Toast.LENGTH_SHORT).show();
                 }
             });
 

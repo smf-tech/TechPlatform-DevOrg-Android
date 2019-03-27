@@ -58,12 +58,15 @@
 
         <ImageView
             android:id="@+id/iv_dashboard_delete_form"
-            android:layout_width="@dimen/dimen_40dp"
-            android:layout_height="@dimen/dimen_40dp"
+            android:layout_width="@dimen/dimen_35dp"
+            android:layout_height="@dimen/dimen_35dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/content_description"
-            android:padding="@dimen/dimen_07dp"
-            android:src="@drawable/ic_delete_24px" />
+            android:paddingStart="@dimen/dimen_07dp"
+            android:paddingTop="@dimen/dimen_07dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="@dimen/dimen_07dp"
+            android:src="@drawable/ic_delete" />
     </RelativeLayout>
 </LinearLayout>

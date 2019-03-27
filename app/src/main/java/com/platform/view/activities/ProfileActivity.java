@@ -551,7 +551,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 if (Util.isConnected(this)) {
                     profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                 } else {
-                    Util.showToast(getResources().getString(R.string.no_internet), this);
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
 
             } catch (Exception e) {

@@ -25,9 +25,11 @@ public class TMRejectedAdapter extends BaseExpandableListAdapter {
     private Map<String, List<PendingRequest>> mApprovedRequestMap;
     private RejectedFragmentPresenter approvedFragmentPresenter;
 
-    public TMRejectedAdapter(final Context context, final Map<String, List<PendingRequest>> approvedRequestMap, RejectedFragmentPresenter presenter) {
-        mContext = context;
-        mApprovedRequestMap = approvedRequestMap;
+    public TMRejectedAdapter(final Context context, final Map<String,
+            List<PendingRequest>> approvedRequestMap, RejectedFragmentPresenter presenter) {
+
+        this.mContext = context;
+        this.mApprovedRequestMap = approvedRequestMap;
         this.approvedFragmentPresenter = presenter;
     }
 
@@ -75,8 +77,11 @@ public class TMRejectedAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(final int groupPosition, final boolean isExpanded, final View convertView, final ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_pending_approvals_item, parent, false);
+    public View getGroupView(final int groupPosition, final boolean isExpanded,
+                             final View convertView, final ViewGroup parent) {
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_pending_approvals_item,
+                parent, false);
 
         ArrayList<String> list = new ArrayList<>(mApprovedRequestMap.keySet());
         String cat = list.get(groupPosition);
@@ -88,7 +93,8 @@ public class TMRejectedAdapter extends BaseExpandableListAdapter {
         }
 
         ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-        ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s %s", String.valueOf(size), mContext.getString(R.string.requests)));
+        ((TextView) view.findViewById(R.id.form_count))
+                .setText(String.format("%s %s", String.valueOf(size), mContext.getString(R.string.requests)));
 
         ImageView v = view.findViewById(R.id.form_image);
         if (isExpanded) {
@@ -101,7 +107,8 @@ public class TMRejectedAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, final View convertView, final ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition,
+                             final boolean isLastChild, final View convertView, final ViewGroup parent) {
 
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.row_pending_requests_card_view, parent, false);

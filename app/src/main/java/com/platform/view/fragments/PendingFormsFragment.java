@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -94,7 +94,9 @@ public class PendingFormsFragment extends Fragment {
                 .registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                if (context == null) return;
+                if (context == null) {
+                    return;
+                }
 
                 try {
                     String action = Objects.requireNonNull(intent.getAction());
@@ -106,7 +108,7 @@ public class PendingFormsFragment extends Fragment {
 
                         case PARTIAL_FORM_ADDED:
                             updateAdapter(context);
-                            Toast.makeText(context, R.string.partial_form_added, Toast.LENGTH_SHORT).show();
+                            Util.showToast(getString(R.string.partial_form_added), context);
                             break;
 
                         case PARTIAL_FORM_REMOVED:
@@ -201,11 +203,13 @@ public class PendingFormsFragment extends Fragment {
 
     private class SavedFormsListAdapter extends BaseExpandableListAdapter {
 
-        Context mContext;
+        private Context mContext;
         private Map<String, List<FormResult>> mMap;
         private PendingFormsFragment mFragment;
 
-        private SavedFormsListAdapter(final Context context, final Map<String, List<FormResult>> map, PendingFormsFragment fragment) {
+        private SavedFormsListAdapter(final Context context, final Map<String,
+                List<FormResult>> map, PendingFormsFragment fragment) {
+
             mContext = context;
             mMap = map;
             mFragment = fragment;
@@ -257,7 +261,7 @@ public class PendingFormsFragment extends Fragment {
         @Override
         public View getGroupView(final int groupPosition, final boolean isExpanded,
                                  final View convertView, final ViewGroup parent) {
-            
+
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
                     parent, false);
 
@@ -271,7 +275,8 @@ public class PendingFormsFragment extends Fragment {
             }
 
             ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-            ((TextView) view.findViewById(R.id.form_count)).setText(String.format("%s %s", String.valueOf(size), getString(R.string.forms)));
+            ((TextView) view.findViewById(R.id.form_count))
+                    .setText(String.format("%s %s", String.valueOf(size), getString(R.string.forms)));
 
             ImageView v = view.findViewById(R.id.form_image);
             if (isExpanded) {
@@ -298,23 +303,16 @@ public class PendingFormsFragment extends Fragment {
             if (processData != null) {
                 formResult = processData.get(childPosition);
 
-                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title)).setText(formResult.getFormName().trim());
+                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title))
+                        .setText(formResult.getFormName().trim());
                 ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
                         .setText(Util.getDateFromTimestamp(formResult.getCreatedAt()));
             }
 
             final FormResult finalFormResult = formResult;
 
-            view.findViewById(R.id.iv_dashboard_delete_form).setOnClickListener(v -> {
-                DatabaseManager.getDBInstance(mContext).deleteFormResult(finalFormResult);
-                if (processData != null) {
-                    processData.remove(finalFormResult);
-                }
-                notifyDataSetChanged();
-                Util.showToast(mContext.getString(R.string.form_deleted), mContext);
-
-                mFragment.onFormDeletedListener();
-            });
+            view.findViewById(R.id.iv_dashboard_delete_form)
+                    .setOnClickListener(v -> showFormDeletePopUp(processData, finalFormResult));
 
             view.setOnClickListener(v -> {
                 if (finalFormResult != null) {
@@ -328,7 +326,6 @@ public class PendingFormsFragment extends Fragment {
                     intent.putExtra(Constants.PM.PARTIAL_FORM, true);
                     mContext.startActivity(intent);
                 }
-
             });
 
             Drawable drawable = mContext.getDrawable(R.drawable.form_status_indicator_partial);
@@ -337,10 +334,39 @@ public class PendingFormsFragment extends Fragment {
             return view;
         }
 
+        private void deleteSavedForm(List<FormResult> processData, FormResult finalFormResult) {
+            DatabaseManager.getDBInstance(mContext).deleteFormResult(finalFormResult);
+            if (processData != null) {
+                processData.remove(finalFormResult);
+            }
+            notifyDataSetChanged();
+            Util.showToast(mContext.getString(R.string.form_deleted), mContext);
+
+            mFragment.onFormDeletedListener();
+        }
+
+        private void showFormDeletePopUp(List<FormResult> processData, FormResult finalFormResult) {
+            AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+            // Setting Dialog Title
+            alertDialog.setTitle(getString(R.string.app_name_ss));
+            // Setting Dialog Message
+            alertDialog.setMessage(getString(R.string.msg_delete_saved_form));
+            // Setting Icon to Dialog
+            alertDialog.setIcon(R.mipmap.app_logo);
+            // Setting CANCEL Button
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
+                    (dialog, which) -> alertDialog.dismiss());
+            // Setting OK Button
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
+                    (dialog, which) -> deleteSavedForm(processData, finalFormResult));
+
+            // Showing Alert Message
+            alertDialog.show();
+        }
+
         @Override
         public boolean isChildSelectable(final int groupPosition, final int childPosition) {
             return false;
         }
     }
-
 }
