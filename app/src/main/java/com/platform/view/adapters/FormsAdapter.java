@@ -77,7 +77,7 @@ public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> 
 
         if (!processData.getName().getLocaleValue().equals(mContext.getString(R.string.forms_are_not_available))) {
             String formattedDate = Util.getDateFromTimestamp(Util.getCurrentTimeStamp());
-            viewHolder.mDate.setText(String.format("on %s", formattedDate));
+            viewHolder.mDate.setText(String.format("%s", formattedDate));
         } else {
             viewHolder.mDate.setVisibility(View.GONE);
         }
