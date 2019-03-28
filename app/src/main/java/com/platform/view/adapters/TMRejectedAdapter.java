@@ -124,7 +124,7 @@ public class TMRejectedAdapter extends BaseExpandableListAdapter {
                 ((TextView) view.findViewById(R.id.txt_pending_request_title))
                         .setText(data.getEntity().getUserInfo().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
-                        .setText(String.format("On %s",
+                        .setText(String.format("%s",
                                 Util.getDateFromTimestamp(data.getUpdatedDateTime())));
             }
 

@@ -34,6 +34,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private String tag;
     private String formId;
 
+    @SuppressWarnings("unused")
     public String getFormId() {
         return formId;
     }

@@ -121,7 +121,7 @@ public class PendingFormsFragment extends Fragment {
                             break;
                     }
                 } catch (IllegalStateException e) {
-                    e.printStackTrace();
+                    Log.e("TAG", e.getMessage());
                 }
             }
         }, filter);

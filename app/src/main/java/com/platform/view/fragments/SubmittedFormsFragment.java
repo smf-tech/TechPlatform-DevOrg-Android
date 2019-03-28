@@ -123,8 +123,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             } else {
                 Util.showToast(getString(R.string.msg_no_network), getContext());
             }
-            Util.showToast("Sync started!", getContext());
-            SyncAdapterUtils.manualRefresh();
         });
 
         setPendingForms();
