@@ -203,6 +203,13 @@
     <string name="submitted_and_synced">Submitted &amp; Synced</string>
     <string name="unexpected_error_occurred">Unexpected error occurred.</string>
 
+    <string name="value_should_not_be_less_than">value should not be less than</string>
+    <string name="value_should_not_be_greater_than">value should not be greater than</string>
+    <string name="length_should_not_be_less_than">length should not be less than</string>
+    <string name="length_should_not_be_greater_than">length should not be greater than</string>
+    <string name="cant_be_empty">can\'t be empty</string>
+    <string name="no_proper_format">not in proper format</string>
+
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>
     <string name="event_login_success" translatable="false">Login Success</string>

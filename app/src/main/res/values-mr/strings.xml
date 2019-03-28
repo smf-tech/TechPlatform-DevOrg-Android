@@ -31,7 +31,7 @@
     <string name="label_time">वेळ</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
     <!--<string name="check_otp">कृपया OTP तपासा</string>-->
-    <string name="otp_timeout_text">वेळ संपला %1$s सेकंद</string>
+    <string name="otp_timeout_text">उर्वरित सेकंद %1$s</string>
     <string name="msg_otp_verification_timeout"> OTP सत्यापित करण्याची वेळ संपली, कृपया पुन्हा प्रयत्न करा</string>
     <string name="msg_waiting_for_otp_text">आपल्या मोबाइल नंबरवर OTP पाठविण्याची प्रतीक्षा करत आहे.</string>
     <string name="msg_verify_otp_text">आपला मोबाइल नंबर सत्यापित करण्यासाठी सत्यापित बटणावर क्लिक करा.</string>
@@ -162,7 +162,7 @@
     <string name="forms">फॉर्म</string>
     <string name="no_records_available">डेटा उपलब्ध नाही!</string>
     <string name="verification_code">पडताळणी कोड</string>
-    <string name="verify">सत्यापित करा</string>
+    <string name="verify">सबमिट करा</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s वर पाठविलेले सत्यापन कोड टाइप करा</string>
     <string name="forms_are_not_available">फॉर्म उपलब्ध नाहीत</string>
     <string name="reports">अहवाल</string>
@@ -202,5 +202,12 @@
     <string name="sync_started">समक्रमण सुरू झाले</string>
     <string name="submitted_and_synced">सबमिट आणि समक्रमित</string>
     <string name="unexpected_error_occurred">अनपेक्षित त्रुटी आली.</string>
+
+    <string name="value_should_not_be_less_than">मूल्य पेक्षा कमी असू नये</string>
+    <string name="value_should_not_be_greater_than">मूल्य पेक्षा मोठे नसावे</string>
+    <string name="length_should_not_be_less_than">लांबी कमी असू नये</string>
+    <string name="length_should_not_be_greater_than">लांबीपेक्षा जास्त नसावी</string>
+    <string name="cant_be_empty">रिक्त असू शकत नाही</string>
+    <string name="no_proper_format">योग्य स्वरूपात नाही</string>
 
 </resources>

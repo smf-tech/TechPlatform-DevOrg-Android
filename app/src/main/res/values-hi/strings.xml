@@ -203,4 +203,11 @@
     <string name="submitted_and_synced">प्रस्तुत और समन्वित</string>
     <string name="unexpected_error_occurred">अनपेक्षित त्रुटि हुई।</string>
 
+    <string name="value_should_not_be_less_than">मान से कम नहीं होना चाहिए</string>
+    <string name="value_should_not_be_greater_than">मान से अधिक नहीं होना चाहिए</string>
+    <string name="length_should_not_be_less_than">लंबाई से कम नहीं होनी चाहिए</string>
+    <string name="length_should_not_be_greater_than">लंबाई से अधिक नहीं होनी चाहिए</string>
+    <string name="cant_be_empty">खाली नहीं हो सकता</string>
+    <string name="no_proper_format">उचित प्रारूप में नहीं</string>
+
 </resources>

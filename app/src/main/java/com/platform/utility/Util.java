@@ -585,7 +585,7 @@ public class Util {
             outputStream.close();
             return file.getPath();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         return "";
     }
@@ -605,7 +605,7 @@ public class Util {
                 completeText.append(nextLine).append("\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         return completeText.toString();
@@ -616,7 +616,7 @@ public class Util {
             File dir = context.getCacheDir();
             deleteDir(dir);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 

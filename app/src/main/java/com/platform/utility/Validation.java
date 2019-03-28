@@ -1,7 +1,10 @@
 package com.platform.utility;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.platform.Platform;
+import com.platform.R;
 import com.platform.models.forms.Validator;
 
 import java.text.ParseException;
@@ -19,14 +22,18 @@ public class Validation {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " value should not be less than " + validator.getMinValue();
+                    return fieldName + " "
+                            + Platform.getInstance().getString(R.string.value_should_not_be_less_than)
+                            + " " + validator.getMinValue();
                 }
             } else if (validator.getMaxValue() != null) {
                 if (fieldIntValue >= validator.getMaxValue()) {
                     if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                         return validator.getText().getLocaleValue();
                     } else {
-                        return fieldName + " value should not be greater than " + validator.getMaxValue();
+                        return fieldName + " "
+                                + Platform.getInstance().getString(R.string.value_should_not_be_greater_than)
+                                + " " + validator.getMaxValue();
                     }
                 }
             }
@@ -40,7 +47,9 @@ public class Validation {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " length should not be less than " + validator.getMinLength();
+                    return fieldName + " "
+                            + Platform.getInstance().getString(R.string.length_should_not_be_less_than)
+                            + " " + validator.getMinLength();
                 }
             }
         } else if (validator.getMaxLength() != null) {
@@ -48,7 +57,9 @@ public class Validation {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " length should not be greater than " + validator.getMaxLength();
+                    return fieldName + " "
+                            + Platform.getInstance().getString(R.string.length_should_not_be_greater_than)
+                            + " " + validator.getMaxLength();
                 }
             }
 
@@ -58,36 +69,45 @@ public class Validation {
 
     public static String editTextMaxLengthValidation(String fieldName, String fieldValue, Integer maxLength) {
         if (maxLength != null && (fieldValue.length() < maxLength)) {
-            return fieldName + " length should not be less than " + maxLength;
+            return fieldName + " "
+                    + Platform.getInstance().getString(R.string.length_should_not_be_less_than)
+                    + " " + maxLength;
         }
         return "";
     }
 
-    public static String expressionValidation(String fieldName, String field1Value, String field2Value, String inputType, Validator validator) {
+    public static String expressionValidation(String fieldName, String field1Value,
+                                              String field2Value, String inputType, Validator validator) {
+
         if (validator != null && !TextUtils.isEmpty(validator.getExpression())) {
             switch (inputType) {
                 case Constants.FormInputType.INPUT_TYPE_DATE:
-                    SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.US);
+                    SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
 
                     try {
                         Date date1 = sdf.parse(field1Value);
                         Date date2 = sdf.parse(field2Value);
 
-                        if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS) && date1.compareTo(date2) < 0) {
-                            if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                        if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS)
+                                && date1.compareTo(date2) < 0) {
+
+                            if (validator.getText() != null &&
+                                    !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                                 return validator.getText().getLocaleValue();
                             } else {
-                                return fieldName + " not in proper format";
+                                return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
                             }
-                        } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS) && date1.compareTo(date2) > 0) {
+                        } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS)
+                                && date1.compareTo(date2) > 0) {
+
                             if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                                 return validator.getText().getLocaleValue();
                             } else {
-                                return fieldName + " not in proper format";
+                                return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
                             }
                         }
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        Log.e("TAG", e.getMessage());
                     }
 
                     break;
@@ -105,7 +125,7 @@ public class Validation {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " not in proper format";
+                    return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
                 }
             }
         }
@@ -115,7 +135,7 @@ public class Validation {
 
     public static String requiredValidation(String fieldName, String fieldValue, boolean isRequired) {
         if (isRequired && TextUtils.isEmpty(fieldValue)) {
-            return fieldName + " can't be empty";
+            return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
         }
 
         return "";
