@@ -144,6 +144,7 @@ public class Constants {
         public static final String DROPDOWN_TEMPLATE = "dropdown";
         public static final String RADIO_GROUP_TEMPLATE = "radiogroup";
         public static final String FILE_TEMPLATE = "file";
+        public static final String PANEL = "panel";
     }
 
     public static final String callUsNumber = "+9120-660-50226";

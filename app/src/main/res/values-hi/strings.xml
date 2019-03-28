@@ -158,6 +158,7 @@
     <string name="msg_take_photo_error">ऐप में फोटो लेने की अनुमति नहीं है, कृपया इसकी अनुमति दें।</string>
 
     <!--Forms-->
+    <string name="default_select">--चुने--</string>
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">प्रपत्र</string>
     <string name="no_records_available">डेटा उपलब्ध नहीं है!</string>

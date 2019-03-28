@@ -158,6 +158,7 @@
     <string name="msg_take_photo_error">अॅपला फोटो घेण्याची परवानगी नाही, कृपया त्यास अनुमती द्या.</string>
 
     <!--Forms-->
+    <string name="default_select">--निवडा--</string>
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">फॉर्म</string>
     <string name="no_records_available">डेटा उपलब्ध नाही!</string>
