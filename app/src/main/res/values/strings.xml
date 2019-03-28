@@ -158,6 +158,7 @@
     <string name="msg_take_photo_error">App do not have permission to take a photo, please allow it.</string>
 
     <!--Forms-->
+    <string name="default_select">--Select--</string>
     <string name="category_title">Category Title</string>
     <string name="forms">Forms</string>
     <string name="no_records_available">Data is not available!</string>

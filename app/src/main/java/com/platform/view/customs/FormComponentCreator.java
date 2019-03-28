@@ -174,8 +174,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         List<DropDownTemplate> matchedTemplates = Stream.of(dropDowns).filter(byTag).collect(Collectors.toList());
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
             Choice selectChoice = new Choice();
-            selectChoice.setValue("--Select--");
-            LocaleData localeData = new LocaleData("--Select--");
+            selectChoice.setValue(fragment.get().getString(R.string.default_select));
+            LocaleData localeData = new LocaleData(fragment.get().getString(R.string.default_select));
             selectChoice.setText(localeData);
             if (!choiceValues.contains(selectChoice)) {
                 choiceValues.add(0, selectChoice);
@@ -185,6 +185,19 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             matchedTemplates.get(0).setFormData(elements);
             matchedTemplates.get(0).setListData(choiceValues);
         }
+    }
+
+    public View panelTemplate(final Elements formData) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "View returned null");
+            return null;
+        }
+
+        TextView panelTemplate = (TextView) View.inflate(fragment.get().getContext(),
+                R.layout.form_panel_template, null);
+        panelTemplate.setText(formData.getTitle().getLocaleValue().trim());
+
+        return panelTemplate;
     }
 
     public View textInputTemplate(final Elements formData) {
@@ -704,7 +717,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 List<JsonObject> dependentObjectsList = new ArrayList<>();
 
                 String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
-                String response = Util.readFromInternalStorage(fragment.get().getContext(), formId + "_" + dependentElement.getName());
+                String response = Util.readFromInternalStorage(fragment.get().getContext(),
+                        formId + "_" + dependentElement.getName());
 
                 if (!TextUtils.isEmpty(dependentResponse) && !TextUtils.isEmpty(response)) {
                     JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
@@ -722,12 +736,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     //Apply condition to match selected value in dependentObjects
                     //If parent has object in choicesByUrl
                     if (parentElement.getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
-                        StringTokenizer parentValueTokenizer
-                                = new StringTokenizer(parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer parentValueTokenizer = new StringTokenizer(
+                                parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+
                         //Ignore first value of valueToken
                         String outerObjName = parentValueTokenizer.nextToken();
                         pValue = parentValueTokenizer.nextToken();
-                        byParentSelection = innerDependentObject -> innerDependentObject.get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value);
+                        byParentSelection = innerDependentObject -> innerDependentObject
+                                .get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value);
                     }
                     //If parent has string in choicesByUrl
                     else {
@@ -736,12 +752,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     }
 
                     //Filter dependentObjects
-                    List<JsonObject> filteredDependentObjects = Stream.of(dependentObjectsList).filter(byParentSelection).collect(Collectors.toList());
-//                List<JsonObject> filteredDependentObjects = dependentObjectsList.stream().filter(byParentSelection).collect(Collectors.toList());
+                    List<JsonObject> filteredDependentObjects
+                            = Stream.of(dependentObjectsList).filter(byParentSelection).collect(Collectors.toList());
 
                     String dTitle, dValue;
                     LocaleData choiceText;
                     String choiceValue;
+
                     //Fill choiceValues list with filtered object's title and value
                     for (int filteredDependentIndex = 0; filteredDependentIndex < filteredDependentObjects.size(); filteredDependentIndex++) {
 
@@ -763,7 +780,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                             dValue = dependentValueTokenizer.nextToken();
 
                             try {
-                                choiceText = PlatformGson.getPlatformGsonInstance().fromJson(dObj.get(dTitle).toString(), LocaleData.class);
+                                choiceText = PlatformGson.getPlatformGsonInstance()
+                                        .fromJson(dObj.get(dTitle).toString(), LocaleData.class);
                             } catch (Exception e) {
                                 choiceText = new LocaleData(dObj.get(dTitle).getAsString());
                             }
@@ -775,7 +793,8 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                             dValue = dependentElement.getChoicesByUrl().getValueName();
 
                             try {
-                                choiceText = PlatformGson.getPlatformGsonInstance().fromJson(dependentInnerObject.get(dTitle).toString(), LocaleData.class);
+                                choiceText = PlatformGson.getPlatformGsonInstance()
+                                        .fromJson(dependentInnerObject.get(dTitle).toString(), LocaleData.class);
                             } catch (Exception e) {
                                 choiceText = new LocaleData(dependentInnerObject.get(dTitle).getAsString());
                             }
@@ -792,14 +811,15 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                     }
 
                     //Sort choices in ascending order
-                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
+                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                            .compareTo(o2.getText().getLocaleValue()));
 
                     //Update UI on UI thread
                     if (fragment.get().getActivity() != null) {
                         fragment.get().getActivity().runOnUiThread(() -> {
                             Choice selectChoice = new Choice();
-                            selectChoice.setValue("--Select--");
-                            LocaleData localeData = new LocaleData("--Select--");
+                            selectChoice.setValue(fragment.get().getString(R.string.default_select));
+                            LocaleData localeData = new LocaleData(fragment.get().getString(R.string.default_select));
                             selectChoice.setText(localeData);
                             choiceValues.add(0, selectChoice);
 
