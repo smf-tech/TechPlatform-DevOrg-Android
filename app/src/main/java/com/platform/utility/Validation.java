@@ -122,13 +122,13 @@ public class Validation {
                         if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                             return validator.getText().getLocaleValue();
                         } else {
-                            return fieldName + " not in proper format";
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
                         }
                     } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS) && field1DoubleValue > field2DoubleValue) {
                         if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                             return validator.getText().getLocaleValue();
                         } else {
-                            return fieldName + " not in proper format";
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
                         }
                     }
                     break;
