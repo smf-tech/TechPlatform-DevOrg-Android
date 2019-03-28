@@ -111,7 +111,26 @@ public class Validation {
                     }
 
                     break;
+
                 case Constants.FormInputType.INPUT_TYPE_TIME:
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                    double field1DoubleValue = Double.parseDouble(field1Value);
+                    double field2DoubleValue = Double.parseDouble(field2Value);
+                    if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS) && field1DoubleValue < field2DoubleValue) {
+                        if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                            return validator.getText().getLocaleValue();
+                        } else {
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                        }
+                    } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS) && field1DoubleValue > field2DoubleValue) {
+                        if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                            return validator.getText().getLocaleValue();
+                        } else {
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                        }
+                    }
                     break;
             }
         }
