@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -555,7 +556,7 @@ public class Util {
 
     public static String encrypt(String rowString) {
         try {
-            String encodedStr = Base64.encodeToString(rowString.getBytes("UTF-8"), Base64.DEFAULT);
+            String encodedStr = Base64.encodeToString(rowString.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
             return encodedStr.replace("\n", "");
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());

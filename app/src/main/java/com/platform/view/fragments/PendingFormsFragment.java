@@ -162,12 +162,12 @@ public class PendingFormsFragment extends Fragment {
     }
 
     private void getPendingFormsFromDB() {
-        List<FormResult> partialSavedForms = DatabaseManager.getDBInstance(getContext())
-                .getAllPartiallySavedForms();
-        if (partialSavedForms != null) {
-            List<FormResult> savedForms = new ArrayList<>(partialSavedForms);
+        List<FormResult> partialSavedForms = DatabaseManager
+                .getDBInstance(getContext()).getAllPartiallySavedForms();
 
-            savedForms = Util.sortFormResultListByCreatedDate(savedForms);
+        if (partialSavedForms != null) {
+            List<FormResult> savedForms
+                    = Util.sortFormResultListByCreatedDate(new ArrayList<>(partialSavedForms));
 
             mFormResultMap = new HashMap<>();
             List<String> categoryList = new ArrayList<>();
