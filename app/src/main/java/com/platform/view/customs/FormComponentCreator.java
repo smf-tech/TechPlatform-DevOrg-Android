@@ -446,23 +446,25 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
                                     if (!TextUtils.isEmpty(validator.getExpression())) {
                                         String expression = validator.getExpression();
-                                        StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=");
-                                        String field1Name = expressionTokenizer.nextToken();
-                                        String field2Name = expressionTokenizer.nextToken();
-
-                                        String field1Value;
-                                        String field2Value;
-                                        if (("{" + formData.getName() + "}").equals(field1Name)) {
-                                            field1Value = editText.getText().toString();
-                                            field2Value = editTextWithNameMap.get(field2Name).getText().toString();
-                                        } else {
+                                        String field1Name, field2Name, field3Name;
+                                        String field1Value = "", field2Value = "", field3Value = "";
+                                        StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=-");
+                                        if (expressionTokenizer.hasMoreTokens()) {
+                                            field1Name = expressionTokenizer.nextToken();
                                             field1Value = editTextWithNameMap.get(field1Name).getText().toString();
-                                            field2Value = editText.getText().toString();
+                                        }
+                                        if (expressionTokenizer.hasMoreTokens()) {
+                                            field2Name = expressionTokenizer.nextToken();
+                                            field2Value = editTextWithNameMap.get(field2Name).getText().toString();
+                                        }
+                                        if (expressionTokenizer.hasMoreTokens()) {
+                                            field3Name = expressionTokenizer.nextToken();
+                                            field3Value = editTextWithNameMap.get(field3Name).getText().toString();
                                         }
 
-                                        if (!TextUtils.isEmpty(field2Value)) {
+                                        if (!TextUtils.isEmpty(field1Value) && !TextUtils.isEmpty(field2Value)) {
                                             errorMsg = Validation.expressionValidation(editText.getTag().toString(),
-                                                    field1Value, field2Value, formData.getInputType(), validator);
+                                                    field1Value, field2Value, field3Value, formData.getInputType(), validator);
 
                                             if (!TextUtils.isEmpty(errorMsg)) {
                                                 fragment.get().setErrorMsg(errorMsg);

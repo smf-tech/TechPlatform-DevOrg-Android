@@ -2,7 +2,7 @@ package com.platform.utility;
 
 public class Constants {
 
-//    public static final int SMS_RECEIVE_REQUEST = 1;
+    //    public static final int SMS_RECEIVE_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
 
@@ -206,6 +206,8 @@ public class Constants {
     class Expression {
         static final String LESS_THAN_EQUALS = "<=";
         static final String GREATER_THAN_EQUALS = ">=";
+        static final String EQUALS = "=";
+        static final String SUBTRACTION = "-";
     }
 
     public class ValidationType {
