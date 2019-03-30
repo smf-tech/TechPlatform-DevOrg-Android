@@ -190,7 +190,7 @@
     <string name="msg_error_rejection_comment_needed">अस्वीकार कारण आवश्यक</string>
 
     <string name="form_count">%1$d फॉर्म</string>
-    <string name="frequently_used_forms">Frequently used forms</string>
+    <string name="frequently_used_forms">वारंवार वापरलेले फॉर्म</string>
 
     <string name="partial_form_added">फॉर्म यशस्वीरित्या जतन केला</string>
     <string name="form_deleted">फॉर्म हटविला!</string>

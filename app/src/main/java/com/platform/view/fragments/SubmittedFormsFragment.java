@@ -10,10 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +22,7 @@ import com.google.gson.annotations.SerializedName;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
+import com.platform.listeners.FormTaskListener;
 import com.platform.models.LocaleData;
 import com.platform.models.common.Microservice;
 import com.platform.models.pm.ProcessData;
@@ -33,6 +33,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
+import com.platform.view.adapters.SubmittedFormsListAdapter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -43,7 +44,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -58,39 +58,28 @@ import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_SYNC_FAILED;
 import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SubmittedFormsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 @SuppressWarnings("CanBeFinal")
-public class SubmittedFormsFragment extends Fragment implements FormStatusCallListener {
+public class SubmittedFormsFragment extends Fragment implements FormStatusCallListener, FormTaskListener {
+
     private static final String TAG = SubmittedFormsFragment.class.getSimpleName();
 
-    //    private LinearLayout lnrOuter;
     private ArrayList<String> processCategoryList = new ArrayList<>();
     private HashMap<String, List<ProcessData>> processMap = new HashMap<>();
+    private HashMap<String, List<ProcessData>> mProcessDataMap = new HashMap<>();
+
     private boolean showNoDataText = true;
+    private FormsFragment parent;
+    private View dividerView;
     private TextView mNoRecordsView;
     private ExpandableListView mExpandableListView;
-    private HashMap<String, List<ProcessData>> mProcessDataMap = new HashMap<>();
     private RelativeLayout mPendingFormsView;
+    private RelativeLayout progressBarLayout;
     private LinearLayout mPendingFormsContainer;
     private TextView mSubmittedFormsTitleView;
-    private View dividerView;
+    private ProgressBar progressBar;
 
     public SubmittedFormsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment SubmittedFormsFragment.
-     */
-    static SubmittedFormsFragment newInstance() {
-        return new SubmittedFormsFragment();
     }
 
     @Override
@@ -105,6 +94,15 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
+
+        if (getArguments() != null) {
+            parent = (FormsFragment) getArguments().getSerializable("PARENT");
+        }
+
+        if (parent != null) {
+            progressBarLayout = parent.getProgressBarView();
+            progressBar = parent.getProgressBar();
+        }
 
         dividerView = view.findViewById(R.id.submitted_forms_divider);
         mPendingFormsView = view.findViewById(R.id.pending_forms_view);
@@ -144,7 +142,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 } else if (action.equals(PARTIAL_FORM_REMOVED) || action.equals(EVENT_FORM_SUBMITTED)) {
                     getProcessData();
                 } else if (intent.getAction().equals(EVENT_SYNC_FAILED)) {
-                    Log.e("PendingForms", "Sync failed!");
+                    Log.e(TAG, "Sync failed!");
                     Util.showToast(getString(R.string.sync_failed), context);
                 }
                 setPendingForms();
@@ -168,7 +166,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
         } catch (Exception e) {
-            Log.e("TAG", e.getMessage() + "");
+            Log.e(TAG, e.getMessage() + "");
         }
 
         updateView();
@@ -194,7 +192,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 microservice.setId(formResult.get_id());
                 object.setMicroservice(microservice);
 
-                if (getContext() == null) continue;
+                if (getContext() == null) {
+                    continue;
+                }
 
                 View formView = LayoutInflater.from(getContext())
                         .inflate(R.layout.form_sub_item, mPendingFormsContainer, false);
@@ -272,7 +272,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 if (data.getMicroservice() != null
                                         && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
                                         && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
-                                    url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
+
+                                    url = getResources().getString(R.string.form_field_mandatory,
+                                            data.getMicroservice().getBaseUrl(),
                                             data.getMicroservice().getRoute());
 
                                     new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
@@ -285,7 +287,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             List<ProcessData> processData = new ArrayList<>();
 
                             for (final String result : localFormResults) {
-                                FormResult formResult = PlatformGson.getPlatformGsonInstance().fromJson(result, FormResult.class);
+                                FormResult formResult = PlatformGson.getPlatformGsonInstance()
+                                        .fromJson(result, FormResult.class);
+
                                 if (formResult.updatedDateTime != null) {
                                     if (isFormOneMonthOld(formResult.updatedDateTime)) {
                                         continue;
@@ -293,10 +297,12 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 }
 
                                 formID = formResult.formID;
+
                                 ProcessData object = new ProcessData();
                                 if (formResult.mOID != null && formResult.mOID.oid != null) {
                                     object.setId(formResult.mOID.oid);
                                 }
+
                                 object.setFormTitle(data.getName().getLocaleValue());
                                 object.setName(new LocaleData(formResult.formTitle));
                                 Microservice microservice = new Microservice();
@@ -332,6 +338,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onFailureListener(String message) {
+        hideProgressBar();
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -339,12 +346,14 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     @Override
     public void onErrorListener(VolleyError error) {
+        hideProgressBar();
         Log.e(TAG, "onErrorListener: " + error.getMessage());
         Util.showToast(error.getMessage(), getContext());
     }
 
     @Override
     public void onFormsLoaded(String response) {
+        hideProgressBar();
         Processes json = new Gson().fromJson(response, Processes.class);
         if (json != null && json.getData() != null && !json.getData().isEmpty()) {
             showNoDataText = false;
@@ -380,6 +389,35 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         return false;
     }
 
+    @Override
+    public void showProgressBar() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null
+                    && progressBar.getVisibility() == View.GONE) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
     static class FormResult {
         @SuppressWarnings("unused")
         @SerializedName("form_title")
@@ -409,148 +447,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         public String getOID() {
             return oid;
-        }
-    }
-
-    private class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
-
-        private Context mContext;
-        private Map<String, List<ProcessData>> mMap;
-
-        private SubmittedFormsListAdapter(final Context context,
-                                          final Map<String, List<ProcessData>> map) {
-            mContext = context;
-            mMap = map;
-        }
-
-        @Override
-        public int getGroupCount() {
-            return mMap.size();
-        }
-
-        @Override
-        public int getChildrenCount(final int groupPosition) {
-            ArrayList<String> list = new ArrayList<>(mMap.keySet());
-            String cat = list.get(groupPosition);
-
-            List<ProcessData> formResults = mMap.get(cat);
-            if (formResults != null) {
-                return formResults.size();
-            }
-
-            return 0;
-        }
-
-        @Override
-        public Object getGroup(final int groupPosition) {
-            return null;
-        }
-
-        @Override
-        public Object getChild(final int groupPosition, final int childPosition) {
-            return null;
-        }
-
-        @Override
-        public long getGroupId(final int groupPosition) {
-            return 0;
-        }
-
-        @Override
-        public long getChildId(final int groupPosition, final int childPosition) {
-            return 0;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        @Override
-        public View getGroupView(final int groupPosition, final boolean isExpanded,
-                                 final View convertView, final ViewGroup parent) {
-
-            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_all_forms_item,
-                    parent, false);
-
-            ArrayList<String> list = new ArrayList<>(mMap.keySet());
-            String cat = list.get(groupPosition);
-
-            List<ProcessData> processData = mMap.get(cat);
-            int size = 0;
-            if (processData != null) {
-                size = processData.size();
-            }
-
-            ((TextView) view.findViewById(R.id.form_title)).setText(cat);
-            ((TextView) view.findViewById(R.id.form_count))
-                    .setText(String.format("%s %s", String.valueOf(size), getString(R.string.forms)));
-
-            ImageView v = view.findViewById(R.id.form_image);
-            if (isExpanded) {
-                Util.rotateImage(180f, v);
-            } else {
-                Util.rotateImage(0f, v);
-            }
-
-            return view;
-        }
-
-        @Override
-        public View getChildView(final int groupPosition, final int childPosition,
-                                 final boolean isLastChild, final View convertView, final ViewGroup parent) {
-
-            View view = LayoutInflater.from(mContext).inflate(R.layout.form_sub_item,
-                    parent, false);
-
-            ArrayList<String> list = new ArrayList<>(mMap.keySet());
-            String cat = list.get(groupPosition);
-
-            List<ProcessData> processData = mMap.get(cat);
-            ProcessData data = null;
-            if (processData != null) {
-                data = processData.get(childPosition);
-
-                ((TextView) view.findViewById(R.id.form_title)).setText(data.getName().getLocaleValue());
-                if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                    ((TextView) view.findViewById(R.id.form_date))
-                            .setText(Util.getDateFromTimestamp(data.getMicroservice().getUpdatedAt()));
-                }
-            }
-
-            final ProcessData finalFormResult = data;
-            view.setOnClickListener(v -> {
-                if (finalFormResult != null) {
-                    final String formID = finalFormResult.getId();
-                    final String processID = finalFormResult.getMicroservice().getId();
-
-                    Intent intent = new Intent(mContext, FormActivity.class);
-                    intent.putExtra(Constants.PM.PROCESS_ID, formID);
-                    intent.putExtra(Constants.PM.FORM_ID, processID);
-                    intent.putExtra(Constants.PM.EDIT_MODE, true);
-                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
-
-                    if (cat.equals(getString(R.string.syncing_pending))) {
-                        intent.putExtra(Constants.PM.FORM_ID, formID);
-                        intent.putExtra(Constants.PM.PROCESS_ID, processID);
-                        intent.putExtra(Constants.PM.PARTIAL_FORM, true);
-                    }
-                    mContext.startActivity(intent);
-                }
-            });
-
-            int bgColor = mContext.getResources().getColor(R.color.submitted_form_color);
-            if (cat.equals(getString(R.string.syncing_pending))) {
-                bgColor = mContext.getResources().getColor(R.color.red);
-            }
-
-            view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
-            return view;
-        }
-
-        @Override
-        public boolean isChildSelectable(final int groupPosition, final int childPosition) {
-            return false;
         }
     }
 }

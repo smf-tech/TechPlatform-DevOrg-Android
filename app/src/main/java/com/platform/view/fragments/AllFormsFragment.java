@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
+import com.platform.listeners.FormTaskListener;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.pm.Processes;
 import com.platform.presenter.FormStatusFragmentPresenter;
@@ -46,32 +48,24 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AllFormsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 @SuppressWarnings("EmptyMethod")
-public class AllFormsFragment extends Fragment implements FormStatusCallListener {
+public class AllFormsFragment extends Fragment implements FormStatusCallListener, FormTaskListener {
 
     private static final String TAG = AllFormsFragment.class.getSimpleName();
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
+
+    private FormsFragment parent;
     private TextView mNoRecordsView;
     private Map<String, String> mCountList;
     private ExpandableAdapter adapter;
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
+
+    private static int mSubmittedFormsCount = 0;
+    private static int mSubmittedFormsDownloadedCount = 0;
 
     public AllFormsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AllFormsFragment.
-     */
-    static AllFormsFragment newInstance() {
-        return new AllFormsFragment();
     }
 
     @Override
@@ -84,8 +78,17 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getArguments() != null) {
+            parent = (FormsFragment) getArguments().getSerializable("PARENT");
+        }
+
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mCountList = new HashMap<>();
+
+        if (parent != null) {
+            progressBarLayout = parent.getProgressBarView();
+            progressBar = parent.getProgressBar();
+        }
 
         ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
@@ -96,22 +99,25 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         IntentFilter filter = new IntentFilter();
         filter.addAction(EVENT_FORM_SUBMITTED);
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                String action = Objects.requireNonNull(intent.getAction());
-                switch (action) {
-                    case EVENT_FORM_SUBMITTED:
-                        getProcessData();
-                        break;
-                }
-            }
-        }, filter);
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(final Context context, final Intent intent) {
+                        String action = Objects.requireNonNull(intent.getAction());
+                        switch (action) {
+                            case EVENT_FORM_SUBMITTED:
+                                getProcessData();
+                                break;
+                        }
+                    }
+                }, filter);
     }
 
     private void getProcessData() {
         try {
-            List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+            List<ProcessData> processDataArrayList =
+                    DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+
             if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
                 Processes processes = new Processes();
                 processes.setData(processDataArrayList);
@@ -119,7 +125,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             } else {
                 mNoRecordsView.setVisibility(View.VISIBLE);
                 if (Util.isConnected(getContext())) {
-                    FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+                    FormStatusFragmentPresenter presenter
+                            = new FormStatusFragmentPresenter(this, this);
                     presenter.getAllProcesses();
                 }
             }
@@ -130,6 +137,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onFailureListener(String message) {
+        hideProgressBar();
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -137,6 +145,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onErrorListener(VolleyError error) {
+        hideProgressBar();
         Log.e(TAG, "onErrorListener: " + error.getMessage());
         Util.showToast(error.getMessage(), getContext());
     }
@@ -161,7 +170,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         mCountList.clear();
         mChildList.clear();
 
-        FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this);
+        FormStatusFragmentPresenter presenter
+                = new FormStatusFragmentPresenter(this, this);
 
         for (ProcessData data : json.getData()) {
             String categoryName = data.getCategory().getName().getLocaleValue();
@@ -186,7 +196,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mCountList.put(data.getId(), submitCount);
             }
 
-            List<String> localFormResults = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+            List<String> localFormResults
+                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
 
             String url;
 
@@ -196,8 +207,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
                         && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
 
-                    url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
-                            data.getMicroservice().getRoute());
+                    setSubmittedFormsCount();
+                    url = getResources().getString(R.string.form_field_mandatory,
+                            data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
                     presenter.getSubmittedForms(data.getId(), url);
                 }
             } else if ((submitCount == null || submitCount.equals("0")) &&
@@ -207,8 +219,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
                             && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
 
-                        url = getResources().getString(R.string.form_field_mandatory, data.getMicroservice().getBaseUrl(),
-                                data.getMicroservice().getRoute());
+                        setSubmittedFormsCount();
+                        url = getResources().getString(R.string.form_field_mandatory,
+                                data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
                         presenter.getSubmittedForms(data.getId(), url);
                     }
                 }
@@ -225,6 +238,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     @Override
     public void onMastersFormsLoaded(final String response, final String formId) {
+        hideProgressBar();
+        mSubmittedFormsDownloadedCount++;
+
         try {
             String count;
             JSONObject metadataObj = null;
@@ -232,8 +248,13 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
                 if (metadata != null && metadata.length() > 0) {
                     metadataObj = metadata.getJSONObject(0);
-                    count = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.SUBMIT_COUNT);
-                    String formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM).getString(Constants.FormDynamicKeys.FORM_ID);
+
+                    count = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                            .getString(Constants.FormDynamicKeys.SUBMIT_COUNT);
+
+                    String formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                            .getString(Constants.FormDynamicKeys.FORM_ID);
+
                     mCountList.put(formID, count);
                     DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
                             .getApplicationContext()).updateProcessSubmitCount(formID, count);
@@ -248,8 +269,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
 
                 for (int i = 0; i < values.length(); i++) {
-                    SubmittedFormsFragment.FormResult formResult = PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)),
-                            SubmittedFormsFragment.FormResult.class);
+                    SubmittedFormsFragment.FormResult formResult =
+                            PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)),
+                                    SubmittedFormsFragment.FormResult.class);
 
                     String uuid = UUID.randomUUID().toString();
                     String formID = formResult.formID;
@@ -272,7 +294,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     result.setCreatedAt(formResult.updatedDateTime);
 
                     JSONObject obj = (JSONObject) values.get(i);
-                    if (obj == null) return;
+                    if (obj == null) {
+                        return;
+                    }
 
                     if (!obj.has(Constants.FormDynamicKeys.FORM_ID)) {
                         obj.put(Constants.FormDynamicKeys.FORM_ID, formID);
@@ -284,9 +308,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                         result.setResult(obj.toString());
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
                     }
-
                 }
-
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
@@ -300,6 +322,12 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         } else {
             mNoRecordsView.setVisibility(View.VISIBLE);
         }
+
+        if (mSubmittedFormsDownloadedCount == mSubmittedFormsCount) {
+            hideProgressBar();
+            mSubmittedFormsCount = 0;
+            mSubmittedFormsDownloadedCount = 0;
+        }
     }
 
     private void setAdapter(final Map<String, List<ProcessData>> data) {
@@ -307,5 +335,38 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             adapter.notifyDataSetChanged();
             mNoRecordsView.setVisibility(View.GONE);
         }
+    }
+
+    private static void setSubmittedFormsCount() {
+        mSubmittedFormsCount++;
+    }
+
+    @Override
+    public void showProgressBar() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null
+                    && progressBar.getVisibility() == View.GONE) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 }
