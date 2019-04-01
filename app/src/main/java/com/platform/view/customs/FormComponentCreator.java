@@ -12,15 +12,15 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.annimon.stream.Collectors;
@@ -35,6 +35,7 @@ import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Validator;
 import com.platform.utility.Constants;
@@ -316,6 +317,34 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return textTemplateView;
     }
 
+    @SuppressWarnings("deprecation")
+    private View matrixDynamicTextTemplate(final Column column, final Elements elements) {
+
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "View returned null");
+            return null;
+        }
+
+        EditText textInputField = new EditText(fragment.get().getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 1f / (elements.getColumns().size() + 1);
+        textInputField.setBackground(fragment.get().getResources().getDrawable(R.drawable.bg_blue_box));
+        textInputField.setLayoutParams(layoutParams);
+
+        if (column != null && elements != null) {
+
+            if (elements.getRows() != null && elements.getRows() > 0) {
+                textInputField.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                textInputField.setMaxLines(elements.getRows());
+                textInputField.setHorizontallyScrolling(false);
+                textInputField.setVerticalScrollBarEnabled(true);
+            } else {
+                textInputField.setMaxLines(1);
+            }
+        }
+        return textInputField;
+    }
+
     private void setInputType(String type, EditText textInputField) {
         if (!TextUtils.isEmpty(type)) {
             switch (type) {
@@ -400,30 +429,92 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         final LinearLayout matrixDynamicView = (LinearLayout) View.inflate(
                 fragment.get().getContext(), R.layout.row_matrix_dynamic, null);
 
+        addTitle(elements, matrixDynamicView);
+
         if (elements.getColumns() != null && !elements.getColumns().isEmpty()) {
-            TableLayout tableLayout = new TableLayout(fragment.get().getContext());
-            tableLayout.setStretchAllColumns(true);
-
-            for (int currentRow = 0; currentRow < 1; currentRow++) {
-                TableRow tableRow = new TableRow(fragment.get().getContext());
-
-                for (int currentColumn = 0; currentColumn < elements.getColumns().size(); currentColumn++) {
-                    if (!TextUtils.isEmpty(elements.getColumns().get(currentColumn).getCellType())) {
-                        switch (elements.getColumns().get(currentColumn).getCellType()) {
-                            case Constants.FormsFactory.TEXT_TEMPLATE:
-                                View view = textInputTemplate(elements);
-                                tableRow.addView(view);
-                                break;
-                        }
-                    }
-                }
-                tableLayout.addView(tableRow);
-            }
-
-            matrixDynamicView.addView(tableLayout);
+            addRow(elements, matrixDynamicView, Constants.Action.ACTION_ADD);
         }
 
         return matrixDynamicView;
+    }
+
+    private void addRow(Elements elements, LinearLayout matrixDynamicView, String action) {
+        for (int currentRow = 0; currentRow < 1; currentRow++) {
+            LinearLayout innerLinearLayout = createInnerLinearLayout();
+
+            for (int currentColumn = 0; currentColumn < elements.getColumns().size(); currentColumn++) {
+                if (!TextUtils.isEmpty(elements.getColumns().get(currentColumn).getCellType())) {
+                    switch (elements.getColumns().get(currentColumn).getCellType()) {
+                        case Constants.FormsFactory.TEXT_TEMPLATE:
+                            View view = matrixDynamicTextTemplate(elements.getColumns().get(currentColumn), elements);
+                            innerLinearLayout.addView(view);
+                            break;
+                    }
+                }
+            }
+
+            switch (action) {
+                case Constants.Action.ACTION_ADD:
+                    ImageView addImg = createAddImageView(elements, matrixDynamicView);
+                    innerLinearLayout.addView(addImg);
+                    break;
+
+                case Constants.Action.ACTION_DELETE:
+                    ImageView deleteImg = createDeleteImageView(innerLinearLayout, matrixDynamicView);
+                    innerLinearLayout.addView(deleteImg);
+                    break;
+            }
+
+            matrixDynamicView.addView(innerLinearLayout);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private ImageView createAddImageView(Elements elements, LinearLayout matrixDynamicView) {
+        ImageView addImg = new ImageView(fragment.get().getContext());
+        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageParams.leftMargin = 20;
+        imageParams.gravity = Gravity.CENTER_VERTICAL;
+        addImg.setLayoutParams(imageParams);
+        addImg.setImageDrawable(fragment.get().getResources().getDrawable(R.drawable.ic_plus));
+        addImg.setBackground(fragment.get().getResources().getDrawable(R.drawable.bg_circle_green_filled));
+        addImg.setOnClickListener(v -> addRow(elements, matrixDynamicView, Constants.Action.ACTION_DELETE));
+        return addImg;
+    }
+
+    @SuppressWarnings("deprecation")
+    private ImageView createDeleteImageView(LinearLayout innerLinearLayout, LinearLayout matrixDynamicView) {
+        ImageView deleteImg = new ImageView(fragment.get().getContext());
+        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageParams.leftMargin = 20;
+        imageParams.gravity = Gravity.CENTER_VERTICAL;
+        deleteImg.setLayoutParams(imageParams);
+        deleteImg.setImageDrawable(fragment.get().getResources().getDrawable(R.drawable.ic_plus));
+        deleteImg.setBackground(fragment.get().getResources().getDrawable(R.drawable.bg_circle_red));
+        deleteImg.setOnClickListener(v -> {
+            innerLinearLayout.removeAllViewsInLayout();
+            matrixDynamicView.removeView(innerLinearLayout);
+        });
+        return deleteImg;
+    }
+
+    private LinearLayout createInnerLinearLayout() {
+        LinearLayout innerLinearLayout = new LinearLayout(fragment.get().getContext());
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        innerLinearLayout.setWeightSum(1f);
+        linearLayoutParams.setMargins(20, 20, 20, 0);
+        innerLinearLayout.setLayoutParams(linearLayoutParams);
+        innerLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        return innerLinearLayout;
+    }
+
+    private void addTitle(Elements elements, LinearLayout matrixDynamicView) {
+        TextView txtName = new TextView(fragment.get().getContext());
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        textViewParams.setMargins(16, 16, 16, 16);
+        txtName.setLayoutParams(textViewParams);
+        txtName.setText(elements.getTitle().getLocaleValue());
+        matrixDynamicView.addView(txtName);
     }
 
     private String setFieldAsMandatory(boolean isRequired) {

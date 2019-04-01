@@ -215,4 +215,9 @@ public class Constants {
         public static final String REGEX_TYPE = "regex";
         public static final String EXPRESSION_TYPE = "expression";
     }
+
+    public class Action {
+        public static final String ACTION_ADD = "Add";
+        public static final String ACTION_DELETE = "Delete";
+    }
 }
