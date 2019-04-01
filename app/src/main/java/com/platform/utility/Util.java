@@ -576,12 +576,9 @@ public class Util {
     }
 
     public static String writeToInternalStorage(Context context, String fileName, String content) {
-        File file;
-        FileOutputStream outputStream;
-        try {
-            file = new File(context.getCacheDir(), fileName + Constants.App.FILE_EXTENSION);
+        File file = new File(context.getCacheDir(), fileName + Constants.App.FILE_EXTENSION);
 
-            outputStream = new FileOutputStream(file);
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(content.getBytes());
             outputStream.close();
             return file.getPath();
@@ -598,10 +595,7 @@ public class Util {
         String nextLine;
         StringBuilder completeText = new StringBuilder();
 
-        try {
-            FileReader fReader = new FileReader(tempFile);
-            BufferedReader bReader = new BufferedReader(fReader);
-
+        try (FileReader fReader = new FileReader(tempFile); BufferedReader bReader = new BufferedReader(fReader)) {
             while ((nextLine = bReader.readLine()) != null) {
                 completeText.append(nextLine).append("\n");
             }

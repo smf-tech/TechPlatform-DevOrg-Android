@@ -46,7 +46,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.bg_circle_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
-    public static int mApprovalCount = 0;
+    private static int mApprovalCount = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
