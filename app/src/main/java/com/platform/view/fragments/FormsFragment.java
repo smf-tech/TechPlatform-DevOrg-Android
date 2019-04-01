@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +15,6 @@ import com.platform.R;
 import com.platform.utility.AppEvents;
 import com.platform.view.activities.HomeActivity;
 
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,12 +22,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-public class FormsFragment extends Fragment implements Serializable {
+public class FormsFragment extends Fragment {
 
     private View formsFragmentView;
     static ViewPager viewPager;
-    private RelativeLayout progressBarLayout;
-    private ProgressBar progressBar;
+    @SuppressLint("StaticFieldLeak")
+    private static RelativeLayout progressBarLayout;
+    @SuppressLint("StaticFieldLeak")
+    private static ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,17 +74,11 @@ public class FormsFragment extends Fragment implements Serializable {
         progressBar = formsFragmentView.findViewById(R.id.pb_gen_form_fragment);
     }
 
-    RelativeLayout getProgressBarView() {
-        if (progressBarLayout == null) {
-            progressBarLayout = formsFragmentView.findViewById(R.id.gen_frag_progress_bar);
-        }
+    static RelativeLayout getProgressBarView() {
         return progressBarLayout;
     }
 
-    ProgressBar getProgressBar() {
-        if (progressBar == null) {
-            progressBar = formsFragmentView.findViewById(R.id.pb_gen_form_fragment);
-        }
+    static ProgressBar getProgressBar() {
         return progressBar;
     }
 
@@ -119,9 +114,6 @@ public class FormsFragment extends Fragment implements Serializable {
                     break;
             }
 
-            Bundle b = new Bundle();
-            b.putSerializable("PARENT", FormsFragment.this);
-            fragment.setArguments(b);
             return fragment;
         }
 

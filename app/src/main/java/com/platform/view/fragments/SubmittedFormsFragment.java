@@ -68,7 +68,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private HashMap<String, List<ProcessData>> mProcessDataMap = new HashMap<>();
 
     private boolean showNoDataText = true;
-    private FormsFragment parent;
     private View dividerView;
     private TextView mNoRecordsView;
     private ExpandableListView mExpandableListView;
@@ -95,14 +94,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
 
-        if (getArguments() != null) {
-            parent = (FormsFragment) getArguments().getSerializable("PARENT");
-        }
-
-        if (parent != null) {
-            progressBarLayout = parent.getProgressBarView();
-            progressBar = parent.getProgressBar();
-        }
+        progressBarLayout = FormsFragment.getProgressBarView();
+        progressBar = FormsFragment.getProgressBar();
 
         dividerView = view.findViewById(R.id.submitted_forms_divider);
         mPendingFormsView = view.findViewById(R.id.pending_forms_view);
