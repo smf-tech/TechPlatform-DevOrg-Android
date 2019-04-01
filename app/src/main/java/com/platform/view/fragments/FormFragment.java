@@ -317,6 +317,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     case Constants.FormsFactory.PANEL:
                         addViewToMainContainer(formComponentCreator.panelTemplate(elements));
                         break;
+
+                    case Constants.FormsFactory.MATRIX_DYNAMIC:
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(elements));
+                        break;
                 }
             }
         }

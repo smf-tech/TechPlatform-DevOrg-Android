@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.annimon.stream.Collectors;
@@ -387,6 +389,41 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
 
         return fileTemplateView;
+    }
+
+    public View matrixDynamicTemplate(final Elements elements) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "View returned null");
+            return null;
+        }
+
+        final LinearLayout matrixDynamicView = (LinearLayout) View.inflate(
+                fragment.get().getContext(), R.layout.row_matrix_dynamic, null);
+
+        if (elements.getColumns() != null && !elements.getColumns().isEmpty()) {
+            TableLayout tableLayout = new TableLayout(fragment.get().getContext());
+            tableLayout.setStretchAllColumns(true);
+
+            for (int currentRow = 0; currentRow < 1; currentRow++) {
+                TableRow tableRow = new TableRow(fragment.get().getContext());
+
+                for (int currentColumn = 0; currentColumn < elements.getColumns().size(); currentColumn++) {
+                    if (!TextUtils.isEmpty(elements.getColumns().get(currentColumn).getCellType())) {
+                        switch (elements.getColumns().get(currentColumn).getCellType()) {
+                            case Constants.FormsFactory.TEXT_TEMPLATE:
+                                View view = textInputTemplate(elements);
+                                tableRow.addView(view);
+                                break;
+                        }
+                    }
+                }
+                tableLayout.addView(tableRow);
+            }
+
+            matrixDynamicView.addView(tableLayout);
+        }
+
+        return matrixDynamicView;
     }
 
     private String setFieldAsMandatory(boolean isRequired) {

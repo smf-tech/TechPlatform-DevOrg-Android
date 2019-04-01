@@ -50,6 +50,17 @@ public class Elements {
     @SerializedName("rows")
     @Expose
     private Integer rows;
+    @SerializedName("columns")
+    @Expose
+    private List<Column> columns;
+
+    public List<Column> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<Column> columns) {
+        this.columns = columns;
+    }
 
     public String getChoicesByUrlResponsePath() {
         return choicesByUrlResponsePath;
