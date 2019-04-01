@@ -20,7 +20,7 @@ android {
         config {
             keyAlias 'SujalamSufalamKey'
             keyPassword 'ss@123'
-            storeFile file('/Users/kkarmalkar/Projects/SMF/TechPlatform-DevOrg-Android/app/ss_certificates')
+            storeFile file('ss_certificates')
             storePassword 'ss@123'
         }
     }
