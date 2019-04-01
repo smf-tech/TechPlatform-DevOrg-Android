@@ -54,7 +54,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private static final String TAG = AllFormsFragment.class.getSimpleName();
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
 
-    private FormsFragment parent;
     private TextView mNoRecordsView;
     private Map<String, String> mCountList;
     private ExpandableAdapter adapter;
@@ -78,17 +77,11 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getArguments() != null) {
-            parent = (FormsFragment) getArguments().getSerializable("PARENT");
-        }
-
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mCountList = new HashMap<>();
 
-        if (parent != null) {
-            progressBarLayout = parent.getProgressBarView();
-            progressBar = parent.getProgressBar();
-        }
+        progressBarLayout = FormsFragment.getProgressBarView();
+        progressBar = FormsFragment.getProgressBar();
 
         ExpandableListView expandableListView = view.findViewById(R.id.forms_expandable_list);
         adapter = new ExpandableAdapter(getContext(), mChildList, mCountList);
