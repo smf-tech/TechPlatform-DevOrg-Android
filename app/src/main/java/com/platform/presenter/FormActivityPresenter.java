@@ -52,6 +52,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
     private FormResult savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
+    private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap;
+    private List<HashMap<String, String>> matrixDynamicValuesList;
+
+    private HashMap<String, List<HashMap<String, String>>> getMatrixDynamicValuesMap() {
+        return matrixDynamicValuesMap;
+    }
+
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
+        this.matrixDynamicValuesMap = matrixDynamicValuesMap;
+    }
 
     private FormResult getSavedForm() {
         return savedForm;
@@ -327,12 +337,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.createFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.createFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.updateFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.updateFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:

@@ -1,11 +1,13 @@
 package com.platform.request;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
@@ -34,11 +36,11 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(final HashMap<String, String> requestObjectMap,
+    public void createFormResponse(final HashMap<String, String> requestObjectMap, HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap,
                                    final List<Map<String, String>> uploadedImageUrlList,
                                    String postUrl, final String formId, final String oId, String callType) {
 
-        JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
+        JsonObject requestObject = getFormRequest(requestObjectMap, matrixDynamicValuesMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
@@ -70,11 +72,11 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void updateFormResponse(final HashMap<String, String> requestObjectMap,
+    public void updateFormResponse(final HashMap<String, String> requestObjectMap, HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap,
                                    final List<Map<String, String>> uploadedImageUrlList, String postUrl,
                                    final String formId, String oid, String callType) {
 
-        JsonObject requestObject = getFormRequest(requestObjectMap, uploadedImageUrlList);
+        JsonObject requestObject = getFormRequest(requestObjectMap, matrixDynamicValuesMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
@@ -213,7 +215,7 @@ public class FormRequestCall {
     }
 
     @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap,
+    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap,
                                       final List<Map<String, String>> imageUrls) {
 
         JsonObject requestObject = new JsonObject();
@@ -221,6 +223,24 @@ public class FormRequestCall {
             String key = entry.getKey();
             String value = entry.getValue();
             requestObject.addProperty(key, value);
+        }
+
+        JsonArray jsonArray = new JsonArray();
+        String outerKey = "";
+        for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
+            outerKey = entry.getKey();
+            for (int index = 0; index < entry.getValue().size(); index++) {
+                JsonObject innerObject = new JsonObject();
+                for (Map.Entry<String, String> innerEntry : entry.getValue().get(index).entrySet()) {
+                    String key = innerEntry.getKey();
+                    String value = innerEntry.getValue();
+                    innerObject.addProperty(key, value);
+                }
+                jsonArray.add(innerObject);
+            }
+        }
+        if (!TextUtils.isEmpty(outerKey)) {
+            requestObject.add(outerKey, jsonArray);
         }
 
         if (imageUrls != null && !imageUrls.isEmpty()) {

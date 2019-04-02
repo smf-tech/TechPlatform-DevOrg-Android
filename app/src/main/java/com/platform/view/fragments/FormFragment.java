@@ -496,6 +496,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 } else {
                     if (Util.isConnected(getActivity())) {
                         formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+                        formPresenter.setMatrixDynamicValuesMap(formComponentCreator.getMatrixDynamicValuesMap());
 
                         String url = null;
                         if (formModel.getData() != null && formModel.getData().getMicroService() != null
