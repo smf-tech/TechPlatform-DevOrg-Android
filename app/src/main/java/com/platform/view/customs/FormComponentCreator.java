@@ -12,9 +12,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,9 +31,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
+import com.platform.listeners.MatrixDynamicValueChangeListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
-import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Validator;
 import com.platform.utility.Constants;
@@ -57,7 +55,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
-public class FormComponentCreator implements DropDownValueSelectListener {
+public class FormComponentCreator implements DropDownValueSelectListener, MatrixDynamicValueChangeListener {
 
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
@@ -72,7 +70,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private HashMap<ImageView, Elements> imageViewElementsHashMap = new HashMap<>();
     private HashMap<String, List<DropDownTemplate>> dependencyMap = new HashMap<>();
     private HashMap<String, EditText> editTextWithNameMap = new HashMap<>();
-    private List<HashMap<String, String>> matrixDynamicValuesList;
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
@@ -319,64 +316,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return textTemplateView;
     }
 
-    @SuppressWarnings("deprecation")
-    private View matrixDynamicTextTemplate(final Column column, final Elements elements, final HashMap<String, String> matrixDynamicMap) {
-
-        if (fragment == null || fragment.get() == null) {
-            Log.e(TAG, "View returned null");
-            return null;
-        }
-
-        EditText textInputField = new EditText(fragment.get().getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.weight = 1f / (elements.getColumns().size() + 1);
-        textInputField.setLayoutParams(layoutParams);
-        textInputField.setBackground(fragment.get().getResources().getDrawable(R.drawable.bg_blue_box));
-
-        if (column.getTitle() != null && !TextUtils.isEmpty(column.getTitle().getLocaleValue())) {
-            textInputField.setHint(column.getTitle().getLocaleValue());
-        }
-
-        if (!TextUtils.isEmpty(column.getInputType())) {
-            setInputType(column.getInputType(), textInputField);
-        }
-
-        textInputField.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!TextUtils.isEmpty(column.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
-                    if (!TextUtils.isEmpty(column.getInputType()) &&
-                            column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
-                        matrixDynamicMap.put(column.getName(), ("" + Util.getDateInLong(charSequence.toString())).trim());
-                    } else {
-                        matrixDynamicMap.put(column.getName(), charSequence.toString().trim());
-                    }
-                    if (!matrixDynamicValuesList.contains(matrixDynamicMap)) {
-                        matrixDynamicValuesList.add(matrixDynamicMap);
-                    }
-                    if (matrixDynamicMap.size() == elements.getColumns().size()) {
-                        matrixDynamicValuesMap.put(elements.getName(), matrixDynamicValuesList);
-                    } else {
-                        matrixDynamicValuesList.remove(matrixDynamicMap);
-                    }
-                } else {
-                    matrixDynamicValuesList.remove(matrixDynamicMap);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        return textInputField;
-    }
 
     private void setInputType(String type, EditText textInputField) {
         if (!TextUtils.isEmpty(type)) {
@@ -459,88 +398,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             return null;
         }
 
-        final LinearLayout matrixDynamicView = (LinearLayout) View.inflate(
-                fragment.get().getContext(), R.layout.row_matrix_dynamic, null);
+        MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(), this);
 
-        addTitle(elements, matrixDynamicView);
-
-        matrixDynamicValuesList = new ArrayList<>();
-        if (elements.getColumns() != null && !elements.getColumns().isEmpty()) {
-            addRow(elements, matrixDynamicView, Constants.Action.ACTION_ADD);
-        }
-
-        return matrixDynamicView;
-    }
-
-    private void addRow(Elements elements, LinearLayout matrixDynamicView, String action) {
-        LinearLayout innerLinearLayout = createInnerLinearLayout();
-        HashMap<String, String> matrixDynamicMap = new HashMap<>();
-
-        for (int currentColumn = 0; currentColumn < elements.getColumns().size(); currentColumn++) {
-            if (!TextUtils.isEmpty(elements.getColumns().get(currentColumn).getCellType())) {
-                switch (elements.getColumns().get(currentColumn).getCellType()) {
-                    case Constants.FormsFactory.TEXT_TEMPLATE:
-                        View view = matrixDynamicTextTemplate(elements.getColumns().get(currentColumn), elements, matrixDynamicMap);
-                        innerLinearLayout.addView(view);
-                        break;
-                }
-            }
-        }
-
-        switch (action) {
-            case Constants.Action.ACTION_ADD:
-                ImageView addImg = createAddImageView(elements, matrixDynamicView);
-                innerLinearLayout.addView(addImg);
-                break;
-
-            case Constants.Action.ACTION_DELETE:
-                ImageView deleteImg = createDeleteImageView(innerLinearLayout, matrixDynamicView, matrixDynamicMap);
-                innerLinearLayout.addView(deleteImg);
-                break;
-        }
-
-        matrixDynamicView.addView(innerLinearLayout);
-    }
-
-    private ImageView createAddImageView(Elements elements, LinearLayout matrixDynamicView) {
-        ImageView addImg = (ImageView) View.inflate(fragment.get().getContext(), R.layout.item_matrix_dynamic_add_image, null);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageParams.leftMargin = 20;
-        imageParams.gravity = Gravity.CENTER_VERTICAL;
-        addImg.setLayoutParams(imageParams);
-        addImg.setOnClickListener(v -> addRow(elements, matrixDynamicView, Constants.Action.ACTION_DELETE));
-        return addImg;
-    }
-
-    private ImageView createDeleteImageView(LinearLayout innerLinearLayout, LinearLayout matrixDynamicView, HashMap<String, String> matrixDynamicMap) {
-        ImageView deleteImg = (ImageView) View.inflate(fragment.get().getContext(), R.layout.item_matrix_dynamic_delete_image, null);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageParams.leftMargin = 20;
-        imageParams.gravity = Gravity.CENTER_VERTICAL;
-        deleteImg.setLayoutParams(imageParams);
-        deleteImg.setOnClickListener(v -> {
-            innerLinearLayout.removeAllViewsInLayout();
-            matrixDynamicView.removeView(innerLinearLayout);
-            matrixDynamicValuesList.remove(matrixDynamicMap);
-        });
-        return deleteImg;
-    }
-
-    private LinearLayout createInnerLinearLayout() {
-        LinearLayout innerLinearLayout = (LinearLayout) View.inflate(fragment.get().getContext(), R.layout.row_inner_matrix_dynamic, null);
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        linearLayoutParams.setMargins(20, 20, 20, 0);
-        innerLinearLayout.setLayoutParams(linearLayoutParams);
-        return innerLinearLayout;
-    }
-
-    private void addTitle(Elements elements, LinearLayout matrixDynamicView) {
-        TextView txtName = (TextView) View.inflate(fragment.get().getContext(), R.layout.item_matrix_dynamic_title, null);
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        textViewParams.setMargins(16, 16, 16, 16);
-        txtName.setLayoutParams(textViewParams);
-        txtName.setText(elements.getTitle().getLocaleValue());
-        matrixDynamicView.addView(txtName);
+        return template.matrixDynamicView();
     }
 
     private String setFieldAsMandatory(boolean isRequired) {
@@ -835,6 +695,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         });
 
         dialog.show();
+    }
+
+    @Override
+    public void onValueChanged(String elementName, List<HashMap<String, String>> matrixDynamicValuesList) {
+        matrixDynamicValuesMap.put(elementName, matrixDynamicValuesList);
     }
 
     @SuppressLint("StaticFieldLeak")
