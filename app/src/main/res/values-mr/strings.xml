@@ -211,4 +211,8 @@
     <string name="cant_be_empty">रिक्त असू शकत नाही</string>
     <string name="no_proper_format">योग्य स्वरूपात नाही</string>
 
+    <string name="gps_settings">जीपीएस सेटिंग्ज</string>
+    <string name="gps_popup_title">कृपया GPS / LOCATION चालू करा</string>
+    <string name="msg_enable_gps">जीपीएस सक्षम नाही, आपण हे सक्षम करू इच्छिता?</string>
+
 </resources>

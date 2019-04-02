@@ -211,4 +211,8 @@
     <string name="cant_be_empty">खाली नहीं हो सकता</string>
     <string name="no_proper_format">उचित प्रारूप में नहीं</string>
 
+    <string name="gps_settings">जीपीएस सेटिंग्स</string>
+    <string name="gps_popup_title">कृपया GPS / LOCATION चालू करें</string>
+    <string name="msg_enable_gps">GPS सक्षम नहीं है, क्या आप इसे सक्षम करना चाहते हैं?</string>
+
 </resources>
