@@ -2,7 +2,7 @@ package com.platform.utility;
 
 public class Constants {
 
-    //    public static final int SMS_RECEIVE_REQUEST = 1;
+    public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
 
@@ -98,6 +98,8 @@ public class Constants {
         public static final String TALUKA = "taluka";
         public static final String VILLAGE = "village";
         public static final String CLUSTER = "cluster";
+        public static final String LATITUDE = "lat";
+        public static final String LONGITUDE = "long";
     }
 
     public static class JurisdictionLevelName {

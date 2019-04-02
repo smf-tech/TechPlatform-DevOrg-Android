@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
@@ -95,12 +97,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private Uri finalUri;
     private ImageView mFileImageView;
     private String mFormName;
+    private GPSTracker gpsTracker;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        gpsTracker = new GPSTracker(getActivity());
         formFragmentView = inflater.inflate(R.layout.fragment_gen_form, container, false);
         return formFragmentView;
     }
@@ -155,7 +159,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     }
                 }
             }
+        }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            if (!gpsTracker.canGetLocation()) {
+                gpsTracker.showSettingsAlert();
+            }
         }
     }
 
@@ -491,7 +504,20 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     Util.showToast(errorMsg, this);
                 } else {
                     if (Util.isConnected(getActivity())) {
-                        formPresenter.setRequestedObject(formComponentCreator.getRequestObject());
+                        Location location = gpsTracker.getLocation();
+                        String strLat, strLong;
+                        if (location != null) {
+                            strLat = String.valueOf(location.getLatitude());
+                            strLong = String.valueOf(location.getLongitude());
+                        } else {
+                            strLat = gpsTracker.getLatitude();
+                            strLong = gpsTracker.getLongitude();
+                        }
+
+                        HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
+                        requestObject.put(Constants.Location.LATITUDE, strLat);
+                        requestObject.put(Constants.Location.LONGITUDE, strLong);
+                        formPresenter.setRequestedObject(requestObject);
 
                         String url = null;
                         if (formModel.getData() != null && formModel.getData().getMicroService() != null
@@ -829,10 +855,18 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constants.CAMERA_REQUEST:
+                Log.e(TAG, "Camera Permission Granted");
+                formComponentCreator.showPictureDialog();
+                break;
 
-        Log.e(TAG, "Camera Permission Granted");
-        formComponentCreator.showPictureDialog();
+            case Constants.GPS_REQUEST:
+                if (!gpsTracker.canGetLocation()) {
+                    gpsTracker.showSettingsAlert();
+                }
+                break;
+        }
     }
 
     private String getImageName() {

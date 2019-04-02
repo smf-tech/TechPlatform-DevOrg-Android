@@ -10,29 +10,6 @@ import androidx.fragment.app.Fragment;
 
 public class Permissions {
 
-//    public static <T> boolean isSMSPermissionGranted(Activity context, T objectInstance) {
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (context.checkSelfPermission(Manifest.permission.RECEIVE_SMS)
-//                    == PackageManager.PERMISSION_GRANTED) {
-//                return true;
-//            } else {
-//                if (objectInstance instanceof Fragment) {
-//                    ((Fragment) objectInstance).requestPermissions(
-//                            new String[]{Manifest.permission.RECEIVE_SMS},
-//                            Constants.SMS_RECEIVE_REQUEST);
-//                } else {
-//                    ActivityCompat.requestPermissions(context,
-//                            new String[]{Manifest.permission.RECEIVE_SMS},
-//                            Constants.SMS_RECEIVE_REQUEST);
-//                }
-//                return false;
-//            }
-//        } else {
-//            return true;
-//        }
-//    }
-
     public static <T> boolean isCameraPermissionGranted(Activity context, T objectInstance) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -52,6 +29,33 @@ public class Permissions {
                             new String[]{Manifest.permission.CAMERA,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             Constants.CAMERA_REQUEST);
+                }
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public static <T> boolean isLocationPermissionGranted(Activity context, T objectInstance) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED
+                    && context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                if (objectInstance instanceof Fragment) {
+                    ((Fragment) objectInstance).requestPermissions(
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION},
+                            Constants.GPS_REQUEST);
+                } else {
+                    ActivityCompat.requestPermissions(context,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION},
+                            Constants.GPS_REQUEST);
                 }
                 return false;
             }
