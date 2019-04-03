@@ -8,11 +8,10 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -66,7 +65,7 @@ class MatrixDynamicTemplate {
     private void addTitle(Elements elements, LinearLayout matrixDynamicView) {
         TextView txtName = (TextView) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_title, null);
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        textViewParams.setMargins(16, 16, 16, 16);
+        textViewParams.setMargins(62, 16, 16, 16);
         txtName.setLayoutParams(textViewParams);
         txtName.setText(elements.getTitle().getLocaleValue());
         matrixDynamicView.addView(txtName);
@@ -89,13 +88,13 @@ class MatrixDynamicTemplate {
 
         switch (action) {
             case Constants.Action.ACTION_ADD:
-                ImageView addImg = createAddImageView(elements, matrixDynamicView);
-                innerLinearLayout.addView(addImg);
+                LinearLayout addLnr = createAddImageView(elements, matrixDynamicView);
+                innerLinearLayout.addView(addLnr);
                 break;
 
             case Constants.Action.ACTION_DELETE:
-                ImageView deleteImg = createDeleteImageView(innerLinearLayout, matrixDynamicView, matrixDynamicMap);
-                innerLinearLayout.addView(deleteImg);
+                LinearLayout deleteLnr = createDeleteImageView(innerLinearLayout, matrixDynamicView, matrixDynamicMap);
+                innerLinearLayout.addView(deleteLnr);
                 break;
         }
 
@@ -105,33 +104,33 @@ class MatrixDynamicTemplate {
     private LinearLayout createInnerLinearLayout() {
         LinearLayout innerLinearLayout = (LinearLayout) View.inflate(context.get().getContext(), R.layout.row_inner_matrix_dynamic, null);
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        linearLayoutParams.setMargins(20, 20, 20, 0);
+        linearLayoutParams.setMargins(62, 20, 20, 0);
         innerLinearLayout.setLayoutParams(linearLayoutParams);
         return innerLinearLayout;
     }
 
-    private ImageView createAddImageView(Elements elements, LinearLayout matrixDynamicView) {
-        ImageView addImg = (ImageView) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_add_image, null);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageParams.leftMargin = 20;
-        imageParams.gravity = Gravity.CENTER_VERTICAL;
-        addImg.setLayoutParams(imageParams);
+    private LinearLayout createAddImageView(Elements elements, LinearLayout matrixDynamicView) {
+        LinearLayout addLnr = (LinearLayout) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_add_image, null);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 0.10f;
+        addLnr.setLayoutParams(layoutParams);
+        ImageButton addImg = addLnr.findViewById(R.id.iv_matrix_dynamic_add);
         addImg.setOnClickListener(v -> addRow(elements, matrixDynamicView, Constants.Action.ACTION_DELETE));
-        return addImg;
+        return addLnr;
     }
 
-    private ImageView createDeleteImageView(LinearLayout innerLinearLayout, LinearLayout matrixDynamicView, HashMap<String, String> matrixDynamicMap) {
-        ImageView deleteImg = (ImageView) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_delete_image, null);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageParams.leftMargin = 20;
-        imageParams.gravity = Gravity.CENTER_VERTICAL;
-        deleteImg.setLayoutParams(imageParams);
+    private LinearLayout createDeleteImageView(LinearLayout innerLinearLayout, LinearLayout matrixDynamicView, HashMap<String, String> matrixDynamicMap) {
+        LinearLayout deleteLnr = (LinearLayout) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_delete_image, null);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 0.10f;
+        deleteLnr.setLayoutParams(layoutParams);
+        ImageButton deleteImg = deleteLnr.findViewById(R.id.iv_matrix_dynamic_delete);
         deleteImg.setOnClickListener(v -> {
             innerLinearLayout.removeAllViewsInLayout();
             matrixDynamicView.removeView(innerLinearLayout);
             matrixDynamicValuesList.remove(matrixDynamicMap);
         });
-        return deleteImg;
+        return deleteLnr;
     }
 
     @SuppressWarnings("deprecation")
@@ -144,7 +143,7 @@ class MatrixDynamicTemplate {
 
         EditText textInputField = new EditText(context.get().getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.weight = 1f / (elements.getColumns().size() + 1);
+        layoutParams.weight = 0.45f;
         textInputField.setLayoutParams(layoutParams);
         textInputField.setBackground(context.get().getResources().getDrawable(R.drawable.bg_blue_box));
 

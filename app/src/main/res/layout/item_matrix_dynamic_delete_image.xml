@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/iv_matrix_dynamic_delete"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lnr_matrix_dynamic_delete_image"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_circle_red"
-    android:contentDescription="@string/content_description"
-    android:src="@drawable/ic_plus" />
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/iv_matrix_dynamic_delete"
+        android:layout_width="@dimen/dimen_28dp"
+        android:layout_height="@dimen/dimen_28dp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@drawable/bg_circle_red"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/ic_plus" />
+</LinearLayout>
