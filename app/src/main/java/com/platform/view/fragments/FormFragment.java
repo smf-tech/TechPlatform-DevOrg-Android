@@ -776,9 +776,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
                         JsonArray valuesArray = object.get(element.getName()).getAsJsonArray();
                         List<HashMap<String, String>> valuesList = new ArrayList<>();
-                        HashMap<String, String> valuesMap = new HashMap<>();
                         for (int valuesArrayIndex = 0; valuesArrayIndex < valuesArray.size(); valuesArrayIndex++) {
                             JsonObject jsonObject = valuesArray.get(valuesArrayIndex).getAsJsonObject();
+                            HashMap<String, String> valuesMap = new HashMap<>();
                             for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
                                 valuesMap.put(element.getColumns().get(columnIndex).getName(), jsonObject.get(element.getColumns().get(columnIndex).getName()).getAsString());
                             }
