@@ -31,13 +31,16 @@ import java.util.HashMap;
 import java.util.List;
 
 class MatrixDynamicTemplate {
+
     private final String TAG = this.getClass().getSimpleName();
     private Elements elements;
     private WeakReference<FormFragment> context;
     private List<HashMap<String, String>> matrixDynamicValuesList;
     private MatrixDynamicValueChangeListener matrixDynamicValueChangeListener;
 
-    MatrixDynamicTemplate(Elements elements, FormFragment context, MatrixDynamicValueChangeListener matrixDynamicValueChangeListener) {
+    MatrixDynamicTemplate(Elements elements, FormFragment context,
+                          MatrixDynamicValueChangeListener matrixDynamicValueChangeListener) {
+
         this.context = new WeakReference<>(context);
         this.elements = elements;
         this.matrixDynamicValueChangeListener = matrixDynamicValueChangeListener;
@@ -63,8 +66,13 @@ class MatrixDynamicTemplate {
     }
 
     private void addTitle(Elements elements, LinearLayout matrixDynamicView) {
-        TextView txtName = (TextView) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_title, null);
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView txtName = (TextView) View.inflate(context.get().getContext(),
+                R.layout.item_matrix_dynamic_title, null);
+
+        LinearLayout.LayoutParams textViewParams
+                = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
         textViewParams.setMargins(62, 16, 16, 16);
         txtName.setLayoutParams(textViewParams);
         txtName.setText(elements.getTitle().getLocaleValue());
@@ -79,7 +87,8 @@ class MatrixDynamicTemplate {
             if (!TextUtils.isEmpty(elements.getColumns().get(currentColumn).getCellType())) {
                 switch (elements.getColumns().get(currentColumn).getCellType()) {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
-                        View view = matrixDynamicTextTemplate(elements.getColumns().get(currentColumn), elements, matrixDynamicMap);
+                        View view = matrixDynamicTextTemplate(elements.getColumns().get(currentColumn),
+                                elements, matrixDynamicMap);
                         innerLinearLayout.addView(view);
                         break;
                 }
@@ -93,7 +102,8 @@ class MatrixDynamicTemplate {
                 break;
 
             case Constants.Action.ACTION_DELETE:
-                LinearLayout deleteLnr = createDeleteImageView(innerLinearLayout, matrixDynamicView, matrixDynamicMap);
+                LinearLayout deleteLnr = createDeleteImageView(innerLinearLayout,
+                        matrixDynamicView, matrixDynamicMap);
                 innerLinearLayout.addView(deleteLnr);
                 break;
         }
@@ -102,16 +112,22 @@ class MatrixDynamicTemplate {
     }
 
     private LinearLayout createInnerLinearLayout() {
-        LinearLayout innerLinearLayout = (LinearLayout) View.inflate(context.get().getContext(), R.layout.row_inner_matrix_dynamic, null);
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout innerLinearLayout = (LinearLayout) View.inflate(context.get().getContext(),
+                R.layout.row_inner_matrix_dynamic, null);
+        LinearLayout.LayoutParams linearLayoutParams
+                = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         linearLayoutParams.setMargins(62, 20, 20, 0);
         innerLinearLayout.setLayoutParams(linearLayoutParams);
         return innerLinearLayout;
     }
 
     private LinearLayout createAddImageView(Elements elements, LinearLayout matrixDynamicView) {
-        LinearLayout addLnr = (LinearLayout) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_add_image, null);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout addLnr = (LinearLayout) View.inflate(context.get().getContext(),
+                R.layout.item_matrix_dynamic_add_image, null);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
         layoutParams.weight = 0.10f;
         addLnr.setLayoutParams(layoutParams);
         ImageButton addImg = addLnr.findViewById(R.id.iv_matrix_dynamic_add);
@@ -119,12 +135,19 @@ class MatrixDynamicTemplate {
         return addLnr;
     }
 
-    private LinearLayout createDeleteImageView(LinearLayout innerLinearLayout, LinearLayout matrixDynamicView, HashMap<String, String> matrixDynamicMap) {
-        LinearLayout deleteLnr = (LinearLayout) View.inflate(context.get().getContext(), R.layout.item_matrix_dynamic_delete_image, null);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+    private LinearLayout createDeleteImageView(LinearLayout innerLinearLayout,
+                                               LinearLayout matrixDynamicView,
+                                               HashMap<String, String> matrixDynamicMap) {
+
+        LinearLayout deleteLnr = (LinearLayout) View.inflate(context.get().getContext(),
+                R.layout.item_matrix_dynamic_delete_image, null);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
         layoutParams.weight = 0.10f;
         deleteLnr.setLayoutParams(layoutParams);
         ImageButton deleteImg = deleteLnr.findViewById(R.id.iv_matrix_dynamic_delete);
+
         deleteImg.setOnClickListener(v -> {
             innerLinearLayout.removeAllViewsInLayout();
             matrixDynamicView.removeView(innerLinearLayout);
@@ -134,7 +157,8 @@ class MatrixDynamicTemplate {
     }
 
     @SuppressWarnings("deprecation")
-    private View matrixDynamicTextTemplate(final Column column, final Elements elements, final HashMap<String, String> matrixDynamicMap) {
+    private View matrixDynamicTextTemplate(final Column column, final Elements elements,
+                                           final HashMap<String, String> matrixDynamicMap) {
 
         if (context == null || context.get() == null) {
             Log.e(TAG, "View returned null");
@@ -142,8 +166,11 @@ class MatrixDynamicTemplate {
         }
 
         EditText textInputField = new EditText(context.get().getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
         layoutParams.weight = 0.45f;
+        textInputField.setPadding(15,25,10,25);
         textInputField.setLayoutParams(layoutParams);
         textInputField.setBackground(context.get().getResources().getDrawable(R.drawable.bg_blue_box));
 
@@ -190,6 +217,7 @@ class MatrixDynamicTemplate {
 
             }
         });
+
         return textInputField;
     }
 
@@ -257,5 +285,4 @@ class MatrixDynamicTemplate {
         timePicker.setTitle("Select Time");
         timePicker.show();
     }
-
 }
