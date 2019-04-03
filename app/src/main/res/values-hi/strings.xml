@@ -131,7 +131,7 @@
     <string name="tab_connect">जुडिये</string>
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
-    <string name="meetings">बैठक</string>
+    <string name="planner">योजनाकर्ता</string>
     <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
@@ -209,5 +209,11 @@
     <string name="length_should_not_be_greater_than">लंबाई से अधिक नहीं होनी चाहिए</string>
     <string name="cant_be_empty">खाली नहीं हो सकता</string>
     <string name="no_proper_format">उचित प्रारूप में नहीं</string>
+
+    <!--Planner-->
+    <string name="events">आयोजन</string>
+    <string name="tasks">कार्य</string>
+    <string name="leave">छुट्टी</string>
+    <string name="Attendence">उपस्थिति</string>
 
 </resources>

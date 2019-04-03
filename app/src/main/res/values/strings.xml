@@ -131,7 +131,7 @@
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
-    <string name="meetings">Meetings</string>
+    <string name="planner">Planner</string>
     <string name="team_management">Team Management</string>
 
     <!--Program management-->
@@ -209,6 +209,12 @@
     <string name="length_should_not_be_greater_than">length should not be greater than</string>
     <string name="cant_be_empty">can\'t be empty</string>
     <string name="no_proper_format">not in proper format</string>
+
+    <!--Planner-->
+    <string name="events">Events</string>
+    <string name="tasks">Tasks</string>
+    <string name="leave">Leave</string>
+    <string name="Attendence">Attendance</string>
 
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>

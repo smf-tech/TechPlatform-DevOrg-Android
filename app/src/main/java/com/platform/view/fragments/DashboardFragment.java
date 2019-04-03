@@ -149,7 +149,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.MEETINGS:
-                    adapter.addFragment(new MeetingsFragment());
+                    adapter.addFragment(new PlannerFragment());
                     break;
 
                 case Constants.Home.APPROVALS:
