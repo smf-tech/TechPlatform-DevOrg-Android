@@ -310,7 +310,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (formData.isRequired() != null) {
                 textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(formData.isRequired()));
             } else {
-                textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(false));
+                // textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(false));
             }
         }
         return textTemplateView;
@@ -398,7 +398,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             return null;
         }
 
-        MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(), this);
+        MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(),
+                this);
 
         return template.matrixDynamicView();
     }

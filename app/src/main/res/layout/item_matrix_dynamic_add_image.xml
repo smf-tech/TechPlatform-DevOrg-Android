@@ -8,9 +8,9 @@
         android:id="@+id/iv_matrix_dynamic_add"
         android:layout_width="@dimen/dimen_28dp"
         android:layout_height="@dimen/dimen_28dp"
-        android:background="@drawable/bg_circle_green_filled"
-        android:contentDescription="@string/content_description"
         android:layout_gravity="center"
         android:layout_margin="@dimen/dimen_05dp"
-        android:src="@drawable/ic_plus" />
+        android:background="@null"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/ic_add" />
 </LinearLayout>
