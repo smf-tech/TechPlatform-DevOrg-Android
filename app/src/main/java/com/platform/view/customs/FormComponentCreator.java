@@ -566,10 +566,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     public HashMap<String, String> getRequestObject() {
-        if (requestObjectMap != null) {
-            return requestObjectMap;
-        }
-        return null;
+        return requestObjectMap;
     }
 
     public void setRequestObject(HashMap<String, String> requestObjectMap) {
@@ -578,11 +575,14 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
     }
 
-    public HashMap<String, List<HashMap<String, String>>> getMatrixDynamicValuesMap() {
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
         if (matrixDynamicValuesMap != null) {
-            return matrixDynamicValuesMap;
+            this.matrixDynamicValuesMap = matrixDynamicValuesMap;
         }
-        return null;
+    }
+
+    public HashMap<String, List<HashMap<String, String>>> getMatrixDynamicValuesMap() {
+        return matrixDynamicValuesMap;
     }
 
     @Override

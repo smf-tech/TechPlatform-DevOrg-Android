@@ -23,7 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.platform.R;
@@ -46,9 +45,6 @@ import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 import com.platform.view.customs.FormComponentCreator;
 import com.soundcloud.android.crop.Crop;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -588,22 +584,38 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             }
         }
 
+        //Save normal values to JsonObject
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            String json = PlatformGson.getPlatformGsonInstance().toJson(formComponentCreator.getRequestObject());
+            JsonObject obj = PlatformGson.getPlatformGsonInstance().fromJson(json, JsonObject.class);
             if (obj != null) {
                 if (mUploadedImageUrlList != null && !mUploadedImageUrlList.isEmpty()) {
-                    try {
-                        for (final Map<String, String> map : mUploadedImageUrlList) {
-                            for (Map.Entry<String, String> entry : map.entrySet()) {
-                                obj.put(entry.getKey(), entry.getValue());
-                            }
+                    for (final Map<String, String> map : mUploadedImageUrlList) {
+                        for (Map.Entry<String, String> entry : map.entrySet()) {
+                            obj.addProperty(entry.getKey(), entry.getValue());
                         }
-                    } catch (JSONException e) {
-                        Log.e(TAG, e.getMessage());
                     }
                 }
-                result.setResult(obj.toString());
             }
+
+            //Save matrix dynamic values to JsonObject
+            if (formComponentCreator.getMatrixDynamicValuesMap() != null && !formComponentCreator.getMatrixDynamicValuesMap().isEmpty()) {
+                HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = formComponentCreator.getMatrixDynamicValuesMap();
+                for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
+                    String elementName = entry.getKey();
+                    List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
+                    JsonArray jsonArray = new JsonArray();
+                    for (HashMap<String, String> matrixDynamicMap : matrixDynamicValuesList) {
+                        JsonObject jsonObject = new JsonObject();
+                        for (Map.Entry<String, String> valueEntry : matrixDynamicMap.entrySet()) {
+                            jsonObject.addProperty(valueEntry.getKey(), valueEntry.getValue());
+                        }
+                        jsonArray.add(jsonObject);
+                    }
+                    obj.add(elementName, jsonArray);
+                }
+            }
+            result.setResult(obj.toString());
         }
 
         if (mIsPartiallySaved) {
@@ -677,9 +689,30 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+            String json = PlatformGson.getPlatformGsonInstance().toJson(formComponentCreator.getRequestObject());
+            JsonObject obj = PlatformGson.getPlatformGsonInstance().fromJson(json, JsonObject.class);
 
-            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            //Save matrix dynamic values to JsonObject
+            if (formComponentCreator.getMatrixDynamicValuesMap() != null && !formComponentCreator.getMatrixDynamicValuesMap().isEmpty()) {
+                HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = formComponentCreator.getMatrixDynamicValuesMap();
+                for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
+                    String elementName = entry.getKey();
+                    List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
+                    JsonArray jsonArray = new JsonArray();
+                    for (HashMap<String, String> matrixDynamicMap : matrixDynamicValuesList) {
+                        JsonObject jsonObject = new JsonObject();
+                        for (Map.Entry<String, String> valueEntry : matrixDynamicMap.entrySet()) {
+                            jsonObject.addProperty(valueEntry.getKey(), valueEntry.getValue());
+                        }
+                        jsonArray.add(jsonObject);
+                    }
+                    obj.add(elementName, jsonArray);
+                }
+                result.setRequestObject(json + PlatformGson.getPlatformGsonInstance().toJson(formComponentCreator.getMatrixDynamicValuesMap()));
+            } else {
+                result.setRequestObject(json);
+            }
+
             if (obj != null) {
                 result.setResult(obj.toString());
                 formPresenter.setSavedForm(result);
@@ -761,6 +794,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (object == null || elements == null || elements.size() == 0) return;
 
         HashMap<String, String> requestedObject = new HashMap<>();
+        HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
         for (final Elements element : elements) {
             if (object.has(element.getName())) {
                 String type = element.getType();
@@ -785,12 +819,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             valuesList.add(valuesMap);
                         }
                         element.setmAnswerArray(valuesList);
+                        matrixDynamicValuesMap.put(element.getName(), element.getmAnswerArray());
                         break;
                 }
             }
         }
 
         formComponentCreator.setRequestObject(requestedObject);
+        formComponentCreator.setMatrixDynamicValuesMap(matrixDynamicValuesMap);
         renderFormView(elements, formId);
     }
 
