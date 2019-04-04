@@ -33,10 +33,10 @@ import java.util.List;
 class MatrixDynamicTemplate {
 
     private final String TAG = this.getClass().getSimpleName();
-    private Elements elements;
-    private WeakReference<FormFragment> context;
+    private final Elements elements;
+    private final WeakReference<FormFragment> context;
     private List<HashMap<String, String>> matrixDynamicValuesList;
-    private MatrixDynamicValueChangeListener matrixDynamicValueChangeListener;
+    private final MatrixDynamicValueChangeListener matrixDynamicValueChangeListener;
 
     MatrixDynamicTemplate(Elements elements, FormFragment context,
                           MatrixDynamicValueChangeListener matrixDynamicValueChangeListener) {
@@ -47,7 +47,7 @@ class MatrixDynamicTemplate {
     }
 
     synchronized View matrixDynamicView() {
-        if (context == null || context.get() == null) {
+        if (context.get() == null) {
             Log.e(TAG, "WeakReference returned null");
             return null;
         }
@@ -160,7 +160,7 @@ class MatrixDynamicTemplate {
     private View matrixDynamicTextTemplate(final Column column, final Elements elements,
                                            final HashMap<String, String> matrixDynamicMap) {
 
-        if (context == null || context.get() == null) {
+        if (context.get() == null) {
             Log.e(TAG, "View returned null");
             return null;
         }
@@ -170,9 +170,11 @@ class MatrixDynamicTemplate {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         layoutParams.weight = 0.45f;
+        layoutParams.setMarginEnd(10);
         textInputField.setPadding(15,25,10,25);
         textInputField.setLayoutParams(layoutParams);
-        textInputField.setBackground(context.get().getResources().getDrawable(R.drawable.bg_blue_box));
+        textInputField.setTextColor(context.get().getResources().getColor(R.color.colorPrimaryDark));
+        textInputField.setBackground(context.get().getResources().getDrawable(R.drawable.bg_white_box));
 
         if (column.getTitle() != null && !TextUtils.isEmpty(column.getTitle().getLocaleValue())) {
             textInputField.setHint(column.getTitle().getLocaleValue());

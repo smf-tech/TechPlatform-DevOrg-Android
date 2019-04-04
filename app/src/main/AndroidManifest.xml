@@ -140,7 +140,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <service android:name=".utility.GPSTracker" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
