@@ -63,9 +63,11 @@ class MatrixDynamicTemplate {
             matrixDynamicValuesList = elements.getmAnswerArray();
             for (int valueListIndex = 0; valueListIndex < matrixDynamicValuesList.size(); valueListIndex++) {
                 if (valueListIndex == 0) {
-                    addRow(elements, matrixDynamicView, matrixDynamicValuesList.get(valueListIndex), Constants.Action.ACTION_ADD);
+                    addRow(elements, matrixDynamicView,
+                            matrixDynamicValuesList.get(valueListIndex), Constants.Action.ACTION_ADD);
                 } else {
-                    addRow(elements, matrixDynamicView, matrixDynamicValuesList.get(valueListIndex), Constants.Action.ACTION_DELETE);
+                    addRow(elements, matrixDynamicView,
+                            matrixDynamicValuesList.get(valueListIndex), Constants.Action.ACTION_DELETE);
                 }
             }
         } else {
@@ -91,7 +93,9 @@ class MatrixDynamicTemplate {
         matrixDynamicView.addView(txtName);
     }
 
-    private void addRow(Elements elements, LinearLayout matrixDynamicView, HashMap<String, String> matrixDynamicMap, String action) {
+    private void addRow(Elements elements, LinearLayout matrixDynamicView, HashMap<String,
+            String> matrixDynamicMap, String action) {
+
         LinearLayout innerLinearLayout = createInnerLinearLayout();
 
         for (int currentColumn = 0; currentColumn < elements.getColumns().size(); currentColumn++) {
@@ -185,7 +189,7 @@ class MatrixDynamicTemplate {
 
         layoutParams.weight = 0.45f;
         layoutParams.setMarginEnd(10);
-        textInputField.setPadding(15,25,10,25);
+        textInputField.setPadding(15, 25, 10, 25);
         textInputField.setLayoutParams(layoutParams);
         textInputField.setTextColor(context.get().getResources().getColor(R.color.colorPrimaryDark));
         textInputField.setBackground(context.get().getResources().getDrawable(R.drawable.bg_white_box));
@@ -202,8 +206,9 @@ class MatrixDynamicTemplate {
             if (!TextUtils.isEmpty(column.getInputType()) &&
                     column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
                 try {
-                    textInputField.setText(Util.getLongDateInString(
-                            Long.valueOf(Objects.requireNonNull(matrixDynamicMap.get(column.getName()))), Constants.FORM_DATE));
+                    textInputField.setText(Util.getLongDateInString(Long.valueOf(
+                            Objects.requireNonNull(matrixDynamicMap.get(column.getName()))),
+                            Constants.FORM_DATE));
                 } catch (Exception e) {
                     Log.e(TAG, "DATE ISSUE");
                     textInputField.setText(Util.getLongDateInString(
@@ -227,7 +232,8 @@ class MatrixDynamicTemplate {
                     if (!TextUtils.isEmpty(column.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
                         if (!TextUtils.isEmpty(column.getInputType()) &&
                                 column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
-                            matrixDynamicMap.put(column.getName(), ("" + Util.getDateInLong(charSequence.toString())).trim());
+                            matrixDynamicMap.put(column.getName(),
+                                    ("" + Util.getDateInLong(charSequence.toString())).trim());
                         } else {
                             matrixDynamicMap.put(column.getName(), charSequence.toString().trim());
                         }
@@ -235,7 +241,8 @@ class MatrixDynamicTemplate {
                             matrixDynamicValuesList.add(matrixDynamicMap);
                         }
                         if (matrixDynamicMap.size() == elements.getColumns().size()) {
-                            matrixDynamicValueChangeListener.onValueChanged(elements.getName(), matrixDynamicValuesList);
+                            matrixDynamicValueChangeListener.onValueChanged(elements.getName(),
+                                    matrixDynamicValuesList);
                         } else {
                             matrixDynamicValuesList.remove(matrixDynamicMap);
                         }
@@ -262,14 +269,16 @@ class MatrixDynamicTemplate {
                     textInputField.setFocusable(false);
                     textInputField.setClickable(false);
                     textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-                    textInputField.setOnClickListener(view -> showDateDialog(context.get().getContext(), textInputField));
+                    textInputField.setOnClickListener(
+                            view -> showDateDialog(context.get().getContext(), textInputField));
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_TIME:
                     textInputField.setFocusable(false);
                     textInputField.setClickable(false);
                     textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
-                    textInputField.setOnClickListener(view -> showTimeDialog(context.get().getContext(), textInputField));
+                    textInputField.setOnClickListener(
+                            view -> showTimeDialog(context.get().getContext(), textInputField));
                     break;
 
                 case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
@@ -298,8 +307,11 @@ class MatrixDynamicTemplate {
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-            String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+            String date = year + "-"
+                    + Util.getTwoDigit(monthOfYear + 1)
+                    + "-" + Util.getTwoDigit(dayOfMonth);
             editText.setText(date);
         }, mYear, mMonth, mDay);
 
