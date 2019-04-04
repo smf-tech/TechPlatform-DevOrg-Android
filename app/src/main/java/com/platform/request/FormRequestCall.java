@@ -1,6 +1,5 @@
 package com.platform.request;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -225,10 +224,9 @@ public class FormRequestCall {
             requestObject.addProperty(key, value);
         }
 
-        JsonArray jsonArray = new JsonArray();
-        String outerKey = "";
         for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
-            outerKey = entry.getKey();
+            String outerKey = entry.getKey();
+            JsonArray jsonArray = new JsonArray();
             for (int index = 0; index < entry.getValue().size(); index++) {
                 JsonObject innerObject = new JsonObject();
                 for (Map.Entry<String, String> innerEntry : entry.getValue().get(index).entrySet()) {
@@ -238,8 +236,6 @@ public class FormRequestCall {
                 }
                 jsonArray.add(innerObject);
             }
-        }
-        if (!TextUtils.isEmpty(outerKey)) {
             requestObject.add(outerKey, jsonArray);
         }
 
