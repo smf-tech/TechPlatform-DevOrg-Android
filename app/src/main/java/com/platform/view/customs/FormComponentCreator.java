@@ -308,9 +308,11 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
             if (formData.isRequired() != null) {
-                textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(formData.isRequired()));
+                textInputLayout.setHint(formData.getTitle().getLocaleValue()
+                        + setFieldAsMandatory(formData.isRequired()));
             } else {
-                // textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(false));
+                 textInputLayout.setHint(formData.getTitle() == null ?
+                         "" : (formData.getTitle().getLocaleValue() + setFieldAsMandatory(false)));
             }
         }
         return textTemplateView;
