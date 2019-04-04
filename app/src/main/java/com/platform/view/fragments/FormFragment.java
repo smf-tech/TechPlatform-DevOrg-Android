@@ -307,7 +307,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             if (elements.getChoicesByUrlResponsePath() != null) {
-                                String response = Util.readFromInternalStorage(this.getContext(), formId + "_" + elements.getName());
+                                String response = Util.readFromInternalStorage(this.getContext(),
+                                        formId + "_" + elements.getName());
                                 if (!TextUtils.isEmpty(response)) {
                                     showChoicesByUrlAsync(response, elements);
                                 } else {
@@ -356,7 +357,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
             }
         }
-
     }
 
     synchronized
@@ -453,7 +453,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         value = obj.get(valueTokenizer.nextToken()).getAsString();
                     } else {
                         try {
-                            text = PlatformGson.getPlatformGsonInstance().fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                            text = PlatformGson.getPlatformGsonInstance()
+                                    .fromJson(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
                         } catch (Exception e) {
                             text = new LocaleData(innerObj.get(elements.getChoicesByUrl().getTitleName()).getAsString());
                         }
@@ -467,7 +468,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     if (!choiceValues.contains(choice)) {
                         choiceValues.add(choice);
                     }
-
                 }
             }
 
@@ -478,7 +478,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
         }
-
     }
 
     @Override
@@ -514,6 +513,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             strLong = gpsTracker.getLongitude();
                         }
 
+                        //Util.showToast("LAT : " + strLat + " LONG:" + strLong, this);
                         HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
                         requestObject.put(Constants.Location.LATITUDE, strLat);
                         requestObject.put(Constants.Location.LONGITUDE, strLong);
