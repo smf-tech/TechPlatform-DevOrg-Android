@@ -605,9 +605,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     String elementName = entry.getKey();
                     List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
                     JsonArray jsonArray = new JsonArray();
-                    for (HashMap<String, String> matrixDynamicMap : matrixDynamicValuesList) {
+                    for (HashMap<String, String> matrixDynamicInnerMap : matrixDynamicValuesList) {
                         JsonObject jsonObject = new JsonObject();
-                        for (Map.Entry<String, String> valueEntry : matrixDynamicMap.entrySet()) {
+                        for (Map.Entry<String, String> valueEntry : matrixDynamicInnerMap.entrySet()) {
                             jsonObject.addProperty(valueEntry.getKey(), valueEntry.getValue());
                         }
                         jsonArray.add(jsonObject);
@@ -699,9 +699,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     String elementName = entry.getKey();
                     List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
                     JsonArray jsonArray = new JsonArray();
-                    for (HashMap<String, String> matrixDynamicMap : matrixDynamicValuesList) {
+                    for (HashMap<String, String> matrixDynamicInnerMap : matrixDynamicValuesList) {
                         JsonObject jsonObject = new JsonObject();
-                        for (Map.Entry<String, String> valueEntry : matrixDynamicMap.entrySet()) {
+                        for (Map.Entry<String, String> valueEntry : matrixDynamicInnerMap.entrySet()) {
                             jsonObject.addProperty(valueEntry.getKey(), valueEntry.getValue());
                         }
                         jsonArray.add(jsonObject);

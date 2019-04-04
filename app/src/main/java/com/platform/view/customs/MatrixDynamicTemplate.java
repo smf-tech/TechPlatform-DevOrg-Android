@@ -72,8 +72,8 @@ class MatrixDynamicTemplate {
             }
         } else {
             matrixDynamicValuesList = new ArrayList<>();
-            HashMap<String, String> matrixDynamicMap = new HashMap<>();
-            addRow(elements, matrixDynamicView, matrixDynamicMap, Constants.Action.ACTION_ADD);
+            HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
+            addRow(elements, matrixDynamicView, matrixDynamicInnerMap, Constants.Action.ACTION_ADD);
         }
 
         return matrixDynamicView;
@@ -94,7 +94,7 @@ class MatrixDynamicTemplate {
     }
 
     private void addRow(Elements elements, LinearLayout matrixDynamicView, HashMap<String,
-            String> matrixDynamicMap, String action) {
+            String> matrixDynamicInnerMap, String action) {
 
         LinearLayout innerLinearLayout = createInnerLinearLayout();
 
@@ -103,7 +103,7 @@ class MatrixDynamicTemplate {
                 switch (elements.getColumns().get(currentColumn).getCellType()) {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         View view = matrixDynamicTextTemplate(elements.getColumns().get(currentColumn),
-                                elements, matrixDynamicMap);
+                                elements, matrixDynamicInnerMap);
                         innerLinearLayout.addView(view);
                         break;
                 }
@@ -118,7 +118,7 @@ class MatrixDynamicTemplate {
 
             case Constants.Action.ACTION_DELETE:
                 LinearLayout deleteLnr = createDeleteImageView(innerLinearLayout,
-                        matrixDynamicView, matrixDynamicMap);
+                        matrixDynamicView, matrixDynamicInnerMap);
                 innerLinearLayout.addView(deleteLnr);
                 break;
         }
@@ -147,15 +147,15 @@ class MatrixDynamicTemplate {
         addLnr.setLayoutParams(layoutParams);
         ImageButton addImg = addLnr.findViewById(R.id.iv_matrix_dynamic_add);
         addImg.setOnClickListener(v -> {
-            HashMap<String, String> matrixDynamicMap = new HashMap<>();
-            addRow(elements, matrixDynamicView, matrixDynamicMap, Constants.Action.ACTION_DELETE);
+            HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
+            addRow(elements, matrixDynamicView, matrixDynamicInnerMap, Constants.Action.ACTION_DELETE);
         });
         return addLnr;
     }
 
     private LinearLayout createDeleteImageView(LinearLayout innerLinearLayout,
                                                LinearLayout matrixDynamicView,
-                                               HashMap<String, String> matrixDynamicMap) {
+                                               HashMap<String, String> matrixDynamicInnerMap) {
 
         LinearLayout deleteLnr = (LinearLayout) View.inflate(context.get().getContext(),
                 R.layout.item_matrix_dynamic_delete_image, null);
@@ -169,14 +169,14 @@ class MatrixDynamicTemplate {
         deleteImg.setOnClickListener(v -> {
             innerLinearLayout.removeAllViewsInLayout();
             matrixDynamicView.removeView(innerLinearLayout);
-            matrixDynamicValuesList.remove(matrixDynamicMap);
+            matrixDynamicValuesList.remove(matrixDynamicInnerMap);
         });
         return deleteLnr;
     }
 
     @SuppressWarnings("deprecation")
     private View matrixDynamicTextTemplate(final Column column, final Elements elements,
-                                           final HashMap<String, String> matrixDynamicMap) {
+                                           final HashMap<String, String> matrixDynamicInnerMap) {
 
         if (context.get() == null) {
             Log.e(TAG, "View returned null");
@@ -202,12 +202,12 @@ class MatrixDynamicTemplate {
             setInputType(column.getInputType(), textInputField);
         }
 
-        if (matrixDynamicMap != null && !matrixDynamicMap.isEmpty()) {
+        if (matrixDynamicInnerMap != null && !matrixDynamicInnerMap.isEmpty()) {
             if (!TextUtils.isEmpty(column.getInputType()) &&
                     column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
                 try {
                     textInputField.setText(Util.getLongDateInString(Long.valueOf(
-                            Objects.requireNonNull(matrixDynamicMap.get(column.getName()))),
+                            Objects.requireNonNull(matrixDynamicInnerMap.get(column.getName()))),
                             Constants.FORM_DATE));
                 } catch (Exception e) {
                     Log.e(TAG, "DATE ISSUE");
@@ -215,7 +215,7 @@ class MatrixDynamicTemplate {
                             Util.getCurrentTimeStamp(), Constants.FORM_DATE));
                 }
             } else {
-                textInputField.setText(matrixDynamicMap.get(column.getName()));
+                textInputField.setText(matrixDynamicInnerMap.get(column.getName()));
             }
         }
 
@@ -228,27 +228,27 @@ class MatrixDynamicTemplate {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (matrixDynamicMap != null) {
+                if (matrixDynamicInnerMap != null) {
                     if (!TextUtils.isEmpty(column.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
                         if (!TextUtils.isEmpty(column.getInputType()) &&
                                 column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
-                            matrixDynamicMap.put(column.getName(),
+                            matrixDynamicInnerMap.put(column.getName(),
                                     ("" + Util.getDateInLong(charSequence.toString())).trim());
                         } else {
-                            matrixDynamicMap.put(column.getName(), charSequence.toString().trim());
+                            matrixDynamicInnerMap.put(column.getName(), charSequence.toString().trim());
                         }
-                        if (!matrixDynamicValuesList.contains(matrixDynamicMap)) {
-                            matrixDynamicValuesList.add(matrixDynamicMap);
+                        if (!matrixDynamicValuesList.contains(matrixDynamicInnerMap)) {
+                            matrixDynamicValuesList.add(matrixDynamicInnerMap);
                         }
-                        if (matrixDynamicMap.size() == elements.getColumns().size()) {
+                        if (matrixDynamicInnerMap.size() == elements.getColumns().size()) {
                             matrixDynamicValueChangeListener.onValueChanged(elements.getName(),
                                     matrixDynamicValuesList);
                         } else {
-                            matrixDynamicValuesList.remove(matrixDynamicMap);
+                            matrixDynamicValuesList.remove(matrixDynamicInnerMap);
                         }
                     } else {
-                        matrixDynamicMap.clear();
-                        matrixDynamicValuesList.remove(matrixDynamicMap);
+                        matrixDynamicInnerMap.clear();
+                        matrixDynamicValuesList.remove(matrixDynamicInnerMap);
                     }
                 }
             }
