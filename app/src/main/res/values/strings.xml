@@ -169,7 +169,7 @@
     <string name="reports">Reports</string>
     <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
     <string name="msg_confirm">Are you sure you want to save this form?</string>
-    <string name="form_saved_offline">You are offline, form saved offline.</string>
+    <string name="form_saved_offline">You are offline, form is submitted offline.</string>
     <string name="form_submit_success">Form submitted successfully!</string>
     <string name="image_upload_success">Image uploaded successfully!</string>
     <string name="status_update_success">Status updated successfully!</string>

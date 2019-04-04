@@ -37,13 +37,13 @@ public class Permissions {
         }
     }
 
-    public static <T> boolean isLocationPermissionGranted(Activity context, T objectInstance) {
+    static <T> boolean isLocationPermissionGranted(Activity context, T objectInstance) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED
-                    && context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+                    == PackageManager.PERMISSION_GRANTED ||
+                    context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
                 if (objectInstance instanceof Fragment) {

@@ -169,7 +169,7 @@
     <string name="reports">रिपोर्ट</string>
     <string name="submitted_form_count">प्रस्तुत प्रपत्रों की कुल गणना : %1$s</string>
     <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को सहेजना चाहते हैं?</string>
-    <string name="form_saved_offline">आप ऑफ़लाइन हैं, फ़ॉर्म ऑफ़लाइन सहेजे गए हैं।</string>
+    <string name="form_saved_offline">आप ऑफ़लाइन हैं, फॉर्म ऑफलाइन जमा किया जाता है।</string>
     <string name="form_submit_success">फॉर्म सफलतापूर्वक सबमिट किया गया!</string>
     <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
     <string name="status_update_success">स्थिति सफलतापूर्वक अपडेट की गई!</string>
