@@ -671,9 +671,19 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
 
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
-            result.setRequestObject(new Gson().toJson(formComponentCreator.getRequestObject()));
+            HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
+            if (mUploadedImageUrlList != null && mUploadedImageUrlList.size() > 0) {
+                for (final Map<String, String> map : mUploadedImageUrlList) {
+                    for (final Map.Entry<String, String> entry : map.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        requestObject.put(key, value);
+                    }
+                }
+            }
+            result.setRequestObject(new Gson().toJson(requestObject));
 
-            JSONObject obj = new JSONObject(formComponentCreator.getRequestObject());
+            JSONObject obj = new JSONObject(requestObject);
             if (obj != null) {
                 result.setResult(obj.toString());
                 formPresenter.setSavedForm(result);
@@ -720,8 +730,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             }
         }
 
-        if (formComponentCreator != null)
+        if (formComponentCreator != null) {
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB, formId);
+        }
     }
 
     private void getFormDataAndParse(final FormResult response) {
@@ -747,8 +758,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
         mFormJSONObject = PlatformGson.getPlatformGsonInstance().fromJson(response.getResult(), JsonObject.class);
 
-        if (formComponentCreator != null)
+        if (formComponentCreator != null) {
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB, formId);
+        }
     }
 
     private void parseSchemaAndFormDetails(final JsonObject object, final List<Elements> elements, String formId) {

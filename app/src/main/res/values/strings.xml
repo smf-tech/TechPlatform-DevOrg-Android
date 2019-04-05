@@ -227,7 +227,7 @@
     <string name="event_update_profile_fail" translatable="false">Profile update fail</string>
     <string name="event_report_click" translatable="false">Report \"%1$s\" clicked</string>
     <string name="event_form_saved" translatable="false">Form \"%1$s\" saved success</string>
-    <string name="event_form_saved_offline" translatable="false">Form \"%1$s\" saved offline</string>
+    <string name="event_form_saved_offline" translatable="false">Form \"%1$s\" submitted offline</string>
     <string name="event_form_submitted_success" translatable="false">Form \"%1$s\" submitted success</string>
     <string name="event_form_submitted_fail" translatable="false">Form \"%1$s\" submitted fail</string>
 

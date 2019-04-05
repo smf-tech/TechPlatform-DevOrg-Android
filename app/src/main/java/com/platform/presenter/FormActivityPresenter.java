@@ -304,7 +304,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
         formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
             //Write choicesByUrl response to internal storage
-            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()), formData.getId() + "_" + elements.getName(), response);
+            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()),
+                    formData.getId() + "_" + elements.getName(), response);
 
             //Fetch form data using formId and update choicesByUrl response path
             FormData savedFormData = DatabaseManager.getDBInstance(formFragment.get().getActivity()).getFormSchema(formData.getId());
@@ -327,12 +328,14 @@ public class FormActivityPresenter implements FormRequestCallListener,
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.createFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.createFormResponse(getRequestedObject(), imageUrlList,
+                        url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.updateFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.updateFormResponse(getRequestedObject(), imageUrlList,
+                        url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
@@ -385,5 +388,4 @@ public class FormActivityPresenter implements FormRequestCallListener,
         DatabaseManager.getDBInstance(formFragment.get().getActivity())
                 .updateProcessSubmitCount(processData.getId(), submitCount);
     }
-
 }
