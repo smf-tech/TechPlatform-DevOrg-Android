@@ -1,11 +1,7 @@
 package com.platform.view.customs;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,9 +21,7 @@ import com.platform.utility.Util;
 import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -204,7 +198,7 @@ class MatrixDynamicTemplate {
         }
 
         if (!TextUtils.isEmpty(column.getInputType())) {
-            setInputType(column.getInputType(), textInputField);
+            Util.setInputType(context.get().getContext(), column.getInputType(), textInputField);
         }
 
         //set max length allowed
@@ -271,75 +265,5 @@ class MatrixDynamicTemplate {
         });
 
         return textInputField;
-    }
-
-    private void setInputType(String type, EditText textInputField) {
-        if (!TextUtils.isEmpty(type)) {
-            switch (type) {
-                case Constants.FormInputType.INPUT_TYPE_DATE:
-                    textInputField.setFocusable(false);
-                    textInputField.setClickable(false);
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-                    textInputField.setOnClickListener(
-                            view -> showDateDialog(context.get().getContext(), textInputField));
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_TIME:
-                    textInputField.setFocusable(false);
-                    textInputField.setClickable(false);
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
-                    textInputField.setOnClickListener(
-                            view -> showTimeDialog(context.get().getContext(), textInputField));
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
-                case Constants.FormInputType.INPUT_TYPE_NUMBER:
-                case Constants.FormInputType.INPUT_TYPE_DECIMAL:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
-                            InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_ALPHABETS:
-                case Constants.FormInputType.INPUT_TYPE_TEXT:
-                    textInputField.setMaxLines(3);
-                    textInputField.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-            }
-        }
-    }
-
-    private void showDateDialog(Context context, final EditText editText) {
-        final Calendar c = Calendar.getInstance();
-        final int mYear = c.get(Calendar.YEAR);
-        final int mMonth = c.get(Calendar.MONTH);
-        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dateDialog
-                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-            String date = year + "-"
-                    + Util.getTwoDigit(monthOfYear + 1)
-                    + "-" + Util.getTwoDigit(dayOfMonth);
-            editText.setText(date);
-        }, mYear, mMonth, mDay);
-
-        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dateDialog.show();
-    }
-
-    private void showTimeDialog(Context context, final EditText editText) {
-        Calendar currentTime = Calendar.getInstance();
-        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = currentTime.get(Calendar.MINUTE);
-
-        TimePickerDialog timePicker = new TimePickerDialog(context,
-                (timePicker1, selectedHour, selectedMinute) -> editText.setText(
-                        MessageFormat.format("{0}:{1}", selectedHour, selectedMinute)),
-                hour, minute, false);
-        timePicker.setTitle("Select Time");
-        timePicker.show();
     }
 }

@@ -2,8 +2,6 @@ package com.platform.view.customs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Editable;
@@ -45,9 +43,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -219,7 +215,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 for (Validator validator :
                         formData.getValidators()) {
                     if (!TextUtils.isEmpty(validator.getType())) {
-                        setInputType(validator.getType(), textInputField);
+                        Util.setInputType(fragment.get().getContext(), validator.getType(), textInputField);
                         break;
                     }
                 }
@@ -263,7 +259,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             if (!TextUtils.isEmpty(formData.getInputType())) {
                 //set input type
-                setInputType(formData.getInputType(), textInputField);
+                Util.setInputType(fragment.get().getContext(), formData.getInputType(), textInputField);
             }
 
             if (formData.getRows() != null && formData.getRows() > 0) {
@@ -316,44 +312,6 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             }
         }
         return textTemplateView;
-    }
-
-
-    private void setInputType(String type, EditText textInputField) {
-        if (!TextUtils.isEmpty(type)) {
-            switch (type) {
-                case Constants.FormInputType.INPUT_TYPE_DATE:
-                    textInputField.setFocusable(false);
-                    textInputField.setClickable(false);
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-                    textInputField.setOnClickListener(view -> showDateDialog(fragment.get().getContext(), textInputField));
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_TIME:
-                    textInputField.setFocusable(false);
-                    textInputField.setClickable(false);
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
-                    textInputField.setOnClickListener(view -> showTimeDialog(fragment.get().getContext(), textInputField));
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
-                case Constants.FormInputType.INPUT_TYPE_NUMBER:
-                case Constants.FormInputType.INPUT_TYPE_DECIMAL:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
-                            InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_ALPHABETS:
-                case Constants.FormInputType.INPUT_TYPE_TEXT:
-                    textInputField.setMaxLines(3);
-                    textInputField.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-            }
-        }
     }
 
     public View fileTemplate(final Elements formData) {
@@ -610,34 +568,6 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
 
         requestObjectMap.remove(parentElement.getName());
-    }
-
-    private void showDateDialog(Context context, final EditText editText) {
-        final Calendar c = Calendar.getInstance();
-        final int mYear = c.get(Calendar.YEAR);
-        final int mMonth = c.get(Calendar.MONTH);
-        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-            String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
-            editText.setText(date);
-        }, mYear, mMonth, mDay);
-
-        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dateDialog.show();
-    }
-
-    private void showTimeDialog(Context context, final EditText editText) {
-        Calendar currentTime = Calendar.getInstance();
-        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = currentTime.get(Calendar.MINUTE);
-
-        TimePickerDialog timePicker = new TimePickerDialog(context,
-                (timePicker1, selectedHour, selectedMinute) -> editText.setText(
-                        MessageFormat.format("{0}:{1}", selectedHour, selectedMinute)),
-                hour, minute, false);
-        timePicker.setTitle("Select Time");
-        timePicker.show();
     }
 
     public void clearOldComponents() {
