@@ -631,4 +631,8 @@ public class Util {
             return false;
         }
     }
+
+    public static String setFieldAsMandatory(boolean isRequired) {
+        return (isRequired ? " *" : "");
+    }
 }

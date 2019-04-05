@@ -95,10 +95,10 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
                 if (formData.isRequired() != null) {
                     txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(formData.isRequired())));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(formData.isRequired())));
                 } else {
                     txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(false)));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(false)));
                 }
             }
         }
@@ -146,9 +146,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         View view;
         if (formData.isRequired() != null) {
-            view = template.init(setFieldAsMandatory(formData.isRequired()));
+            view = template.init(Util.setFieldAsMandatory(formData.isRequired()));
         } else {
-            view = template.init(setFieldAsMandatory(false));
+            view = template.init(Util.setFieldAsMandatory(false));
         }
 
         view.setTag(formData.getName());
@@ -309,10 +309,10 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
             if (formData.isRequired() != null) {
                 textInputLayout.setHint(formData.getTitle().getLocaleValue()
-                        + setFieldAsMandatory(formData.isRequired()));
+                        + Util.setFieldAsMandatory(formData.isRequired()));
             } else {
-                 textInputLayout.setHint(formData.getTitle() == null ?
-                         "" : (formData.getTitle().getLocaleValue() + setFieldAsMandatory(false)));
+                textInputLayout.setHint(formData.getTitle() == null ?
+                        "" : (formData.getTitle().getLocaleValue() + Util.setFieldAsMandatory(false)));
             }
         }
         return textTemplateView;
@@ -374,10 +374,10 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
                 if (formData.isRequired() != null) {
                     txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(formData.isRequired())));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(formData.isRequired())));
                 } else {
                     txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(false)));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(false)));
                 }
             }
         }
@@ -404,10 +404,6 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 this);
 
         return template.matrixDynamicView();
-    }
-
-    private String setFieldAsMandatory(boolean isRequired) {
-        return (isRequired ? " *" : "");
     }
 
     public boolean isValid() {

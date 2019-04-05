@@ -18,6 +18,28 @@ public class Column {
     @SerializedName("inputType")
     @Expose
     private String inputType;
+    @SerializedName("isRequired")
+    @Expose
+    private Boolean isRequired;
+    @SerializedName("maxLength")
+    @Expose
+    private Integer maxLength;
+
+    public Boolean getRequired() {
+        return isRequired;
+    }
+
+    public void setRequired(Boolean required) {
+        isRequired = required;
+    }
+
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
+    }
 
     public String getName() {
         return name;

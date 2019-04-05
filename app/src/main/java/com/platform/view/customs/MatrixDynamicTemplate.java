@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -194,12 +195,22 @@ class MatrixDynamicTemplate {
         textInputField.setTextColor(context.get().getResources().getColor(R.color.colorPrimaryDark));
         textInputField.setBackground(context.get().getResources().getDrawable(R.drawable.bg_white_box));
 
-        if (column.getTitle() != null && !TextUtils.isEmpty(column.getTitle().getLocaleValue())) {
-            textInputField.setHint(column.getTitle().getLocaleValue());
+        if (column.getRequired() != null) {
+            textInputField.setHint(column.getTitle().getLocaleValue()
+                    + Util.setFieldAsMandatory(column.getRequired()));
+        } else {
+            textInputField.setHint(column.getTitle() == null ?
+                    "" : (column.getTitle().getLocaleValue() + Util.setFieldAsMandatory(false)));
         }
 
         if (!TextUtils.isEmpty(column.getInputType())) {
             setInputType(column.getInputType(), textInputField);
+        }
+
+        //set max length allowed
+        if (column.getMaxLength() != null) {
+            textInputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(
+                    column.getMaxLength())});
         }
 
         if (matrixDynamicInnerMap != null && !matrixDynamicInnerMap.isEmpty()) {
