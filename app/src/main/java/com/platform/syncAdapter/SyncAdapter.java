@@ -79,8 +79,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void submitForm(final FormResult form) {
-
-
         try {
             URL formUrl = new URL(getFormUrl(form));
 
@@ -149,7 +147,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return url;
     }
 
-    private synchronized void updateForm(final FormResult form, final String response, final String requestObjectString) {
+    private synchronized void updateForm(final FormResult form, final String response,
+                                         final String requestObjectString) {
         try {
 
             JSONObject outerObject = new JSONObject(response);

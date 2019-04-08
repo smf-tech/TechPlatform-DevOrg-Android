@@ -314,7 +314,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
         formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
             //Write choicesByUrl response to internal storage
-            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()), formData.getId() + "_" + elements.getName(), response);
+            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()),
+                    formData.getId() + "_" + elements.getName(), response);
 
             //Fetch form data using formId and update choicesByUrl response path
             FormData savedFormData = DatabaseManager.getDBInstance(formFragment.get().getActivity()).getFormSchema(formData.getId());
@@ -395,5 +396,4 @@ public class FormActivityPresenter implements FormRequestCallListener,
         DatabaseManager.getDBInstance(formFragment.get().getActivity())
                 .updateProcessSubmitCount(processData.getId(), submitCount);
     }
-
 }

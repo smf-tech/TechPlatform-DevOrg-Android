@@ -759,8 +759,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             }
         }
 
-        if (formComponentCreator != null)
+        if (formComponentCreator != null) {
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB, formId);
+        }
     }
 
     private void getFormDataAndParse(final FormResult response) {
@@ -786,8 +787,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
         mFormJSONObject = PlatformGson.getPlatformGsonInstance().fromJson(response.getResult(), JsonObject.class);
 
-        if (formComponentCreator != null)
+        if (formComponentCreator != null) {
             parseSchemaAndFormDetails(mFormJSONObject, mElementsListFromDB, formId);
+        }
     }
 
     private void parseSchemaAndFormDetails(final JsonObject object, final List<Elements> elements, String formId) {
