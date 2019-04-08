@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.models.LocaleData;
 
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.room.ColumnInfo;
@@ -14,6 +15,7 @@ public class Elements {
     private String choicesByUrlResponsePath;
 
     private String mAnswer;
+    private List<HashMap<String, String>> mAnswerArray;
     @SerializedName("type")
     @Expose
     private String type;
@@ -50,6 +52,25 @@ public class Elements {
     @SerializedName("rows")
     @Expose
     private Integer rows;
+    @SerializedName("columns")
+    @Expose
+    private List<Column> columns;
+
+    public List<HashMap<String, String>> getmAnswerArray() {
+        return mAnswerArray;
+    }
+
+    public void setmAnswerArray(List<HashMap<String, String>> mAnswerArray) {
+        this.mAnswerArray = mAnswerArray;
+    }
+
+    public List<Column> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<Column> columns) {
+        this.columns = columns;
+    }
 
     public String getChoicesByUrlResponsePath() {
         return choicesByUrlResponsePath;

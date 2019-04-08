@@ -2,8 +2,6 @@ package com.platform.view.customs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Editable;
@@ -31,6 +29,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
+import com.platform.listeners.MatrixDynamicValueChangeListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
@@ -44,9 +43,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +51,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
-public class FormComponentCreator implements DropDownValueSelectListener {
+public class FormComponentCreator implements DropDownValueSelectListener, MatrixDynamicValueChangeListener {
 
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
@@ -63,6 +60,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     private String mImageName;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
+    private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
     private HashMap<EditText, Elements> editTextElementsHashMap = new HashMap<>();
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
     private HashMap<ImageView, Elements> imageViewElementsHashMap = new HashMap<>();
@@ -93,10 +91,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
                 if (formData.isRequired() != null) {
                     txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(formData.isRequired())));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(formData.isRequired())));
                 } else {
                     txtRadioGroupName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(false)));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(false)));
                 }
             }
         }
@@ -105,24 +103,23 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
                 radioButtonForm.setText(formData.getChoices().get(index).getText().getLocaleValue());
+                radioButtonForm.setTag(formData.getChoices().get(index).getValue());
                 radioButtonForm.setId(index);
                 radioGroupForm.addView(radioButtonForm);
 
                 radioGroupForm.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
                     if (!TextUtils.isEmpty(formData.getName()) &&
-                            !TextUtils.isEmpty(((RadioButton) radioGroupForm.findViewById(
-                                    radioGroup1.getCheckedRadioButtonId())).getText())) {
+                            radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId()).getTag() != null) {
 
                         requestObjectMap.put(formData.getName(),
-                                ((RadioButton) radioGroupForm.findViewById(
-                                        radioGroup1.getCheckedRadioButtonId())).getText().toString().trim());
+                                radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId()).getTag().toString());
                     } else {
                         requestObjectMap.remove(formData.getName());
                     }
                 });
 
-                if (!TextUtils.isEmpty(formData.getAnswer()) && !TextUtils.isEmpty(radioButtonForm.getText())) {
-                    if (radioButtonForm.getText().equals(formData.getAnswer())) {
+                if (!TextUtils.isEmpty(formData.getAnswer()) && radioButtonForm.getTag() != null) {
+                    if (radioButtonForm.getTag().toString().equals(formData.getAnswer())) {
                         radioButtonForm.setChecked(true);
                     }
                 } else if (index == 0) {
@@ -144,9 +141,9 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
         View view;
         if (formData.isRequired() != null) {
-            view = template.init(setFieldAsMandatory(formData.isRequired()));
+            view = template.init(Util.setFieldAsMandatory(formData.isRequired()));
         } else {
-            view = template.init(setFieldAsMandatory(false));
+            view = template.init(Util.setFieldAsMandatory(false));
         }
 
         view.setTag(formData.getName());
@@ -217,7 +214,7 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 for (Validator validator :
                         formData.getValidators()) {
                     if (!TextUtils.isEmpty(validator.getType())) {
-                        setInputType(validator.getType(), textInputField);
+                        Util.setInputType(fragment.get().getContext(), validator.getType(), textInputField);
                         break;
                     }
                 }
@@ -255,13 +252,13 @@ public class FormComponentCreator implements DropDownValueSelectListener {
                 }
             }
 
-            if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
+            if (formData.getTitle() != null && !TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
                 textInputField.setTag(formData.getTitle().getLocaleValue());
             }
 
             if (!TextUtils.isEmpty(formData.getInputType())) {
                 //set input type
-                setInputType(formData.getInputType(), textInputField);
+                Util.setInputType(fragment.get().getContext(), formData.getInputType(), textInputField);
             }
 
             if (formData.getRows() != null && formData.getRows() > 0) {
@@ -306,49 +303,14 @@ public class FormComponentCreator implements DropDownValueSelectListener {
 
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
             if (formData.isRequired() != null) {
-                textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(formData.isRequired()));
+                textInputLayout.setHint(formData.getTitle().getLocaleValue()
+                        + Util.setFieldAsMandatory(formData.isRequired()));
             } else {
-                textInputLayout.setHint(formData.getTitle().getLocaleValue() + setFieldAsMandatory(false));
+                textInputLayout.setHint(formData.getTitle() == null ?
+                        "" : (formData.getTitle().getLocaleValue() + Util.setFieldAsMandatory(false)));
             }
         }
         return textTemplateView;
-    }
-
-    private void setInputType(String type, EditText textInputField) {
-        if (!TextUtils.isEmpty(type)) {
-            switch (type) {
-                case Constants.FormInputType.INPUT_TYPE_DATE:
-                    textInputField.setFocusable(false);
-                    textInputField.setClickable(false);
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-                    textInputField.setOnClickListener(view -> showDateDialog(fragment.get().getContext(), textInputField));
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_TIME:
-                    textInputField.setFocusable(false);
-                    textInputField.setClickable(false);
-                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
-                    textInputField.setOnClickListener(view -> showTimeDialog(fragment.get().getContext(), textInputField));
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
-                case Constants.FormInputType.INPUT_TYPE_NUMBER:
-                case Constants.FormInputType.INPUT_TYPE_DECIMAL:
-                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
-                            InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    break;
-
-                case Constants.FormInputType.INPUT_TYPE_ALPHABETS:
-                case Constants.FormInputType.INPUT_TYPE_TEXT:
-                    textInputField.setMaxLines(3);
-                    textInputField.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-            }
-        }
     }
 
     public View fileTemplate(final Elements formData) {
@@ -369,10 +331,10 @@ public class FormComponentCreator implements DropDownValueSelectListener {
             if (!TextUtils.isEmpty(formData.getTitle().getLocaleValue())) {
                 if (formData.isRequired() != null) {
                     txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(formData.isRequired())));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(formData.isRequired())));
                 } else {
                     txtFileName.setText(fragment.get().getResources().getString(R.string.form_field_mandatory,
-                            formData.getTitle().getLocaleValue(), setFieldAsMandatory(false)));
+                            formData.getTitle().getLocaleValue(), Util.setFieldAsMandatory(false)));
                 }
             }
         }
@@ -389,8 +351,16 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         return fileTemplateView;
     }
 
-    private String setFieldAsMandatory(boolean isRequired) {
-        return (isRequired ? " *" : "");
+    public View matrixDynamicTemplate(final Elements elements) {
+        if (fragment == null || fragment.get() == null) {
+            Log.e(TAG, "View returned null");
+            return null;
+        }
+
+        MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(),
+                this);
+
+        return template.matrixDynamicView();
     }
 
     public boolean isValid() {
@@ -551,16 +521,23 @@ public class FormComponentCreator implements DropDownValueSelectListener {
     }
 
     public HashMap<String, String> getRequestObject() {
-        if (requestObjectMap != null) {
-            return requestObjectMap;
-        }
-        return null;
+        return requestObjectMap;
     }
 
     public void setRequestObject(HashMap<String, String> requestObjectMap) {
         if (requestObjectMap != null) {
             this.requestObjectMap = requestObjectMap;
         }
+    }
+
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
+        if (matrixDynamicValuesMap != null) {
+            this.matrixDynamicValuesMap = matrixDynamicValuesMap;
+        }
+    }
+
+    public HashMap<String, List<HashMap<String, String>>> getMatrixDynamicValuesMap() {
+        return matrixDynamicValuesMap;
     }
 
     @Override
@@ -590,34 +567,6 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         }
 
         requestObjectMap.remove(parentElement.getName());
-    }
-
-    private void showDateDialog(Context context, final EditText editText) {
-        final Calendar c = Calendar.getInstance();
-        final int mYear = c.get(Calendar.YEAR);
-        final int mMonth = c.get(Calendar.MONTH);
-        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-            String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
-            editText.setText(date);
-        }, mYear, mMonth, mDay);
-
-        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dateDialog.show();
-    }
-
-    private void showTimeDialog(Context context, final EditText editText) {
-        Calendar currentTime = Calendar.getInstance();
-        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = currentTime.get(Calendar.MINUTE);
-
-        TimePickerDialog timePicker = new TimePickerDialog(context,
-                (timePicker1, selectedHour, selectedMinute) -> editText.setText(
-                        MessageFormat.format("{0}:{1}", selectedHour, selectedMinute)),
-                hour, minute, false);
-        timePicker.setTitle("Select Time");
-        timePicker.show();
     }
 
     public void clearOldComponents() {
@@ -674,6 +623,11 @@ public class FormComponentCreator implements DropDownValueSelectListener {
         });
 
         dialog.show();
+    }
+
+    @Override
+    public void onValueChanged(String elementName, List<HashMap<String, String>> matrixDynamicValuesList) {
+        matrixDynamicValuesMap.put(elementName, matrixDynamicValuesList);
     }
 
     @SuppressLint("StaticFieldLeak")
