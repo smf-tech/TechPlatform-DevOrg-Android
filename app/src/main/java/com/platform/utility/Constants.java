@@ -116,6 +116,10 @@ public class Constants {
         public static final String MEETINGS = "Meetings";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
+        public static final String PROG_MANAGEMENT = "Program Management";
+        public static final String MY_CONTENT= "MV Content";
+        public static final String TEAM_MANAGEMENT = "Team Management";
+        public static final String PLANNER = "Planner";
     }
 
     public static class PM {

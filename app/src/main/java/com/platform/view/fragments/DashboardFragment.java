@@ -117,7 +117,7 @@ public class DashboardFragment extends Fragment {
     private void initViews() {
         CustomViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
         int pageLimit = 4;
-        if (tabNames.size()<pageLimit) {
+        if (tabNames.size() < pageLimit) {
             pageLimit = tabNames.size();
         }
         viewPager.setOffscreenPageLimit(pageLimit);
@@ -158,6 +158,10 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.REPORTS:
                     adapter.addFragment(new ReportsFragment());
+                    break;
+
+                default:
+                    adapter.addFragment(new DefaultFragment());
                     break;
             }
         }
@@ -219,7 +223,7 @@ public class DashboardFragment extends Fragment {
             pendingActionsCountView.setVisibility(View.GONE);
         } else {
             pendingActionsCountView.setVisibility(View.VISIBLE);
-            int resId = tabIcons[0];
+            int resId;
             int pendingActionCount = 0;
 
             switch (tabNames.get(i).getName().getLocaleValue()) {
@@ -239,6 +243,10 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.REPORTS:
                     resId = tabIcons[3];
+                    break;
+
+                default:
+                    resId = R.drawable.bg_circle_default;
                     break;
             }
 
