@@ -103,24 +103,23 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             for (int index = 0; index < formData.getChoices().size(); index++) {
                 RadioButton radioButtonForm = new RadioButton(fragment.get().getContext());
                 radioButtonForm.setText(formData.getChoices().get(index).getText().getLocaleValue());
+                radioButtonForm.setTag(formData.getChoices().get(index).getValue());
                 radioButtonForm.setId(index);
                 radioGroupForm.addView(radioButtonForm);
 
                 radioGroupForm.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
                     if (!TextUtils.isEmpty(formData.getName()) &&
-                            !TextUtils.isEmpty(((RadioButton) radioGroupForm.findViewById(
-                                    radioGroup1.getCheckedRadioButtonId())).getText())) {
+                            radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId()).getTag() != null) {
 
                         requestObjectMap.put(formData.getName(),
-                                ((RadioButton) radioGroupForm.findViewById(
-                                        radioGroup1.getCheckedRadioButtonId())).getText().toString().trim());
+                                radioGroupForm.findViewById(radioGroup1.getCheckedRadioButtonId()).getTag().toString());
                     } else {
                         requestObjectMap.remove(formData.getName());
                     }
                 });
 
-                if (!TextUtils.isEmpty(formData.getAnswer()) && !TextUtils.isEmpty(radioButtonForm.getText())) {
-                    if (radioButtonForm.getText().equals(formData.getAnswer())) {
+                if (!TextUtils.isEmpty(formData.getAnswer()) && radioButtonForm.getTag() != null) {
+                    if (radioButtonForm.getTag().toString().equals(formData.getAnswer())) {
                         radioButtonForm.setChecked(true);
                     }
                 } else if (index == 0) {

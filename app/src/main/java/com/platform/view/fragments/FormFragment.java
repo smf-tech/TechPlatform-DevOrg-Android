@@ -302,16 +302,45 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
-                            if (elements.getChoicesByUrlResponsePath() != null) {
+                            //Online
+                            if (Util.isConnected(getContext())) {
+                                //Opened submitted/partially or offline saved form
+                                if (mIsInEditMode) {
+                                    //Partially saved form
+                                    if (mIsPartiallySaved) {
+                                        callChoicesAPI(elements.getName());
+                                    }
+                                    //Submitted form
+                                    else {
+                                        //Editable submitted form
+                                        if (!TextUtils.isEmpty(formModel.getData().getEditable())
+                                                && Boolean.parseBoolean(formModel.getData().getEditable())) {
+                                            callChoicesAPI(elements.getName());
+                                        }
+                                        //Non editable submitted form
+                                        else {
+                                            String response = Util.readFromInternalStorage(this.getContext(),
+                                                    formId + "_" + elements.getName());
+                                            if (!TextUtils.isEmpty(response)) {
+                                                showChoicesByUrlAsync(response, elements);
+                                            } else {
+                                                callChoicesAPI(elements.getName());
+                                            }
+                                        }
+                                    }
+                                }
+                                //Opened new form
+                                else {
+                                    callChoicesAPI(elements.getName());
+                                }
+                            }
+                            //Offline
+                            else {
                                 String response = Util.readFromInternalStorage(this.getContext(),
                                         formId + "_" + elements.getName());
                                 if (!TextUtils.isEmpty(response)) {
                                     showChoicesByUrlAsync(response, elements);
-                                } else {
-                                    callChoicesAPI(elements.getName());
                                 }
-                            } else {
-                                callChoicesAPI(elements.getName());
                             }
                         }
                         break;
