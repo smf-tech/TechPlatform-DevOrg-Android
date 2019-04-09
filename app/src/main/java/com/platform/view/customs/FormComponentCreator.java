@@ -69,6 +69,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
+    private ArrayList<MatrixDynamicTemplate> matrixDynamics = new ArrayList<>();
     private ArrayList<ImageView> photos = new ArrayList<>();
 
     public FormComponentCreator(FormFragment fragment) {
@@ -360,6 +361,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(),
                 this);
 
+        matrixDynamics.add(template);
+
         return template.matrixDynamicView();
     }
 
@@ -487,6 +490,22 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     }
                 }
             }
+        }
+
+        //For all matrix dynamics
+        for (MatrixDynamicTemplate template :
+                matrixDynamics) {
+            Elements element = template.getElements();
+            List<HashMap<String, String>> valuesList = getMatrixDynamicValuesMap().get(element.getName());
+            if (element.isRequired() != null) {
+                errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(), element.getColumns().size(), valuesList);
+
+                if (!TextUtils.isEmpty(errorMsg)) {
+                    fragment.get().setErrorMsg(errorMsg);
+                    return false;
+                }
+            }
+
         }
 
         //For all photos

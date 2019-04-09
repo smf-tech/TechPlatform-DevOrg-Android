@@ -42,6 +42,10 @@ class MatrixDynamicTemplate {
         this.matrixDynamicValueChangeListener = matrixDynamicValueChangeListener;
     }
 
+    public Elements getElements() {
+        return elements;
+    }
+
     synchronized View matrixDynamicView() {
         if (context.get() == null) {
             Log.e(TAG, "WeakReference returned null");
@@ -84,7 +88,11 @@ class MatrixDynamicTemplate {
 
         textViewParams.setMargins(62, 16, 16, 16);
         txtName.setLayoutParams(textViewParams);
-        txtName.setText(elements.getTitle().getLocaleValue());
+        if (elements.isRequired() != null) {
+            txtName.setText(context.get().getResources().getString(R.string.form_field_mandatory, elements.getTitle().getLocaleValue(), Util.setFieldAsMandatory(elements.isRequired())));
+        } else {
+            txtName.setText(context.get().getResources().getString(R.string.form_field_mandatory, elements.getTitle().getLocaleValue(), Util.setFieldAsMandatory(false)));
+        }
         matrixDynamicView.addView(txtName);
     }
 
@@ -248,12 +256,7 @@ class MatrixDynamicTemplate {
                         if (matrixDynamicInnerMap.size() == elements.getColumns().size()) {
                             matrixDynamicValueChangeListener.onValueChanged(elements.getName(),
                                     matrixDynamicValuesList);
-                        } else {
-                            matrixDynamicValuesList.remove(matrixDynamicInnerMap);
                         }
-                    } else {
-                        matrixDynamicInnerMap.clear();
-                        matrixDynamicValuesList.remove(matrixDynamicInnerMap);
                     }
                 }
             }
