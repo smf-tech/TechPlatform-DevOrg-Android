@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.models.LocaleData;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class Column {
     @SerializedName("name")
@@ -24,6 +26,17 @@ public class Column {
     @SerializedName("maxLength")
     @Expose
     private Integer maxLength;
+    @SerializedName("validators")
+    @Expose
+    private List<Validator> validators = null;
+
+    public List<Validator> getValidators() {
+        return validators;
+    }
+
+    public void setValidators(List<Validator> validators) {
+        this.validators = validators;
+    }
 
     public Boolean getRequired() {
         return isRequired;
