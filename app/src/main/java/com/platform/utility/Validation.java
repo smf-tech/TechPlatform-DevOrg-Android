@@ -10,6 +10,8 @@ import com.platform.models.forms.Validator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -167,6 +169,21 @@ public class Validation {
 
     public static String requiredValidation(String fieldName, String fieldValue, boolean isRequired) {
         if (isRequired && TextUtils.isEmpty(fieldValue)) {
+            return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+        }
+
+        return "";
+    }
+
+    public static String matrixDynamicRequiredValidation(String fieldName, int columnsSize, List<HashMap<String, String>> valuesList) {
+        if (valuesList != null && !valuesList.isEmpty()) {
+            for (HashMap<String, String> valuesMap :
+                    valuesList) {
+                if (valuesMap.size() != columnsSize) {
+                    return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+                }
+            }
+        } else {
             return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
         }
 

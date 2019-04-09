@@ -69,6 +69,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
+    private ArrayList<MatrixDynamicTemplate> matrixDynamics = new ArrayList<>();
     private ArrayList<ImageView> photos = new ArrayList<>();
 
     public FormComponentCreator(FormFragment fragment) {
@@ -360,6 +361,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(),
                 this);
 
+        matrixDynamics.add(template);
+
         return template.matrixDynamicView();
     }
 
@@ -487,6 +490,75 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     }
                 }
             }
+        }
+
+        //For all matrix dynamics
+        for (MatrixDynamicTemplate template :
+                matrixDynamics) {
+            Elements element = template.getElements();
+            List<HashMap<String, String>> valuesList = getMatrixDynamicValuesMap().get(element.getName());
+            if (element.isRequired() != null) {
+                errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(), element.getColumns().size(), valuesList);
+
+                if (!TextUtils.isEmpty(errorMsg)) {
+                    fragment.get().setErrorMsg(errorMsg);
+                    return false;
+                }
+            }
+
+            if (valuesList != null && !valuesList.isEmpty()) {
+                for (HashMap<String, String> valuesMap :
+                        valuesList) {
+                    for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
+                        if (element.getColumns().get(columnIndex).getValidators() != null &&
+                                !element.getColumns().get(columnIndex).getValidators().isEmpty()) {
+                            String value = valuesMap.get(element.getColumns().get(columnIndex).getName());
+
+                            for (Validator validator :
+                                    element.getColumns().get(columnIndex).getValidators()) {
+                                if (!TextUtils.isEmpty(validator.getType())) {
+                                    switch (validator.getType()) {
+                                        case Constants.ValidationType.REGEX_TYPE:
+                                            if (!TextUtils.isEmpty(value)) {
+
+                                                errorMsg = Validation.regexValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
+                                                        value, validator);
+
+                                                if (!TextUtils.isEmpty(errorMsg)) {
+                                                    fragment.get().setErrorMsg(errorMsg);
+                                                    return false;
+                                                }
+                                            }
+                                            break;
+
+                                        default:
+                                            if (!TextUtils.isEmpty(value)) {
+
+                                                errorMsg = Validation.editTextMinMaxValueValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
+                                                        value, validator);
+
+                                                if (!TextUtils.isEmpty(errorMsg)) {
+                                                    fragment.get().setErrorMsg(errorMsg);
+                                                    return false;
+                                                }
+
+                                                errorMsg = Validation.editTextMinMaxLengthValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
+                                                        value, validator);
+
+                                                if (!TextUtils.isEmpty(errorMsg)) {
+                                                    fragment.get().setErrorMsg(errorMsg);
+                                                    return false;
+                                                }
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         //For all photos
