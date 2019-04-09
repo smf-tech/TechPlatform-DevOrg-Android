@@ -116,10 +116,10 @@ public class Constants {
         public static final String MEETINGS = "Meetings";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
-        public static final String PROG_MANAGEMENT = "Program Management";
-        public static final String MY_CONTENT= "MV Content";
-        public static final String TEAM_MANAGEMENT = "Team Management";
-        public static final String PLANNER = "Planner";
+        //public static final String PROGRAM_MANAGEMENT = "Program Management";
+        //public static final String MY_CONTENT= "MV Content";
+        //public static final String TEAM_MANAGEMENT = "Team Management";
+        //public static final String PLANNER = "Planner";
     }
 
     public static class PM {
@@ -175,13 +175,13 @@ public class Constants {
 
     public class FormInputType {
         public static final String INPUT_TYPE_DATE = "date";
-        public static final String INPUT_TYPE_TIME = "time";
-        public static final String INPUT_TYPE_NUMBER = "number";
-        public static final String INPUT_TYPE_TELEPHONE = "tel";
-        public static final String INPUT_TYPE_NUMERIC = "numeric";
-        public static final String INPUT_TYPE_DECIMAL = "decimal";
-        public static final String INPUT_TYPE_ALPHABETS = "alphabets";
-        public static final String INPUT_TYPE_TEXT = "text";
+        static final String INPUT_TYPE_TIME = "time";
+        static final String INPUT_TYPE_NUMBER = "number";
+        static final String INPUT_TYPE_TELEPHONE = "tel";
+        static final String INPUT_TYPE_NUMERIC = "numeric";
+        static final String INPUT_TYPE_DECIMAL = "decimal";
+        static final String INPUT_TYPE_ALPHABETS = "alphabets";
+        static final String INPUT_TYPE_TEXT = "text";
     }
 
     public class Image {

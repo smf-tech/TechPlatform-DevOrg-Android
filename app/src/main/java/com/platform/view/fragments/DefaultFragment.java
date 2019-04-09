@@ -6,14 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.platform.R;
-import com.platform.utility.AppEvents;
-import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+@SuppressWarnings("WeakerAccess")
 public class DefaultFragment extends Fragment {
 
     @Override
