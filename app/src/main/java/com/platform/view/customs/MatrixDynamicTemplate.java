@@ -53,9 +53,9 @@ class MatrixDynamicTemplate {
 
         addTitle(elements, matrixDynamicView);
 
-        if (elements.getmAnswerArray() != null && !elements.getmAnswerArray().isEmpty() &&
+        if (elements.getAnswerArray() != null && !elements.getAnswerArray().isEmpty() &&
                 elements.getColumns() != null && !elements.getColumns().isEmpty()) {
-            matrixDynamicValuesList = elements.getmAnswerArray();
+            matrixDynamicValuesList = elements.getAnswerArray();
             for (int valueListIndex = 0; valueListIndex < matrixDynamicValuesList.size(); valueListIndex++) {
                 if (valueListIndex == 0) {
                     addRow(elements, matrixDynamicView,

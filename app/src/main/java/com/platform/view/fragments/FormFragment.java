@@ -625,26 +625,31 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         }
                     }
                 }
-            }
 
-            //Save matrix dynamic values to JsonObject
-            if (formComponentCreator.getMatrixDynamicValuesMap() != null && !formComponentCreator.getMatrixDynamicValuesMap().isEmpty()) {
-                HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = formComponentCreator.getMatrixDynamicValuesMap();
-                for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
-                    String elementName = entry.getKey();
-                    List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
-                    JsonArray jsonArray = new JsonArray();
-                    for (HashMap<String, String> matrixDynamicInnerMap : matrixDynamicValuesList) {
-                        JsonObject jsonObject = new JsonObject();
-                        for (Map.Entry<String, String> valueEntry : matrixDynamicInnerMap.entrySet()) {
-                            jsonObject.addProperty(valueEntry.getKey(), valueEntry.getValue());
+                //Save matrix dynamic values to JsonObject
+                if (formComponentCreator.getMatrixDynamicValuesMap() != null &&
+                        !formComponentCreator.getMatrixDynamicValuesMap().isEmpty()) {
+
+                    HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap
+                            = formComponentCreator.getMatrixDynamicValuesMap();
+
+                    for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
+                        String elementName = entry.getKey();
+                        List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
+                        JsonArray jsonArray = new JsonArray();
+
+                        for (HashMap<String, String> matrixDynamicInnerMap : matrixDynamicValuesList) {
+                            JsonObject jsonObject = new JsonObject();
+                            for (Map.Entry<String, String> valueEntry : matrixDynamicInnerMap.entrySet()) {
+                                jsonObject.addProperty(valueEntry.getKey(), valueEntry.getValue());
+                            }
+                            jsonArray.add(jsonObject);
                         }
-                        jsonArray.add(jsonObject);
+                        obj.add(elementName, jsonArray);
                     }
-                    obj.add(elementName, jsonArray);
                 }
+                result.setResult(obj.toString());
             }
-            result.setResult(obj.toString());
         }
 
         if (mIsPartiallySaved) {
@@ -849,8 +854,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             }
                             valuesList.add(valuesMap);
                         }
-                        element.setmAnswerArray(valuesList);
-                        matrixDynamicValuesMap.put(element.getName(), element.getmAnswerArray());
+                        element.setAnswerArray(valuesList);
+                        matrixDynamicValuesMap.put(element.getName(), element.getAnswerArray());
                         break;
                 }
             }

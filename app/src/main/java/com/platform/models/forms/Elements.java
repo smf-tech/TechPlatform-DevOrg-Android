@@ -56,11 +56,11 @@ public class Elements {
     @Expose
     private List<Column> columns;
 
-    public List<HashMap<String, String>> getmAnswerArray() {
+    public List<HashMap<String, String>> getAnswerArray() {
         return mAnswerArray;
     }
 
-    public void setmAnswerArray(List<HashMap<String, String>> mAnswerArray) {
+    public void setAnswerArray(List<HashMap<String, String>> mAnswerArray) {
         this.mAnswerArray = mAnswerArray;
     }
 
