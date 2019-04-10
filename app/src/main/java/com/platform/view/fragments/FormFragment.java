@@ -35,6 +35,7 @@ import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
+import com.platform.models.forms.Page;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppEvents;
@@ -172,7 +173,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private class GetDataFromDBTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            showChoicesByUrl(params[0], PlatformGson.getPlatformGsonInstance().fromJson(params[1], Elements.class));
+            showChoicesByUrl(params[0],
+                    PlatformGson.getPlatformGsonInstance().fromJson(params[1], Elements.class));
             return null;
         }
 
@@ -298,7 +300,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
                         if (elements.getChoicesByUrl() == null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
-                            Collections.sort(elements.getChoices(), (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
+                            Collections.sort(elements.getChoices(),
+                                    (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
                             addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
@@ -366,24 +369,25 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     private void callChoicesAPI(String name) {
-        for (int pageIndex = 0; pageIndex < formModel.getData().getComponents().getPages().size(); pageIndex++) {
+        List<Page> pages = formModel.getData().getComponents().getPages();
+        for (int pageIndex = 0; pageIndex < pages.size(); pageIndex++) {
 
-            if (formModel.getData().getComponents().getPages().get(pageIndex).getElements() != null &&
-                    !formModel.getData().getComponents().getPages().get(pageIndex).getElements().isEmpty()) {
+            if (pages.get(pageIndex).getElements() != null &&
+                    !pages.get(pageIndex).getElements().isEmpty()) {
 
-                for (int elementIndex = 0; elementIndex < formModel.getData().getComponents().getPages().get(pageIndex).getElements().size(); elementIndex++) {
+                for (int elementIndex = 0; elementIndex < pages.get(pageIndex).getElements().size(); elementIndex++) {
 
-                    if (formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex) != null
-                            && formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl() != null &&
-                            formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getName().equals(name) &&
-                            !TextUtils.isEmpty(formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl()) &&
-                            !TextUtils.isEmpty(formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
+                    if (pages.get(pageIndex).getElements().get(elementIndex) != null
+                            && pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl() != null &&
+                            pages.get(pageIndex).getElements().get(elementIndex).getName().equals(name) &&
+                            !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl()) &&
+                            !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
 
-                        formPresenter.getChoicesByUrl(formModel.getData().getComponents().getPages().get(pageIndex).getElements().get(elementIndex), pageIndex, elementIndex, formModel.getData());
+                        formPresenter.getChoicesByUrl(pages.get(pageIndex).getElements().get(elementIndex),
+                                pageIndex, elementIndex, formModel.getData());
                         break;
                     }
                 }
-
             }
         }
     }
@@ -467,13 +471,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 JsonObject innerObj = dataArray.get(index).getAsJsonObject();
                 if (elements.getChoicesByUrl() != null && !TextUtils.isEmpty(elements.getChoicesByUrl().getTitleName())) {
                     if (elements.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
-                        StringTokenizer titleTokenizer = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
-                        StringTokenizer valueTokenizer = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer titleTokenizer
+                                = new StringTokenizer(elements.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer valueTokenizer
+                                = new StringTokenizer(elements.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
                         JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
 
                         String title = titleTokenizer.nextToken();
                         try {
-                            text = PlatformGson.getPlatformGsonInstance().fromJson(obj.get(title).getAsString(), LocaleData.class);
+                            text = PlatformGson.getPlatformGsonInstance()
+                                    .fromJson(obj.get(title).getAsString(), LocaleData.class);
                         } catch (Exception e) {
                             text = new LocaleData(obj.get(title).getAsString());
                         }
@@ -500,7 +507,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
 
-            Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
+            Collections.sort(choiceValues,
+                    (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
@@ -727,12 +735,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             JsonObject obj = PlatformGson.getPlatformGsonInstance().fromJson(json, JsonObject.class);
 
             //Save matrix dynamic values to JsonObject
-            if (formComponentCreator.getMatrixDynamicValuesMap() != null && !formComponentCreator.getMatrixDynamicValuesMap().isEmpty()) {
-                HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = formComponentCreator.getMatrixDynamicValuesMap();
+            if (formComponentCreator.getMatrixDynamicValuesMap() != null &&
+                    !formComponentCreator.getMatrixDynamicValuesMap().isEmpty()) {
+
+                HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap
+                        = formComponentCreator.getMatrixDynamicValuesMap();
+
                 for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
                     String elementName = entry.getKey();
                     List<HashMap<String, String>> matrixDynamicValuesList = matrixDynamicValuesMap.get(elementName);
                     JsonArray jsonArray = new JsonArray();
+
                     for (HashMap<String, String> matrixDynamicInnerMap : matrixDynamicValuesList) {
                         JsonObject jsonObject = new JsonObject();
                         for (Map.Entry<String, String> valueEntry : matrixDynamicInnerMap.entrySet()) {
@@ -742,7 +755,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     }
                     obj.add(elementName, jsonArray);
                 }
-                result.setRequestObject(json + PlatformGson.getPlatformGsonInstance().toJson(formComponentCreator.getMatrixDynamicValuesMap()));
+
+                result.setRequestObject(json + PlatformGson.getPlatformGsonInstance()
+                        .toJson(formComponentCreator.getMatrixDynamicValuesMap()));
             } else {
                 result.setRequestObject(json);
             }
@@ -780,13 +795,16 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         JsonObject object = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
         JsonArray values = object.getAsJsonArray("values");
         for (int i = 0; i < values.size(); i++) {
-            mFormJSONObject = PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)), JsonObject.class);
+            mFormJSONObject = PlatformGson.getPlatformGsonInstance()
+                    .fromJson(String.valueOf(values.get(i)), JsonObject.class);
+
             String oid;
             try {
                 oid = mFormJSONObject.get("_id").getAsJsonObject().get("$oid").getAsString();
             } catch (Exception e) {
                 oid = mFormJSONObject.get("_id").getAsString();
             }
+
             if (oid.equals(formId)) {
                 Log.e(TAG, "Form result\n" + mFormJSONObject.toString());
                 break;
@@ -806,6 +824,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             formData = DatabaseManager.getDBInstance(
                     Objects.requireNonNull(getActivity()).getApplicationContext())
                     .getFormSchema(formId);
+
             if (formData == null || formData.getComponents() == null) {
                 if (Util.isConnected(getContext())) {
                     formPresenter.getProcessDetails(formId);
@@ -827,12 +846,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     private void parseSchemaAndFormDetails(final JsonObject object, final List<Elements> elements, String formId) {
-        if (object == null || elements == null || elements.size() == 0) return;
+        if (object == null || elements == null || elements.size() == 0) {
+            return;
+        }
 
         HashMap<String, String> requestedObject = new HashMap<>();
         HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
         for (final Elements element : elements) {
             if (object.has(element.getName())) {
+
                 String type = element.getType();
                 switch (type) {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
@@ -843,17 +865,22 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         element.setAnswer(object.get(element.getName()).getAsString());
                         requestedObject.put(element.getName(), element.getAnswer());
                         break;
+
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
                         JsonArray valuesArray = object.get(element.getName()).getAsJsonArray();
                         List<HashMap<String, String>> valuesList = new ArrayList<>();
+
                         for (int valuesArrayIndex = 0; valuesArrayIndex < valuesArray.size(); valuesArrayIndex++) {
                             JsonObject jsonObject = valuesArray.get(valuesArrayIndex).getAsJsonObject();
                             HashMap<String, String> valuesMap = new HashMap<>();
+
                             for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
-                                valuesMap.put(element.getColumns().get(columnIndex).getName(), jsonObject.get(element.getColumns().get(columnIndex).getName()).getAsString());
+                                valuesMap.put(element.getColumns().get(columnIndex).getName(),
+                                        jsonObject.get(element.getColumns().get(columnIndex).getName()).getAsString());
                             }
                             valuesList.add(valuesMap);
                         }
+
                         element.setAnswerArray(valuesList);
                         matrixDynamicValuesMap.put(element.getName(), element.getAnswerArray());
                         break;
@@ -907,7 +934,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 String imageFilePath = getImageName();
-                if (imageFilePath == null) return;
+                if (imageFilePath == null) {
+                    return;
+                }
 
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -918,7 +947,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             if (data != null) {
                 try {
                     String imageFilePath = getImageName();
-                    if (imageFilePath == null) return;
+                    if (imageFilePath == null) {
+                        return;
+                    }
 
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
