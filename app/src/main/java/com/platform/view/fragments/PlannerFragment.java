@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +13,8 @@ import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,8 +25,6 @@ import androidx.viewpager.widget.ViewPager;
 public class PlannerFragment extends Fragment implements View.OnClickListener {
 
     private View plannerView;
-    @SuppressLint("StaticFieldLeak")
-    static ViewPager viewPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,16 +59,16 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initTabView() {
-        viewPager = plannerView.findViewById(R.id.view_pager);
+        ViewPager viewPager = plannerView.findViewById(R.id.view_pager);
         viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
 
         TabLayout tabs = plannerView.findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
 
-        tabs.getTabAt(0).setIcon(R.drawable.test);
-        tabs.getTabAt(1).setIcon(R.drawable.test);
-        tabs.getTabAt(2).setIcon(R.drawable.test);
-        tabs.getTabAt(3).setIcon(R.drawable.test);
+        Objects.requireNonNull(tabs.getTabAt(0)).setIcon(R.drawable.test);
+        Objects.requireNonNull(tabs.getTabAt(1)).setIcon(R.drawable.test);
+        Objects.requireNonNull(tabs.getTabAt(2)).setIcon(R.drawable.test);
+        Objects.requireNonNull(tabs.getTabAt(3)).setIcon(R.drawable.test);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        public ViewPagerAdapter(@NonNull FragmentManager fm) {
+        ViewPagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
         }
 

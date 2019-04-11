@@ -22,10 +22,11 @@ import com.platform.view.fragments.FormFragment;
 import java.lang.ref.WeakReference;
 
 class TextInputTemplate {
+
     private final String TAG = this.getClass().getSimpleName();
-    private Elements formData;
-    private WeakReference<FormFragment> context;
-    private TextValueChangeListener textValueChangeListener;
+    private final Elements formData;
+    private final WeakReference<FormFragment> context;
+    private final TextValueChangeListener textValueChangeListener;
 
     TextInputTemplate(Elements formData, FormFragment context, TextValueChangeListener textValueChangeListener) {
         this.formData = formData;

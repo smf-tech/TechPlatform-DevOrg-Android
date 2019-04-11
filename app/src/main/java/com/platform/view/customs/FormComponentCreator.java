@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -190,9 +191,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
     }
 
-    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues) {
+    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues, HashMap<String, String> matrixDynamicInnerMap) {
         if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
-            matrixDynamics.get(0).updateDropDownValues(column, choiceValues);
+            matrixDynamics.get(0).updateDropDownValues(column, choiceValues, matrixDynamicInnerMap);
         }
     }
 
@@ -260,7 +261,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 Util.getCurrentTimeStamp(), Constants.FORM_DATE));
                     }
                 } else {
-                    textInputField.setText(formData.getAnswer());
+                    textInputField.setText(String.format(Locale.getDefault(), "%s", formData.getAnswer()));
                 }
             }
 
@@ -715,8 +716,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     @Override
-    public void showChoicesByUrlOffline(String response, Elements elements) {
-        fragment.get().showChoicesByUrlAsync(response, elements);
+    public void showChoicesByUrlOffline(String response, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+        fragment.get().showChoicesByUrlAsyncMD(response, column, matrixDynamicInnerMap);
     }
 
     @Override
