@@ -92,12 +92,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
         requestCall.getProcessDetails(processId);
     }
 
-    public void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex, FormData formData) {
+    public void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex, int columnIndex, FormData formData, String url) {
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, formData);
+        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, columnIndex, formData, url);
     }
 
     public void getFormResults(String url) {
@@ -310,7 +310,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData) {
+    public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex,
+                                   int columnIndex, FormData formData) {
         formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
             //Write choicesByUrl response to internal storage
@@ -319,7 +320,11 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
             //Fetch form data using formId and update choicesByUrl response path
             FormData savedFormData = DatabaseManager.getDBInstance(formFragment.get().getActivity()).getFormSchema(formData.getId());
-            savedFormData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponsePath(path);
+            if (columnIndex == -1) {
+                savedFormData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponsePath(path);
+            } else {
+                savedFormData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).getColumns().get(columnIndex).setChoicesByUrlResponsePath(path);
+            }
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(savedFormData);
 
             //Update values on UI

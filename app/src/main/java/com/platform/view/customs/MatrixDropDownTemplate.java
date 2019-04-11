@@ -11,6 +11,7 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
 import com.platform.view.adapters.FormSpinnerAdapter;
 import com.platform.view.fragments.FormFragment;
@@ -23,7 +24,7 @@ import java.util.List;
 import androidx.core.content.ContextCompat;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
+public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private Elements formData;
@@ -33,6 +34,8 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     private DropDownValueSelectListener dropDownValueSelectListener;
     private String tag;
     private String formId;
+    private float weight = 1f;
+    private Column column;
 
     @SuppressWarnings("unused")
     public String getFormId() {
@@ -47,18 +50,23 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         this.tag = tag;
     }
 
-    DropDownTemplate(Elements formData, FormFragment context, DropDownValueSelectListener listener, String formId) {
+    MatrixDropDownTemplate(Elements formData, Column column, FormFragment context, DropDownValueSelectListener listener, String formId) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
         this.formId = formId;
+        this.column = column;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     public List<Choice> getValueList() {
         return valueList;
     }
 
-    synchronized View init(String mandatory) {
+    synchronized public View init(String mandatory) {
         return dropDownView(mandatory);
     }
 
@@ -80,10 +88,17 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         LinearLayout baseLayout = (LinearLayout) View.inflate(context.get().getContext(),
                 R.layout.form_dropdown_template, null);
 
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = this.weight;
+        baseLayout.setLayoutParams(layoutParams);
+
         spinner = baseLayout.findViewById(R.id.sp_single_select);
 
-        String label = formData.getTitle().getLocaleValue() + mandatory;
-        ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
+        if (column != null && !TextUtils.isEmpty(column.getTitle().getLocaleValue())) {
+            String label = column.getTitle().getLocaleValue() + mandatory;
+            ((TextView) baseLayout.findViewById(R.id.dropdown_label)).setText(label);
+        }
 
         FormSpinnerAdapter adapter = new FormSpinnerAdapter(context.get().getContext(),
                 R.layout.layout_spinner_item, valueList);
@@ -105,12 +120,12 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
                 this.setSelectedItem(0);
             }
 
-            if (formData.getChoices() != null && !formData.getChoices().isEmpty()) {
-                for (int index = 0; index < formData.getChoices().size(); index++) {
+            if (column.getChoices() != null && !column.getChoices().isEmpty()) {
+                for (int index = 0; index < column.getChoices().size(); index++) {
                     if (!TextUtils.isEmpty(formData.getAnswer()) &&
-                            formData.getChoices().get(index).getText() != null &&
-                            !TextUtils.isEmpty(formData.getChoices().get(index).getText().getLocaleValue()) &&
-                            formData.getAnswer().equals(formData.getChoices().get(index).getValue())) {
+                            column.getChoices().get(index).getText() != null &&
+                            !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
+                            formData.getAnswer().equals(column.getChoices().get(index).getValue())) {
                         this.setSelectedItem(index);
                     }
                 }

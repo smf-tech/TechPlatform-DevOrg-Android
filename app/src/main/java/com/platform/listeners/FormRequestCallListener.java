@@ -20,7 +20,7 @@ public interface FormRequestCallListener {
 
     void onSuccessListener(String response);
 
-    void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData);
+    void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, int columnIndex, FormData formData);
 
     @SuppressWarnings("unused")
     void onSubmitClick(String submitType, String url, String formId, String oid, final List<Map<String, String>> imageUrlList);

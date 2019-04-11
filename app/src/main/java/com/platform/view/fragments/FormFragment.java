@@ -298,13 +298,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                         if (elements.getChoicesByUrl() == null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             //Online
                             if (Util.isConnected(getContext())) {
                                 //Opened submitted/partially or offline saved form
@@ -361,7 +360,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(elements));
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(), elements,
+                                mIsInEditMode, mIsPartiallySaved, formPresenter));
                         break;
                 }
             }
@@ -384,7 +384,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
 
                         formPresenter.getChoicesByUrl(pages.get(pageIndex).getElements().get(elementIndex),
-                                pageIndex, elementIndex, formModel.getData());
+                                pageIndex, elementIndex, -1, formModel.getData(), pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl());
                         break;
                     }
                 }

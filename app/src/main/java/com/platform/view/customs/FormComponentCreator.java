@@ -30,10 +30,13 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.listeners.MatrixDynamicValueChangeListener;
+import com.platform.listeners.TextValueChangeListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
+import com.platform.models.forms.FormData;
 import com.platform.models.forms.Validator;
+import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.PlatformGson;
@@ -51,7 +54,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
-public class FormComponentCreator implements DropDownValueSelectListener, MatrixDynamicValueChangeListener {
+public class FormComponentCreator implements DropDownValueSelectListener, MatrixDynamicValueChangeListener,
+        TextValueChangeListener {
 
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
@@ -352,14 +356,15 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         return fileTemplateView;
     }
 
-    public View matrixDynamicTemplate(final Elements elements) {
+    public View matrixDynamicTemplate(FormData formData, final Elements elements,
+                                      boolean mIsInEditMode, boolean mIsPartiallySaved, FormActivityPresenter formActivityPresenter) {
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "View returned null");
             return null;
         }
 
-        MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(),
-                this);
+        MatrixDynamicTemplate template = new MatrixDynamicTemplate(formData, elements, fragment.get(),
+                this, mIsInEditMode, mIsPartiallySaved, formActivityPresenter);
 
         matrixDynamics.add(template);
 
@@ -698,8 +703,22 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     @Override
-    public void onValueChanged(String elementName, List<HashMap<String, String>> matrixDynamicValuesList) {
+    public void onMatrixDynamicValueChanged(String elementName, List<HashMap<String, String>> matrixDynamicValuesList) {
         matrixDynamicValuesMap.put(elementName, matrixDynamicValuesList);
+    }
+
+    @Override
+    public void showChoicesByUrlOffline(String response, Elements elements) {
+        fragment.get().showChoicesByUrlAsync(response, elements);
+    }
+
+    @Override
+    public void onTextValueChanged(String elementName, String value) {
+        if (!TextUtils.isEmpty(value)) {
+            requestObjectMap.put(elementName, value);
+        } else {
+            requestObjectMap.remove(elementName);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
