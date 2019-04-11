@@ -146,7 +146,7 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
                         break;
 
                     case 3:
-                        title = getResources().getString(R.string.Attendence);
+                        title = getResources().getString(R.string.Attendance);
                         break;
                 }
             } catch (Resources.NotFoundException | IllegalStateException e) {

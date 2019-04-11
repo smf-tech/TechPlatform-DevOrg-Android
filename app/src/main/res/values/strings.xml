@@ -132,6 +132,7 @@
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="planner">Planner</string>
+    <string name="meetings">Meetings</string>
     <string name="team_management">Team Management</string>
 
     <!--Program management-->
@@ -219,7 +220,7 @@
     <string name="events">Events</string>
     <string name="tasks">Tasks</string>
     <string name="leave">Leave</string>
-    <string name="Attendence">Attendance</string>
+    <string name="Attendance">Attendance</string>
 
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>

@@ -9,7 +9,7 @@
         android:id="@+id/meeting_dummy_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Attendence"
+        android:text="@string/Attendance"
         android:textSize="@dimen/text_size_20"
         android:textStyle="bold" />
 

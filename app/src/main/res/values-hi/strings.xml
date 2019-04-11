@@ -132,6 +132,7 @@
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="planner">योजनाकर्ता</string>
+    <string name="meetings">मीटिंग्ज</string>
     <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
@@ -215,10 +216,10 @@
     <string name="gps_popup_title">कृपया GPS / LOCATION चालू करें</string>
     <string name="msg_enable_gps">GPS सक्षम नहीं है, क्या आप इसे सक्षम करना चाहते हैं?</string>
 
-  <!--Planner-->
+    <!--Planner-->
     <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
-    <string name="Attendence">उपस्थिति</string>
+    <string name="Attendance">उपस्थिति</string>
 
 </resources>
