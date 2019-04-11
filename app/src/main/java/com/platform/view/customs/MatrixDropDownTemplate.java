@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.listeners.DropDownValueSelectListener;
+import com.platform.listeners.MatrixDynamicDropDownValueSelectListener;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
@@ -19,6 +19,7 @@ import com.platform.widgets.PlatformSpinner;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.core.content.ContextCompat;
@@ -31,11 +32,12 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     private PlatformSpinner spinner;
     private WeakReference<FormFragment> context;
     private List<Choice> valueList = new ArrayList<>();
-    private DropDownValueSelectListener dropDownValueSelectListener;
+    private MatrixDynamicDropDownValueSelectListener dropDownValueSelectListener;
     private String tag;
     private String formId;
     private float weight = 1f;
     private Column column;
+    private HashMap<String, String> matrixDynamicInnerMap;
 
     @SuppressWarnings("unused")
     public String getFormId() {
@@ -50,12 +52,15 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         this.tag = tag;
     }
 
-    MatrixDropDownTemplate(Elements formData, Column column, FormFragment context, DropDownValueSelectListener listener, String formId) {
+    MatrixDropDownTemplate(Elements formData, Column column, FormFragment context,
+                           HashMap<String, String> matrixDynamicInnerMap,
+                           MatrixDynamicDropDownValueSelectListener listener, String formId) {
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
         this.formId = formId;
         this.column = column;
+        this.matrixDynamicInnerMap = matrixDynamicInnerMap;
     }
 
     public void setWeight(float weight) {
@@ -153,14 +158,14 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
             if (tv != null) {
                 tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
             }
-            dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue(), formId);
+            dropDownValueSelectListener.onDropdownValueSelected(matrixDynamicInnerMap, column, valueList.get(i).getValue(), formId);
         } else {
-            dropDownValueSelectListener.onEmptyDropdownSelected(formData);
+            dropDownValueSelectListener.onEmptyDropdownSelected(matrixDynamicInnerMap, column);
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        dropDownValueSelectListener.onEmptyDropdownSelected(formData);
+        dropDownValueSelectListener.onEmptyDropdownSelected(matrixDynamicInnerMap, column);
     }
 }
