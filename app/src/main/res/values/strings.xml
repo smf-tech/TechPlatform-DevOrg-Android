@@ -131,6 +131,7 @@
     <string name="tab_connect">Connect</string>
     <string name="tab_stories">Stories</string>
     <string name="programme_management">Programme\nManagement</string>
+    <string name="planner">Planner</string>
     <string name="meetings">Meetings</string>
     <string name="team_management">Team Management</string>
 
@@ -214,6 +215,12 @@
     <string name="gps_settings">GPS Settings</string>
     <string name="gps_popup_title">Please turn on GPS/LOCATION.</string>
     <string name="msg_enable_gps">GPS is not enabled. Do you want to enable it?</string>
+
+    <!--Planner-->
+    <string name="events">Events</string>
+    <string name="tasks">Tasks</string>
+    <string name="leave">Leave</string>
+    <string name="Attendance">Attendance</string>
 
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>

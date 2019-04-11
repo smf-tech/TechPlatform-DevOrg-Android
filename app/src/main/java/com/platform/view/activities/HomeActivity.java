@@ -37,7 +37,7 @@ import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
-import com.platform.view.fragments.MeetingsFragment;
+import com.platform.view.fragments.PlannerFragment;
 import com.platform.view.fragments.NotificationsFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserApprovalsFragment;
@@ -237,8 +237,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadMeetingsPage() {
-        Util.launchFragment(new MeetingsFragment(), this,
-                getString(R.string.meetings), true);
+        Util.launchFragment(new PlannerFragment(), this,
+                getString(R.string.planner), true);
     }
 
     private void loadTeamsPage() {
