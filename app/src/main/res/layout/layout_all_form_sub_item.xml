@@ -6,23 +6,22 @@
     android:paddingEnd="@dimen/dimen_05dp">
 
     <View
-        android:layout_width="@dimen/dimen_05dp"
-        android:layout_height="@dimen/dimen_50dp"
+        android:layout_width="@dimen/form_item_status_indicator_width"
+        android:layout_height="@dimen/dimen_45dp"
         android:layout_centerVertical="true"
         android:background="@color/freq_used_form_color" />
 
     <TextView
         android:id="@+id/form_title"
-        style="@style/FormLabel.Title"
+        style="@style/roboto_medium_dark_grey_14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_toStartOf="@id/add_form_button"
         android:ellipsize="end"
-        android:maxLines="2"
-        android:text="@string/category_title"
-        android:textColor="@color/black" />
+        android:maxLines="2" />
 
     <TextView
         android:id="@+id/target_date_label"

@@ -158,6 +158,7 @@
     <string name="msg_take_photo_error">अॅपला फोटो घेण्याची परवानगी नाही, कृपया त्यास अनुमती द्या.</string>
 
     <!--Forms-->
+    <string name="default_select">--निवडा--</string>
     <string name="category_title">श्रेणी शीर्षक</string>
     <string name="forms">फॉर्म</string>
     <string name="no_records_available">डेटा उपलब्ध नाही!</string>
@@ -168,7 +169,7 @@
     <string name="reports">अहवाल</string>
     <string name="submitted_form_count">सबमिट केलेल्या फॉर्मची एकूण संख्या : %1$s</string>
     <string name="msg_confirm">आपणास खात्री आहे की आपण हा फॉर्म जतन करू इच्छिता?</string>
-    <string name="form_saved_offline">आपण ऑफलाइन आहात, फॉर्म ऑफलाइन जतन केला आहे.</string>
+    <string name="form_saved_offline">आपण ऑफलाइन आहात, फॉर्म ऑफलाइन सबमिट केला आहे.</string>
     <string name="form_submit_success">फॉर्म यशस्वीरित्या सबमिट केला!</string>
     <string name="image_upload_success">प्रतिमा यशस्वीरित्या अपलोड केली!</string>
     <string name="status_update_success">स्थिती यशस्वीरित्या अद्यतनित केली!</string>
@@ -189,7 +190,7 @@
     <string name="msg_error_rejection_comment_needed">अस्वीकार कारण आवश्यक</string>
 
     <string name="form_count">%1$d फॉर्म</string>
-    <string name="frequently_used_forms">Frequently used forms</string>
+    <string name="frequently_used_forms">वारंवार वापरलेले फॉर्म</string>
 
     <string name="partial_form_added">फॉर्म यशस्वीरित्या जतन केला</string>
     <string name="form_deleted">फॉर्म हटविला!</string>
@@ -209,6 +210,10 @@
     <string name="length_should_not_be_greater_than">लांबीपेक्षा जास्त नसावी</string>
     <string name="cant_be_empty">रिक्त असू शकत नाही</string>
     <string name="no_proper_format">योग्य स्वरूपात नाही</string>
+
+    <string name="gps_settings">जीपीएस सेटिंग्ज</string>
+    <string name="gps_popup_title">कृपया GPS / LOCATION चालू करा</string>
+    <string name="msg_enable_gps">जीपीएस सक्षम नाही, आपण हे सक्षम करू इच्छिता?</string>
 
     <!--Planner-->
     <string name="events">कार्यक्रम</string>

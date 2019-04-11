@@ -10,6 +10,8 @@ import com.platform.models.forms.Validator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -76,8 +78,8 @@ public class Validation {
         return "";
     }
 
-    public static String expressionValidation(String fieldName, String field1Value,
-                                              String field2Value, String inputType, Validator validator) {
+    public static String expressionValidation(String fieldName, String field1Value, String field2Value,
+                                              String field3Value, String inputType, Validator validator) {
 
         if (validator != null && !TextUtils.isEmpty(validator.getExpression())) {
             switch (inputType) {
@@ -111,7 +113,39 @@ public class Validation {
                     }
 
                     break;
+
                 case Constants.FormInputType.INPUT_TYPE_TIME:
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                    double field1DoubleValue = Double.parseDouble(field1Value);
+                    double field2DoubleValue = Double.parseDouble(field2Value);
+                    double field3DoubleValue = 0;
+                    if (!TextUtils.isEmpty(field3Value)) {
+                        field3DoubleValue = Double.parseDouble(field3Value);
+                    }
+                    if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS) && field1DoubleValue < field2DoubleValue) {
+                        if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                            return validator.getText().getLocaleValue();
+                        } else {
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                        }
+                    } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS) && field1DoubleValue > field2DoubleValue) {
+                        if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                            return validator.getText().getLocaleValue();
+                        } else {
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                        }
+                    } else if (validator.getExpression().contains(Constants.Expression.EQUALS) &&
+                            validator.getExpression().contains(Constants.Expression.SUBTRACTION) &&
+                            !TextUtils.isEmpty(field3Value) &&
+                            field1DoubleValue != field2DoubleValue - field3DoubleValue) {
+                        if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
+                            return validator.getText().getLocaleValue();
+                        } else {
+                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                        }
+                    }
                     break;
             }
         }
@@ -135,6 +169,21 @@ public class Validation {
 
     public static String requiredValidation(String fieldName, String fieldValue, boolean isRequired) {
         if (isRequired && TextUtils.isEmpty(fieldValue)) {
+            return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+        }
+
+        return "";
+    }
+
+    public static String matrixDynamicRequiredValidation(String fieldName, int columnsSize, List<HashMap<String, String>> valuesList) {
+        if (valuesList != null && !valuesList.isEmpty()) {
+            for (HashMap<String, String> valuesMap :
+                    valuesList) {
+                if (valuesMap.size() != columnsSize) {
+                    return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+                }
+            }
+        } else {
             return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
         }
 

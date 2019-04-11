@@ -52,6 +52,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
     private FormResult savedForm;
     private WeakReference<FormFragment> formFragment;
     private HashMap<String, String> requestedObject;
+    private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap;
+    private List<HashMap<String, String>> matrixDynamicValuesList;
+
+    private HashMap<String, List<HashMap<String, String>>> getMatrixDynamicValuesMap() {
+        return matrixDynamicValuesMap;
+    }
+
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
+        this.matrixDynamicValuesMap = matrixDynamicValuesMap;
+    }
 
     private FormResult getSavedForm() {
         return savedForm;
@@ -180,93 +190,101 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public void onFormCreatedUpdated(String message, String requestObjectString, String formId,
                                      String callType, String oid) {
 
-        if (formFragment != null && formFragment.get() != null) {
-            formFragment.get().hideProgressBar();
-            Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success), formFragment.get().getActivity());
-        }
-
         try {
             JSONObject outerObject = new JSONObject(message);
-            JSONObject requestObject = new JSONObject(requestObjectString);
 
-            if (outerObject.has(Constants.RESPONSE_DATA)) {
-                JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
-                JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
-
-                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
-                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
-                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
-
-                requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
-                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
-                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
-
-                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
-                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
-
-                if (oid != null) {
-                    FormResult formResult = DatabaseManager
-                            .getDBInstance(formFragment.get().getContext()).getFormResult(oid);
-
-                    if (formResult != null) {
-                        DatabaseManager.getDBInstance(formFragment.get().getContext())
-                                .deleteFormResult(formResult);
-                    }
+            if (outerObject.getString("status").equalsIgnoreCase(Constants.ERROR)) {
+                formFragment.get().hideProgressBar();
+                if (!TextUtils.isEmpty(outerObject.getString("message"))) {
+                    Util.showToast(outerObject.getString("message"), formFragment.get().getActivity());
+                } else {
+                    Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                            formFragment.get().getActivity());
                 }
+            } else {
+                if (formFragment != null && formFragment.get() != null) {
+                    formFragment.get().hideProgressBar();
+                    Util.showToast(formFragment.get().getResources().getString(R.string.form_submit_success),
+                            formFragment.get().getActivity());
 
-                FormResult result = new FormResult();
-                result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
-                result.setFormId(formId);
-                String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
-                result.setCreatedAt(Long.parseLong(date));
-                result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
-                result.setResult(requestObject.toString());
-                result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
-                result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
-                DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+                    JSONObject requestObject = new JSONObject(requestObjectString);
 
-                AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success,
-                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
+                    if (outerObject.has(Constants.RESPONSE_DATA)) {
+                        JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
+                        JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
 
-                switch (callType) {
-                    case Constants.ONLINE_SUBMIT_FORM_TYPE:
+                        requestObject.put(Constants.FormDynamicKeys._ID, idObject);
+                        requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
+                                dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
 
-                        String countStr = DatabaseManager.getDBInstance(
-                                Objects.requireNonNull(formFragment.get().getContext()))
-                                .getProcessSubmitCount(formId);
+                        requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
+                        requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
+                                dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
 
-                        if (!TextUtils.isEmpty(countStr)) {
-                            int count = Integer.parseInt(countStr);
-                            DatabaseManager.getDBInstance(
-                                    Objects.requireNonNull(formFragment.get().getContext()))
-                                    .updateProcessSubmitCount(formId, String.valueOf(++count));
-                        }
+                        requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
+                                dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
-                        Intent intent = new Intent();
                         if (oid != null) {
-                            intent.setAction(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
+                            FormResult formResult = DatabaseManager
+                                    .getDBInstance(formFragment.get().getContext()).getFormResult(oid);
+
+                            if (formResult != null) {
+                                DatabaseManager.getDBInstance(formFragment.get().getContext())
+                                        .deleteFormResult(formResult);
+                            }
                         }
-                        intent.setAction(SyncAdapterUtils.EVENT_FORM_SUBMITTED);
-                        Context context = formFragment.get().getContext();
-                        if (context != null) {
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+                        FormResult result = new FormResult();
+                        result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
+                        result.setFormId(formId);
+                        String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                        result.setCreatedAt(Long.parseLong(date));
+                        result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                        result.setResult(requestObject.toString());
+                        result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                        result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                        DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
+
+                        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success,
+                                dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
+
+                        switch (callType) {
+                            case Constants.ONLINE_SUBMIT_FORM_TYPE:
+
+                                String countStr = DatabaseManager.getDBInstance(
+                                        Objects.requireNonNull(formFragment.get().getContext()))
+                                        .getProcessSubmitCount(formId);
+
+                                if (!TextUtils.isEmpty(countStr)) {
+                                    int count = Integer.parseInt(countStr);
+                                    DatabaseManager.getDBInstance(
+                                            Objects.requireNonNull(formFragment.get().getContext()))
+                                            .updateProcessSubmitCount(formId, String.valueOf(++count));
+                                }
+
+                                Intent intent = new Intent();
+                                if (oid != null) {
+                                    intent.setAction(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
+                                }
+                                intent.setAction(SyncAdapterUtils.EVENT_FORM_SUBMITTED);
+                                Context context = formFragment.get().getContext();
+                                if (context != null) {
+                                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                                }
+                                break;
                         }
-                        break;
+                    }
+
+                    FormActivity activity = (FormActivity) formFragment.get().getActivity();
+                    if (activity != null) {
+                        activity.closeScreen(true);
+                    }
+
+                    Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
                 }
-
             }
-
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
-        }
-
-        if (formFragment.get() != null) {
-            FormActivity activity = (FormActivity) formFragment.get().getActivity();
-            if (activity != null) {
-                activity.closeScreen(true);
-            }
-
-            Objects.requireNonNull(formFragment.get().getActivity()).onBackPressed();
         }
     }
 
@@ -296,7 +314,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
         formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
             //Write choicesByUrl response to internal storage
-            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()), formData.getId() + "_" + elements.getName(), response);
+            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()),
+                    formData.getId() + "_" + elements.getName(), response);
 
             //Fetch form data using formId and update choicesByUrl response path
             FormData savedFormData = DatabaseManager.getDBInstance(formFragment.get().getActivity()).getFormSchema(formData.getId());
@@ -319,12 +338,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.createFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.createFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.updateFormResponse(getRequestedObject(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.updateFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(), imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
@@ -377,5 +396,4 @@ public class FormActivityPresenter implements FormRequestCallListener,
         DatabaseManager.getDBInstance(formFragment.get().getActivity())
                 .updateProcessSubmitCount(processData.getId(), submitCount);
     }
-
 }

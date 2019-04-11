@@ -30,8 +30,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.platform.view.fragments.DashboardFragment.mApprovalCount;
-
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
@@ -103,7 +101,7 @@ public class NotificationsFragment extends Fragment implements TMTaskListener,
 
     public void showPendingRequests(List<PendingRequest> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
-            mApprovalCount = pendingRequestList.size();
+            DashboardFragment.setApprovalCount(pendingRequestList.size());
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.VISIBLE);
@@ -111,7 +109,7 @@ public class NotificationsFragment extends Fragment implements TMTaskListener,
             NotificationsAdapter newTMAdapter = new NotificationsAdapter(pendingRequestList, this);
             rvPendingRequests.setAdapter(newTMAdapter);
         } else {
-            mApprovalCount = 0;
+            DashboardFragment.setApprovalCount(0);
             txtNoData.setVisibility(View.VISIBLE);
             txtNoData.setText(getString(R.string.msg_no_pending_req));
             rvPendingRequests.setVisibility(View.GONE);

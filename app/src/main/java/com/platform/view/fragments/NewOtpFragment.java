@@ -516,7 +516,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                     if (msg != null && !msg.isEmpty()) {
                         msg = msg.replace("\n", "");
 
-                        String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                        String body = msg.substring(msg.lastIndexOf(":") + 1);
                         body = body.substring(0, body.lastIndexOf(" "));
                         Log.d("PL_SMS_Receive_OTP", body);
                         setOtp(body);

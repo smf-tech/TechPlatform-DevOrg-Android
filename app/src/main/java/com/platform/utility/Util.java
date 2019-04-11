@@ -1,6 +1,8 @@
 package com.platform.utility;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -42,10 +45,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -555,7 +561,7 @@ public class Util {
 
     public static String encrypt(String rowString) {
         try {
-            String encodedStr = Base64.encodeToString(rowString.getBytes("UTF-8"), Base64.DEFAULT);
+            String encodedStr = Base64.encodeToString(rowString.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
             return encodedStr.replace("\n", "");
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -575,12 +581,9 @@ public class Util {
     }
 
     public static String writeToInternalStorage(Context context, String fileName, String content) {
-        File file;
-        FileOutputStream outputStream;
-        try {
-            file = new File(context.getCacheDir(), fileName + Constants.App.FILE_EXTENSION);
+        File file = new File(context.getCacheDir(), fileName + Constants.App.FILE_EXTENSION);
 
-            outputStream = new FileOutputStream(file);
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(content.getBytes());
             outputStream.close();
             return file.getPath();
@@ -597,10 +600,7 @@ public class Util {
         String nextLine;
         StringBuilder completeText = new StringBuilder();
 
-        try {
-            FileReader fReader = new FileReader(tempFile);
-            BufferedReader bReader = new BufferedReader(fReader);
-
+        try (FileReader fReader = new FileReader(tempFile); BufferedReader bReader = new BufferedReader(fReader)) {
             while ((nextLine = bReader.readLine()) != null) {
                 completeText.append(nextLine).append("\n");
             }
@@ -635,5 +635,79 @@ public class Util {
         } else {
             return false;
         }
+    }
+
+    public static String setFieldAsMandatory(boolean isRequired) {
+        return (isRequired ? " *" : "");
+    }
+
+    public static void setInputType(Context context, String type, EditText textInputField) {
+        if (!TextUtils.isEmpty(type)) {
+            switch (type) {
+                case Constants.FormInputType.INPUT_TYPE_DATE:
+                    textInputField.setFocusable(false);
+                    textInputField.setClickable(false);
+                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                    textInputField.setOnClickListener(
+                            view -> showDateDialog(context, textInputField));
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_TIME:
+                    textInputField.setFocusable(false);
+                    textInputField.setClickable(false);
+                    textInputField.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
+                    textInputField.setOnClickListener(
+                            view -> showTimeDialog(context, textInputField));
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_TELEPHONE:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_NUMERIC:
+                case Constants.FormInputType.INPUT_TYPE_NUMBER:
+                case Constants.FormInputType.INPUT_TYPE_DECIMAL:
+                    textInputField.setInputType(InputType.TYPE_CLASS_NUMBER |
+                            InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    break;
+
+                case Constants.FormInputType.INPUT_TYPE_ALPHABETS:
+                case Constants.FormInputType.INPUT_TYPE_TEXT:
+                    textInputField.setMaxLines(3);
+                    textInputField.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+            }
+        }
+    }
+
+    private static void showDateDialog(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+            String date = year + "-"
+                    + Util.getTwoDigit(monthOfYear + 1)
+                    + "-" + Util.getTwoDigit(dayOfMonth);
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateDialog.show();
+    }
+
+    private static void showTimeDialog(Context context, final EditText editText) {
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+
+        TimePickerDialog timePicker = new TimePickerDialog(context,
+                (timePicker1, selectedHour, selectedMinute) -> editText.setText(
+                        MessageFormat.format("{0}:{1}", selectedHour, selectedMinute)),
+                hour, minute, false);
+        timePicker.setTitle("Select Time");
+        timePicker.show();
     }
 }
