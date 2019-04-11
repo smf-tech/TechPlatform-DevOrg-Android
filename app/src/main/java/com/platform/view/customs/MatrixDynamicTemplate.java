@@ -99,7 +99,7 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
                 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        textViewParams.setMargins(62, 16, 16, 16);
+        textViewParams.setMargins(30, 16, 16, 16);
         txtName.setLayoutParams(textViewParams);
         if (elements.isRequired() != null) {
             txtName.setText(context.get().getResources().getString(R.string.form_field_mandatory, elements.getTitle().getLocaleValue(), Util.setFieldAsMandatory(elements.isRequired())));
@@ -111,14 +111,17 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
 
     private void addRow(Elements elements, LinearLayout matrixDynamicView, HashMap<String,
             String> matrixDynamicInnerMap, String action) {
+
         int rowCount = elements.getColumns().size() % 2 == 0 ? elements.getColumns().size() / 2 : elements.getColumns().size() / 2 + 1;
         LinearLayout innerLinearLayout = null;
         LinearLayout innerItemLinearLayout = createInnerItemLinearLayout();
+
         for (int currentColumnIndex = 0; currentColumnIndex < elements.getColumns().size(); currentColumnIndex++) {
             Column currentColumn = elements.getColumns().get(currentColumnIndex);
             if (!TextUtils.isEmpty(currentColumn.getCellType())) {
                 if (currentColumnIndex % 2 == 0) {
                     innerLinearLayout = createInnerLinearLayout();
+                    innerLinearLayout.setBackgroundColor(context.get().getResources().getColor(R.color.green));
                 }
                 switch (currentColumn.getCellType()) {
                     case Constants.FormsFactory.TEXT_TEMPLATE:
@@ -130,7 +133,8 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        MatrixDropDownTemplate template = new MatrixDropDownTemplate(elements, currentColumn, context.get(), this, formData.getId());
+                        MatrixDropDownTemplate template = new MatrixDropDownTemplate(elements,
+                                currentColumn, context.get(), this, formData.getId());
                         template.setWeight(0.45f);
 
                         View dropdownView;
@@ -192,12 +196,12 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
                                 }
                             }
                         }
-
-
                         break;
                 }
+
                 if (currentColumnIndex % 2 != 0) {
                     innerItemLinearLayout.addView(innerLinearLayout);
+                    innerItemLinearLayout.setBackgroundColor(context.get().getResources().getColor(R.color.medium_blue));
                     rowCount--;
                 }
 
@@ -211,7 +215,9 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
                             break;
 
                         case Constants.Action.ACTION_DELETE:
-                            LinearLayout deleteLnr = createDeleteImageView(innerItemLinearLayout, matrixDynamicView, matrixDynamicInnerMap);
+                            LinearLayout deleteLnr = createDeleteImageView(innerItemLinearLayout,
+                                    matrixDynamicView, matrixDynamicInnerMap);
+
                             if (innerLinearLayout != null) {
                                 innerLinearLayout.addView(deleteLnr);
                             }
@@ -234,7 +240,7 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
         LinearLayout.LayoutParams linearLayoutParams
                 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        linearLayoutParams.setMargins(62, 20, 20, 0);
+        linearLayoutParams.setMargins(30, 20, 20, 0);
         innerItemLinearLayout.setLayoutParams(linearLayoutParams);
         return innerItemLinearLayout;
     }
@@ -290,7 +296,8 @@ class MatrixDynamicTemplate implements DropDownValueSelectListener {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         layoutParams.weight = 0.45f;
-        layoutParams.setMarginEnd(10);
+        layoutParams.setMargins(0, 75, 10,0);
+//        layoutParams.setMarginEnd(10);
         textInputField.setPadding(15, 25, 10, 25);
         textInputField.setLayoutParams(layoutParams);
         textInputField.setTextColor(context.get().getResources().getColor(R.color.colorPrimaryDark));

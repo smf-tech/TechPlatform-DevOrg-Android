@@ -50,7 +50,9 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         this.tag = tag;
     }
 
-    MatrixDropDownTemplate(Elements formData, Column column, FormFragment context, DropDownValueSelectListener listener, String formId) {
+    MatrixDropDownTemplate(Elements formData, Column column, FormFragment context,
+                           DropDownValueSelectListener listener, String formId) {
+
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
