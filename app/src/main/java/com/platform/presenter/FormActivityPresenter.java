@@ -328,8 +328,12 @@ public class FormActivityPresenter implements FormRequestCallListener,
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(savedFormData);
 
             //Update values on UI
-            elements.setChoicesByUrlResponsePath(path);
-            formFragment.get().showChoicesByUrlAsync(response, elements);
+            if (columnIndex == -1) {
+                elements.setChoicesByUrlResponsePath(path);
+                formFragment.get().showChoicesByUrlAsync(response, elements);
+            } else {
+                formFragment.get().showChoicesByUrlAsyncMD(response, elements.getColumns().get(columnIndex));
+            }
         }
     }
 

@@ -33,6 +33,7 @@ import com.platform.listeners.MatrixDynamicValueChangeListener;
 import com.platform.listeners.TextValueChangeListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.Validator;
@@ -186,6 +187,12 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             elements.setChoices(choiceValues);
             matchedTemplates.get(0).setFormData(elements);
             matchedTemplates.get(0).setListData(choiceValues);
+        }
+    }
+
+    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues) {
+        if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
+            matrixDynamics.get(0).updateDropDownValues(column, choiceValues);
         }
     }
 
