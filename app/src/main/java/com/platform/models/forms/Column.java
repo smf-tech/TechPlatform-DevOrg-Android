@@ -6,8 +6,13 @@ import com.platform.models.LocaleData;
 
 import java.util.List;
 
+import androidx.room.ColumnInfo;
+
 @SuppressWarnings("unused")
 public class Column {
+    @ColumnInfo(name = "choices_by_url_response_path")
+    private String choicesByUrlResponsePath;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -29,6 +34,20 @@ public class Column {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
+    @SerializedName("choices")
+    @Expose
+    private List<Choice> choices = null;
+    @SerializedName("choicesByUrl")
+    @Expose
+    private ChoicesByUrl choicesByUrl;
+
+    public String getChoicesByUrlResponsePath() {
+        return choicesByUrlResponsePath;
+    }
+
+    public void setChoicesByUrlResponsePath(String choicesByUrlResponsePath) {
+        this.choicesByUrlResponsePath = choicesByUrlResponsePath;
+    }
 
     public List<Validator> getValidators() {
         return validators;
@@ -36,6 +55,22 @@ public class Column {
 
     public void setValidators(List<Validator> validators) {
         this.validators = validators;
+    }
+
+    public List<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(List<Choice> choices) {
+        this.choices = choices;
+    }
+
+    public ChoicesByUrl getChoicesByUrl() {
+        return choicesByUrl;
+    }
+
+    public void setChoicesByUrl(ChoicesByUrl choicesByUrl) {
+        this.choicesByUrl = choicesByUrl;
     }
 
     public Boolean getRequired() {

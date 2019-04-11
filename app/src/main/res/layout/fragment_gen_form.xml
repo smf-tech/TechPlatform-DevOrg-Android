@@ -24,7 +24,8 @@
             android:id="@+id/ll_form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_15dp" />
     </ScrollView>
 
     <View

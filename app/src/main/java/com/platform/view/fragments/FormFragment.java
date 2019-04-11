@@ -30,6 +30,7 @@ import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.Column;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
@@ -96,6 +97,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private String mFormName;
     private GPSTracker gpsTracker;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
+    private HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -175,6 +177,31 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         protected String doInBackground(String... params) {
             showChoicesByUrl(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Elements.class));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideProgressBar();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressBar();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetDataFromDBTaskMD extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            showChoicesByUrlMD(params[0],
+                    PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
+                    matrixDynamicInnerMap);
             return null;
         }
 
@@ -298,13 +325,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                         if (elements.getChoicesByUrl() == null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             //Online
                             if (Util.isConnected(getContext())) {
                                 //Opened submitted/partially or offline saved form
@@ -361,7 +387,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(elements));
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(), elements,
+                                mIsInEditMode, mIsPartiallySaved, formPresenter));
                         break;
                 }
             }
@@ -384,7 +411,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
 
                         formPresenter.getChoicesByUrl(pages.get(pageIndex).getElements().get(elementIndex),
-                                pageIndex, elementIndex, formModel.getData());
+                                pageIndex, elementIndex, -1, formModel.getData(),
+                                pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl(),
+                                new HashMap<>());
                         break;
                     }
                 }
@@ -459,6 +488,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
+    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+        this.matrixDynamicInnerMap = matrixDynamicInnerMap;
+        new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column));
+    }
+
     private void showChoicesByUrl(String result, Elements elements) {
         List<Choice> choiceValues = new ArrayList<>();
         try {
@@ -514,6 +548,64 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
+        }
+    }
+
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+        List<Choice> choiceValues = new ArrayList<>();
+        try {
+            LocaleData text;
+            String value;
+
+            JsonObject outerObj = PlatformGson.getPlatformGsonInstance().fromJson(result, JsonObject.class);
+            JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
+            for (int index = 0; index < dataArray.size(); index++) {
+                JsonObject innerObj = dataArray.get(index).getAsJsonObject();
+                if (column.getChoicesByUrl() != null && !TextUtils.isEmpty(column.getChoicesByUrl().getTitleName())) {
+                    if (column.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                        StringTokenizer titleTokenizer
+                                = new StringTokenizer(column.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer valueTokenizer
+                                = new StringTokenizer(column.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
+
+                        String title = titleTokenizer.nextToken();
+                        try {
+                            text = PlatformGson.getPlatformGsonInstance()
+                                    .fromJson(obj.get(title).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(obj.get(title).getAsString());
+                        }
+                        //Ignore first value of valueToken
+                        valueTokenizer.nextToken();
+                        value = obj.get(valueTokenizer.nextToken()).getAsString();
+                    } else {
+                        try {
+                            text = PlatformGson.getPlatformGsonInstance()
+                                    .fromJson(innerObj.get(column.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(innerObj.get(column.getChoicesByUrl().getTitleName()).getAsString());
+                        }
+                        value = innerObj.get(column.getChoicesByUrl().getValueName()).getAsString();
+                    }
+
+                    Choice choice = new Choice();
+                    choice.setText(text);
+                    choice.setValue(value);
+
+                    if (!choiceValues.contains(choice)) {
+                        choiceValues.add(choice);
+                    }
+                }
+            }
+
+            Collections.sort(choiceValues,
+                    (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in showChoicesByUrlMD()" + result);
+        }
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> formComponentCreator.updateMatrixDynamicDropDownValues(column, choiceValues, matrixDynamicInnerMap));
         }
     }
 
