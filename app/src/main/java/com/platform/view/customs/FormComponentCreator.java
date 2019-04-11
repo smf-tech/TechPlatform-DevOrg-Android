@@ -190,9 +190,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
     }
 
-    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues) {
+    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues, HashMap<String, String> matrixDynamicInnerMap) {
         if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
-            matrixDynamics.get(0).updateDropDownValues(column, choiceValues);
+            matrixDynamics.get(0).updateDropDownValues(column, choiceValues, matrixDynamicInnerMap);
         }
     }
 
@@ -715,8 +715,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     @Override
-    public void showChoicesByUrlOffline(String response, Elements elements) {
-        fragment.get().showChoicesByUrlAsync(response, elements);
+    public void showChoicesByUrlOffline(String response, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+        fragment.get().showChoicesByUrlAsyncMD(response, column, matrixDynamicInnerMap);
     }
 
     @Override

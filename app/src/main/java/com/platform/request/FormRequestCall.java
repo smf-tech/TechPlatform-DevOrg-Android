@@ -109,14 +109,15 @@ public class FormRequestCall {
     }
 
     public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex,
-                                final int columnIndex, final FormData formData, final String url) {
+                                final int columnIndex, final FormData formData, final String url,
+                                HashMap<String, String> matrixDynamicInnerMap) {
 
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getChoicesByUrl - Resp: " + res);
-                    listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, columnIndex, formData);
+                    listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, columnIndex, formData, matrixDynamicInnerMap);
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Exception in getChoicesByUrl()");

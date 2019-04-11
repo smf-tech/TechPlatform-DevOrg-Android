@@ -21,6 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.core.content.ContextCompat;
 
@@ -42,6 +43,14 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     @SuppressWarnings("unused")
     public String getFormId() {
         return formId;
+    }
+
+    public Column getColumn() {
+        return column;
+    }
+
+    public void setColumn(Column column) {
+        this.column = column;
     }
 
     public String getTag() {
@@ -114,7 +123,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     }
 
     @SuppressWarnings("unchecked")
-    void setListData(List<Choice> valueList) {
+    void setListData(List<Choice> valueList, HashMap<String, String> valuesMap) {
         if (valueList != null) {
             this.valueList = valueList;
             FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
@@ -127,10 +136,10 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
 
             if (column.getChoices() != null && !column.getChoices().isEmpty()) {
                 for (int index = 0; index < column.getChoices().size(); index++) {
-                    if (!TextUtils.isEmpty(formData.getAnswer()) &&
+                    if (formData.getAnswerArray() != null &&
                             column.getChoices().get(index).getText() != null &&
                             !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
-                            formData.getAnswer().equals(column.getChoices().get(index).getValue())) {
+                            Objects.requireNonNull(valuesMap.get(column.getName())).equals(column.getChoices().get(index).getValue())) {
                         this.setSelectedItem(index);
                     }
                 }
