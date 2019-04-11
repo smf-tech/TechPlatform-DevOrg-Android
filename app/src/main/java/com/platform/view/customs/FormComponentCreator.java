@@ -422,14 +422,17 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                         String field1Name, field2Name, field3Name;
                                         String field1Value = "", field2Value = "", field3Value = "";
                                         StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=-");
+
                                         if (expressionTokenizer.hasMoreTokens()) {
                                             field1Name = expressionTokenizer.nextToken();
                                             field1Value = editTextWithNameMap.get(field1Name).getText().toString();
                                         }
+
                                         if (expressionTokenizer.hasMoreTokens()) {
                                             field2Name = expressionTokenizer.nextToken();
                                             field2Value = editTextWithNameMap.get(field2Name).getText().toString();
                                         }
+
                                         if (expressionTokenizer.hasMoreTokens()) {
                                             field3Name = expressionTokenizer.nextToken();
                                             field3Value = editTextWithNameMap.get(field3Name).getText().toString();
@@ -493,12 +496,13 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
 
         //For all matrix dynamics
-        for (MatrixDynamicTemplate template :
-                matrixDynamics) {
+        for (MatrixDynamicTemplate template : matrixDynamics) {
             Elements element = template.getElements();
             List<HashMap<String, String>> valuesList = getMatrixDynamicValuesMap().get(element.getName());
+
             if (element.isRequired() != null) {
-                errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(), element.getColumns().size(), valuesList);
+                errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(),
+                        element.getColumns().size(), valuesList);
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -507,8 +511,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             }
 
             if (valuesList != null && !valuesList.isEmpty()) {
-                for (HashMap<String, String> valuesMap :
-                        valuesList) {
+                for (HashMap<String, String> valuesMap : valuesList) {
                     for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
                         if (element.getColumns().get(columnIndex).getValidators() != null &&
                                 !element.getColumns().get(columnIndex).getValidators().isEmpty()) {
@@ -521,7 +524,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                         case Constants.ValidationType.REGEX_TYPE:
                                             if (!TextUtils.isEmpty(value)) {
 
-                                                errorMsg = Validation.regexValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
+                                                errorMsg = Validation.regexValidation(
+                                                        element.getColumns().get(columnIndex)
+                                                                .getTitle().getLocaleValue(),
                                                         value, validator);
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
@@ -534,7 +539,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                         default:
                                             if (!TextUtils.isEmpty(value)) {
 
-                                                errorMsg = Validation.editTextMinMaxValueValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
+                                                errorMsg = Validation.editTextMinMaxValueValidation(
+                                                        element.getColumns().get(columnIndex)
+                                                                .getTitle().getLocaleValue(),
                                                         value, validator);
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
@@ -542,7 +549,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                                     return false;
                                                 }
 
-                                                errorMsg = Validation.editTextMinMaxLengthValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
+                                                errorMsg = Validation.editTextMinMaxLengthValidation(
+                                                        element.getColumns().get(columnIndex)
+                                                                .getTitle().getLocaleValue(),
                                                         value, validator);
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
@@ -558,7 +567,6 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     }
                 }
             }
-
         }
 
         //For all photos

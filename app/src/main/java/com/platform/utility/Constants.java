@@ -114,7 +114,7 @@ public class Constants {
         public static final String HOME_DATA = "homeObj";
         public static final String FORMS = "Forms";
         public static final String MEETINGS = "Meetings";
-        public static final String PLANNER = "Planner";
+        //public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
