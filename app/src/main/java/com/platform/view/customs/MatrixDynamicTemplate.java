@@ -370,8 +370,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                             Constants.FORM_DATE));
                 } catch (Exception e) {
                     Log.e(TAG, "DATE ISSUE");
-                    textInputField.setText(Util.getLongDateInString(
-                            Util.getCurrentTimeStamp(), Constants.FORM_DATE));
+                    textInputField.setText("");
                 }
             } else {
                 textInputField.setText(matrixDynamicInnerMap.get(column.getName()));

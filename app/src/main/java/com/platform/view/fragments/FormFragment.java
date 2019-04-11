@@ -24,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -967,8 +968,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             HashMap<String, String> valuesMap = new HashMap<>();
 
                             for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
+                                JsonElement jsonElement = jsonObject.get(element.getColumns().get(columnIndex).getName());
                                 valuesMap.put(element.getColumns().get(columnIndex).getName(),
-                                        jsonObject.get(element.getColumns().get(columnIndex).getName()).getAsString());
+                                        jsonElement != null ? jsonElement.getAsString() : "");
                             }
                             valuesList.add(valuesMap);
                         }
