@@ -2,12 +2,13 @@ package com.platform.utility;
 
 public class Constants {
 
-//    public static final int SMS_RECEIVE_REQUEST = 1;
+    public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
+    public static final String ERROR = "error";
     public static final String RESPONSE_DATA = "data";
     public static final String KEY_SEPARATOR = ".";
 
@@ -99,6 +100,8 @@ public class Constants {
         public static final String TALUKA = "taluka";
         public static final String VILLAGE = "village";
         public static final String CLUSTER = "cluster";
+        public static final String LATITUDE = "lat";
+        public static final String LONGITUDE = "long";
     }
 
     public static class JurisdictionLevelName {
@@ -116,6 +119,10 @@ public class Constants {
         public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
+        //public static final String PROGRAM_MANAGEMENT = "Program Management";
+        //public static final String MY_CONTENT= "MV Content";
+        //public static final String TEAM_MANAGEMENT = "Team Management";
+        //public static final String PLANNER = "Planner";
     }
 
     public static class PM {
@@ -147,6 +154,8 @@ public class Constants {
         public static final String DROPDOWN_TEMPLATE = "dropdown";
         public static final String RADIO_GROUP_TEMPLATE = "radiogroup";
         public static final String FILE_TEMPLATE = "file";
+        public static final String PANEL = "panel";
+        public static final String MATRIX_DYNAMIC = "matrixdynamic";
     }
 
     public static final String callUsNumber = "+9120-660-50226";
@@ -169,13 +178,13 @@ public class Constants {
 
     public class FormInputType {
         public static final String INPUT_TYPE_DATE = "date";
-        public static final String INPUT_TYPE_TIME = "time";
-        public static final String INPUT_TYPE_NUMBER = "number";
-        public static final String INPUT_TYPE_TELEPHONE = "tel";
-        public static final String INPUT_TYPE_NUMERIC = "numeric";
-        public static final String INPUT_TYPE_DECIMAL = "decimal";
-        public static final String INPUT_TYPE_ALPHABETS = "alphabets";
-        public static final String INPUT_TYPE_TEXT = "text";
+        static final String INPUT_TYPE_TIME = "time";
+        static final String INPUT_TYPE_NUMBER = "number";
+        static final String INPUT_TYPE_TELEPHONE = "tel";
+        static final String INPUT_TYPE_NUMERIC = "numeric";
+        static final String INPUT_TYPE_DECIMAL = "decimal";
+        static final String INPUT_TYPE_ALPHABETS = "alphabets";
+        static final String INPUT_TYPE_TEXT = "text";
     }
 
     public class Image {
@@ -207,11 +216,18 @@ public class Constants {
     class Expression {
         static final String LESS_THAN_EQUALS = "<=";
         static final String GREATER_THAN_EQUALS = ">=";
+        static final String EQUALS = "=";
+        static final String SUBTRACTION = "-";
     }
 
     public class ValidationType {
         public static final String REGEX_TYPE = "regex";
         public static final String EXPRESSION_TYPE = "expression";
+    }
+
+    public class Action {
+        public static final String ACTION_ADD = "Add";
+        public static final String ACTION_DELETE = "Delete";
     }
 
     public static class Planner {

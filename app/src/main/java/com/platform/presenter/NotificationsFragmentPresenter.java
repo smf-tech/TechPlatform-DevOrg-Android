@@ -35,14 +35,15 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
     public void onPendingRequestsFetched(String response) {
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
-        }
-        if (!TextUtils.isEmpty(response)) {
-            PendingRequestsResponse pendingRequestsResponse
-                    = new Gson().fromJson(response, PendingRequestsResponse.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getData() != null
-                    && !pendingRequestsResponse.getData().isEmpty()
-                    && pendingRequestsResponse.getData().size() > 0) {
-                fragmentWeakReference.get().showPendingRequests(pendingRequestsResponse.getData());
+
+            if (!TextUtils.isEmpty(response)) {
+                PendingRequestsResponse pendingRequestsResponse
+                        = new Gson().fromJson(response, PendingRequestsResponse.class);
+                if (pendingRequestsResponse != null && pendingRequestsResponse.getData() != null
+                        && !pendingRequestsResponse.getData().isEmpty()
+                        && pendingRequestsResponse.getData().size() > 0) {
+                    fragmentWeakReference.get().showPendingRequests(pendingRequestsResponse.getData());
+                }
             }
         }
     }
@@ -51,9 +52,10 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
     public void onRequestStatusChanged(String response, PendingRequest pendingRequest) {
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
-        }
-        if (!TextUtils.isEmpty(response)) {
-            fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
+
+            if (!TextUtils.isEmpty(response)) {
+                fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
+            }
         }
     }
 

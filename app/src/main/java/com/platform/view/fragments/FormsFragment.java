@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
@@ -23,8 +25,11 @@ import androidx.viewpager.widget.ViewPager;
 public class FormsFragment extends Fragment {
 
     private View formsFragmentView;
-    @SuppressLint("StaticFieldLeak")
     static ViewPager viewPager;
+    @SuppressLint("StaticFieldLeak")
+    private static RelativeLayout progressBarLayout;
+    @SuppressLint("StaticFieldLeak")
+    private static ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +40,7 @@ public class FormsFragment extends Fragment {
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
-            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }
@@ -64,6 +69,17 @@ public class FormsFragment extends Fragment {
 
         TabLayout tabs = formsFragmentView.findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
+
+        progressBarLayout = formsFragmentView.findViewById(R.id.gen_frag_progress_bar);
+        progressBar = formsFragmentView.findViewById(R.id.pb_gen_form_fragment);
+    }
+
+    static RelativeLayout getProgressBarView() {
+        return progressBarLayout;
+    }
+
+    static ProgressBar getProgressBar() {
+        return progressBar;
     }
 
     @Override
@@ -83,18 +99,18 @@ public class FormsFragment extends Fragment {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = AllFormsFragment.newInstance();
+            Fragment fragment = new AllFormsFragment();
             switch (position) {
                 case 0:
-                    fragment = AllFormsFragment.newInstance();
+                    fragment = new AllFormsFragment();
                     break;
 
                 case 1:
-                    fragment = PendingFormsFragment.newInstance();
+                    fragment = new PendingFormsFragment();
                     break;
 
                 case 2:
-                    fragment = SubmittedFormsFragment.newInstance();
+                    fragment = new SubmittedFormsFragment();
                     break;
             }
 

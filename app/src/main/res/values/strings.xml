@@ -158,6 +158,7 @@
     <string name="msg_take_photo_error">App do not have permission to take a photo, please allow it.</string>
 
     <!--Forms-->
+    <string name="default_select">--Select--</string>
     <string name="category_title">Category Title</string>
     <string name="forms">Forms</string>
     <string name="no_records_available">Data is not available!</string>
@@ -168,7 +169,7 @@
     <string name="reports">Reports</string>
     <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
     <string name="msg_confirm">Are you sure you want to save this form?</string>
-    <string name="form_saved_offline">You are offline, form saved offline.</string>
+    <string name="form_saved_offline">You are offline, form is submitted offline.</string>
     <string name="form_submit_success">Form submitted successfully!</string>
     <string name="image_upload_success">Image uploaded successfully!</string>
     <string name="status_update_success">Status updated successfully!</string>
@@ -210,6 +211,10 @@
     <string name="cant_be_empty">can\'t be empty</string>
     <string name="no_proper_format">not in proper format</string>
 
+    <string name="gps_settings">GPS Settings</string>
+    <string name="gps_popup_title">Please turn on GPS/LOCATION.</string>
+    <string name="msg_enable_gps">GPS is not enabled. Do you want to enable it?</string>
+
     <!--Planner-->
     <string name="tasks">Tasks</string>
     <string name="leave">Leave</string>
@@ -236,7 +241,7 @@
     <string name="event_update_profile_fail" translatable="false">Profile update fail</string>
     <string name="event_report_click" translatable="false">Report \"%1$s\" clicked</string>
     <string name="event_form_saved" translatable="false">Form \"%1$s\" saved success</string>
-    <string name="event_form_saved_offline" translatable="false">Form \"%1$s\" saved offline</string>
+    <string name="event_form_saved_offline" translatable="false">Form \"%1$s\" submitted offline</string>
     <string name="event_form_submitted_success" translatable="false">Form \"%1$s\" submitted success</string>
     <string name="event_form_submitted_fail" translatable="false">Form \"%1$s\" submitted fail</string>
 

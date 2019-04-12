@@ -154,10 +154,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         }
 
         mSavedForms.clear();
-        List<FormResult> partiallySavedForms = DatabaseManager
+        List<FormResult> savedForms = DatabaseManager
                 .getDBInstance(getContext()).getAllPartiallySavedForms();
 
-        partiallySavedForms = Util.sortFormResultListByCreatedDate(partiallySavedForms);
+        List<FormResult> partiallySavedForms = Util.sortFormResultListByCreatedDate(savedForms);
 
         mSavedForms.addAll(partiallySavedForms);
 
@@ -182,14 +182,15 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void getPartiallySavedForms() {
-        mSavedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
-        if (mSavedForms != null && !mSavedForms.isEmpty()) {
+        List<FormResult> savedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
+        if (savedForms != null && !savedForms.isEmpty()) {
 
-            mSavedForms = Util.sortFormResultListByCreatedDate(mSavedForms);
+            mSavedForms = Util.sortFormResultListByCreatedDate(savedForms);
 
             rltPendingForms.setVisibility(View.VISIBLE);
             rltPendingForms.setVisibility(View.VISIBLE);
             pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.VISIBLE);
+
             pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms, this);
             rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvPendingForms.setAdapter(pendingFormsAdapter);
