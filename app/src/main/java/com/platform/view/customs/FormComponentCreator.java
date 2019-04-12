@@ -523,6 +523,15 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 }
             }
 
+            // Check duplicate entry
+            if (!TextUtils.isEmpty(element.getKeyName())) {
+                if (isDuplicateEntryFound(valuesList, element.getKeyName())) {
+                    errorMsg = element.getKeyDuplicationError().getLocaleValue();
+                    fragment.get().setErrorMsg(errorMsg);
+                    return false;
+                }
+            }
+
             if (valuesList != null && !valuesList.isEmpty()) {
                 for (HashMap<String, String> valuesMap : valuesList) {
                     for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
@@ -611,6 +620,23 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
 
         return TextUtils.isEmpty(errorMsg);
+    }
+
+    private boolean isDuplicateEntryFound(List<HashMap<String, String>> valuesList, String key) {
+        if (valuesList != null && valuesList.size() > 0) {
+            for (int i = 0; i < valuesList.size(); i++) {
+                HashMap<String, String> valueItem = valuesList.get(i);
+                String keyValue = valueItem.get(key);
+
+                for (int j = i + 1; j < valuesList.size(); j++) {
+                    HashMap<String, String> nextItem = valuesList.get(j);
+                    if (keyValue.equalsIgnoreCase(nextItem.get(key))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public HashMap<String, String> getRequestObject() {
