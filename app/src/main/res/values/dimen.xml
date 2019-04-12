@@ -25,6 +25,7 @@
     <dimen name="dimen_100dp">100dp</dimen>
     <dimen name="dimen_120dp">120dp</dimen>
     <dimen name="dimen_130dp">130dp</dimen>
+    <dimen name="dimen_150dp">150dp</dimen>
     <dimen name="dimen_175dp">175dp</dimen>
 
     <dimen name="circle_size">64dp</dimen>

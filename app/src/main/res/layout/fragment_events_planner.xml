@@ -1,21 +1,91 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_margin="@dimen/dimen_15dp"
     tools:context="com.platform.view.fragments.EventsPlannerFragment">
 
-    <TextView
-        android:id="@+id/meeting_dummy_text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/ly_calender"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/events"
-        android:textSize="@dimen/text_size_20"
-        android:textStyle="bold" />
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="visible">
 
-    <TextView
-        android:layout_width="wrap_content"
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ly_filter_tab"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/coming_soon" />
+        android:layout_below="@+id/ly_calender"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="visible"
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_my_events"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="My Events"/>
+        <TextView
+            android:id="@+id/tv_all_events"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="All Events"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/ly_events"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_filter_tab"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_today_events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_hours"
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_events"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_today_events"
+            android:layout_marginTop="@dimen/dimen_05dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_all_events_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rv_events"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:text="@string/all_events"
+            android:textColor="@color/tab_selector"
+            android:textSize="@dimen/text_size_16" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bt_add_events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rv_events"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/dimen_05dp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

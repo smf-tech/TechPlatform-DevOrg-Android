@@ -211,9 +211,17 @@
     <string name="no_proper_format">उचित प्रारूप में नहीं</string>
 
     <!--Planner-->
-    <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
-    <string name="Attendence">उपस्थिति</string>
+
+
+    <!--Attendance-->
+    <string name="attendance">उपस्थिति</string>
+    <string name="total_hours">कुल घंटे</string>
+    <string name="attendance_details">जाँच उपस्थिति विवरण</string>
+
+    <!--Events-->
+    <string name="events">आयोजन</string>
+    <string name="all_events">सभी कार्यक्रम</string>
 
 </resources>

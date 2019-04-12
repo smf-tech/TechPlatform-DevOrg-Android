@@ -26,6 +26,8 @@ public class Constants {
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
     static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
+    public static final String MONTH_DAY_FORMAT = "MMMM dd";
+    public static final String TIME_FORMAT = "hh:mm aa";
 
     public static class App {
         static final String APP_DATA = "AppData";
@@ -210,5 +212,9 @@ public class Constants {
     public class ValidationType {
         public static final String REGEX_TYPE = "regex";
         public static final String EXPRESSION_TYPE = "expression";
+    }
+
+    public static class Planner {
+        public static final String KEY_IS_DASHBOARD = "isDashboard";
     }
 }
