@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.MatrixDynamicDropDownValueSelectListener;
+import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
@@ -38,6 +39,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     private String formId;
     private float weight = 1f;
     private Column column;
+    private int rowIndex;
     private HashMap<String, String> matrixDynamicInnerMap;
 
     @SuppressWarnings("unused")
@@ -63,13 +65,14 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
 
     MatrixDropDownTemplate(Elements formData, Column column, FormFragment context,
                            HashMap<String, String> matrixDynamicInnerMap,
-                           MatrixDynamicDropDownValueSelectListener listener, String formId) {
+                           MatrixDynamicDropDownValueSelectListener listener, String formId, int index) {
 
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
         this.formId = formId;
         this.column = column;
+        this.rowIndex = index;
         this.matrixDynamicInnerMap = matrixDynamicInnerMap;
     }
 
@@ -125,25 +128,49 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     }
 
     @SuppressWarnings("unchecked")
-    void setListData(List<Choice> valueList, HashMap<String, String> valuesMap) {
-        if (valueList != null) {
-            this.valueList = valueList;
-            FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
-            adapter.clear();
-            adapter.addAll(valueList);
-            adapter.notifyDataSetChanged();
-            if (valueList.size() > 0) {
-                this.setSelectedItem(0);
-            }
+    void setListData(List<Choice> valueList, HashMap<String, String> valuesMap, boolean isInEditMode,
+                     boolean isPartiallySaved, int rowIndex) {
 
-            if (column.getChoices() != null && !column.getChoices().isEmpty()) {
-                for (int index = 0; index < column.getChoices().size(); index++) {
-                    if (formData.getAnswerArray() != null &&
-                            column.getChoices().get(index).getText() != null &&
-                            !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
-                            Objects.requireNonNull(valuesMap.get(column.getName()))
-                                    .equals(column.getChoices().get(index).getValue())) {
-                        this.setSelectedItem(index);
+        if (this.rowIndex == rowIndex) {
+            if (valueList != null) {
+                boolean isValueSet = false;
+                this.valueList = valueList;
+                FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
+                adapter.clear();
+                adapter.addAll(valueList);
+                adapter.notifyDataSetChanged();
+
+                if (valueList.size() > 0) {
+                    this.setSelectedItem(0);
+                }
+
+                if (column.getChoices() != null && !column.getChoices().isEmpty()) {
+                    for (int index = 0; index < column.getChoices().size(); index++) {
+                        if (formData.getAnswerArray() != null &&
+                                column.getChoices().get(index).getText() != null &&
+                                !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
+                                Objects.requireNonNull(valuesMap.get(column.getName()))
+                                        .equals(column.getChoices().get(index).getValue())) {
+                            isValueSet = true;
+                            this.setSelectedItem(index);
+                        }
+                    }
+                }
+
+                // This code will add submitted value in list and update the adapter, in API response
+                // submitted value is not coming hence this is workaround.
+                if (isInEditMode && !isPartiallySaved) {
+                    if (!isValueSet) {
+                        Choice ch = new Choice();
+                        LocaleData ld = new LocaleData(valuesMap.get(column.getName()));
+                        ch.setText(ld);
+
+                        this.valueList.add(ch);
+                        valueList.add(ch);
+                        adapter.clear();
+                        adapter.addAll(valueList);
+                        adapter.notifyDataSetChanged();
+                        this.setSelectedItem(valueList.size() - 1);
                     }
                 }
             }

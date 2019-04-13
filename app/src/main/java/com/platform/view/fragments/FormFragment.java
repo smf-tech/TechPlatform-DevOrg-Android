@@ -101,10 +101,21 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        gpsTracker = new GPSTracker(getActivity());
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            if (!gpsTracker.canGetLocation()) {
+                gpsTracker.showSettingsAlert();
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        gpsTracker = new GPSTracker(getActivity());
         formFragmentView = inflater.inflate(R.layout.fragment_gen_form, container, false);
         return formFragmentView;
     }
@@ -158,16 +169,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         }
                     }
                 }
-            }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-            if (!gpsTracker.canGetLocation()) {
-                gpsTracker.showSettingsAlert();
             }
         }
     }
@@ -606,7 +607,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             Log.e(TAG, "Exception in showChoicesByUrlMD()" + result);
         }
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> formComponentCreator.updateMatrixDynamicDropDownValues(column, choiceValues, matrixDynamicInnerMap));
+            getActivity().runOnUiThread(() -> formComponentCreator
+                    .updateMatrixDynamicDropDownValues(column, choiceValues, matrixDynamicInnerMap));
         }
     }
 

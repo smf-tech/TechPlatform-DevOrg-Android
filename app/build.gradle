@@ -102,15 +102,15 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-    implementation 'com.google.firebase:firebase-config:16.4.1'
+    implementation 'com.google.firebase:firebase-config:16.5.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
-    implementation 'com.google.firebase:firebase-messaging:17.5.0'
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.8@aar') {
         transitive = true
     }
@@ -119,8 +119,8 @@ dependencies {
     implementation 'com.annimon:stream:1.0.1'
     annotationProcessor "androidx.room:room-compiler:2.1.0-alpha04"
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
 }
 

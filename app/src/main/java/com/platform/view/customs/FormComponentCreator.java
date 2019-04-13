@@ -64,6 +64,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     private View mImageView;
     private String mImageName;
+    private boolean mIsInEditMode;
+    private boolean mIsPartiallySaved;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
@@ -187,13 +189,16 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             elements.setChoices(choiceValues);
             matchedTemplates.get(0).setFormData(elements);
-            matchedTemplates.get(0).setListData(choiceValues);
+            matchedTemplates.get(0).setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
         }
     }
 
-    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues, HashMap<String, String> matrixDynamicInnerMap) {
+    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues,
+                                                  HashMap<String, String> matrixDynamicInnerMap) {
+
         if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
-            matrixDynamics.get(0).updateDropDownValues(column, choiceValues, matrixDynamicInnerMap);
+            matrixDynamics.get(0).updateDropDownValues(column, choiceValues,
+                    matrixDynamicInnerMap, mIsInEditMode, mIsPartiallySaved);
         }
     }
 
@@ -364,12 +369,16 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         return fileTemplateView;
     }
 
-    public View matrixDynamicTemplate(FormData formData, final Elements elements,
-                                      boolean mIsInEditMode, boolean mIsPartiallySaved, FormActivityPresenter formActivityPresenter) {
+    public View matrixDynamicTemplate(FormData formData, final Elements elements, boolean isInEditMode,
+                                      boolean isPartiallySaved, FormActivityPresenter formActivityPresenter) {
+
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "View returned null");
             return null;
         }
+
+        this.mIsInEditMode = isInEditMode;
+        this.mIsPartiallySaved = isPartiallySaved;
 
         MatrixDynamicTemplate template = new MatrixDynamicTemplate(formData, elements, fragment.get(),
                 this, mIsInEditMode, mIsPartiallySaved, formActivityPresenter);
@@ -680,7 +689,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     List<Choice> choiceValues = new ArrayList<>();
                     dependentElement.setChoices(choiceValues);
                     dropDownTemplate.setFormData(dependentElement);
-                    dropDownTemplate.setListData(choiceValues);
+                    dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
                 }
             }
         }
@@ -912,7 +921,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                             dependentElement.setChoices(choiceValues);
                             dropDownTemplate.setFormData(dependentElement);
-                            dropDownTemplate.setListData(choiceValues);
+                            dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
                         });
                     }
                 }
