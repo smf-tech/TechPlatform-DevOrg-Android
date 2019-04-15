@@ -154,9 +154,9 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        MatrixDropDownTemplate template = new MatrixDropDownTemplate(elements,
-                                currentColumn, context.get(), matrixDynamicInnerMap, this,
-                                formData.getId(), rowIndex);
+                        MatrixDropDownTemplate template = new MatrixDropDownTemplate(this,
+                                elements, currentColumn, context.get(), matrixDynamicInnerMap,
+                                this, formData.getId(), rowIndex);
 
                         template.setWeight(0.45f);
 
@@ -267,6 +267,14 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         }
 
         matrixDynamicView.addView(innerItemLinearLayout);
+    }
+
+    public HashMap<String, String> getFormData(int index) {
+        if (matrixDynamicValuesList != null && matrixDynamicValuesList.size() > 0) {
+            return matrixDynamicValuesList.get(index);
+        }
+
+        return null;
     }
 
     private LinearLayout createInnerLinearLayout() {

@@ -40,6 +40,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     private float weight = 1f;
     private Column column;
     private int rowIndex;
+    private MatrixDynamicTemplate mParent;
     private HashMap<String, String> matrixDynamicInnerMap;
 
     @SuppressWarnings("unused")
@@ -63,10 +64,11 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         this.tag = tag;
     }
 
-    MatrixDropDownTemplate(Elements formData, Column column, FormFragment context,
-                           HashMap<String, String> matrixDynamicInnerMap,
+    MatrixDropDownTemplate(MatrixDynamicTemplate parent, Elements formData, Column column,
+                           FormFragment context, HashMap<String, String> matrixDynamicInnerMap,
                            MatrixDynamicDropDownValueSelectListener listener, String formId, int index) {
 
+        this.mParent = parent;
         this.formData = formData;
         this.context = new WeakReference<>(context);
         this.dropDownValueSelectListener = listener;
@@ -160,7 +162,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
                 // This code will add submitted value in list and update the adapter, in API response
                 // submitted value is not coming hence this is workaround.
                 if (isInEditMode && !isPartiallySaved) {
-                    if (!isValueSet) {
+                    if (!isValueSet && !TextUtils.isEmpty(valuesMap.get(column.getName()))) {
                         Choice ch = new Choice();
                         LocaleData ld = new LocaleData(valuesMap.get(column.getName()));
                         ch.setText(ld);
@@ -171,6 +173,29 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
                         adapter.addAll(valueList);
                         adapter.notifyDataSetChanged();
                         this.setSelectedItem(valueList.size() - 1);
+                    }
+                }
+            }
+        }
+
+        if (this.rowIndex == 0 && rowIndex == 1) {
+            if (isInEditMode && !isPartiallySaved) {
+                if (valueList != null && !valueList.get(1).getValue().equals("new")) {
+                    FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
+                    HashMap<String, String> formData = mParent.getFormData(this.rowIndex);
+                    if (formData != null) {
+                        if (!TextUtils.isEmpty(formData.get("machine_code"))) {
+                            Choice ch = new Choice();
+                            LocaleData ld = new LocaleData(formData.get("machine_code"));
+                            ch.setText(ld);
+
+                            this.valueList.add(ch);
+                            valueList.add(ch);
+                            adapter.clear();
+                            adapter.addAll(valueList);
+                            adapter.notifyDataSetChanged();
+                            this.setSelectedItem(valueList.size() - 1);
+                        }
                     }
                 }
             }
