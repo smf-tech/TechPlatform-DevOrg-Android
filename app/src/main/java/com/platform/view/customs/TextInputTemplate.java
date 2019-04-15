@@ -21,6 +21,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("unused")
 class TextInputTemplate {
 
     private final String TAG = this.getClass().getSimpleName();

@@ -311,17 +311,17 @@ public class Util {
         editor.apply();
     }
 
-//    public static void clearAllUserData() {
-//        try {
-//            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-//                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = preferences.edit();
-//            editor.clear();
-//            editor.apply();
-//        } catch (Exception e) {
-//            Log.e(TAG, e.getMessage());
-//        }
-//    }
+    private static void clearAllUserRoleData() {
+        try {
+            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                    (Constants.Login.USER_ROLE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 
     public static <T> void showToast(String msg, T context) {
         try {
@@ -493,6 +493,7 @@ public class Util {
     }
 
     public static void removeDatabaseRecords(final boolean refreshData) {
+        clearAllUserRoleData();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();

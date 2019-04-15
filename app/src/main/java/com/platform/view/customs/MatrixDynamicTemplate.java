@@ -269,7 +269,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         matrixDynamicView.addView(innerItemLinearLayout);
     }
 
-    public HashMap<String, String> getFormData(int index) {
+    HashMap<String, String> getFormData(int index) {
         if (matrixDynamicValuesList != null && matrixDynamicValuesList.size() > 0) {
             return matrixDynamicValuesList.get(index);
         }
