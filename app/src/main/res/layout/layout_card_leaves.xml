@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_175dp"
+    android:layout_marginStart="@dimen/dimen_25dp"
+    android:layout_marginTop="@dimen/dimen_32dp"
+    android:layout_marginEnd="@dimen/dimen_15dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_no_leaves_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_leaves_count"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dp"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginTop="@dimen/dimen_40dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:background="@drawable/leaves_count_border"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/rl_total_leaves_v"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/leaves_count_border"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:paddingTop="@dimen/dimen_05dp"
+            android:paddingEnd="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_07dp">
+
+            <TextView
+                android:id="@+id/tv_total_leaves_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_20" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_total_leaves_count"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_horizontal"
+                android:text="@string/total_leaves" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lv_lay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/rl_total_leaves_v"
+            android:baselineAligned="false"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_leaves_cl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/dimen_05dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dimen_07dp"
+                    android:text="@string/cl_leaves"
+                    android:textColor="@color/leave_type"
+                    android:textSize="@dimen/text_size_12" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_leaves_paid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/dimen_05dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dimen_07dp"
+                    android:text="@string/paid_leaves"
+                    android:textColor="@color/leave_type"
+                    android:textSize="@dimen/text_size_12" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_leaves_unpaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/dimen_05dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_20" />
+
+                <TextView
+                    android:id="@+id/tv_str_unpaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dimen_07dp"
+                    android:text="@string/unpaid_leaves"
+                    android:textColor="@color/leave_type"
+                    android:textSize="@dimen/text_size_12" />
+            </LinearLayout>
+
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_leaves_coff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/dimen_05dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_20" />
+
+                <TextView
+                    android:id="@+id/tv_str_coff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dimen_07dp"
+                    android:text="@string/coff_leaves"
+                    android:textColor="@color/leave_type"
+                    android:textSize="@dimen/text_size_12" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_apply_leave"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dp"
+        android:layout_below="@+id/rl_leaves_count"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_horizontal|center_vertical"
+        android:singleLine="true"
+        android:text="@string/btn_leave_apply_str"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_16"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/tv_link_check_leaves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_apply_leave"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/link_leave_apply"
+        android:textColor="@color/tab_selector"
+        android:textSize="@dimen/text_size_16" />
+
+    <ImageView
+        android:id="@+id/img_add_leaves"
+        android:layout_width="@dimen/dimen_45dp"
+        android:layout_height="@dimen/dimen_45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginBottom="@dimen/dimen_15dp"
+        android:background="@drawable/bg_circle_grey"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_plus" />
+</RelativeLayout>

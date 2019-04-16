@@ -52,4 +52,20 @@
     <!--<color name="profile">#396377</color>-->
     <color name="list_category">#F5F5F5</color>
     <color name="freq_used_form_color">#4A9BD6</color>
+    
+    <color name="leave_type">#717171</color>
+    <color name="leave_desc_color">#A2A2A2</color>
+
+
+    <color name="leaves_tab">#F8F8F8</color>
+    <color name="planner_lable">#7198AA</color>
+    <color name="blur_tab">#B5B5B5</color>
+    <color name="list_divider">#AFAFAF</color>
+    <color name="holiday_text">#3C3C3C</color>
+    <color name="border_layout">#C7C7C7</color>
+    <color name="dialog_btn_border">#333333</color>
+
+    <color name="leave_form_text_color">#3785D1</color>
+
+
 </resources>

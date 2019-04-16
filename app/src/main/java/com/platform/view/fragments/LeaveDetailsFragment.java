@@ -2,7 +2,6 @@ package com.platform.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.view.activities.GeneralActionsActivity;
@@ -23,64 +21,41 @@ import com.platform.view.adapters.AppliedLeavesAdapter;
 
 import java.util.ArrayList;
 
-
-public class LeavePlannerFragment extends Fragment {
-
-    View view1;
+public class LeaveDetailsFragment extends Fragment {
 
 
-    public LeavePlannerFragment() {
+    public LeaveDetailsFragment() {
         // Required empty public constructor
     }
 
 
-    public static LeavePlannerFragment newInstance() {
-        return new LeavePlannerFragment();
+    public static LeaveDetailsFragment newInstance(String param1, String param2) {
+        LeaveDetailsFragment fragment = new LeaveDetailsFragment();
+
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_leave_planner, container, false);
+        return inflater.inflate(R.layout.layout_applied_leaves_list, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImageView toolBarMenu = getActivity().findViewById(R.id.toolbar_edit_action);
 
-        view1 = view.findViewById(R.id.layout_1);
-
-
-
-        TextView tvLink = view.findViewById(R.id.tv_link_check_leaves);
-        ImageView imgAddLeaves = view.findViewById(R.id.img_add_leaves);
-        TextView tvCntCL = view.findViewById(R.id.tv_leaves_cl);
-        TextView tvCntPaid = view.findViewById(R.id.tv_leaves_paid);
-        TextView tvCntCoff = view.findViewById(R.id.tv_leaves_coff);
-        TextView tvCntTotal = view.findViewById(R.id.tv_total_leaves_count);
-
-
-        tvCntCL.setText("241");
-        tvCntPaid.setText("08");
-        tvCntCoff.setText("12");
-        tvCntTotal.setText("20");
-
-        tvLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                intent.putExtra("title", "Leave");
-                intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                startActivity(intent);
-            }
-        });
-
-        imgAddLeaves.setOnClickListener(new View.OnClickListener() {
+        RecyclerView leavesList = view.findViewById(R.id.rv_applied_leaves_list);
+        ImageView imgAdddLeaves = view.findViewById(R.id.iv_add_leaves);
+        imgAdddLeaves.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
@@ -90,7 +65,36 @@ public class LeavePlannerFragment extends Fragment {
             }
         });
 
+        toolBarMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                intent.putExtra("title", "Holiday List");
+                intent.putExtra("switch_fragments", "HolidayListFragment");
+                startActivity(intent);
+            }
+        });
+
+        ArrayList<String> leaves = new ArrayList<>();
+        leaves.add("1");
+        leaves.add("2");
+        AppliedLeavesAdapter adapter = new AppliedLeavesAdapter(getActivity(),leaves);
+        leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        leavesList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
     }
-}
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+    }
+
+
+}

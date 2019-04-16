@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lighter_grey"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen_05dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_75dp"
+            android:layout_gravity="center"
+            android:background="@color/leaves_tab"
+            android:paddingStart="@dimen/dimen_40dp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingEnd="@dimen/dimen_35dp"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tv_tb_pending"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/crop__ic_done"
+                android:drawablePadding="-15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/tab_pending_leaves"
+                android:textAllCaps="true"
+                android:textColor="@color/black_green"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tv_tb_approved"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/crop__ic_done"
+                android:drawablePadding="-15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/tab_approved_leaves"
+                android:textAllCaps="true"
+                android:textColor="@color/blur_tab"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tv_tb_rejected"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/crop__ic_cancel"
+                android:drawablePadding="-15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/tab_rejected_leaves"
+                android:textAllCaps="true"
+                android:textColor="@color/blur_tab"
+                android:textSize="@dimen/text_size_12" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_applied_leaves_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_add_leaves"
+        android:layout_width="@dimen/dimen_45dp"
+        android:layout_height="@dimen/dimen_45dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_marginBottom="@dimen/dimen_25dp"
+        android:background="@drawable/bg_circle_grey"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_plus" />
+
+</FrameLayout>

@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dimen_15dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.platform.view.fragments.HolidayListFragment">
+
+
+    <TextView
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="@color/holiday_text"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="@string/holiday_list_title" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_holiday_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>
