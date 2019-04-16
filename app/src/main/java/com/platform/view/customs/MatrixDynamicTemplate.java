@@ -405,23 +405,27 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (matrixDynamicInnerMap != null) {
-                    if (!TextUtils.isEmpty(column.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
-                        if (!TextUtils.isEmpty(column.getInputType()) &&
-                                column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
-                            matrixDynamicInnerMap.put(column.getName(),
-                                    ("" + Util.getDateInLong(charSequence.toString())).trim());
-                        } else {
-                            matrixDynamicInnerMap.put(column.getName(), charSequence.toString().trim());
-                        }
+                    try {
+                        if (!TextUtils.isEmpty(column.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
+                            if (!TextUtils.isEmpty(column.getInputType()) &&
+                                    column.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
+                                matrixDynamicInnerMap.put(column.getName(),
+                                        ("" + Util.getDateInLong(charSequence.toString())).trim());
+                            } else {
+                                matrixDynamicInnerMap.put(column.getName(), charSequence.toString().trim());
+                            }
 
-                        if (!matrixDynamicValuesList.contains(matrixDynamicInnerMap)) {
-                            matrixDynamicValuesList.add(matrixDynamicInnerMap);
-                        }
+                            if (!matrixDynamicValuesList.contains(matrixDynamicInnerMap)) {
+                                matrixDynamicValuesList.add(matrixDynamicInnerMap);
+                            }
 
-                        if (matrixDynamicInnerMap.size() == elements.getColumns().size()) {
-                            matrixDynamicValueChangeListener.onMatrixDynamicValueChanged(elements.getName(),
-                                    matrixDynamicValuesList);
+                            if (matrixDynamicInnerMap.size() == elements.getColumns().size()) {
+                                matrixDynamicValueChangeListener.onMatrixDynamicValueChanged(elements.getName(),
+                                        matrixDynamicValuesList);
+                            }
                         }
+                    } catch (Exception e) {
+                        Log.e(TAG, "TEXT ISSUE:" + e.getMessage());
                     }
                 }
             }

@@ -17,7 +17,7 @@
 
     <!--App Update-->
     <string name="title_new_version_available">New version available</string>
-    <string name="msg_update_app">Please, update app to new version to continue.</string>
+    <string name="msg_update_app">Please update app to new version to continue.</string>
     <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
