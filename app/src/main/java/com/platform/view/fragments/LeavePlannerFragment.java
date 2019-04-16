@@ -8,8 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +18,6 @@ import android.widget.TextView;
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.view.activities.GeneralActionsActivity;
-import com.platform.view.adapters.AppliedLeavesAdapter;
-
-import java.util.ArrayList;
-
 
 public class LeavePlannerFragment extends Fragment {
 
@@ -47,22 +41,8 @@ public class LeavePlannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         view1 = view.findViewById(R.id.layout_1);
-
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         initView();
-    }
 
-    private void initView() {
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            isDashboard = bundle.getBoolean(Constants.Planner.KEY_IS_DASHBOARD);
-        }
-    }
         TextView tvLink = view.findViewById(R.id.tv_link_check_leaves);
         ImageView imgAddLeaves = view.findViewById(R.id.img_add_leaves);
         TextView tvCntCL = view.findViewById(R.id.tv_leaves_cl);
@@ -97,6 +77,12 @@ public class LeavePlannerFragment extends Fragment {
         });
 
 
+    }
+    private void initView() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            isDashboard = bundle.getBoolean(Constants.Planner.KEY_IS_DASHBOARD);
+        }
     }
 }
 

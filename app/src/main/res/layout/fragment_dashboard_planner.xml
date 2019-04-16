@@ -75,9 +75,7 @@
                 android:id="@+id/leave_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_15dp"
-                android:layout_marginTop="@dimen/dimen_12dp"
-                android:layout_marginRight="@dimen/dimen_15dp">
+                android:layout_marginBottom="@dimen/dimen_15dp">
 
                 <FrameLayout
                     android:id="@+id/fly_leave"
