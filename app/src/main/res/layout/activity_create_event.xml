@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.platform.view.activities.CreateEventActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/ly_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tbr_create_event"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary">
+
+                <TextView
+                    android:id="@+id/tv_create_event_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/create_event"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18"
+                    android:textStyle="bold" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/iv_create_event_icon"
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/dimen_05dp"
+                android:src="@drawable/ic_back_white" />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_app_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Category-->
+            <Spinner
+                android:id="@+id/sp_category"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
+
+            <!--Title-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_title"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/sp_category"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_title"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/tesk_title"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Start Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_start_date"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/tly_title"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_start_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/task_start_date"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:drawableEnd="@drawable/ic_add"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_start_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tly_start_date"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+                <!--Start Time-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_start_time"
+                    android:layout_weight="5"
+                    style="@style/RegistrationTextInputLayout"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_start_time"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/task_start_time"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:inputType="time"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Time-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_end_time"
+                    android:layout_weight="5"
+                    style="@style/RegistrationTextInputLayout"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_end_time"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/tesk_end_time"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:inputType="time"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_repeat"
+                android:layout_below="@+id/ly_start_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:background="@drawable/bg_blue_box">
+
+                <!--Repeat-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_repeat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:padding="@dimen/dimen_10dp"
+                    android:theme="@style/TextInputLayoutForLabel"
+                    android:visibility="visible"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_repeat"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/task_repeat"
+                        android:inputType="text|textCapWords"
+                        tools:ignore="Autofill" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/bt_repeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/medium_blue"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_repeat_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_repeat"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"/>
+
+            <!--Description-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_description"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/tv_repeat_detail"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_description"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/task_descriptiocn"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Address-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_address"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/tly_description"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_address"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/task_address"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Add Members-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tily_add_members"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/tly_address"
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                >
+
+                <EditText
+                    android:id="@+id/et_add_members"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/task_add_members"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:inputType="text|textCapWords"
+                    android:drawableStart="@drawable/ic_add"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/bt_event_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tily_add_members"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:background="@drawable/bg_button"
+                android:text="@string/btn_submit"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_22" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

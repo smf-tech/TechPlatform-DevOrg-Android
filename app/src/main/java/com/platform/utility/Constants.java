@@ -232,5 +232,6 @@ public class Constants {
 
     public static class Planner {
         public static final String KEY_IS_DASHBOARD = "isDashboard";
+        public static final String TO_OPEN ="ToOpan";
     }
 }
