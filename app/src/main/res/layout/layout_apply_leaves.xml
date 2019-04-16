@@ -142,12 +142,15 @@
         <EditText
             android:id="@+id/edt_reason"
             android:paddingStart="@dimen/dimen_15dp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:gravity="top"
+            android:textColorHint="@color/leave_form_text_color"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_75dp"
             android:layout_below="@+id/lv_category_date"
             android:background="@drawable/leave_form_view_nonfocused"
             android:fontFamily="@font/roboto_regular"
-            android:text="@string/reason"
+            android:hint="@string/reason"
             android:textAllCaps="false"
             android:textColor="@color/leave_form_text_color"
             android:textSize="@dimen/text_size_13" />
@@ -158,6 +161,7 @@
             android:textSize="@dimen/text_size_16"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
+
             android:layout_alignParentBottom="true"
             android:background="@color/tab_selector"
             android:text="@string/btn_leave_apply_str"
