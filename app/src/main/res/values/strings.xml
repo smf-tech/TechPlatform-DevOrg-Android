@@ -216,10 +216,35 @@
     <string name="msg_enable_gps">GPS is not enabled. Do you want to enable it?</string>
 
     <!--Planner-->
-    <string name="events">Events</string>
+    <string name="meetings">Meeting</string>
     <string name="tasks">Tasks</string>
     <string name="leave">Leave</string>
-    <string name="Attendence">Attendance</string>
+
+    <!--Attendance-->
+    <string name="attendance">Attendance</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="attendance_details">Check Attendance Details</string>
+
+    <!--Events-->
+    <string name="events">Events</string>
+    <string name="all_events">All Events</string>
+    <string name="today_events">Today\'s Events</string>
+    <string name="no_events">No events today!</string>
+    <string name="create_event">CREATE EVENT</string>
+    <string name="task_category">Category</string>
+    <string name="tesk_title">Title</string>
+    <string name="task_start_date">Start Date</string>
+    <string name="task_start_time">Start Time</string>
+    <string name="tesk_end_time">End Time</string>
+    <string name="task_repeat">Repeat</string>
+    <string name="task_descriptiocn">Description</string>
+    <string name="task_address">Address</string>
+    <string name="task_add_members">Add Members</string>
+    <string-array name="category_types">
+        <item>Category</item>
+        <item>Meeting</item>
+        <item>Event</item>
+    </string-array>
 
     <!--App Events-->
     <string name="event_title" translatable="false">Event_Title</string>
@@ -287,6 +312,4 @@
     <string name="reason">Reason</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-</resources>
+  </resources>

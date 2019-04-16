@@ -216,10 +216,31 @@
     <string name="msg_enable_gps">जीपीएस सक्षम नाही, आपण हे सक्षम करू इच्छिता?</string>
 
     <!--Planner-->
-    <string name="events">कार्यक्रम</string>
+    <string name="meetings">Meeting</string>
     <string name="tasks">कार्ये</string>
     <string name="leave">रजा</string>
-    <string name="Attendence">उपस्थित</string>
+
+
+    <!--Attendance-->
+    <string name="attendance">उपस्थित</string>
+    <string name="total_hours">एकूण तास</string>
+    <string name="attendance_details">उपस्थिती तपशील तपासा</string>
+
+    <!--Events-->
+    <string name="events">कार्यक्रम</string>
+    <string name="all_events">सर्व कार्यक्रम</string>
+    <string name="today_events">आजचे कार्यक्रम</string>
+    <string name="no_events">आज कोणतेही कार्यक्रम नाहीत!</string>
+    <string name="create_event">कार्यक्रम तयार करा</string>
+    <string name="task_category">Category</string>
+    <string name="tesk_title">Title</string>
+    <string name="task_start_date">Start Date</string>
+    <string name="task_start_time">Start Time</string>
+    <string name="tesk_end_time">End Time</string>
+    <string name="task_repeat">Repeat</string>
+    <string name="task_descriptiocn">Description</string>
+    <string name="task_address">Address</string>
+    <string name="task_add_members">Add Members</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>

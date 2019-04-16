@@ -1,21 +1,95 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_15dp"
     tools:context="com.platform.view.fragments.AttendancePlannerFragment">
 
-    <TextView
-        android:id="@+id/meeting_dummy_text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/ly_calender"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Attendence"
-        android:textSize="@dimen/text_size_20"
-        android:textStyle="bold" />
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
+    </RelativeLayout>
+
+   <RelativeLayout
+       android:id="@+id/ly_working_hours"
+       android:layout_below="@id/ly_calender"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_margin="@dimen/dimen_05dp">
+
+       <TextView
+           android:id="@+id/tv_lab_total_hours"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/total_hours"/>
+       <TextView
+           android:id="@+id/tv_total_hours"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentEnd="true"
+           android:text="4:2 Hours"/>
+
+   </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/ly_checkin_out_dashboard"
+        android:layout_below="@+id/ly_working_hours"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/coming_soon" />
+        android:layout_margin="@dimen/dimen_05dp">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/bt_checkin"
+            android:layout_width="@dimen/dimen_150dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
+        <Button
+            android:id="@+id/bt_checkout"
+            android:layout_width="@dimen/dimen_150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tv_attendance_details"
+            android:layout_below="@+id/bt_checkin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/attendance_details"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_01dp"
+            android:textColor="@color/tab_selector"
+            android:textSize="@dimen/text_size_16"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ly_checkin_out_detail"
+        android:layout_below="@+id/ly_checkin_out_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/bt_checkin_dtl"
+            android:layout_width="@dimen/dimen_150dp"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_day_schedule"
+            android:layout_below="@+id/bt_checkin_dtl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/bt_checkout_dtl"
+            android:layout_below="@+id/rv_day_schedule"
+            android:layout_width="@dimen/dimen_150dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>
