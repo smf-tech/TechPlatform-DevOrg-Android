@@ -66,25 +66,25 @@ public class PlannerFragment extends Fragment {
         attendancePlannerFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fly_attendance, attendancePlannerFragment, attendancePlannerFragment
-                        .getClass().getSimpleName()).addToBackStack(null).commit();
+                        .getClass().getSimpleName()).commit();
 
         Fragment eventsPlannerFragment = new EventsPlannerFragment();
         eventsPlannerFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fly_events, eventsPlannerFragment, eventsPlannerFragment.getClass()
-                        .getSimpleName()).addToBackStack(null).commit();
+                        .getSimpleName()).commit();
 
         Fragment tasksPlannerFragment = new TasksPlannerFragment();
         tasksPlannerFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fly_tasks, tasksPlannerFragment, tasksPlannerFragment.getClass()
-                        .getSimpleName()).addToBackStack(null).commit();
+                        .getSimpleName()).commit();
 
         Fragment leavePlannerFragment = new LeavePlannerFragment();
         leavePlannerFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fly_leave, leavePlannerFragment, leavePlannerFragment.getClass()
-                        .getSimpleName()).addToBackStack(null).commit();
+                        .getSimpleName()).commit();
 
     }
 
