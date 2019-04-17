@@ -177,7 +177,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
                         }
                     }
                 } catch (Exception e) {
-                    Log.e("TAG", e.getMessage());
+                    Log.e("TAG", "EXCEPTION_IN_SET_DATA_1");
                 }
             }
         }
@@ -204,7 +204,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
                         }
                     }
                 } catch (Exception e) {
-                    Log.e("TAG", e.getMessage());
+                    Log.e("TAG", "EXCEPTION_IN_SET_DATA_2");
                 }
             }
         }
