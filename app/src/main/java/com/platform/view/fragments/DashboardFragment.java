@@ -94,7 +94,7 @@ public class DashboardFragment extends Fragment {
 
     private void setMenuResourceId() {
         for (int i = 0; i < tabNames.size(); i++) {
-            switch (tabNames.get(i).getName().getLocaleValue()) {
+            switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
                     tabNames.get(i).setResId(R.id.action_menu_forms);
                     break;
@@ -139,7 +139,7 @@ public class DashboardFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
-            switch (modules.getName().getLocaleValue()) {
+            switch (modules.getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
                     Bundle b = new Bundle();
                     b.putBoolean("NEED_SYNC", isSyncRequired);
@@ -226,7 +226,7 @@ public class DashboardFragment extends Fragment {
             int resId;
             int pendingActionCount = 0;
 
-            switch (tabNames.get(i).getName().getLocaleValue()) {
+            switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
                     resId = tabIcons[0];
                     pendingActionCount = getFormsPendingActionCount();
