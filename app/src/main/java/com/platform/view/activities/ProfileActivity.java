@@ -86,7 +86,7 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     private ImageView backButton;
     private Button btnProfileSubmit;
 
-    private String userGender = "Male";
+    private String userGender = Constants.Login.MALE;
 
     private List<Organization> organizations = new ArrayList<>();
     private List<OrganizationProject> projects = new ArrayList<>();
@@ -155,15 +155,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
         radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
             switch (checkedId) {
                 case R.id.gender_male:
-                    userGender = getResources().getString(R.string.male);
+                    userGender = Constants.Login.MALE;
                     break;
 
                 case R.id.gender_female:
-                    userGender = getResources().getString(R.string.female);
+                    userGender = Constants.Login.FEMALE;
                     break;
 
                 case R.id.gender_other:
-                    userGender = getResources().getString(R.string.other);
+                    userGender = Constants.Login.OTHER;
                     break;
             }
         });
@@ -231,15 +231,15 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                     etUserEmailId.setText(userInfo.getUserEmailId());
 
                     if (!TextUtils.isEmpty(userInfo.getUserGender())) {
-                        if (userInfo.getUserGender().equalsIgnoreCase(getResources().getString(R.string.male))) {
+                        if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.MALE)) {
                             radioGroup.check(R.id.gender_male);
-                            userGender = getResources().getString(R.string.male);
-                        } else if (userInfo.getUserGender().equalsIgnoreCase(getResources().getString(R.string.female))) {
+                            userGender = Constants.Login.MALE;
+                        } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.FEMALE)) {
                             radioGroup.check(R.id.gender_female);
-                            userGender = getResources().getString(R.string.female);
-                        } else if (userInfo.getUserGender().equalsIgnoreCase(getResources().getString(R.string.other))) {
+                            userGender = Constants.Login.FEMALE;
+                        } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.OTHER)) {
                             radioGroup.check(R.id.gender_other);
-                            userGender = getResources().getString(R.string.other);
+                            userGender = Constants.Login.OTHER;
                         }
                     }
 

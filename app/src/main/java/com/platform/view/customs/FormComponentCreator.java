@@ -266,7 +266,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 Util.getCurrentTimeStamp(), Constants.FORM_DATE));
                     }
                 } else {
-                    textInputField.setText(String.format(Locale.getDefault(), "%s", formData.getAnswer()));
+                    textInputField.setText(String.format(Locale.getDefault(), "%s",
+                            formData.getAnswer()));
                 }
             }
 
@@ -398,7 +399,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (formData.isRequired() != null) {
 
                 errorMsg = Validation.requiredValidation(editText.getTag().toString(),
-                        editText.getText().toString(), formData.isRequired());
+                        editText.getText().toString(), formData.isRequired(), fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -409,7 +410,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (formData.getMaxLength() != null) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
                     errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getMaxLength());
+                            editText.getText().toString(), formData.getMaxLength(), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -427,7 +428,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                                     errorMsg = Validation.regexValidation(editText.getTag().toString(),
-                                            editText.getText().toString(), validator);
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
                                     if (!TextUtils.isEmpty(errorMsg)) {
                                         fragment.get().setErrorMsg(errorMsg);
@@ -462,7 +463,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                                         if (!TextUtils.isEmpty(field1Value) && !TextUtils.isEmpty(field2Value)) {
                                             errorMsg = Validation.expressionValidation(editText.getTag().toString(),
-                                                    field1Value, field2Value, field3Value, formData.getInputType(), validator);
+                                                    field1Value, field2Value, field3Value,
+                                                    formData.getInputType(), validator, fragment.get().getContext());
 
                                             if (!TextUtils.isEmpty(errorMsg)) {
                                                 fragment.get().setErrorMsg(errorMsg);
@@ -477,7 +479,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                                     errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                                            editText.getText().toString(), validator);
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
                                     if (!TextUtils.isEmpty(errorMsg)) {
                                         fragment.get().setErrorMsg(errorMsg);
@@ -485,7 +487,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                     }
 
                                     errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
-                                            editText.getText().toString(), validator);
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
                                     if (!TextUtils.isEmpty(errorMsg)) {
                                         fragment.get().setErrorMsg(errorMsg);
@@ -507,7 +509,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 if ((dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) ||
                         !(dropDownTemplate.getSelectedItem() > 0)) {
                     errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
-                            "", formData.isRequired());
+                            "", formData.isRequired(), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -524,7 +526,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             if (element.isRequired() != null) {
                 errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(),
-                        element.getColumns().size(), valuesList);
+                        element.getColumns().size(), valuesList, fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -558,7 +560,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                                 errorMsg = Validation.regexValidation(
                                                         element.getColumns().get(columnIndex)
                                                                 .getTitle().getLocaleValue(),
-                                                        value, validator);
+                                                        value, validator, fragment.get().getContext());
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
                                                     fragment.get().setErrorMsg(errorMsg);
@@ -573,7 +575,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                                 errorMsg = Validation.editTextMinMaxValueValidation(
                                                         element.getColumns().get(columnIndex)
                                                                 .getTitle().getLocaleValue(),
-                                                        value, validator);
+                                                        value, validator, fragment.get().getContext());
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
                                                     fragment.get().setErrorMsg(errorMsg);
@@ -583,7 +585,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                                 errorMsg = Validation.editTextMinMaxLengthValidation(
                                                         element.getColumns().get(columnIndex)
                                                                 .getTitle().getLocaleValue(),
-                                                        value, validator);
+                                                        value, validator, fragment.get().getContext());
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
                                                     fragment.get().setErrorMsg(errorMsg);
@@ -619,7 +621,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             if (formData.isRequired() != null && TextUtils.isEmpty(imgUrl)) {
                 errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
-                        "", formData.isRequired());
+                        "", formData.isRequired(), fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -658,7 +660,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
     }
 
-    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String,
+            String>>> matrixDynamicValuesMap) {
+
         if (matrixDynamicValuesMap != null) {
             this.matrixDynamicValuesMap = matrixDynamicValuesMap;
         }
@@ -754,12 +758,14 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     @Override
-    public void onMatrixDynamicValueChanged(String elementName, List<HashMap<String, String>> matrixDynamicValuesList) {
+    public void onMatrixDynamicValueChanged(String elementName, List<HashMap<String,
+            String>> matrixDynamicValuesList) {
         matrixDynamicValuesMap.put(elementName, matrixDynamicValuesList);
     }
 
     @Override
-    public void showChoicesByUrlOffline(String response, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+    public void showChoicesByUrlOffline(String response, Column column, HashMap<String,
+            String> matrixDynamicInnerMap) {
         fragment.get().showChoicesByUrlAsyncMD(response, column, matrixDynamicInnerMap);
     }
 
@@ -817,7 +823,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         formId + "_" + dependentElement.getName());
 
                 if (!TextUtils.isEmpty(dependentResponse) && !TextUtils.isEmpty(response)) {
-                    JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
+                    JsonObject dependentOuterObj
+                            = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
                     JsonArray dependentDataArray = dependentOuterObj.getAsJsonArray(Constants.RESPONSE_DATA);
 
                     //Convert dependentDataArray to List of JsonObject

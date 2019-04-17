@@ -135,45 +135,49 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
 
         if (this.rowIndex == rowIndex) {
             if (valueList != null) {
-                boolean isValueSet = false;
-                this.valueList = valueList;
-                FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
-                adapter.clear();
-                adapter.addAll(valueList);
-                adapter.notifyDataSetChanged();
+                try {
+                    boolean isValueSet = false;
+                    this.valueList = valueList;
+                    FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
+                    adapter.clear();
+                    adapter.addAll(valueList);
+                    adapter.notifyDataSetChanged();
 
-                if (valueList.size() > 0) {
-                    this.setSelectedItem(0);
-                }
+                    if (valueList.size() > 0) {
+                        this.setSelectedItem(0);
+                    }
 
-                if (column.getChoices() != null && !column.getChoices().isEmpty()) {
-                    for (int index = 0; index < column.getChoices().size(); index++) {
-                        if (formData.getAnswerArray() != null &&
-                                column.getChoices().get(index).getText() != null &&
-                                !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
-                                Objects.requireNonNull(valuesMap.get(column.getName()))
-                                        .equals(column.getChoices().get(index).getValue())) {
-                            isValueSet = true;
-                            this.setSelectedItem(index);
+                    if (column.getChoices() != null && !column.getChoices().isEmpty()) {
+                        for (int index = 0; index < column.getChoices().size(); index++) {
+                            if (formData.getAnswerArray() != null &&
+                                    column.getChoices().get(index).getText() != null &&
+                                    !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
+                                    Objects.requireNonNull(valuesMap.get(column.getName()))
+                                            .equals(column.getChoices().get(index).getValue())) {
+                                isValueSet = true;
+                                this.setSelectedItem(index);
+                            }
                         }
                     }
-                }
 
-                // This code will add submitted value in list and update the adapter, in API response
-                // submitted value is not coming hence this is workaround.
-                if (isInEditMode && !isPartiallySaved) {
-                    if (!isValueSet && !TextUtils.isEmpty(valuesMap.get(column.getName()))) {
-                        Choice ch = new Choice();
-                        LocaleData ld = new LocaleData(valuesMap.get(column.getName()));
-                        ch.setText(ld);
+                    // This code will add submitted value in list and update the adapter, in API response
+                    // submitted value is not coming hence this is workaround.
+                    if (isInEditMode && !isPartiallySaved) {
+                        if (!isValueSet && !TextUtils.isEmpty(valuesMap.get(column.getName()))) {
+                            Choice ch = new Choice();
+                            LocaleData ld = new LocaleData(valuesMap.get(column.getName()));
+                            ch.setText(ld);
 
-                        this.valueList.add(ch);
-                        valueList.add(ch);
-                        adapter.clear();
-                        adapter.addAll(valueList);
-                        adapter.notifyDataSetChanged();
-                        this.setSelectedItem(valueList.size() - 1);
+                            this.valueList.add(ch);
+                            valueList.add(ch);
+                            adapter.clear();
+                            adapter.addAll(valueList);
+                            adapter.notifyDataSetChanged();
+                            this.setSelectedItem(valueList.size() - 1);
+                        }
                     }
+                } catch (Exception e) {
+                    Log.e("TAG", e.getMessage());
                 }
             }
         }
