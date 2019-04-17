@@ -13,8 +13,6 @@ import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -64,11 +62,6 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
 
         TabLayout tabs = plannerView.findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
-
-        Objects.requireNonNull(tabs.getTabAt(0)).setIcon(R.drawable.test);
-        Objects.requireNonNull(tabs.getTabAt(1)).setIcon(R.drawable.test);
-        Objects.requireNonNull(tabs.getTabAt(2)).setIcon(R.drawable.test);
-        Objects.requireNonNull(tabs.getTabAt(3)).setIcon(R.drawable.test);
     }
 
     @Override

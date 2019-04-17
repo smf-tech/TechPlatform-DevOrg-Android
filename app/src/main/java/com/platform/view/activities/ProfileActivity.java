@@ -1107,72 +1107,76 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
 
     @Override
     public void onValuesSelected(boolean[] selected, String spinnerName) {
-        switch (spinnerName) {
-            case Constants.MultiSelectSpinnerType.SPINNER_PROJECT:
-                selectedProjects.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedProjects.add(projects.get(i).getId());
+        try {
+            switch (spinnerName) {
+                case Constants.MultiSelectSpinnerType.SPINNER_PROJECT:
+                    selectedProjects.clear();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            selectedProjects.add(projects.get(i).getId());
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case Constants.MultiSelectSpinnerType.SPINNER_ROLE:
-                selectedRoles.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedRoles.add(roles.get(i).getId());
+                case Constants.MultiSelectSpinnerType.SPINNER_ROLE:
+                    selectedRoles.clear();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            selectedRoles.add(roles.get(i).getId());
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case Constants.MultiSelectSpinnerType.SPINNER_DISTRICT:
-                selectedDistricts.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedDistricts.add(districts.get(i));
+                case Constants.MultiSelectSpinnerType.SPINNER_DISTRICT:
+                    selectedDistricts.clear();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            selectedDistricts.add(districts.get(i));
+                        }
                     }
-                }
 
-                if (spTaluka.getVisibility() == View.VISIBLE) {
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                            selectedRole.getProject().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                }
-                break;
-
-            case Constants.MultiSelectSpinnerType.SPINNER_TALUKA:
-                selectedTalukas.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedTalukas.add(talukas.get(i));
+                    if (spTaluka.getVisibility() == View.VISIBLE) {
+                        profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                                selectedRole.getProject().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
                     }
-                }
+                    break;
 
-                if (spVillage.getVisibility() == View.VISIBLE) {
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                            selectedRole.getProject().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-                }
-                break;
-
-            case Constants.MultiSelectSpinnerType.SPINNER_CLUSTER:
-                selectedClusters.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedClusters.add(clusters.get(i));
+                case Constants.MultiSelectSpinnerType.SPINNER_TALUKA:
+                    selectedTalukas.clear();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            selectedTalukas.add(talukas.get(i));
+                        }
                     }
-                }
-                break;
 
-            case Constants.MultiSelectSpinnerType.SPINNER_VILLAGE:
-                selectedVillages.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedVillages.add(villages.get(i));
+                    if (spVillage.getVisibility() == View.VISIBLE) {
+                        profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                                selectedRole.getProject().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                     }
-                }
-                break;
+                    break;
+
+                case Constants.MultiSelectSpinnerType.SPINNER_CLUSTER:
+                    selectedClusters.clear();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            selectedClusters.add(clusters.get(i));
+                        }
+                    }
+                    break;
+
+                case Constants.MultiSelectSpinnerType.SPINNER_VILLAGE:
+                    selectedVillages.clear();
+                    for (int i = 0; i < selected.length; i++) {
+                        if (selected[i]) {
+                            selectedVillages.add(villages.get(i));
+                        }
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "EXCEPTION_IN_ON_VALUE_SELECTED");
         }
     }
 }
