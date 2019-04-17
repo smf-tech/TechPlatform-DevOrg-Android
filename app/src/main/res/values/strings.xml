@@ -240,6 +240,7 @@
     <string name="task_descriptiocn">Description</string>
     <string name="task_address">Address</string>
     <string name="task_add_members">Add Members</string>
+    <string name="my_events">My Events</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>
@@ -286,6 +287,7 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
+
 
 
 </resources>

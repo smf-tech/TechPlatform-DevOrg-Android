@@ -232,14 +232,16 @@
     <string name="today_events">आजचे कार्यक्रम</string>
     <string name="no_events">आज कोणतेही कार्यक्रम नाहीत!</string>
     <string name="create_event">कार्यक्रम तयार करा</string>
-    <string name="task_category">Category</string>
-    <string name="tesk_title">Title</string>
-    <string name="task_start_date">Start Date</string>
-    <string name="task_start_time">Start Time</string>
-    <string name="tesk_end_time">End Time</string>
-    <string name="task_repeat">Repeat</string>
-    <string name="task_descriptiocn">Description</string>
-    <string name="task_address">Address</string>
-    <string name="task_add_members">Add Members</string>
+    <string name="task_category">वर्ग</string>
+    <string name="tesk_title">शीर्षक</string>
+    <string name="task_start_date">प्रारंभ तारीख</string>
+    <string name="task_start_time">सुरवातीची वेळ</string>
+    <string name="tesk_end_time">समाप्तीचा वेळ</string>
+    <string name="task_repeat">पुन्हा करा</string>
+    <string name="task_descriptiocn">वर्णन</string>
+    <string name="task_address">पत्ता</string>
+    <string name="task_add_members">सदस्य जोडा</string>
+    <string name="my_events">माझे कार्यक्रम</string>
+
 
 </resources>
