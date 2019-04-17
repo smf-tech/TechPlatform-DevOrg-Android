@@ -225,12 +225,16 @@
     <string name="total_hours">Total Hours</string>
     <string name="attendance_details">Check Attendance Details</string>
 
-    <!--Events-->
+    <!--Events & Tasks-->
     <string name="events">Events</string>
     <string name="all_events">All Events</string>
     <string name="today_events">Today\'s Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">CREATE EVENT</string>
+    <string name="all_tasks">All Tasks</string>
+    <string name="today_tasks">Today\'s Tasks</string>
+    <string name="no_tasks">No tasks today!</string>
+    <string name="create_task">CREATE TASK</string>
     <string name="task_category">Category</string>
     <string name="tesk_title">Title</string>
     <string name="task_start_date">Start Date</string>

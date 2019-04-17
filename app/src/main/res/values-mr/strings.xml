@@ -226,12 +226,16 @@
     <string name="total_hours">एकूण तास</string>
     <string name="attendance_details">उपस्थिती तपशील तपासा</string>
 
-    <!--Events-->
+    <!--Events & Tasks-->
     <string name="events">कार्यक्रम</string>
     <string name="all_events">सर्व कार्यक्रम</string>
     <string name="today_events">आजचे कार्यक्रम</string>
     <string name="no_events">आज कोणतेही कार्यक्रम नाहीत!</string>
     <string name="create_event">कार्यक्रम तयार करा</string>
+    <string name="all_tasks">सर्व कार्ये</string>
+    <string name="today_tasks">आजचे कार्ये</string>
+    <string name="no_tasks">आज कोणतेही कार्ये नाहीत!</string>
+    <string name="create_task">कार्य तयार करा</string>
     <string name="task_category">Category</string>
     <string name="tesk_title">Title</string>
     <string name="task_start_date">Start Date</string>

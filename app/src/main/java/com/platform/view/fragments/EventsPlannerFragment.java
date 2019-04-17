@@ -119,6 +119,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         switch (v.getId()){
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,"EVENTS");
                 this.startActivity(intentCreateEvent);
                 break;
             case R.id.tv_all_events_list:

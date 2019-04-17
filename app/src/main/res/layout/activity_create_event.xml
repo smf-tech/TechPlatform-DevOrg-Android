@@ -62,7 +62,8 @@
                 android:id="@+id/sp_category"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_marginTop="@dimen/dimen_10dp"/>
 
             <!--Title-->
             <com.google.android.material.textfield.TextInputLayout

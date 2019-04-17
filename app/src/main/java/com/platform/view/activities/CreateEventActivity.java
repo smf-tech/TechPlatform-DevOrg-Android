@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.platform.R;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 
 import java.util.Calendar;
@@ -44,6 +45,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
+
+        String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
 
         spCategory = findViewById(R.id.sp_category);
         etTitle = findViewById(R.id.et_title);
@@ -81,13 +84,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.et_start_date:
-                showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
+                Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
                 break;
             case R.id.et_start_time:
-                showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_start_time));
+                Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_start_time));
                 break;
             case R.id.et_end_time:
-                showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_end_time));
+                Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_end_time));
                 break;
             case R.id.et_add_members:
 
@@ -101,33 +104,4 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void showTimeDialog(Context context, final EditText editText) {
-        // TODO Auto-generated method stub
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                editText.setText( selectedHour + ":" + selectedMinute);
-            }
-        }, hour, minute, false);//Yes 24 hour time
-        mTimePicker.show();
-    }
-
-    private void showDateDialog(Context context, final EditText editText) {
-        final Calendar c = Calendar.getInstance();
-        final int mYear = c.get(Calendar.YEAR);
-        final int mMonth = c.get(Calendar.MONTH);
-        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dateDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-            String date = year + "-" + Util.getTwoDigit(monthOfYear + 1) + "-" + Util.getTwoDigit(dayOfMonth);
-            editText.setText(date);
-        }, mYear, mMonth, mDay);
-
-        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dateDialog.show();
-    }
 }
