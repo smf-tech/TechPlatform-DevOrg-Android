@@ -151,6 +151,8 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
+
+        <activity android:name=".view.activities.AddMemberFilerActivity"></activity>
     </application>
 
 </manifest>

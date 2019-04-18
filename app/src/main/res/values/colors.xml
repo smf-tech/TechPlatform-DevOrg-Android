@@ -10,6 +10,7 @@
     <color name="dark_grey">#3E3E3E</color>
     <color name="light_grey">#909090</color>
     <color name="lighter_grey">#EBEBEB</color>
+    <color name="lighter_grey_tab">#F8F8F8</color>
     <!--<color name="lightest_grey">#EDEDED</color>-->
     <color name="medium_grey">#676767</color>
 

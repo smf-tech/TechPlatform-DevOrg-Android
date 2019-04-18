@@ -30,7 +30,7 @@ public class PlannerDetailActivity extends AppCompatActivity {
             eventsPlannerFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fly_events_list, eventsPlannerFragment, eventsPlannerFragment.getClass()
-                            .getSimpleName()).addToBackStack(null).commit();
+                            .getSimpleName()).commit();
         } else if (toOpen.equals("TASKS")) {
 
         } else if (toOpen.equals("LEAVES")) {
@@ -43,6 +43,5 @@ public class PlannerDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
     }
 }

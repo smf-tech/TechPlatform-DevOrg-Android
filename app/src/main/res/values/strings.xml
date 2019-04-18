@@ -230,7 +230,7 @@
     <string name="all_events">All Events</string>
     <string name="today_events">Today\'s Events</string>
     <string name="no_events">No events today!</string>
-    <string name="create_event">CREATE EVENT</string>
+    <string name="create_event">Create Event</string>
     <string name="task_category">Category</string>
     <string name="tesk_title">Title</string>
     <string name="task_start_date">Start Date</string>
@@ -241,6 +241,8 @@
     <string name="task_address">Address</string>
     <string name="task_add_members">Add Members</string>
     <string name="my_events">My Events</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="filter">FILTER</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>

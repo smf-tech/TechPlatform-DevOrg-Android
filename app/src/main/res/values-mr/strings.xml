@@ -242,6 +242,8 @@
     <string name="task_address">पत्ता</string>
     <string name="task_add_members">सदस्य जोडा</string>
     <string name="my_events">माझे कार्यक्रम</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="filter">Filter</string>
 
 
 </resources>

@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -21,6 +23,7 @@ import java.util.Calendar;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private ImageView ivBackIcon;
     private Spinner spCategory;
     private EditText etTitle;
     private EditText etStartDate;
@@ -45,6 +48,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private void initView() {
 
+        ivBackIcon = findViewById(R.id.iv_back_icon);
         spCategory = findViewById(R.id.sp_category);
         etTitle = findViewById(R.id.et_title);
         etStartDate = findViewById(R.id.et_start_date);
@@ -69,6 +73,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setListeners() {
+        ivBackIcon.setOnClickListener(this);
         etStartDate.setOnClickListener(this);
         etStartTime.setOnClickListener(this);
         etEndTime.setOnClickListener(this);
@@ -80,6 +85,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_back_icon:
+                finish();
+                break;
             case R.id.et_start_date:
                 showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
                 break;
@@ -90,7 +98,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_end_time));
                 break;
             case R.id.et_add_members:
-
+                Intent intentAddMemberFilerActivity = new Intent(this, AddMemberFilerActivity.class);
+                this.startActivity(intentAddMemberFilerActivity);
                 break;
             case R.id.bt_repeat:
 

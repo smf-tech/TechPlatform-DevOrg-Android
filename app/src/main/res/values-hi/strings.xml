@@ -242,5 +242,7 @@
     <string name="task_address">पता</string>
     <string name="task_add_members">सदस्य जोड़ें</string>
     <string name="my_events">मेरी घटनाएँ</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="filter">Filter</string>
 
 </resources>
