@@ -22,9 +22,6 @@ import com.platform.utility.EventDecorator;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.AppliedLeavesAdapter;
 
-//import com.shrikanthravi.collapsiblecalendarview.data.Day;
-//import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -173,11 +170,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 break;
 
             case R.id.tv_calendar_mode:
-                if(isMonth){
-                    isMonth=false;
-                } else {
-                    isMonth=true;
-                }
+                isMonth = !isMonth;
                 setCalendar();
                 break;
         }
