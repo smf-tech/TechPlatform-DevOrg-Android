@@ -266,6 +266,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="reason">Reason</string>
-
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
 </resources>

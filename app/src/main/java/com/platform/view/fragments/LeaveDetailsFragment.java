@@ -47,7 +47,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private int tabClicked =-1;
     private MaterialCalendarView calendarView ;
     private ImageView tvCalendarMode;
-    boolean isMonth;
+    boolean isMonth = true;
 
     public LeaveDetailsFragment() {
         // Required empty public constructor
@@ -173,11 +173,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 break;
 
             case R.id.tv_calendar_mode:
-                if(isMonth){
-                    isMonth=false;
-                } else {
-                    isMonth=true;
-                }
+                isMonth = !isMonth;
                 setCalendar();
                 break;
         }

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
+import com.platform.utility.Constants;
+import com.platform.view.fragments.AttendancePlannerFragment;
 import com.platform.view.fragments.HolidayListFragment;
 import com.platform.view.fragments.LeaveApplyFragment;
 import com.platform.view.fragments.LeaveDetailsFragment;
@@ -91,6 +93,15 @@ public class GeneralActionsActivity extends BaseActivity implements
                     case "LeaveApplyFragment":
                         fragment = new LeaveApplyFragment();
 
+                        toolBarMenu.setVisibility(View.GONE);
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+
+                    case "AttendancePlannerFragment":
+                        fragment = new AttendancePlannerFragment();
+
+                        data.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, false);
                         toolBarMenu.setVisibility(View.GONE);
                         fragment.setArguments(data);
                         openFragment();
