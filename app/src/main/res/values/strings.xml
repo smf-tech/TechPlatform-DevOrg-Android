@@ -217,7 +217,6 @@
     <string name="msg_enable_gps">GPS is not enabled. Do you want to enable it?</string>
 
     <!--Planner-->
-    <string name="meetings">Meeting</string>
     <string name="tasks">Tasks</string>
     <string name="leave">Leave</string>
 

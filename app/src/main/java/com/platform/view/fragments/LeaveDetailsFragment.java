@@ -18,15 +18,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.platform.R;
+import com.platform.utility.EventDecorator;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.AppliedLeavesAdapter;
 
-import com.shrikanthravi.collapsiblecalendarview.data.Day;
-import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
+//import com.shrikanthravi.collapsiblecalendarview.data.Day;
+//import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class LeaveDetailsFragment extends Fragment implements View.OnClickListener {
+public class LeaveDetailsFragment extends Fragment implements View.OnClickListener,OnDateSelectedListener {
 
     private ImageView toolBarMenu;
     private RecyclerView leavesList;
@@ -36,6 +45,9 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private TextView tvClickApproved;
     private TextView tvClickRejected;
     private int tabClicked =-1;
+    private MaterialCalendarView calendarView ;
+    private ImageView tvCalendarMode;
+    boolean isMonth;
 
     public LeaveDetailsFragment() {
         // Required empty public constructor
@@ -74,6 +86,9 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         tvClickApproved.setOnClickListener(this);
         tvClickRejected = view.findViewById(R.id.tv_tb_rejected);
         tvClickRejected.setOnClickListener(this);
+        tvCalendarMode = view.findViewById(R.id.tv_calendar_mode);
+        tvCalendarMode.setOnClickListener(this);
+        calendarView = view.findViewById(R.id.calendarView);
 
         imgAddLeaves.setOnClickListener(this);
 
@@ -91,7 +106,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     private void setUIData(View view) {
-        initCalender(view);
+        //initCalender(view);
 
         ArrayList<String> leaves = new ArrayList<>();
         leaves.add("1");
@@ -100,6 +115,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         leavesList.setAdapter(adapter);
+
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                Toast.makeText(getActivity(),"Month Changed:"+date,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -114,37 +136,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private void initCalender(View leavePlannerView) {
-
-        final CollapsibleCalendar collapsibleCalendar = leavePlannerView.findViewById(R.id.calendarView);
-        collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
-            @Override
-            public void onDaySelect() {
-                Day day = collapsibleCalendar.getSelectedDay();
-                Toast.makeText(getActivity(), "Selected Day: "
-                        + day.getYear() + "/" + (day.getMonth() + 1) + "/" + day.getDay(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemClick(View view) {
-            }
-
-            @Override
-            public void onDataUpdate() {
-
-            }
-
-            @Override
-            public void onMonthChange() {
-                Toast.makeText(getActivity(), "Month changed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onWeekChange(int i) {
-                Toast.makeText(getActivity(), "Week changed", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     @Override
     public void onClick(View v) {
@@ -181,7 +172,66 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 }
                 break;
 
-
+            case R.id.tv_calendar_mode:
+                if(isMonth){
+                    isMonth=false;
+                } else {
+                    isMonth=true;
+                }
+                setCalendar();
+                break;
         }
+    }
+
+
+    private void setCalendar() {
+        calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        Calendar instance = Calendar.getInstance();
+        calendarView.setSelectedDate(instance.getTime());
+
+        Calendar instance1 = Calendar.getInstance();
+        instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
+        if(isMonth){
+            calendarView.state().edit()
+                    .setMinimumDate(instance1.getTime())
+                    .setCalendarDisplayMode(CalendarMode.MONTHS)
+                    .commit();
+        } else {
+            calendarView.state().edit()
+                    .setMinimumDate(instance1.getTime())
+                    .setCalendarDisplayMode(CalendarMode.WEEKS)
+                    .commit();
+        }
+        calendarView.setSelectedDate(instance.getTime());
+        calendarView.setCurrentDate(instance.getTime());
+        highliteDates();
+    }
+
+    private void highliteDates() {
+        // set the date list to highlight
+        ArrayList<CalendarDay> dateList = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
+        String reg_date = formatter.format(cal.getTime());
+
+        cal.add(Calendar.DATE, 2);
+        try {
+            dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        cal.add(Calendar.DATE, 3);
+        try {
+            dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendarView.addDecorator(new EventDecorator(getActivity(),
+                dateList, getResources().getDrawable(R.drawable.circle_background)));
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView, @NonNull CalendarDay calendarDay, boolean b) {
+        Toast.makeText(getActivity(),"date:"+calendarDay,Toast.LENGTH_SHORT).show();
     }
 }
