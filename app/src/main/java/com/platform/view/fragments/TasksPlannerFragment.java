@@ -86,11 +86,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private void initView() {
         taskList=new ArrayList<Event>();
         sortedTaskList=new ArrayList<Event>();
-        taskList.add(new Event("1", "Tital1", "01/01/2019","10:00 am",
+        taskList.add(new Event("1", "meeting","Tital1", "01/01/2019","10:00 am",
                 "11:00 am","-","test","Wagholi,Pune.","Sachin",
                 "1234"));
 
-        taskList.add(new Event("2", "Tital2", "01/02/2019","11:00 am",
+        taskList.add(new Event("2", "visit","Tital2", "01/02/2019","11:00 am",
                 "12:00 pm", "-","test","Hadpsar,Pune.","Sagar",
                 "1235"));
 

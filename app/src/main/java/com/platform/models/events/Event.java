@@ -1,7 +1,10 @@
 package com.platform.models.events;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable{
     private String id;
+    private String category;
     private String tital;
     private String startDate;
     private String starTime;
@@ -12,8 +15,9 @@ public class Event {
     private String owner;
     private String ownerID;
 
-    public Event(String id, String tital, String startDate, String starTime, String endTime, String repeat, String description, String address, String owner, String ownerID) {
+    public Event(String id, String category, String tital, String startDate, String starTime, String endTime, String repeat, String description, String address, String owner, String ownerID) {
         this.id = id;
+        this.category = category;
         this.tital = tital;
         this.startDate = startDate;
         this.starTime = starTime;
@@ -31,6 +35,14 @@ public class Event {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getTital() {

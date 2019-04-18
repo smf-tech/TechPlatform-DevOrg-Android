@@ -295,6 +295,6 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
-
+    <string name="event_detail">Event Detail</string>
 
 </resources>

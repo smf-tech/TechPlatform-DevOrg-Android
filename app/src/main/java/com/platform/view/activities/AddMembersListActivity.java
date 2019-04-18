@@ -35,6 +35,4 @@ public class AddMembersListActivity extends AppCompatActivity {
         rvMembers.setLayoutManager(mLayoutManager);
         rvMembers.setAdapter(addMembersListAdapter);
     }
-
-
 }

@@ -84,11 +84,12 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
         eventsList=new ArrayList<Event>();
         sortedEventsList=new ArrayList<Event>();
-        eventsList.add(new Event("1", "Tital1", "01/01/0001","10:00 am",
+
+        eventsList.add(new Event("1","meeting", "Tital1", "01/01/0001","10:00 am",
                 "11:00 am","-","test","wagoli,pune.","sachin",
                 "1234"));
 
-        eventsList.add(new Event("2", "Tital2", "01/01/0001","10:00 am",
+        eventsList.add(new Event("2","visit" ,"Tital2", "01/01/0001","10:00 am",
                 "11:00 am", "-","test","hadpsir,pune.","sagar",
                 "1235"));
 

@@ -249,6 +249,7 @@
     <string name="my_events">माझे कार्यक्रम</string>
     <string name="apply_filters">Apply Filters</string>
     <string name="filter">Filter</string>
+    <string name="event_detail">Event Detail</string>
     <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
 
 
