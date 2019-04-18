@@ -132,6 +132,7 @@
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="planner">योजनाकर्ता</string>
+    <string name="meetings">मीटिंग्ज</string>
     <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
@@ -217,9 +218,12 @@
 
     <!--Planner-->
     <string name="meetings">Meeting</string>
+    <!--Planner-->
+    <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
 
+    <string name="Attendance">उपस्थिति</string>
 
     <!--Attendance-->
     <string name="attendance">उपस्थिति</string>

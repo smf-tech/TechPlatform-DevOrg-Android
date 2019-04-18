@@ -132,6 +132,7 @@
     <string name="tab_stories">कथा</string>
     <string name="programme_management">कार्यक्रम\nव्यवस्थापन</string>
     <string name="planner">नियोजक</string>
+    <string name="meetings">बैठक</string>
     <string name="team_management">संघ व्यवस्थापन</string>
 
     <!--Program management-->
@@ -242,6 +243,7 @@
     <string name="task_address">पत्ता</string>
     <string name="task_add_members">सदस्य जोडा</string>
     <string name="my_events">माझे कार्यक्रम</string>
+    <string name="Attendance">उपस्थित</string>
 
 
     <string name="cl_leaves">CL/SL</string>

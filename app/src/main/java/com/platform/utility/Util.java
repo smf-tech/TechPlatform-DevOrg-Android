@@ -311,17 +311,17 @@ public class Util {
         editor.apply();
     }
 
-//    public static void clearAllUserData() {
-//        try {
-//            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
-//                    (Constants.App.APP_DATA, Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = preferences.edit();
-//            editor.clear();
-//            editor.apply();
-//        } catch (Exception e) {
-//            Log.e(TAG, e.getMessage());
-//        }
-//    }
+    private static void clearAllUserRoleData() {
+        try {
+            SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                    (Constants.Login.USER_ROLE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 
     public static <T> void showToast(String msg, T context) {
         try {
@@ -493,6 +493,7 @@ public class Util {
     }
 
     public static void removeDatabaseRecords(final boolean refreshData) {
+        clearAllUserRoleData();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllProcesses();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();
@@ -688,9 +689,11 @@ public class Util {
 
         DatePickerDialog dateDialog
                 = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-            String date = year + "-"
-                    + Util.getTwoDigit(monthOfYear + 1)
-                    + "-" + Util.getTwoDigit(dayOfMonth);
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
             editText.setText(date);
         }, mYear, mMonth, mDay);
 
@@ -705,7 +708,9 @@ public class Util {
 
         TimePickerDialog timePicker = new TimePickerDialog(context,
                 (timePicker1, selectedHour, selectedMinute) -> editText.setText(
-                        MessageFormat.format("{0}:{1}", selectedHour, selectedMinute)),
+                        MessageFormat.format("{0}:{1}",
+                                String.format(Locale.getDefault(), "%02d", selectedHour),
+                                String.format(Locale.getDefault(), "%02d", selectedMinute))),
                 hour, minute, false);
         timePicker.setTitle("Select Time");
         timePicker.show();
