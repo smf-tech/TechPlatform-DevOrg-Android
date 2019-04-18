@@ -2,6 +2,7 @@
 <resources>
     <dimen name="dimen_01dp">1dp</dimen>
     <!--<dimen name="dimen_02dp">2dp</dimen>-->
+    <dimen name="dimen_03dp">3dp</dimen>
     <dimen name="dimen_05dp">5dp</dimen>
     <dimen name="dimen_07dp">7dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
@@ -31,6 +32,7 @@
     <dimen name="dimen_130dp">130dp</dimen>
     <dimen name="dimen_150dp">150dp</dimen>
     <dimen name="dimen_175dp">175dp</dimen>
+    <dimen name="dimen_225dp">225dp</dimen>
 
     <dimen name="circle_size">64dp</dimen>
     <dimen name="dimen_65dp">65dp</dimen>

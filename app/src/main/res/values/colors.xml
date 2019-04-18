@@ -50,9 +50,11 @@
     <color name="submitted_form_color">#47A713</color>
 
     <!--<color name="profile">#396377</color>-->
+    <color name="planner_lable">#7198AA</color>
     <color name="list_category">#F5F5F5</color>
     <color name="freq_used_form_color">#4A9BD6</color>
-    
+    <color name="shep_dotted_line">#707070</color>
+
     <color name="leave_type">#717171</color>
     <color name="leave_desc_color">#A2A2A2</color>
 

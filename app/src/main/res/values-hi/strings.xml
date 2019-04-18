@@ -232,15 +232,16 @@
     <string name="today_events">आज की घटनाएँ</string>
     <string name="no_events">आज कोई घटना नहीं!</string>
     <string name="create_event">कार्यक्रम बनाएँ</string>
-    <string name="task_category">Category</string>
-    <string name="tesk_title">Title</string>
-    <string name="task_start_date">Start Date</string>
-    <string name="task_start_time">Start Time</string>
-    <string name="tesk_end_time">End Time</string>
-    <string name="task_repeat">Repeat</string>
-    <string name="task_descriptiocn">Description</string>
-    <string name="task_address">Address</string>
-    <string name="task_add_members">Add Members</string>
+    <string name="task_category">वर्ग</string>
+    <string name="tesk_title">शीर्षक</string>
+    <string name="task_start_date">आरंभ करने की तिथि</string>
+    <string name="task_start_time">समय शुरू</string>
+    <string name="tesk_end_time">अंतिम समय</string>
+    <string name="task_repeat">दोहराना</string>
+    <string name="task_descriptiocn">विवरण</string>
+    <string name="task_address">पता</string>
+    <string name="task_add_members">सदस्य जोड़ें</string>
+    <string name="my_events">मेरी घटनाएँ</string>
 
 
     <string name="cl_leaves">CL/SL</string>

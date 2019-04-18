@@ -150,7 +150,11 @@
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
 
         <activity android:name=".view.activities.PlannerDetailActivity" />
-        <activity android:name=".view.activities.CreateEventActivity"></activity>
+        <activity android:name=".view.activities.CreateEventActivity" />
+
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/circle_background" />
     </application>
 
 </manifest>
