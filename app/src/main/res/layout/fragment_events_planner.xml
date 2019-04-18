@@ -29,11 +29,12 @@
                     android:layout_gravity="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:text="@string/events"/>
             </androidx.appcompat.widget.Toolbar>
 
             <ImageView
-                android:id="@+id/events_sync_icon"
+                android:id="@+id/iv_events_sync_icon"
                 android:layout_width="@dimen/dimen_35dp"
                 android:layout_height="@dimen/dimen_35dp"
                 android:layout_alignParentEnd="true"
@@ -45,7 +46,7 @@
                 android:visibility="visible" />
 
             <ImageView
-                android:id="@+id/home_bell_icon"
+                android:id="@+id/iv_back_icon"
                 android:layout_width="@dimen/dimen_35dp"
                 android:layout_height="@dimen/dimen_35dp"
                 android:layout_centerVertical="true"
@@ -74,67 +75,55 @@
             app:mcv_tileHeight="@dimen/dimen_30dp" />
 
         <ImageView
-            android:id="@+id/tv_calendar_mode"
+            android:id="@+id/iv_calendar_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/calendarView"
             android:layout_centerHorizontal="true"
-            android:paddingTop="@dimen/dimen_05dp"
-            android:paddingLeft="@dimen/dimen_05dp"
-            android:paddingRight="@dimen/dimen_05dp"
             android:gravity="center"
+            android:paddingLeft="@dimen/dimen_05dp"
+            android:paddingTop="@dimen/dimen_05dp"
+            android:paddingRight="@dimen/dimen_05dp"
             android:src="@drawable/ic_down_arrow_light_blue" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ly_filter_tab"
+    <RadioGroup
+        android:id="@+id/radio_group_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ly_calender"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        android:background="#F8F8F8"
-        >
+        android:background="@color/lighter_grey_tab"
+        android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/rb_all_events"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#F8F8F8">
+            android:layout_weight="1"
+            android:button="@android:color/transparent"
+            android:checked="true"
+            android:drawableTop="@drawable/radio_btn_icon_selector"
+            android:gravity="center"
+            android:text="@string/all_events"
+            android:textColor="@drawable/radio_btn_txt_colour" />
 
-            <RadioButton
-                android:id="@+id/rb_all_events"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:textColor="@drawable/radio_btn_txt_colour"
-                android:text="@string/all_events"
-                android:drawableTop="@drawable/radio_btn_icon_selector"
-                android:button="@android:color/transparent"
-                android:gravity="center"/>
-
-            <RadioButton
-                android:id="@+id/rb_my_events"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@drawable/radio_btn_txt_colour"
-                android:text="@string/my_events"
-                android:drawableTop="@drawable/radio_btn_icon_selector"
-                android:button="@android:color/transparent"
-                android:gravity="center"/>
-        </RadioGroup>
-
-    </LinearLayout>
+        <RadioButton
+            android:id="@+id/rb_my_events"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@android:color/transparent"
+            android:drawableTop="@drawable/radio_btn_icon_selector"
+            android:gravity="center"
+            android:text="@string/my_events"
+            android:textColor="@drawable/radio_btn_txt_colour" />
+    </RadioGroup>
 
     <RelativeLayout
         android:id="@+id/ly_events"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ly_filter_tab"
+        android:layout_below="@+id/radio_group_filter"
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
@@ -154,8 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/tv_all_events_list"
             android:layout_below="@+id/tv_no_events_msg"
-            android:layout_marginTop="@dimen/dimen_10dp"
-           />
+            android:layout_marginTop="@dimen/dimen_10dp" />
 
         <TextView
             android:id="@+id/tv_all_events_list"

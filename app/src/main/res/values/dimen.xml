@@ -29,7 +29,7 @@
     <dimen name="dimen_130dp">130dp</dimen>
     <dimen name="dimen_150dp">150dp</dimen>
     <dimen name="dimen_175dp">175dp</dimen>
-    <dimen name="dimen_225dp">225dp</dimen>
+    <dimen name="dimen_225dp">200dp</dimen>
 
     <dimen name="circle_size">64dp</dimen>
 

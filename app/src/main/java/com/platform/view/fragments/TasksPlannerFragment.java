@@ -43,12 +43,14 @@ import java.util.Calendar;
 
 public class TasksPlannerFragment extends Fragment implements View.OnClickListener,OnDateSelectedListener,RadioGroup.OnCheckedChangeListener{
 
+    private ImageView ivBackIcon;
+    private ImageView ivEventsSyncIcon;
     private View tasksPlannerView;
     private boolean isDashboard;
     private AppBarLayout appBarLayout;
     private RelativeLayout lyCalender;
     private LinearLayout lyFilterTab;
-    private ImageView tvCalendarMode;
+    private ImageView ivCalendarMode;
     private TextView tvAllEventsDetail;
     private TextView tvNoEventsMsg;
     private RadioGroup radioGroup;
@@ -98,16 +100,18 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         }
         setActionbar(getString(R.string.tasks));
         isMonth=false;
+
+        ivBackIcon = tasksPlannerView.findViewById(R.id.iv_back_icon);
+        ivEventsSyncIcon = tasksPlannerView.findViewById(R.id.iv_events_sync_icon);
         appBarLayout= tasksPlannerView.findViewById(R.id.app_bar_layout);
         lyCalender = tasksPlannerView.findViewById(R.id.ly_calender);
-        lyFilterTab = tasksPlannerView.findViewById(R.id.ly_filter_tab);
-        tvCalendarMode = tasksPlannerView.findViewById(R.id.tv_calendar_mode);
+        ivCalendarMode = tasksPlannerView.findViewById(R.id.iv_calendar_mode);
         tvAllEventsDetail = tasksPlannerView.findViewById(R.id.tv_all_events_list);
         tvNoEventsMsg = tasksPlannerView.findViewById(R.id.tv_no_events_msg);
         btAddEvents = tasksPlannerView.findViewById(R.id.bt_add_events);
         rvTasks = tasksPlannerView.findViewById(R.id.rv_events);
         calendarView = tasksPlannerView.findViewById(R.id.calendarView);
-        radioGroup = (RadioGroup) tasksPlannerView.findViewById(R.id.radio_group);
+        radioGroup = (RadioGroup) tasksPlannerView.findViewById(R.id.radio_group_filter);
         RadioButton allTasksButton = (RadioButton) tasksPlannerView.findViewById(R.id.rb_all_events);
         RadioButton myTasksButton = (RadioButton) tasksPlannerView.findViewById(R.id.rb_my_events);
 
@@ -128,12 +132,12 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         if(isDashboard) {
             appBarLayout.setVisibility(View.GONE);
             lyCalender.setVisibility(View.GONE);
-            lyFilterTab.setVisibility(View.GONE);
+            radioGroup.setVisibility(View.GONE);
             tvAllEventsDetail.setVisibility(View.VISIBLE);
         } else {
             appBarLayout.setVisibility(View.VISIBLE);
             lyCalender.setVisibility(View.VISIBLE);
-            lyFilterTab.setVisibility(View.VISIBLE);
+            radioGroup.setVisibility(View.VISIBLE);
             tvAllEventsDetail.setVisibility(View.GONE);
         }
 
@@ -151,9 +155,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void setListeners() {
+        ivBackIcon.setOnClickListener(this);
+        ivEventsSyncIcon.setOnClickListener(this);
         btAddEvents.setOnClickListener(this);
         tvAllEventsDetail.setOnClickListener(this);
-        tvCalendarMode.setOnClickListener(this);
+        ivCalendarMode.setOnClickListener(this);
         calendarView.setOnDateChangedListener(this);
         radioGroup.setOnCheckedChangeListener(this);
     }
@@ -161,7 +167,12 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tv_calendar_mode:
+            case R.id.iv_back_icon:
+                getActivity().finish();
+                break;
+            case R.id.iv_events_sync_icon:
+                break;
+            case R.id.iv_calendar_mode:
                 if(isMonth){
                     isMonth=false;
                 } else {

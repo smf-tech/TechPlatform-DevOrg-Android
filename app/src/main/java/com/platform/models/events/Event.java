@@ -1,16 +1,16 @@
 package com.platform.models.events;
 
 public class Event {
-    String id;
-    String tital;
-    String startDate;
-    String starTime;
-    String endTime;
-    String repeat;
-    String description;
-    String address;
-    String owner;
-    String ownerID;
+    private String id;
+    private String tital;
+    private String startDate;
+    private String starTime;
+    private String endTime;
+    private String repeat;
+    private String description;
+    private String address;
+    private String owner;
+    private String ownerID;
 
     public Event(String id, String tital, String startDate, String starTime, String endTime, String repeat, String description, String address, String owner, String ownerID) {
         this.id = id;

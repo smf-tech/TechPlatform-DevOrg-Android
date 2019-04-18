@@ -5,21 +5,16 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <!-- <uses-permission android:name="android.permission.RECEIVE_SMS" /> -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- Sync Adapter related permissions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Sync Adapter related permissions -->
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
-
-    <!-- GPS location permissions -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" /> <!-- GPS location permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -34,6 +29,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".view.activities.AddMembersListActivity"></activity>
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -151,6 +147,8 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
+
+        <activity android:name=".view.activities.AddMemberFilerActivity" />
     </application>
 
 </manifest>

@@ -34,7 +34,7 @@
             </androidx.appcompat.widget.Toolbar>
 
             <ImageView
-                android:id="@+id/iv_create_event_icon"
+                android:id="@+id/iv_back_icon"
                 android:layout_width="@dimen/dimen_35dp"
                 android:layout_height="@dimen/dimen_35dp"
                 android:layout_centerVertical="true"
@@ -248,7 +248,8 @@
                 android:layout_below="@+id/tily_add_members"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
-                android:text="@string/btn_submit"
+                android:text="@string/create_event"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_22" />
 
