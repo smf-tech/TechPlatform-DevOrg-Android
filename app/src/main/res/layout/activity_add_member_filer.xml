@@ -5,18 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.platform.view.activities.AddMemberFilerActivity">
+
     <include
         android:id="@+id/profile_toolbar"
         layout="@layout/app_toolbar" />
+
     <ScrollView
-        android:layout_below="@+id/profile_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <!--Organization-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_organization" />
+
+            <Spinner
+                android:id="@+id/sp_user_organization"
+                style="@style/FormSpinner"
+                android:prompt="@string/organization" />
+
+            <!--Project-->
+
+          <!--  <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_project" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_project"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />-->
+
+            <!--Role-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_role" />
+
+            <Spinner
+                android:id="@+id/sp_role"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
+
 
             <!--State-->
             <TextView
@@ -79,45 +115,13 @@
 
             <!--School-->
             <!--<TextView-->
-                <!--style="@style/FormLabel"-->
-                <!--android:text="@string/mandatory_school" />-->
+            <!--style="@style/FormLabel"-->
+            <!--android:text="@string/mandatory_school" />-->
 
             <!--<Spinner-->
-                <!--android:id="@+id/sp_user_structure"-->
-                <!--style="@style/FormSpinner"-->
-                <!--android:prompt="@string/school" />-->
-
-            <!--Organization-->
-            <TextView
-                style="@style/FormLabel"
-                android:text="@string/mandatory_organization" />
-
-            <Spinner
-                android:id="@+id/sp_user_organization"
-                style="@style/FormSpinner"
-                android:prompt="@string/organization" />
-
-            <!--Project-->
-            <!--<TextView-->
-                <!--style="@style/FormLabel"-->
-                <!--android:text="@string/mandatory_project" />-->
-
-            <!--<com.platform.widgets.MultiSelectSpinner-->
-                <!--android:id="@+id/sp_project"-->
-                <!--style="@style/FormSpinner"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dimen_50dp" />-->
-
-            <!--Role-->
-            <TextView
-                style="@style/FormLabel"
-                android:text="@string/mandatory_role" />
-
-            <Spinner
-                android:id="@+id/sp_role"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+            <!--android:id="@+id/sp_user_structure"-->
+            <!--style="@style/FormSpinner"-->
+            <!--android:prompt="@string/school" />-->
 
             <Button
                 android:id="@+id/bt_apply_filters"
@@ -130,6 +134,26 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_22" />
+
         </LinearLayout>
     </ScrollView>
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </RelativeLayout>

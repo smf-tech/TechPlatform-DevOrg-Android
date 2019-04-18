@@ -152,7 +152,8 @@
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
 
-        <activity android:name=".view.activities.AddMemberFilerActivity"></activity>
+        <activity android:name=".view.activities.AddMemberFilerActivity" />
+        <activity android:name=".view.activities.EventDetailActivity"></activity>
     </application>
 
 </manifest>
