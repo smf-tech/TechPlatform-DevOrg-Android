@@ -11,22 +11,14 @@ import android.view.ViewGroup;
 
 import com.platform.R;
 
-
 public class AttendancePlannerFragment extends Fragment {
 
     public AttendancePlannerFragment() {
         // Required empty public constructor
     }
 
-
     public static AttendancePlannerFragment newInstance() {
         return new AttendancePlannerFragment();
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override

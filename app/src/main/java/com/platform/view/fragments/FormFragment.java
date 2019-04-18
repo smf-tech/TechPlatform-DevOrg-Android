@@ -327,7 +327,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId,
+                                mIsInEditMode, mIsPartiallySaved));
+
                         if (elements.getChoicesByUrl() == null) {
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));

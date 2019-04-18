@@ -11,21 +11,14 @@ import android.view.ViewGroup;
 
 import com.platform.R;
 
-
 public class LeavePlannerFragment extends Fragment {
 
     public LeavePlannerFragment() {
         // Required empty public constructor
     }
 
-
     public static LeavePlannerFragment newInstance() {
         return new LeavePlannerFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -34,5 +27,4 @@ public class LeavePlannerFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_leave_planner, container, false);
     }
-
 }

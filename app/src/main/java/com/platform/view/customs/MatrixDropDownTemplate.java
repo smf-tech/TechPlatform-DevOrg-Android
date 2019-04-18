@@ -90,10 +90,12 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         return dropDownView(mandatory);
     }
 
+    @SuppressWarnings("unused")
     public Elements getFormData() {
         return formData;
     }
 
+    @SuppressWarnings("unused")
     public void setFormData(Elements formData) {
         this.formData = formData;
     }

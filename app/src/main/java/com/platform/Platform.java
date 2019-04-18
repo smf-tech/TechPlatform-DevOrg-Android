@@ -62,6 +62,7 @@ public class Platform extends Application {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "remote config is fetched.");
+                        //noinspection deprecation
                         firebaseRemoteConfig.activateFetched();
                     }
                 });
