@@ -10,34 +10,34 @@
     android:background="@drawable/leaves_count_border_filled_bg"
     android:visibility="visible">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_total_leaves_v"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@drawable/leaves_count_border_filled_bg"
         android:paddingStart="@dimen/dimen_15dp"
-        android:paddingTop="@dimen/dimen_05dp"
-        android:paddingEnd="@dimen/dimen_15dp"
-        android:paddingBottom="@dimen/dimen_07dp">
+        android:paddingEnd="@dimen/dimen_15dp">
 
         <TextView
             android:id="@+id/tv_total_leaves_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/dimen_05dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_20" />
 
         <TextView
             android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dimen_07dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_total_leaves_count"
-            android:layout_centerHorizontal="true"
             android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/leave_type"
+            android:textSize="@dimen/text_size_12"
             android:gravity="center_horizontal"
             android:text="@string/total" />
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <LinearLayout

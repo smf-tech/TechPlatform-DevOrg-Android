@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.platform.R;
 import com.platform.view.fragments.HolidayListFragment;
@@ -66,6 +65,10 @@ public class GeneralActionsActivity extends BaseActivity implements
             TextView toolBar = findViewById(R.id.toolbar_title);
             ImageView toolBarMenu = findViewById(R.id.toolbar_edit_action);
             toolBar.setText(title);
+
+            ImageView toolBarBack = findViewById(R.id.toolbar_back_action);
+            toolBarBack.setOnClickListener(this);
+
 
             if (!TextUtils.isEmpty(switchToFragment)) {
 
@@ -149,6 +152,8 @@ public class GeneralActionsActivity extends BaseActivity implements
     @Override
     public void onClick(View view) {
         if (view.getId() == -1) {
+            finish();
+        } else if (view.getId() == R.id.toolbar_back_action) {
             finish();
         }
     }

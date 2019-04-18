@@ -38,6 +38,7 @@
             android:weightSum="3">
 
             <Button
+                android:id="@+id/btn_cl"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
@@ -49,6 +50,7 @@
                 android:textSize="@dimen/text_size_13" />
 
             <Button
+                android:id="@+id/btn_paid"
                 android:fontFamily="@font/roboto_regular"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
@@ -60,6 +62,7 @@
                 android:text="@string/paid_leaves" />
 
             <Button
+                android:id="@+id/btn_coff"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
@@ -82,6 +85,7 @@
             android:weightSum="2">
 
             <Button
+                android:id="@+id/btn_half_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
@@ -93,6 +97,7 @@
                 android:textSize="@dimen/text_size_13" />
 
             <Button
+                android:id="@+id/btn_full_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
@@ -112,10 +117,12 @@
             android:layout_height="@dimen/dimen_50dp"
             android:layout_below="@+id/lv_category_type"
             android:layout_marginBottom="@dimen/dimen_25dp"
-
             android:weightSum="2">
 
-            <Button
+            <TextView
+                android:id="@+id/btn_start_date"
+                android:paddingStart="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_15dp"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_marginEnd="@dimen/dimen_25dp"
@@ -127,8 +134,11 @@
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13" />
 
-            <Button
+            <TextView
+                android:id="@+id/btn_end_date"
                 android:layout_width="0dp"
+                android:paddingStart="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_15dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
                 android:background="@drawable/leave_form_view_nonfocused"
@@ -161,7 +171,6 @@
             android:textSize="@dimen/text_size_16"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-
             android:layout_alignParentBottom="true"
             android:background="@color/tab_selector"
             android:text="@string/btn_leave_apply_str"

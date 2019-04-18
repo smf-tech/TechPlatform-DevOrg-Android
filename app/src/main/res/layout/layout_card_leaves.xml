@@ -9,9 +9,11 @@
 
     <TextView
         android:id="@+id/tv_no_leaves_balance"
+        android:text="@string/tv_no_leaves_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:layout_centerVertical="true" />
 
 
@@ -22,8 +24,7 @@
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
-        android:background="@drawable/leaves_count_border"
-        android:visibility="visible">
+        android:background="@drawable/leaves_count_border">
 
         <RelativeLayout
             android:id="@+id/rl_total_leaves_v"

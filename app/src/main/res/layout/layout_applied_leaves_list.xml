@@ -7,18 +7,39 @@
     android:paddingTop="@dimen/dimen_05dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/ly_calender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:visibility="visible">
+
+            <!--<CalendarView
+                android:id="@+id/calendar_View"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp" />-->
+
+            <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_75dp"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_05dp"
             android:background="@color/leaves_tab"
-            android:paddingStart="@dimen/dimen_40dp"
-            android:paddingTop="@dimen/dimen_10dp"
-            android:paddingEnd="@dimen/dimen_35dp"
+            android:paddingStart="@dimen/dimen_30dp"
+            android:paddingTop="@dimen/dimen_20dp"
+            android:paddingEnd="@dimen/dimen_30dp"
             android:weightSum="3">
 
             <TextView
@@ -27,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/crop__ic_done"
+                android:drawableTop="@drawable/selector_pending_tab"
                 android:drawablePadding="-15dp"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
@@ -42,7 +63,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/crop__ic_done"
+                android:drawableTop="@drawable/ic_approved"
                 android:drawablePadding="-15dp"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
@@ -57,7 +78,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/crop__ic_cancel"
+                android:drawableTop="@drawable/ic_rejected"
                 android:drawablePadding="-15dp"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
