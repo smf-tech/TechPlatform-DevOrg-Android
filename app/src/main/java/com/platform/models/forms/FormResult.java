@@ -87,7 +87,9 @@ public class FormResult {
     }
 
     public String getFormName() {
-        this.formName = formNameLocale.getLocaleValue();
+        if (formNameLocale != null) {
+            this.formName = formNameLocale.getLocaleValue();
+        }
         return formName;
     }
 
@@ -96,7 +98,9 @@ public class FormResult {
     }
 
     public String getFormCategory() {
-        this.formCategory = formCategoryLocale.getLocaleValue();
+        if (formNameLocale != null) {
+            this.formCategory = formCategoryLocale.getLocaleValue();
+        }
         return formCategory;
     }
 
