@@ -185,7 +185,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         }
 
         if (this.rowIndex == 0 && rowIndex == 1) {
-            if (isInEditMode && !isPartiallySaved) {
+//            if (isInEditMode && !isPartiallySaved) {
                 try {
                     if (isMachineCodeSpinner(valueList)) {
                         FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
@@ -208,7 +208,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
                 } catch (Exception e) {
                     Log.e("TAG", "EXCEPTION_IN_SET_DATA_2");
                 }
-            }
+//            }
         }
     }
 
