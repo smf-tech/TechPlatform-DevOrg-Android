@@ -223,6 +223,7 @@
 
     <!--Attendance-->
     <string name="attendance">उपस्थित</string>
+    <string name="mark_attendance"> उपस्थिती प्रविष्ट करा </string>
     <string name="total_hours">एकूण तास</string>
     <string name="attendance_details">उपस्थिती तपशील तपासा</string>
 

@@ -8,10 +8,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.platform.R;
-import com.platform.models.events.Event;
 import com.platform.models.events.Member;
+import com.platform.view.activities.AddMembersListActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<Member> membersList;
+    private ArrayList<Member> membersList = null;
+    private ArrayList<Member> filterMembersList;
 
     public AddMembersListAdapter(Context mContext, ArrayList<Member> membersList) {
         this.mContext = mContext;
         this.membersList = membersList;
+        this.filterMembersList = new ArrayList<Member>();
+        this.filterMembersList = membersList;
     }
 
     @NonNull
@@ -68,12 +72,27 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
                 if (membersList.size() > getAdapterPosition()) {
                     if (((CheckBox) v).isChecked()) {
                         membersList.get(getAdapterPosition()).setMemberSelected(true);
+                        ((AddMembersListActivity) mContext).checkAllSelected((ArrayList<Member>) membersList);
                     } else {
                         membersList.get(getAdapterPosition()).setMemberSelected(false);
+                        ((AddMembersListActivity) mContext).checkAllDeSelected();
                     }
                 }
             });
 
         }
     }
+
+//    public void filter(String searchText) {
+//        searchText = searchText.toLowerCase(Locale.getDefault());
+//         if(searchText.length()>0) {
+//            membersList.clear();
+//            for (Member member : filterMembersList) {
+//                if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
+//                    membersList.add(member);
+//                }
+//            }
+//             notifyDataSetChanged();
+//        }
+//    }
 }

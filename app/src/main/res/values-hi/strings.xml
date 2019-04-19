@@ -222,6 +222,7 @@
 
     <!--Attendance-->
     <string name="attendance">उपस्थिति</string>
+    <string name="mark_attendance"> उपस्थिति दर्ज करें </string>
     <string name="total_hours">कुल घंटे</string>
     <string name="attendance_details">जाँच उपस्थिति विवरण</string>
 
