@@ -2,11 +2,14 @@ package com.platform.models.forms;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity
 @SuppressWarnings("unused")
@@ -50,6 +53,14 @@ public class FormResult {
     @ColumnInfo(name = "oid")
     private String oid;
 
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "formCategoryLocale")
+    private LocaleData formCategoryLocale;
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "formNameLocale")
+    private LocaleData formNameLocale;
+
     @NonNull
     public String get_id() {
         return _id;
@@ -76,6 +87,7 @@ public class FormResult {
     }
 
     public String getFormName() {
+        this.formName = formNameLocale.getLocaleValue();
         return formName;
     }
 
@@ -84,6 +96,7 @@ public class FormResult {
     }
 
     public String getFormCategory() {
+        this.formCategory = formCategoryLocale.getLocaleValue();
         return formCategory;
     }
 
@@ -129,5 +142,21 @@ public class FormResult {
 
     public void setOid(final String oid) {
         this.oid = oid;
+    }
+
+    public LocaleData getFormCategoryLocale() {
+        return formCategoryLocale;
+    }
+
+    public void setFormCategoryLocale(LocaleData formCategoryLocale) {
+        this.formCategoryLocale = formCategoryLocale;
+    }
+
+    public LocaleData getFormNameLocale() {
+        return formNameLocale;
+    }
+
+    public void setFormNameLocale(LocaleData formNameLocale) {
+        this.formNameLocale = formNameLocale;
     }
 }
