@@ -34,6 +34,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".view.activities.AddMembersListActivity"></activity>
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -155,6 +156,9 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
+
+        <activity android:name=".view.activities.AddMemberFilerActivity" />
+        <activity android:name=".view.activities.EventDetailActivity"></activity>
     </application>
 
 </manifest>

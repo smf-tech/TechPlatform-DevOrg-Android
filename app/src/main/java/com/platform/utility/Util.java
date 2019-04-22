@@ -683,7 +683,7 @@ public class Util {
         }
     }
 
-    private static void showDateDialog(Context context, final EditText editText) {
+    public static void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
@@ -703,7 +703,7 @@ public class Util {
         dateDialog.show();
     }
 
-    private static void showTimeDialog(Context context, final EditText editText) {
+    public static void showTimeDialog(Context context, final EditText editText) {
         Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
         int minute = currentTime.get(Calendar.MINUTE);

@@ -34,7 +34,6 @@
             android:src="@drawable/ic_down_arrow_light_blue" />
     </RelativeLayout>
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
