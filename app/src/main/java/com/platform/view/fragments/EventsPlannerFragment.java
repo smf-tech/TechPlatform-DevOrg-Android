@@ -23,6 +23,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.models.events.Event;
+import com.platform.models.events.Member;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventActivity;
@@ -85,13 +86,19 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         eventsList=new ArrayList<Event>();
         sortedEventsList=new ArrayList<Event>();
 
-        eventsList.add(new Event("1","meeting", "Title1", "01/01/0001","10:00 am",
-                "11:00 am","-","test","wagoli,pune.","sachin",
-                "1234"));
+        ArrayList<Member> membersList = new ArrayList<>();
+        membersList.add(new Member("1", "Sagar Mahajan", "DM",true));
+        membersList.add(new Member("2", "Kishor Shevkar", "TC",false));
+        membersList.add(new Member("3", "Jagruti Devare", "MT",true));
+        membersList.add(new Member("4", "Sachin Kakade", "FA",false));
 
-        eventsList.add(new Event("2","visit" ,"Title2", "01/01/0001","10:00 am",
+        eventsList.add(new Event("1","meeting", "Title1", "22/04/2019","10:00 am",
+                "11:00 am","-","test","wagoli,pune.","sachin",
+                "1234",membersList));
+
+        eventsList.add(new Event("2","visit" ,"Title2", "22/04/2019","10:00 am",
                 "11:00 am", "-","test","hadpsir,pune.","sagar",
-                "1235"));
+                "1235",membersList));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

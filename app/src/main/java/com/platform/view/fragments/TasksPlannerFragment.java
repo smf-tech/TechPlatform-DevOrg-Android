@@ -25,6 +25,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.models.events.Event;
+import com.platform.models.events.Member;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventActivity;
@@ -86,13 +87,20 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private void initView() {
         taskList=new ArrayList<Event>();
         sortedTaskList=new ArrayList<Event>();
+
+        ArrayList<Member> membersList = new ArrayList<>();
+        membersList.add(new Member("1", "Sagar Mahajan", "DM",true));
+        membersList.add(new Member("2", "Kishor Shevkar", "TC",false));
+        membersList.add(new Member("3", "Jagruti Devare", "MT",true));
+        membersList.add(new Member("4", "Sachin Kakade", "FA",false));
+
         taskList.add(new Event("1", "meeting","Title1", "01/01/2019","10:00 am",
                 "11:00 am","-","test","Wagholi,Pune.","Sachin",
-                "1234"));
+                "1234",membersList));
 
         taskList.add(new Event("2", "visit","Title2", "01/02/2019","11:00 am",
                 "12:00 pm", "-","test","Hadpsar,Pune.","Sagar",
-                "1235"));
+                "1235",membersList));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

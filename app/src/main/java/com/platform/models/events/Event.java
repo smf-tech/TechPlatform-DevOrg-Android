@@ -1,6 +1,7 @@
 package com.platform.models.events;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Event implements Serializable{
     private String id;
@@ -14,8 +15,11 @@ public class Event implements Serializable{
     private String address;
     private String owner;
     private String ownerID;
+    private ArrayList<Member> membersList = new ArrayList<>();
 
-    public Event(String id, String category, String tital, String startDate, String starTime, String endTime, String repeat, String description, String address, String owner, String ownerID) {
+    public Event(String id, String category, String tital, String startDate, String starTime,
+                 String endTime, String repeat, String description, String address, String owner,
+                 String ownerID, ArrayList<Member> membersList) {
         this.id = id;
         this.category = category;
         this.tital = tital;
@@ -27,6 +31,7 @@ public class Event implements Serializable{
         this.address = address;
         this.owner = owner;
         this.ownerID = ownerID;
+        this.membersList.addAll(membersList);
     }
 
     public String getId() {
@@ -115,5 +120,13 @@ public class Event implements Serializable{
 
     public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public ArrayList<Member> getMembersList() {
+        return membersList;
+    }
+
+    public void setMembersList(ArrayList<Member> membersList) {
+        this.membersList = membersList;
     }
 }

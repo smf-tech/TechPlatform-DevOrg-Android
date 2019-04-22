@@ -239,6 +239,14 @@
                     android:inputType="text|textCapWords"
                     android:drawableStart="@drawable/ic_add"
                     tools:ignore="Autofill" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_attendees_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_attendees_list">
+
+                </androidx.recyclerview.widget.RecyclerView>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

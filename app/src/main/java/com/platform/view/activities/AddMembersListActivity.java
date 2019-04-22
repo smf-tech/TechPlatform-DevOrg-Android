@@ -45,7 +45,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         filterMembersList.addAll(membersList);
         checkAllSelected(membersList);
         RecyclerView rvMembers = findViewById(R.id.rv_members);
-        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList);
+        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList,true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvMembers.setLayoutManager(mLayoutManager);
         rvMembers.setAdapter(addMembersListAdapter);

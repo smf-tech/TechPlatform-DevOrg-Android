@@ -20,12 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAdapter.ViewHolder> {
 
     private Context mContext;
+    private boolean isCheckVisibil;
     private ArrayList<Member> membersList = null;
     private ArrayList<Member> filterMembersList;
 
-    public AddMembersListAdapter(Context mContext, ArrayList<Member> membersList) {
+    public AddMembersListAdapter(Context mContext, ArrayList<Member> membersList, boolean isCheckVisibil) {
         this.mContext = mContext;
         this.membersList = membersList;
+        this.isCheckVisibil = isCheckVisibil;
         this.filterMembersList = new ArrayList<Member>();
         this.filterMembersList = membersList;
     }
@@ -67,6 +69,10 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             tvMemberName = itemView.findViewById(R.id.tv_member_name);
             tvMemberDesignation = itemView.findViewById(R.id.tv_member_designation);
             cbMemberSelect = itemView.findViewById(R.id.cb_select_member);
+
+            if(!isCheckVisibil){
+                cbMemberSelect.setVisibility(View.GONE);
+            }
 
             cbMemberSelect.setOnClickListener(v -> {
                 if (membersList.size() > getAdapterPosition()) {

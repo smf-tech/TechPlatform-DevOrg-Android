@@ -32,14 +32,13 @@
             android:layout_marginEnd="@dimen/dimen_10dp">
 
             <TextView
-                android:id="@+id/tv_label_title"
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_dark_blue_box"
                 android:gravity="center"
                 android:paddingTop="@dimen/dimen_15dp"
                 android:paddingBottom="@dimen/dimen_15dp"
-                android:text="Meeting Title/ Event Title"
                 android:textColor="@color/tab_select"
                 android:textSize="@dimen/text_size_16"
                 android:textStyle="bold" />
@@ -48,7 +47,7 @@
                 android:id="@+id/ly_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_label_title"
+                android:layout_below="@+id/tv_title"
                 android:background="@drawable/bg_light_blue_box">
 
                 <TextView
@@ -58,7 +57,7 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="Category"
+                    android:text="@string/task_category"
                     android:textColor="@color/tab_select"
                     android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
@@ -71,7 +70,6 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Training"
                     android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
 
@@ -91,7 +89,7 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="Description"
+                    android:text="@string/task_descriptiocn"
                     android:textColor="@color/tab_select"
                     android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
@@ -104,7 +102,6 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="This programe is for teachers and coordinators"
                     android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
 
@@ -124,8 +121,6 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="Tuesday, April 16, 2019"
-
                     android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
 
@@ -137,7 +132,6 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="12:00 PM > 3:00 PM"
                     android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
 
@@ -149,7 +143,6 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Repeats daily, ends on 9th June 2019"
                     android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
 
@@ -161,7 +154,7 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="Where"
+                    android:text="@string/where"
                     android:textColor="@color/tab_select"
                     android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
@@ -174,7 +167,6 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text=" Velhe , School Hall"
                     android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
 
@@ -206,7 +198,6 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dimen_07dp"
                         android:paddingBottom="@dimen/dimen_07dp"
-                        android:text="03 Attended"
                         android:textColor="@color/light_green"
                         android:textSize="@dimen/text_size_16"
                         android:textStyle="bold" />
@@ -221,7 +212,6 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dimen_05dp"
                         android:paddingBottom="@dimen/dimen_05dp"
-                        android:text="05 Not Attended"
                         android:textColor="@color/brown"
                         android:textSize="@dimen/text_size_16"
                         android:textStyle="bold" />
@@ -235,13 +225,15 @@
                     android:src="@drawable/ic_down_arrow_light_blue"
                     android:layout_centerHorizontal="true"
                     android:paddingStart="@dimen/dimen_05dp"
-                    android:paddingEnd="@dimen/dimen_05dp"/>
+                    android:paddingEnd="@dimen/dimen_05dp"
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_attendees_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_attendees_list">
+                    android:layout_below="@+id/iv_attendees_list"
+                    android:visibility="gone">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
