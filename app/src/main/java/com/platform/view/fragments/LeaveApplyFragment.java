@@ -88,9 +88,18 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         btnStartDate.setOnClickListener(this);
         btnEndDate = view.findViewById(R.id.btn_end_date);
         btnEndDate.setOnClickListener(this);
+        setUIData();
 
     }
 
+
+    private void setUIData(){
+        tvCLSLLeavesCount.setText("2");
+        tvPaidLeavesCount.setText("4");
+        tvUnPaidLeavesCount.setText("12");
+        tvCOffLeavesCount.setText("2");
+        tvTotalLeavesCount.setText("20");
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -107,14 +116,27 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cl:
+                btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_focused);
+                btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
             case R.id.btn_paid:
+                btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_focused);
+                btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
             case R.id.btn_coff:
+                btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_focused);
                 break;
             case R.id.btn_half_day:
+                btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_focused);
+                btnFullDay.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
             case R.id.btn_full_day:
+                btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnFullDay.setBackgroundResource(R.drawable.leave_form_view_focused);
                 break;
             case R.id.btn_start_date:
 

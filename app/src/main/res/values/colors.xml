@@ -68,5 +68,5 @@
 
     <color name="leave_form_text_color">#3785D1</color>
 
-
+    <color name="form_category_selected">#D2E1F8</color>
 </resources>

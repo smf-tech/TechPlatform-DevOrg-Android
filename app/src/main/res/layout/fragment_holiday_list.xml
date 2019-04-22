@@ -9,8 +9,9 @@
 
 
     <TextView
-        android:fontFamily="@font/roboto_regular"
-        android:textSize="@dimen/text_size_16"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/text_size_14"
+        android:textStyle="bold"
         android:textColor="@color/holiday_text"
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/dimen_15dp"

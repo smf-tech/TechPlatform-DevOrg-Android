@@ -71,7 +71,7 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int i) {
 
         viewHolder.userImage.setBackgroundResource(R.drawable.add_img);
-        viewHolder.leaveDesc.setText("You have applied leaves from 8 March to 11 March");
+        viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
         //viewHolder.leaveStatus.setText("Request status :"+"Not yet approved");
     }
 

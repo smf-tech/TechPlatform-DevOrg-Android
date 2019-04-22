@@ -75,7 +75,7 @@ public class GeneralActionsActivity extends BaseActivity implements
                 switch (switchToFragment) {
                     case "HolidayListFragment":
                         fragment = new HolidayListFragment();
-
+                        toolBarBack.setBackgroundResource(R.drawable.ic_dialog_close_dark);
                         toolBarMenu.setVisibility(View.GONE);
                         fragment.setArguments(data);
                         openFragment();

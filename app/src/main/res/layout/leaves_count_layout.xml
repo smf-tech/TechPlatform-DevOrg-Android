@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/rl_total_leaves_v"
         android:baselineAligned="false"
-        android:weightSum="4">
+        android:weightSum="3">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -110,7 +110,6 @@
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 

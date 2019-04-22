@@ -13,12 +13,16 @@
 
         <RelativeLayout
             android:id="@+id/ly_calender"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_marginEnd="@dimen/dimen_05dp"
+            android:layout_marginTop="@dimen/dimen_05dp"
             android:visibility="visible">
 
-            <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,13 +45,10 @@
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_75dp"
+            android:layout_height="@dimen/dimen_80dp"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:background="@color/leaves_tab"
-            android:paddingStart="@dimen/dimen_30dp"
+            android:background="@drawable/leaves_tab_shadow"
             android:paddingTop="@dimen/dimen_20dp"
-            android:paddingEnd="@dimen/dimen_30dp"
             android:weightSum="3">
 
             <TextView
