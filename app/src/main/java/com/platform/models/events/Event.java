@@ -2,18 +2,18 @@ package com.platform.models.events;
 
 import java.io.Serializable;
 
-public class Event implements Serializable {
-    String id;
-    String category;
-    String tital;
-    String startDate;
-    String starTime;
-    String endTime;
-    String repeat;
-    String description;
-    String address;
-    String owner;
-    String ownerID;
+public class Event implements Serializable{
+    private String id;
+    private String category;
+    private String tital;
+    private String startDate;
+    private String starTime;
+    private String endTime;
+    private String repeat;
+    private String description;
+    private String address;
+    private String owner;
+    private String ownerID;
 
     public Event(String id, String category, String tital, String startDate, String starTime, String endTime, String repeat, String description, String address, String owner, String ownerID) {
         this.id = id;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,11 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder>{
 
     private Context mContext;
-    private ArrayList<Event> eventsList;;
+    private ArrayList<Event> eventsList;
+    private String type;
 
-    public EventListAdapter(Context mContext, ArrayList<Event> eventsList) {
+    public EventListAdapter(Context mContext, ArrayList<Event> eventsList, String type) {
         this.mContext = mContext;
         this.eventsList = eventsList;
+        this.type = type;
     }
 
     @NonNull
@@ -44,6 +47,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventTime.setText(event.getStarTime());
         holder.tvEventAddress.setText(event.getAddress());
         holder.tvEventOwner.setText(event.getTital());
+        if(type.equalsIgnoreCase(Constants.Planner.TASK_DETAIL)){
+
+        }
         holder.lyEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +71,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         TextView tvEventTime;
         TextView tvEventAddress;
         TextView tvEventOwner;
+        ImageView imgArrow;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +81,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             tvEventTime = itemView.findViewById(R.id.tv_event_time);
             tvEventAddress = itemView.findViewById(R.id.tv_event_address);
             tvEventOwner = itemView.findViewById(R.id.tv_event_owner);
+            imgArrow = itemView.findViewById(R.id.iv_left_icon);
 
         }
     }

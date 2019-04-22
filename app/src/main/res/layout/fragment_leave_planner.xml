@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/leave"
         android:textSize="@dimen/text_size_20"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:textStyle="bold" />
 
     <TextView

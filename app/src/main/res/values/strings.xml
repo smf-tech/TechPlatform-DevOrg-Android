@@ -222,15 +222,21 @@
 
     <!--Attendance-->
     <string name="attendance">Attendance</string>
+    <string name="mark_attendance"> Mark Attendance</string>
     <string name="total_hours">Total Hours</string>
     <string name="attendance_details">Check Attendance Details</string>
 
-    <!--Events-->
+    <!--Events & Tasks-->
     <string name="events">Events</string>
     <string name="all_events">All Events</string>
     <string name="today_events">Today\'s Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
+    <string name="all_tasks">All Tasks</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="today_tasks">Today\'s Tasks</string>
+    <string name="no_tasks">No tasks today!</string>
+    <string name="create_task">CREATE TASK</string>
     <string name="task_category">Category</string>
     <string name="tesk_title">Title</string>
     <string name="task_start_date">Start Date</string>
@@ -243,6 +249,7 @@
     <string name="my_events">My Events</string>
     <string name="apply_filters">Apply Filters</string>
     <string name="filter">FILTER</string>
+    <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>
@@ -290,6 +297,5 @@
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
     <string name="event_detail">Event Detail</string>
-
 
 </resources>

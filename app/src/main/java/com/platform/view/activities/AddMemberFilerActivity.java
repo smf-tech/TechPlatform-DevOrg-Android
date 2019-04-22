@@ -2,6 +2,7 @@ package com.platform.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -137,6 +138,14 @@ public class AddMemberFilerActivity extends AppCompatActivity implements Profile
             case R.id.btn_profile_submit:
 
                 break;
+
+            case R.id.bt_apply_filters:
+                Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+                this.startActivity(intentAddMembersListActivity);
+                break;
+
+
+
         }
     }
 

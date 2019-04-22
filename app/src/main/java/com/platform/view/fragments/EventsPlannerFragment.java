@@ -85,11 +85,11 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         eventsList=new ArrayList<Event>();
         sortedEventsList=new ArrayList<Event>();
 
-        eventsList.add(new Event("1","meeting", "Tital1", "01/01/0001","10:00 am",
+        eventsList.add(new Event("1","meeting", "Title1", "01/01/0001","10:00 am",
                 "11:00 am","-","test","wagoli,pune.","sachin",
                 "1234"));
 
-        eventsList.add(new Event("2","visit" ,"Tital2", "01/01/0001","10:00 am",
+        eventsList.add(new Event("2","visit" ,"Title2", "01/01/0001","10:00 am",
                 "11:00 am", "-","test","hadpsir,pune.","sagar",
                 "1235"));
 
@@ -111,7 +111,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
         radioGroup = (RadioGroup) eventsPlannerView.findViewById(R.id.radio_group_filter);
 
-        eventListAdapter = new EventListAdapter(getActivity(),sortedEventsList);
+        eventListAdapter = new EventListAdapter(getActivity(),sortedEventsList,Constants.Planner.EVENT_DETAIL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvEvents.setLayoutManager(mLayoutManager);
         rvEvents.setAdapter(eventListAdapter);
@@ -169,6 +169,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,"EVENTS");
                 this.startActivity(intentCreateEvent);
                 break;
             case R.id.tv_all_events_list:
@@ -185,7 +186,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
             case R.id.rb_all_events:
                 sorteEventsList(true);
                 break;
-            case R.id.rb_my_event:
+            case R.id.rb_my_events:
                 sorteEventsList(false);
                 break;
         }

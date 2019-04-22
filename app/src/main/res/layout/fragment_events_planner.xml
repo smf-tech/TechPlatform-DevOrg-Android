@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     tools:context="com.platform.view.fragments.EventsPlannerFragment">
 
@@ -108,7 +108,7 @@
             android:textColor="@drawable/radio_btn_txt_colour" />
 
         <RadioButton
-            android:id="@+id/rb_my_event"
+            android:id="@+id/rb_my_events"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

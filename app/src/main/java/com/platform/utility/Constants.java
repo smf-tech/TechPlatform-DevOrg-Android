@@ -234,5 +234,6 @@ public class Constants {
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN ="ToOpan";
         public static final String EVENT_DETAIL = "EventDetail";
+        public static final String TASK_DETAIL = "TaskDetail";
     }
 }

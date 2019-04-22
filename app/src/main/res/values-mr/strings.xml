@@ -223,15 +223,21 @@
 
     <!--Attendance-->
     <string name="attendance">उपस्थित</string>
+    <string name="mark_attendance"> उपस्थिती प्रविष्ट करा </string>
     <string name="total_hours">एकूण तास</string>
     <string name="attendance_details">उपस्थिती तपशील तपासा</string>
 
-    <!--Events-->
+    <!--Events & Tasks-->
     <string name="events">कार्यक्रम</string>
     <string name="all_events">सर्व कार्यक्रम</string>
     <string name="today_events">आजचे कार्यक्रम</string>
     <string name="no_events">आज कोणतेही कार्यक्रम नाहीत!</string>
     <string name="create_event">कार्यक्रम तयार करा</string>
+    <string name="all_tasks">सर्व कार्ये</string>
+    <string name="my_tasks">माझी कार्ये</string>
+    <string name="today_tasks">आजचे कार्ये</string>
+    <string name="no_tasks">आज कोणतेही कार्ये नाहीत!</string>
+    <string name="create_task">कार्य तयार करा</string>
     <string name="task_category">वर्ग</string>
     <string name="tesk_title">शीर्षक</string>
     <string name="task_start_date">प्रारंभ तारीख</string>
@@ -245,6 +251,7 @@
     <string name="apply_filters">Apply Filters</string>
     <string name="filter">Filter</string>
     <string name="event_detail">Event Detail</string>
+    <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
 
 
 </resources>
