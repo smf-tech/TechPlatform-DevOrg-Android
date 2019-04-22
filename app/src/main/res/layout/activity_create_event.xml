@@ -74,7 +74,7 @@
                 <EditText
                     android:id="@+id/et_title"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/tesk_title"
+                    android:hint="@string/task_title"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,7 +131,7 @@
                     <EditText
                         android:id="@+id/et_end_time"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/tesk_end_time"
+                        android:hint="@string/task_end_time"
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="time"
@@ -201,7 +201,7 @@
                 <EditText
                     android:id="@+id/et_description"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/task_descriptiocn"
+                    android:hint="@string/task_description"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>

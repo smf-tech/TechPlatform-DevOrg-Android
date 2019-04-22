@@ -220,7 +220,6 @@
     <string name="tasks">कार्ये</string>
     <string name="leave">रजा</string>
 
-
     <!--Attendance-->
     <string name="attendance">उपस्थित</string>
     <string name="total_hours">एकूण तास</string>
@@ -233,17 +232,15 @@
     <string name="no_events">आज कोणतेही कार्यक्रम नाहीत!</string>
     <string name="create_event">कार्यक्रम तयार करा</string>
     <string name="task_category">वर्ग</string>
-    <string name="tesk_title">शीर्षक</string>
+    <string name="task_title">शीर्षक</string>
     <string name="task_start_date">प्रारंभ तारीख</string>
     <string name="task_start_time">सुरवातीची वेळ</string>
-    <string name="tesk_end_time">समाप्तीचा वेळ</string>
+    <string name="task_end_time">समाप्तीचा वेळ</string>
     <string name="task_repeat">पुन्हा करा</string>
-    <string name="task_descriptiocn">वर्णन</string>
+    <string name="task_description">वर्णन</string>
     <string name="task_address">पत्ता</string>
     <string name="task_add_members">सदस्य जोडा</string>
     <string name="my_events">माझे कार्यक्रम</string>
-    <string name="Attendance">उपस्थित</string>
-
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">पगारी रजा</string>
@@ -270,4 +267,5 @@
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="holiday_list_title">सुट्टीची यादी 2019</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

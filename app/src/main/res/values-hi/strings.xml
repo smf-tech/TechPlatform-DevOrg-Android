@@ -216,13 +216,10 @@
     <string name="gps_popup_title">कृपया GPS / LOCATION चालू करें</string>
     <string name="msg_enable_gps">GPS सक्षम नहीं है, क्या आप इसे सक्षम करना चाहते हैं?</string>
 
-
     <!--Planner-->
     <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
-
-    <string name="Attendance">उपस्थिति</string>
 
     <!--Attendance-->
     <string name="attendance">उपस्थिति</string>
@@ -235,16 +232,15 @@
     <string name="no_events">आज कोई घटना नहीं!</string>
     <string name="create_event">कार्यक्रम बनाएँ</string>
     <string name="task_category">वर्ग</string>
-    <string name="tesk_title">शीर्षक</string>
+    <string name="task_title">शीर्षक</string>
     <string name="task_start_date">आरंभ करने की तिथि</string>
     <string name="task_start_time">समय शुरू</string>
-    <string name="tesk_end_time">अंतिम समय</string>
+    <string name="task_end_time">अंतिम समय</string>
     <string name="task_repeat">दोहराना</string>
-    <string name="task_descriptiocn">विवरण</string>
+    <string name="task_description">विवरण</string>
     <string name="task_address">पता</string>
     <string name="task_add_members">सदस्य जोड़ें</string>
     <string name="my_events">मेरी घटनाएँ</string>
-
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
@@ -269,4 +265,5 @@
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
