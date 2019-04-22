@@ -84,19 +84,19 @@ android {
     }
 
     lintOptions {
-        checkReleaseBuilds true
+        checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         checkAllWarnings true
         warningsAsErrors true
-        abortOnError true
+        abortOnError false
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-//    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+//    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0-alpha01'
     implementation 'androidx.media:media:1.1.0-alpha04'
     implementation 'androidx.mediarouter:mediarouter:1.1.0-alpha03'

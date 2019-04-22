@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,7 +98,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         btCheckout.setOnClickListener(this);
         tvAttendanceDetails = plannerView.findViewById(R.id.tv_attendance_details);
         tvAttendanceDetails.setOnClickListener(this);
-        tvAttendanceLable = plannerView.findViewById(R.id.tv_attendance_lable);
+        tvAttendanceLable = plannerView.findViewById(R.id.tv_attendance_label);
         tvCalendarMode = plannerView.findViewById(R.id.tv_calendar_mode);
         calendarView = plannerView.findViewById(R.id.calendarView);
         tvCalendarMode.setOnClickListener(this);

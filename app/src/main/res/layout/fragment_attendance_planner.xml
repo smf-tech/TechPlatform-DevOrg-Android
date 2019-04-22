@@ -119,7 +119,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_attendance_lable"
+            android:id="@+id/tv_attendance_label"
             android:layout_width="@dimen/dimen_130dp"
             android:layout_height="@dimen/dimen_32dp"
             android:layout_marginStart="@dimen/dimen_20dp"

@@ -228,7 +228,6 @@
     <string name="attendance_details">जाँच उपस्थिति विवरण</string>
 
     <!--Events & Tasks-->
-    <string name="events">आयोजन</string>
     <string name="all_events">सभी कार्यक्रम</string>
     <string name="today_events">आज की घटनाएँ</string>
     <string name="no_events">आज कोई घटना नहीं!</string>
