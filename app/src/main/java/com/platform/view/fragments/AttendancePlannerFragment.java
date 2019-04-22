@@ -20,7 +20,6 @@ import com.platform.utility.Constants;
 
 import java.util.Date;
 
-
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener {
 
     private View plannerView;

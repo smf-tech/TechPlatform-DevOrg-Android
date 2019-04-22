@@ -33,7 +33,6 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
         // Required empty public constructor
     }
 
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -103,4 +102,3 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
 
     }
 }
-

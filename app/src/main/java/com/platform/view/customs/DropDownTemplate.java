@@ -122,7 +122,7 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
                 }
             }
 
-            if (!isInEditMode && !isPartiallySaved) {
+            if (isInEditMode && !isPartiallySaved) {
                 if (!isValueSet && !TextUtils.isEmpty(formData.getAnswer())) {
                     Choice ch = new Choice();
                     LocaleData ld = new LocaleData(formData.getAnswer());
