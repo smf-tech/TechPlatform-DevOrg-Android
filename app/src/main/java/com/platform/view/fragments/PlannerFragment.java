@@ -1,26 +1,22 @@
 package com.platform.view.fragments;
 
 import android.content.res.Resources;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.tabs.TabLayout;
+import android.widget.TextView;
 import com.platform.R;
 import com.platform.utility.AppEvents;
-import com.platform.utility.Util;
+import com.platform.utility.Constants;
 import com.platform.view.activities.HomeActivity;
-
+import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-public class PlannerFragment extends Fragment implements View.OnClickListener {
+public class PlannerFragment extends Fragment {
 
     private View plannerView;
 
@@ -53,15 +49,44 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initTabView();
+        initCardView();
     }
 
-    private void initTabView() {
-        ViewPager viewPager = plannerView.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
+    private void initCardView() {
 
-        TabLayout tabs = plannerView.findViewById(R.id.tab_layout);
-        tabs.setupWithViewPager(viewPager);
+        Date d = new Date();
+        CharSequence date  = DateFormat.format(Constants.MONTH_DAY_FORMAT, d.getTime());
+
+        TextView todayDate=plannerView.findViewById(R.id.tv_today_date);
+        todayDate.setText(date);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, true);
+
+        Fragment attendancePlannerFragment = new AttendancePlannerFragment();
+        attendancePlannerFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fly_attendance, attendancePlannerFragment, attendancePlannerFragment
+                        .getClass().getSimpleName()).commit();
+
+        Fragment eventsPlannerFragment = new EventsPlannerFragment();
+        eventsPlannerFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fly_events, eventsPlannerFragment, eventsPlannerFragment.getClass()
+                        .getSimpleName()).commit();
+
+        Fragment tasksPlannerFragment = new TasksPlannerFragment();
+        tasksPlannerFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fly_tasks, tasksPlannerFragment, tasksPlannerFragment.getClass()
+                        .getSimpleName()).commit();
+
+        Fragment leavePlannerFragment = new LeavePlannerFragment();
+        leavePlannerFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fly_leave, leavePlannerFragment, leavePlannerFragment.getClass()
+                        .getSimpleName()).commit();
+
     }
 
     @Override
@@ -73,79 +98,4 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
         super.onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.txt_view_all_approvals:
-                Util.launchFragment(new PlannerFragment(), getContext(),
-                        getString(R.string.planner), true);
-                break;
-        }
-    }
-
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
-
-        ViewPagerAdapter(@NonNull FragmentManager fm) {
-            super(fm);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = EventsPlannerFragment.newInstance();
-            switch (position) {
-                case 0:
-                    fragment = EventsPlannerFragment.newInstance();
-                    break;
-
-                case 1:
-                    fragment = TasksPlannerFragment.newInstance();
-                    break;
-
-                case 2:
-                    fragment = LeavePlannerFragment.newInstance();
-                    break;
-
-                case 3:
-                    fragment = AttendancePlannerFragment.newInstance();
-                    break;
-            }
-
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            String title = "";
-            try {
-                switch (position) {
-                    case 0:
-                        title = getResources().getString(R.string.events);
-                        break;
-
-                    case 1:
-                        title = getResources().getString(R.string.tasks);
-                        break;
-
-                    case 2:
-                        title = getResources().getString(R.string.leave);
-                        break;
-
-                    case 3:
-                        title = getResources().getString(R.string.Attendance);
-                        break;
-                }
-            } catch (Resources.NotFoundException | IllegalStateException e) {
-                Log.e("TAG", e.getMessage());
-            }
-
-            return title;
-        }
-    }
 }

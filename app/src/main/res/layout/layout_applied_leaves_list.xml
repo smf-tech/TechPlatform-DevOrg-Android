@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lighter_grey"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen_05dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/ly_calender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:visibility="visible">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mcv_calendarMode="month"
+                app:mcv_selectionColor="#00F"
+                app:mcv_showOtherDates="all"
+                app:mcv_tileHeight="@dimen/dimen_30dp" />
+
+            <ImageView
+                android:id="@+id/tv_calendar_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/calendarView"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="@dimen/dimen_05dp"
+                android:paddingLeft="@dimen/dimen_05dp"
+                android:paddingRight="@dimen/dimen_05dp"
+                android:gravity="center"
+                android:src="@drawable/ic_down_arrow_light_blue" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_75dp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:background="@color/leaves_tab"
+            android:paddingStart="@dimen/dimen_30dp"
+            android:paddingTop="@dimen/dimen_20dp"
+            android:paddingEnd="@dimen/dimen_30dp"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tv_tb_pending"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/selector_pending_tab"
+                android:drawablePadding="-15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/tab_pending_leaves"
+                android:textAllCaps="true"
+                android:textColor="@color/black_green"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tv_tb_approved"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_approved"
+                android:drawablePadding="-15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/tab_approved_leaves"
+                android:textAllCaps="true"
+                android:textColor="@color/blur_tab"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tv_tb_rejected"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_rejected"
+                android:drawablePadding="-15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/tab_rejected_leaves"
+                android:textAllCaps="true"
+                android:textColor="@color/blur_tab"
+                android:textSize="@dimen/text_size_12" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_applied_leaves_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_add_leaves"
+        android:layout_width="@dimen/dimen_45dp"
+        android:layout_height="@dimen/dimen_45dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_marginBottom="@dimen/dimen_25dp"
+        android:background="@drawable/bg_circle_grey"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_plus" />
+
+</FrameLayout>

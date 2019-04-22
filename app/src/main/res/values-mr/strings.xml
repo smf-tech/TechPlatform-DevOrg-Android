@@ -217,9 +217,56 @@
     <string name="msg_enable_gps">जीपीएस सक्षम नाही, आपण हे सक्षम करू इच्छिता?</string>
 
     <!--Planner-->
-    <string name="events">कार्यक्रम</string>
     <string name="tasks">कार्ये</string>
     <string name="leave">रजा</string>
+
+
+    <!--Attendance-->
+    <string name="attendance">उपस्थित</string>
+    <string name="total_hours">एकूण तास</string>
+    <string name="attendance_details">उपस्थिती तपशील तपासा</string>
+
+    <!--Events-->
+    <string name="events">कार्यक्रम</string>
+    <string name="all_events">सर्व कार्यक्रम</string>
+    <string name="today_events">आजचे कार्यक्रम</string>
+    <string name="no_events">आज कोणतेही कार्यक्रम नाहीत!</string>
+    <string name="create_event">कार्यक्रम तयार करा</string>
+    <string name="task_category">वर्ग</string>
+    <string name="tesk_title">शीर्षक</string>
+    <string name="task_start_date">प्रारंभ तारीख</string>
+    <string name="task_start_time">सुरवातीची वेळ</string>
+    <string name="tesk_end_time">समाप्तीचा वेळ</string>
+    <string name="task_repeat">पुन्हा करा</string>
+    <string name="task_descriptiocn">वर्णन</string>
+    <string name="task_address">पत्ता</string>
+    <string name="task_add_members">सदस्य जोडा</string>
+    <string name="my_events">माझे कार्यक्रम</string>
     <string name="Attendance">उपस्थित</string>
 
+
+    <string name="cl_leaves">CL/SL</string>
+    <string name="paid_leaves">पगारी रजा</string>
+    <string name="unpaid_leaves">बिनपगारी रजा</string>
+    <string name="coff_leaves">कॉम्प ऑफ</string>
+    <string name="total_leaves">एकूण सुट्टी</string>
+    <string name="total">एकूण</string>
+    <string name="btn_leave_apply_str">सुट्टीसाठी अर्ज करा</string>
+    <string name="leaves_applied">Leave Applied</string>
+    <string name="link_leave_apply">सुट्टीचा तपशील तपासा</string>
+    <string name="leave_details">सुट्टीचा तपशील</string>
+
+    <string name="tv_no_leaves_balance">सुट्टी शिल्लक नाही!</string>
+    <string name="tab_pending_leaves">प्रलंबित</string>
+    <string name="tab_approved_leaves">मंजूर</string>
+    <string name="tab_rejected_leaves">नाकारले</string>
+
+    <string name="category">Category</string>
+    <string name="full_day">पूर्ण दिवस</string>
+    <string name="half_day">अर्धा दिवस</string>
+    <string name="start_date">प्रारंभ तारीख</string>
+    <string name="end_date">शेवटची तारीख</string>
+    <string name="reason">कारण</string>
+
+    <string name="holiday_list_title">सुट्टीची यादी 2019</string>
 </resources>
