@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="com.platform.view.fragments.LeavePlannerFragment">
 
-
     <include
         android:id="@+id/layout_1"
         layout="@layout/layout_card_leaves" />
