@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.view.activities.GeneralActionsActivity;
@@ -25,7 +26,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     private TextView tvUnPaidLeavesCount;
     private TextView tvCOffLeavesCount;
     private TextView tvTotalLeavesCount;
-    private ImageView imgClickAddLeaves;
+    private FloatingActionButton imgClickAddLeaves;
     private TextView tvNoLeavesBalance;
     private RelativeLayout rlLeavesCount;
 
@@ -58,15 +59,15 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
         tvCheckLeaveDetailsLink = view.findViewById(R.id.tv_link_check_leaves);
         tvCheckLeaveDetailsLink.setOnClickListener(this);
 
-        imgClickAddLeaves = view.findViewById(R.id.img_add_leaves);
+        imgClickAddLeaves = view.findViewById(R.id.fab_add_leaves);
         imgClickAddLeaves.setOnClickListener(this);
 
-        setUIData(null);
+        setUIData(new JsonObject());
 
     }
 
     private void setUIData(JsonObject leavesData) {
-        if (leavesData != null && leavesData.has("total_leaves") && leavesData.get("total_leaves").getAsInt() > 0) {
+        if (leavesData != null){// && leavesData.has("total_leaves") && leavesData.get("total_leaves").getAsInt() > 0) {
             rlLeavesCount.setVisibility(View.VISIBLE);
             tvCLSLLeavesCount.setText("02");
             tvPaidLeavesCount.setText("06");
@@ -91,7 +92,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
                 intent.putExtra("switch_fragments", "LeaveDetailsFragment");
                 startActivity(intent);
                 break;
-            case R.id.img_add_leaves:
+            case R.id.fab_add_leaves:
 
                 intent.putExtra("title", "Apply For Leave");
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");

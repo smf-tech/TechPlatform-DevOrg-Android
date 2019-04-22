@@ -119,6 +119,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 Toast.makeText(getActivity(),"Month Changed:"+date,Toast.LENGTH_SHORT).show();
             }
         });
+        isMonth = !isMonth;
+        setCalendar();
     }
 
     @Override

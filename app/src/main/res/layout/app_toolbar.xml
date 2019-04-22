@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_back_white" />
+                android:background="@drawable/ic_back_white" />
 
             <TextView
                 android:id="@+id/toolbar_title"
