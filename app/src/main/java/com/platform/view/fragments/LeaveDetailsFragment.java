@@ -44,7 +44,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private int tabClicked =-1;
     private MaterialCalendarView calendarView ;
     private ImageView tvCalendarMode;
-    boolean isMonth;
+    boolean isMonth = true;
 
     public LeaveDetailsFragment() {
         // Required empty public constructor

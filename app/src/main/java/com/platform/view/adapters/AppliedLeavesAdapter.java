@@ -77,6 +77,6 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
 
     @Override
     public int getItemCount() {
-        return leavesList.size();
+        return 2;//leavesList.size();
     }
 }
