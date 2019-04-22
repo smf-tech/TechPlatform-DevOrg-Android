@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener,OnDateSelectedListener {
 
     private View plannerView;

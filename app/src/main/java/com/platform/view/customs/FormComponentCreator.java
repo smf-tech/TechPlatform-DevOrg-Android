@@ -140,11 +140,16 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         return radioTemplateView;
     }
 
-    public synchronized View dropDownTemplate(Elements formData, String formId) {
+    public synchronized View dropDownTemplate(Elements formData, String formId, boolean isInEditMode,
+                                              boolean isPartiallySaved) {
+
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
+
+        this.mIsInEditMode = isInEditMode;
+        this.mIsPartiallySaved = isPartiallySaved;
 
         DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, formId);
 

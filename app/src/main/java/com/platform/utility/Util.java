@@ -434,15 +434,17 @@ public class Util {
         }
 
         try {
+            String strLocale = getLocaleLanguageCode();
+            Locale.setDefault(new Locale(strLocale));
             DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
             DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
-            return outputFormat.format(date1);
+            return String.format(Locale.getDefault(), "%s", outputFormat.format(date1));
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-        return date;
+        return String.format(Locale.getDefault(), "%s", date);
     }
 
     public static long getCurrentTimeStamp() {

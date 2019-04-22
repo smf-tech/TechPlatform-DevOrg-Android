@@ -327,7 +327,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId,
+                                mIsInEditMode, mIsPartiallySaved));
+
                         if (elements.getChoicesByUrl() == null) {
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
@@ -704,15 +706,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         result.set_id(UUID.randomUUID().toString());
 
         result.setFormId(formData.getId());
-        result.setFormCategory(formData.getCategory().getName().getLocaleValue());
-        result.setFormName(formData.getName().getLocaleValue());
+        result.setFormCategoryLocale(formData.getCategory().getName());
+        result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
         result.setCreatedAt(Util.getCurrentTimeStamp());
 
         if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName().getLocaleValue();
-            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
-                result.setFormCategory(category);
+            LocaleData category = formData.getCategory().getName();
+            if (category != null) {
+                result.setFormCategoryLocale(category);
             }
         }
 
@@ -811,7 +813,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         } else {
             result = new FormResult();
             result.setFormId(formData.getId());
-            result.setFormName(formData.getName().getLocaleValue());
+            result.setFormNameLocale(formData.getName());
             result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
@@ -819,9 +821,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName().getLocaleValue();
-            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
-                result.setFormCategory(category);
+            LocaleData category = formData.getCategory().getName();
+            if (category != null) {
+                result.setFormCategoryLocale(category);
             }
         }
 
