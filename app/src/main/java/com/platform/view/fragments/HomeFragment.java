@@ -135,7 +135,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
 
             if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                     this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
-                showApprovedDialog();
+                if (!dialogNotApproved.isShowing()) {
+                    showApprovedDialog();
+                }
             }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
@@ -199,7 +201,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                     this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 
-                showApprovedDialog();
+                if (!dialogNotApproved.isShowing()) {
+                    showApprovedDialog();
+                }
             }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);

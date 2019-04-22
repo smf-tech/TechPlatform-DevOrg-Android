@@ -1,22 +1,31 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lighter_grey"
     android:orientation="vertical"
     tools:context="com.platform.view.fragments.LeavePlannerFragment">
 
+    <include
+        android:id="@+id/layout_1"
+        layout="@layout/layout_card_leaves" />
+
     <TextView
-        android:id="@+id/meeting_dummy_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/leave"
-        android:textSize="@dimen/text_size_20"
+        android:id="@+id/tv_leave_lable"
+        android:layout_width="@dimen/dimen_130dp"
+        android:layout_height="@dimen/dimen_32dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_marginTop="@dimen/dimen_20dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/coming_soon" />
-
-</LinearLayout>
+        android:background="@color/planner_lable"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:paddingStart="@dimen/dimen_20dp"
+        android:paddingEnd="@dimen/dimen_20dp"
+        android:text="@string/leave_details"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_14" />
+    <!--include
+        android:id="@+id/layout_2"
+        android:visibility="gone"
+        layout="@layout/layout_applied_leaves_list"/-->
+</FrameLayout>

@@ -30,10 +30,14 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.listeners.MatrixDynamicValueChangeListener;
+import com.platform.listeners.TextValueChangeListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
+import com.platform.models.forms.FormData;
 import com.platform.models.forms.Validator;
+import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.PlatformGson;
@@ -47,17 +51,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 @SuppressWarnings({"ConstantConditions", "CanBeFinal"})
-public class FormComponentCreator implements DropDownValueSelectListener, MatrixDynamicValueChangeListener {
+public class FormComponentCreator implements DropDownValueSelectListener, MatrixDynamicValueChangeListener,
+        TextValueChangeListener {
 
     private final WeakReference<FormFragment> fragment;
     private final String TAG = this.getClass().getSimpleName();
 
     private View mImageView;
     private String mImageName;
+    private boolean mIsInEditMode;
+    private boolean mIsPartiallySaved;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
@@ -132,11 +140,16 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         return radioTemplateView;
     }
 
-    public synchronized View dropDownTemplate(Elements formData, String formId) {
+    public synchronized View dropDownTemplate(Elements formData, String formId, boolean isInEditMode,
+                                              boolean isPartiallySaved) {
+
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "dropDownTemplate returned null");
             return null;
         }
+
+        this.mIsInEditMode = isInEditMode;
+        this.mIsPartiallySaved = isPartiallySaved;
 
         DropDownTemplate template = new DropDownTemplate(formData, fragment.get(), this, formId);
 
@@ -181,7 +194,16 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             elements.setChoices(choiceValues);
             matchedTemplates.get(0).setFormData(elements);
-            matchedTemplates.get(0).setListData(choiceValues);
+            matchedTemplates.get(0).setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+        }
+    }
+
+    public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues,
+                                                  HashMap<String, String> matrixDynamicInnerMap) {
+
+        if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
+            matrixDynamics.get(0).updateDropDownValues(column, choiceValues,
+                    matrixDynamicInnerMap, mIsInEditMode, mIsPartiallySaved);
         }
     }
 
@@ -249,7 +271,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 Util.getCurrentTimeStamp(), Constants.FORM_DATE));
                     }
                 } else {
-                    textInputField.setText(formData.getAnswer());
+                    textInputField.setText(String.format(Locale.getDefault(), "%s",
+                            formData.getAnswer()));
                 }
             }
 
@@ -352,14 +375,19 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         return fileTemplateView;
     }
 
-    public View matrixDynamicTemplate(final Elements elements) {
+    public View matrixDynamicTemplate(FormData formData, final Elements elements, boolean isInEditMode,
+                                      boolean isPartiallySaved, FormActivityPresenter formActivityPresenter) {
+
         if (fragment == null || fragment.get() == null) {
             Log.e(TAG, "View returned null");
             return null;
         }
 
-        MatrixDynamicTemplate template = new MatrixDynamicTemplate(elements, fragment.get(),
-                this);
+        this.mIsInEditMode = isInEditMode;
+        this.mIsPartiallySaved = isPartiallySaved;
+
+        MatrixDynamicTemplate template = new MatrixDynamicTemplate(formData, elements, fragment.get(),
+                this, mIsInEditMode, mIsPartiallySaved, formActivityPresenter);
 
         matrixDynamics.add(template);
 
@@ -376,7 +404,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (formData.isRequired() != null) {
 
                 errorMsg = Validation.requiredValidation(editText.getTag().toString(),
-                        editText.getText().toString(), formData.isRequired());
+                        editText.getText().toString(), formData.isRequired(), fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -387,7 +415,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (formData.getMaxLength() != null) {
                 if (!TextUtils.isEmpty(editText.getText().toString())) {
                     errorMsg = Validation.editTextMaxLengthValidation(editText.getTag().toString(),
-                            editText.getText().toString(), formData.getMaxLength());
+                            editText.getText().toString(), formData.getMaxLength(), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -405,7 +433,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                                     errorMsg = Validation.regexValidation(editText.getTag().toString(),
-                                            editText.getText().toString(), validator);
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
                                     if (!TextUtils.isEmpty(errorMsg)) {
                                         fragment.get().setErrorMsg(errorMsg);
@@ -422,14 +450,17 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                         String field1Name, field2Name, field3Name;
                                         String field1Value = "", field2Value = "", field3Value = "";
                                         StringTokenizer expressionTokenizer = new StringTokenizer(expression, "><=-");
+
                                         if (expressionTokenizer.hasMoreTokens()) {
                                             field1Name = expressionTokenizer.nextToken();
                                             field1Value = editTextWithNameMap.get(field1Name).getText().toString();
                                         }
+
                                         if (expressionTokenizer.hasMoreTokens()) {
                                             field2Name = expressionTokenizer.nextToken();
                                             field2Value = editTextWithNameMap.get(field2Name).getText().toString();
                                         }
+
                                         if (expressionTokenizer.hasMoreTokens()) {
                                             field3Name = expressionTokenizer.nextToken();
                                             field3Value = editTextWithNameMap.get(field3Name).getText().toString();
@@ -437,7 +468,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                                         if (!TextUtils.isEmpty(field1Value) && !TextUtils.isEmpty(field2Value)) {
                                             errorMsg = Validation.expressionValidation(editText.getTag().toString(),
-                                                    field1Value, field2Value, field3Value, formData.getInputType(), validator);
+                                                    field1Value, field2Value, field3Value,
+                                                    formData.getInputType(), validator, fragment.get().getContext());
 
                                             if (!TextUtils.isEmpty(errorMsg)) {
                                                 fragment.get().setErrorMsg(errorMsg);
@@ -452,7 +484,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                 if (!TextUtils.isEmpty(editText.getText().toString())) {
 
                                     errorMsg = Validation.editTextMinMaxValueValidation(editText.getTag().toString(),
-                                            editText.getText().toString(), validator);
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
                                     if (!TextUtils.isEmpty(errorMsg)) {
                                         fragment.get().setErrorMsg(errorMsg);
@@ -460,7 +492,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                     }
 
                                     errorMsg = Validation.editTextMinMaxLengthValidation(editText.getTag().toString(),
-                                            editText.getText().toString(), validator);
+                                            editText.getText().toString(), validator, fragment.get().getContext());
 
                                     if (!TextUtils.isEmpty(errorMsg)) {
                                         fragment.get().setErrorMsg(errorMsg);
@@ -482,7 +514,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 if ((dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) ||
                         !(dropDownTemplate.getSelectedItem() > 0)) {
                     errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
-                            "", formData.isRequired());
+                            "", formData.isRequired(), fragment.get().getContext());
 
                     if (!TextUtils.isEmpty(errorMsg)) {
                         fragment.get().setErrorMsg(errorMsg);
@@ -493,12 +525,13 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
 
         //For all matrix dynamics
-        for (MatrixDynamicTemplate template :
-                matrixDynamics) {
+        for (MatrixDynamicTemplate template : matrixDynamics) {
             Elements element = template.getElements();
             List<HashMap<String, String>> valuesList = getMatrixDynamicValuesMap().get(element.getName());
+
             if (element.isRequired() != null) {
-                errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(), element.getColumns().size(), valuesList);
+                errorMsg = Validation.matrixDynamicRequiredValidation(element.getTitle().getLocaleValue(),
+                        element.getColumns().size(), valuesList, fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -506,9 +539,17 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 }
             }
 
+            // Check duplicate entry
+            if (!TextUtils.isEmpty(element.getKeyName())) {
+                if (isDuplicateEntryFound(valuesList, element.getKeyName())) {
+                    errorMsg = element.getKeyDuplicationError().getLocaleValue();
+                    fragment.get().setErrorMsg(errorMsg);
+                    return false;
+                }
+            }
+
             if (valuesList != null && !valuesList.isEmpty()) {
-                for (HashMap<String, String> valuesMap :
-                        valuesList) {
+                for (HashMap<String, String> valuesMap : valuesList) {
                     for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
                         if (element.getColumns().get(columnIndex).getValidators() != null &&
                                 !element.getColumns().get(columnIndex).getValidators().isEmpty()) {
@@ -521,8 +562,10 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                         case Constants.ValidationType.REGEX_TYPE:
                                             if (!TextUtils.isEmpty(value)) {
 
-                                                errorMsg = Validation.regexValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
-                                                        value, validator);
+                                                errorMsg = Validation.regexValidation(
+                                                        element.getColumns().get(columnIndex)
+                                                                .getTitle().getLocaleValue(),
+                                                        value, validator, fragment.get().getContext());
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
                                                     fragment.get().setErrorMsg(errorMsg);
@@ -534,16 +577,20 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                         default:
                                             if (!TextUtils.isEmpty(value)) {
 
-                                                errorMsg = Validation.editTextMinMaxValueValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
-                                                        value, validator);
+                                                errorMsg = Validation.editTextMinMaxValueValidation(
+                                                        element.getColumns().get(columnIndex)
+                                                                .getTitle().getLocaleValue(),
+                                                        value, validator, fragment.get().getContext());
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
                                                     fragment.get().setErrorMsg(errorMsg);
                                                     return false;
                                                 }
 
-                                                errorMsg = Validation.editTextMinMaxLengthValidation(element.getColumns().get(columnIndex).getTitle().getLocaleValue(),
-                                                        value, validator);
+                                                errorMsg = Validation.editTextMinMaxLengthValidation(
+                                                        element.getColumns().get(columnIndex)
+                                                                .getTitle().getLocaleValue(),
+                                                        value, validator, fragment.get().getContext());
 
                                                 if (!TextUtils.isEmpty(errorMsg)) {
                                                     fragment.get().setErrorMsg(errorMsg);
@@ -558,7 +605,6 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     }
                 }
             }
-
         }
 
         //For all photos
@@ -580,7 +626,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             if (formData.isRequired() != null && TextUtils.isEmpty(imgUrl)) {
                 errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
-                        "", formData.isRequired());
+                        "", formData.isRequired(), fragment.get().getContext());
 
                 if (!TextUtils.isEmpty(errorMsg)) {
                     fragment.get().setErrorMsg(errorMsg);
@@ -590,6 +636,23 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
 
         return TextUtils.isEmpty(errorMsg);
+    }
+
+    private boolean isDuplicateEntryFound(List<HashMap<String, String>> valuesList, String key) {
+        if (valuesList != null && valuesList.size() > 0) {
+            for (int i = 0; i < valuesList.size(); i++) {
+                HashMap<String, String> valueItem = valuesList.get(i);
+                String keyValue = valueItem.get(key);
+
+                for (int j = i + 1; j < valuesList.size(); j++) {
+                    HashMap<String, String> nextItem = valuesList.get(j);
+                    if (keyValue.equalsIgnoreCase(nextItem.get(key))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public HashMap<String, String> getRequestObject() {
@@ -602,7 +665,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
     }
 
-    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String,
+            String>>> matrixDynamicValuesMap) {
+
         if (matrixDynamicValuesMap != null) {
             this.matrixDynamicValuesMap = matrixDynamicValuesMap;
         }
@@ -633,7 +698,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     List<Choice> choiceValues = new ArrayList<>();
                     dependentElement.setChoices(choiceValues);
                     dropDownTemplate.setFormData(dependentElement);
-                    dropDownTemplate.setListData(choiceValues);
+                    dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
                 }
             }
         }
@@ -698,8 +763,24 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     @Override
-    public void onValueChanged(String elementName, List<HashMap<String, String>> matrixDynamicValuesList) {
+    public void onMatrixDynamicValueChanged(String elementName, List<HashMap<String,
+            String>> matrixDynamicValuesList) {
         matrixDynamicValuesMap.put(elementName, matrixDynamicValuesList);
+    }
+
+    @Override
+    public void showChoicesByUrlOffline(String response, Column column, HashMap<String,
+            String> matrixDynamicInnerMap) {
+        fragment.get().showChoicesByUrlAsyncMD(response, column, matrixDynamicInnerMap);
+    }
+
+    @Override
+    public void onTextValueChanged(String elementName, String value) {
+        if (!TextUtils.isEmpty(value)) {
+            requestObjectMap.put(elementName, value);
+        } else {
+            requestObjectMap.remove(elementName);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -747,7 +828,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         formId + "_" + dependentElement.getName());
 
                 if (!TextUtils.isEmpty(dependentResponse) && !TextUtils.isEmpty(response)) {
-                    JsonObject dependentOuterObj = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
+                    JsonObject dependentOuterObj
+                            = PlatformGson.getPlatformGsonInstance().fromJson(response, JsonObject.class);
                     JsonArray dependentDataArray = dependentOuterObj.getAsJsonArray(Constants.RESPONSE_DATA);
 
                     //Convert dependentDataArray to List of JsonObject
@@ -851,7 +933,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                             dependentElement.setChoices(choiceValues);
                             dropDownTemplate.setFormData(dependentElement);
-                            dropDownTemplate.setListData(choiceValues);
+                            dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
                         });
                     }
                 }

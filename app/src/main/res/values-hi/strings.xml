@@ -132,6 +132,7 @@
     <string name="tab_stories">कहानियों</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="planner">योजनाकर्ता</string>
+    <string name="meetings">मीटिंग्ज</string>
     <string name="team_management">टीम प्रबंधक</string>
 
     <!--Program management-->
@@ -215,8 +216,9 @@
     <string name="gps_popup_title">कृपया GPS / LOCATION चालू करें</string>
     <string name="msg_enable_gps">GPS सक्षम नहीं है, क्या आप इसे सक्षम करना चाहते हैं?</string>
 
+
     <!--Planner-->
-    <string name="meetings">Meeting</string>
+    <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
 
@@ -253,4 +255,28 @@
     <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
     <string name="where">Where</string>
 
+
+    <string name="cl_leaves">CL/SL</string>
+    <string name="paid_leaves">Paid</string>
+    <string name="unpaid_leaves">Unpaid</string>
+    <string name="coff_leaves">Comp OFF</string>
+    <string name="total_leaves">Total Leaves</string>
+    <string name="total">Total </string>
+    <string name="btn_leave_apply_str">Apply for a leave</string>
+    <string name="leaves_applied">Leave Applied</string>
+    <string name="link_leave_apply"> Check Leave Details</string>
+    <string name="leave_details">Leave Details</string>
+    <string name="tv_no_leaves_balance">No Leave balance!</string>
+    <string name="tab_pending_leaves">Pending</string>
+    <string name="tab_approved_leaves">Approved</string>
+    <string name="tab_rejected_leaves">Rejected</string>
+    <string name="category">Category</string>
+    <string name="full_day">Full Day</string>
+    <string name="half_day">Half Day</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="reason">Reason</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="holiday_list_title">Holiday List for 2019</string>
 </resources>

@@ -6,9 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
-    android:paddingStart="@dimen/dimen_15dp"
     android:paddingTop="@dimen/dimen_10dp"
-    android:paddingEnd="@dimen/dimen_15dp"
     android:paddingBottom="@dimen/dimen_10dp"
     tools:ignore="PrivateResource">
 

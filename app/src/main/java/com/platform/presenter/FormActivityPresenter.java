@@ -59,7 +59,9 @@ public class FormActivityPresenter implements FormRequestCallListener,
         return matrixDynamicValuesMap;
     }
 
-    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap) {
+    public void setMatrixDynamicValuesMap(HashMap<String, List<HashMap<String,
+            String>>> matrixDynamicValuesMap) {
+
         this.matrixDynamicValuesMap = matrixDynamicValuesMap;
     }
 
@@ -92,12 +94,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
         requestCall.getProcessDetails(processId);
     }
 
-    public void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex, FormData formData) {
+    public void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex,
+                                int columnIndex, FormData formData, String url,
+                                HashMap<String, String> matrixDynamicInnerMap) {
+
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, formData);
+        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, columnIndex,
+                formData, url, matrixDynamicInnerMap);
     }
 
     public void getFormResults(String url) {
@@ -129,7 +135,9 @@ public class FormActivityPresenter implements FormRequestCallListener,
     public void onImageUploadedListener(final String response, final String formName) {
         Log.e(TAG, "onImageUploadedListener:\n" + response);
 
-        if (formFragment == null || formFragment.get() == null) return;
+        if (formFragment == null || formFragment.get() == null) {
+            return;
+        }
 
         formFragment.get().hideProgressBar();
 
@@ -152,38 +160,64 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onFailureListener(String message) {
-        if (formFragment != null && formFragment.get() != null) {
-            formFragment.get().hideProgressBar();
-            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
-        }
+        try {
+            if (formFragment != null && formFragment.get() != null) {
+                formFragment.get().hideProgressBar();
+                AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+            }
 
-        if (!TextUtils.isEmpty(message)) {
-            Log.e(TAG, "onFailureListener :" + message);
+            if (!TextUtils.isEmpty(message)) {
+                Log.e(TAG, "onFailureListener :" + message);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-        formFragment.get().hideProgressBar();
 
-        if (error != null) {
-            if (error.networkResponse.statusCode == 400) {
-                Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
-                        formFragment.get().getActivity());
-            } else {
-                if (formFragment != null && formFragment.get() != null) {
-                    Util.showToast(formFragment.get().getString(R.string.unexpected_error_occurred),
-                            formFragment.get().getActivity());
+        if (formFragment != null && formFragment.get() != null) {
+            formFragment.get().hideProgressBar();
+            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+
+            if (error != null && error.networkResponse != null) {
+                if (error.networkResponse.statusCode == 400) {
+                    if (error.networkResponse.data!=null) {
+                        String json = new String(error.networkResponse.data);
+                        json = trimMessage(json);
+                        if (json != null) {
+                            Util.showToast(json, formFragment.get().getActivity());
+                        } else {
+                            Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                                    formFragment.get().getActivity());
+                        }
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                                formFragment.get().getActivity());
+                    }
+                } else {
+                    Util.showToast(formFragment.get().getString(R.string.unexpected_error_occurred), formFragment.get().getActivity());
                     Log.e("onErrorListener",
                             "Unexpected response code " + error.networkResponse.statusCode);
                 }
             }
         }
+    }
 
-        if (formFragment != null && formFragment.get() != null) {
-            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+    private String trimMessage(String json) {
+        String trimmedString;
+
+        try {
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString("message");
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+            return null;
         }
+
+        return trimmedString;
     }
 
     @Override
@@ -194,12 +228,16 @@ public class FormActivityPresenter implements FormRequestCallListener,
             JSONObject outerObject = new JSONObject(message);
 
             if (outerObject.getString("status").equalsIgnoreCase(Constants.ERROR)) {
-                formFragment.get().hideProgressBar();
-                if (!TextUtils.isEmpty(outerObject.getString("message"))) {
-                    Util.showToast(outerObject.getString("message"), formFragment.get().getActivity());
-                } else {
-                    Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
-                            formFragment.get().getActivity());
+                if (formFragment != null && formFragment.get() != null) {
+                    formFragment.get().hideProgressBar();
+
+                    if (!TextUtils.isEmpty(outerObject.getString("message"))) {
+                        Util.showToast(outerObject.getString("message"),
+                                formFragment.get().getActivity());
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                                formFragment.get().getActivity());
+                    }
                 }
             } else {
                 if (formFragment != null && formFragment.get() != null) {
@@ -310,21 +348,47 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     @Override
-    public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, FormData formData) {
+    public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex,
+                                   int columnIndex, FormData formData, HashMap<String, String> matrixDynamicInnerMap) {
+
+        if (formFragment == null || formFragment.get() == null) {
+            return;
+        }
+
         formFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(response) && formData != null && formFragment != null && formFragment.get() != null) {
-            //Write choicesByUrl response to internal storage
-            String path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()),
-                    formData.getId() + "_" + elements.getName(), response);
-
             //Fetch form data using formId and update choicesByUrl response path
-            FormData savedFormData = DatabaseManager.getDBInstance(formFragment.get().getActivity()).getFormSchema(formData.getId());
-            savedFormData.getComponents().getPages().get(pageIndex).getElements().get(elementIndex).setChoicesByUrlResponsePath(path);
+            String path;
+            FormData savedFormData = DatabaseManager.getDBInstance(formFragment.get()
+                    .getActivity()).getFormSchema(formData.getId());
+
+            if (columnIndex == -1) {
+                //Write choicesByUrl response to internal storage
+                path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()),
+                        formData.getId() + "_" + elements.getName(), response);
+
+                savedFormData.getComponents().getPages().get(pageIndex).getElements()
+                        .get(elementIndex).setChoicesByUrlResponsePath(path);
+            } else {
+                //Write choicesByUrl response to internal storage
+                path = Util.writeToInternalStorage(Objects.requireNonNull(formFragment.get().getContext()),
+                        formData.getId() + "_" + elements.getName()
+                                + "_" + elements.getColumns().get(columnIndex).getName(), response);
+
+                savedFormData.getComponents().getPages().get(pageIndex).getElements()
+                        .get(elementIndex).getColumns().get(columnIndex).setChoicesByUrlResponsePath(path);
+            }
+
             DatabaseManager.getDBInstance(formFragment.get().getActivity()).updateFormSchema(savedFormData);
 
             //Update values on UI
-            elements.setChoicesByUrlResponsePath(path);
-            formFragment.get().showChoicesByUrlAsync(response, elements);
+            if (columnIndex == -1) {
+                elements.setChoicesByUrlResponsePath(path);
+                formFragment.get().showChoicesByUrlAsync(response, elements);
+            } else {
+                formFragment.get().showChoicesByUrlAsyncMD(response,
+                        elements.getColumns().get(columnIndex), matrixDynamicInnerMap);
+            }
         }
     }
 
@@ -338,12 +402,14 @@ public class FormActivityPresenter implements FormRequestCallListener,
         switch (submitType) {
             case Constants.ONLINE_SUBMIT_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.createFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.createFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(),
+                        imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.ONLINE_UPDATE_FORM_TYPE:
                 formFragment.get().showProgressBar();
-                formRequestCall.updateFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(), imageUrlList, url, formId, oid, submitType);
+                formRequestCall.updateFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(),
+                        imageUrlList, url, formId, oid, submitType);
                 break;
 
             case Constants.OFFLINE_SUBMIT_FORM_TYPE:
@@ -377,23 +443,29 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     private void updateFormSubmittedCount(final String formId) {
-        ProcessData processData = DatabaseManager.getDBInstance(formFragment.get().getActivity())
-                .getProcessData(formId);
-        String submitCount = processData.getSubmitCount();
-        int count = 0;
-        if (!TextUtils.isEmpty(submitCount)) {
-            count = Integer.parseInt(submitCount);
-        }
+        if (formFragment != null && formFragment.get() != null) {
+            ProcessData processData = DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                    .getProcessData(formId);
 
-        count++;
-        List<String> formResults = DatabaseManager.getDBInstance(formFragment.get().getActivity())
-                .getAllFormResults(processData.getId());
-        if (count == formResults.size()) {
-            submitCount = String.valueOf(count);
-        } else {
-            submitCount = String.valueOf(formResults.size());
+            String submitCount = processData.getSubmitCount();
+
+            int count = 0;
+            if (!TextUtils.isEmpty(submitCount)) {
+                count = Integer.parseInt(submitCount);
+            }
+
+            count++;
+            List<String> formResults = DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                    .getAllFormResults(processData.getId());
+
+            if (count == formResults.size()) {
+                submitCount = String.valueOf(count);
+            } else {
+                submitCount = String.valueOf(formResults.size());
+            }
+
+            DatabaseManager.getDBInstance(formFragment.get().getActivity())
+                    .updateProcessSubmitCount(processData.getId(), submitCount);
         }
-        DatabaseManager.getDBInstance(formFragment.get().getActivity())
-                .updateProcessSubmitCount(processData.getId(), submitCount);
     }
 }
