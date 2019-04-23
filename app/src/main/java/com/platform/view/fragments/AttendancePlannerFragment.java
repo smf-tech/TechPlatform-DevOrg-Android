@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.AppliedLeavesAdapter;
+import com.platform.view.adapters.AttendanceAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -44,18 +46,20 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private TextView tvClickPending;
     private TextView tvClickApproved;
     private TextView tvClickRejected;
-    private TextView tvAttendanceLable;
-    private LinearLayout lvAttendaceStatus;
+
+    private CardView lvAttendaceStatus;
     private RecyclerView rvAttendanceList;
     private int tabClicked =-1;
 
-    private RelativeLayout lyCalender;
-    private RelativeLayout lyWorkingHours;
-    private RelativeLayout lyCheckInOutDashboard;
+    private CardView lyCalender;
+   // private RelativeLayout lyWorkingHours;
+    private LinearLayout lyCheckInOutDashboard;
     private TextView tvAttendanceDetails;
-    private ImageView tvCalendarMode;
+    private ImageView ivCalendarMode;
     private MaterialCalendarView calendarView ;
     boolean isMonth = true;
+    private TextView tvCheckInTime,tvCheckOutTime;
+
     public AttendancePlannerFragment() {
         // Required empty public constructor
     }
@@ -82,7 +86,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
 
         lyCalender = plannerView.findViewById(R.id.ly_calender);
-        lyWorkingHours = plannerView.findViewById(R.id.ly_working_hours);
+        tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
+        tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
+       // lyWorkingHours = plannerView.findViewById(R.id.ly_working_hours);
         lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_checkin_out_dashboard);
         lvAttendaceStatus = plannerView.findViewById(R.id.lv_attendance_status);
         rvAttendanceList = plannerView.findViewById(R.id.rv_attendance_list);
@@ -98,10 +104,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         btCheckout.setOnClickListener(this);
         tvAttendanceDetails = plannerView.findViewById(R.id.tv_attendance_details);
         tvAttendanceDetails.setOnClickListener(this);
-        tvAttendanceLable = plannerView.findViewById(R.id.tv_attendance_label);
-        tvCalendarMode = plannerView.findViewById(R.id.tv_calendar_mode);
+
+        ivCalendarMode = plannerView.findViewById(R.id.iv_calendar_mode);
         calendarView = plannerView.findViewById(R.id.calendarView);
-        tvCalendarMode.setOnClickListener(this);
+        ivCalendarMode.setOnClickListener(this);
         setUIData();
 
     }
@@ -111,26 +117,29 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             lvAttendaceStatus.setVisibility(View.GONE);
             rvAttendanceList.setVisibility(View.GONE);
             lyCalender.setVisibility(View.GONE);
-            lyWorkingHours.setVisibility(View.VISIBLE);
+           // lyWorkingHours.setVisibility(View.VISIBLE);
             lyCheckInOutDashboard.setVisibility(View.VISIBLE);
 
         } else {
             rvAttendanceList.setVisibility(View.VISIBLE);
             lvAttendaceStatus.setVisibility(View.VISIBLE);
-            tvAttendanceLable.setVisibility(View.INVISIBLE);
+
             lyCalender.setVisibility(View.VISIBLE);
-            lyWorkingHours.setVisibility(View.VISIBLE);
+            //lyWorkingHours.setVisibility(View.VISIBLE);
             tvAttendanceDetails.setVisibility(View.GONE);
             attendaceListData();
 
         }
+
+        isMonth = !isMonth;
+        setCalendar();
 
 
     }
 
     private void attendaceListData(){
 
-        AppliedLeavesAdapter adapter = new AppliedLeavesAdapter(getActivity(), new ArrayList<>());
+        AttendanceAdapter adapter = new AttendanceAdapter(getActivity(), new ArrayList<>());
         rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         rvAttendanceList.setAdapter(adapter);
@@ -141,10 +150,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         CharSequence time  = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
         switch (v.getId()){
             case R.id.bt_checkin:
-                btCheckin.setText("Check in\n@ "+time);
+                tvCheckInTime.setText("@9:30 AM");
+                btCheckin.setBackground(getActivity().getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                btCheckin.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
                 break;
             case R.id.bt_checkout:
-                btCheckout.setText("Check out\n@ "+time);
+                tvCheckOutTime.setText("@9:30 AM");
+                btCheckout.setBackground(getActivity().getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
                 break;
             case R.id.tv_attendance_details:
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
@@ -179,7 +192,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 }
                 break;
 
-            case R.id.tv_calendar_mode:
+            case R.id.iv_calendar_mode:
                 isMonth = !isMonth;
                 setCalendar();
                 break;
