@@ -1,19 +1,27 @@
 package com.platform.models.events;
 
-public class Event {
-    String id;
-    String tital;
-    String startDate;
-    String starTime;
-    String endTime;
-    String repeat;
-    String description;
-    String address;
-    String owner;
-    String ownerID;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-    public Event(String id, String tital, String startDate, String starTime, String endTime, String repeat, String description, String address, String owner, String ownerID) {
+public class Event implements Serializable{
+    private String id;
+    private String category;
+    private String tital;
+    private String startDate;
+    private String starTime;
+    private String endTime;
+    private String repeat;
+    private String description;
+    private String address;
+    private String owner;
+    private String ownerID;
+    private ArrayList<Member> membersList = new ArrayList<>();
+
+    public Event(String id, String category, String tital, String startDate, String starTime,
+                 String endTime, String repeat, String description, String address, String owner,
+                 String ownerID, ArrayList<Member> membersList) {
         this.id = id;
+        this.category = category;
         this.tital = tital;
         this.startDate = startDate;
         this.starTime = starTime;
@@ -23,6 +31,7 @@ public class Event {
         this.address = address;
         this.owner = owner;
         this.ownerID = ownerID;
+        this.membersList.addAll(membersList);
     }
 
     public String getId() {
@@ -31,6 +40,14 @@ public class Event {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getTital() {
@@ -103,5 +120,13 @@ public class Event {
 
     public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public ArrayList<Member> getMembersList() {
+        return membersList;
+    }
+
+    public void setMembersList(ArrayList<Member> membersList) {
+        this.membersList = membersList;
     }
 }

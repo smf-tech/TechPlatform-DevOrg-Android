@@ -57,6 +57,9 @@ public class ProfileRequestCall {
         Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
 
         final String getOrgUrl = BuildConfig.BASE_URL + Urls.Profile.GET_ORGANIZATION;
+
+        Log.d(TAG, "Organization API: " + getOrgUrl);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getOrgUrl,
@@ -122,6 +125,8 @@ public class ProfileRequestCall {
 
         final String getOrgProjectUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId);
+
+        Log.d(TAG, "OrganizationRoles API: " + getOrgProjectUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

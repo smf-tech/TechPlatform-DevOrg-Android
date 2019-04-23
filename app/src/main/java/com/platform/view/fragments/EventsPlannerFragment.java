@@ -24,6 +24,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.models.events.Event;
+import com.platform.models.events.Member;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventActivity;
@@ -42,12 +43,13 @@ import java.util.Calendar;
 
 public class EventsPlannerFragment extends Fragment implements View.OnClickListener,OnDateSelectedListener,RadioGroup.OnCheckedChangeListener {
 
+    private ImageView ivBackIcon;
+    private ImageView ivEventsSyncIcon;
     private View eventsPlannerView;
     private boolean isDashboard;
     private AppBarLayout appBarLayout;
     private RelativeLayout lyCalender;
-    private LinearLayout lyFilterTab;
-    private ImageView tvCalendarMode;
+    private ImageView ivCalendarMode;
     private TextView tvAllEventsDetail;
     private TextView tvNoEventsMsg;
     private RadioGroup radioGroup;
@@ -84,31 +86,40 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
         eventsList=new ArrayList<Event>();
         sortedEventsList=new ArrayList<Event>();
-        eventsList.add(new Event("1", "Tital1", "01/01/0001","10:00 am",
-                "11:00 am","-","test","wagoli,pune.","sachin",
-                "1234"));
 
-        eventsList.add(new Event("2", "Tital2", "01/01/0001","10:00 am",
+        ArrayList<Member> membersList = new ArrayList<>();
+        membersList.add(new Member("1", "Sagar Mahajan", "DM",true));
+        membersList.add(new Member("2", "Kishor Shevkar", "TC",false));
+        membersList.add(new Member("3", "Jagruti Devare", "MT",true));
+        membersList.add(new Member("4", "Sachin Kakade", "FA",false));
+
+        eventsList.add(new Event("1","meeting", "Title1", "22/04/2019","10:00 am",
+                "11:00 am","-","test","wagoli,pune.","sachin",
+                "1234",membersList));
+
+        eventsList.add(new Event("2","visit" ,"Title2", "22/04/2019","10:00 am",
                 "11:00 am", "-","test","hadpsir,pune.","sagar",
-                "1235"));
+                "1235",membersList));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             isDashboard = bundle.getBoolean(Constants.Planner.KEY_IS_DASHBOARD);
         }
         isMonth=false;
+
+        ivBackIcon = eventsPlannerView.findViewById(R.id.iv_back_icon);
+        ivEventsSyncIcon = eventsPlannerView.findViewById(R.id.iv_events_sync_icon);
         appBarLayout= eventsPlannerView.findViewById(R.id.app_bar_layout);
         lyCalender = eventsPlannerView.findViewById(R.id.ly_calender);
-        lyFilterTab = eventsPlannerView.findViewById(R.id.ly_filter_tab);
-        tvCalendarMode = eventsPlannerView.findViewById(R.id.tv_calendar_mode);
+        ivCalendarMode = eventsPlannerView.findViewById(R.id.iv_calendar_mode);
         tvAllEventsDetail = eventsPlannerView.findViewById(R.id.tv_all_events_list);
         tvNoEventsMsg = eventsPlannerView.findViewById(R.id.tv_no_events_msg);
         btAddEvents = eventsPlannerView.findViewById(R.id.bt_add_events);
         rvEvents = eventsPlannerView.findViewById(R.id.rv_events);
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
-        radioGroup = (RadioGroup) eventsPlannerView.findViewById(R.id.radio_group);
+        radioGroup = (RadioGroup) eventsPlannerView.findViewById(R.id.radio_group_filter);
 
-        eventListAdapter = new EventListAdapter(getActivity(),sortedEventsList);
+        eventListAdapter = new EventListAdapter(getActivity(),sortedEventsList,Constants.Planner.EVENT_DETAIL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvEvents.setLayoutManager(mLayoutManager);
         rvEvents.setAdapter(eventListAdapter);
@@ -120,12 +131,12 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         if(isDashboard) {
             appBarLayout.setVisibility(View.GONE);
             lyCalender.setVisibility(View.GONE);
-            lyFilterTab.setVisibility(View.GONE);
+            radioGroup.setVisibility(View.GONE);
             tvAllEventsDetail.setVisibility(View.VISIBLE);
         } else {
             appBarLayout.setVisibility(View.VISIBLE);
             lyCalender.setVisibility(View.VISIBLE);
-            lyFilterTab.setVisibility(View.VISIBLE);
+            radioGroup.setVisibility(View.VISIBLE);
             tvAllEventsDetail.setVisibility(View.GONE);
         }
 
@@ -138,9 +149,11 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     }
 
     private void setListeners() {
+        ivBackIcon.setOnClickListener(this);
+        ivEventsSyncIcon.setOnClickListener(this);
         btAddEvents.setOnClickListener(this);
         tvAllEventsDetail.setOnClickListener(this);
-        tvCalendarMode.setOnClickListener(this);
+        ivCalendarMode.setOnClickListener(this);
         calendarView.setOnDateChangedListener(this);
         radioGroup.setOnCheckedChangeListener(this);
     }
@@ -148,9 +161,15 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tv_calendar_mode:
+            case R.id.iv_back_icon:
+                getActivity().finish();
+                break;
+            case R.id.iv_events_sync_icon:
+                break;
+            case R.id.iv_calendar_mode:
                 if(isMonth){
                     isMonth=false;
+//                    ivCalendarMode.setImageResource(getResources().getDrawable(R.drawable.ic_right_arrow_grey));
                 } else {
                     isMonth=true;
                 }
@@ -158,6 +177,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,"EVENTS");
                 this.startActivity(intentCreateEvent);
                 break;
             case R.id.tv_all_events_list:
@@ -174,7 +194,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
             case R.id.rb_all_events:
                 sorteEventsList(true);
                 break;
-            case R.id.rb_my_event:
+            case R.id.rb_my_events:
                 sorteEventsList(false);
                 break;
         }

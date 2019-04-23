@@ -34,7 +34,7 @@
             </androidx.appcompat.widget.Toolbar>
 
             <ImageView
-                android:id="@+id/iv_create_event_icon"
+                android:id="@+id/iv_back_icon"
                 android:layout_width="@dimen/dimen_35dp"
                 android:layout_height="@dimen/dimen_35dp"
                 android:layout_centerVertical="true"
@@ -62,7 +62,8 @@
                 android:id="@+id/sp_category"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_marginTop="@dimen/dimen_10dp"/>
 
             <!--Title-->
             <com.google.android.material.textfield.TextInputLayout
@@ -74,7 +75,7 @@
                 <EditText
                     android:id="@+id/et_title"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/tesk_title"
+                    android:hint="@string/task_title"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,7 +132,7 @@
                     <EditText
                         android:id="@+id/et_end_time"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/tesk_end_time"
+                        android:hint="@string/task_end_time"
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="time"
@@ -201,7 +202,7 @@
                 <EditText
                     android:id="@+id/et_description"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/task_descriptiocn"
+                    android:hint="@string/task_description"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -238,6 +239,14 @@
                     android:inputType="text|textCapWords"
                     android:drawableStart="@drawable/ic_add"
                     tools:ignore="Autofill" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_attendees_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_attendees_list">
+
+                </androidx.recyclerview.widget.RecyclerView>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -247,7 +256,8 @@
                 android:layout_below="@+id/tily_add_members"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
-                android:text="@string/btn_submit"
+                android:text="@string/create_event"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_22" />
 
