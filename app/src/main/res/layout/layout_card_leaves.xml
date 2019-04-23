@@ -5,6 +5,7 @@
     android:layout_height="@dimen/dimen_175dp"
     android:layout_marginStart="@dimen/dimen_25dp"
     android:layout_marginTop="@dimen/dimen_30dp"
+    android:layout_marginBottom="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_15dp">
 
     <RelativeLayout
