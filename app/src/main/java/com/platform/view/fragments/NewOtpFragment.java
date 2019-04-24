@@ -44,7 +44,6 @@ import androidx.fragment.app.Fragment;
  * Use the {@link NewOtpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@SuppressWarnings("FieldCanBeLocal")
 public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
     private static LoginInfo sLoginInfo;
@@ -369,7 +368,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     public boolean isAllFieldsValid() {
-        return String.valueOf(getOtp()).trim().length() == 6;
+        return getOtp().trim().length() == 6;
     }
 
     private void startOtpTimer() {

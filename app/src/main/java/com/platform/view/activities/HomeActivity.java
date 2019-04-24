@@ -111,7 +111,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void initMenuView() {
         setActionBarTitle(getResources().getString(R.string.app_name_ss));
 

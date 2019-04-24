@@ -134,7 +134,6 @@ public class ReportsAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     private void startWebView(String name, String url, Context context) {
         Uri uri = Uri.parse(url);
         if (uri == null) {

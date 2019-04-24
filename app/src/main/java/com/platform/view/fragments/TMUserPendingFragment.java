@@ -97,11 +97,9 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.txt_view_all_approvals:
-                Util.launchFragment(new TMUserApprovalsFragment(), getContext(),
-                        getString(R.string.approvals), true);
-                break;
+        if (v.getId() == R.id.txt_view_all_approvals) {
+            Util.launchFragment(new TMUserApprovalsFragment(), getContext(),
+                    getString(R.string.approvals), true);
         }
     }
 
@@ -196,8 +194,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public static class ApprovalDialogFragment extends DialogFragment {
+    static class ApprovalDialogFragment extends DialogFragment {
 
         private static PendingRequest sPendingRequest;
         @SuppressLint("StaticFieldLeak")

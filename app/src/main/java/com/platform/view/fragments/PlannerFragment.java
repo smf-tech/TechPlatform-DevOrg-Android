@@ -75,11 +75,9 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.txt_view_all_approvals:
-                Util.launchFragment(new PlannerFragment(), getContext(),
-                        getString(R.string.planner), true);
-                break;
+        if (v.getId() == R.id.txt_view_all_approvals) {
+            Util.launchFragment(new PlannerFragment(), getContext(),
+                    getString(R.string.planner), true);
         }
     }
 

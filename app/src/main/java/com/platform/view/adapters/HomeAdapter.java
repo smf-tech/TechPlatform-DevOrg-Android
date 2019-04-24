@@ -77,18 +77,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.home_module_view:
-                    try {
-                        if (menuItemList.get(getAdapterPosition()).getAccessible()) {
-                            Intent openClass = new Intent(context,
-                                    menuItemList.get(getAdapterPosition()).getDestination());
-                            context.startActivity(openClass);
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
+            if (view.getId() == R.id.home_module_view) {
+                try {
+                    if (menuItemList.get(getAdapterPosition()).getAccessible()) {
+                        Intent openClass = new Intent(context,
+                                menuItemList.get(getAdapterPosition()).getDestination());
+                        context.startActivity(openClass);
                     }
-                    break;
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
             }
         }
     }

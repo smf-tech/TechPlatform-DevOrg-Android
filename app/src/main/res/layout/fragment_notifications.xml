@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
-        android:layout_above="@id/txt_view_all_approvals"
         android:background="@drawable/bg_rounded_rect_gray" />
 
     <TextView

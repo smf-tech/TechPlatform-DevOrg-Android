@@ -38,7 +38,6 @@ public class TMAdapter extends RecyclerView.Adapter<TMAdapter.TMViewHolder> {
         return new TMViewHolder(itemView);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull TMViewHolder holder, int position) {
         Template template = templateList.get(position);
@@ -89,11 +88,9 @@ public class TMAdapter extends RecyclerView.Adapter<TMAdapter.TMViewHolder> {
             templateLayout = view.findViewById(R.id.template_layout);
             templateLayout.setOnClickListener(view1 -> {
                 if (context instanceof TMActivity) {
-                    switch (getAdapterPosition()) {
-                        case 0:
-                            Intent intent = new Intent(context, TMUserProfileListActivity.class);
-                            context.startActivity(intent);
-                            break;
+                    if (getAdapterPosition() == 0) {
+                        Intent intent = new Intent(context, TMUserProfileListActivity.class);
+                        context.startActivity(intent);
                     }
                 }
             });

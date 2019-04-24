@@ -94,7 +94,6 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         return baseLayout;
     }
 
-    @SuppressWarnings("unchecked")
     void setListData(List<Choice> valueList, boolean isInEditMode, boolean isPartiallySaved) {
         if (valueList != null) {
             boolean isValueSet = false;

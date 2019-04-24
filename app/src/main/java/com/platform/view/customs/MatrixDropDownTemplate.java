@@ -131,7 +131,6 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         return baseLayout;
     }
 
-    @SuppressWarnings("unchecked")
     void setListData(List<Choice> valueList, HashMap<String, String> valuesMap, boolean isInEditMode,
                      boolean isPartiallySaved, int rowIndex) {
 
