@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -493,8 +494,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
-        this.matrixDynamicInnerMap = matrixDynamicInnerMap;
-        new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column), String.valueOf(rowIndex));
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            // Do something after 1500 ms
+            this.matrixDynamicInnerMap = matrixDynamicInnerMap;
+            new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column), String.valueOf(rowIndex));
+        }, 1500);
     }
 
     private void showChoicesByUrl(String result, Elements elements) {
@@ -555,7 +560,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
-    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, final long rowIndex) {
         List<Choice> choiceValues = new ArrayList<>();
         try {
             LocaleData text;

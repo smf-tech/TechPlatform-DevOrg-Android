@@ -110,9 +110,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         return baseLayout;
     }
 
-    @SuppressWarnings("unchecked")
     void setListData(List<Choice> valueList, HashMap<String, String> valuesMap) {
-
         if (valueList != null) {
             try {
                 this.valueList = valueList;
@@ -125,16 +123,14 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
                     this.setSelectedItem(0);
                 }
 
-                if (column.getChoices() != null && !column.getChoices().isEmpty()) {
-                    for (int index = 0; index < column.getChoices().size(); index++) {
-                        if (formData.getAnswerArray() != null &&
-                                column.getChoices().get(index).getText() != null &&
-                                !TextUtils.isEmpty(column.getChoices().get(index).getText().getLocaleValue()) &&
-                                Objects.requireNonNull(valuesMap.get(column.getName()))
-                                        .equals(column.getChoices().get(index).getValue())) {
-                            this.setSelectedItem(index);
-                            break;
-                        }
+                for (int index = 0; index < this.valueList.size(); index++) {
+                    if (formData.getAnswerArray() != null &&
+                            this.valueList.get(index).getText() != null &&
+                            !TextUtils.isEmpty(this.valueList.get(index).getText().getLocaleValue()) &&
+                            Objects.requireNonNull(valuesMap.get(column.getName()))
+                                    .equals(this.valueList.get(index).getValue())) {
+                        this.setSelectedItem(index);
+                        break;
                     }
                 }
             } catch (Exception e) {
