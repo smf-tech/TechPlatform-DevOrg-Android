@@ -255,9 +255,9 @@
     <string name="add_members_screen_msg">"आपने फ़िल्टर लागू कर दिया है, घटना के लिए सदस्यों का चयन करें।"</string>
     <string name="where">कहा पे</string>
     <string name="edit_attendance">उपस्थिति संपादित करें</string>
-    <string name="repeat">Repeat</string>
-    <string name="interval">Interval</string>
-    <string name="which_days">On which days</string>
+    <string name="repeat">दोहराना</string>
+    <string name="interval">मध्यान्तर</string>
+    <string name="which_days">किन दिनों पर</string>
 
 
     <string name="cl_leaves">CL/SL</string>

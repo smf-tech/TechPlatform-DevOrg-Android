@@ -248,24 +248,15 @@
     <string name="task_address">पत्ता</string>
     <string name="task_add_members">सदस्य जोडा</string>
     <string name="my_events">माझे कार्यक्रम</string>
-<<<<<<< HEAD
     <string name="apply_filters">फिल्टर लागू करा</string>
     <string name="filter">फिल्टर</string>
     <string name="event_detail">कार्यक्रम तपशील</string>
     <string name="add_members_screen_msg">"आपण फिल्टर लागू केले आहेत, इव्हेंटसाठी सदस्यांची निवड करा."</string>
     <string name="where">कुठे</string>
     <string name="edit_attendance">उपस्थिती संपादित करा</string>
-    <string name="repeat">Repeat</string>
-    <string name="interval">Interval</string>
-    <string name="which_days">On which days</string>
-=======
-
-    <string name="apply_filters">Apply Filters</string>
-    <string name="filter">Filter</string>
-    <string name="event_detail">Event Detail</string>
-    <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
-    <string name="where">Where</string>
->>>>>>> origin/Calendar_sk
+    <string name="repeat">पुन्हा करा</string>
+    <string name="interval">अंतराल</string>
+    <string name="which_days">कोणत्या दिवशी</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">पगारी रजा</string>
