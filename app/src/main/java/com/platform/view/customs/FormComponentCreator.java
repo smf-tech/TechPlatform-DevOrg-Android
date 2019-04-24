@@ -203,7 +203,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
             matrixDynamics.get(0).updateDropDownValues(column, choiceValues,
-                    matrixDynamicInnerMap, mIsInEditMode, mIsPartiallySaved, rowIndex);
+                    matrixDynamicInnerMap, rowIndex);
         }
     }
 

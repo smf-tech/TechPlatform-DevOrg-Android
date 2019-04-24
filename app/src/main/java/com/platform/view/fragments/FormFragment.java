@@ -603,6 +603,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
 
+            // This code will add submitted value in list and update the adapter, in API response
+            // submitted value is not coming hence this is workaround.
+            Choice ch = new Choice();
+            LocaleData ld = new LocaleData(matrixDynamicInnerMap.get(column.getName()));
+            ch.setText(ld);
+            ch.setValue(ld.getLocaleValue());
+
+            if (!choiceValues.contains(ch)) {
+                choiceValues.add(ch);
+            }
+
             Collections.sort(choiceValues,
                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
         } catch (Exception e) {
