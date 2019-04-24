@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@android:color/transparent" />
     <stroke
-        android:width="1px"
-        android:color="@color/border_layout" />
+        android:width="@dimen/dimen_01dp"
+        android:color="@color/leaves_count_view" />
 
     <!--corners android:radius="3dp" /-->
 

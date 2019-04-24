@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="@dimen/dimen_10dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:paddingStart="@dimen/dimen_25dp"
+    android:layout_height="@dimen/dimen_70dp"
     android:layout_marginStart="@dimen/dimen_15dp"
+    android:layout_marginTop="@dimen/dimen_15dp"
     android:layout_marginEnd="@dimen/dimen_15dp"
-    android:background="@drawable/cardview_shadow"
-    android:paddingTop="@dimen/dimen_20dp"
-    android:layout_height="@dimen/dimen_80dp">
-    <ImageView
-        android:id="@+id/img_user_leaves"
-        android:layout_width="@dimen/dimen_36dp"
-        android:layout_height="@dimen/dimen_32dp" />
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/tv_leave_desc"
-        android:fontFamily="@font/roboto_medium"
-        android:textSize="@dimen/text_size_12"
-        android:textColor="@color/leave_desc_color"
-        android:layout_toEndOf="@+id/img_user_leaves"
-        android:layout_marginEnd="@dimen/dimen_65dp"
-        android:layout_marginStart="@dimen/dimen_15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_32dp" />
-    <ImageView
-        android:id="@+id/img_edit"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_15dp"
-        android:background="@drawable/ic_delete"
-        android:layout_toStartOf="@+id/img_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/img_delete"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_15dp"
-        android:background="@drawable/ic_delete"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/dimen_25dp"
+        android:paddingTop="@dimen/dimen_15dp">
+
+        <ImageView
+            android:id="@+id/img_user_leaves"
+            android:layout_width="@dimen/dimen_36dp"
+            android:layout_height="@dimen/dimen_32dp" />
+
+        <TextView
+            android:id="@+id/tv_leave_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_32dp"
+            android:layout_marginStart="@dimen/dimen_15dp"
+            android:layout_marginEnd="@dimen/dimen_65dp"
+            android:layout_toEndOf="@+id/img_user_leaves"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/leave_desc_color"
+            android:textSize="@dimen/text_size_12" />
+
+        <ImageView
+            android:id="@+id/img_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:layout_toStartOf="@+id/img_delete"
+            android:background="@drawable/ic_delete" />
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:background="@drawable/ic_delete" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
