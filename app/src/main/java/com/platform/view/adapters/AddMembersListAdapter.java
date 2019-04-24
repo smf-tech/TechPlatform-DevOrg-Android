@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -59,6 +60,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
+//        RelativeLayout lyMain;
         TextView tvMemberName;
         TextView tvMemberDesignation;
         CheckBox cbMemberSelect;
@@ -69,6 +71,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             tvMemberName = itemView.findViewById(R.id.tv_member_name);
             tvMemberDesignation = itemView.findViewById(R.id.tv_member_designation);
             cbMemberSelect = itemView.findViewById(R.id.cb_select_member);
+//            lyMain = itemView.findViewById(R.id.ly_main);
 
             if(!isCheckVisibil){
                 cbMemberSelect.setVisibility(View.GONE);

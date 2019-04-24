@@ -5,21 +5,16 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <!-- <uses-permission android:name="android.permission.RECEIVE_SMS" /> -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- Sync Adapter related permissions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Sync Adapter related permissions -->
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
-
-    <!-- GPS location permissions -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" /> <!-- GPS location permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -34,7 +29,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".view.activities.AddMembersListActivity"></activity>
+        <activity android:name=".view.activities.RepeatEventActivity"></activity>
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -86,6 +81,16 @@
             android:name=".view.activities.TMUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity android:name=".view.activities.PlannerDetailActivity" />
+        <activity
+            android:name=".view.activities.CreateEventActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity android:name=".view.activities.AddMemberFilerActivity" />
+        <activity android:name=".view.activities.EventDetailActivity" />
+        <activity
+            android:name=".view.activities.AddMembersListActivity"
+            android:windowSoftInputMode="adjustNothing" />
 
         <receiver
             android:name=".receivers.SmsReceiver"
@@ -145,16 +150,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
-
-        <activity android:name=".view.activities.PlannerDetailActivity" />
-        <activity android:name=".view.activities.CreateEventActivity" />
-
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
-
-        <activity android:name=".view.activities.AddMemberFilerActivity" />
-        <activity android:name=".view.activities.EventDetailActivity"></activity>
     </application>
 
 </manifest>

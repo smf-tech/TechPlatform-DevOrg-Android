@@ -6,44 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.platform.view.activities.CreateEventActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <include
         android:id="@+id/ly_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tbr_create_event"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary">
-
-                <TextView
-                    android:id="@+id/tv_create_event_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/create_event"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold" />
-            </androidx.appcompat.widget.Toolbar>
-
-            <ImageView
-                android:id="@+id/iv_back_icon"
-                android:layout_width="@dimen/dimen_35dp"
-                android:layout_height="@dimen/dimen_35dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:contentDescription="@string/content_description"
-                android:padding="@dimen/dimen_05dp"
-                android:src="@drawable/ic_back_white" />
-        </RelativeLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+        layout="@layout/app_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"

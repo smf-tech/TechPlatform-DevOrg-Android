@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp">
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -244,8 +245,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_attended"
                 android:background="@drawable/bg_button"
-                android:text="@string/btn_submit"
+                android:text="@string/edit_attendance"
                 android:textColor="@android:color/white"
+                android:textAllCaps="false"
                 android:textSize="@dimen/text_size_22"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 />

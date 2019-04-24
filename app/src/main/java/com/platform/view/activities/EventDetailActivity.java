@@ -114,6 +114,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         backButton.setOnClickListener(this);
         editButton.setOnClickListener(this);
         ivAttendeesList.setOnClickListener(this);
+        btEditAttendance.setOnClickListener(this);
     }
 
     private void setActionbar(String title) {
@@ -144,7 +145,10 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.bt_edit_attendance:
-
+                Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+                intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,false);
+                intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,event.getMembersList());
+                this.startActivity(intentAddMembersListActivity);
                 break;
         }
     }

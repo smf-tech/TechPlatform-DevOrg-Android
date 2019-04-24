@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
+import com.platform.models.events.Member;
 import com.platform.models.profile.Jurisdiction;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.Location;
@@ -135,12 +136,15 @@ public class AddMemberFilerActivity extends AppCompatActivity implements Profile
                 onBackPressed();
                 break;
 
-            case R.id.btn_profile_submit:
-
-                break;
-
             case R.id.bt_apply_filters:
+                ArrayList<Member> membersList = new ArrayList<>();
+                membersList.add(new Member("1", "Sagar Mahajan", "DM",true));
+                membersList.add(new Member("2", "Kishor Shevkar", "TC",false));
+                membersList.add(new Member("3", "Jagruti Devare", "MT",true));
+                membersList.add(new Member("4", "Sachin Kakade", "FA",false));
                 Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+                intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);
+                intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,membersList);
                 this.startActivity(intentAddMembersListActivity);
                 break;
 

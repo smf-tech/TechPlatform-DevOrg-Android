@@ -5,44 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <include
         android:id="@+id/ly_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tbr_create_event"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary">
-
-                <TextView
-                    android:id="@+id/tv_create_event_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/task_add_members"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold" />
-            </androidx.appcompat.widget.Toolbar>
-
-            <ImageView
-                android:id="@+id/iv_back_icon"
-                android:layout_width="@dimen/dimen_35dp"
-                android:layout_height="@dimen/dimen_35dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:contentDescription="@string/content_description"
-                android:padding="@dimen/dimen_05dp"
-                android:src="@drawable/ic_back_white" />
-        </RelativeLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+        layout="@layout/app_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,10 +15,48 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/dimen_30dp">
 
+        <LinearLayout
+            android:id="@+id/ly_attended_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_attended"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_weight="5"
+                android:background="@drawable/bg_attened_lable"
+                android:gravity="center"
+                android:paddingTop="@dimen/dimen_07dp"
+                android:paddingBottom="@dimen/dimen_07dp"
+                android:textColor="@color/light_green"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_not_attended"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_weight="5"
+                android:background="@drawable/bg_attened_not_lable"
+                android:gravity="center"
+                android:paddingTop="@dimen/dimen_05dp"
+                android:paddingBottom="@dimen/dimen_05dp"
+                android:textColor="@color/brown"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     <TextView
         android:id="@+id/tv_info_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_attended_tab"
         android:text="@string/add_members_screen_msg"
         android:gravity="center"
         android:textStyle="bold"/>

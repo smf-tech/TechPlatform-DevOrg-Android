@@ -174,6 +174,7 @@ public class Constants {
         public static final String SPINNER_TALUKA = "Taluka";
         public static final String SPINNER_CLUSTER = "Cluster";
         public static final String SPINNER_VILLAGE = "Village";
+        public static final String SPINNER_WHICH_DAYS = "WhichDays";
     }
 
     public class FormInputType {
@@ -234,6 +235,8 @@ public class Constants {
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN ="ToOpan";
         public static final String EVENT_DETAIL = "EventDetail";
+        public static final String MEMBERS_LIST = "MembersList";
+        public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
         public static final String TASK_DETAIL = "TaskDetail";
     }
 }

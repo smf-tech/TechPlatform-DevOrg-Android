@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.events.Member;
+import com.platform.utility.Constants;
 import com.platform.view.adapters.AddMembersListAdapter;
 
 import java.util.ArrayList;
@@ -24,7 +27,9 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     private ArrayList<Member> filterMembersList = new ArrayList<>();
     SearchView editSearch;
     CheckBox cbSelectAllMembers;
+    private ImageView toolbarAction;
     private ImageView ivBackIcon;
+    boolean isNewMembersList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +38,31 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     }
 
     private void initViews() {
+        setActionbar(getResources().getString(R.string.task_add_members));
         cbSelectAllMembers = (CheckBox)findViewById(R.id.cb_select_all_members);
-        ivBackIcon = findViewById(R.id.iv_back_icon);
+        ivBackIcon = findViewById(R.id.toolbar_back_action);
+        toolbarAction = findViewById(R.id.toolbar_edit_action);
         editSearch = (SearchView) findViewById(R.id.search_view);
 
-        membersList.add(new Member("1", "Sagar Mahajan", "DM",true));
-        membersList.add(new Member("2", "Kishor Shevkar", "TC",false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT",true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA",false));
+        membersList=(ArrayList<Member>)getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
+        isNewMembersList=getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,false);
+
+        LinearLayout lyAttendedTab = findViewById(R.id.ly_attended_tab);
+        TextView tvInfoLabel = findViewById(R.id.tv_info_label);
+        if(isNewMembersList){
+            toolbarAction.setVisibility(View.GONE);
+            lyAttendedTab.setVisibility(View.GONE);
+            tvInfoLabel.setVisibility(View.VISIBLE);
+        } else {
+            toolbarAction.setVisibility(View.VISIBLE);
+            toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
+            tvInfoLabel.setVisibility(View.GONE);
+            lyAttendedTab.setVisibility(View.VISIBLE);
+            TextView tvAttended = findViewById(R.id.tv_attended);
+            TextView tvNotAttended = findViewById(R.id.tv_not_attended);
+            tvAttended.setText("03 Attended");
+            tvNotAttended.setText("05 Not Attended");
+        }
 
         filterMembersList.addAll(membersList);
         checkAllSelected(membersList);
@@ -55,6 +77,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     private void setListeners(){
         ivBackIcon.setOnClickListener(this);
         cbSelectAllMembers.setOnClickListener(this);
+        toolbarAction.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
     }
 
@@ -106,8 +129,11 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back_icon:
+            case R.id.toolbar_back_action:
                 finish();
+                break;
+            case R.id.toolbar_edit_action:
+                //Submit attendance
                 break;
             case R.id.cb_select_all_members:
                 if (((CheckBox) v).isChecked()) {
@@ -136,5 +162,9 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
                 addMembersListAdapter.notifyDataSetChanged();
                 break;
         }
+    }
+    private void setActionbar(String title) {
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText(title);
     }
 }

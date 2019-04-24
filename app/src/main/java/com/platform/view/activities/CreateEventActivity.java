@@ -55,15 +55,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_create_event);
 
         initView();
-
     }
 
     private void initView() {
-
+        setActionbar(getString(R.string.create_event));
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
-        ivBackIcon = findViewById(R.id.iv_back_icon);
+        ivBackIcon = findViewById(R.id.toolbar_back_action);
         spCategory = findViewById(R.id.sp_category);
         etTitle = findViewById(R.id.et_title);
         etStartDate = findViewById(R.id.et_start_date);
@@ -98,6 +97,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setAllData() {
+        ArrayAdapter myAdap = (ArrayAdapter) spCategory.getAdapter();
+        int spinnerPosition = myAdap.getPosition(event.getCategory());
+        spCategory.setSelection(spinnerPosition);
         etTitle.setText(event.getTital());
         etStartDate.setText(event.getStartDate());
         etStartTime.setText(event.getStarTime());
@@ -123,10 +125,16 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         addMembersListAdapter.notifyDataSetChanged();
     }
 
+    private void setActionbar(String title) {
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText(title);
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back_icon:
+            case R.id.toolbar_back_action:
                 finish();
                 break;
             case R.id.et_start_date:
@@ -143,7 +151,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 this.startActivity(intentAddMemberFilerActivity);
                 break;
             case R.id.bt_repeat:
-
+                Intent intentRepeatEventActivity = new Intent(this, RepeatEventActivity.class);
+                this.startActivityForResult(intentRepeatEventActivity,001);
                 break;
             case R.id.bt_event_submit:
 

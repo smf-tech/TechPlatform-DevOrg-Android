@@ -248,12 +248,35 @@
     <string name="task_add_members">Add Members</string>
     <string name="my_events">My Events</string>
     <string name="apply_filters">Apply Filters</string>
-    <string name="filter">FILTER</string>
+    <string name="filter">Filter</string>
     <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
+    <string name="event_detail">Event Detail</string>
+    <string name="where">Where</string>
+    <string name="edit_attendance">Edit Attendance</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>
         <item>Event</item>
+        <item>Task</item>
+    </string-array>
+
+    <string-array name="repeat_array">
+        <item>Repeat</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string-array name="repeat_weeks">
+        <item>1 Week</item>
+        <item>2 Weeks</item>
+        <item>3 Weeks</item>
+    </string-array>
+
+    <string-array name="repeat_months">
+        <item>1 Month</item>
+        <item>2 Months</item>
+        <item>3 Months</item>
     </string-array>
 
     <!--App Events-->
@@ -296,7 +319,8 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
-    <string name="event_detail">Event Detail</string>
-    <string name="where">Where</string>
+    <string name="repeat">Repeat</string>
+    <string name="interval">Interval</string>
+    <string name="which_days">On which days</string>
 
 </resources>
