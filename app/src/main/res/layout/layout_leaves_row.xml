@@ -26,10 +26,10 @@
             android:layout_marginEnd="@dimen/dimen_65dp"
             android:layout_toEndOf="@+id/img_user_leaves"
             android:fontFamily="@font/roboto_medium"
-            android:textColor="@color/leave_desc_color"
+            android:textColor="@color/attendance_list_item"
             android:textSize="@dimen/text_size_12" />
 
-        <ImageView
+        <!--ImageView
             android:id="@+id/img_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_15dp"
-            android:background="@drawable/ic_delete" />
+            android:background="@drawable/ic_delete" /-->
 
 
     </RelativeLayout>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginStart="@dimen/dimen_25dp"
+    android:layout_marginTop="@dimen/dimen_15dp"
+    android:layout_marginEnd="@dimen/dimen_15dp"
+    android:layout_marginBottom="@dimen/dimen_10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/tv_lab_total_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_30dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/total_hours"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/tv_total_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dimen_30dp"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="4:2 Hours"
+            android:textSize="@dimen/text_size_14" />
+
+
+        <LinearLayout
+            android:id="@+id/ly_checkin_out_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_lab_total_hours"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_30dp"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:layout_marginBottom="@dimen/dimen_50dp"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/bt_checkin"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_45dp"
+                    android:background="@drawable/bg_button_switch"
+                    android:text="@string/check_in"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_on_selection"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_check_in_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bt_checkin"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/bt_checkout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_45dp"
+                    android:background="@drawable/bg_button_switch"
+                    android:text="@string/check_out"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_on_selection"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_check_out_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bt_checkout"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_attendance_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_175dp"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:fontFamily="@font/roboto_regular"
+            android:paddingBottom="@dimen/dimen_25dp"
+            android:text="@string/attendance_details"
+            android:textColor="@color/tab_selector"
+            android:textSize="@dimen/text_size_14" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

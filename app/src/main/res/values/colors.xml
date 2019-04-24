@@ -73,4 +73,8 @@
     <color name="form_category_selected">#D2E1F8</color>
     <color name="card_view_border">#C1C4C6</color>
     <color name="leaves_count_view">#CBCBCB</color>
+    <color name="attendance_list_bg">#FAFAFA</color>
+    <color name="attendance_text_color">#7E7E7E</color>
+    <color name="attendance_list_item">#656565</color>
+
 </resources>

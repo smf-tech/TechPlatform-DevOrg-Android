@@ -1,201 +1,139 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@color/lighter_grey"
+    android:orientation="vertical"
+    tools:context="com.platform.view.fragments.AttendancePlannerFragment">
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/ly_calender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_marginStart="@dimen/dimen_01dp"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:layout_marginEnd="@dimen/dimen_01dp"
         android:background="@color/white"
         android:visibility="visible">
-
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:mcv_calendarMode="month"
-            app:mcv_selectionColor="#00F"
-            app:mcv_showOtherDates="all"
-            app:mcv_tileHeight="@dimen/dimen_30dp" />
-
-        <ImageView
-            android:id="@+id/tv_calendar_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/calendarView"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:paddingLeft="@dimen/dimen_05dp"
-            android:paddingTop="@dimen/dimen_05dp"
-            android:paddingRight="@dimen/dimen_05dp"
-            android:src="@drawable/ic_down_arrow_light_blue" />
-    </RelativeLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lighter_grey"
-        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_25dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_15dp"
             android:background="@color/white"
-            android:paddingStart="@dimen/dimen_05dp"
-            android:paddingEnd="@dimen/dimen_20dp"
-            android:paddingBottom="@dimen/dimen_40dp">
+            android:visibility="visible">
 
-
-            <RelativeLayout
-                android:id="@+id/ly_working_hours"
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_30dp">
+                app:mcv_calendarMode="month"
+                app:mcv_selectionColor="#00F"
+                app:mcv_showOtherDates="all"
+                app:mcv_tileHeight="@dimen/dimen_30dp" />
 
-                <TextView
-                    android:id="@+id/tv_lab_total_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/total_hours"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_total_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="4:2 Hours" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/ly_checkin_out_dashboard"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/iv_calendar_mode"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_working_hours"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp">
-
-                <Button
-                    android:id="@+id/bt_checkin"
-                    android:layout_width="@dimen/dimen_150dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_button"
-                    android:text="@string/check_in"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/bt_checkout"
-                    android:layout_width="@dimen/dimen_150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_button"
-                    android:text="@string/check_out"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/tv_attendance_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/bt_checkin"
-                    android:layout_marginTop="@dimen/dimen_20dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="@string/attendance_details"
-                    android:textColor="@color/tab_selector"
-                    android:textSize="@dimen/text_size_16" />
-            </RelativeLayout>
-
-
+                android:layout_below="@+id/calendarView"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_05dp"
+                android:paddingTop="@dimen/dimen_05dp"
+                android:paddingRight="@dimen/dimen_05dp"
+                android:src="@drawable/ic_down_arrow_light_blue" />
         </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tv_attendance_label"
-            android:layout_width="@dimen/dimen_130dp"
-            android:layout_height="@dimen/dimen_32dp"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:background="@color/planner_lable"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:paddingStart="@dimen/dimen_20dp"
-            android:paddingEnd="@dimen/dimen_20dp"
-            android:text="@string/leave_details"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_14" />
-    </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/lv_attendance_status"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_75dp"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/leaves_tab"
-        android:paddingStart="@dimen/dimen_30dp"
-        android:paddingTop="@dimen/dimen_20dp"
-        android:paddingEnd="@dimen/dimen_30dp"
-        android:weightSum="3">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_tb_pending"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_pending_tab"
-            android:drawablePadding="-15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/tab_pending_leaves"
-            android:textAllCaps="true"
-            android:textColor="@color/black_green"
-            android:textSize="@dimen/text_size_12" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_tb_approved"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_approved"
-            android:drawablePadding="-15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/tab_approved_leaves"
-            android:textAllCaps="true"
-            android:textColor="@color/blur_tab"
-            android:textSize="@dimen/text_size_12" />
+            <include
+                android:id="@+id/rv_card_attendance"
 
-        <TextView
-            android:id="@+id/tv_tb_rejected"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_rejected"
-            android:drawablePadding="-15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/tab_rejected_leaves"
-            android:textAllCaps="true"
-            android:textColor="@color/blur_tab"
-            android:textSize="@dimen/text_size_12" />
-
-    </LinearLayout>
+                layout="@layout/layout_attendance_card" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_attendance_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lv_attendance_status"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_75dp"
+                android:layout_below="@+id/rv_card_attendance"
+                android:layout_marginStart="@dimen/dimen_01dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginEnd="@dimen/dimen_01dp"
+                android:background="@color/leaves_tab">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_75dp"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/dimen_20dp"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/tv_tb_pending"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/selector_pending_tab"
+                        android:drawablePadding="-15dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/tab_pending_leaves"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black_green"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <TextView
+                        android:id="@+id/tv_tb_approved"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_approved"
+                        android:drawablePadding="-15dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/tab_approved_leaves"
+                        android:textAllCaps="true"
+                        android:textColor="@color/blur_tab"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <TextView
+                        android:id="@+id/tv_tb_rejected"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_rejected"
+                        android:drawablePadding="-15dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/tab_rejected_leaves"
+                        android:textAllCaps="true"
+                        android:textColor="@color/blur_tab"
+                        android:textSize="@dimen/text_size_12" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:paddingBottom="@dimen/dimen_15dp"
+                android:id="@+id/rv_attendance_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/attendance_list_bg" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
