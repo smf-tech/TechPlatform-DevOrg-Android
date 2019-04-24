@@ -11,7 +11,6 @@ public class AppEvents {
 
     private static final String TAG = AppEvents.class.getName();
 
-    @SuppressWarnings("unchecked")
     public static void trackAppEvent(String message) {
         try {
             FirebaseAnalytics firebaseAnalytics = Platform.getInstance().getFirebaseAnalyticsInstance();

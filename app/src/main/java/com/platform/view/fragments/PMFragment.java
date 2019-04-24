@@ -230,7 +230,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             }
 
             for (int index = 0; index < processMap.size(); index++) {
-                if (processMap != null && !TextUtils.isEmpty(processCategoryList.get(index)) &&
+                if (!TextUtils.isEmpty(processCategoryList.get(index)) &&
                         processMap.get(processCategoryList.get(index)) != null) {
 
                     List<ProcessData> processData = processMap.get(processCategoryList.get(index));
@@ -295,11 +295,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.txt_view_all_forms:
-                Util.launchFragment(new FormsFragment(), getContext(),
-                        getString(R.string.forms), true);
-                break;
+        if (v.getId() == R.id.txt_view_all_forms) {
+            Util.launchFragment(new FormsFragment(), getContext(),
+                    getString(R.string.forms), true);
         }
     }
 

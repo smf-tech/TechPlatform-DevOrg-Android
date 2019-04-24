@@ -609,12 +609,10 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case Constants.CAMERA_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showPictureDialog();
-                }
-                break;
+        if (requestCode == Constants.CAMERA_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showPictureDialog();
+            }
         }
     }
 
