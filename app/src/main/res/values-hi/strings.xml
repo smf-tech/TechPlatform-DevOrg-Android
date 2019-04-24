@@ -218,7 +218,6 @@
 
 
     <!--Planner-->
-    <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
 
@@ -258,6 +257,7 @@
     <string name="repeat">दोहराना</string>
     <string name="interval">मध्यान्तर</string>
     <string name="which_days">किन दिनों पर</string>
+    <string name="edit_event">घटना संपादित करें</string>
 
 
     <string name="cl_leaves">CL/SL</string>
@@ -283,4 +283,5 @@
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
+
 </resources>

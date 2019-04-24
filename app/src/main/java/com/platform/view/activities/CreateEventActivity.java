@@ -35,6 +35,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     Event event;
 
     private ImageView ivBackIcon;
+    private ImageView toolbarAction;
     private Spinner spCategory;
     private EditText etTitle;
     private EditText etStartDate;
@@ -58,7 +59,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-        setActionbar(getString(R.string.create_event));
+
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
@@ -89,7 +90,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         rvAttendeesList.setAdapter(addMembersListAdapter);
 
         if(event!=null){
+            setActionbar(getString(R.string.edit_event));
+            btEventSubmit.setText(getString(R.string.btn_submit));
             setAllData();
+            toolbarAction = findViewById(R.id.toolbar_edit_action);
+            toolbarAction.setVisibility(View.VISIBLE);
+            toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
+        } else {
+            setActionbar(getString(R.string.create_event));
         }
 
         setListeners();
