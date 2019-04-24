@@ -1,195 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginStart="0dp"
+    android:layout_marginTop="0dp"
     android:background="@color/lighter_grey"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/dimen_15dp">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_today_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:layout_marginTop="@dimen/dimen_12dp"
+            android:layout_marginRight="@dimen/dimen_15dp"
+            android:textSize="@dimen/text_size_22" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/lighter_grey">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/events_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_225dp"
+                    android:layout_marginStart="@dimen/dimen_25dp"
+                    android:layout_marginTop="@dimen/dimen_32dp"
+                    android:layout_marginEnd="@dimen/dimen_15dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp">
+
+                    <FrameLayout
+                        android:id="@+id/fly_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/tv_today_date"
+                android:id="@+id/tv_event_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_15dp"
-                android:layout_marginTop="@dimen/dimen_12dp"
-                android:layout_marginRight="@dimen/dimen_15dp"
-                android:textSize="@dimen/text_size_22" />
+                android:layout_height="@dimen/dimen_32dp"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:background="@color/planner_label"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingStart="@dimen/dimen_20dp"
+                android:paddingEnd="@dimen/dimen_20dp"
+                android:text="@string/today_events"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
 
-            <RelativeLayout
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lighter_grey">
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:layout_height="wrap_content">
 
-                <FrameLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/tasks_card_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="@dimen/dimen_225dp"
+                    android:layout_marginStart="@dimen/dimen_25dp"
+                    android:layout_marginTop="@dimen/dimen_32dp"
+                    android:layout_marginEnd="@dimen/dimen_15dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"
+                    android:visibility="gone">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/attendance_card_view"
+                    <FrameLayout
+                        android:id="@+id/fly_tasks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <FrameLayout
-                            android:id="@+id/fly_attendance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
-                <TextView
-                    android:id="@+id/tv_attendance_label"
-                    android:layout_width="@dimen/dimen_130dp"
-                    android:layout_height="@dimen/dimen_32dp"
-                    android:layout_marginStart="@dimen/dimen_15dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:background="@color/planner_lable"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:text="@string/mark_attendance"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_14" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_task_label"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_32dp"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:background="@color/planner_label"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingStart="@dimen/dimen_20dp"
+                android:paddingEnd="@dimen/dimen_20dp"
+                android:text="@string/today_tasks"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
 
-            <!--   <RelativeLayout
-                   xmlns:android="http://schemas.android.com/apk/res/android"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:background="@color/lighter_grey">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
-                   <androidx.cardview.widget.CardView
-                       android:id="@+id/events_card_view"
-                       android:layout_width="match_parent"
-                       android:layout_height="@dimen/dimen_225dp"
-                       android:layout_marginStart="@dimen/dimen_25dp"
-                       android:layout_marginTop="@dimen/dimen_32dp"
-                       android:layout_marginEnd="@dimen/dimen_15dp">
-
-                       <FrameLayout
-                           android:id="@+id/fly_events"
-                           android:layout_width="match_parent"
-                           android:layout_height="wrap_content">
-
-                       </FrameLayout>
-                   </androidx.cardview.widget.CardView>
-
-
-               </RelativeLayout>-->
-
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lighter_grey">
+                android:layout_height="wrap_content">
 
-                <FrameLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/attendance_card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/events_card_view"
+                    <FrameLayout
+                        android:id="@+id/fly_attendance"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_225dp"
-                        android:layout_marginStart="@dimen/dimen_25dp"
-                        android:layout_marginTop="@dimen/dimen_32dp"
-                        android:layout_marginEnd="@dimen/dimen_15dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp">
+                        android:layout_height="wrap_content" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
-                        <FrameLayout
-                            android:id="@+id/fly_events"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
+            <TextView
+                android:id="@+id/tv_attendance_label"
+                android:layout_width="@dimen/dimen_130dp"
+                android:layout_height="@dimen/dimen_32dp"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:background="@color/planner_label"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/mark_attendance"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_event_lable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_32dp"
-                    android:layout_marginStart="@dimen/dimen_15dp"
-                    android:layout_marginTop="@dimen/dimen_20dp"
-                    android:background="@color/planner_lable"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/dimen_20dp"
-                    android:paddingEnd="@dimen/dimen_20dp"
-                    android:text="@string/today_events"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_14" />
-            </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/leave_card_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lighter_grey">
+                android:layout_height="wrap_content">
 
                 <FrameLayout
+                    android:id="@+id/fly_leave"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/tasks_card_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_225dp"
-                        android:layout_marginStart="@dimen/dimen_25dp"
-                        android:layout_marginTop="@dimen/dimen_32dp"
-                        android:layout_marginEnd="@dimen/dimen_15dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp"
-                        android:visibility="gone">
-
-                        <FrameLayout
-                            android:id="@+id/fly_tasks"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                        </FrameLayout>
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_task_lable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_32dp"
-                    android:layout_marginStart="@dimen/dimen_15dp"
-                    android:layout_marginTop="@dimen/dimen_20dp"
-                    android:background="@color/planner_lable"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/dimen_20dp"
-                    android:paddingEnd="@dimen/dimen_20dp"
-                    android:text="@string/today_tasks"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_14" />
-            </RelativeLayout>
-
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/leave_card_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <FrameLayout
-                            android:id="@+id/fly_leave"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
-
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+                    android:layout_height="wrap_content" />
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+    </LinearLayout>
+</ScrollView>

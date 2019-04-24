@@ -27,10 +27,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="@string/events"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold"
-                    android:text="@string/events"/>
+                    android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
 
             <ImageView
@@ -65,7 +65,7 @@
         android:layout_margin="@dimen/dimen_05dp"
         android:visibility="visible">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,6 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/calendarView"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/content_description"
             android:gravity="center"
             android:paddingLeft="@dimen/dimen_05dp"
             android:paddingTop="@dimen/dimen_05dp"
@@ -165,7 +166,7 @@
             android:src="@android:drawable/ic_input_add"
             android:tint="@color/white"
             app:backgroundTint="@color/tab_selector"
-            app:fabSize="mini" />
+            app:fabSize="mini"
+            tools:ignore="RelativeOverlap" />
     </RelativeLayout>
-
 </RelativeLayout>
