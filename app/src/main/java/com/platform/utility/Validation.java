@@ -1,9 +1,9 @@
 package com.platform.utility;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.forms.Validator;
 
@@ -17,15 +17,16 @@ import java.util.regex.Pattern;
 
 public class Validation {
 
-    public static String editTextMinMaxValueValidation(String fieldName, String fieldValue, Validator validator) {
+    public static String editTextMinMaxValueValidation(String fieldName, String fieldValue,
+                                                       Validator validator, Context context) {
+
         if (validator.getMinValue() != null) {
             double fieldIntValue = Double.parseDouble(fieldValue);
             if ((fieldIntValue <= validator.getMinValue())) {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " "
-                            + Platform.getInstance().getString(R.string.value_should_not_be_less_than)
+                    return fieldName + " " + context.getString(R.string.value_should_not_be_less_than)
                             + " " + validator.getMinValue();
                 }
             } else if (validator.getMaxValue() != null) {
@@ -33,8 +34,7 @@ public class Validation {
                     if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                         return validator.getText().getLocaleValue();
                     } else {
-                        return fieldName + " "
-                                + Platform.getInstance().getString(R.string.value_should_not_be_greater_than)
+                        return fieldName + " " + context.getString(R.string.value_should_not_be_greater_than)
                                 + " " + validator.getMaxValue();
                     }
                 }
@@ -43,14 +43,15 @@ public class Validation {
         return "";
     }
 
-    public static String editTextMinMaxLengthValidation(String fieldName, String fieldValue, Validator validator) {
+    public static String editTextMinMaxLengthValidation(String fieldName, String fieldValue,
+                                                        Validator validator, Context context) {
+
         if (validator.getMinLength() != null) {
             if ((fieldValue.length() < validator.getMinLength())) {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " "
-                            + Platform.getInstance().getString(R.string.length_should_not_be_less_than)
+                    return fieldName + " " + context.getString(R.string.length_should_not_be_less_than)
                             + " " + validator.getMinLength();
                 }
             }
@@ -59,8 +60,7 @@ public class Validation {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " "
-                            + Platform.getInstance().getString(R.string.length_should_not_be_greater_than)
+                    return fieldName + " " + context.getString(R.string.length_should_not_be_greater_than)
                             + " " + validator.getMaxLength();
                 }
             }
@@ -69,17 +69,19 @@ public class Validation {
         return "";
     }
 
-    public static String editTextMaxLengthValidation(String fieldName, String fieldValue, Integer maxLength) {
+    public static String editTextMaxLengthValidation(String fieldName, String fieldValue,
+                                                     Integer maxLength, Context context) {
+
         if (maxLength != null && (fieldValue.length() < maxLength)) {
-            return fieldName + " "
-                    + Platform.getInstance().getString(R.string.length_should_not_be_less_than)
+            return fieldName + " " + context.getString(R.string.length_should_not_be_less_than)
                     + " " + maxLength;
         }
         return "";
     }
 
     public static String expressionValidation(String fieldName, String field1Value, String field2Value,
-                                              String field3Value, String inputType, Validator validator) {
+                                              String field3Value, String inputType, Validator validator,
+                                              Context context) {
 
         if (validator != null && !TextUtils.isEmpty(validator.getExpression())) {
             switch (inputType) {
@@ -97,7 +99,7 @@ public class Validation {
                                     !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                                 return validator.getText().getLocaleValue();
                             } else {
-                                return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                                return fieldName + " " + context.getString(R.string.no_proper_format);
                             }
                         } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS)
                                 && date1.compareTo(date2) > 0) {
@@ -105,7 +107,7 @@ public class Validation {
                             if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                                 return validator.getText().getLocaleValue();
                             } else {
-                                return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                                return fieldName + " " + context.getString(R.string.no_proper_format);
                             }
                         }
                     } catch (ParseException e) {
@@ -121,20 +123,26 @@ public class Validation {
                     double field1DoubleValue = Double.parseDouble(field1Value);
                     double field2DoubleValue = Double.parseDouble(field2Value);
                     double field3DoubleValue = 0;
+
                     if (!TextUtils.isEmpty(field3Value)) {
                         field3DoubleValue = Double.parseDouble(field3Value);
                     }
-                    if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS) && field1DoubleValue < field2DoubleValue) {
+
+                    if (validator.getExpression().contains(Constants.Expression.GREATER_THAN_EQUALS)
+                            && field1DoubleValue < field2DoubleValue) {
+
                         if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                             return validator.getText().getLocaleValue();
                         } else {
-                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                            return fieldName + " " + context.getString(R.string.no_proper_format);
                         }
-                    } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS) && field1DoubleValue > field2DoubleValue) {
+                    } else if (validator.getExpression().contains(Constants.Expression.LESS_THAN_EQUALS)
+                            && field1DoubleValue > field2DoubleValue) {
+
                         if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                             return validator.getText().getLocaleValue();
                         } else {
-                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                            return fieldName + " " + context.getString(R.string.no_proper_format);
                         }
                     } else if (validator.getExpression().contains(Constants.Expression.EQUALS) &&
                             validator.getExpression().contains(Constants.Expression.SUBTRACTION) &&
@@ -143,7 +151,7 @@ public class Validation {
                         if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                             return validator.getText().getLocaleValue();
                         } else {
-                            return fieldName + " " + Platform.getInstance().getString(R.string.no_proper_format);
+                            return fieldName + " " + context.getString(R.string.no_proper_format);
                         }
                     }
                     break;
@@ -153,13 +161,15 @@ public class Validation {
         return "";
     }
 
-    public static String regexValidation(String fieldName, String fieldValue, Validator validator) {
+    public static String regexValidation(String fieldName, String fieldValue,
+                                         Validator validator, Context context) {
+
         if (validator != null && !TextUtils.isEmpty(validator.getRegex())) {
             if (!Pattern.compile(validator.getRegex()).matcher(fieldValue).matches()) {
                 if (validator.getText() != null && !TextUtils.isEmpty(validator.getText().getLocaleValue())) {
                     return validator.getText().getLocaleValue();
                 } else {
-                    return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+                    return fieldName + " " + context.getString(R.string.cant_be_empty);
                 }
             }
         }
@@ -167,24 +177,29 @@ public class Validation {
         return "";
     }
 
-    public static String requiredValidation(String fieldName, String fieldValue, boolean isRequired) {
+    public static String requiredValidation(String fieldName, String fieldValue,
+                                            boolean isRequired, Context context) {
+
         if (isRequired && TextUtils.isEmpty(fieldValue)) {
-            return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+            return fieldName + " " + context.getString(R.string.cant_be_empty);
         }
 
         return "";
     }
 
-    public static String matrixDynamicRequiredValidation(String fieldName, int columnsSize, List<HashMap<String, String>> valuesList) {
+    public static String matrixDynamicRequiredValidation(String fieldName, int columnsSize,
+                                                         List<HashMap<String, String>> valuesList,
+                                                         Context context) {
+
         if (valuesList != null && !valuesList.isEmpty()) {
             for (HashMap<String, String> valuesMap :
                     valuesList) {
                 if (valuesMap.size() != columnsSize) {
-                    return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+                    return fieldName + " " + context.getString(R.string.cant_be_empty);
                 }
             }
         } else {
-            return fieldName + " " + Platform.getInstance().getString(R.string.cant_be_empty);
+            return fieldName + " " + context.getString(R.string.cant_be_empty);
         }
 
         return "";

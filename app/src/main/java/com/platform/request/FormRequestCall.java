@@ -35,9 +35,9 @@ public class FormRequestCall {
         this.listener = listener;
     }
 
-    public void createFormResponse(final HashMap<String, String> requestObjectMap, HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap,
-                                   final List<Map<String, String>> uploadedImageUrlList,
-                                   String postUrl, final String formId, final String oId, String callType) {
+    public void createFormResponse(final HashMap<String, String> requestObjectMap, HashMap<String,
+            List<HashMap<String, String>>> matrixDynamicValuesMap, final List<Map<String,
+            String>> uploadedImageUrlList, String postUrl, final String formId, final String oId, String callType) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, matrixDynamicValuesMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
@@ -71,9 +71,9 @@ public class FormRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void updateFormResponse(final HashMap<String, String> requestObjectMap, HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap,
-                                   final List<Map<String, String>> uploadedImageUrlList, String postUrl,
-                                   final String formId, String oid, String callType) {
+    public void updateFormResponse(final HashMap<String, String> requestObjectMap, HashMap<String,
+            List<HashMap<String, String>>> matrixDynamicValuesMap, final List<Map<String,
+            String>> uploadedImageUrlList, String postUrl, final String formId, String oid, String callType) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, matrixDynamicValuesMap, uploadedImageUrlList);
         Response.Listener<JSONObject> createFormResponseListener = response -> {
@@ -109,14 +109,16 @@ public class FormRequestCall {
     }
 
     public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex,
-                                final FormData formData) {
+                                final int columnIndex, final FormData formData, final String url,
+                                HashMap<String, String> matrixDynamicInnerMap) {
 
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getChoicesByUrl - Resp: " + res);
-                    listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, formData);
+                    listener.onChoicesPopulated(res, elements, pageIndex, elementIndex, columnIndex,
+                            formData, matrixDynamicInnerMap);
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Exception in getChoicesByUrl()");
@@ -130,7 +132,7 @@ public class FormRequestCall {
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
-                elements.getChoicesByUrl().getUrl(),
+                url,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -214,8 +216,8 @@ public class FormRequestCall {
     }
 
     @NonNull
-    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap,
-                                      final List<Map<String, String>> imageUrls) {
+    private JsonObject getFormRequest(HashMap<String, String> requestObjectMap, HashMap<String,
+            List<HashMap<String, String>>> matrixDynamicValuesMap, final List<Map<String, String>> imageUrls) {
 
         JsonObject requestObject = new JsonObject();
         for (Map.Entry<String, String> entry : requestObjectMap.entrySet()) {

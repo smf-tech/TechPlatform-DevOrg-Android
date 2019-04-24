@@ -24,12 +24,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormDataTaskListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.Column;
 import com.platform.models.forms.Components;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.Form;
@@ -96,12 +98,24 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private String mFormName;
     private GPSTracker gpsTracker;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
+    private HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        gpsTracker = new GPSTracker(getActivity());
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            if (!gpsTracker.canGetLocation()) {
+                gpsTracker.showSettingsAlert();
+            }
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        gpsTracker = new GPSTracker(getActivity());
         formFragmentView = inflater.inflate(R.layout.fragment_gen_form, container, false);
         return formFragmentView;
     }
@@ -159,22 +173,37 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-            if (!gpsTracker.canGetLocation()) {
-                gpsTracker.showSettingsAlert();
-            }
-        }
-    }
-
     @SuppressLint("StaticFieldLeak")
     private class GetDataFromDBTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             showChoicesByUrl(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Elements.class));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideProgressBar();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressBar();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetDataFromDBTaskMD extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            showChoicesByUrlMD(params[0],
+                    PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
+                    matrixDynamicInnerMap);
             return null;
         }
 
@@ -298,13 +327,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
+                        addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId,
+                                mIsInEditMode, mIsPartiallySaved));
+
                         if (elements.getChoicesByUrl() == null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
                             formComponentCreator.updateDropDownValues(elements, elements.getChoices());
                         } else if (elements.getChoicesByUrl() != null) {
-                            addViewToMainContainer(formComponentCreator.dropDownTemplate(elements, formId));
                             //Online
                             if (Util.isConnected(getContext())) {
                                 //Opened submitted/partially or offline saved form
@@ -361,7 +391,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(elements));
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(), elements,
+                                mIsInEditMode, mIsPartiallySaved, formPresenter));
                         break;
                 }
             }
@@ -384,7 +415,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
 
                         formPresenter.getChoicesByUrl(pages.get(pageIndex).getElements().get(elementIndex),
-                                pageIndex, elementIndex, formModel.getData());
+                                pageIndex, elementIndex, -1, formModel.getData(),
+                                pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl(),
+                                new HashMap<>());
                         break;
                     }
                 }
@@ -459,6 +492,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
+    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+        this.matrixDynamicInnerMap = matrixDynamicInnerMap;
+        new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column));
+    }
+
     private void showChoicesByUrl(String result, Elements elements) {
         List<Choice> choiceValues = new ArrayList<>();
         try {
@@ -514,6 +552,65 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
+        }
+    }
+
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+        List<Choice> choiceValues = new ArrayList<>();
+        try {
+            LocaleData text;
+            String value;
+
+            JsonObject outerObj = PlatformGson.getPlatformGsonInstance().fromJson(result, JsonObject.class);
+            JsonArray dataArray = outerObj.getAsJsonArray(Constants.RESPONSE_DATA);
+            for (int index = 0; index < dataArray.size(); index++) {
+                JsonObject innerObj = dataArray.get(index).getAsJsonObject();
+                if (column.getChoicesByUrl() != null && !TextUtils.isEmpty(column.getChoicesByUrl().getTitleName())) {
+                    if (column.getChoicesByUrl().getTitleName().contains(Constants.KEY_SEPARATOR)) {
+                        StringTokenizer titleTokenizer
+                                = new StringTokenizer(column.getChoicesByUrl().getTitleName(), Constants.KEY_SEPARATOR);
+                        StringTokenizer valueTokenizer
+                                = new StringTokenizer(column.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+                        JsonObject obj = innerObj.getAsJsonObject(titleTokenizer.nextToken());
+
+                        String title = titleTokenizer.nextToken();
+                        try {
+                            text = PlatformGson.getPlatformGsonInstance()
+                                    .fromJson(obj.get(title).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(obj.get(title).getAsString());
+                        }
+                        //Ignore first value of valueToken
+                        valueTokenizer.nextToken();
+                        value = obj.get(valueTokenizer.nextToken()).getAsString();
+                    } else {
+                        try {
+                            text = PlatformGson.getPlatformGsonInstance()
+                                    .fromJson(innerObj.get(column.getChoicesByUrl().getTitleName()).getAsString(), LocaleData.class);
+                        } catch (Exception e) {
+                            text = new LocaleData(innerObj.get(column.getChoicesByUrl().getTitleName()).getAsString());
+                        }
+                        value = innerObj.get(column.getChoicesByUrl().getValueName()).getAsString();
+                    }
+
+                    Choice choice = new Choice();
+                    choice.setText(text);
+                    choice.setValue(value);
+
+                    if (!choiceValues.contains(choice)) {
+                        choiceValues.add(choice);
+                    }
+                }
+            }
+
+            Collections.sort(choiceValues,
+                    (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in showChoicesByUrlMD()" + result);
+        }
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> formComponentCreator
+                    .updateMatrixDynamicDropDownValues(column, choiceValues, matrixDynamicInnerMap));
         }
     }
 
@@ -609,15 +706,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         result.set_id(UUID.randomUUID().toString());
 
         result.setFormId(formData.getId());
-        result.setFormCategory(formData.getCategory().getName().getLocaleValue());
-        result.setFormName(formData.getName().getLocaleValue());
+        result.setFormCategoryLocale(formData.getCategory().getName());
+        result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
         result.setCreatedAt(Util.getCurrentTimeStamp());
 
         if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName().getLocaleValue();
-            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
-                result.setFormCategory(category);
+            LocaleData category = formData.getCategory().getName();
+            if (category != null) {
+                result.setFormCategoryLocale(category);
             }
         }
 
@@ -716,7 +813,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         } else {
             result = new FormResult();
             result.setFormId(formData.getId());
-            result.setFormName(formData.getName().getLocaleValue());
+            result.setFormNameLocale(formData.getName());
             result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
@@ -724,9 +821,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
-            String category = formData.getCategory().getName().getLocaleValue();
-            if (formData.getCategory() != null && !TextUtils.isEmpty(category)) {
-                result.setFormCategory(category);
+            LocaleData category = formData.getCategory().getName();
+            if (category != null) {
+                result.setFormCategoryLocale(category);
             }
         }
 
@@ -875,8 +972,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             HashMap<String, String> valuesMap = new HashMap<>();
 
                             for (int columnIndex = 0; columnIndex < element.getColumns().size(); columnIndex++) {
+                                JsonElement jsonElement = jsonObject.get(element.getColumns().get(columnIndex).getName());
                                 valuesMap.put(element.getColumns().get(columnIndex).getName(),
-                                        jsonObject.get(element.getColumns().get(columnIndex).getName()).getAsString());
+                                        jsonElement != null ? jsonElement.getAsString() : "");
                             }
                             valuesList.add(valuesMap);
                         }

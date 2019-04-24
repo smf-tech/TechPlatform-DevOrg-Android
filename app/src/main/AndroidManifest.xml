@@ -81,6 +81,7 @@
             android:name=".view.activities.TMUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+<<<<<<< HEAD
         <activity android:name=".view.activities.PlannerDetailActivity" />
         <activity
             android:name=".view.activities.CreateEventActivity"
@@ -91,6 +92,12 @@
         <activity
             android:name=".view.activities.AddMembersListActivity"
             android:windowSoftInputMode="adjustNothing" />
+=======
+        <activity
+            android:name=".view.activities.GeneralActionsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+>>>>>>> origin/Calendar_sk
 
         <receiver
             android:name=".receivers.SmsReceiver"

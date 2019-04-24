@@ -55,6 +55,12 @@ public class Elements {
     @SerializedName("columns")
     @Expose
     private List<Column> columns;
+    @SerializedName("keyName")
+    @Expose
+    private String keyName;
+    @SerializedName("keyDuplicationError")
+    @Expose
+    private LocaleData keyDuplicationError;
 
     public List<HashMap<String, String>> getAnswerArray() {
         return mAnswerArray;
@@ -182,6 +188,22 @@ public class Elements {
 
     public void setRows(Integer rows) {
         this.rows = rows;
+    }
+
+    public String getKeyName() {
+        return keyName;
+    }
+
+    public void setKeyName(String keyName) {
+        this.keyName = keyName;
+    }
+
+    public LocaleData getKeyDuplicationError() {
+        return keyDuplicationError;
+    }
+
+    public void setKeyDuplicationError(LocaleData keyDuplicationError) {
+        this.keyDuplicationError = keyDuplicationError;
     }
 }
 

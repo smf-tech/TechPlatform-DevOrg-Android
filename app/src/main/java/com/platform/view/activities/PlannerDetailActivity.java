@@ -7,6 +7,7 @@ import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.EventsPlannerFragment;
 import com.platform.view.fragments.TasksPlannerFragment;
+import com.platform.view.fragments.LeavePlannerFragment;
 
 public class PlannerDetailActivity extends AppCompatActivity {
 
@@ -39,7 +40,11 @@ public class PlannerDetailActivity extends AppCompatActivity {
                     .replace(R.id.fly_events_list, tasksPlannerFragment, tasksPlannerFragment.getClass()
                             .getSimpleName()).commit();
         } else if (toOpen.equals("LEAVES")) {
-
+            Fragment leavePlannerFragment = new LeavePlannerFragment();
+            leavePlannerFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fly_events_list, leavePlannerFragment, leavePlannerFragment.getClass()
+                            .getSimpleName()).addToBackStack(null).commit();
         }
 
 

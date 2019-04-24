@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.content.res.Resources;
 
 import android.os.Bundle;
 import android.text.format.DateFormat;

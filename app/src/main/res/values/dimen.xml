@@ -15,6 +15,7 @@
     <dimen name="dimen_28dp">28dp</dimen>
     <dimen name="dimen_30dp">30dp</dimen>
     <dimen name="dimen_32dp">32dp</dimen>
+    <dimen name="dimen_36dp">36dp</dimen>
     <dimen name="dimen_35dp">35dp</dimen>
     <dimen name="dimen_40dp">40dp</dimen>
     <dimen name="dimen_45dp">45dp</dimen>
@@ -23,8 +24,10 @@
     <dimen name="dimen_55dp">55dp</dimen>
     <dimen name="dimen_60dp">60dp</dimen>
     <dimen name="dimen_70dp">70dp</dimen>
+    <dimen name="dimen_75dp">75dp</dimen>
     <dimen name="dimen_80dp">80dp</dimen>
-    <!--<dimen name="dimen_87dp">87dp</dimen>-->
+
+    <dimen name="dimen_90dp">90dp</dimen>    <!--<dimen name="dimen_87dp">87dp</dimen>-->
     <dimen name="dimen_100dp">100dp</dimen>
     <dimen name="dimen_120dp">120dp</dimen>
     <dimen name="dimen_130dp">130dp</dimen>
@@ -33,7 +36,7 @@
     <dimen name="dimen_225dp">200dp</dimen>
 
     <dimen name="circle_size">64dp</dimen>
-
+    <dimen name="dimen_65dp">65dp</dimen>
     <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
@@ -44,5 +47,8 @@
     <dimen name="text_size_20">20sp</dimen>
     <!--<dimen name="text_size_21">21sp</dimen>-->
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_36">36sp</dimen>
+    <dimen name="text_size_40">40sp</dimen>
     <dimen name="form_item_status_indicator_width">6dp</dimen>
 </resources>

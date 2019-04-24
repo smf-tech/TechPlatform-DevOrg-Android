@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginStart="@dimen/dimen_15dp"
+    android:layout_marginEnd="@dimen/dimen_15dp"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_holiday_date"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/holiday_text"
+        android:layout_alignParentStart="true"
+        android:text="14 Apr"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:layout_marginBottom="@dimen/dimen_15dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_height="@dimen/dimen_20dp" />
+    <TextView
+        android:id="@+id/tv_holiday_desc"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/holiday_text"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:layout_marginBottom="@dimen/dimen_15dp"
+        android:text="Ganapati"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_height="@dimen/dimen_20dp" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/list_divider"
+        android:layout_below="@+id/tv_holiday_date"
+        android:layout_height="1dp"/>
+    
+
+</RelativeLayout>

@@ -33,6 +33,10 @@ public class LocaleData implements Serializable {
         this.hi = hi;
     }
 
+    public String getDefaultValue() {
+        return en;
+    }
+
     public String getLocaleValue() {
         if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
             if (!TextUtils.isEmpty(mr)) {
