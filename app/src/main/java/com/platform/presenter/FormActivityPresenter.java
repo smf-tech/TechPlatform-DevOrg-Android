@@ -286,30 +286,27 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success,
                                 dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
-                        switch (callType) {
-                            case Constants.ONLINE_SUBMIT_FORM_TYPE:
+                        if (Constants.ONLINE_SUBMIT_FORM_TYPE.equals(callType)) {
+                            String countStr = DatabaseManager.getDBInstance(
+                                    Objects.requireNonNull(formFragment.get().getContext()))
+                                    .getProcessSubmitCount(formId);
 
-                                String countStr = DatabaseManager.getDBInstance(
+                            if (!TextUtils.isEmpty(countStr)) {
+                                int count = Integer.parseInt(countStr);
+                                DatabaseManager.getDBInstance(
                                         Objects.requireNonNull(formFragment.get().getContext()))
-                                        .getProcessSubmitCount(formId);
+                                        .updateProcessSubmitCount(formId, String.valueOf(++count));
+                            }
 
-                                if (!TextUtils.isEmpty(countStr)) {
-                                    int count = Integer.parseInt(countStr);
-                                    DatabaseManager.getDBInstance(
-                                            Objects.requireNonNull(formFragment.get().getContext()))
-                                            .updateProcessSubmitCount(formId, String.valueOf(++count));
-                                }
-
-                                Intent intent = new Intent();
-                                if (oid != null) {
-                                    intent.setAction(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
-                                }
-                                intent.setAction(SyncAdapterUtils.EVENT_FORM_SUBMITTED);
-                                Context context = formFragment.get().getContext();
-                                if (context != null) {
-                                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                                }
-                                break;
+                            Intent intent = new Intent();
+                            if (oid != null) {
+                                intent.setAction(SyncAdapterUtils.PARTIAL_FORM_REMOVED);
+                            }
+                            intent.setAction(SyncAdapterUtils.EVENT_FORM_SUBMITTED);
+                            Context context = formFragment.get().getContext();
+                            if (context != null) {
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                            }
                         }
                     }
 

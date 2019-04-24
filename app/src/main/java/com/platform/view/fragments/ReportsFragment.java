@@ -164,11 +164,9 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.txt_view_all_reports:
-                Util.launchFragment(new ReportsFragment(), getContext(),
-                        getString(R.string.reports), true);
-                break;
+        if (view.getId() == R.id.txt_view_all_reports) {
+            Util.launchFragment(new ReportsFragment(), getContext(),
+                    getString(R.string.reports), true);
         }
     }
 }

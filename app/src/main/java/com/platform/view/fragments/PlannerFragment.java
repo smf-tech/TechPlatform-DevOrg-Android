@@ -102,5 +102,4 @@ public class PlannerFragment extends Fragment {
         }
         super.onDestroy();
     }
-
 }

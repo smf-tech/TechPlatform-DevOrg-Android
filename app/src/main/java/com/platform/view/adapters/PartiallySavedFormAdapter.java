@@ -60,7 +60,6 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
         return new ViewHolder(v);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 

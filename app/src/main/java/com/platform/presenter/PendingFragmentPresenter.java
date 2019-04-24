@@ -69,7 +69,6 @@ public class PendingFragmentPresenter implements TMPendingRequestCallListener {
         }
     }
 
-    @SuppressWarnings("ThrowableNotThrown")
     @Override
     public void onErrorListener(VolleyError volleyError) {
 

@@ -111,10 +111,8 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_back_action:
-                finish();
-                break;
+        if (view.getId() == R.id.toolbar_back_action) {
+            finish();
         }
     }
 
