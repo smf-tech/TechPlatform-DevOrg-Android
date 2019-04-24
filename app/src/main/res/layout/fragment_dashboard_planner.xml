@@ -39,6 +39,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/attendance_card_view"
+                        android:background="@drawable/bg_cardview_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
