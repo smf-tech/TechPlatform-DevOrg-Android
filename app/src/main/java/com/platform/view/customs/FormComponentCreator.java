@@ -199,11 +199,11 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     public void updateMatrixDynamicDropDownValues(Column column, List<Choice> choiceValues,
-                                                  HashMap<String, String> matrixDynamicInnerMap) {
+                                                  HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
 
         if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
             matrixDynamics.get(0).updateDropDownValues(column, choiceValues,
-                    matrixDynamicInnerMap, mIsInEditMode, mIsPartiallySaved);
+                    matrixDynamicInnerMap, mIsInEditMode, mIsPartiallySaved, rowIndex);
         }
     }
 
@@ -386,8 +386,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         this.mIsInEditMode = isInEditMode;
         this.mIsPartiallySaved = isPartiallySaved;
 
-        MatrixDynamicTemplate template = new MatrixDynamicTemplate(formData, elements, fragment.get(),
-                this, mIsInEditMode, mIsPartiallySaved, formActivityPresenter);
+        MatrixDynamicTemplate template = new MatrixDynamicTemplate(fragment.get(), formData, elements,
+                formActivityPresenter, mIsInEditMode, mIsPartiallySaved, this);
 
         matrixDynamics.add(template);
 
@@ -730,6 +730,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         dependencyMap.clear();
         dependencyMap = new HashMap<>();
+
+        matrixDynamics.clear();
+        matrixDynamics = new ArrayList<>();
     }
 
     private void onAddImageClick(final View view, final String name) {
@@ -769,9 +772,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     @Override
-    public void showChoicesByUrlOffline(String response, Column column, HashMap<String,
+    public void showChoicesByUrlOffline(String response, Column column, long rowIndex, HashMap<String,
             String> matrixDynamicInnerMap) {
-        fragment.get().showChoicesByUrlAsyncMD(response, column, matrixDynamicInnerMap);
+        fragment.get().showChoicesByUrlAsyncMD(response, column, matrixDynamicInnerMap, rowIndex);
     }
 
     @Override
