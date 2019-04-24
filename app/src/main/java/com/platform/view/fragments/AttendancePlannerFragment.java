@@ -47,11 +47,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private TextView tvClickApproved;
     private TextView tvClickRejected;
 
-    private CardView lvAttendaceStatus;
+    private LinearLayout lvAttendaceStatus;
     private RecyclerView rvAttendanceList;
     private int tabClicked =-1;
 
-    private CardView lyCalender;
+    private RelativeLayout lyCalender;
    // private RelativeLayout lyWorkingHours;
     private LinearLayout lyCheckInOutDashboard;
     private TextView tvAttendanceDetails;
