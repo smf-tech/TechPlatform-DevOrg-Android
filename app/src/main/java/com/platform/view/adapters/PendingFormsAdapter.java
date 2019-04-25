@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 @SuppressWarnings({"CanBeFinal", "unused"})
 public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapter.TMViewHolder> {
 
-    @SuppressWarnings("FieldCanBeLocal")
     private Context context;
     private List<FormResult> savedFormList;
     private PMFragment mFragment;

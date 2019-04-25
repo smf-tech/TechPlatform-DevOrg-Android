@@ -558,46 +558,42 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                             for (Validator validator :
                                     element.getColumns().get(columnIndex).getValidators()) {
                                 if (!TextUtils.isEmpty(validator.getType())) {
-                                    switch (validator.getType()) {
-                                        case Constants.ValidationType.REGEX_TYPE:
-                                            if (!TextUtils.isEmpty(value)) {
+                                    if (Constants.ValidationType.REGEX_TYPE.equals(validator.getType())) {
+                                        if (!TextUtils.isEmpty(value)) {
 
-                                                errorMsg = Validation.regexValidation(
-                                                        element.getColumns().get(columnIndex)
-                                                                .getTitle().getLocaleValue(),
-                                                        value, validator, fragment.get().getContext());
+                                            errorMsg = Validation.regexValidation(
+                                                    element.getColumns().get(columnIndex)
+                                                            .getTitle().getLocaleValue(),
+                                                    value, validator, fragment.get().getContext());
 
-                                                if (!TextUtils.isEmpty(errorMsg)) {
-                                                    fragment.get().setErrorMsg(errorMsg);
-                                                    return false;
-                                                }
+                                            if (!TextUtils.isEmpty(errorMsg)) {
+                                                fragment.get().setErrorMsg(errorMsg);
+                                                return false;
                                             }
-                                            break;
+                                        }
+                                    } else {
+                                        if (!TextUtils.isEmpty(value)) {
 
-                                        default:
-                                            if (!TextUtils.isEmpty(value)) {
+                                            errorMsg = Validation.editTextMinMaxValueValidation(
+                                                    element.getColumns().get(columnIndex)
+                                                            .getTitle().getLocaleValue(),
+                                                    value, validator, fragment.get().getContext());
 
-                                                errorMsg = Validation.editTextMinMaxValueValidation(
-                                                        element.getColumns().get(columnIndex)
-                                                                .getTitle().getLocaleValue(),
-                                                        value, validator, fragment.get().getContext());
-
-                                                if (!TextUtils.isEmpty(errorMsg)) {
-                                                    fragment.get().setErrorMsg(errorMsg);
-                                                    return false;
-                                                }
-
-                                                errorMsg = Validation.editTextMinMaxLengthValidation(
-                                                        element.getColumns().get(columnIndex)
-                                                                .getTitle().getLocaleValue(),
-                                                        value, validator, fragment.get().getContext());
-
-                                                if (!TextUtils.isEmpty(errorMsg)) {
-                                                    fragment.get().setErrorMsg(errorMsg);
-                                                    return false;
-                                                }
+                                            if (!TextUtils.isEmpty(errorMsg)) {
+                                                fragment.get().setErrorMsg(errorMsg);
+                                                return false;
                                             }
-                                            break;
+
+                                            errorMsg = Validation.editTextMinMaxLengthValidation(
+                                                    element.getColumns().get(columnIndex)
+                                                            .getTitle().getLocaleValue(),
+                                                    value, validator, fragment.get().getContext());
+
+                                            if (!TextUtils.isEmpty(errorMsg)) {
+                                                fragment.get().setErrorMsg(errorMsg);
+                                                return false;
+                                            }
+                                        }
                                     }
                                 }
                             }

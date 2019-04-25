@@ -52,7 +52,7 @@
     <color name="submitted_form_color">#47A713</color>
 
     <!--<color name="profile">#396377</color>-->
-    <color name="planner_lable">#7198AA</color>
+    <color name="planner_label">#7198AA</color>
     <color name="list_category">#F5F5F5</color>
     <color name="freq_used_form_color">#4A9BD6</color>
     <color name="shep_dotted_line">#707070</color>
@@ -71,4 +71,10 @@
     <color name="leave_form_text_color">#3785D1</color>
 
     <color name="form_category_selected">#D2E1F8</color>
+    <color name="card_view_border">#C1C4C6</color>
+    <color name="leaves_count_view">#CBCBCB</color>
+    <color name="attendance_list_bg">#FAFAFA</color>
+    <color name="attendance_text_color">#7E7E7E</color>
+    <color name="attendance_list_item">#656565</color>
+
 </resources>

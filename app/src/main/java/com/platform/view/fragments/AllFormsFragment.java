@@ -97,10 +97,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     @Override
                     public void onReceive(final Context context, final Intent intent) {
                         String action = Objects.requireNonNull(intent.getAction());
-                        switch (action) {
-                            case EVENT_FORM_SUBMITTED:
-                                getProcessData();
-                                break;
+                        if (EVENT_FORM_SUBMITTED.equals(action)) {
+                            getProcessData();
                         }
                     }
                 }, filter);

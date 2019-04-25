@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
-public class TMActivity extends BaseActivity implements View.OnClickListener {
+public class TMActivity extends BaseActivity {
 
     private List<Template> processAllList = new ArrayList<>();
 
@@ -65,14 +65,5 @@ public class TMActivity extends BaseActivity implements View.OnClickListener {
 
         ImageView img_back = findViewById(R.id.toolbar_back_action);
         img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_back_action:
-                break;
-        }
     }
 }

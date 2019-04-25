@@ -24,7 +24,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private String remoteMessageId = "";

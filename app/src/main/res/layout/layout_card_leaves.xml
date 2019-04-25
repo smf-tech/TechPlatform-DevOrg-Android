@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_175dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="@dimen/dimen_20dp"
-    android:layout_marginTop="@dimen/dimen_25dp"
-    android:layout_marginEnd="@dimen/dimen_10dp"
-    android:background="@drawable/cardview_shadow">
+    android:layout_marginStart="@dimen/dimen_25dp"
+    android:layout_marginTop="@dimen/dimen_30dp"
+    android:layout_marginEnd="@dimen/dimen_15dp"
+    android:layout_marginBottom="@dimen/dimen_10dp"
+    android:background="@drawable/bg_cardview_box"
+    android:elevation="@dimen/dimen_03dp">
 
     <TextView
         android:id="@+id/tv_no_leaves_balance"
-        android:text="@string/tv_no_leaves_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:text="@string/tv_no_leaves_balance"
+        android:visibility="gone" />
 
 
     <RelativeLayout
@@ -63,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/rl_total_leaves_v"
             android:baselineAligned="false"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -122,13 +125,13 @@
                     android:textColor="@color/leave_type"
                     android:textSize="@dimen/text_size_12" />
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <TextView
@@ -155,7 +158,6 @@
 
 
             <LinearLayout
-
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -226,18 +228,18 @@
         android:textSize="@dimen/text_size_16" />
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_leaves"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/dimen_20dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:src="@android:drawable/ic_input_add"
-            android:tint="@color/white"
-            app:backgroundTint="@color/tab_selector"
-            app:fabSize="mini" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_leaves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginBottom="@dimen/dimen_15dp"
+        android:elevation="@dimen/dimen_03dp"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/white"
+        app:backgroundTint="@color/tab_selector"
+        app:fabSize="mini" />
 
-    </RelativeLayout>
-
+</RelativeLayout>

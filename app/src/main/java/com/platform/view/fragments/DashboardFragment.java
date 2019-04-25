@@ -135,7 +135,6 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
         DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
         for (Modules modules : tabNames) {
