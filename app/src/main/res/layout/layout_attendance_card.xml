@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:elevation="@dimen/dimen_03dp">
 
     <TextView
         android:id="@+id/tv_lab_total_hours"
@@ -15,7 +16,8 @@
         android:layout_toStartOf="@id/tv_total_hours"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/total_hours"
-        android:textSize="@dimen/text_size_14" />
+        android:textSize="@dimen/text_size_14"
+        tools:ignore="RelativeOverlap" />
 
     <TextView
         android:id="@+id/tv_total_hours"
@@ -24,6 +26,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
         android:fontFamily="@font/roboto_regular"
         android:text="4:2 Hours"
         android:textSize="@dimen/text_size_14"

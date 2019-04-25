@@ -16,14 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_01dp"
-            android:layout_marginTop="@dimen/dimen_03dp"
             android:layout_marginEnd="@dimen/dimen_01dp"
             android:background="@color/white"
             android:elevation="@dimen/dimen_03dp"
             android:paddingTop="@dimen/dimen_10dp"
             android:visibility="visible">
 
-            <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
                 android:paddingLeft="@dimen/dimen_05dp"
                 android:paddingTop="@dimen/dimen_05dp"
                 android:paddingRight="@dimen/dimen_05dp"
-                android:src="@drawable/ic_down_arrow_light_blue" />
+                android:src="@drawable/ic_down_arrow_light_blue"
+                android:contentDescription="@string/content_description" />
         </RelativeLayout>
 
 
@@ -52,7 +53,7 @@
             android:layout_height="@dimen/dimen_75dp"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/dimen_01dp"
-            android:layout_marginTop="@dimen/dimen_05dp"
+            android:layout_marginTop="@dimen/dimen_01dp"
             android:layout_marginEnd="@dimen/dimen_01dp"
             android:background="@color/leaves_tab"
             android:paddingTop="@dimen/dimen_20dp"
@@ -106,6 +107,7 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/dimen_05dp"
             android:id="@+id/rv_applied_leaves_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -123,6 +125,7 @@
         android:layout_marginBottom="@dimen/dimen_25dp"
         android:background="@drawable/bg_circle_grey"
         android:scaleType="centerInside"
+        android:contentDescription="@string/content_description"
         android:src="@drawable/ic_plus" />
 
 </FrameLayout>

@@ -102,31 +102,20 @@
                 android:text="@string/mark_attendance" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lighter_grey">
+            android:layout_height="wrap_content">
 
-            <FrameLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/leave_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/leave_card_view"
-                    style="@style/PlannerCard"
-                    android:layout_height="170dp">
-
-                    <FrameLayout
-                        android:id="@+id/fly_leave"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </androidx.cardview.widget.CardView>
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/tv_leave_label"
-                style="@style/CardHeader"
-                android:text="@string/leave_details" />
-        </RelativeLayout>
+                <FrameLayout
+                    android:id="@+id/fly_leave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
     </LinearLayout>
 </ScrollView>

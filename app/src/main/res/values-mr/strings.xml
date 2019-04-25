@@ -273,14 +273,18 @@
     <string name="tab_approved_leaves">मंजूर</string>
     <string name="tab_rejected_leaves">नाकारले</string>
 
-    <string name="category">Category</string>
+    <string name="category">वर्ग</string>
     <string name="full_day">पूर्ण दिवस</string>
     <string name="half_day">अर्धा दिवस</string>
     <string name="start_date">प्रारंभ तारीख</string>
     <string name="end_date">शेवटची तारीख</string>
     <string name="reason">कारण</string>
-    <string name="check_in">Check In</string>
-    <string name="check_out">Check Out</string>
+    <string name="check_in">चेक इन</string>
+    <string name="check_out">चेक आउट</string>
     <string name="holiday_list_title">सुट्टीची यादी 2019</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sure_to_delete">आपणास खात्री आहे की आपण ते हटवू इच्छिता ?</string>
+    <string name="delete">हटवा</string>
+    <string name="leave_apply_msg1">एकदा आपल्याला आपल्या व्यवस्थापकाकडून मंजुरी मिळाल्यावर आपण सुट्टी शिल्लक पाहू शकाल</string>
+    <string name="leave_apply_msg">आपण %1$s वरून %2$s ते %3$s साठी अर्ज केला</string>
+
 </resources>
