@@ -55,7 +55,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
             tvInfoLabel.setVisibility(View.VISIBLE);
         } else {
             toolbarAction.setVisibility(View.VISIBLE);
-            toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
+            toolbarAction.setImageResource(R.drawable.ic_check_white);
             tvInfoLabel.setVisibility(View.GONE);
             lyAttendedTab.setVisibility(View.VISIBLE);
             TextView tvAttended = findViewById(R.id.tv_attended);

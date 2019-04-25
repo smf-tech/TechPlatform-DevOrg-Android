@@ -23,12 +23,17 @@
             android:layout_height="wrap_content">
 
             <!--Category-->
+            <TextView
+                android:id="@+id/tv_category"
+                style="@style/FormLabel"
+                android:text="@string/category" />
             <Spinner
                 android:id="@+id/sp_category"
+                android:layout_below="@+id/tv_category"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp"
-                android:layout_marginTop="@dimen/dimen_10dp"/>
+                android:layout_marginTop="@dimen/dimen_05dp"/>
 
             <!--Title-->
             <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +64,7 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:inputType="date"
-                    android:drawableEnd="@drawable/ic_add"
+                    android:drawableEnd="@drawable/ic_calendar_ev"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
