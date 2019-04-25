@@ -22,6 +22,7 @@
         android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_marginTop="@dimen/dimen_20dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
+        android:paddingBottom="@dimen/dimen_10dp"
         android:background="@color/white">
 
         <RelativeLayout

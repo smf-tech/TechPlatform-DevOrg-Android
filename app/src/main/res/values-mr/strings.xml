@@ -282,9 +282,6 @@
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="holiday_list_title">सुट्टीची यादी 2019</string>
-<<<<<<< HEAD
     <string name="edit_event">कार्यक्रम संपादित करा</string>
-=======
     <string name="hello_blank_fragment">Hello blank fragment</string>
->>>>>>> ea63a8efcc124967e2ebe657891f980d02dd0a4b
 </resources>
