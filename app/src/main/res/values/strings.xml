@@ -216,6 +216,9 @@
     <string name="gps_popup_title">Please turn on GPS/LOCATION.</string>
     <string name="msg_enable_gps">GPS is not enabled. Do you want to enable it?</string>
 
+    <string name="select_date_title">Select Date</string>
+    <string name="select_time_title">Select Time</string>
+
     <!--Planner-->
     <string name="tasks">Tasks</string>
     <string name="leave">Leave</string>

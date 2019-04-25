@@ -216,6 +216,9 @@
     <string name="gps_popup_title">कृपया GPS / LOCATION चालू करें</string>
     <string name="msg_enable_gps">GPS सक्षम नहीं है, क्या आप इसे सक्षम करना चाहते हैं?</string>
 
+    <string name="select_date_title">तारीख़ चुनें</string>
+    <string name="select_time_title">समय चुनें</string>
+
     <!--Planner-->
     <string name="events">आयोजन</string>
     <string name="tasks">कार्य</string>
