@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context="com.platform.view.fragments.AttendancePlannerFragment">
 
-
     <RelativeLayout
         android:id="@+id/ly_calender"
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
         android:elevation="@dimen/dimen_03dp"
         android:visibility="visible">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,13 +33,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/calendarView"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/content_description"
             android:gravity="center"
             android:paddingLeft="@dimen/dimen_05dp"
             android:paddingTop="@dimen/dimen_05dp"
             android:paddingRight="@dimen/dimen_05dp"
             android:src="@drawable/ic_down_arrow_light_blue" />
     </RelativeLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -54,7 +53,6 @@
             <include
                 android:id="@+id/rv_card_attendance"
                 layout="@layout/layout_attendance_card" />
-
 
             <LinearLayout
                 android:id="@+id/lv_attendance_status"
@@ -112,17 +110,16 @@
                     android:textAllCaps="true"
                     android:textColor="@color/blur_tab"
                     android:textSize="@dimen/text_size_12" />
-
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_attendance_list"
-                android:layout_marginTop="@dimen/dimen_02dp"
-                android:paddingTop="@dimen/dimen_05dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dimen_02dp"
                 android:layout_weight="1"
-                android:background="@color/attendance_list_bg" />
+                android:background="@color/attendance_list_bg"
+                android:paddingTop="@dimen/dimen_05dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
