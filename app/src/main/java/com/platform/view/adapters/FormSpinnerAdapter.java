@@ -2,31 +2,38 @@ package com.platform.view.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.models.forms.Choice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
+public class FormSpinnerAdapter extends ArrayAdapter<Choice> implements Filterable {
 
     private final Context context;
-    private final List<Choice> objects;
+    private List<Choice> originalObjects;
+    private List<Choice> filteredObjects;
+    private Filter filter;
 
     public FormSpinnerAdapter(@NonNull Context context, int resourceId,
                               @NonNull List<Choice> objects) {
 
         super(context, resourceId, objects);
         this.context = context;
-        this.objects = objects;
+        this.originalObjects = objects;
+        this.filteredObjects = objects;
     }
 
     @NonNull
@@ -44,7 +51,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.text.setText(objects.get(position).getText().getLocaleValue());
+        viewHolder.text.setText(filteredObjects.get(position).getText().getLocaleValue());
 
         ViewGroup.LayoutParams p = convertView.getLayoutParams();
         p.height = 100; // set the height
@@ -67,7 +74,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.text.setText(objects.get(position).getText().getLocaleValue());
+        viewHolder.text.setText(filteredObjects.get(position).getText().getLocaleValue());
 
         ViewGroup.LayoutParams p = convertView.getLayoutParams();
         p.height = 100; // set the height
@@ -84,13 +91,13 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
     @Nullable
     @Override
     public Choice getItem(int position) {
-        return objects.get(position);
+        return filteredObjects.get(position);
     }
 
     @Override
     public int getCount() {
-        if (objects != null && !objects.isEmpty()) {
-            return objects.size();
+        if (filteredObjects != null && !filteredObjects.isEmpty()) {
+            return filteredObjects.size();
         } else {
             return 0;
         }
@@ -99,4 +106,51 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> {
     private class ViewHolder {
         private TextView text;
     }
+
+    private class ChoiceFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String keyword = "";
+            if (constraint != null && constraint.toString().length() > 0) {
+                keyword = constraint.toString().toLowerCase();
+            }
+            FilterResults results = new FilterResults();
+            if (!TextUtils.isEmpty(keyword)) {
+                final List<Choice> list = originalObjects;
+                int count = list.size();
+                final ArrayList<Choice> finalList = new ArrayList<>(count);
+                Choice filterableChoice;
+                for (int index = 0; index < count; index++) {
+                    filterableChoice = list.get(index);
+                    if (filterableChoice.getText().getLocaleValue().toLowerCase().contains(keyword)) {
+                        finalList.add(filterableChoice);
+                    }
+                }
+                results.values = finalList;
+                results.count = finalList.size();
+            } else {
+                synchronized (this) {
+                    results.values = originalObjects;
+                    results.count = originalObjects.size();
+                }
+            }
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredObjects = (ArrayList<Choice>) results.values;
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null)
+            filter = new ChoiceFilter();
+
+        return filter;
+    }
+
 }

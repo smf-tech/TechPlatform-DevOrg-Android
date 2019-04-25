@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -99,7 +98,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private String mFormName;
     private GPSTracker gpsTracker;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
-    private HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -204,7 +202,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         protected String doInBackground(String... params) {
             showChoicesByUrlMD(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
-                    matrixDynamicInnerMap, Long.parseLong(params[2]));
+                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2], HashMap.class), Long.parseLong(params[3]));
             return null;
         }
 
@@ -494,12 +492,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            // Do something after 1500 ms
-            this.matrixDynamicInnerMap = matrixDynamicInnerMap;
-            new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column), String.valueOf(rowIndex));
-        }, 1500);
+        new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column),
+                PlatformGson.getPlatformGsonInstance().toJson(matrixDynamicInnerMap),
+                String.valueOf(rowIndex));
     }
 
     private void showChoicesByUrl(String result, Elements elements) {
@@ -615,7 +610,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             ch.setText(ld);
             ch.setValue(ld.getLocaleValue());
 
-            if (!choiceValues.contains(ch)) {
+            if (!TextUtils.isEmpty(matrixDynamicInnerMap.get(column.getName())) && !choiceValues.contains(ch)) {
                 choiceValues.add(ch);
             }
 
@@ -663,7 +658,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             strLong = gpsTracker.getLongitude();
                         }
 
-                        //Util.showToast("LAT : " + strLat + " LONG:" + strLong, this);
                         HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
                         requestObject.put(Constants.Location.LATITUDE, strLat);
                         requestObject.put(Constants.Location.LONGITUDE, strLong);
