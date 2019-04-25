@@ -51,7 +51,7 @@
             <Button
                 android:id="@+id/bt_check_in"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_40dp"
                 android:background="@drawable/bg_button_switch"
                 android:text="@string/check_in"
                 android:textAllCaps="false"
@@ -80,7 +80,7 @@
             <Button
                 android:id="@+id/bt_checkout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_40dp"
                 android:background="@drawable/bg_button_switch"
                 android:text="@string/check_out"
                 android:textAllCaps="false"

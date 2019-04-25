@@ -87,12 +87,12 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/attendance_card_view"
                     style="@style/PlannerCard"
-                    android:layout_height="180dp">
+                    android:layout_height="wrap_content">
 
                     <FrameLayout
                         android:id="@+id/fly_attendance"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="180dp" />
                 </androidx.cardview.widget.CardView>
             </FrameLayout>
 
@@ -102,20 +102,32 @@
                 android:text="@string/mark_attendance" />
         </RelativeLayout>
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/lighter_grey">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leave_card_view"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <FrameLayout
-                    android:id="@+id/fly_leave"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </androidx.cardview.widget.CardView>
-        </FrameLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/leave_card_view"
+                    style="@style/PlannerCard"
+                    android:layout_height="180dp">
+
+                    <FrameLayout
+                        android:id="@+id/fly_leave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_leaves_label"
+                style="@style/CardHeader"
+                android:text="@string/leave_details" />
+        </RelativeLayout>
+
     </LinearLayout>
 </ScrollView>
