@@ -88,7 +88,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
        // lyWorkingHours = plannerView.findViewById(R.id.ly_working_hours);
-        lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_checkin_out_dashboard);
+        lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_check_in_out_dashboard);
         lvAttendaceStatus = plannerView.findViewById(R.id.lv_attendance_status);
         rvAttendanceList = plannerView.findViewById(R.id.rv_attendance_list);
         tvClickPending = plannerView.findViewById(R.id.tv_tb_pending);
@@ -97,7 +97,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         tvClickApproved.setOnClickListener(this);
         tvClickRejected = plannerView.findViewById(R.id.tv_tb_rejected);
         tvClickRejected.setOnClickListener(this);
-        btCheckin = plannerView.findViewById(R.id.bt_checkin);
+        btCheckin = plannerView.findViewById(R.id.bt_check_in);
         btCheckin.setOnClickListener(this);
         btCheckout = plannerView.findViewById(R.id.bt_checkout);
         btCheckout.setOnClickListener(this);
@@ -154,7 +154,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         Date d = new Date();
         CharSequence time  = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
         switch (v.getId()){
-            case R.id.bt_checkin:
+            case R.id.bt_check_in:
                 tvCheckInTime.setText("@9:30 AM");
                 //noinspection deprecation
                 btCheckin.setBackground(Objects.requireNonNull(getActivity()).getResources().getDrawable(R.drawable.bg_grey_box_with_border));
