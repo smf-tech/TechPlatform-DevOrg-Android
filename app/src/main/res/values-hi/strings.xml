@@ -283,5 +283,6 @@
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
+    <string name="same_day">Same date for each month</string>
 
 </resources>
