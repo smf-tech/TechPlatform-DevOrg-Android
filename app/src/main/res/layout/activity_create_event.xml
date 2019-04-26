@@ -27,13 +27,14 @@
                 android:id="@+id/tv_category"
                 style="@style/FormLabel"
                 android:text="@string/category" />
+
             <Spinner
                 android:id="@+id/sp_category"
                 android:layout_below="@+id/tv_category"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp"
-                android:layout_marginTop="@dimen/dimen_05dp"/>
+                android:layout_marginTop="@dimen/dimen_05dp" />
 
             <!--Title-->
             <com.google.android.material.textfield.TextInputLayout
@@ -84,7 +85,7 @@
                     android:focusable="false"
                     android:inputType="date"
                     android:drawableEnd="@drawable/ic_calendar_ev"
-                    tools:ignore="Autofill"/>
+                    tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -166,8 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/medium_blue"
-                    android:layout_gravity="center"
-                    />
+                    android:layout_gravity="center" />
 
             </LinearLayout>
 
@@ -179,7 +179,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <!--Description-->
             <com.google.android.material.textfield.TextInputLayout
@@ -216,8 +216,7 @@
                 android:id="@+id/tily_add_members"
                 style="@style/RegistrationTextInputLayout"
                 android:layout_below="@+id/tly_address"
-                app:hintTextAppearance="@style/TextInputLayoutHint"
-                >
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/et_add_members"

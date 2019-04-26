@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.MatrixDynamicDropDownValueSelectListener;
@@ -23,8 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
-import androidx.core.content.ContextCompat;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListener {
@@ -185,28 +185,28 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
 
         if (this.rowIndex == 0 && rowIndex == 1) {
 //            if (isInEditMode && !isPartiallySaved) {
-                try {
-                    if (isMachineCodeSpinner(valueList)) {
-                        FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
-                        HashMap<String, String> formData = mParent.getFormData(this.rowIndex);
-                        if (formData != null) {
-                            if (!TextUtils.isEmpty(formData.get("machine_code"))) {
-                                Choice ch = new Choice();
-                                LocaleData ld = new LocaleData(formData.get("machine_code"));
-                                ch.setText(ld);
+            try {
+                if (isMachineCodeSpinner(valueList)) {
+                    FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
+                    HashMap<String, String> formData = mParent.getFormData(this.rowIndex);
+                    if (formData != null) {
+                        if (!TextUtils.isEmpty(formData.get("machine_code"))) {
+                            Choice ch = new Choice();
+                            LocaleData ld = new LocaleData(formData.get("machine_code"));
+                            ch.setText(ld);
 
-                                this.valueList.add(ch);
-                                valueList.add(ch);
-                                adapter.clear();
-                                adapter.addAll(valueList);
-                                adapter.notifyDataSetChanged();
-                                this.setSelectedItem(valueList.size() - 1);
-                            }
+                            this.valueList.add(ch);
+                            valueList.add(ch);
+                            adapter.clear();
+                            adapter.addAll(valueList);
+                            adapter.notifyDataSetChanged();
+                            this.setSelectedItem(valueList.size() - 1);
                         }
                     }
-                } catch (Exception e) {
-                    Log.e("TAG", "EXCEPTION_IN_SET_DATA_2");
                 }
+            } catch (Exception e) {
+                Log.e("TAG", "EXCEPTION_IN_SET_DATA_2");
+            }
 //            }
         }
     }

@@ -1,13 +1,13 @@
 package com.platform.models.forms;
 
+import androidx.room.ColumnInfo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.models.LocaleData;
 
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.room.ColumnInfo;
 
 @SuppressWarnings("unused")
 public class Elements {

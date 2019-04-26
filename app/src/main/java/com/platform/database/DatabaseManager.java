@@ -3,6 +3,11 @@ package com.platform.database;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
@@ -17,11 +22,6 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.room.Room;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class DatabaseManager {
     private static final String TAG = DatabaseManager.class.getSimpleName();

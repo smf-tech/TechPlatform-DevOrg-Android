@@ -8,17 +8,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.AttendancePlannerFragment;
 import com.platform.view.fragments.HolidayListFragment;
 import com.platform.view.fragments.LeaveApplyFragment;
 import com.platform.view.fragments.LeaveDetailsFragment;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
 /**

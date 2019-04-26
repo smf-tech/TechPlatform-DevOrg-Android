@@ -1,7 +1,5 @@
 package com.platform.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.events.Member;
@@ -26,7 +26,6 @@ import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.AddMemberFilerActivityPresenter;
-import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AddMemberFilerActivity extends AppCompatActivity implements ProfileTaskListener,
+public class AddMembersFilterActivity extends AppCompatActivity implements ProfileTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener,
         MultiSelectSpinner.MultiSpinnerListener {
 
@@ -138,16 +137,15 @@ public class AddMemberFilerActivity extends AppCompatActivity implements Profile
 
             case R.id.bt_apply_filters:
                 ArrayList<Member> membersList = new ArrayList<>();
-                membersList.add(new Member("1", "Sagar Mahajan", "DM",true));
-                membersList.add(new Member("2", "Kishor Shevkar", "TC",false));
-                membersList.add(new Member("3", "Jagruti Devare", "MT",true));
-                membersList.add(new Member("4", "Sachin Kakade", "FA",false));
+                membersList.add(new Member("1", "Sagar Mahajan", "DM", true,true));
+                membersList.add(new Member("2", "Kishor Shevkar", "TC", false,false));
+                membersList.add(new Member("3", "Jagruti Devare", "MT", true,true));
+                membersList.add(new Member("4", "Sachin Kakade", "FA", false,false));
                 Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-                intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);
-                intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,membersList);
+                intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, true);
+                intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, membersList);
                 this.startActivity(intentAddMembersListActivity);
                 break;
-
 
 
         }
@@ -304,7 +302,7 @@ public class AddMemberFilerActivity extends AppCompatActivity implements Profile
             org.add(organizations.get(i).getOrgName());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMemberFilerActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMembersFilterActivity.this,
                 android.R.layout.simple_spinner_item, org);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spOrganization.setAdapter(adapter);
@@ -329,7 +327,7 @@ public class AddMemberFilerActivity extends AppCompatActivity implements Profile
             this.roles.clear();
             this.roles.addAll(organizationRoles);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMemberFilerActivity.this,
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMembersFilterActivity.this,
                     android.R.layout.simple_spinner_item, roles);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spRole.setAdapter(adapter);
@@ -366,7 +364,7 @@ public class AddMemberFilerActivity extends AppCompatActivity implements Profile
                         this.states.add(location.getState());
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMemberFilerActivity.this,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMembersFilterActivity.this,
                             android.R.layout.simple_spinner_item, stateNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spState.setAdapter(adapter);

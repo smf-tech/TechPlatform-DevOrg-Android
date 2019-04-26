@@ -1,5 +1,7 @@
 package com.platform.listeners;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.VolleyError;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.FormData;
@@ -7,8 +9,6 @@ import com.platform.models.forms.FormData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.Nullable;
 
 public interface FormRequestCallListener {
 

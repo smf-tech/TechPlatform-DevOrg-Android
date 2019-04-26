@@ -2,16 +2,15 @@ package com.platform.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.platform.R;
 import com.platform.view.adapters.HolidayListAdapter;
@@ -26,8 +25,9 @@ public class HolidayListFragment extends Fragment {
     }
 
     public static HolidayListFragment newInstance() {
-        return  new HolidayListFragment();
+        return new HolidayListFragment();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,7 @@ public class HolidayListFragment extends Fragment {
         ArrayList<String> leaves = new ArrayList<>();
         leaves.add("1");
         leaves.add("2");
-        HolidayListAdapter adapter = new HolidayListAdapter(getActivity(),leaves);
+        HolidayListAdapter adapter = new HolidayListAdapter(getActivity(), leaves);
         leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         leavesList.setAdapter(adapter);

@@ -52,14 +52,14 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_info_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ly_attended_tab"
-        android:text="@string/add_members_screen_msg"
-        android:gravity="center"
-        android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_info_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ly_attended_tab"
+            android:text="@string/add_members_screen_msg"
+            android:gravity="center"
+            android:textStyle="bold" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
@@ -68,8 +68,7 @@
             app:queryHint="Search Here"
             android:background="@drawable/bg_blue_box"
             style="@style/RegistrationEditTextLayout"
-            android:iconifiedByDefault="false">
-        </androidx.appcompat.widget.SearchView>
+            android:iconifiedByDefault="false"></androidx.appcompat.widget.SearchView>
 
         <RelativeLayout
             android:id="@+id/ly_select_all"
@@ -81,7 +80,7 @@
                 android:id="@+id/cb_select_all_members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -98,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_below="@+id/ly_select_all"/>
+            android:layout_below="@+id/ly_select_all" />
 
         <Button
             android:id="@+id/bt_apply_filters"
@@ -109,7 +108,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_22"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 

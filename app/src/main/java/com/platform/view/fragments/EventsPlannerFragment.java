@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -90,18 +89,18 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         sortedEventsList = new ArrayList<>();
 
         ArrayList<Member> membersList = new ArrayList<>();
-        membersList.add(new Member("1", "Sagar Mahajan", "DM", true));
-        membersList.add(new Member("2", "Kishor Shevkar", "TC", false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT", true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA", false));
+        membersList.add(new Member("1", "Sagar Mahajan", "DM", true, true));
+        membersList.add(new Member("2", "Kishor Shevkar", "TC", false, false));
+        membersList.add(new Member("3", "Jagruti Devare", "MT", true,true));
+        membersList.add(new Member("4", "Sachin Kakade", "FA", false,false));
 
-        eventsList.add(new Event("1","Meeting", "Title1", "22/04/2019","10:00 am",
-                "11:00 am","-","test","wagoli,pune.","sachin",
-                "1234",membersList));
+        eventsList.add(new Event("1", "Meeting", "Title1", "22/04/2019", "10:00 am",
+                "11:00 am", "-", "test", "wagoli,pune.", "sachin",
+                "1234", membersList));
 
-        eventsList.add(new Event("2","Event" ,"Title2", "22/04/2019","10:00 am",
-                "11:00 am", "-","test","hadpsir,pune.","sagar",
-                "1235",membersList));
+        eventsList.add(new Event("2", "Event", "Title2", "22/04/2019", "10:00 am",
+                "11:00 am", "-", "test", "hadpsir,pune.", "sagar",
+                "1235", membersList));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

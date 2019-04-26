@@ -7,17 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 public class TMUserApprovalsFragment extends Fragment {
 
@@ -36,7 +36,7 @@ public class TMUserApprovalsFragment extends Fragment {
             ((HomeActivity) context).setActionBarTitle(title);
             ((HomeActivity) context).setSyncButtonVisibility(false);
 
-            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }

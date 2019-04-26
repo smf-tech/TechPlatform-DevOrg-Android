@@ -5,18 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.events.Member;
 import com.platform.view.activities.AddMembersListActivity;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAdapter.ViewHolder> {
 
@@ -47,7 +45,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.tvMemberDesignation.setText(member.getRole());
         holder.cbMemberSelect.setChecked(membersList.get(position).getMemberSelected());
 
-        if (membersList.get(position).getMemberSelected()) {
+        if (membersList.get(position).getMemberAttended()) {
             holder.cbMemberSelect.setChecked(true);
         } else {
             holder.cbMemberSelect.setChecked(false);
@@ -59,8 +57,8 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         return membersList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-//        RelativeLayout lyMain;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        //        RelativeLayout lyMain;
         TextView tvMemberName;
         TextView tvMemberDesignation;
         CheckBox cbMemberSelect;
@@ -73,7 +71,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             cbMemberSelect = itemView.findViewById(R.id.cb_select_member);
 //            lyMain = itemView.findViewById(R.id.ly_main);
 
-            if(!isCheckVisibil){
+            if (!isCheckVisibil) {
                 cbMemberSelect.setVisibility(View.GONE);
             }
 

@@ -9,18 +9,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.utility.Constants;
-import com.platform.view.activities.AddMemberFilerActivity;
 import com.platform.view.activities.EventDetailActivity;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder>{
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<Event> eventsList;
@@ -47,15 +46,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventTime.setText(event.getStarTime());
         holder.tvEventAddress.setText(event.getAddress());
         holder.tvEventOwner.setText(event.getTital());
-        if(type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)){
+        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
 
         }
         holder.lyEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
-                intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL,event);
-                intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN,type);
+                intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL, event);
+                intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN, type);
                 mContext.startActivity(intentEventDetailActivity);
             }
         });
@@ -66,7 +65,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         return eventsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout lyEvent;
         TextView tvEventTitle;
         TextView tvEventTime;

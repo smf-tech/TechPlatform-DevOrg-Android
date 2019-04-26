@@ -3,18 +3,17 @@ package com.platform.view.fragments;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.platform.R;
 
@@ -93,13 +92,14 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void setUIData(){
+    private void setUIData() {
         tvCLSLLeavesCount.setText("2");
         tvPaidLeavesCount.setText("4");
         tvUnPaidLeavesCount.setText("12");
         tvCOffLeavesCount.setText("2");
         tvTotalLeavesCount.setText("20");
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -147,7 +147,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                btnStartDate.setText(day+"-"+month+"-"+year);
+                                btnStartDate.setText(day + "-" + month + "-" + year);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
@@ -160,7 +160,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                btnEndDate.setText(day+"-"+month+"-"+year);
+                                btnEndDate.setText(day + "-" + month + "-" + year);
                             }
                         }, year1, month1, day1);
                 endDatePickerDialog.show();

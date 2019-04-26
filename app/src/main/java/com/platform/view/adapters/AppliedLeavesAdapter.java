@@ -1,36 +1,18 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.platform.R;
-import com.platform.models.LocaleData;
-import com.platform.models.pm.ProcessData;
-import com.platform.models.reports.ReportData;
-import com.platform.syncAdapter.SyncAdapterUtils;
-import com.platform.utility.AppEvents;
-import com.platform.utility.Util;
-import com.platform.view.fragments.CompletedFormsFragment;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.platform.R;
+
+import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
 public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdapter.ViewHolder> {

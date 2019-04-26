@@ -3,7 +3,7 @@ package com.platform.models.events;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Event implements Serializable{
+public class Event implements Serializable {
     private String id;
     private String category;
     private String tital;

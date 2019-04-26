@@ -4,12 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.platform.utility.LocaleManager;
 import com.platform.utility.Util;
 
 import java.util.Locale;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 

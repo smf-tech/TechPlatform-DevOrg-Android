@@ -6,10 +6,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import androidx.appcompat.app.AlertDialog;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AlertDialog;
 
 @SuppressWarnings("unused")
 public class MultiSelectSpinner extends androidx.appcompat.widget.AppCompatSpinner implements

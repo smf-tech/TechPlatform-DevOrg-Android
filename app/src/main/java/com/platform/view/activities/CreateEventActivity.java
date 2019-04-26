@@ -1,12 +1,5 @@
 package com.platform.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
@@ -28,12 +24,11 @@ import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AddMembersListAdapter addMembersListAdapter;
-    ArrayList<Member> membersList =new ArrayList<Member>();
+    ArrayList<Member> membersList = new ArrayList<Member>();
     Event event;
 
     private ImageView ivBackIcon;
@@ -86,7 +81,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         btRepeat.setText("Never");
 
         // Task Module UI changes
-        if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             tlyEndDate = findViewById(R.id.tly_end_date);
             tlyEndDate.setVisibility(View.VISIBLE);
             lyRepeat = findViewById(R.id.ly_repeat);
@@ -95,19 +90,19 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             tlyAddress.setVisibility(View.GONE);
         }
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                 R.array.category_types,android.R.layout.simple_spinner_item);
+                R.array.category_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList,false);
+        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
 
-        if(event!=null){
-            if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+        if (event != null) {
+            if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
-            }else{
+            } else {
                 setActionbar(getString(R.string.edit_event));
             }
             btEventSubmit.setText(getString(R.string.btn_submit));
@@ -116,10 +111,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             toolbarAction.setVisibility(View.VISIBLE);
             toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
         } else {
-            if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.create_task));
                 btEventSubmit.setText(getString(R.string.create_task));
-            }else{
+            } else {
                 setActionbar(getString(R.string.create_event));
             }
         }
@@ -179,12 +174,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_end_time));
                 break;
             case R.id.et_add_members:
-                Intent intentAddMemberFilerActivity = new Intent(this, AddMemberFilerActivity.class);
+                Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
                 this.startActivity(intentAddMemberFilerActivity);
                 break;
             case R.id.bt_repeat:
                 Intent intentRepeatEventActivity = new Intent(this, RepeatEventActivity.class);
-                this.startActivityForResult(intentRepeatEventActivity,001);
+                this.startActivityForResult(intentRepeatEventActivity, 001);
                 break;
             case R.id.bt_event_submit:
 

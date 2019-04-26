@@ -3,13 +3,6 @@ package com.platform.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +10,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.AppliedLeavesAdapter;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class LeaveDetailsFragment extends Fragment implements View.OnClickListener,OnDateSelectedListener {
+public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, OnDateSelectedListener {
 
     private ImageView toolBarMenu;
     private RecyclerView leavesList;
@@ -41,8 +40,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private TextView tvClickPending;
     private TextView tvClickApproved;
     private TextView tvClickRejected;
-    private int tabClicked =-1;
-    private MaterialCalendarView calendarView ;
+    private int tabClicked = -1;
+    private MaterialCalendarView calendarView;
     private ImageView tvCalendarMode;
     boolean isMonth = true;
 
@@ -116,7 +115,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                Toast.makeText(getActivity(),"Month Changed:"+date,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Month Changed:" + date, Toast.LENGTH_SHORT).show();
             }
         });
         isMonth = !isMonth;
@@ -147,7 +146,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.tv_tb_pending:
 
-                if(tabClicked != 1) {
+                if (tabClicked != 1) {
                     tabClicked = 1;
                     tvClickPending.setTextColor(getResources().getColor(R.color.black_green));
                     tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
@@ -155,7 +154,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 }
                 break;
             case R.id.tv_tb_approved:
-                if(tabClicked != 2) {
+                if (tabClicked != 2) {
                     tabClicked = 2;
                     tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
                     tvClickApproved.setTextColor(getResources().getColor(R.color.black_green));
@@ -163,7 +162,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 }
                 break;
             case R.id.tv_tb_rejected:
-                if(tabClicked != 3) {
+                if (tabClicked != 3) {
                     tabClicked = 3;
                     tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
                     tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
@@ -186,7 +185,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
-        if(isMonth){
+        if (isMonth) {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
@@ -227,6 +226,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView, @NonNull CalendarDay calendarDay, boolean b) {
-        Toast.makeText(getActivity(),"date:"+calendarDay,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
     }
 }
