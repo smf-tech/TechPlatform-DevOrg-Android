@@ -12,6 +12,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.browser.customtabs.CustomTabsIntent;
+
 import com.platform.R;
 import com.platform.models.reports.ReportData;
 import com.platform.utility.AppEvents;
@@ -20,8 +22,6 @@ import com.platform.utility.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import androidx.browser.customtabs.CustomTabsIntent;
 
 @SuppressWarnings("CanBeFinal")
 public class ReportsAdapter extends BaseExpandableListAdapter {

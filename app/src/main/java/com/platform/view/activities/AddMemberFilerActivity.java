@@ -1,7 +1,5 @@
 package com.platform.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.profile.Jurisdiction;
@@ -25,7 +25,6 @@ import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.AddMemberFilerActivityPresenter;
-import com.platform.presenter.ProfileActivityPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;

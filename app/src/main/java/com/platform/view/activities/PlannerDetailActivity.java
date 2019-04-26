@@ -1,13 +1,15 @@
 package com.platform.view.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import android.os.Bundle;
+
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.EventsPlannerFragment;
-import com.platform.view.fragments.TasksPlannerFragment;
 import com.platform.view.fragments.LeavePlannerFragment;
+import com.platform.view.fragments.TasksPlannerFragment;
 
 public class PlannerDetailActivity extends AppCompatActivity {
 

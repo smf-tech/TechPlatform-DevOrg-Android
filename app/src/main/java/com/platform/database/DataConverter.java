@@ -1,5 +1,7 @@
 package com.platform.database;
 
+import androidx.room.TypeConverter;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.platform.models.LocaleData;
@@ -10,8 +12,6 @@ import com.platform.models.reports.ReportCategory;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
-
-import androidx.room.TypeConverter;
 
 @SuppressWarnings("unused")
 public class DataConverter implements Serializable {

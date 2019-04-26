@@ -9,16 +9,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.utility.Constants;
-import com.platform.view.activities.AddMemberFilerActivity;
 import com.platform.view.activities.EventDetailActivity;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder>{
 

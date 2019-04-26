@@ -1,5 +1,11 @@
 package com.platform.models.forms;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.database.DataConverter;
@@ -10,12 +16,6 @@ import com.platform.models.common.Microservice;
 import com.platform.models.common.Project;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 @SuppressWarnings("unused")
 @androidx.room.Entity

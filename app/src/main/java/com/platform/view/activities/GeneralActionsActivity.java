@@ -1,12 +1,16 @@
 package com.platform.view.activities;
 
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.platform.R;
 import com.platform.utility.Constants;
@@ -15,18 +19,11 @@ import com.platform.view.fragments.HolidayListFragment;
 import com.platform.view.fragments.LeaveApplyFragment;
 import com.platform.view.fragments.LeaveDetailsFragment;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-
 /**
  * A class for handling the fragment switching.
  * This class will mainly be used for deciding <b>WHICH</b> fragment of the 'General Actions' tab should be invoked.
  */
-public class GeneralActionsActivity extends BaseActivity implements
-        View.OnClickListener {
+public class GeneralActionsActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * Debug log tag.
@@ -37,7 +34,6 @@ public class GeneralActionsActivity extends BaseActivity implements
      * Application fragment manager.
      */
     private FragmentManager fManager;
-
 
     private Fragment fragment;
 
@@ -61,16 +57,17 @@ public class GeneralActionsActivity extends BaseActivity implements
              * */
             String switchToFragment = data.getString("switch_fragments") != null
                     ? data.getString("switch_fragments") : "null";
+
             String title = data.getString("title") != null
                     ? data.getString("title") : "";
             Log.d(strTAG, "switchToFragment " + switchToFragment);
+
             TextView toolBar = findViewById(R.id.toolbar_title);
             ImageView toolBarMenu = findViewById(R.id.toolbar_edit_action);
             toolBar.setText(title);
 
             ImageView toolBarBack = findViewById(R.id.toolbar_back_action);
             toolBarBack.setOnClickListener(this);
-
 
             if (!TextUtils.isEmpty(switchToFragment)) {
 
@@ -90,6 +87,7 @@ public class GeneralActionsActivity extends BaseActivity implements
                         fragment.setArguments(data);
                         openFragment();
                         break;
+
                     case "LeaveApplyFragment":
                         fragment = new LeaveApplyFragment();
 
@@ -111,33 +109,28 @@ public class GeneralActionsActivity extends BaseActivity implements
         }
     }
 
-
     private void openFragment() {
         // Begin transaction.
         FragmentTransaction fTransaction = fManager.beginTransaction();
-
         fTransaction.replace(R.id.general_actions_fragment, fragment).addToBackStack(null)
                 .commit();
     }
 
-
     @Override
     public void onBackPressed() {
         if (shouldHandleBackPress()) {
-            Fragment fragment = fManager.getFragments().get(0);
+            Log.d(strTAG, "shouldHandleBackPress returned true onBackPressed GAA "
+                    + fManager.getBackStackEntryCount() + " " + fManager.getFragments());
 
-            if (fragment != null) {
-                if (fragment instanceof HolidayListFragment) {
-                    //((HolidayListFragment) fragment).clearData();
-                }
-            }
-            Log.d(strTAG, "shouldHandleBackPress returned true onBackPressed GAA " + fManager.getBackStackEntryCount() + " " + fManager.getFragments());
             try {
                 fManager.popBackStackImmediate();
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-            Log.d(strTAG, "onBackPressed GAA " + fManager.getBackStackEntryCount() + " " + fManager.getFragments());
+
+            Log.d(strTAG, "onBackPressed GAA " + fManager.getBackStackEntryCount()
+                    + " " + fManager.getFragments());
+
             if (fManager.getBackStackEntryCount() == 0) {
                 Log.d(strTAG, "onBackPressed GAA count 0 finishing GAA with result code 550");
                 finish();
@@ -146,9 +139,9 @@ public class GeneralActionsActivity extends BaseActivity implements
     }
 
     private boolean shouldHandleBackPress() {
-
         if (fManager != null && fManager.getFragments().size() > 0) {
             Log.d(strTAG, "shouldHandleBackPress inside IF  " + fManager.getFragments());
+
             Fragment fragment = fManager.getFragments().get(0);
             if (fragment != null) {
                 if (fragment instanceof HolidayListFragment) {
@@ -157,6 +150,7 @@ public class GeneralActionsActivity extends BaseActivity implements
                 }
             }
         }
+
         return true;
     }
 
