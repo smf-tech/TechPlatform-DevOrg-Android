@@ -98,7 +98,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private String mFormName;
     private GPSTracker gpsTracker;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
-    private HashMap<String, String> matrixDynamicInnerMap = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -203,7 +202,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         protected String doInBackground(String... params) {
             showChoicesByUrlMD(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
-                    matrixDynamicInnerMap);
+                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2], HashMap.class), Long.parseLong(params[3]));
             return null;
         }
 
@@ -415,7 +414,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getTitleName())) {
 
                         formPresenter.getChoicesByUrl(pages.get(pageIndex).getElements().get(elementIndex),
-                                pageIndex, elementIndex, -1, formModel.getData(),
+                                pageIndex, elementIndex, -1, -1, formModel.getData(),
                                 pages.get(pageIndex).getElements().get(elementIndex).getChoicesByUrl().getUrl(),
                                 new HashMap<>());
                         break;
@@ -492,9 +491,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
-    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap) {
-        this.matrixDynamicInnerMap = matrixDynamicInnerMap;
-        new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column));
+    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
+        new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column),
+                PlatformGson.getPlatformGsonInstance().toJson(matrixDynamicInnerMap),
+                String.valueOf(rowIndex));
     }
 
     private void showChoicesByUrl(String result, Elements elements) {
@@ -555,7 +555,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
-    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap) {
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, final long rowIndex) {
         List<Choice> choiceValues = new ArrayList<>();
         try {
             LocaleData text;
@@ -603,6 +603,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
 
+            // This code will add submitted value in list and update the adapter, in API response
+            // submitted value is not coming hence this is workaround.
+            Choice ch = new Choice();
+            LocaleData ld = new LocaleData(matrixDynamicInnerMap.get(column.getName()));
+            ch.setText(ld);
+            ch.setValue(ld.getLocaleValue());
+
+            if (!TextUtils.isEmpty(matrixDynamicInnerMap.get(column.getName())) && !choiceValues.contains(ch)) {
+                choiceValues.add(ch);
+            }
+
             Collections.sort(choiceValues,
                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
         } catch (Exception e) {
@@ -610,7 +621,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> formComponentCreator
-                    .updateMatrixDynamicDropDownValues(column, choiceValues, matrixDynamicInnerMap));
+                    .updateMatrixDynamicDropDownValues(column, choiceValues, matrixDynamicInnerMap, rowIndex));
         }
     }
 
@@ -647,7 +658,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             strLong = gpsTracker.getLongitude();
                         }
 
-                        //Util.showToast("LAT : " + strLat + " LONG:" + strLong, this);
                         HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
                         requestObject.put(Constants.Location.LATITUDE, strLat);
                         requestObject.put(Constants.Location.LONGITUDE, strLong);

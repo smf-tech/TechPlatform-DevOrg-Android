@@ -21,10 +21,9 @@ public interface FormRequestCallListener {
 
     void onSuccessListener(String response);
 
-    void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, int columnIndex, FormData formData,
-                            HashMap<String, String> matrixDynamicInnerMap);
+    void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, int columnIndex, long rowIndex,
+                            FormData formData, HashMap<String, String> matrixDynamicInnerMap);
 
-    @SuppressWarnings("unused")
     void onSubmitClick(String submitType, String url, String formId, String oid, final List<Map<String, String>> imageUrlList);
 
     void onFormDetailsLoadedListener(String response);
