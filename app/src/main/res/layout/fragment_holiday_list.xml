@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/dimen_15dp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/holiday_list_title"
-        android:drawableStart="@drawable/holiday_list"
+        android:drawableStart="@drawable/ic_holiday_list"
         android:textColor="@color/holiday_text"
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold" />

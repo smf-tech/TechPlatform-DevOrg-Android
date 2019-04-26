@@ -55,7 +55,7 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     @Override
     public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int i) {
 
-        viewHolder.userImage.setBackgroundResource(R.drawable.add_img);
+        viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
         viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
         viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves());
         viewHolder.editClick.setOnClickListener(new View.OnClickListener() {
