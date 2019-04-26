@@ -68,11 +68,30 @@
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!--End Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_end_date"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/tly_start_date"
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                android:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_end_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/task_end_date"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:drawableEnd="@drawable/ic_calendar_ev"
+                    tools:ignore="Autofill"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:id="@+id/ly_start_end_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tly_start_date"
+                android:layout_below="@+id/tly_end_date"
                 android:orientation="horizontal"
                 android:baselineAligned="false">
                 <!--Start Time-->

@@ -128,7 +128,7 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
 
         tvAllEventsDetail.setText(R.string.all_tasks);
 
-        taskListAdapter = new EventListAdapter(getActivity(),sortedTaskList, Constants.Planner.TASK_DETAIL);
+        taskListAdapter = new EventListAdapter(getActivity(),sortedTaskList, Constants.Planner.TASKS_LABEL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvTasks.setLayoutManager(mLayoutManager);
         rvTasks.setAdapter(taskListAdapter);
@@ -190,12 +190,12 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,"TASKS");
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,Constants.Planner.TASKS_LABEL);
                 this.startActivity(intentCreateEvent);
                 break;
             case R.id.tv_all_events_list:
                 Intent intentTaskList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentTaskList.putExtra(Constants.Planner.TO_OPEN,"TASKS");
+                intentTaskList.putExtra(Constants.Planner.TO_OPEN,Constants.Planner.TASKS_LABEL);
                 this.startActivity(intentTaskList);
                 break;
         }

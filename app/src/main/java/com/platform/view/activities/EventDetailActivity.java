@@ -45,6 +45,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private Button btEditAttendance;
 
     private boolean isMemberListVisible;
+    String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
+        toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
-        setActionbar(getString(R.string.event_detail));
+        if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)){
+            setActionbar(getString(R.string.task_detail));
+        }else{
+            setActionbar(getString(R.string.event_detail));
+        }
 
         backButton = findViewById(R.id.toolbar_back_action);
         editButton = findViewById(R.id.toolbar_edit_action);
@@ -130,7 +136,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.toolbar_edit_action:
                 Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,"EVENTS");
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,toOpen);
                 intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL,event);
                 this.startActivity(intentCreateEvent);
 

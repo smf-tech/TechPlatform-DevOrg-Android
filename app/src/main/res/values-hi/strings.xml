@@ -239,6 +239,7 @@
     <string name="task_category">वर्ग</string>
     <string name="task_title">शीर्षक</string>
     <string name="task_start_date">आरंभ करने की तिथि</string>
+    <string name="task_end_date">समाप्त करने की तिथि</string>
     <string name="task_start_time">समय शुरू</string>
     <string name="task_end_time">अंतिम समय</string>
     <string name="task_repeat">दोहराना</string>
@@ -249,6 +250,7 @@
     <string name="apply_filters">फ़िल्टर लागू करें</string>
     <string name="filter">फ़िल्टर</string>
     <string name="event_detail">घटना का विवरण</string>
+    <string name="task_detail">कार्य का विवरण</string>
     <string name="add_members_screen_msg">"आपने फ़िल्टर लागू कर दिया है, घटना के लिए सदस्यों का चयन करें।"</string>
     <string name="where">कहा पे</string>
     <string name="edit_attendance">उपस्थिति संपादित करें</string>
@@ -256,6 +258,7 @@
     <string name="interval">मध्यान्तर</string>
     <string name="which_days">किन दिनों पर</string>
     <string name="edit_event">घटना संपादित करें</string>
+    <string name="edit_task">कार्य संपादित करें</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>

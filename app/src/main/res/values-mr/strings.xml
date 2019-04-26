@@ -240,6 +240,7 @@
     <string name="task_category">वर्ग</string>
     <string name="task_title">शीर्षक</string>
     <string name="task_start_date">प्रारंभ तारीख</string>
+    <string name="task_end_date">समाप्त तारीख</string>
     <string name="task_start_time">सुरवातीची वेळ</string>
     <string name="task_end_time">समाप्तीचा वेळ</string>
     <string name="task_repeat">पुन्हा करा</string>
@@ -250,6 +251,7 @@
     <string name="apply_filters">फिल्टर लागू करा</string>
     <string name="filter">फिल्टर</string>
     <string name="event_detail">कार्यक्रम तपशील</string>
+    <string name="task_detail">कार्य तपशील</string>
     <string name="add_members_screen_msg">"आपण फिल्टर लागू केले आहेत, इव्हेंटसाठी सदस्यांची निवड करा."</string>
     <string name="where">कुठे</string>
     <string name="edit_attendance">उपस्थिती संपादित करा</string>
@@ -283,6 +285,7 @@
     <string name="check_out">Check Out</string>
     <string name="holiday_list_title">सुट्टीची यादी 2019</string>
     <string name="edit_event">कार्यक्रम संपादित करा</string>
+    <string name="edit_task">कार्य संपादित करा</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">Same date for each month</string>
 </resources>

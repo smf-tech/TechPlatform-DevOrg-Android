@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -120,7 +121,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
         radioGroup = eventsPlannerView.findViewById(R.id.radio_group_filter);
 
-        eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, Constants.Planner.EVENT_DETAIL);
+        eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, Constants.Planner.EVENTS_LABEL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvEvents.setLayoutManager(mLayoutManager);
         rvEvents.setAdapter(eventListAdapter);
@@ -174,13 +175,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, "EVENTS");
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 this.startActivity(intentCreateEvent);
                 break;
 
             case R.id.tv_all_events_list:
                 Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, "EVENTS");
+                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 this.startActivity(intentEventList);
                 break;
         }

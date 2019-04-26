@@ -240,6 +240,7 @@
     <string name="task_category">Category</string>
     <string name="task_title">Title</string>
     <string name="task_start_date">Start Date</string>
+    <string name="task_end_date">End Date</string>
     <string name="task_start_time">Start Time</string>
     <string name="task_end_time">End Time</string>
     <string name="task_repeat">Repeat</string>
@@ -251,11 +252,13 @@
     <string name="filter">Filter</string>
     <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
     <string name="event_detail">Event Detail</string>
+    <string name="task_detail">Task Detail</string>
     <string name="where">Where</string>
     <string name="edit_attendance">Edit Attendance</string>
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="edit_event">Edit Event</string>
+    <string name="edit_task">Edit Task</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>

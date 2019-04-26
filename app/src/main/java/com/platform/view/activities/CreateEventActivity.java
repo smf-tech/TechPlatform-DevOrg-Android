@@ -14,10 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
@@ -49,6 +51,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private Button btRepeat;
     private Button btEventSubmit;
     private RecyclerView rvAttendeesList;
+    TextInputLayout tlyEndDate;
+    LinearLayout lyRepeat;
+    TextInputLayout tlyAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,16 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         rvAttendeesList = findViewById(R.id.rv_attendees_list);
 
         btRepeat.setText("Never");
+
+        // Task Module UI changes
+        if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            tlyEndDate = findViewById(R.id.tly_end_date);
+            tlyEndDate.setVisibility(View.VISIBLE);
+            lyRepeat = findViewById(R.id.ly_repeat);
+            lyRepeat.setVisibility(View.GONE);
+            tlyAddress = findViewById(R.id.tly_address);
+            tlyAddress.setVisibility(View.GONE);
+        }
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                  R.array.category_types,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -90,14 +105,23 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         rvAttendeesList.setAdapter(addMembersListAdapter);
 
         if(event!=null){
-            setActionbar(getString(R.string.edit_event));
+            if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+                setActionbar(getString(R.string.edit_task));
+            }else{
+                setActionbar(getString(R.string.edit_event));
+            }
             btEventSubmit.setText(getString(R.string.btn_submit));
             setAllData();
             toolbarAction = findViewById(R.id.toolbar_edit_action);
             toolbarAction.setVisibility(View.VISIBLE);
             toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
         } else {
-            setActionbar(getString(R.string.create_event));
+            if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+                setActionbar(getString(R.string.create_task));
+                btEventSubmit.setText(getString(R.string.create_task));
+            }else{
+                setActionbar(getString(R.string.create_event));
+            }
         }
 
         setListeners();

@@ -47,7 +47,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventTime.setText(event.getStarTime());
         holder.tvEventAddress.setText(event.getAddress());
         holder.tvEventOwner.setText(event.getTital());
-        if(type.equalsIgnoreCase(Constants.Planner.TASK_DETAIL)){
+        if(type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)){
 
         }
         holder.lyEvent.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +55,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             public void onClick(View v) {
                 Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
                 intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL,event);
+                intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN,type);
                 mContext.startActivity(intentEventDetailActivity);
             }
         });

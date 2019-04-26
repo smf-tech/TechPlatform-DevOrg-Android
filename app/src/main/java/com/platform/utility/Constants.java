@@ -242,5 +242,7 @@ public class Constants {
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
         public static final String TASK_DETAIL = "TaskDetail";
+        public static final String EVENTS_LABEL ="EVENTS";
+        public static final String TASKS_LABEL ="TASKS";
     }
 }
