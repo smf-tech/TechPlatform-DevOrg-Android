@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 public class FormSpinnerAdapter extends ArrayAdapter<Choice> implements Filterable {
 
     private final Context context;
-    private List<Choice> originalObjects;
+    private final List<Choice> originalObjects;
     private List<Choice> filteredObjects;
     private Filter filter;
 
@@ -145,6 +145,7 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> implements Filterab
         }
     }
 
+    @NonNull
     @Override
     public Filter getFilter() {
         if (filter == null)
@@ -152,5 +153,4 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> implements Filterab
 
         return filter;
     }
-
 }

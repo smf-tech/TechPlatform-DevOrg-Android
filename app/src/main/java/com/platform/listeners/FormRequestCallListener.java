@@ -10,6 +10,7 @@ import java.util.Map;
 
 import androidx.annotation.Nullable;
 
+@SuppressWarnings("unused")
 public interface FormRequestCallListener {
 
     void onFailureListener(String message);
