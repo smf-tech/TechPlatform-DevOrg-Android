@@ -4,9 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +43,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
-<<<<<<< HEAD
-public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, OnDateSelectedListener {
-=======
 public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, OnDateSelectedListener, AppliedLeavesAdapter.LeaveAdapterListener {
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 
     private RecyclerView leavesList;
 
@@ -60,12 +52,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private TextView tvClickRejected;
     private int tabClicked = -1;
     private MaterialCalendarView calendarView;
-<<<<<<< HEAD
-    private ImageView tvCalendarMode;
-    boolean isMonth = true;
-=======
     private boolean isMonth = true;
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 
     public LeaveDetailsFragment() {
         // Required empty public constructor
@@ -246,13 +233,11 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView, @NonNull CalendarDay calendarDay, boolean b) {
         Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
-=======
     }
 
     @Override
     public void deleteLeaves() {
-        showAlertDialog("",getString(R.string.sure_to_delete),getString(R.string.cancel),getString(R.string.delete));
+        showAlertDialog("", getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
     }
 
     @Override
@@ -261,23 +246,23 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void showAlertDialog(String dialogTitle,String message,String btn1String,String btn2String) {
+    private void showAlertDialog(String dialogTitle, String message, String btn1String, String btn2String) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
-        if(!TextUtils.isEmpty(dialogTitle)) {
+        if (!TextUtils.isEmpty(dialogTitle)) {
             TextView title = dialog.findViewById(R.id.tv_dialog_title);
             title.setText(dialogTitle);
             title.setVisibility(View.VISIBLE);
         }
-        if(!TextUtils.isEmpty(message)) {
+        if (!TextUtils.isEmpty(message)) {
             TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
             text.setText(message);
             text.setVisibility(View.VISIBLE);
         }
-        if(!TextUtils.isEmpty(btn1String)) {
-            Button button =  dialog.findViewById(R.id.btn_dialog);
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
@@ -288,8 +273,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 }
             });
         }
-        if(!TextUtils.isEmpty(btn2String)) {
-            Button button1 =  dialog.findViewById(R.id.btn_dialog_1);
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
             button1.setText(btn2String);
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(new View.OnClickListener() {
@@ -302,8 +287,5 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         }
         dialog.setCancelable(false);
         dialog.show();      // if decline button is clicked, close the custom dialog
-
-
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
     }
-}
+ }

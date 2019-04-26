@@ -5,10 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
 import android.text.TextUtils;
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class LeaveApplyFragment extends Fragment implements View.OnClickListener {
@@ -162,26 +156,19 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 btnFullDay.setBackgroundResource(R.drawable.leave_form_view_focused);
                 break;
             case R.id.btn_apply_leave:
-                try {
-                    showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected, getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
-                            getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false))
-                            , getString(R.string.leave_apply_msg1), "Ok", "");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    showAlertDialog(getString(R.string.leave_apply_msg), leaveTypeSelected, getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
+//                            getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false))
+//                            , getString(R.string.leave_apply_msg1), "Ok", "");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 break;
             case R.id.btn_start_date:
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
-<<<<<<< HEAD
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                btnStartDate.setText(day + "-" + month + "-" + year);
-                            }
-=======
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
                         (datePicker, year12, month12, day12) -> {
                             Calendar calendar = Calendar.getInstance();
@@ -189,7 +176,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                             @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                             btnStartDate.setText(format.format(calendar.getTime()));
 
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
                         }, year, month, day);
                 datePickerDialog.show();
                 break;
@@ -201,14 +187,12 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-<<<<<<< HEAD
-                                btnEndDate.setText(day + "-" + month + "-" + year);
-=======
+
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(year, month, day);
                                 @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                                 btnEndDate.setText(format.format(calendar.getTime()));
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
+
                             }
                         }, year1, month1, day1);
                 endDatePickerDialog.show();

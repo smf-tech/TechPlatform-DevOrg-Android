@@ -36,16 +36,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-
-<<<<<<< HEAD
-=======
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener, OnDateSelectedListener {
 
     private View plannerView;
@@ -60,7 +50,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private int tabClicked = -1;
 
     private RelativeLayout lyCalender;
-<<<<<<< HEAD
     // private RelativeLayout lyWorkingHours;
     private LinearLayout lyCheckInOutDashboard;
     private TextView tvAttendanceDetails;
@@ -68,15 +57,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private MaterialCalendarView calendarView;
     boolean isMonth = true;
     private TextView tvCheckInTime, tvCheckOutTime;
-=======
-    private LinearLayout lyCheckInOutDashboard;
-    private TextView tvAttendanceDetails;
-    private MaterialCalendarView calendarView;
-    private boolean isMonth = true;
-    private TextView tvCheckInTime, tvCheckOutTime;
 
     private RelativeLayout attendaceCardLayout;
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 
     public AttendancePlannerFragment() {
         // Required empty public constructor
@@ -107,11 +89,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
         // lyWorkingHours = plannerView.findViewById(R.id.ly_working_hours);
-<<<<<<< HEAD
-        lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_checkin_out_dashboard);
-=======
         lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_check_in_out_dashboard);
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
         lvAttendaceStatus = plannerView.findViewById(R.id.lv_attendance_status);
         rvAttendanceList = plannerView.findViewById(R.id.rv_attendance_list);
         tvClickPending = plannerView.findViewById(R.id.tv_tb_pending);
@@ -178,11 +156,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         Date d = new Date();
         CharSequence time = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
         switch (v.getId()) {
-<<<<<<< HEAD
-            case R.id.bt_checkin:
-=======
             case R.id.bt_check_in:
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
                 tvCheckInTime.setText("@9:30 AM");
                 //noinspection deprecation
                 btCheckin.setBackground(Objects.requireNonNull(getActivity()).getResources().getDrawable(R.drawable.bg_grey_box_with_border));
