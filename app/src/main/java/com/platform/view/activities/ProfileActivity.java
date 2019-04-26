@@ -561,32 +561,6 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-
-//            Glide.with(this)
-//                    .load(finalUri)
-//                    .listener(new RequestListener<Drawable>() {
-//                        @Override
-//                        public boolean onLoadFailed(@Nullable final GlideException e, final Object model, final Target<Drawable> target, final boolean isFirstResource) {
-//                            Util.showToast("Filed to load selected image!", ProfileActivity.this);
-//                            return false;
-//                        }
-//
-//                        @Override
-//                        public boolean onResourceReady(final Drawable drawable, final Object model, final Target<Drawable> target, final DataSource dataSource, final boolean isFirstResource) {
-//                            imgUserProfilePic.setImageURI(finalUri);
-//
-//                            try {
-//                                mImageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-//                                profilePresenter.uploadProfileImage(mImageFile);
-//                            } catch (Exception e) {
-//                                Log.e(TAG, e.getMessage());
-//                            }
-//
-//                            return uploadImageHere(drawable);
-//
-//                        }
-//                    })
-//                    .into(imgUserProfilePic);
         }
     }
 
