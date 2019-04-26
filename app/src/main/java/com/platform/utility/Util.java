@@ -699,6 +699,7 @@ public class Util {
             editText.setText(date);
         }, mYear, mMonth, mDay);
 
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
         dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
     }
@@ -714,7 +715,8 @@ public class Util {
                                 String.format(Locale.getDefault(), "%02d", selectedHour),
                                 String.format(Locale.getDefault(), "%02d", selectedMinute))),
                 hour, minute, false);
-        timePicker.setTitle("Select Time");
+
+        timePicker.setTitle(context.getString(R.string.select_time_title));
         timePicker.show();
     }
 }

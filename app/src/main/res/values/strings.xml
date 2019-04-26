@@ -216,6 +216,9 @@
     <string name="gps_popup_title">Please turn on GPS/LOCATION.</string>
     <string name="msg_enable_gps">GPS is not enabled. Do you want to enable it?</string>
 
+    <string name="select_date_title">Select Date</string>
+    <string name="select_time_title">Select Time</string>
+
     <!--Planner-->
     <string name="tasks">Tasks</string>
     <string name="leave">Leave</string>
@@ -357,4 +360,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">Same date for each month</string>
 
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+
+    <string name="sure_to_delete">Are you sure you want to delete it ?</string>
+    <string name="delete">Delete</string>
+    <string name="leave_apply_msg1">You will able to see leave balance once you get approval from your manager</string>
+    <string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>
 </resources>
