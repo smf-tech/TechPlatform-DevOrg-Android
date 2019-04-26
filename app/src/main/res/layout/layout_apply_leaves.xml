@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -27,7 +28,8 @@
             android:text="@string/category"
             android:textAllCaps="false"
             android:textColor="@color/leave_form_text_color"
-            android:textSize="@dimen/text_size_13" />
+            android:textSize="@dimen/text_size_13"
+            tools:ignore="RtlSymmetry" />
 
         <LinearLayout
             android:id="@+id/lv_category_selection"
@@ -48,7 +50,8 @@
                 android:text="@string/cl_leaves"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
+                android:textSize="@dimen/text_size_13"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/btn_paid"
@@ -60,7 +63,8 @@
                 android:text="@string/paid_leaves"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
+                android:textSize="@dimen/text_size_13"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/btn_coff"
@@ -72,7 +76,8 @@
                 android:text="@string/coff_leaves"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
+                android:textSize="@dimen/text_size_13"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
 
@@ -88,18 +93,6 @@
             android:weightSum="2">
 
             <Button
-                android:id="@+id/btn_half_day"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/half_day"
-                android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
-
-            <Button
                 android:id="@+id/btn_full_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
@@ -109,8 +102,20 @@
                 android:text="@string/full_day"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
-
+                android:textSize="@dimen/text_size_13"
+                tools:ignore="ButtonStyle" />
+            <Button
+                android:id="@+id/btn_half_day"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_weight="1"
+                android:background="@drawable/leave_form_view_nonfocused"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/half_day"
+                android:textAllCaps="false"
+                android:textColor="@color/leave_form_text_color"
+                android:textSize="@dimen/text_size_13"
+                tools:ignore="ButtonStyle" />
 
         </LinearLayout>
 
@@ -133,8 +138,10 @@
                 android:background="@drawable/leave_form_view_nonfocused"
                 android:fontFamily="@font/roboto_regular"
                 android:paddingStart="@dimen/dimen_15dp"
-                android:paddingTop="@dimen/dimen_15dp"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dimen_15dp"
                 android:text="@string/start_date"
+                android:drawableEnd="@drawable/calender"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13" />
@@ -144,11 +151,13 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:background="@drawable/leave_form_view_nonfocused"
                 android:drawablePadding="-10dp"
+                android:drawableEnd="@drawable/calender"
                 android:fontFamily="@font/roboto_regular"
+                android:paddingEnd="@dimen/dimen_15dp"
                 android:paddingStart="@dimen/dimen_15dp"
-                android:paddingTop="@dimen/dimen_15dp"
                 android:text="@string/end_date"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
@@ -171,7 +180,9 @@
             android:textAllCaps="false"
             android:textColor="@color/leave_form_text_color"
             android:textColorHint="@color/leave_form_text_color"
-            android:textSize="@dimen/text_size_13" />
+            android:textSize="@dimen/text_size_13"
+            tools:ignore="RtlSymmetry"
+            android:importantForAutofill="no" />
 
 
         <Button

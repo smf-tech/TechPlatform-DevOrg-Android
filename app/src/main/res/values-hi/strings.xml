@@ -216,6 +216,9 @@
     <string name="gps_popup_title">कृपया GPS / LOCATION चालू करें</string>
     <string name="msg_enable_gps">GPS सक्षम नहीं है, क्या आप इसे सक्षम करना चाहते हैं?</string>
 
+    <string name="select_date_title">तारीख़ चुनें</string>
+    <string name="select_time_title">समय चुनें</string>
+
     <!--Planner-->
     <string name="tasks">कार्य</string>
     <string name="leave">छुट्टी</string>
@@ -269,27 +272,35 @@
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
-    <string name="unpaid_leaves">Unpaid</string>
+    <string name="unpaid_leaves">अवैतनिक</string>
     <string name="coff_leaves">Comp OFF</string>
-    <string name="total_leaves">Total Leaves</string>
-    <string name="total">Total </string>
-    <string name="btn_leave_apply_str">Apply for a leave</string>
+    <string name="total_leaves">कुल छुट्टी</string>
+    <string name="total">कुल </string>
+    <string name="btn_leave_apply_str">छुट्टी के लिए आवेदन करें</string>
     <string name="leaves_applied">Leave Applied</string>
-    <string name="link_leave_apply"> Check Leave Details</string>
-    <string name="leave_details">Leave Details</string>
-    <string name="tv_no_leaves_balance">No Leave balance!</string>
-    <string name="tab_pending_leaves">Pending</string>
-    <string name="tab_approved_leaves">Approved</string>
-    <string name="tab_rejected_leaves">Rejected</string>
-    <string name="category">Category</string>
-    <string name="full_day">Full Day</string>
-    <string name="half_day">Half Day</string>
-    <string name="start_date">Start Date</string>
-    <string name="end_date">End Date</string>
-    <string name="reason">Reason</string>
-    <string name="check_in">Check In</string>
-    <string name="check_out">Check Out</string>
-    <string name="holiday_list_title">Holiday List for 2019</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">प्रत्येक माह के लिए एक ही तारीख</string>
+
+    <string name="link_leave_apply">चेक छुट्टी विवरण</string>
+    <string name="leave_details">छुट्टी विवरण</string>
+    <string name="tv_no_leaves_balance">कोई छुट्टी शेष नहीं!</string>
+    <string name="tab_pending_leaves">अपूर्ण</string>
+    <string name="tab_approved_leaves">मंजूर की</string>
+    <string name="tab_rejected_leaves">अस्वीकृत</string>
+    <string name="category">वर्ग</string>
+    <string name="full_day">पूरा दिन</string>
+    <string name="half_day">आधा दिन</string>
+    <string name="start_date">आरंभ तिथि</string>
+    <string name="end_date">अंतिम तिथि</string>
+    <string name="reason">कारण</string>
+    <string name="check_in">चेक इन</string>
+    <string name="check_out">चेक आउट</string>
+    <string name="holiday_list_title">2019 के लिए अवकाश सूची</string>
+    <string name="sure_to_delete">क्या आप इसे मिटाना चाहते हैं ?</string>
+    <string name="delete">हटाना</string>
+    <string name="leave_apply_msg1">एक बार जब आप अपने प्रबंधक से स्वीकृति प्राप्त कर लेंगे, तो आप अवकाश शेष देख पाएंगे</string>
+    <string name="leave_apply_msg">आपने %2$s से %3$s पर %1​​$s के पत्तों के लिए आवेदन किया</string>
+
+>>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
 </resources>

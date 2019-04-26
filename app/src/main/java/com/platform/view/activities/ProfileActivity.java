@@ -307,7 +307,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 break;
 
             case R.id.btn_profile_submit:
-                submitProfileDetails();
+                if (Util.isConnected(this)) {
+                    submitProfileDetails();
+                } else {
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
                 break;
         }
     }
