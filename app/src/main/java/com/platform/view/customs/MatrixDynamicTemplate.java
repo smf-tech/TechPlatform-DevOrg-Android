@@ -45,15 +45,13 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
     private final boolean mIsInEditMode;
     private final boolean mIsPartiallySaved;
     private final FormData formData;
-    private int rowIndex = -1;
     private final FormActivityPresenter formActivityPresenter;
     private final List<MatrixDropDownTemplate> matrixDropDownTemplateList = new ArrayList<>();
-//    private List<HashMap<String, MatrixDropDownTemplate>> matrixDropDownTemplateMapList = new ArrayList<>();
 
-    MatrixDynamicTemplate(FormData formData, Elements elements, FormFragment context,
-                          MatrixDynamicValueChangeListener matrixDynamicValueChangeListener,
+    MatrixDynamicTemplate(FormFragment context, FormData formData, Elements elements,
+                          FormActivityPresenter formActivityPresenter,
                           boolean mIsInEditMode, boolean mIsPartiallySaved,
-                          FormActivityPresenter formActivityPresenter) {
+                          MatrixDynamicValueChangeListener matrixDynamicValueChangeListener) {
 
         this.context = new WeakReference<>(context);
         this.elements = elements;
@@ -126,7 +124,6 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
     private void addRow(Elements elements, LinearLayout matrixDynamicView, HashMap<String,
             String> matrixDynamicInnerMap, String action) {
 
-        rowIndex++;
         int rowCount = elements.getColumns().size() % 2 == 0 ?
                 elements.getColumns().size() / 2 : elements.getColumns().size() / 2 + 1;
 
@@ -138,8 +135,6 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
             Column currentColumn = elements.getColumns().get(currentColumnIndex);
 
             if (!TextUtils.isEmpty(currentColumn.getCellType())) {
-//                HashMap<String, MatrixDropDownTemplate> matrixDropDownTemplateHashMap = new HashMap<>();
-
                 if (currentColumnIndex % 2 == 0) {
                     innerLinearLayout = createInnerLinearLayout();
                 }
@@ -154,9 +149,9 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                         break;
 
                     case Constants.FormsFactory.DROPDOWN_TEMPLATE:
-                        MatrixDropDownTemplate template = new MatrixDropDownTemplate(this,
-                                elements, currentColumn, context.get(), matrixDynamicInnerMap,
-                                this, formData.getId(), rowIndex);
+                        MatrixDropDownTemplate template = new MatrixDropDownTemplate(context.get(),
+                                elements, currentColumn, formData.getId(),
+                                matrixDynamicInnerMap, this);
 
                         template.setWeight(0.45f);
 
@@ -167,10 +162,8 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                             dropdownView = template.init(Util.setFieldAsMandatory(false));
                         }
 
-                        template.setTag(currentColumn.getName());
+                        template.setTag(currentColumn.getName() + "_" + template.getRowIndex());
                         matrixDropDownTemplateList.add(template);
-//                        matrixDropDownTemplateHashMap.put(currentColumn.getName(), template);
-//                        matrixDropDownTemplateMapList.add(matrixDropDownTemplateHashMap);
 
                         if (innerLinearLayout != null) {
                             innerLinearLayout.addView(dropdownView);
@@ -178,7 +171,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
 
                         if (currentColumn.getChoicesByUrl() == null) {
                             updateDropDownValues(currentColumn, currentColumn.getChoices(),
-                                    matrixDynamicInnerMap, mIsInEditMode, mIsPartiallySaved);
+                                    matrixDynamicInnerMap, template.getRowIndex());
                         } else if (currentColumn.getChoicesByUrl() != null) {
                             //Online
                             if (Util.isConnected(context.get().getContext())) {
@@ -187,7 +180,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
 
                                     //Partially saved form
                                     if (mIsPartiallySaved) {
-                                        callChoicesAPI(elements.getName(), currentColumnIndex, matrixDynamicInnerMap);
+                                        callChoicesAPI(elements.getName(), currentColumnIndex, template.getRowIndex(), matrixDynamicInnerMap);
                                     }
 
                                     //Submitted form
@@ -195,7 +188,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                                         //Editable submitted form
                                         if (!TextUtils.isEmpty(formData.getEditable())
                                                 && Boolean.parseBoolean(formData.getEditable())) {
-                                            callChoicesAPI(elements.getName(), currentColumnIndex, matrixDynamicInnerMap);
+                                            callChoicesAPI(elements.getName(), currentColumnIndex, template.getRowIndex(), matrixDynamicInnerMap);
                                         }
 
                                         //Non editable submitted form
@@ -207,16 +200,16 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
 
                                             if (!TextUtils.isEmpty(response)) {
                                                 matrixDynamicValueChangeListener.showChoicesByUrlOffline(
-                                                        response, currentColumn, matrixDynamicInnerMap);
+                                                        response, currentColumn, template.getRowIndex(), matrixDynamicInnerMap);
                                             } else {
-                                                callChoicesAPI(elements.getName(), currentColumnIndex, matrixDynamicInnerMap);
+                                                callChoicesAPI(elements.getName(), currentColumnIndex, template.getRowIndex(), matrixDynamicInnerMap);
                                             }
                                         }
                                     }
                                 }
                                 //Opened new form
                                 else {
-                                    callChoicesAPI(elements.getName(), currentColumnIndex, matrixDynamicInnerMap);
+                                    callChoicesAPI(elements.getName(), currentColumnIndex, template.getRowIndex(), matrixDynamicInnerMap);
                                 }
                             }
                             //Offline
@@ -227,7 +220,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
 
                                 if (!TextUtils.isEmpty(response)) {
                                     matrixDynamicValueChangeListener.showChoicesByUrlOffline(
-                                            response, currentColumn, matrixDynamicInnerMap);
+                                            response, currentColumn, template.getRowIndex(), matrixDynamicInnerMap);
                                 }
                             }
                         }
@@ -267,14 +260,6 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         }
 
         matrixDynamicView.addView(innerItemLinearLayout);
-    }
-
-    HashMap<String, String> getFormData(int index) {
-        if (matrixDynamicValuesList != null && matrixDynamicValuesList.size() > 0) {
-            return matrixDynamicValuesList.get(index);
-        }
-
-        return null;
     }
 
     private LinearLayout createInnerLinearLayout() {
@@ -325,11 +310,9 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         ImageButton deleteImg = deleteLnr.findViewById(R.id.iv_matrix_dynamic_delete);
 
         deleteImg.setOnClickListener(v -> {
-            rowIndex--;
             innerItemLinearLayout.removeAllViewsInLayout();
             matrixDynamicView.removeView(innerItemLinearLayout);
             matrixDynamicValuesList.remove(matrixDynamicInnerMap);
-//            matrixDropDownTemplateMapList.remove(matrixDropDownTemplateHashMap);
         });
 
         return deleteLnr;
@@ -439,7 +422,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         return textInputField;
     }
 
-    private void callChoicesAPI(String name, int columnIndex, HashMap<String, String> matrixDynamicInnerMap) {
+    private void callChoicesAPI(String name, int columnIndex, long rowIndex, HashMap<String, String> matrixDynamicInnerMap) {
         List<Page> pages = formData.getComponents().getPages();
         for (int pageIndex = 0; pageIndex < pages.size(); pageIndex++) {
 
@@ -458,7 +441,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                             !TextUtils.isEmpty(pages.get(pageIndex).getElements().get(elementIndex).getColumns().get(columnIndex).getChoicesByUrl().getTitleName())) {
 
                         formActivityPresenter.getChoicesByUrl(pages.get(pageIndex).getElements().get(elementIndex),
-                                pageIndex, elementIndex, columnIndex, formData,
+                                pageIndex, elementIndex, columnIndex, rowIndex, formData,
                                 pages.get(pageIndex).getElements().get(elementIndex).getColumns().get(columnIndex).getChoicesByUrl().getUrl(),
                                 matrixDynamicInnerMap);
                         break;
@@ -469,27 +452,23 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
     }
 
     void updateDropDownValues(Column column, List<Choice> choiceValues, HashMap<String,
-            String> matrixDynamicInnerMap, boolean isInEditMode, boolean isPartiallySaved) {
+            String> matrixDynamicInnerMap, long rowIndex) {
 
-        Predicate<MatrixDropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(column.getName());
+        Predicate<MatrixDropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(column.getName() + "_" + rowIndex);
         List<MatrixDropDownTemplate> matchedTemplates = Stream.of(matrixDropDownTemplateList).filter(byTag).collect(Collectors.toList());
 
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
-            for (MatrixDropDownTemplate template : matchedTemplates) {
-                Choice selectChoice = new Choice();
-                selectChoice.setValue(context.get().getString(R.string.default_select));
-                LocaleData localeData = new LocaleData(context.get().getString(R.string.default_select));
-                selectChoice.setText(localeData);
+            Choice selectChoice = new Choice();
+            selectChoice.setValue(context.get().getString(R.string.default_select));
+            LocaleData localeData = new LocaleData(context.get().getString(R.string.default_select));
+            selectChoice.setText(localeData);
 
-                if (!choiceValues.contains(selectChoice)) {
-                    choiceValues.add(0, selectChoice);
-                }
-                column.setChoices(choiceValues);
-                template.setColumn(column);
-                int i = matrixDynamicValuesList.indexOf(matrixDynamicInnerMap);
-                template.setListData(choiceValues, matrixDynamicInnerMap, isInEditMode,
-                        isPartiallySaved, i > 0 ? i : rowIndex);
+            if (!choiceValues.contains(selectChoice)) {
+                choiceValues.add(0, selectChoice);
             }
+            column.setChoices(choiceValues);
+            matchedTemplates.get(0).setColumn(column);
+            matchedTemplates.get(0).setListData(choiceValues, matrixDynamicInnerMap);
         }
     }
 
