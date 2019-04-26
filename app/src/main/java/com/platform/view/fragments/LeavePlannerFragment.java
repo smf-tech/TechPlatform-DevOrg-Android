@@ -67,7 +67,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void setUIData(JsonObject leavesData) {
-        if (leavesData != null){// && leavesData.has("total_leaves") && leavesData.get("total_leaves").getAsInt() > 0) {
+        if (leavesData != null) {// && leavesData.has("total_leaves") && leavesData.get("total_leaves").getAsInt() > 0) {
             rlLeavesCount.setVisibility(View.VISIBLE);
             tvCLSLLeavesCount.setText("02");
             tvPaidLeavesCount.setText("06");
