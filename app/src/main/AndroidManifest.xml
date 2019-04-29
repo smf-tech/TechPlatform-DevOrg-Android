@@ -33,8 +33,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".view.activities.AddMembersListActivity"></activity>
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
+        tools:replace="android:label">
+
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -88,6 +89,18 @@
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
             android:name=".view.activities.GeneralActionsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name=".view.activities.AddMemberFilerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name=".view.activities.EventDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name=".view.activities.AddMembersListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
@@ -156,9 +169,5 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
-
-        <activity android:name=".view.activities.AddMemberFilerActivity" />
-        <activity android:name=".view.activities.EventDetailActivity"></activity>
     </application>
-
 </manifest>

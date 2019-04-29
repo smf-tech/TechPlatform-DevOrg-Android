@@ -95,14 +95,14 @@ public class FormActivityPresenter implements FormRequestCallListener,
     }
 
     public void getChoicesByUrl(Elements elements, int pageIndex, int elementIndex,
-                                int columnIndex, FormData formData, String url,
+                                int columnIndex, long rowIndex, FormData formData, String url,
                                 HashMap<String, String> matrixDynamicInnerMap) {
 
         FormRequestCall requestCall = new FormRequestCall();
         requestCall.setListener(this);
 
         formFragment.get().showProgressBar();
-        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, columnIndex,
+        requestCall.getChoicesByUrl(elements, pageIndex, elementIndex, columnIndex, rowIndex,
                 formData, url, matrixDynamicInnerMap);
     }
 
@@ -184,7 +184,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
             if (error != null && error.networkResponse != null) {
                 if (error.networkResponse.statusCode == 400) {
-                    if (error.networkResponse.data!=null) {
+                    if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = trimMessage(json);
                         if (json != null) {
@@ -346,7 +346,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex,
-                                   int columnIndex, FormData formData, HashMap<String, String> matrixDynamicInnerMap) {
+                                   int columnIndex, long rowIndex, FormData formData, HashMap<String, String> matrixDynamicInnerMap) {
 
         if (formFragment == null || formFragment.get() == null) {
             return;
@@ -383,8 +383,9 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 elements.setChoicesByUrlResponsePath(path);
                 formFragment.get().showChoicesByUrlAsync(response, elements);
             } else {
+                elements.getColumns().get(columnIndex).setChoicesByUrlResponsePath(path);
                 formFragment.get().showChoicesByUrlAsyncMD(response,
-                        elements.getColumns().get(columnIndex), matrixDynamicInnerMap);
+                        elements.getColumns().get(columnIndex), matrixDynamicInnerMap, rowIndex);
             }
         }
     }

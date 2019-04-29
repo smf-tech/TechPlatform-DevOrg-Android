@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public interface FormRequestCallListener {
 
     void onFailureListener(String message);
@@ -21,11 +22,12 @@ public interface FormRequestCallListener {
 
     void onSuccessListener(String response);
 
-    void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex, int columnIndex, FormData formData,
-                            HashMap<String, String> matrixDynamicInnerMap);
+    void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex,
+                            int columnIndex, long rowIndex, FormData formData, HashMap<String,
+            String> matrixDynamicInnerMap);
 
-    @SuppressWarnings("unused")
-    void onSubmitClick(String submitType, String url, String formId, String oid, final List<Map<String, String>> imageUrlList);
+    void onSubmitClick(String submitType, String url, String formId, String oid, final List<Map<String,
+            String>> imageUrlList);
 
     void onFormDetailsLoadedListener(String response);
 }
