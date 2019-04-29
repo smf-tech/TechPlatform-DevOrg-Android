@@ -1,5 +1,6 @@
 package com.platform.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -58,11 +59,6 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private void initView() {
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
-        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            setActionbar(getString(R.string.task_detail));
-        } else {
-            setActionbar(getString(R.string.event_detail));
-        }
 
         backButton = findViewById(R.id.toolbar_back_action);
         editButton = findViewById(R.id.toolbar_edit_action);
@@ -118,6 +114,21 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         setAdapter(event.getMembersList());
 
         isMemberListVisible = true;
+
+        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            setActionbar(getString(R.string.task_detail));
+            View vtaskStatusIndicator = findViewById(R.id.task_status_indicator);
+            vtaskStatusIndicator.setVisibility(View.VISIBLE);
+            if (event.getStatus().equals("Planned")){
+                vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
+                btEditAttendance.setText("Mark As Completed.");
+            }else if(event.getStatus().equals("Completed")){
+                vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
+                btEditAttendance.setVisibility(View.GONE);
+            }
+        } else {
+            setActionbar(getString(R.string.event_detail));
+        }
 
         setListeners();
     }
