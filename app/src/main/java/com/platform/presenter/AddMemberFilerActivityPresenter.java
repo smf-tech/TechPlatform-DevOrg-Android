@@ -35,7 +35,7 @@ public class AddMemberFilerActivityPresenter implements ProfileRequestCallListen
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
-//        addMemberFilerActivity.get().showProgressBar();
+        addMemberFilerActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);
     }
 

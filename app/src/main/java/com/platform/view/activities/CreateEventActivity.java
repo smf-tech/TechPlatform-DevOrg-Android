@@ -14,13 +14,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.platform.R;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
+import com.platform.presenter.CreateEventActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
@@ -28,7 +32,7 @@ import com.platform.view.adapters.AddMembersListAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
     ArrayList<Member> membersList =new ArrayList<Member>();
@@ -50,6 +54,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private Button btEventSubmit;
     private RecyclerView rvAttendeesList;
 
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +66,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
+
+        progressBarLayout = findViewById(R.id.profile_act_progress_bar);
+        progressBar = findViewById(R.id.pb_profile_act);
+
+        CreateEventActivityPresenter createEventPresenter =new CreateEventActivityPresenter(this);
+        createEventPresenter.getEventCategory();
+
 
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
@@ -168,4 +182,33 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void showProgressBar() {
+        runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public <T> void showNextScreen(T data) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String result) {
+        runOnUiThread(() -> Util.showToast(result, this));
+    }
 }

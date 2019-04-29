@@ -46,7 +46,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventTitle.setText(event.getTital());
         holder.tvEventTime.setText(event.getStarTime());
         holder.tvEventAddress.setText(event.getAddress());
-        holder.tvEventOwner.setText(event.getTital());
+        holder.tvEventOwner.setText(event.getOwner());
         if(type.equalsIgnoreCase(Constants.Planner.TASK_DETAIL)){
 
         }
@@ -58,6 +58,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 mContext.startActivity(intentEventDetailActivity);
             }
         });
+        if(position==(eventsList.size()-1)){
+            holder.ivDottedLine.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -72,6 +75,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         TextView tvEventAddress;
         TextView tvEventOwner;
         ImageView imgArrow;
+        ImageView ivDottedLine;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +86,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             tvEventAddress = itemView.findViewById(R.id.tv_event_address);
             tvEventOwner = itemView.findViewById(R.id.tv_event_owner);
             imgArrow = itemView.findViewById(R.id.iv_left_icon);
+            ivDottedLine = itemView.findViewById(R.id.iv_dotted_line);
 
         }
     }

@@ -285,4 +285,7 @@
     <string name="edit_event">कार्यक्रम संपादित करा</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">Same date for each month</string>
+    <string name="edit">Edit</string>
+    <string name="this_event_only">This event only</string>
+    <string name="all_events_in_series">All events in series</string>
 </resources>

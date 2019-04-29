@@ -172,8 +172,10 @@ public class Constants {
     }
 
     public class MultiSelectSpinnerType {
+        public static final String SPINNER_ORGANIZATION = "Organization";
         public static final String SPINNER_PROJECT = "Project";
         public static final String SPINNER_ROLE = "Role";
+        public static final String SPINNER_STATE = "State";
         public static final String SPINNER_DISTRICT = "District";
         public static final String SPINNER_TALUKA = "Taluka";
         public static final String SPINNER_CLUSTER = "Cluster";
