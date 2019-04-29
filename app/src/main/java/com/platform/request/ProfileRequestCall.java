@@ -13,6 +13,7 @@ import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileRequestCallListener;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.Constants;
@@ -222,9 +223,9 @@ public class ProfileRequestCall {
 
                 // Add project Ids
                 JsonArray projectIdArray = new JsonArray();
-                ArrayList<String> userProjectIds = userInfo.getProjectIds();
-                for (String projectId : userProjectIds) {
-                    projectIdArray.add(projectId);
+                ArrayList<JurisdictionType> userProjects = userInfo.getProjectIds();
+                for (JurisdictionType project : userProjects) {
+                    projectIdArray.add(project.getId());
                 }
                 body.add(Constants.Login.USER_PROJECTS, projectIdArray);
 
@@ -234,40 +235,40 @@ public class ProfileRequestCall {
 
                 JsonArray locationArray = new JsonArray();
                 if (userLocation.getStateId() != null) {
-                    for (String stateId : userLocation.getStateId()) {
-                        locationArray.add(stateId);
+                    for (JurisdictionType states : userLocation.getStateId()) {
+                        locationArray.add(states.getId());
                     }
                     locationObj.add(Constants.Location.STATE, locationArray);
                 }
 
                 locationArray = new JsonArray();
                 if (userLocation.getDistrictIds() != null) {
-                    for (String districtId : userLocation.getDistrictIds()) {
-                        locationArray.add(districtId);
+                    for (JurisdictionType districts : userLocation.getDistrictIds()) {
+                        locationArray.add(districts.getId());
                     }
                     locationObj.add(Constants.Location.DISTRICT, locationArray);
                 }
 
                 locationArray = new JsonArray();
                 if (userLocation.getTalukaIds() != null) {
-                    for (String talukaId : userLocation.getTalukaIds()) {
-                        locationArray.add(talukaId);
+                    for (JurisdictionType talukas : userLocation.getTalukaIds()) {
+                        locationArray.add(talukas.getId());
                     }
                     locationObj.add(Constants.Location.TALUKA, locationArray);
                 }
 
                 locationArray = new JsonArray();
                 if (userLocation.getVillageIds() != null) {
-                    for (String villageId : userLocation.getVillageIds()) {
-                        locationArray.add(villageId);
+                    for (JurisdictionType villages : userLocation.getVillageIds()) {
+                        locationArray.add(villages.getId());
                     }
                     locationObj.add(Constants.Location.VILLAGE, locationArray);
                 }
 
                 locationArray = new JsonArray();
                 if (userLocation.getClusterIds() != null) {
-                    for (String clusterId : userLocation.getClusterIds()) {
-                        locationArray.add(clusterId);
+                    for (JurisdictionType clusters : userLocation.getClusterIds()) {
+                        locationArray.add(clusters.getId());
                     }
                     locationObj.add(Constants.Location.CLUSTER, locationArray);
                 }

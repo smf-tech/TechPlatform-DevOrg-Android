@@ -388,7 +388,7 @@ public class Util {
         }
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
             Date date = sdf.parse(dateString);
             return date.getTime();
 
