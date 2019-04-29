@@ -24,10 +24,11 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_organization" />
 
-            <Spinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_organization"
                 style="@style/FormSpinner"
-                android:prompt="@string/organization" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
 
             <!--Project-->
 
@@ -46,12 +47,11 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_role" />
 
-            <Spinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_role"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp" />
-
 
             <!--State-->
             <TextView
@@ -59,10 +59,11 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_state" />
 
-            <Spinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_state"
                 style="@style/FormSpinner"
-                android:prompt="@string/state" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
 
             <!--District-->
             <TextView

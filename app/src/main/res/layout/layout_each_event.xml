@@ -90,6 +90,7 @@
         android:src="@drawable/ic_right_arrow_grey" />
 
     <ImageView
+        android:id="@+id/iv_dotted_line"
         android:layout_width="match_parent"
         android:layout_below="@+id/tv_event_time"
         android:layout_height="@dimen/dimen_03dp"

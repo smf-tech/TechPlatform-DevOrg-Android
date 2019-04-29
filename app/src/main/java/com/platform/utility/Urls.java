@@ -38,4 +38,9 @@ public class Urls {
     public class Report {
         public static final String GET_ALL_REPORTS = "api/reports";
     }
+
+    public class Events {
+        public static final String GET_CATEGORY = "api/event-types";
+        public static final String GET_EVENTS = "api/events";
+    }
 }

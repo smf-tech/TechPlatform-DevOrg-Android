@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,10 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
+import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
+import com.platform.utility.Util;
 import com.platform.view.activities.CreateEventActivity;
 import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.adapters.EventListAdapter;
@@ -39,7 +43,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class EventsPlannerFragment extends Fragment implements View.OnClickListener,
-        OnDateSelectedListener, RadioGroup.OnCheckedChangeListener {
+        OnDateSelectedListener, RadioGroup.OnCheckedChangeListener, PlatformTaskListener {
 
     private ImageView ivBackIcon;
     private ImageView ivEventsSyncIcon;
@@ -60,6 +64,10 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     EventListAdapter eventListAdapter;
     ArrayList<Event> eventsList;
     ArrayList<Event> sortedEventsList;
+
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
+
 
     public EventsPlannerFragment() {
         // Required empty public constructor
@@ -84,6 +92,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         if (getActivity() == null) {
             return;
         }
+        progressBarLayout = eventsPlannerView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = eventsPlannerView.findViewById(R.id.pb_profile_act);
+
+
+        EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
+        eventsPlannerPresenter.getEvents("");
+
 
         eventsList = new ArrayList<>();
         sortedEventsList = new ArrayList<>();
@@ -267,5 +282,36 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView,
                                @NonNull CalendarDay calendarDay, boolean b) {
         Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void showProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public <T> void showNextScreen(T data) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String result) {
+        getActivity().runOnUiThread(() -> Util.showToast(result, this));
     }
 }

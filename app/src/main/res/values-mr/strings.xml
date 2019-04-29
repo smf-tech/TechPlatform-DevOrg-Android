@@ -302,5 +302,7 @@
     <string name="delete">हटवा</string>
     <string name="leave_apply_msg1">एकदा आपल्याला आपल्या व्यवस्थापकाकडून मंजुरी मिळाल्यावर आपण सुट्टी शिल्लक पाहू शकाल</string>
     <string name="leave_apply_msg">आपण %1$s वरून %2$s ते %3$s साठी अर्ज केला</string>
->>>>>>> 11ec56bdc6882b2c69ba660bfea83f052a5b0825
+    <string name="edit">Edit</string>
+    <string name="this_event_only">This event only</string>
+    <string name="all_events_in_series">All events in series</string>
 </resources>
