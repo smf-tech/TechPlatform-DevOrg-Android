@@ -19,6 +19,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.Task;
@@ -34,10 +38,6 @@ import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
 import com.platform.view.activities.ProfileActivity;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.

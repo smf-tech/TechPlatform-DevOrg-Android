@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
@@ -22,10 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 @SuppressWarnings("CanBeFinal")
 public class ReportsFragment extends Fragment implements PlatformTaskListener, View.OnClickListener {

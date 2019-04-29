@@ -1,16 +1,16 @@
 package com.platform.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.events.Member;
@@ -30,6 +30,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     private ImageView toolbarAction;
     private ImageView ivBackIcon;
     boolean isNewMembersList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,42 +40,50 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
 
     private void initViews() {
         setActionbar(getResources().getString(R.string.task_add_members));
-        cbSelectAllMembers = (CheckBox)findViewById(R.id.cb_select_all_members);
+        cbSelectAllMembers = (CheckBox) findViewById(R.id.cb_select_all_members);
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         toolbarAction = findViewById(R.id.toolbar_edit_action);
         editSearch = (SearchView) findViewById(R.id.search_view);
 
-        membersList=(ArrayList<Member>)getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
-        isNewMembersList=getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,false);
+        membersList = (ArrayList<Member>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
+        isNewMembersList = getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
 
         LinearLayout lyAttendedTab = findViewById(R.id.ly_attended_tab);
         TextView tvInfoLabel = findViewById(R.id.tv_info_label);
-        if(isNewMembersList){
+        if (isNewMembersList) {
             toolbarAction.setVisibility(View.GONE);
             lyAttendedTab.setVisibility(View.GONE);
             tvInfoLabel.setVisibility(View.VISIBLE);
         } else {
             toolbarAction.setVisibility(View.VISIBLE);
             toolbarAction.setImageResource(R.drawable.ic_check_white);
+            setActionbar(getResources().getString(R.string.mark_attendance));
+            findViewById(R.id.bt_apply_filters).setVisibility(View.GONE);
             tvInfoLabel.setVisibility(View.GONE);
             lyAttendedTab.setVisibility(View.VISIBLE);
             TextView tvAttended = findViewById(R.id.tv_attended);
             TextView tvNotAttended = findViewById(R.id.tv_not_attended);
-            tvAttended.setText("03 Attended");
-            tvNotAttended.setText("05 Not Attended");
+            int attendedCount = 0;
+            for(Member m: membersList){
+                if(m.getMemberAttended()){
+                    attendedCount++;
+                }
+            }
+            tvAttended.setText(attendedCount + " Attended");
+            tvNotAttended.setText(membersList.size()- attendedCount + " Not Attended");
         }
 
         filterMembersList.addAll(membersList);
         checkAllSelected(membersList);
         RecyclerView rvMembers = findViewById(R.id.rv_members);
-        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList,true);
+        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList, true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvMembers.setLayoutManager(mLayoutManager);
         rvMembers.setAdapter(addMembersListAdapter);
         setListeners();
     }
 
-    private void setListeners(){
+    private void setListeners() {
         ivBackIcon.setOnClickListener(this);
         cbSelectAllMembers.setOnClickListener(this);
         toolbarAction.setOnClickListener(this);
@@ -114,13 +123,13 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     public void filter(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
         membersList.clear();
-        if(searchText.length()>0) {
+        if (searchText.length() > 0) {
             for (Member member : filterMembersList) {
                 if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
                     membersList.add(member);
                 }
             }
-        }else{
+        } else {
             membersList.addAll(filterMembersList);
         }
         addMembersListAdapter.notifyDataSetChanged();
@@ -137,26 +146,14 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
                 break;
             case R.id.cb_select_all_members:
                 if (((CheckBox) v).isChecked()) {
-                    if (editSearch.getQuery().toString().trim().length() == 0) {
                         for (Member member : membersList) {
-                            member.setMemberSelected(true);
+                            member.setMemberAttended(true);
                         }
-                    } else {
-                        for (Member member : membersList) {
-                            member.setMemberSelected(true);
-                        }
-                    }
 
                 } else {
-                    if (editSearch.getQuery().toString().trim().length() == 0) {
-                        for (Member member  : membersList) {
-                            member.setMemberSelected(false);
-                        }
-                    } else {
                         for (Member member : membersList) {
-                            member.setMemberSelected(false);
+                            member.setMemberAttended(false);
                         }
-                    }
 
                 }
                 addMembersListAdapter.notifyDataSetChanged();

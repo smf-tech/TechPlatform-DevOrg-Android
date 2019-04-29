@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.platform.view.activities.AddMemberFilerActivity">
+    tools:context="com.platform.view.activities.AddMembersFilterActivity">
 
     <include
         android:id="@+id/profile_toolbar"
@@ -33,15 +32,15 @@
 
             <!--Project-->
 
-          <!--  <TextView
-                style="@style/FormLabel"
-                android:text="@string/mandatory_project" />
+            <!--  <TextView
+                  style="@style/FormLabel"
+                  android:text="@string/mandatory_project" />
 
-            <com.platform.widgets.MultiSelectSpinner
-                android:id="@+id/sp_project"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />-->
+              <com.platform.widgets.MultiSelectSpinner
+                  android:id="@+id/sp_project"
+                  style="@style/FormSpinner"
+                  android:layout_width="match_parent"
+                  android:layout_height="@dimen/dimen_50dp" />-->
 
             <!--Role-->
             <TextView
@@ -138,6 +137,7 @@
 
         </LinearLayout>
     </ScrollView>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

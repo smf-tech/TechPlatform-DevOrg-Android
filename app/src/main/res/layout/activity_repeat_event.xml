@@ -22,13 +22,14 @@
             android:id="@+id/tv_repeat"
             style="@style/FormLabel"
             android:text="@string/repeat" />
+
         <Spinner
             android:id="@+id/sp_repeat"
             android:layout_below="@+id/tv_repeat"
             style="@style/FormSpinner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_05dp"/>
+            android:layout_marginTop="@dimen/dimen_05dp" />
 
     </RelativeLayout>
 
@@ -45,13 +46,14 @@
             android:id="@+id/tv_day_interval"
             style="@style/FormLabel"
             android:text="@string/interval" />
+
         <Spinner
             android:id="@+id/sp_day_interval"
             android:layout_below="@+id/tv_day_interval"
             style="@style/FormSpinner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_05dp"/>
+            android:layout_marginTop="@dimen/dimen_05dp" />
 
     </RelativeLayout>
 
@@ -68,13 +70,14 @@
             android:id="@+id/tv_week_interval"
             style="@style/FormLabel"
             android:text="@string/interval" />
+
         <Spinner
             android:id="@+id/sp_week_interval"
             android:layout_below="@+id/tv_week_interval"
             style="@style/FormSpinner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_05dp"/>
+            android:layout_marginTop="@dimen/dimen_05dp" />
 
     </RelativeLayout>
 
@@ -91,13 +94,14 @@
             android:id="@+id/tv_month_interval"
             style="@style/FormLabel"
             android:text="@string/interval" />
+
         <Spinner
             android:id="@+id/sp_month_interval"
             android:layout_below="@+id/tv_month_interval"
             style="@style/FormSpinner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_05dp"/>
+            android:layout_marginTop="@dimen/dimen_05dp" />
 
     </RelativeLayout>
 
@@ -114,13 +118,14 @@
             android:id="@+id/tv_which_days"
             style="@style/FormLabel"
             android:text="@string/interval" />
+
         <com.platform.widgets.MultiSelectSpinner
             android:id="@+id/sp_which_days"
             android:layout_below="@+id/tv_which_days"
             style="@style/FormSpinner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_05dp"/>
+            android:layout_marginTop="@dimen/dimen_05dp" />
 
     </RelativeLayout>
 

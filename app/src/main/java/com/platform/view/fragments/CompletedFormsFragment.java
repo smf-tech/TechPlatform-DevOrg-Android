@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -37,10 +41,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.utility.Constants.DATE_FORMAT;

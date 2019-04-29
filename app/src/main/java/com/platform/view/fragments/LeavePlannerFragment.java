@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.view.activities.GeneralActionsActivity;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 public class LeavePlannerFragment extends Fragment implements View.OnClickListener {
 
@@ -67,7 +66,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void setUIData(JsonObject leavesData) {
-        if (leavesData != null){// && leavesData.has("total_leaves") && leavesData.get("total_leaves").getAsInt() > 0) {
+        if (leavesData != null) {// && leavesData.has("total_leaves") && leavesData.get("total_leaves").getAsInt() > 0) {
             rlLeavesCount.setVisibility(View.VISIBLE);
             tvCLSLLeavesCount.setText("02");
             tvPaidLeavesCount.setText("06");

@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
@@ -20,8 +22,6 @@ import com.platform.widgets.PlatformSpinner;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.content.ContextCompat;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class DropDownTemplate implements AdapterView.OnItemSelectedListener {

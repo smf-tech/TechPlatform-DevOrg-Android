@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,9 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import androidx.fragment.app.FragmentActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
 public class FormActivityPresenter implements FormRequestCallListener,
@@ -184,7 +184,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
             if (error != null && error.networkResponse != null) {
                 if (error.networkResponse.statusCode == 400) {
-                    if (error.networkResponse.data!=null) {
+                    if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = trimMessage(json);
                         if (json != null) {

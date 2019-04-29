@@ -25,6 +25,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
@@ -59,9 +62,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
@@ -699,6 +699,7 @@ public class Util {
             editText.setText(date);
         }, mYear, mMonth, mDay);
 
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
         dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
     }
@@ -714,7 +715,8 @@ public class Util {
                                 String.format(Locale.getDefault(), "%02d", selectedHour),
                                 String.format(Locale.getDefault(), "%02d", selectedMinute))),
                 hour, minute, false);
-        timePicker.setTitle("Select Time");
+
+        timePicker.setTitle(context.getString(R.string.select_time_title));
         timePicker.show();
     }
 }

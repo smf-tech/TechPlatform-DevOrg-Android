@@ -2,6 +2,8 @@ package com.platform.request;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -23,8 +25,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 public class FormRequestCall {
 

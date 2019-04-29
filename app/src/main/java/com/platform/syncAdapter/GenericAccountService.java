@@ -26,7 +26,7 @@ public class GenericAccountService extends Service {
      * @param accountType AccountType defined in the configuration XML file for
      *                    android.accounts.AccountAuthenticator (e.g. res/xml/sync adapter.xml).
      * @return Handle to application's account (not guaranteed to resolve unless CreateSyncAccount()
-     *         has been called)
+     * has been called)
      */
     public static Account GetAccount(String accountName, String accountType) {
         // Note: Normally the account name is set to the user's identity (username or email

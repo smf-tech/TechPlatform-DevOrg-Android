@@ -14,9 +14,9 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.platform.R;
-
 import androidx.annotation.Nullable;
+
+import com.platform.R;
 
 @SuppressLint("Registered")
 public class GPSTracker extends Service implements LocationListener {

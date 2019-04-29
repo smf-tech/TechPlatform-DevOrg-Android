@@ -27,6 +27,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
 import com.bumptech.glide.Glide;
 import com.platform.Platform;
 import com.platform.R;
@@ -55,9 +58,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 
 @SuppressWarnings("CanBeFinal")
 public class ProfileActivity extends BaseActivity implements ProfileTaskListener,
@@ -307,7 +307,11 @@ public class ProfileActivity extends BaseActivity implements ProfileTaskListener
                 break;
 
             case R.id.btn_profile_submit:
-                submitProfileDetails();
+                if (Util.isConnected(this)) {
+                    submitProfileDetails();
+                } else {
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
                 break;
         }
     }

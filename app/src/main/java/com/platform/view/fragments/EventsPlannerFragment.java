@@ -104,18 +104,18 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         sortedEventsList = new ArrayList<>();
 
         ArrayList<Member> membersList = new ArrayList<>();
-        membersList.add(new Member("1", "Sagar Mahajan", "DM", true));
-        membersList.add(new Member("2", "Kishor Shevkar", "TC", false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT", true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA", false));
+        membersList.add(new Member("1", "Sagar Mahajan", "DM", true, true));
+        membersList.add(new Member("2", "Kishor Shevkar", "TC", false, false));
+        membersList.add(new Member("3", "Jagruti Devare", "MT", true,true));
+        membersList.add(new Member("4", "Sachin Kakade", "FA", false,false));
 
-        eventsList.add(new Event("1","Meeting", "Title1", "22/04/2019","10:00 am",
-                "11:00 am","-","test","wagoli,pune.","sachin",
-                "1234",membersList));
+        eventsList.add(new Event("1", "Meeting", "Title1", "22/04/2019", "10:00 am",
+                "11:00 am", "-", "test", "wagoli,pune.", "sachin",
+                "1234", membersList));
 
-        eventsList.add(new Event("2","Event" ,"Title2", "22/04/2019","10:00 am",
-                "11:00 am", "-","test","hadpsir,pune.","sagar",
-                "1235",membersList));
+        eventsList.add(new Event("2", "Event", "Title2", "22/04/2019", "10:00 am",
+                "11:00 am", "-", "test", "hadpsir,pune.", "sagar",
+                "1235", membersList));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -135,7 +135,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
         radioGroup = eventsPlannerView.findViewById(R.id.radio_group_filter);
 
-        eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, Constants.Planner.EVENT_DETAIL);
+        eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, Constants.Planner.EVENTS_LABEL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvEvents.setLayoutManager(mLayoutManager);
         rvEvents.setAdapter(eventListAdapter);
@@ -189,13 +189,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, "EVENTS");
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 this.startActivity(intentCreateEvent);
                 break;
 
             case R.id.tv_all_events_list:
                 Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, "EVENTS");
+                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 this.startActivity(intentEventList);
                 break;
         }

@@ -1,13 +1,13 @@
 package com.platform.dao;
 
-import com.platform.models.pm.ProcessData;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.platform.models.pm.ProcessData;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 @Dao

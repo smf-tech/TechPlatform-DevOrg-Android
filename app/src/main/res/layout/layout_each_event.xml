@@ -15,8 +15,7 @@
         android:maxLines="1"
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        />
+        android:layout_marginStart="@dimen/dimen_10dp" />
 
     <TextView
         android:id="@+id/tv_event_time"
@@ -37,7 +36,8 @@
         android:layout_toRightOf="@+id/tv_event_time"
         android:textSize="@dimen/text_size_11"
         android:textColor="@color/light_grey"
-        android:text="|"/>
+        android:text="|" />
+
     <TextView
         android:id="@+id/tv_event_address"
         android:layout_width="wrap_content"
@@ -48,6 +48,7 @@
         android:textSize="@dimen/text_size_11"
         android:textColor="@color/light_grey"
         android:maxLength="30" />
+
     <TextView
         android:id="@+id/tv_line2"
         android:layout_width="wrap_content"
@@ -57,7 +58,8 @@
         android:layout_toRightOf="@+id/tv_event_address"
         android:textSize="@dimen/text_size_11"
         android:textColor="@color/light_grey"
-        android:text="|"/>
+        android:text="|" />
+
     <TextView
         android:id="@+id/tv_event_owner"
         android:layout_width="wrap_content"
@@ -68,6 +70,7 @@
         android:textSize="@dimen/text_size_11"
         android:maxLength="22"
         android:textColor="@color/light_grey" />
+
     <ImageView
         android:id="@+id/iv_left_icon"
         android:layout_width="wrap_content"
@@ -75,7 +78,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dimen_10dp"
-        android:src="@drawable/ic_right_arrow_grey"/>
+        android:src="@drawable/ic_right_arrow_grey" />
 
     <ImageView
         android:id="@+id/iv_dotted_line"

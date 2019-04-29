@@ -7,12 +7,15 @@ public class Member implements Serializable {
     private String name;
     private String role;
     private Boolean isMemberSelected;
+    private Boolean isMemberAttended;
 
-    public Member(String id, String name, String role, Boolean isMemberSelected){
+
+    public Member(String id, String name, String role, Boolean isMemberSelected, Boolean isMemberAttended) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.isMemberSelected = isMemberSelected;
+        this.isMemberAttended = isMemberAttended;
     }
 
     public String getId() {
@@ -45,6 +48,14 @@ public class Member implements Serializable {
 
     public void setMemberSelected(Boolean memberSelected) {
         isMemberSelected = memberSelected;
+    }
+
+    public Boolean getMemberAttended() {
+        return isMemberAttended;
+    }
+
+    public void setMemberAttended(Boolean memberAttended) {
+        isMemberAttended = memberAttended;
     }
 
 }

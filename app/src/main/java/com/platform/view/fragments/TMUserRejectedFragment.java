@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.platform.R;
 import com.platform.listeners.TMTaskListener;
 import com.platform.models.tm.PendingRequest;
@@ -16,10 +20,6 @@ import com.platform.view.adapters.TMRejectedAdapter;
 
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import static com.platform.utility.Constants.TM.USER_APPROVALS;
 

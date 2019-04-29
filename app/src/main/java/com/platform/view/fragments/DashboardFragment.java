@@ -8,6 +8,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -22,12 +28,6 @@ import com.platform.view.customs.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 
 @SuppressWarnings("WeakerAccess")
 public class DashboardFragment extends Fragment {
@@ -75,9 +75,9 @@ public class DashboardFragment extends Fragment {
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
                     for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
-                            if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
+                           // if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
                                 tabName.setActive(true);
-                            }
+                           //}
                         }
                     }
                 } else {

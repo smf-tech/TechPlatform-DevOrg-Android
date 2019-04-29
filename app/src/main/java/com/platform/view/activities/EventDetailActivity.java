@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
@@ -39,6 +43,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private Button btEditAttendance;
 
     private boolean isMemberListVisible;
+    String toOpen;
 
     private Snackbar snackbar;
 
@@ -51,8 +56,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
+        toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
-        setActionbar(getString(R.string.event_detail));
+        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            setActionbar(getString(R.string.task_detail));
+        } else {
+            setActionbar(getString(R.string.event_detail));
+        }
 
         backButton = findViewById(R.id.toolbar_back_action);
         editButton = findViewById(R.id.toolbar_edit_action);
@@ -82,20 +92,33 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         String finalDate = weekDay.format(date);
-        finalDate = finalDate +", "+ targetFormat.format(date);
+        finalDate = finalDate + ", " + targetFormat.format(date);
 
         tvTitle.setText(event.getTital());
         tvCategory.setText(event.getCategory());
         tvDescription.setText(event.getDescription());
         tvDate.setText(finalDate);
-        tvTime.setText(event.getStarTime()+" > "+event.getEndTime());
+        tvTime.setText(event.getStarTime() + " > " + event.getEndTime());
         tvRepeat.setText(event.getRepeat());
         tvAddress.setText(event.getAddress());
-        tvAttended.setText("03 Attended");
-        tvNotAttended.setText("05 Not Attended");
+        int attendedCount = 0;
+        boolean isAttendanceMarked = false;
+        for(Member m: event.getMembersList()){
+            if(m.getMemberAttended()){
+                attendedCount++;
+                isAttendanceMarked = true;
+            }
+        }
+        if(isAttendanceMarked) {
+            tvAttended.setText(attendedCount + " Attended");
+            tvNotAttended.setText(event.getMembersList().size() - attendedCount + " Not Attended");
+        }else{
+            tvAttended.setText("0 Attended");
+            tvNotAttended.setText(event.getMembersList().size()+ " Not Attended");
+        }
         setAdapter(event.getMembersList());
 
-        isMemberListVisible=true;
+        isMemberListVisible = true;
 
         mySnackbar();
         setListeners();
@@ -138,18 +161,18 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.iv_attendees_list:
-                if(isMemberListVisible){
-                    isMemberListVisible=false;
+                if (isMemberListVisible) {
+                    isMemberListVisible = false;
                     rvAttendeesList.setVisibility(View.VISIBLE);
                 } else {
-                    isMemberListVisible=true;
+                    isMemberListVisible = true;
                     rvAttendeesList.setVisibility(View.GONE);
                 }
                 break;
             case R.id.bt_edit_attendance:
                 Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-                intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,false);
-                intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,event.getMembersList());
+                intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+                intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
                 this.startActivity(intentAddMembersListActivity);
                 break;
             case R.id.tv_edit_this_event:
@@ -167,7 +190,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
     public void callCreateEvent(String edit){
         Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
-        intentCreateEvent.putExtra(Constants.Planner.TO_OPEN,"EVENTS");
+            intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
         intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL,event);
         this.startActivity(intentCreateEvent);
         lyGreyedOut.setVisibility(View.GONE);

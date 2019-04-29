@@ -239,10 +239,12 @@ public class Constants {
 
     public static class Planner {
         public static final String KEY_IS_DASHBOARD = "isDashboard";
-        public static final String TO_OPEN ="ToOpan";
+        public static final String TO_OPEN = "ToOpan";
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
         public static final String TASK_DETAIL = "TaskDetail";
+        public static final String EVENTS_LABEL = "EVENTS";
+        public static final String TASKS_LABEL = "TASKS";
     }
 }
