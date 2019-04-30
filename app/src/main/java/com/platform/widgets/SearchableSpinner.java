@@ -1,5 +1,22 @@
-package com.toptoche.searchablespinnerlibrary;
+/*
+  Copyright 2015-2016 Mitesh Pithadiya
+  <p>
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  <p>
+  http://www.apache.org/licenses/LICENSE-2.0
+  <p>
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ */
 
+package com.platform.widgets;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -13,10 +30,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import com.platform.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressLint("AppCompatCustomView")
 public class SearchableSpinner extends Spinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
     public static final int NO_ITEM_SELECTED = -1;
 
@@ -90,11 +110,8 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
 
                 // spinner every time it is loaded with items in the adapter.
                 _items.clear();
-                for (int i = 0; i < _arrayAdapter.getCount(); i++) {
-
+                for (int i = 0; i < _arrayAdapter.getCount(); i++)
                     _items.add(_arrayAdapter.getItem(i));
-
-                }
                 // Change end.
 
                 _searchableListDialog.show(scanForActivity(_context).getFragmentManager(), "TAG");

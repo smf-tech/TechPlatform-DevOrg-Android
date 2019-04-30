@@ -4,6 +4,7 @@
     <!--<dimen name="dimen_02dp">2dp</dimen>-->
     <dimen name="dimen_05dp">5dp</dimen>
     <dimen name="dimen_07dp">7dp</dimen>
+    <dimen name="dimen_08dp">8dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
     <dimen name="dimen_12dp">12dp</dimen>
     <dimen name="dimen_15dp">15dp</dimen>
