@@ -39,6 +39,8 @@
     <string name="msg_auth_fail">Server issue, please try again later.</string>
 
     <!--Profile-->
+    <string name="profile">Profile</string>
+    <string name="add_photo">Add Photo</string>
     <string name="registration_title">Registration</string>
     <string name="btn_submit">Submit</string>
     <string name="first_name">First Name *</string>
@@ -58,6 +60,7 @@
     <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
+    <string name="role">Role</string>
     <string name="mandatory_state">State *</string>
     <string name="state">State </string>
     <string name="mandatory_district">District *</string>

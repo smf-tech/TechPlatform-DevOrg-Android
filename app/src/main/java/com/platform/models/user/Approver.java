@@ -2,6 +2,7 @@ package com.platform.models.user;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.UserLocation;
 
 @SuppressWarnings("unused")
@@ -38,10 +39,10 @@ public class Approver {
     private UserLocation location;
     @SerializedName("org_id")
     @Expose
-    private String orgId;
+    private JurisdictionType orgId;
     @SerializedName("role_id")
     @Expose
-    private String roleId;
+    private JurisdictionType roleId;
     @SerializedName("type")
     @Expose
     private String type;
@@ -127,18 +128,18 @@ public class Approver {
     }
 
     public String getOrgId() {
-        return orgId;
+        return orgId.getId();
     }
 
-    public void setOrgId(String orgId) {
+    public void setOrgId(JurisdictionType orgId) {
         this.orgId = orgId;
     }
 
     public String getRoleId() {
-        return roleId;
+        return roleId.getId();
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(JurisdictionType roleId) {
         this.roleId = roleId;
     }
 

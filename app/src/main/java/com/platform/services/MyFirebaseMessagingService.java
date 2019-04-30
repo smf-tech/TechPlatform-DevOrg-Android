@@ -17,7 +17,7 @@ import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.LoginActivity;
-import com.platform.view.activities.ProfileActivity;
+import com.platform.view.activities.EditProfileActivity;
 
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -91,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                 intent = new Intent(getApplicationContext(), LoginActivity.class);
             } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
-                intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                intent = new Intent(getApplicationContext(), EditProfileActivity.class);
             } else {
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
             }
