@@ -227,7 +227,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void deleteLeaves() {
-        showAlertDialog(getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+        showAlertDialog("", getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
     }
 
     @Override
@@ -235,9 +235,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private void showAlertDialog(String message, String btn1String, String btn2String) {
-        final String dialogTitle = "";
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+    private void showAlertDialog(String dialogTitle, String message, String btn1String, String btn2String) {
+        final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
@@ -277,4 +276,4 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         dialog.setCancelable(false);
         dialog.show();      // if decline button is clicked, close the custom dialog
     }
-}
+ }

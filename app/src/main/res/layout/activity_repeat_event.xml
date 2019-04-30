@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.platform.view.activities.RepeatEventActivity">
+
+    <include
+        android:id="@+id/ly_app_bar"
+        layout="@layout/app_toolbar" />
+
+    <!--Repeat-->
+    <RelativeLayout
+        android:id="@+id/ly_repeat"
+        android:layout_below="@+id/ly_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_repeat"
+            style="@style/FormLabel"
+            android:text="@string/repeat" />
+
+        <Spinner
+            android:id="@+id/sp_repeat"
+            android:layout_below="@+id/tv_repeat"
+            style="@style/FormSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_05dp" />
+
+    </RelativeLayout>
+
+    <!--Day Interval-->
+    <RelativeLayout
+        android:id="@+id/ly_day_interval"
+        android:layout_below="@+id/ly_repeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_day_interval"
+            style="@style/FormLabel"
+            android:text="@string/interval" />
+
+        <Spinner
+            android:id="@+id/sp_day_interval"
+            android:layout_below="@+id/tv_day_interval"
+            style="@style/FormSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_05dp" />
+
+    </RelativeLayout>
+
+    <!--Week Interval-->
+    <RelativeLayout
+        android:id="@+id/ly_week_interval"
+        android:layout_below="@+id/ly_day_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_week_interval"
+            style="@style/FormLabel"
+            android:text="@string/interval" />
+
+        <Spinner
+            android:id="@+id/sp_week_interval"
+            android:layout_below="@+id/tv_week_interval"
+            style="@style/FormSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_05dp" />
+
+    </RelativeLayout>
+
+    <!--Month Interval-->
+    <RelativeLayout
+        android:id="@+id/ly_month_interval"
+        android:layout_below="@+id/ly_week_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_month_interval"
+            style="@style/FormLabel"
+            android:text="@string/interval" />
+
+        <Spinner
+            android:id="@+id/sp_month_interval"
+            android:layout_below="@+id/tv_month_interval"
+            style="@style/FormSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_05dp" />
+
+    </RelativeLayout>
+
+    <!--which_days-->
+    <RelativeLayout
+        android:id="@+id/ly_which_days"
+        android:layout_below="@+id/ly_month_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_which_days"
+            style="@style/FormLabel"
+            android:text="@string/interval" />
+
+        <com.platform.widgets.MultiSelectSpinner
+            android:id="@+id/sp_which_days"
+            android:layout_below="@+id/tv_which_days"
+            style="@style/FormSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_05dp" />
+
+    </RelativeLayout>
+
+    <!--Which Date-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tly_which_date"
+        style="@style/RegistrationTextInputLayout"
+        android:layout_below="@+id/ly_which_days"
+        app:hintTextAppearance="@style/TextInputLayoutHint"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_which_date"
+            style="@style/RegistrationEditTextLayout"
+            android:hint="@string/same_day"
+            android:clickable="false"
+            android:focusable="false"
+            android:inputType="date"
+            tools:ignore="Autofill" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--End Date-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tly_end_date"
+        style="@style/RegistrationTextInputLayout"
+        android:layout_below="@+id/tly_which_date"
+        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+        <EditText
+            android:id="@+id/et_end_date"
+            style="@style/RegistrationEditTextLayout"
+            android:hint="@string/end_date"
+            android:clickable="false"
+            android:focusable="false"
+            android:inputType="date"
+            android:drawableEnd="@drawable/ic_calendar_ev"
+            tools:ignore="Autofill" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</RelativeLayout>

@@ -43,7 +43,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private View plannerView;
     private boolean isDashboard;
     private boolean isMonth = true;
-    private Button btCheckIn, btCheckout;
+    private int tabClicked = -1;
 
     private TextView tvClickPending;
     private TextView tvClickApproved;
@@ -51,15 +51,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private TextView tvAttendanceDetails;
     private TextView tvCheckInTime;
     private TextView tvCheckOutTime;
+    private Button btCheckIn, btCheckout;
 
-    private LinearLayout lyCheckInOutDashboard;
-    private LinearLayout lvAttendanceStatus;
+    private RecyclerView rvAttendanceList;
     private RelativeLayout attendanceCardLayout;
     private RelativeLayout lyCalender;
-
+    private LinearLayout lyCheckInOutDashboard;
+    private LinearLayout lvAttendanceStatus;
     private MaterialCalendarView calendarView;
-    private RecyclerView rvAttendanceList;
-    private int tabClicked = -1;
 
     public AttendancePlannerFragment() {
         // Required empty public constructor

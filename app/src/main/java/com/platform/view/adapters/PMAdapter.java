@@ -94,7 +94,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
             }
 
             String headerTitle = (String) getGroup(groupPosition);
-            TextView txtName = convertView .findViewById(R.id.group_list_header);
+            TextView txtName = convertView.findViewById(R.id.group_list_header);
             txtName.setText(headerTitle);
         }
 
@@ -109,7 +109,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater layoutInflater =
-                    (LayoutInflater) this.context .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater != null ?
                     layoutInflater.inflate(R.layout.layout_each_process, parent, false) : null;
         }
@@ -118,7 +118,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
             TextView processName = convertView.findViewById(R.id.pm_process_name_text);
             processName.setText(process.getName().getLocaleValue());
             processName.setOnClickListener(view ->
-                listener.onProcessListItemClickListener(process));
+                    listener.onProcessListItemClickListener(process));
         }
 
         return convertView;

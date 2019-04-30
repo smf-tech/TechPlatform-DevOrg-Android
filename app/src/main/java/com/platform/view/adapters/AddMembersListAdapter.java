@@ -45,7 +45,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.tvMemberDesignation.setText(member.getRole());
         holder.cbMemberSelect.setChecked(membersList.get(position).getMemberSelected());
 
-        if (membersList.get(position).getMemberSelected()) {
+        if (membersList.get(position).getMemberAttended()) {
             holder.cbMemberSelect.setChecked(true);
         } else {
             holder.cbMemberSelect.setChecked(false);
@@ -57,7 +57,8 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         return membersList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        //        RelativeLayout lyMain;
         TextView tvMemberName;
         TextView tvMemberDesignation;
         CheckBox cbMemberSelect;
@@ -68,8 +69,9 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             tvMemberName = itemView.findViewById(R.id.tv_member_name);
             tvMemberDesignation = itemView.findViewById(R.id.tv_member_designation);
             cbMemberSelect = itemView.findViewById(R.id.cb_select_member);
+//            lyMain = itemView.findViewById(R.id.ly_main);
 
-            if(!isCheckVisibil){
+            if (!isCheckVisibil) {
                 cbMemberSelect.setVisibility(View.GONE);
             }
 

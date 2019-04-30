@@ -1,9 +1,11 @@
 package com.platform.models.events;
 
+import com.platform.models.forms.Form;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Event implements Serializable{
+public class Event implements Serializable {
     private String id;
     private String category;
     private String tital;
@@ -15,11 +17,13 @@ public class Event implements Serializable{
     private String address;
     private String owner;
     private String ownerID;
+    private String status;
     private ArrayList<Member> membersList = new ArrayList<>();
+    private ArrayList<Form> formsList = new ArrayList<>();
 
     public Event(String id, String category, String tital, String startDate, String starTime,
                  String endTime, String repeat, String description, String address, String owner,
-                 String ownerID, ArrayList<Member> membersList) {
+                 String ownerID, String status, ArrayList<Member> membersList, ArrayList<Form> formsList) {
         this.id = id;
         this.category = category;
         this.tital = tital;
@@ -31,7 +35,11 @@ public class Event implements Serializable{
         this.address = address;
         this.owner = owner;
         this.ownerID = ownerID;
+        this.status = status;
         this.membersList.addAll(membersList);
+        if (formsList!=null) {
+            this.formsList.addAll(formsList);
+        }
     }
 
     public String getId() {
@@ -122,11 +130,27 @@ public class Event implements Serializable{
         this.ownerID = ownerID;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public ArrayList<Member> getMembersList() {
         return membersList;
     }
 
     public void setMembersList(ArrayList<Member> membersList) {
         this.membersList = membersList;
+    }
+
+    public ArrayList<Form> getFormsList() {
+        return formsList;
+    }
+
+    public void setFormsList(ArrayList<Form> formsList) {
+        this.formsList = formsList;
     }
 }

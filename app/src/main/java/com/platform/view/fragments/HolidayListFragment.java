@@ -25,8 +25,9 @@ public class HolidayListFragment extends Fragment {
     }
 
     public static HolidayListFragment newInstance() {
-        return  new HolidayListFragment();
+        return new HolidayListFragment();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class HolidayListFragment extends Fragment {
         ArrayList<String> leaves = new ArrayList<>();
         leaves.add("1");
         leaves.add("2");
-        HolidayListAdapter adapter = new HolidayListAdapter(getActivity(),leaves);
+        HolidayListAdapter adapter = new HolidayListAdapter(getActivity(), leaves);
         leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         leavesList.setAdapter(adapter);

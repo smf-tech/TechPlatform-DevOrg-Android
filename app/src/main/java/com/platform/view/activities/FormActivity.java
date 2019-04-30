@@ -68,6 +68,7 @@ public class FormActivity extends BaseActivity {
     }
 
     private boolean isOfflineSaved;
+
     public void closeScreen(boolean flag) {
         isOfflineSaved = flag;
     }

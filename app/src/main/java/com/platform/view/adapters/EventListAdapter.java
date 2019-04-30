@@ -19,7 +19,7 @@ import com.platform.view.activities.EventDetailActivity;
 
 import java.util.ArrayList;
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder>{
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<Event> eventsList;
@@ -45,18 +45,26 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventTitle.setText(event.getTital());
         holder.tvEventTime.setText(event.getStarTime());
         holder.tvEventAddress.setText(event.getAddress());
-        holder.tvEventOwner.setText(event.getTital());
-        if(type.equalsIgnoreCase(Constants.Planner.TASK_DETAIL)){
+        holder.tvEventOwner.setText(event.getOwner());
 
-        }
-        holder.lyEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
-                intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL,event);
-                mContext.startActivity(intentEventDetailActivity);
+        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            if (event.getStatus().equals("Planned")) {
+                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            } else if (event.getStatus().equals("Completed")) {
+                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             }
+        }
+
+        holder.lyEvent.setOnClickListener(v -> {
+            Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
+            intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL, event);
+            intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN, type);
+            mContext.startActivity(intentEventDetailActivity);
         });
+
+        if (position == (eventsList.size() - 1)) {
+            holder.ivDottedLine.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -64,13 +72,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         return eventsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout lyEvent;
         TextView tvEventTitle;
         TextView tvEventTime;
         TextView tvEventAddress;
         TextView tvEventOwner;
         ImageView imgArrow;
+        ImageView ivDottedLine;
+        View vTaskStatusIndicator;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,7 +91,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             tvEventAddress = itemView.findViewById(R.id.tv_event_address);
             tvEventOwner = itemView.findViewById(R.id.tv_event_owner);
             imgArrow = itemView.findViewById(R.id.iv_left_icon);
-
+            vTaskStatusIndicator = itemView.findViewById(R.id.task_status_indicator);
+            ivDottedLine = itemView.findViewById(R.id.iv_dotted_line);
         }
     }
 }

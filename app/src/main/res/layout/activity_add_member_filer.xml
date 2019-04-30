@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.platform.view.activities.AddMemberFilerActivity">
+    tools:context="com.platform.view.activities.AddMembersFilterActivity">
 
     <include
         android:id="@+id/profile_toolbar"
@@ -25,34 +24,34 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_organization" />
 
-            <Spinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_organization"
                 style="@style/FormSpinner"
-                android:prompt="@string/organization" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
 
             <!--Project-->
 
-          <!--  <TextView
-                style="@style/FormLabel"
-                android:text="@string/mandatory_project" />
+            <!--  <TextView
+                  style="@style/FormLabel"
+                  android:text="@string/mandatory_project" />
 
-            <com.platform.widgets.MultiSelectSpinner
-                android:id="@+id/sp_project"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />-->
+              <com.platform.widgets.MultiSelectSpinner
+                  android:id="@+id/sp_project"
+                  style="@style/FormSpinner"
+                  android:layout_width="match_parent"
+                  android:layout_height="@dimen/dimen_50dp" />-->
 
             <!--Role-->
             <TextView
                 style="@style/FormLabel"
                 android:text="@string/mandatory_role" />
 
-            <Spinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_role"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp" />
-
 
             <!--State-->
             <TextView
@@ -60,10 +59,11 @@
                 style="@style/FormLabel"
                 android:text="@string/mandatory_state" />
 
-            <Spinner
+            <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_state"
                 style="@style/FormSpinner"
-                android:prompt="@string/state" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
 
             <!--District-->
             <TextView
@@ -137,6 +137,7 @@
 
         </LinearLayout>
     </ScrollView>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

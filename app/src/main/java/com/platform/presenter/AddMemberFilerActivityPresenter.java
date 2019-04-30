@@ -10,17 +10,17 @@ import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
-import com.platform.view.activities.AddMemberFilerActivity;
+import com.platform.view.activities.AddMembersFilterActivity;
 
 import java.lang.ref.WeakReference;
 
 public class AddMemberFilerActivityPresenter implements ProfileRequestCallListener {
     private final String TAG = AddMemberFilerActivityPresenter.class.getName();
-    private WeakReference<AddMemberFilerActivity> addMemberFilerActivity;
+    private WeakReference<AddMembersFilterActivity> addMemberFilerActivity;
 
 
-    public AddMemberFilerActivityPresenter(AddMemberFilerActivity addMemberFilerActivity) {
-        this.addMemberFilerActivity = new WeakReference<> (addMemberFilerActivity);
+    public AddMemberFilerActivityPresenter(AddMembersFilterActivity addMembersFilterActivity) {
+        this.addMemberFilerActivity = new WeakReference<>(addMembersFilterActivity);
     }
 
     public void getOrganizations() {
@@ -35,7 +35,7 @@ public class AddMemberFilerActivityPresenter implements ProfileRequestCallListen
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
-//        addMemberFilerActivity.get().showProgressBar();
+        addMemberFilerActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);
     }
 

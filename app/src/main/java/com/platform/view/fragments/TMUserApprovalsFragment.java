@@ -36,7 +36,7 @@ public class TMUserApprovalsFragment extends Fragment {
             ((HomeActivity) context).setActionBarTitle(title);
             ((HomeActivity) context).setSyncButtonVisibility(false);
 
-            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
+            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }

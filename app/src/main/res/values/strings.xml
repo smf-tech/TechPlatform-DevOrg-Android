@@ -246,6 +246,7 @@
     <string name="task_category">Category</string>
     <string name="task_title">Title</string>
     <string name="task_start_date">Start Date</string>
+    <string name="task_end_date">End Date</string>
     <string name="task_start_time">Start Time</string>
     <string name="task_end_time">End Time</string>
     <string name="task_repeat">Repeat</string>
@@ -254,12 +255,47 @@
     <string name="task_add_members">Add Members</string>
     <string name="my_events">My Events</string>
     <string name="apply_filters">Apply Filters</string>
-    <string name="filter">FILTER</string>
+    <string name="filter">Filter</string>
     <string name="add_members_screen_msg">"You have applied filters, select members for event."</string>
+    <string name="event_detail">Event Detail</string>
+    <string name="task_detail">Task Detail</string>
+    <string name="where">Where</string>
+    <string name="edit_attendance">Edit Attendance</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thirsday">Thirsday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>
         <item>Event</item>
+        <item>Task</item>
+    </string-array>
+
+    <string-array name="repeat_array">
+        <item>Repeat</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string-array name="repeat_weeks">
+        <item>1 Week</item>
+        <item>2 Weeks</item>
+        <item>3 Weeks</item>
+    </string-array>
+
+    <string-array name="repeat_months">
+        <item>1 Month</item>
+        <item>2 Months</item>
+        <item>3 Months</item>
     </string-array>
 
     <!--App Events-->
@@ -302,8 +338,9 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
-    <string name="event_detail">Event Detail</string>
-    <string name="where">Where</string>
+    <string name="repeat">Repeat</string>
+    <string name="interval">Interval</string>
+    <string name="which_days">On which days</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
@@ -329,13 +366,15 @@
     <string name="reason">Reason</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
 
-    <string name="check_in">Check In</string>
-    <string name="check_out">Check Out</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="same_day">Same date for each month</string>
+    <string name="edit">Edit</string>
+    <string name="this_event_only">This event only</string>
+    <string name="all_events_in_series">All events in series</string>
 
     <string name="sure_to_delete">Are you sure you want to delete it ?</string>
     <string name="delete">Delete</string>
     <string name="leave_apply_msg1">You will able to see leave balance once you get approval from your manager</string>
     <string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>
-
-
 </resources>

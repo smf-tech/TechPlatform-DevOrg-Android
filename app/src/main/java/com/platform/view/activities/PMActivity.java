@@ -105,7 +105,8 @@ public class PMActivity extends BaseActivity implements PlatformTaskListener, Vi
                 }
                 lastExpandedPosition = groupPosition;
             });
-            expListView.setOnGroupCollapseListener(groupPosition -> {});
+            expListView.setOnGroupCollapseListener(groupPosition -> {
+            });
         }
     }
 

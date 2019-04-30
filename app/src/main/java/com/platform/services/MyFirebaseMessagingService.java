@@ -18,9 +18,9 @@ import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.activities.EditProfileActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.LoginActivity;
-import com.platform.view.activities.EditProfileActivity;
 
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 

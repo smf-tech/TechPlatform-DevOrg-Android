@@ -82,7 +82,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     public void showBackArrow() {
-        if (toggle!= null) {
+        if (toggle != null) {
             toggle.setDrawerIndicatorEnabled(false);
             toolbar.setNavigationIcon(R.drawable.ic_back_white);
             toolbar.setNavigationOnClickListener(view -> {

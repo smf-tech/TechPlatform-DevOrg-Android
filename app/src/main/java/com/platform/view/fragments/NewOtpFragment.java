@@ -35,9 +35,9 @@ import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.EditProfileActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
-import com.platform.view.activities.EditProfileActivity;
 
 /**
  * A simple {@link Fragment} subclass.

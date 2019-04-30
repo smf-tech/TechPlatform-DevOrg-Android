@@ -16,8 +16,6 @@ import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
 public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdapter.ViewHolder> {
-
-
     private LeaveAdapterListener leavesListener;
 
     public AppliedLeavesAdapter(final Context context, final List<String> leavesList, LeaveAdapterListener leavesListener) {
@@ -40,31 +38,23 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
             userImage = itemView.findViewById(R.id.img_user_leaves);
             deleteClick = itemView.findViewById(R.id.img_delete);
             editClick = itemView.findViewById(R.id.img_edit);
-
         }
     }
 
     @NonNull
     @Override
     public AppliedLeavesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_leaves_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_leaves_row,
+                viewGroup, false);
         return new AppliedLeavesAdapter.ViewHolder(v);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int i) {
-
         viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
         viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
         viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves());
-        viewHolder.editClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leavesListener.editLeaves();
-            }
-        });
-        //viewHolder.leaveStatus.setText("Request status :"+"Not yet approved");
+        viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves());
     }
 
     @Override

@@ -323,7 +323,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/add_img" />
+                android:src="@drawable/ic_add_img" />
 
             <TextView
                 android:id="@+id/user_profile_pic_label"

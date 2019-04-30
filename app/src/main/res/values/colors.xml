@@ -11,6 +11,7 @@
     <color name="light_grey">#909090</color>
     <color name="lighter_grey">#EBEBEB</color>
     <color name="lighter_grey_tab">#F0EFEF</color>
+    <color name="lighter_grey_transparent">#60EBEBEB</color>
     <!--<color name="lightest_grey">#EDEDED</color>-->
     <color name="medium_grey">#676767</color>
 
@@ -51,6 +52,8 @@
     <!--<color name="sync_pending_form_color">#6286cc</color>-->
     <color name="submitted_form_color">#47A713</color>
 
+    <color name="planner_label">#7198AA</color>
+
     <color name="profile_name">#333333</color>
     <color name="profile_label">#74A2CE</color>
     <color name="profile_divider">#40707070</color>
@@ -62,7 +65,6 @@
 
     <color name="leave_type">#717171</color>
     <color name="leave_desc_color">#A2A2A2</color>
-
 
     <color name="leaves_tab">#F8F8F8</color>
     <color name="blur_tab">#B5B5B5</color>
