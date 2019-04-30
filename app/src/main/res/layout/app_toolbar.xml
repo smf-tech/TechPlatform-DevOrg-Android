@@ -51,8 +51,8 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="2dp"
                 android:contentDescription="@string/content_description"
-                android:padding="@dimen/dimen_05dp"
-                android:background="@drawable/ic_edit"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_edit"
                 android:visibility="invisible" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>

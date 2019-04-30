@@ -39,6 +39,8 @@
     <string name="msg_auth_fail">सर्वर समस्या, कृपया बाद में पुनः प्रयास करें।</string>
 
     <!--Registration-->
+    <string name="profile">प्रोफ़ाइल</string>
+    <string name="add_photo">तस्वीर जोड़ो</string>
     <string name="registration_title">पंजीकरण</string>
     <string name="btn_submit">जमा करें</string>
     <string name="first_name">पहला नाम *</string>
@@ -58,6 +60,7 @@
     <string name="mandatory_project">परियोजना *</string>
     <string name="project">परियोजना</string>
     <string name="mandatory_role">भूमिका *</string>
+    <string name="role">भूमिका</string>
     <string name="mandatory_state">राज्य *</string>
     <string name="state">राज्य</string>
     <string name="mandatory_district">जिला *</string>

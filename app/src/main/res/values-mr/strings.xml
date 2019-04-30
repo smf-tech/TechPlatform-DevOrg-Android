@@ -39,6 +39,8 @@
     <string name="msg_auth_fail">सर्व्हर समस्या, कृपया नंतर पुन्हा प्रयत्न करा.</string>
 
     <!--Registration-->
+    <string name="profile">प्रोफाइल</string>
+    <string name="add_photo">फोटो जोडा</string>
     <string name="registration_title">नोंदणी</string>
     <string name="btn_submit">सबमिट</string>
     <string name="first_name">पहिले नाव *</string>
@@ -58,6 +60,7 @@
     <string name="mandatory_project">प्रकल्प *</string>
     <string name="project">प्रकल्प</string>
     <string name="mandatory_role">भूमिका *</string>
+    <string name="role">भूमिका</string>
     <string name="mandatory_state">राज्य *</string>
     <string name="state">राज्य</string>
     <string name="mandatory_district">जिल्हा *</string>

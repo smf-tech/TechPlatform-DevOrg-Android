@@ -3,8 +3,6 @@ package com.platform.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
-
 public class PlatformSpinner extends SearchableSpinner {
     public PlatformSpinner(Context context) {
         super(context);
