@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ly_coordinator"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ly_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lighter_grey_tab"
@@ -15,15 +15,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?android:attr/actionBarSize">
-    <RelativeLayout
-        android:id="@+id/ly_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_20dp"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:layout_marginEnd="@dimen/dimen_20dp"
-        android:paddingBottom="@dimen/dimen_10dp"
-        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/ly_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/dimen_10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -34,37 +35,38 @@
                 android:layout_marginBottom="@dimen/dimen_10dp">
 
                 <!--<View-->
-                    <!--android:id="@+id/eww"-->
-                    <!--android:layout_width="@dimen/dimen_05dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="#00ff00">-->
-                    <!---->
+                <!--android:id="@+id/eww"-->
+                <!--android:layout_width="@dimen/dimen_05dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="#00ff00">-->
+                <!---->
                 <!--</View>-->
 
                 <LinearLayout
                     android:id="@+id/ly_status_title"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <View
                         android:id="@+id/task_status_indicator"
                         android:layout_width="@dimen/dimen_10dp"
                         android:layout_height="match_parent"
-                        android:visibility="gone">
-                    </View>
+                        android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_dark_blue_box"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/dimen_15dp"
-                    android:paddingBottom="@dimen/dimen_15dp"
-                    android:textColor="@color/tab_select"
-                    android:textSize="@dimen/text_size_16"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_dark_blue_box"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dimen_15dp"
+                        android:paddingBottom="@dimen/dimen_15dp"
+                        android:textColor="@color/tab_select"
+                        android:textSize="@dimen/text_size_16"
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <RelativeLayout
                     android:id="@+id/ly_category"
                     android:layout_width="match_parent"
@@ -244,10 +246,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ly_attended_tab"
-                        android:src="@drawable/ic_down_arrow_light_blue"
                         android:layout_centerHorizontal="true"
                         android:paddingStart="@dimen/dimen_05dp"
-                        android:paddingEnd="@dimen/dimen_05dp" />
+                        android:paddingEnd="@dimen/dimen_05dp"
+                        android:src="@drawable/ic_down_arrow_light_blue" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_attendees_list"
@@ -260,17 +262,41 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/ly_task_forms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ly_attended"
+                    android:background="@drawable/bg_light_blue_box"
+                    android:padding="@dimen/dimen_10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_formlist_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="@string/task_formlist_screen_msg" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_forms_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_formlist_label"></androidx.recyclerview.widget.RecyclerView>
+
+                </RelativeLayout>
+
                 <Button
                     android:id="@+id/bt_edit_attendance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_attended"
+                    android:layout_below="@+id/ly_task_forms"
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:background="@drawable/bg_button"
                     android:text="@string/edit_attendance"
-                    android:textColor="@android:color/white"
                     android:textAllCaps="false"
-                    android:textSize="@dimen/text_size_22"
-                    android:layout_marginTop="@dimen/dimen_10dp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_22" />
             </RelativeLayout>
 
 
@@ -281,8 +307,8 @@
         android:id="@+id/ly_greyed_out"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/lighter_grey_transparent"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/lighter_grey_transparent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

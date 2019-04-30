@@ -242,11 +242,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
                     .commit();
+            ivCalendarMode.setRotation(180);
         } else {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.WEEKS)
                     .commit();
+            ivCalendarMode.setRotation(0);
         }
         calendarView.setSelectedDate(instance.getTime());
         calendarView.setCurrentDate(instance.getTime());

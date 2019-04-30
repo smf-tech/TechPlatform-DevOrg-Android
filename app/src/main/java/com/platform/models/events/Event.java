@@ -19,11 +19,11 @@ public class Event implements Serializable {
     private String ownerID;
     private String status;
     private ArrayList<Member> membersList = new ArrayList<>();
-    private ArrayList<Form> formsList = new ArrayList<>();
+    private ArrayList<TaskForm> formsList = new ArrayList<>();
 
     public Event(String id, String category, String tital, String startDate, String starTime,
                  String endTime, String repeat, String description, String address, String owner,
-                 String ownerID, String status, ArrayList<Member> membersList, ArrayList<Form> formsList) {
+                 String ownerID, String status, ArrayList<Member> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.category = category;
         this.tital = tital;
@@ -146,11 +146,11 @@ public class Event implements Serializable {
         this.membersList = membersList;
     }
 
-    public ArrayList<Form> getFormsList() {
+    public ArrayList<TaskForm> getFormsList() {
         return formsList;
     }
 
-    public void setFormsList(ArrayList<Form> formsList) {
+    public void setFormsList(ArrayList<TaskForm> formsList) {
         this.formsList = formsList;
     }
 }
