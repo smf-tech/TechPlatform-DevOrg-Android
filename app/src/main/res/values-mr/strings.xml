@@ -268,7 +268,7 @@
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">पगारी रजा</string>
     <string name="unpaid_leaves">बिनपगारी रजा</string>
-    <string name="coff_leaves">कॉम्प ऑफ</string>
+    <string name="comp_off_leaves">कॉम्प ऑफ</string>
     <string name="total_leaves">एकूण सुट्टी</string>
     <string name="total">एकूण</string>
     <string name="btn_leave_apply_str">सुट्टीसाठी अर्ज करा</string>
@@ -295,7 +295,7 @@
     <string name="monday">सोमवार</string>
     <string name="tuesday">मंगळवार</string>
     <string name="wednesday">बुधवार</string>
-    <string name="thirsday">गुरुवार</string>
+    <string name="thursday">गुरुवार</string>
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>

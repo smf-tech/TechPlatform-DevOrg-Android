@@ -67,6 +67,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         ImageView toolBarMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_edit_action);
         toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
@@ -227,7 +228,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void deleteLeaves() {
-        showAlertDialog("", getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+        showAlertDialog("", getString(R.string.sure_to_delete),
+                getString(R.string.cancel), getString(R.string.delete));
     }
 
     @Override
@@ -236,7 +238,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     private void showAlertDialog(String dialogTitle, String message, String btn1String, String btn2String) {
-        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
 

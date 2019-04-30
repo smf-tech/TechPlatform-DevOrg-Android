@@ -133,10 +133,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setAllData() {
-        ArrayAdapter myAdap = (ArrayAdapter) spCategory.getAdapter();
-        int spinnerPosition = myAdap.getPosition(event.getCategory());
+        ArrayAdapter myAdapter = (ArrayAdapter) spCategory.getAdapter();
+        int spinnerPosition = myAdapter.getPosition(event.getCategory());
         spCategory.setSelection(spinnerPosition);
-        etTitle.setText(event.getTital());
+        etTitle.setText(event.getTitle());
         etStartDate.setText(event.getStartDate());
         etStartTime.setText(event.getStarTime());
         etEndTime.setText(event.getEndTime());

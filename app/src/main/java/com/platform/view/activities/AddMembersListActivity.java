@@ -104,7 +104,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
             cbSelectAllMembers.setChecked(false);
     }
 
-    // uncheck chech all check box
+    // uncheck check all check box
     public void checkAllDeSelected() {
         cbSelectAllMembers.setChecked(false);
     }

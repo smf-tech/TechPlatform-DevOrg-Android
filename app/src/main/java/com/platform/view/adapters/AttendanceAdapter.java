@@ -50,7 +50,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         return new AttendanceAdapter.ViewHolder(v);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull AttendanceAdapter.ViewHolder viewHolder, int i) {
 

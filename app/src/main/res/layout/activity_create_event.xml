@@ -213,7 +213,7 @@
 
             <!--Add Members-->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tily_add_members"
+                android:id="@+id/txt_add_members"
                 style="@style/RegistrationTextInputLayout"
                 android:layout_below="@+id/tly_address"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -241,7 +241,7 @@
                 android:id="@+id/bt_event_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tily_add_members"
+                android:layout_below="@+id/txt_add_members"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/create_event"

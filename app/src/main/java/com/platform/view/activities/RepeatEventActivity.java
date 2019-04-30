@@ -18,7 +18,8 @@ import com.platform.widgets.MultiSelectSpinner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepeatEventActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
+public class RepeatEventActivity extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
 
     private ImageView ivBackIcon;
     private ImageView toolbarAction;
@@ -78,7 +79,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         whichDays.add(getString(R.string.monday));
         whichDays.add(getString(R.string.tuesday));
         whichDays.add(getString(R.string.wednesday));
-        whichDays.add(getString(R.string.thirsday));
+        whichDays.add(getString(R.string.thursday));
         whichDays.add(getString(R.string.friday));
         whichDays.add(getString(R.string.saturday));
         whichDays.add(getString(R.string.sunday));

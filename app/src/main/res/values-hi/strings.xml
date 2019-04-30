@@ -233,6 +233,7 @@
     <string name="attendance_details">जाँच उपस्थिति विवरण</string>
 
     <!--Events & Tasks-->
+    <string name="events">कार्यक्रम</string>
     <string name="all_events">सभी कार्यक्रम</string>
     <string name="today_events">आज की घटनाएँ</string>
     <string name="no_events">आज कोई घटना नहीं!</string>
@@ -268,7 +269,7 @@
     <string name="monday">सोमवार</string>
     <string name="tuesday">मंगलवार</string>
     <string name="wednesday">बुधवार</string>
-    <string name="thirsday">गुरूवार</string>
+    <string name="thursday">गुरूवार</string>
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
@@ -276,7 +277,7 @@
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
     <string name="unpaid_leaves">अवैतनिक</string>
-    <string name="coff_leaves">Comp OFF</string>
+    <string name="comp_off_leaves">Comp OFF</string>
     <string name="total_leaves">कुल छुट्टी</string>
     <string name="total">कुल </string>
     <string name="btn_leave_apply_str">छुट्टी के लिए आवेदन करें</string>

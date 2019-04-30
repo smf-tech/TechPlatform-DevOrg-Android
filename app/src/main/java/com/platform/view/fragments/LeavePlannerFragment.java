@@ -47,7 +47,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
         tvCLSLLeavesCount = view.findViewById(R.id.tv_leaves_cl);
         tvPaidLeavesCount = view.findViewById(R.id.tv_leaves_paid);
         tvUnPaidLeavesCount = view.findViewById(R.id.tv_leaves_unpaid);
-        tvCOffLeavesCount = view.findViewById(R.id.tv_leaves_coff);
+        tvCOffLeavesCount = view.findViewById(R.id.tv_leaves_com_off);
         tvTotalLeavesCount = view.findViewById(R.id.tv_total_leaves_count);
         tvNoLeavesBalance = view.findViewById(R.id.tv_no_leaves_balance);
         rlLeavesCount = view.findViewById(R.id.rl_leaves_count);

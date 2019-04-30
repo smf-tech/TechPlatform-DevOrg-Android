@@ -127,7 +127,6 @@
                 android:id="@+id/bt_apply_filters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tily_add_members"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/apply_filters"

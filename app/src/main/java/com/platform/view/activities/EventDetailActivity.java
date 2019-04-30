@@ -87,7 +87,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         String finalDate = weekDay.format(date);
         finalDate = finalDate + ", " + targetFormat.format(date);
 
-        tvTitle.setText(event.getTital());
+        tvTitle.setText(event.getTitle());
         tvCategory.setText(event.getCategory());
         tvDescription.setText(event.getDescription());
         tvDate.setText(finalDate);
@@ -119,13 +119,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         mySnackBar();
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
-            View vtaskStatusIndicator = findViewById(R.id.task_status_indicator);
-            vtaskStatusIndicator.setVisibility(View.VISIBLE);
+            View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
+            vTaskStatusIndicator.setVisibility(View.VISIBLE);
             if (event.getStatus().equals("Planned")) {
-                vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
+                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
                 btEditAttendance.setText("Mark As Completed.");
             } else if (event.getStatus().equals("Completed")) {
-                vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
+                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
                 btEditAttendance.setVisibility(View.GONE);
             }
         } else {

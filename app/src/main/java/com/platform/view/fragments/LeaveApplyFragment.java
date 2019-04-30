@@ -34,7 +34,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private TextView tvTotalLeavesCount;
     private Button btnCategoryCL;
     private Button btnCategoryPaid;
-    private Button btnCategoryCoff;
+    private Button btnCategoryCompOff;
 
     private Button btnHalfDay;
     private Button btnFullDay;
@@ -69,15 +69,15 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         tvCLSLLeavesCount = view.findViewById(R.id.tv_leaves_cl);
         tvPaidLeavesCount = view.findViewById(R.id.tv_leaves_paid);
         tvUnPaidLeavesCount = view.findViewById(R.id.tv_leaves_unpaid);
-        tvCOffLeavesCount = view.findViewById(R.id.tv_leaves_coff);
+        tvCOffLeavesCount = view.findViewById(R.id.tv_leaves_com_off);
         tvTotalLeavesCount = view.findViewById(R.id.tv_total_leaves_count);
 
         btnCategoryCL = view.findViewById(R.id.btn_cl);
         btnCategoryCL.setOnClickListener(this);
         btnCategoryPaid = view.findViewById(R.id.btn_paid);
         btnCategoryPaid.setOnClickListener(this);
-        btnCategoryCoff = view.findViewById(R.id.btn_coff);
-        btnCategoryCoff.setOnClickListener(this);
+        btnCategoryCompOff = view.findViewById(R.id.btn_comp_off);
+        btnCategoryCompOff.setOnClickListener(this);
 
         btnHalfDay = view.findViewById(R.id.btn_half_day);
         btnHalfDay.setOnClickListener(this);
@@ -120,21 +120,21 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 // String leaveTypeSelected = btnCategoryCL.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_focused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
-                btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
 
             case R.id.btn_paid:
                 // leaveTypeSelected = btnCategoryPaid.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_focused);
-                btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
+                btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
 
-            case R.id.btn_coff:
-                // leaveTypeSelected = btnCategoryCoff.getText().toString();
+            case R.id.btn_comp_off:
+                // leaveTypeSelected = btnCategoryCompOff.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
-                btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_focused);
+                btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_focused);
                 break;
 
             case R.id.btn_half_day:

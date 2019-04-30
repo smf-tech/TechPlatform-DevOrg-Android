@@ -155,7 +155,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_leaves_coff"
+                    android:id="@+id/tv_leaves_com_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
@@ -165,13 +165,13 @@
                     android:textSize="@dimen/text_size_20" />
 
                 <TextView
-                    android:id="@+id/tv_str_coff"
+                    android:id="@+id/tv_str_comp_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingBottom="@dimen/dimen_07dp"
-                    android:text="@string/coff_leaves"
+                    android:text="@string/comp_off_leaves"
                     android:textColor="@color/leave_type"
                     android:textSize="@dimen/text_size_12" />
             </LinearLayout>

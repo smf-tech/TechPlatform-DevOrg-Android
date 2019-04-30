@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Event implements Serializable {
     private String id;
     private String category;
-    private String tital;
+    private String title;
     private String startDate;
     private String starTime;
     private String endTime;
@@ -21,12 +21,12 @@ public class Event implements Serializable {
     private ArrayList<Member> membersList = new ArrayList<>();
     private ArrayList<Form> formsList = new ArrayList<>();
 
-    public Event(String id, String category, String tital, String startDate, String starTime,
+    public Event(String id, String category, String title, String startDate, String starTime,
                  String endTime, String repeat, String description, String address, String owner,
                  String ownerID, String status, ArrayList<Member> membersList, ArrayList<Form> formsList) {
         this.id = id;
         this.category = category;
-        this.tital = tital;
+        this.title = title;
         this.startDate = startDate;
         this.starTime = starTime;
         this.endTime = endTime;
@@ -58,12 +58,12 @@ public class Event implements Serializable {
         this.category = category;
     }
 
-    public String getTital() {
-        return tital;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTital(String tital) {
-        this.tital = tital;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getStartDate() {
