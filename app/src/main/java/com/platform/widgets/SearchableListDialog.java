@@ -1,4 +1,20 @@
-package com.toptoche.searchablespinnerlibrary;
+/*
+  Copyright 2015-2016 Mitesh Pithadiya
+  <p>
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  <p>
+  http://www.apache.org/licenses/LICENSE-2.0
+  <p>
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ */
+
+package com.platform.widgets;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,13 +29,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.platform.R;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchableListDialog extends DialogFragment implements
         SearchView.OnQueryTextListener, SearchView.OnCloseListener {
@@ -58,7 +76,7 @@ public class SearchableListDialog extends DialogFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams
+        Objects.requireNonNull(getDialog().getWindow()).setSoftInputMode(WindowManager.LayoutParams
                 .SOFT_INPUT_STATE_HIDDEN);
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -95,7 +113,7 @@ public class SearchableListDialog extends DialogFragment implements
         alertDialog.setTitle(strTitle);
 
         final AlertDialog dialog = alertDialog.create();
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         return dialog;
     }
@@ -165,15 +183,9 @@ public class SearchableListDialog extends DialogFragment implements
 
         _listViewItems.setTextFilterEnabled(true);
 
-        _listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                _searchableItem.onSearchableItemClicked(listAdapter.getItem(position), position);
-                getDialog().dismiss();
-            }
-
+        _listViewItems.setOnItemClickListener((parent, view, position, id) -> {
+            _searchableItem.onSearchableItemClicked(listAdapter.getItem(position), position);
+            getDialog().dismiss();
         });
     }
 
