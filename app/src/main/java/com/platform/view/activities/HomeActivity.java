@@ -439,7 +439,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void showProfileScreen() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(Constants.Login.ACTION, Constants.Login.ACTION_EDIT);
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 

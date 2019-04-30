@@ -1,11 +1,5 @@
 package com.platform.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +8,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
@@ -34,7 +29,7 @@ import java.util.Locale;
 
 public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Event event;
+    private Event event;
 
     private ImageView backButton;
     private ImageView editButton;
@@ -44,7 +39,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private Button btEditAttendance;
 
     private boolean isMemberListVisible;
-    String toOpen;
+    private String toOpen;
 
     private Snackbar snackbar;
 
@@ -78,15 +73,17 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         rvAttendeesList = findViewById(R.id.rv_attendees_list);
         btEditAttendance = findViewById(R.id.bt_edit_attendance);
 
-        DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        SimpleDateFormat weekDay = new SimpleDateFormat("EEEE");
+        DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+        SimpleDateFormat weekDay = new SimpleDateFormat("EEEE", Locale.getDefault());
+
         Date date = null;
         try {
             date = originalFormat.parse(event.getStartDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         String finalDate = weekDay.format(date);
         finalDate = finalDate + ", " + targetFormat.format(date);
 
@@ -94,37 +91,40 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         tvCategory.setText(event.getCategory());
         tvDescription.setText(event.getDescription());
         tvDate.setText(finalDate);
-        tvTime.setText(event.getStarTime() + " > " + event.getEndTime());
+        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvRepeat.setText(event.getRepeat());
         tvAddress.setText(event.getAddress());
+
         int attendedCount = 0;
         boolean isAttendanceMarked = false;
-        for(Member m: event.getMembersList()){
-            if(m.getMemberAttended()){
+        for (Member m : event.getMembersList()) {
+            if (m.getMemberAttended()) {
                 attendedCount++;
                 isAttendanceMarked = true;
             }
         }
-        if(isAttendanceMarked) {
+
+        if (isAttendanceMarked) {
             tvAttended.setText(attendedCount + " Attended");
             tvNotAttended.setText(event.getMembersList().size() - attendedCount + " Not Attended");
-        }else{
+        } else {
             tvAttended.setText("0 Attended");
-            tvNotAttended.setText(event.getMembersList().size()+ " Not Attended");
+            tvNotAttended.setText(event.getMembersList().size() + " Not Attended");
         }
+
         setAdapter(event.getMembersList());
 
         isMemberListVisible = true;
 
-        mySnackbar();
+        mySnackBar();
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
             View vtaskStatusIndicator = findViewById(R.id.task_status_indicator);
             vtaskStatusIndicator.setVisibility(View.VISIBLE);
-            if (event.getStatus().equals("Planned")){
+            if (event.getStatus().equals("Planned")) {
                 vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
                 btEditAttendance.setText("Mark As Completed.");
-            }else if(event.getStatus().equals("Completed")){
+            } else if (event.getStatus().equals("Completed")) {
                 vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
                 btEditAttendance.setVisibility(View.GONE);
             }
@@ -136,7 +136,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setAdapter(ArrayList<Member> membersList) {
-        AddMembersListAdapter addMembersListAdapter = new AddMembersListAdapter(EventDetailActivity.this, membersList, false);
+        AddMembersListAdapter addMembersListAdapter
+                = new AddMembersListAdapter(EventDetailActivity.this, membersList, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
@@ -161,16 +162,17 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             case R.id.toolbar_back_action:
                 onBackPressed();
                 break;
+
             case R.id.toolbar_edit_action:
-                if(snackbar.isShown()){
+                if (snackbar.isShown()) {
                     snackbar.dismiss();
                     lyGreyedOut.setVisibility(View.GONE);
                 } else {
                     snackbar.show();
                     lyGreyedOut.setVisibility(View.VISIBLE);
-
                 }
                 break;
+
             case R.id.iv_attendees_list:
                 if (isMemberListVisible) {
                     isMemberListVisible = false;
@@ -180,18 +182,22 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                     rvAttendeesList.setVisibility(View.GONE);
                 }
                 break;
+
             case R.id.bt_edit_attendance:
                 Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
                 intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
                 intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
                 this.startActivity(intentAddMembersListActivity);
                 break;
+
             case R.id.tv_edit_this_event:
                 callCreateEvent("Edit This Event");
                 break;
+
             case R.id.tv_edit_all_event:
                 callCreateEvent("Edit All Events");
                 break;
+
             case R.id.ly_greyed_out:
                 lyGreyedOut.setVisibility(View.GONE);
                 snackbar.dismiss();
@@ -199,18 +205,18 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void callCreateEvent(String edit){
+    public void callCreateEvent(String edit) {
         Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
-            intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
-        intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL,event);
+        intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
+        intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL, event);
         this.startActivity(intentCreateEvent);
         lyGreyedOut.setVisibility(View.GONE);
         snackbar.dismiss();
     }
 
-    public void mySnackbar(){
+    public void mySnackBar() {
         // Create the Snackbar
-        CoordinatorLayout containerLayout=findViewById(R.id.ly_coordinator);
+        CoordinatorLayout containerLayout = findViewById(R.id.ly_coordinator);
         snackbar = Snackbar.make(containerLayout, "", Snackbar.LENGTH_INDEFINITE);
 
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
@@ -220,9 +226,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         tvThisEvent.setOnClickListener(this);
         TextView tvAllEvent = snackView.findViewById(R.id.tv_edit_all_event);
         tvAllEvent.setOnClickListener(this);
-        layout.setPadding(0,0,0,0);
+        layout.setPadding(0, 0, 0, 0);
 
         layout.addView(snackView, 0);
-
     }
 }

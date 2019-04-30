@@ -141,7 +141,7 @@
                 android:gravity="center_vertical"
                 android:paddingEnd="@dimen/dimen_15dp"
                 android:text="@string/start_date"
-                android:drawableEnd="@drawable/calender"
+                android:drawableEnd="@drawable/ic_calender_dark"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13" />
@@ -154,7 +154,7 @@
                 android:gravity="center_vertical"
                 android:background="@drawable/leave_form_view_nonfocused"
                 android:drawablePadding="-10dp"
-                android:drawableEnd="@drawable/calender"
+                android:drawableEnd="@drawable/ic_calender_dark"
                 android:fontFamily="@font/roboto_regular"
                 android:paddingEnd="@dimen/dimen_15dp"
                 android:paddingStart="@dimen/dimen_15dp"

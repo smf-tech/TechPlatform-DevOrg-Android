@@ -88,6 +88,8 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
         FormSpinnerAdapter adapter = new FormSpinnerAdapter(context.get().getContext(),
                 R.layout.layout_spinner_item, valueList);
+        spinner.setTitle(formData.getTitle().getLocaleValue());
+        spinner.setDialogAdapterFactory(list -> adapter);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
@@ -154,14 +156,13 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (i != 0) {
+        Choice selectedChoice = ((FormSpinnerAdapter) spinner.getAdapter()).getItem(i);
+        if (i != -1 && selectedChoice != null && !selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
             TextView tv = (TextView) adapterView.getSelectedView();
             if (tv != null) {
                 tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
             }
-            dropDownValueSelectListener.onDropdownValueSelected(formData, valueList.get(i).getValue(), formId);
-        } else {
-            dropDownValueSelectListener.onEmptyDropdownSelected(formData);
+            dropDownValueSelectListener.onDropdownValueSelected(formData, selectedChoice.getValue(), formId);
         }
     }
 

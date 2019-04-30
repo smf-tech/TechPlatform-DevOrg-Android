@@ -35,9 +35,9 @@ import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.EditProfileActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
-import com.platform.view.activities.ProfileActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -475,7 +475,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (userObj != null && !TextUtils.isEmpty(userObj.getUserInfo().getOrgId())) {
             intent = new Intent(getActivity(), HomeActivity.class);
         } else {
-            intent = new Intent(getActivity(), ProfileActivity.class);
+            intent = new Intent(getActivity(), EditProfileActivity.class);
         }
 
         try {

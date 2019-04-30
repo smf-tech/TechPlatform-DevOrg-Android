@@ -52,15 +52,19 @@
     <!--<color name="sync_pending_form_color">#6286cc</color>-->
     <color name="submitted_form_color">#47A713</color>
 
-    <!--<color name="profile">#396377</color>-->
     <color name="planner_label">#7198AA</color>
+
+    <color name="profile_name">#333333</color>
+    <color name="profile_label">#74A2CE</color>
+    <color name="profile_divider">#40707070</color>
+    <color name="profile_pic_bg">#3785D1</color>
+
     <color name="list_category">#F5F5F5</color>
     <color name="freq_used_form_color">#4A9BD6</color>
     <color name="shep_dotted_line">#707070</color>
 
     <color name="leave_type">#717171</color>
     <color name="leave_desc_color">#A2A2A2</color>
-
 
     <color name="leaves_tab">#F8F8F8</color>
     <color name="blur_tab">#B5B5B5</color>

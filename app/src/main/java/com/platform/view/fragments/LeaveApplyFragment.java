@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.platform.R;
@@ -25,10 +22,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
-import androidx.fragment.app.Fragment;
 
 public class LeaveApplyFragment extends Fragment implements View.OnClickListener {
+
     private TextView tvCLSLLeavesCount;
     private TextView tvPaidLeavesCount;
     private TextView tvUnPaidLeavesCount;
@@ -43,25 +41,19 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     private TextView btnStartDate;
     private TextView btnEndDate;
-
     private Calendar c = Calendar.getInstance();
-    private String leaveTypeSelected = null;
-
 
     public LeaveApplyFragment() {
         // Required empty public constructor
     }
 
-
     public static LeaveApplyFragment newInstance() {
-
         return new LeaveApplyFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -100,70 +92,64 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         Button btnApplyLeaves = view.findViewById(R.id.btn_apply_leave);
         btnApplyLeaves.setOnClickListener(this);
 
-
         setUIData();
-
     }
 
-
     private void setUIData() {
-        tvCLSLLeavesCount.setText("2");
-        tvPaidLeavesCount.setText("4");
-        tvUnPaidLeavesCount.setText("12");
-        tvCOffLeavesCount.setText("2");
-        tvTotalLeavesCount.setText("20");
+        tvCLSLLeavesCount.setText(String.valueOf(2));
+        tvPaidLeavesCount.setText(String.valueOf(4));
+        tvUnPaidLeavesCount.setText(String.valueOf(12));
+        tvCOffLeavesCount.setText(String.valueOf(2));
+        tvTotalLeavesCount.setText(String.valueOf(20));
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cl:
-                leaveTypeSelected = btnCategoryCL.getText().toString();
+                // String leaveTypeSelected = btnCategoryCL.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_focused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
+
             case R.id.btn_paid:
-                leaveTypeSelected = btnCategoryPaid.getText().toString();
+                // leaveTypeSelected = btnCategoryPaid.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_focused);
                 btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
+
             case R.id.btn_coff:
-                leaveTypeSelected = btnCategoryCoff.getText().toString();
+                // leaveTypeSelected = btnCategoryCoff.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnCategoryCoff.setBackgroundResource(R.drawable.leave_form_view_focused);
                 break;
+
             case R.id.btn_half_day:
                 btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_focused);
                 btnFullDay.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 break;
+
             case R.id.btn_full_day:
                 btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_nonfocused);
                 btnFullDay.setBackgroundResource(R.drawable.leave_form_view_focused);
                 break;
+
             case R.id.btn_apply_leave:
-//                try {
-//                    showAlertDialog(getString(R.string.leave_apply_msg), leaveTypeSelected, getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
-//                            getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false))
-//                            , getString(R.string.leave_apply_msg1), "Ok", "");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
                 break;
+
             case R.id.btn_start_date:
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
@@ -173,39 +159,40 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         (datePicker, year12, month12, day12) -> {
                             Calendar calendar = Calendar.getInstance();
                             calendar.set(year12, month12, day12);
-                            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                             btnStartDate.setText(format.format(calendar.getTime()));
 
                         }, year, month, day);
                 datePickerDialog.show();
                 break;
+
             case R.id.btn_end_date:
                 int year1 = c.get(Calendar.YEAR);
                 int month1 = c.get(Calendar.MONTH);
                 int day1 = c.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog endDatePickerDialog = new DatePickerDialog(getActivity(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(year, month, day);
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                                btnEndDate.setText(format.format(calendar.getTime()));
+                DatePickerDialog endDatePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
+                        (datePicker, year2, month2, day2) -> {
 
-                            }
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year2, month2, day2);
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                            btnEndDate.setText(format.format(calendar.getTime()));
+
                         }, year1, month1, day1);
+
                 endDatePickerDialog.show();
                 break;
         }
     }
 
+    @SuppressWarnings("deprecation")
     private String getCurrentDateInSpecificFormat(String currentCalDate, boolean isStart) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Date d = null;
         try {
             d = sdf.parse(currentCalDate);
-            @SuppressWarnings("deprecation") String dayNumberSuffix = getDayNumberSuffix(d.getDate());
+            String dayNumberSuffix = getDayNumberSuffix(d.getDate());
             final String NEW_FORMAT = isStart ? " d'" + dayNumberSuffix + "' MMMM " : " d'" + dayNumberSuffix + "' MMMM yyyy";
 
             sdf.applyPattern(NEW_FORMAT);
@@ -214,31 +201,31 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             e.printStackTrace();
         }
 
-
         return sdf.format(d);
-
-        //DateFormat dateFormat = new SimpleDateFormat(" d'" + dayNumberSuffix + "' MMMM yyyy");
-        //return dateFormat.format(currentCalDate.getTime());
     }
 
     private String getDayNumberSuffix(int day) {
         if (day >= 11 && day <= 13) {
             return "th";
         }
+
         switch (day % 10) {
             case 1:
                 return "st";
+
             case 2:
                 return "nd";
+
             case 3:
                 return "rd";
+
             default:
                 return "th";
         }
     }
 
     private void showAlertDialog(String dialogTitle, String message, String btn1String, String btn2String) {
-        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
@@ -247,38 +234,33 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             title.setText(dialogTitle);
             title.setVisibility(View.VISIBLE);
         }
+
         if (!TextUtils.isEmpty(message)) {
             TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
             text.setText(message);
             text.setVisibility(View.VISIBLE);
         }
+
         if (!TextUtils.isEmpty(btn1String)) {
             Button button = dialog.findViewById(R.id.btn_dialog);
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Close dialog
-                    dialog.dismiss();
-                }
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
             });
         }
+
         if (!TextUtils.isEmpty(btn2String)) {
             Button button1 = dialog.findViewById(R.id.btn_dialog_1);
             button1.setText(btn2String);
             button1.setVisibility(View.VISIBLE);
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Close dialog
-
-                }
+            button1.setOnClickListener(v -> {
+                // Close dialog
             });
         }
+
         dialog.setCancelable(false);
         dialog.show();      // if decline button is clicked, close the custom dialog
-
-
     }
 }

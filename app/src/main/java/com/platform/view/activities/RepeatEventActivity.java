@@ -6,12 +6,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
