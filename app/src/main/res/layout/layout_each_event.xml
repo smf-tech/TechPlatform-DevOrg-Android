@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/task_status_indicator"
+        android:layout_width="@dimen/form_item_status_indicator_width"
+        android:layout_height="35dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"/>
+
     <TextView
         android:id="@+id/tv_event_title"
         android:layout_width="wrap_content"
@@ -15,6 +22,7 @@
         android:maxLines="1"
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
+        android:layout_toRightOf="@+id/task_status_indicator"
         android:layout_marginStart="@dimen/dimen_10dp" />
 
     <TextView
@@ -25,6 +33,7 @@
         android:textSize="@dimen/text_size_11"
         android:textColor="@color/light_grey"
         android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_toRightOf="@+id/task_status_indicator"
         android:maxLength="11" />
 
     <TextView

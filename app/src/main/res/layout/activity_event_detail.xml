@@ -33,6 +33,26 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginBottom="@dimen/dimen_10dp">
 
+                <!--<View-->
+                    <!--android:id="@+id/eww"-->
+                    <!--android:layout_width="@dimen/dimen_05dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="#00ff00">-->
+                    <!---->
+                <!--</View>-->
+
+                <LinearLayout
+                    android:id="@+id/ly_status_title"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:id="@+id/task_status_indicator"
+                        android:layout_width="@dimen/dimen_10dp"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                    </View>
+
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
@@ -44,12 +64,12 @@
                     android:textColor="@color/tab_select"
                     android:textSize="@dimen/text_size_16"
                     android:textStyle="bold" />
-
+                </LinearLayout>
                 <RelativeLayout
                     android:id="@+id/ly_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_title"
+                    android:layout_below="@+id/ly_status_title"
                     android:background="@drawable/bg_light_blue_box">
 
                     <TextView

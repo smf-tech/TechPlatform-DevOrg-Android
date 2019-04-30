@@ -2,6 +2,7 @@ package com.platform.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventAddress.setText(event.getAddress());
         holder.tvEventOwner.setText(event.getOwner());
         if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-
+            if(event.getStatus().equals("Planned")){
+                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            }else if(event.getStatus().equals("Completed")){
+                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+            }
         }
         holder.lyEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +81,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         TextView tvEventOwner;
         ImageView imgArrow;
         ImageView ivDottedLine;
+        View vTaskStatusIndicator;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +92,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             tvEventAddress = itemView.findViewById(R.id.tv_event_address);
             tvEventOwner = itemView.findViewById(R.id.tv_event_owner);
             imgArrow = itemView.findViewById(R.id.iv_left_icon);
+            vTaskStatusIndicator = itemView.findViewById(R.id.task_status_indicator);
             ivDottedLine = itemView.findViewById(R.id.iv_dotted_line);
 
         }
