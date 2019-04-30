@@ -105,11 +105,13 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         if (isAttendanceMarked) {
-            tvAttended.setText(attendedCount + " Attended");
-            tvNotAttended.setText(event.getMembersList().size() - attendedCount + " Not Attended");
+            tvAttended.setText(String.format(Locale.getDefault(), "%d Attended", attendedCount));
+            tvNotAttended.setText(String.format(Locale.getDefault(), "%d Not Attended",
+                    event.getMembersList().size() - attendedCount));
         } else {
             tvAttended.setText("0 Attended");
-            tvNotAttended.setText(event.getMembersList().size() + " Not Attended");
+            tvNotAttended.setText(String.format(Locale.getDefault(), "%d Not Attended",
+                    event.getMembersList().size()));
         }
 
         setAdapter(event.getMembersList());
@@ -121,6 +123,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             setActionbar(getString(R.string.task_detail));
             View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
             vTaskStatusIndicator.setVisibility(View.VISIBLE);
+
             if (event.getStatus().equals("Planned")) {
                 vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
                 btEditAttendance.setText("Mark As Completed.");
@@ -215,15 +218,15 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void mySnackBar() {
-        // Create the Snackbar
         CoordinatorLayout containerLayout = findViewById(R.id.ly_coordinator);
         snackbar = Snackbar.make(containerLayout, "", Snackbar.LENGTH_INDEFINITE);
 
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
 
-        View snackView = getLayoutInflater().inflate(R.layout.snackbar_cust, null);
+        View snackView = getLayoutInflater().inflate(R.layout.snackbar_cust, layout, false);
         TextView tvThisEvent = snackView.findViewById(R.id.tv_edit_this_event);
         tvThisEvent.setOnClickListener(this);
+
         TextView tvAllEvent = snackView.findViewById(R.id.tv_edit_all_event);
         tvAllEvent.setOnClickListener(this);
         layout.setPadding(0, 0, 0, 0);

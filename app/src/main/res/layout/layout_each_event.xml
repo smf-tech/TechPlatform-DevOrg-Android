@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ly_event"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <View
         android:id="@+id/task_status_indicator"
         android:layout_width="@dimen/form_item_status_indicator_width"
         android:layout_height="35dp"
         android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"/>
+        android:layout_marginTop="@dimen/dimen_10dp" />
 
     <TextView
         android:id="@+id/tv_event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_14"
-        android:textColor="@color/tab_select"
-        android:textStyle="bold"
-        android:maxLines="1"
+        android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
         android:layout_toRightOf="@+id/task_status_indicator"
-        android:layout_marginStart="@dimen/dimen_10dp" />
+        android:maxLines="1"
+        android:textColor="@color/tab_select"
+        android:textSize="@dimen/text_size_14"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_event_time"
-        android:layout_below="@+id/tv_event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_11"
-        android:textColor="@color/light_grey"
+        android:layout_below="@+id/tv_event_title"
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_toRightOf="@+id/task_status_indicator"
-        android:maxLength="11" />
+        android:maxLength="11"
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/text_size_11" />
 
     <TextView
         android:id="@+id/tv_line1"
@@ -43,20 +43,20 @@
         android:layout_below="@+id/tv_event_title"
         android:layout_marginLeft="@dimen/dimen_05dp"
         android:layout_toRightOf="@+id/tv_event_time"
-        android:textSize="@dimen/text_size_11"
+        android:text="|"
         android:textColor="@color/light_grey"
-        android:text="|" />
+        android:textSize="@dimen/text_size_11" />
 
     <TextView
         android:id="@+id/tv_event_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_event_title"
-        android:layout_toRightOf="@+id/tv_line1"
         android:layout_marginLeft="@dimen/dimen_05dp"
-        android:textSize="@dimen/text_size_11"
+        android:layout_toRightOf="@+id/tv_line1"
+        android:maxLength="30"
         android:textColor="@color/light_grey"
-        android:maxLength="30" />
+        android:textSize="@dimen/text_size_11" />
 
     <TextView
         android:id="@+id/tv_line2"
@@ -65,20 +65,20 @@
         android:layout_below="@+id/tv_event_title"
         android:layout_marginLeft="@dimen/dimen_05dp"
         android:layout_toRightOf="@+id/tv_event_address"
-        android:textSize="@dimen/text_size_11"
+        android:text="|"
         android:textColor="@color/light_grey"
-        android:text="|" />
+        android:textSize="@dimen/text_size_11" />
 
     <TextView
         android:id="@+id/tv_event_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_event_title"
-        android:layout_toRightOf="@+id/tv_line2"
-        android:layout_marginLeft="@dimen/dimen_05dp"
-        android:textSize="@dimen/text_size_11"
+        android:layout_marginStart="@dimen/dimen_05dp"
+        android:layout_toEndOf="@+id/tv_line2"
         android:maxLength="22"
-        android:textColor="@color/light_grey" />
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/text_size_11" />
 
     <ImageView
         android:id="@+id/iv_left_icon"
@@ -87,15 +87,16 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dimen_10dp"
+        android:contentDescription="@string/content_description"
         android:src="@drawable/ic_right_arrow_grey" />
 
     <ImageView
         android:id="@+id/iv_dotted_line"
         android:layout_width="match_parent"
-        android:layout_below="@+id/tv_event_time"
         android:layout_height="@dimen/dimen_03dp"
-        android:src="@drawable/dotted_line"
+        android:layout_below="@+id/tv_event_time"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:layerType="software" />
-
+        android:contentDescription="@string/content_description"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
 </RelativeLayout>

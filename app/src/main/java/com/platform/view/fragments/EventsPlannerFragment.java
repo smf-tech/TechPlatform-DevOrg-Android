@@ -47,27 +47,21 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
     private ImageView ivBackIcon;
     private ImageView ivEventsSyncIcon;
-    private View eventsPlannerView;
-    private boolean isDashboard;
-    private AppBarLayout appBarLayout;
-    private RelativeLayout lyCalender;
     private ImageView ivCalendarMode;
     private TextView tvAllEventsDetail;
-    private TextView tvNoEventsMsg;
+    private View eventsPlannerView;
     private RadioGroup radioGroup;
     private FloatingActionButton btAddEvents;
-    private RecyclerView rvEvents;
     private MaterialCalendarView calendarView;
-    // flag to check th calender mode
-    boolean isMonth;
-
-    EventListAdapter eventListAdapter;
-    ArrayList<Event> eventsList;
-    ArrayList<Event> sortedEventsList;
-
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
 
+    private boolean isDashboard;
+    private boolean isMonth;
+
+    private EventListAdapter eventListAdapter;
+    private ArrayList<Event> eventsList;
+    private ArrayList<Event> sortedEventsList;
 
     public EventsPlannerFragment() {
         // Required empty public constructor
@@ -106,16 +100,16 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         ArrayList<Member> membersList = new ArrayList<>();
         membersList.add(new Member("1", "Sagar Mahajan", "DM", true, true));
         membersList.add(new Member("2", "Kishor Shevkar", "TC", false, false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT", true,true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA", false,false));
+        membersList.add(new Member("3", "Jagruti Devare", "MT", true, true));
+        membersList.add(new Member("4", "Sachin Kakade", "FA", false, false));
 
         eventsList.add(new Event("1", "Meeting", "Title1", "22/04/2019", "10:00 am",
                 "11:00 am", "-", "test", "Wagholi,pune.", "Sachin",
-                "1234","Completed", membersList, null));
+                "1234", "Completed", membersList, null));
 
         eventsList.add(new Event("2", "Event", "Title2", "22/04/2019", "10:00 am",
                 "11:30 am", "-", "test", "Hadpsar,pune.", "Sagar",
-                "1235","Planned", membersList,null));
+                "1235", "Planned", membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -125,13 +119,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
         ivBackIcon = eventsPlannerView.findViewById(R.id.iv_back_icon);
         ivEventsSyncIcon = eventsPlannerView.findViewById(R.id.iv_events_sync_icon);
-        appBarLayout = eventsPlannerView.findViewById(R.id.app_bar_layout);
-        lyCalender = eventsPlannerView.findViewById(R.id.ly_calender);
+        AppBarLayout appBarLayout = eventsPlannerView.findViewById(R.id.app_bar_layout);
+        RelativeLayout lyCalender = eventsPlannerView.findViewById(R.id.ly_calender);
         ivCalendarMode = eventsPlannerView.findViewById(R.id.iv_calendar_mode);
         tvAllEventsDetail = eventsPlannerView.findViewById(R.id.tv_all_events_list);
-        tvNoEventsMsg = eventsPlannerView.findViewById(R.id.tv_no_events_msg);
+
         btAddEvents = eventsPlannerView.findViewById(R.id.bt_add_events);
-        rvEvents = eventsPlannerView.findViewById(R.id.rv_events);
+        RecyclerView rvEvents = eventsPlannerView.findViewById(R.id.rv_events);
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
         radioGroup = eventsPlannerView.findViewById(R.id.radio_group_filter);
 
@@ -287,22 +281,26 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void showProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.VISIBLE);
-                progressBarLayout.setVisibility(View.VISIBLE);
-            }
-        });
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressBarLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
@@ -312,6 +310,8 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void showErrorMessage(String result) {
-        getActivity().runOnUiThread(() -> Util.showToast(result, this));
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> Util.showToast(result, this));
+        }
     }
 }

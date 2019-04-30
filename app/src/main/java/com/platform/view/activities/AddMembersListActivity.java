@@ -20,7 +20,8 @@ import com.platform.view.adapters.AddMembersListAdapter;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AddMembersListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
+public class AddMembersListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
+        View.OnClickListener {
 
     private AddMembersListAdapter addMembersListAdapter;
     private ArrayList<Member> membersList = new ArrayList<>();
@@ -40,16 +41,17 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
 
     private void initViews() {
         setActionbar(getResources().getString(R.string.task_add_members));
-        cbSelectAllMembers = (CheckBox) findViewById(R.id.cb_select_all_members);
+        cbSelectAllMembers = findViewById(R.id.cb_select_all_members);
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         toolbarAction = findViewById(R.id.toolbar_edit_action);
-        editSearch = (SearchView) findViewById(R.id.search_view);
+        editSearch = findViewById(R.id.search_view);
 
         membersList = (ArrayList<Member>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
         isNewMembersList = getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
 
         LinearLayout lyAttendedTab = findViewById(R.id.ly_attended_tab);
         TextView tvInfoLabel = findViewById(R.id.tv_info_label);
+
         if (isNewMembersList) {
             toolbarAction.setVisibility(View.GONE);
             lyAttendedTab.setVisibility(View.GONE);
@@ -63,20 +65,23 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
             lyAttendedTab.setVisibility(View.VISIBLE);
             TextView tvAttended = findViewById(R.id.tv_attended);
             TextView tvNotAttended = findViewById(R.id.tv_not_attended);
+
             int attendedCount = 0;
-            for(Member m: membersList){
-                if(m.getMemberAttended()){
+            for (Member m : membersList) {
+                if (m.getMemberAttended()) {
                     attendedCount++;
                 }
             }
+
             tvAttended.setText(attendedCount + " Attended");
-            tvNotAttended.setText(membersList.size()- attendedCount + " Not Attended");
+            tvNotAttended.setText(membersList.size() - attendedCount + " Not Attended");
         }
 
         filterMembersList.addAll(membersList);
         checkAllSelected(membersList);
         RecyclerView rvMembers = findViewById(R.id.rv_members);
         addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList, true);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvMembers.setLayoutManager(mLayoutManager);
         rvMembers.setAdapter(addMembersListAdapter);
@@ -98,10 +103,12 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
                 break;
             }
         }
-        if (allCheck)
+
+        if (allCheck) {
             cbSelectAllMembers.setChecked(true);
-        else
+        } else {
             cbSelectAllMembers.setChecked(false);
+        }
     }
 
     // uncheck check all check box
@@ -132,6 +139,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         } else {
             membersList.addAll(filterMembersList);
         }
+
         addMembersListAdapter.notifyDataSetChanged();
     }
 
@@ -141,25 +149,26 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
             case R.id.toolbar_back_action:
                 finish();
                 break;
+
             case R.id.toolbar_edit_action:
                 //Submit attendance
                 break;
+
             case R.id.cb_select_all_members:
                 if (((CheckBox) v).isChecked()) {
-                        for (Member member : membersList) {
-                            member.setMemberAttended(true);
-                        }
-
+                    for (Member member : membersList) {
+                        member.setMemberAttended(true);
+                    }
                 } else {
-                        for (Member member : membersList) {
-                            member.setMemberAttended(false);
-                        }
-
+                    for (Member member : membersList) {
+                        member.setMemberAttended(false);
+                    }
                 }
                 addMembersListAdapter.notifyDataSetChanged();
                 break;
         }
     }
+
     private void setActionbar(String title) {
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(title);
