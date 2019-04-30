@@ -512,7 +512,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             if (formData.isRequired() != null) {
 
                 if ((dropDownTemplate.getValueList() != null && dropDownTemplate.getValueList().size() == 0) ||
-                        !(dropDownTemplate.getSelectedItem() > 0)) {
+                        (dropDownTemplate.getSelectedItem() == null) ||
+                        (dropDownTemplate.getSelectedItem() != null &&
+                                dropDownTemplate.getSelectedItem().getValue().equals(fragment.get().getResources().getString(R.string.default_select)))) {
                     errorMsg = Validation.requiredValidation(formData.getTitle().getLocaleValue(),
                             "", formData.isRequired(), fragment.get().getContext());
 
