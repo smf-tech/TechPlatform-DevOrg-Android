@@ -1,5 +1,6 @@
 package com.platform.view.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,18 +23,25 @@ import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
+import com.platform.models.events.Repeat;
 import com.platform.presenter.CreateEventActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
     ArrayList<Member> membersList = new ArrayList<Member>();
     Event event;
+    Repeat repeat;
 
     private ImageView ivBackIcon;
     private ImageView toolbarAction;
@@ -56,6 +64,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
+    CreateEventActivityPresenter createEventPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +79,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
 
-        CreateEventActivityPresenter createEventPresenter =new CreateEventActivityPresenter(this);
+        createEventPresenter =new CreateEventActivityPresenter(this);
         createEventPresenter.getEventCategory();
 
 
@@ -193,12 +202,57 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.bt_repeat:
                 Intent intentRepeatEventActivity = new Intent(this, RepeatEventActivity.class);
-                this.startActivityForResult(intentRepeatEventActivity, 001);
+                this.startActivityForResult(intentRepeatEventActivity, Constants.Planner.REPEAT_EVENT);
                 break;
             case R.id.bt_event_submit:
-
+                submitDetails();
                 break;
         }
+    }
+
+    private void submitDetails() {
+
+        Event event = new Event();
+
+        event.setCategory(spCategory.getSelectedItem().toString());
+        event.setTital(etTitle.getText().toString());
+        event.setStartDate(dateToTimeStamp(etStartDate.getText().toString()));
+        event.setStarTime(etStartTime.getText().toString());
+        event.setEndTime(etEndTime.getText().toString());
+        event.setRepeat(repeat.getRepeat());
+        event.setDescription(etDescription.getText().toString());
+        event.setAddress(etAddress.getText().toString());
+
+        //put in response of above api
+        createEventPresenter.submitEvent(event);
+
+    }
+
+    public String dateToTimeStamp(String strDate) {
+        DateFormat formatter ;
+        Date date = null;
+        formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            date = (Date)formatter.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Timestamp timeStampDate = new Timestamp(date.getTime());
+        return timeStampDate.toString();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                repeat = (Repeat) data.getSerializableExtra("result");
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+//        }
     }
 
     @Override

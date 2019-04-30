@@ -1,5 +1,7 @@
 package com.platform.view.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,11 +10,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
+import com.platform.models.events.Repeat;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
@@ -28,7 +32,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     private Spinner spDailyInterval;
     private Spinner spWeeklyInterval;
     private Spinner spMonthlyInterval;
-    private MultiSelectSpinner spDistrict;
+    private MultiSelectSpinner spWeekDay;
 
     private EditText etEndDate;
 
@@ -75,8 +79,8 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         adapterMonthlyInterval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMonthlyInterval.setAdapter(adapterMonthlyInterval);
 
-        spDistrict = findViewById(R.id.sp_which_days);
-        spDistrict.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS);
+        spWeekDay = findViewById(R.id.sp_which_days);
+        spWeekDay.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS);
         whichDays.add(getString(R.string.monday));
         whichDays.add(getString(R.string.tuesday));
         whichDays.add(getString(R.string.wednesday));
@@ -84,7 +88,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         whichDays.add(getString(R.string.friday));
         whichDays.add(getString(R.string.saturday));
         whichDays.add(getString(R.string.sunday));
-        spDistrict.setItems(whichDays, "Monday", this);
+        spWeekDay.setItems(whichDays, "Monday", this);
 
         etEndDate = findViewById(R.id.et_end_date);
 
@@ -107,6 +111,8 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.toolbar_edit_action:
                 //Submit attendance
+                submitRepeatValues();
+
                 break;
             case R.id.et_end_date:
                 Util.showDateDialog(this, findViewById(R.id.et_end_date));
@@ -115,7 +121,24 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void setActionbar(String string) {
+    private void submitRepeatValues() {
+
+        Repeat repeatObj=new Repeat();
+        repeatObj.setRepeat(spRepeat.getSelectedItem().toString());
+        repeatObj.setInterval(spDailyInterval.getSelectedItem().toString());
+        repeatObj.setInterval(spWeeklyInterval.getSelectedItem().toString());
+        repeatObj.setInterval(spMonthlyInterval.getSelectedItem().toString());
+
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",repeatObj);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+    }
+
+    private void setActionbar(String title) {
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText(title);
     }
 
     //singleSelection
@@ -129,29 +152,21 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
                     findViewById(R.id.ly_day_interval).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.GONE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.GONE);
                 } else if (selectedRepeat.equalsIgnoreCase("Weekly")) {
                     findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.VISIBLE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.GONE);
                 } else if (selectedRepeat.equalsIgnoreCase("Monthly")) {
                     findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_month_interval).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.GONE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.VISIBLE);
                 } else {
                     findViewById(R.id.tly_end_date).setVisibility(View.GONE);
                     findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.GONE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.GONE);
                 }
                 break;
         }

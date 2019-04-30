@@ -34,6 +34,10 @@ public class Event implements Serializable {
         this.membersList.addAll(membersList);
     }
 
+    public Event() {
+
+    }
+
     public String getId() {
         return id;
     }
