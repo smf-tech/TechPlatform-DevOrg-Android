@@ -47,7 +47,7 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
     }
 
     @Override
-    public void onEventSummited(String response) {
+    public void onEventSubmitted(String response) {
 
     }
 

@@ -3,6 +3,7 @@ package com.platform.view.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
@@ -42,7 +44,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
-    Recurrence recurrence;
+    private Recurrence recurrence;
 
     private ImageView ivBackIcon;
     private Spinner spCategory;
@@ -59,7 +61,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    CreateEventActivityPresenter createEventPresenter;
+    private CreateEventActivityPresenter createEventPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +217,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         event.setEventType(spCategory.getSelectedItem().toString());
         event.setTitle(etTitle.getText().toString());
-        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(),etStartTime.getText().toString()));
+        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
         event.setStarTime(etStartTime.getText().toString());
         event.setEndTime(etEndTime.getText().toString());
         event.setRepeat(recurrence.getType());
@@ -224,43 +226,47 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         //put in response of above api
         createEventPresenter.submitEvent(event);
-
     }
 
     public Long dateToTimeStamp(String strDate, String strTime) {
-        Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
-            date = (Date)formatter.parse(strDate +" "+strTime);
+            date = formatter.parse(strDate + " " + strTime);
+            return date.getTime();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
-        return date.getTime();
+
+        return 0L;
     }
 
     public String timeStampToDate(Long timeStamp) {
-        try{
+        try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timeStamp * 1000);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
-        }catch (Exception e) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date currentTimeZone = calendar.getTime();
+            return sdf.format(currentTimeZone);
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
         }
         return "";
     }
+
     public String timeStampToTime(Long timeStamp) {
-        try{
+        try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timeStamp * 1000);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
-        }catch (Exception e) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date currentTimeZone = calendar.getTime();
+            return sdf.format(currentTimeZone);
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
         }
         return "";
     }
@@ -270,13 +276,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         super.onActivityResult(requestCode, resultCode, data);
 //        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                recurrence = (Recurrence) data.getSerializableExtra("result");
-                btRepeat.setText(recurrence.getType());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            recurrence = (Recurrence) data.getSerializableExtra("result");
+            btRepeat.setText(recurrence.getType());
+        }
+
+        if (resultCode == Activity.RESULT_CANCELED) {
+            //Write your code if there's no result
+        }
 //        }
     }
 

@@ -125,7 +125,7 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
             try {
                 fManager.popBackStackImmediate();
             } catch (IllegalStateException e) {
-                e.printStackTrace();
+                Log.e("TAG", e.getMessage());
             }
 
             Log.d(strTAG, "onBackPressed GAA " + fManager.getBackStackEntryCount()

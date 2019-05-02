@@ -273,7 +273,7 @@
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
-    <string name="task_formlist_screen_msg">"Forms are required for this task."</string>
+    <string name="task_form_list_screen_msg">"Forms are required for this task."</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>

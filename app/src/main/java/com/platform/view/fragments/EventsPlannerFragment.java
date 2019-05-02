@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -260,14 +261,14 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         try {
             dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
 
         cal.add(Calendar.DATE, 3);
         try {
             dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
 
         calendarView.addDecorator(new EventDecorator(getActivity(),

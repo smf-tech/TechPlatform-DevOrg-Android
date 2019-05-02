@@ -6,7 +6,6 @@
     android:layout_alignParentTop="true"
     android:layout_marginStart="0dp"
     android:layout_marginTop="0dp"
-    android:background="@color/lighter_grey"
     android:paddingBottom="@dimen/dimen_15dp">
 
     <LinearLayout
@@ -19,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_15dp"
-            android:layout_marginTop="@dimen/dimen_12dp"
+            android:layout_marginTop="@dimen/dimen_05dp"
             android:layout_marginRight="@dimen/dimen_15dp"
             android:textSize="@dimen/text_size_22" />
 
         <RelativeLayout
+            android:id="@+id/events_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lighter_grey">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -50,9 +49,9 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/tasks_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lighter_grey">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -76,9 +75,9 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/attendance_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lighter_grey">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -103,9 +102,9 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/leave_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lighter_grey">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"

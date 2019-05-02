@@ -15,7 +15,6 @@ import com.platform.utility.Util;
 import com.platform.view.activities.AddMembersFilterActivity;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 public class AddMemberFilerActivityPresenter implements AddMemberRequestCallListener {
     private final String TAG = AddMemberFilerActivityPresenter.class.getName();

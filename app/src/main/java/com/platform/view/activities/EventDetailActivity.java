@@ -23,10 +23,8 @@ import com.platform.view.adapters.AddMembersListAdapter;
 import com.platform.view.adapters.TaskFormsListAdapter;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
