@@ -14,11 +14,8 @@ package com.platform.models;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
-import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Math Evaluator.  Provides the ability to evaluate a String math expression, with support for pureFunctions, variables and
@@ -94,6 +91,7 @@ import java.util.TreeSet;
  * @since Build 2008.0426.1016
  */
 
+@SuppressWarnings({"ClassExplicitlyExtendsObject", "CanBeFinal", "unused"})
 public class MathEval
         extends Object {
 
@@ -111,6 +109,7 @@ public class MathEval
 
     private String expression;                                                 // expression being evaluated
     private int offset;                                                     // used when returning from a higher precedence sub-expression evaluation
+    @SuppressWarnings("unused")
     private boolean isConstant;                                                 // last expression evaluated is constant
 
 // *************************************************************************************************
@@ -151,7 +150,7 @@ public class MathEval
     /**
      * Create a math evaluator with the same constants, variables, function handlers and relaxation setting as the supplied evaluator.
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "CopyConstructorMissesField"})
     public MathEval(MathEval oth) {
         super();
 
@@ -179,18 +178,19 @@ public class MathEval
 // INSTANCE METHODS - ACCESSORS
 // *************************************************************************************************
 
-    /**
-     * Set a named constant (constant names are not case-sensitive).  Constants are like variables but are not cleared by clear(). Variables of the same name have precedence over constants.
-     */
-    public double getConstant(String nam) {
-        Double val = constants.get(nam);
-
-        return (val == null ? 0 : val);
-    }
+//    /**
+//     * Set a named constant (constant names are not case-sensitive).  Constants are like variables but are not cleared by clear(). Variables of the same name have precedence over constants.
+//     */
+//    public double getConstant(String nam) {
+//        Double val = constants.get(nam);
+//
+//        return (val == null ? 0 : val);
+//    }
 
     /**
      * Gets an unmodifiable iterable of the constants in this evaluator.
      */
+    @SuppressWarnings("unused")
     public Iterable<Map.Entry<String, Double>> getConstants() {
         return Collections.unmodifiableMap(constants).entrySet();
     }
@@ -198,6 +198,7 @@ public class MathEval
     /**
      * Set a named constant (constants names are not case-sensitive).  Constants are like variables but are not cleared by clear(). Variables of the same name have precedence over constants.
      */
+    @SuppressWarnings("UnusedReturnValue")
     private MathEval setConstant(String nam, double val) {
         return setConstant(nam, Double.valueOf(val));
     }
@@ -217,6 +218,7 @@ public class MathEval
     /**
      * Set a custom operator, replacing any existing operator with the same symbol. Operators cannot be removed, only replaced.
      */
+    @SuppressWarnings("UnusedReturnValue")
     private MathEval setOperator(Operator opr) {
         if (opr.symbol >= operators.length) {                                                              // extend the array if necessary
             Operator[] noa = new Operator[opr.symbol + (opr.symbol % 255) + 1];                                 // use allocation pages of 256
@@ -232,6 +234,7 @@ public class MathEval
      * <p>
      * Pure functions have results which depend purely on their arguments; given constant arguments they will have a constant result.  Impure functions are rare.
      */
+    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
     private MathEval setFunctionHandler(String nam, FunctionHandler hdl) {
         return setFunctionHandler(nam, hdl, false);
     }
@@ -256,25 +259,26 @@ public class MathEval
         return this;
     }
 
+//    /**
+//     * Set a named variable (variables names are not case-sensitive).
+//     */
+//    public double getVariable(String nam) {
+//        Double val = variables.get(nam);
+//
+//        return (val == null ? 0 : val);
+//    }
+//
+//    /**
+//     * Gets an unmodifiable iterable of the variables in this evaluator.
+//     */
+//    public Iterable<Map.Entry<String, Double>> getVariables() {
+//        return Collections.unmodifiableMap(variables).entrySet();
+//    }
+
     /**
      * Set a named variable (variables names are not case-sensitive).
      */
-    public double getVariable(String nam) {
-        Double val = variables.get(nam);
-
-        return (val == null ? 0 : val);
-    }
-
-    /**
-     * Gets an unmodifiable iterable of the variables in this evaluator.
-     */
-    public Iterable<Map.Entry<String, Double>> getVariables() {
-        return Collections.unmodifiableMap(variables).entrySet();
-    }
-
-    /**
-     * Set a named variable (variables names are not case-sensitive).
-     */
+    @SuppressWarnings("UnusedReturnValue")
     public MathEval setVariable(String nam, double val) {
         return setVariable(nam, Double.valueOf(val));
     }
@@ -295,6 +299,7 @@ public class MathEval
     /**
      * Clear all variables (constants are not affected).
      */
+    @SuppressWarnings("unused")
     public MathEval clear() {
         variables.clear();
         return this;
@@ -303,25 +308,26 @@ public class MathEval
     /**
      * Clear all variables prefixed by the supplied string followed by a dot, such that they match "Prefix.xxx".
      */
+    @SuppressWarnings("unused")
     public MathEval clear(String pfx) {
         variables.subMap((pfx + "."), (pfx + "." + Character.MAX_VALUE)).clear();
         return this;
     }
 
-    /**
-     * Get whether a variable which is used in an expression is required to be explicitly set. If not explicitly set, the value 0.0 is assumed.
-     */
-    public boolean getVariableRequired() {
-        return relaxed;
-    }
-
-    /**
-     * Set whether a variable which is used in an expression is required to be explicitly set. If not explicitly set, the value 0.0 is assumed.
-     */
-    public MathEval setVariableRequired(boolean val) {
-        relaxed = (!val);
-        return this;
-    }
+//    /**
+//     * Get whether a variable which is used in an expression is required to be explicitly set. If not explicitly set, the value 0.0 is assumed.
+//     */
+//    public boolean getVariableRequired() {
+//        return relaxed;
+//    }
+//
+//    /**
+//     * Set whether a variable which is used in an expression is required to be explicitly set. If not explicitly set, the value 0.0 is assumed.
+//     */
+//    public MathEval setVariableRequired(boolean val) {
+//        relaxed = (!val);
+//        return this;
+//    }
 
     private void validateName(String nam) {
         if (!Character.isLetter(nam.charAt(0))) {
@@ -346,48 +352,48 @@ public class MathEval
         return _evaluate(0, (exp.length() - 1));
     }
 
-    /**
-     * Return whether the previous expression evaluated was constant (i.e. contained no variables).
-     * This is useful when optimizing to store the result instead of repeatedly evaluating a constant expression like "2+2".
-     */
-    public boolean previousExpressionConstant() {
-        return isConstant;
-    }
+//    /**
+//     * Return whether the previous expression evaluated was constant (i.e. contained no variables).
+//     * This is useful when optimizing to store the result instead of repeatedly evaluating a constant expression like "2+2".
+//     */
+//    public boolean previousExpressionConstant() {
+//        return isConstant;
+//    }
 
-    /**
-     * Return a set of the variables in the supplied expression. Note: Substitutions which are in the constant table are not included.
-     */
-    public Set<String> getVariablesWithin(String exp) {
-        Set<String> all = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        String add = null;
-
-        if (separators == null) {
-            StringBuilder sep = new StringBuilder(10);
-            for (char chr = 0; chr < operators.length; chr++) {
-                if (operators[chr] != null && !operators[chr].internal) {
-                    sep.append(chr);
-                }
-            }
-            sep.append("()");
-            separators = sep.toString();
-        }
-
-        for (StringTokenizer tkz = new StringTokenizer(exp, separators, true); tkz.hasMoreTokens(); ) {
-            String tkn = tkz.nextToken().trim();
-
-            if (tkn.length() != 0 && Character.isLetter(tkn.charAt(0))) {
-                add = tkn;
-            } else if (tkn.length() == 1 && tkn.charAt(0) == '(') {
-                add = null;
-            } else if (add != null && !constants.containsKey(add)) {
-                all.add(add);
-            }
-        }
-        if (add != null && !constants.containsKey(add)) {
-            all.add(add);
-        }
-        return all;
-    }
+//    /**
+//     * Return a set of the variables in the supplied expression. Note: Substitutions which are in the constant table are not included.
+//     */
+//    public Set<String> getVariablesWithin(String exp) {
+//        Set<String> all = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+//        String add = null;
+//
+//        if (separators == null) {
+//            StringBuilder sep = new StringBuilder(10);
+//            for (char chr = 0; chr < operators.length; chr++) {
+//                if (operators[chr] != null && !operators[chr].internal) {
+//                    sep.append(chr);
+//                }
+//            }
+//            sep.append("()");
+//            separators = sep.toString();
+//        }
+//
+//        for (StringTokenizer tkz = new StringTokenizer(exp, separators, true); tkz.hasMoreTokens(); ) {
+//            String tkn = tkz.nextToken().trim();
+//
+//            if (tkn.length() != 0 && Character.isLetter(tkn.charAt(0))) {
+//                add = tkn;
+//            } else if (tkn.length() == 1 && tkn.charAt(0) == '(') {
+//                add = null;
+//            } else if (add != null && !constants.containsKey(add)) {
+//                all.add(add);
+//            }
+//        }
+//        if (add != null && !constants.containsKey(add)) {
+//            all.add(add);
+//        }
+//        return all;
+//    }
 
 // *************************************************************************************************
 // INSTANCE METHODS - PRIVATE IMPLEMENTATION
@@ -417,7 +423,7 @@ public class MathEval
         int ofs;                                                        // current expression offset
 
         for (ofs = beg; (ofs = skipWhitespace(expression, ofs, end)) <= end; ofs++) {
-            boolean fnc = false;
+//            boolean fnc = false;
             double rgt;                                             // next operand (right-value) to process
 
             for (beg = ofs; ofs <= end; ofs++) {
@@ -542,16 +548,16 @@ public class MathEval
         }
     }
 
+    @SuppressWarnings({"ThrowFromFinallyBlock", "StatementWithEmptyBody"})
     private double doFunction(int beg, int end) {
-        int argbeg = beg;
+        int argbeg;
 
         for (argbeg = beg; argbeg <= end && expression.charAt(argbeg) != '('; argbeg++) {
-            ;
         }
 
         String fncnam = expression.substring(beg, argbeg).trim();
         ArgParser fncargs = new ArgParser(argbeg, end);
-        FunctionHandler fnchdl = null;
+        FunctionHandler fnchdl;
 
         try {
             if ((fnchdl = pureFunctions.get(fncnam)) != null) {
@@ -613,6 +619,7 @@ public class MathEval
         return new ArithmeticException(txt + " at offset " + ofs + " in expression \"" + expression + "\"" + " (Cause: " + (thr.getMessage() != null ? thr.getMessage() : thr.toString()) + ")");
     }
 
+    @SuppressWarnings("SameParameterValue")
     private boolean stringOfsEq(String str, int ofs, String val) {
         return str.regionMatches(true, ofs, val, 0, val.length());
     }
@@ -631,7 +638,7 @@ public class MathEval
     /**
      * An abstract parser for function arguments.
      */
-    public final class ArgParser {
+    final class ArgParser {
         final int exEnd;
 
         int index;
@@ -656,15 +663,15 @@ public class MathEval
             return _next();
         }
 
-        /**
-         * Parse the next argument, returning the supplied default if there are no more arguments.
-         */
-        public double next(double dft) {
-            if (!hasNext()) {
-                return dft;
-            }
-            return _next();
-        }
+//        /**
+//         * Parse the next argument, returning the supplied default if there are no more arguments.
+//         */
+//        public double next(double dft) {
+//            if (!hasNext()) {
+//                return dft;
+//            }
+//            return _next();
+//        }
 
         private double _next() {
             if (expression.charAt(index) == ',') {
@@ -697,7 +704,8 @@ public class MathEval
      * This class is immutable and threadsafe, but note that whether it can be used in multiple MathEval instances (as
      * opposed to for multiple operators in one instance) depends on the threadsafety of the handler it contains.
      */
-    static public final class Operator
+    @SuppressWarnings({"ClassExplicitlyExtendsObject"})
+    static final class Operator
             extends Object {
         final char symbol;                                                     // parser symbol for this operator
         final int precedenceL;                                                // precedence when on the left
@@ -709,30 +717,31 @@ public class MathEval
         /**
          * Create a binary operator with the same precedence on the left and right.
          */
+        @SuppressWarnings("SameParameterValue")
         Operator(char sym, int prc, OperatorHandler hnd) {
             this(sym, prc, prc, NO_SIDE, false, hnd);
         }
 
-        /**
-         * Create an operator which may have different left and right precedence and/or may be unary.
-         * <p>
-         * Using different precedence for one side allows affinity binding such that consecutive operators are evaluated left to right.
-         * <p>
-         * Marking an operator as unary binds the precedence for the specified side such that it always has maximum precedence when considered from the opposite side.
-         */
-        public Operator(char sym, int prclft, int prcrgt, int unibnd, OperatorHandler hnd) {
-            this(sym, prclft, prcrgt, unibnd, false, hnd);
-
-            if (prclft < 0 || prclft > 99) {
-                throw new IllegalArgumentException("Operator precendence must be 0 - 99");
-            }
-            if (prcrgt < 0 || prcrgt > 99) {
-                throw new IllegalArgumentException("Operator precendence must be 0 - 99");
-            }
-            if (handler == null) {
-                throw new IllegalArgumentException("Operator handler is required");
-            }
-        }
+//        /**
+//         * Create an operator which may have different left and right precedence and/or may be unary.
+//         * <p>
+//         * Using different precedence for one side allows affinity binding such that consecutive operators are evaluated left to right.
+//         * <p>
+//         * Marking an operator as unary binds the precedence for the specified side such that it always has maximum precedence when considered from the opposite side.
+//         */
+//        public Operator(char sym, int prclft, int prcrgt, int unibnd, OperatorHandler hnd) {
+//            this(sym, prclft, prcrgt, unibnd, false, hnd);
+//
+//            if (prclft < 0 || prclft > 99) {
+//                throw new IllegalArgumentException("Operator precendence must be 0 - 99");
+//            }
+//            if (prcrgt < 0 || prcrgt > 99) {
+//                throw new IllegalArgumentException("Operator precendence must be 0 - 99");
+//            }
+//            if (handler == null) {
+//                throw new IllegalArgumentException("Operator handler is required");
+//            }
+//        }
 
         Operator(char sym, int prclft, int prcrgt, int unibnd, boolean intern, OperatorHandler hnd) {
             symbol = sym;
@@ -752,7 +761,7 @@ public class MathEval
 // STATIC NESTED CLASSES - OPERATION EVALUATOR INTERFACE
 // *************************************************************************************************
 
-    public interface OperatorHandler {
+    interface OperatorHandler {
         double evaluateOperator(double lft, char opr, double rgt) throws ArithmeticException;
     }
 
@@ -760,7 +769,7 @@ public class MathEval
 // STATIC NESTED CLASSES - FUNCTION EVALUATOR INTERFACE
 // *************************************************************************************************
 
-    public interface FunctionHandler {
+    interface FunctionHandler {
         double evaluateFunction(String fncnam, ArgParser fncargs) throws ArithmeticException;
     }
 
@@ -771,6 +780,7 @@ public class MathEval
     /**
      * An implementation of the default supported operations and functions.
      */
+    @SuppressWarnings("ClassExplicitlyExtendsObject")
     static class DefaultImpl
             extends Object
             implements OperatorHandler, FunctionHandler {
@@ -1022,15 +1032,15 @@ public class MathEval
      */
     static private final int NO_SIDE = 'B';
 
-    /**
-     * Implementation for the default operators.
-     */
-    static public final OperatorHandler DFT_OPERATOR_HANDLER = DefaultImpl.INSTANCE;
+//    /**
+//     * Implementation for the default operators.
+//     */
+//    static public final OperatorHandler DFT_OPERATOR_HANDLER = DefaultImpl.INSTANCE;
 
-    /**
-     * Implementation for the default function (java.lang.Math).
-     */
-    static public final FunctionHandler DFT_FUNCTION_HANDLER = DefaultImpl.INSTANCE;
+//    /**
+//     * Implementation for the default function (java.lang.Math).
+//     */
+//    static public final FunctionHandler DFT_FUNCTION_HANDLER = DefaultImpl.INSTANCE;
 
     static private final Operator OPERAND = new Operator('\0', 0, 0, NO_SIDE, false, null);          // special "non-operator" representing an operand character
 
