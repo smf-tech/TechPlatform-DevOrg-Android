@@ -13,7 +13,6 @@
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginBottom="@dimen/dimen_15dp"
-        android:fontFamily="@font/roboto_medium"
         android:text="14 Apr"
         android:textColor="@color/holiday_text"
         android:textSize="@dimen/text_size_14" />
@@ -26,7 +25,6 @@
         android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_15dp"
-        android:fontFamily="@font/roboto_medium"
         android:text="Ganapati"
         android:textColor="@color/holiday_text"
         android:textSize="@dimen/text_size_14" />

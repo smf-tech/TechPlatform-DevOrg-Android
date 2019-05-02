@@ -48,8 +48,6 @@ public class PlannerDetailActivity extends AppCompatActivity {
                     .replace(R.id.fly_events_list, leavePlannerFragment, leavePlannerFragment.getClass()
                             .getSimpleName()).addToBackStack(null).commit();
         }
-
-
     }
 
     @Override

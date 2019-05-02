@@ -147,11 +147,11 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         }
     }
 
-    int getSelectedItem() {
+    Choice getSelectedItem() {
         if (spinner != null) {
-            return spinner.getSelectedItemPosition();
+            return (Choice) spinner.getSelectedItem();
         }
-        return 0;
+        return null;
     }
 
     @Override

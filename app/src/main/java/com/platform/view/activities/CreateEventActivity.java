@@ -22,27 +22,27 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
-import com.platform.models.events.Member;
-import com.platform.models.events.Repeat;
+import com.platform.models.events.Participant;
+import com.platform.models.events.Recurrence;
 import com.platform.presenter.CreateEventActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
-    private ArrayList<Member> membersList = new ArrayList<>();
+    private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
-    Repeat repeat;
+    Recurrence recurrence;
 
     private ImageView ivBackIcon;
     private Spinner spCategory;
@@ -148,14 +148,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private void setAllData() {
         ArrayAdapter myAdapter = (ArrayAdapter) spCategory.getAdapter();
-        int spinnerPosition = myAdapter.getPosition(event.getCategory());
+        int spinnerPosition = myAdapter.getPosition(event.getEventType());
         spCategory.setSelection(spinnerPosition);
         etTitle.setText(event.getTitle());
-        etStartDate.setText(event.getStartDate());
-        etStartTime.setText(event.getStarTime());
+        etStartDate.setText(timeStampToDate(event.getEventStartDateTime()));
+        etStartTime.setText(timeStampToTime(event.getEventStartDateTime()));
         etEndTime.setText(event.getEndTime());
         etRepeat.setText(event.getRepeat());
-        etDescription.setText(event.getDescription());
+        etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
         setAdapter(event.getMembersList());
     }
@@ -170,8 +170,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         btEventSubmit.setOnClickListener(this);
     }
 
-    private void setAdapter(ArrayList<Member> members) {
-        membersList.addAll(members);
+    private void setAdapter(ArrayList<Participant> participants) {
+        membersList.addAll(participants);
         addMembersListAdapter.notifyDataSetChanged();
     }
 
@@ -222,13 +222,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         Event event = new Event();
 
-        event.setCategory(spCategory.getSelectedItem().toString());
+        event.setEventType(spCategory.getSelectedItem().toString());
         event.setTitle(etTitle.getText().toString());
-        event.setStartDate(dateToTimeStamp(etStartDate.getText().toString()));
+        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(),etStartTime.getText().toString()));
         event.setStarTime(etStartTime.getText().toString());
         event.setEndTime(etEndTime.getText().toString());
-        event.setRepeat(repeat.getRepeat());
-        event.setDescription(etDescription.getText().toString());
+        event.setRepeat(recurrence.getType());
+        event.setEventDescription(etDescription.getText().toString());
         event.setAddress(etAddress.getText().toString());
 
         //put in response of above api
@@ -236,17 +236,42 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public String dateToTimeStamp(String strDate) {
-        DateFormat formatter ;
+    public Long dateToTimeStamp(String strDate, String strTime) {
         Date date = null;
-        formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
-            date = (Date)formatter.parse(strDate);
+            date = (Date)formatter.parse(strDate +" "+strTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Timestamp timeStampDate = new Timestamp(date.getTime());
-        return timeStampDate.toString();
+        return date.getTime();
+    }
+
+    public String timeStampToDate(Long timeStamp) {
+        try{
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timeStamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        }catch (Exception e) {
+        }
+        return "";
+    }
+    public String timeStampToTime(Long timeStamp) {
+        try{
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timeStamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        }catch (Exception e) {
+        }
+        return "";
     }
 
     @Override
@@ -255,7 +280,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
 //        if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                repeat = (Repeat) data.getSerializableExtra("result");
+                recurrence = (Recurrence) data.getSerializableExtra("result");
+                btRepeat.setText(recurrence.getType());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result

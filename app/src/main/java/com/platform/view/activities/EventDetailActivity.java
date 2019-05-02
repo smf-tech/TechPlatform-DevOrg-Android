@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.models.events.Event;
-import com.platform.models.events.Member;
+import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
 import com.platform.utility.Constants;
 import com.platform.view.adapters.AddMembersListAdapter;
@@ -75,19 +75,12 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
         SimpleDateFormat weekDay = new SimpleDateFormat("EEEE", Locale.getDefault());
 
-        Date date = null;
-        try {
-            date = originalFormat.parse(event.getStartDate());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String finalDate = weekDay.format(date);
-        finalDate = finalDate + ", " + targetFormat.format(date);
+        String finalDate = weekDay.format(event.getEventStartDateTime());
+        finalDate = finalDate + ", " + targetFormat.format(event.getEventStartDateTime());
 
         tvTitle.setText(event.getTitle());
-        tvCategory.setText(event.getCategory());
-        tvDescription.setText(event.getDescription());
+        tvCategory.setText(event.getEventType());
+        tvDescription.setText(event.getEventDescription());
         tvDate.setText(finalDate);
 //        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvAddress.setText(event.getAddress());
@@ -171,7 +164,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         setListeners();
     }
 
-    private void setAdapter(ArrayList<Member> membersList) {
+    private void setAdapter(ArrayList<Participant> membersList) {
         AddMembersListAdapter addMembersListAdapter
                 = new AddMembersListAdapter(EventDetailActivity.this, membersList, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -205,8 +198,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
         int attendedCount = 0;
         boolean isAttendanceMarked = false;
-        for (Member m : event.getMembersList()) {
-            if (m.getMemberAttended()) {
+        for (Participant m : event.getMembersList()) {
+            if (m.getAttended()) {
                 attendedCount++;
                 isAttendanceMarked = true;
             }
@@ -301,5 +294,10 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         layout.setPadding(0, 0, 0, 0);
 
         layout.addView(snackView, 0);
+    }
+
+    public String timeStampToDate(int timeStamp) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+        return formatter.format(timeStamp);
     }
 }

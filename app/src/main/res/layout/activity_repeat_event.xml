@@ -140,10 +140,6 @@
 
     </RelativeLayout>
 
-    <!--which_days-->
-
-
-
     <!--End Date-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tly_end_date"

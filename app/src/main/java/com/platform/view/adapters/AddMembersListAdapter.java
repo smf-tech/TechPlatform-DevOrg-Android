@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
-import com.platform.models.events.Member;
+import com.platform.models.events.Participant;
 import com.platform.view.activities.AddMembersListActivity;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
 
     private Context mContext;
     private boolean isCheckVisible;
-    private ArrayList<Member> membersList;
+    private ArrayList<Participant> membersList;
 
-    public AddMembersListAdapter(Context mContext, ArrayList<Member> membersList, boolean isCheckVisible) {
+    public AddMembersListAdapter(Context mContext, ArrayList<Participant> membersList, boolean isCheckVisible) {
         this.mContext = mContext;
         this.membersList = membersList;
         this.isCheckVisible = isCheckVisible;
@@ -38,12 +38,12 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
 
     @Override
     public void onBindViewHolder(@NonNull AddMembersListAdapter.ViewHolder holder, int position) {
-        Member member = membersList.get(position);
+        Participant member = membersList.get(position);
         holder.tvMemberName.setText(member.getName());
         holder.tvMemberDesignation.setText(member.getRole());
         holder.cbMemberSelect.setChecked(membersList.get(position).getMemberSelected());
 
-        if (membersList.get(position).getMemberAttended()) {
+        if (membersList.get(position).getAttended()) {
             holder.cbMemberSelect.setChecked(true);
         } else {
             holder.cbMemberSelect.setChecked(false);

@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
-import com.platform.models.events.Member;
+import com.platform.models.events.Participant;
 import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
@@ -97,17 +97,17 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         eventsList = new ArrayList<>();
         sortedEventsList = new ArrayList<>();
 
-        ArrayList<Member> membersList = new ArrayList<>();
-        membersList.add(new Member("1", "Sagar Mahajan", "DM", true, true));
-        membersList.add(new Member("2", "Kishor Shevkar", "TC", false, false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT", true, true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA", false, false));
+        ArrayList<Participant> membersList = new ArrayList<>();
+        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true, true));
+        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false, false));
+        membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
+        membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
 
-        eventsList.add(new Event("1", "Meeting", "Title1", "22/04/2019", null, "10:00 am",
+        eventsList.add(new Event("1", "Meeting", "Title1", 1556794660l, null, "10:00 am",
                 "11:00 am", "-", "test", "Wagholi,pune.", "Sachin",
                 "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
 
-        eventsList.add(new Event("2", "Event", "Title2", "22/04/2019", null,"10:00 am",
+        eventsList.add(new Event("2", "Event", "Title2", 1556794660l, null, "10:00 am",
                 "11:30 am", "-", "test", "Hadpsar,pune.", "Sagar",
                 "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
-import com.platform.models.events.Member;
+import com.platform.models.events.Participant;
 import com.platform.utility.Constants;
 import com.platform.view.adapters.AddMembersListAdapter;
 
@@ -24,8 +24,8 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         View.OnClickListener {
 
     private AddMembersListAdapter addMembersListAdapter;
-    private ArrayList<Member> membersList = new ArrayList<>();
-    private ArrayList<Member> filterMembersList = new ArrayList<>();
+    private ArrayList<Participant> membersList = new ArrayList<>();
+    private ArrayList<Participant> filterMembersList = new ArrayList<>();
     SearchView editSearch;
     CheckBox cbSelectAllMembers;
     private ImageView toolbarAction;
@@ -46,7 +46,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         toolbarAction = findViewById(R.id.toolbar_edit_action);
         editSearch = findViewById(R.id.search_view);
 
-        membersList = (ArrayList<Member>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
+        membersList = (ArrayList<Participant>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
         isNewMembersList = getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
 
         LinearLayout lyAttendedTab = findViewById(R.id.ly_attended_tab);
@@ -67,8 +67,8 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
             TextView tvNotAttended = findViewById(R.id.tv_not_attended);
 
             int attendedCount = 0;
-            for (Member m : membersList) {
-                if (m.getMemberAttended()) {
+            for (Participant m : membersList) {
+                if (m.getAttended()) {
                     attendedCount++;
                 }
             }
@@ -95,7 +95,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         editSearch.setOnQueryTextListener(this);
     }
 
-    public void checkAllSelected(ArrayList<Member> membersList) {
+    public void checkAllSelected(ArrayList<Participant> membersList) {
         boolean allCheck = true;
         for (int i = 0; i < membersList.size(); i++) {
             if (!membersList.get(i).getMemberSelected()) {
@@ -131,7 +131,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         searchText = searchText.toLowerCase(Locale.getDefault());
         membersList.clear();
         if (searchText.length() > 0) {
-            for (Member member : filterMembersList) {
+            for (Participant member : filterMembersList) {
                 if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
                     membersList.add(member);
                 }
@@ -156,12 +156,12 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
 
             case R.id.cb_select_all_members:
                 if (((CheckBox) v).isChecked()) {
-                    for (Member member : membersList) {
-                        member.setMemberAttended(true);
+                    for (Participant participant : membersList) {
+                        participant.setAttended(true);
                     }
                 } else {
-                    for (Member member : membersList) {
-                        member.setMemberAttended(false);
+                    for (Participant participant : membersList) {
+                        participant.setAttended(false);
                     }
                 }
                 addMembersListAdapter.notifyDataSetChanged();
