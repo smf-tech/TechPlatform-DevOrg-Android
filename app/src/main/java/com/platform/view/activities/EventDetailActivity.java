@@ -89,10 +89,9 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         tvCategory.setText(event.getCategory());
         tvDescription.setText(event.getDescription());
         tvDate.setText(finalDate);
-        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
-        tvRepeat.setText(event.getRepeat());
+//        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvAddress.setText(event.getAddress());
-        rvAttendeesList = findViewById(R.id.rv_attendees_list);
+//        rvAttendeesList = findViewById(R.id.rv_attendees_list);
 //        int attendedCount = 0;
 //        boolean isAttendanceMarked = false;
 //        for (Member m : event.getMembersList()) {
@@ -120,21 +119,50 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
             View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
+            TextView tvFormlistLabel = findViewById(R.id.tv_formlist_label);
             vTaskStatusIndicator.setVisibility(View.VISIBLE);
-
-            if (event.getStatus().equals("Planned")) {
-                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
-                btEditAttendance.setText("Mark As Completed.");
-            } else if (event.getStatus().equals("Completed")) {
-                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
-                btEditAttendance.setVisibility(View.GONE);
-            }
             findViewById(R.id.ly_attended).setVisibility(View.GONE);
-            findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
-            rvFormsList = findViewById(R.id.rv_forms_list);
-            setFormListAdapter(event.getFormsList());
+            findViewById(R.id.ly_category).setVisibility(View.GONE);
+            TextView tvEndDate = findViewById(R.id.tv_end_date);
+            tvEndDate.setVisibility(View.VISIBLE);
+            TextView tvEndTime = findViewById(R.id.tv_end_time);
+            tvEndTime.setVisibility(View.VISIBLE);
+            tvEndTime.setText(event.getEndTime());
+            tvRepeat.setVisibility(View.GONE);
+
+            Date endDate = null;
+            try {
+                endDate = originalFormat.parse(event.getEndDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            String finalEndDate = weekDay.format(endDate);
+            finalEndDate = finalEndDate + ", " + targetFormat.format(endDate);
+            tvEndDate.setText(finalEndDate);
+
+            tvTime.setText(String.format(event.getStarTime()));
+
+            if (event.getStatus().equals(Constants.Planner.PLANNED_STATUS)) {
+                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
+            } else if (event.getStatus().equals(Constants.Planner.COMPLETED_STATUS)) {
+                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
+            }
+            if(event.getFormsList().size()>0){
+                findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
+                btEditAttendance.setVisibility(View.GONE);
+                tvFormlistLabel.setVisibility(View.VISIBLE);
+                tvFormlistLabel.setText(event.getFormsList().size()+" "+getString(R.string.task_formlist_screen_msg));
+                rvFormsList = findViewById(R.id.rv_forms_list);
+                setFormListAdapter(event.getFormsList());
+            }else{
+                btEditAttendance.setText("Mark As Completed.");
+                tvFormlistLabel.setVisibility(View.GONE);
+            }
         } else {
             setActionbar(getString(R.string.event_detail));
+            tvRepeat.setText(event.getRepeat());
+            tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
             rvAttendeesList = findViewById(R.id.rv_attendees_list);
             setAdapter(event.getMembersList());
             getAttendedCount();
@@ -200,12 +228,19 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.toolbar_edit_action:
-                if (snackbar.isShown()) {
-                    snackbar.dismiss();
-                    lyGreyedOut.setVisibility(View.GONE);
-                } else {
-                    snackbar.show();
-                    lyGreyedOut.setVisibility(View.VISIBLE);
+                if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+                    Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
+                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
+                    intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL, event);
+                    this.startActivity(intentCreateEvent);
+                }else{
+                    if (snackbar.isShown()) {
+                        snackbar.dismiss();
+                        lyGreyedOut.setVisibility(View.GONE);
+                    } else {
+                        snackbar.show();
+                        lyGreyedOut.setVisibility(View.VISIBLE);
+                    }
                 }
                 break;
 

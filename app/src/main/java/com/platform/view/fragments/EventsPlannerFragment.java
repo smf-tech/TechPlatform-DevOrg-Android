@@ -103,13 +103,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         membersList.add(new Member("3", "Jagruti Devare", "MT", true, true));
         membersList.add(new Member("4", "Sachin Kakade", "FA", false, false));
 
-        eventsList.add(new Event("1", "Meeting", "Title1", "22/04/2019", "10:00 am",
+        eventsList.add(new Event("1", "Meeting", "Title1", "22/04/2019", null, "10:00 am",
                 "11:00 am", "-", "test", "Wagholi,pune.", "Sachin",
-                "1234", "Completed", membersList, null));
+                "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
 
-        eventsList.add(new Event("2", "Event", "Title2", "22/04/2019", "10:00 am",
+        eventsList.add(new Event("2", "Event", "Title2", "22/04/2019", null,"10:00 am",
                 "11:30 am", "-", "test", "Hadpsar,pune.", "Sagar",
-                "1235", "Planned", membersList, null));
+                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

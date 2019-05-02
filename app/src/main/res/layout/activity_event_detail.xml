@@ -130,7 +130,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_time"
+                    android:id="@+id/tv_end_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_date"
@@ -138,13 +138,37 @@
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_01dp"
                     android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_end_date"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_end_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_time"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_repeat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_time"
+                    android:layout_below="@+id/tv_end_time"
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_10dp"

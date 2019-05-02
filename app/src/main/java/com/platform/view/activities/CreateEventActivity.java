@@ -48,6 +48,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private Spinner spCategory;
     private EditText etTitle;
     private EditText etStartDate;
+    private EditText etEndDate;
     private EditText etStartTime;
     private EditText etEndTime;
     private EditText etRepeat;
@@ -82,6 +83,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         spCategory = findViewById(R.id.sp_category);
         etTitle = findViewById(R.id.et_title);
         etStartDate = findViewById(R.id.et_start_date);
+        etEndDate = findViewById(R.id.et_end_date);
         etStartTime = findViewById(R.id.et_start_time);
         etEndTime = findViewById(R.id.et_end_time);
         etRepeat = findViewById(R.id.et_repeat);
@@ -120,6 +122,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 setActionbar(getString(R.string.edit_task));
             } else {
                 setActionbar(getString(R.string.edit_event));
+                etEndDate.setOnClickListener(this);
+                etEndDate.setText(event.getEndDate());
             }
 
             btEventSubmit.setText(getString(R.string.btn_submit));
@@ -132,6 +136,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.create_task));
+                findViewById(R.id.txt_add_members).setVisibility(View.GONE);
                 btEventSubmit.setText(getString(R.string.create_task));
             } else {
                 setActionbar(getString(R.string.create_event));
@@ -184,6 +189,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.et_start_date:
                 Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
+                break;
+
+            case R.id.et_end_date:
+                Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_end_date));
                 break;
 
             case R.id.et_start_time:

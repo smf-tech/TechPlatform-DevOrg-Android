@@ -48,9 +48,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventOwner.setText(event.getOwner());
 
         if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            if (event.getStatus().equals("Planned")) {
+            if (event.getStatus().equals(Constants.Planner.PLANNED_STATUS)) {
                 holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-            } else if (event.getStatus().equals("Completed")) {
+            } else if (event.getStatus().equals(Constants.Planner.COMPLETED_STATUS)) {
                 holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             }
         }

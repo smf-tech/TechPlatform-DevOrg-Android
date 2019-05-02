@@ -10,6 +10,7 @@ public class Event implements Serializable {
     private String category;
     private String title;
     private String startDate;
+    private String endDate;
     private String starTime;
     private String endTime;
     private String repeat;
@@ -21,13 +22,14 @@ public class Event implements Serializable {
     private ArrayList<Member> membersList = new ArrayList<>();
     private ArrayList<TaskForm> formsList = new ArrayList<>();
 
-    public Event(String id, String category, String title, String startDate, String starTime,
+    public Event(String id, String category, String title, String startDate, String endDate, String starTime,
                  String endTime, String repeat, String description, String address, String owner,
                  String ownerID, String status, ArrayList<Member> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.category = category;
         this.title = title;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.starTime = starTime;
         this.endTime = endTime;
         this.repeat = repeat;
@@ -77,6 +79,15 @@ public class Event implements Serializable {
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
 
     public String getStarTime() {
         return starTime;
