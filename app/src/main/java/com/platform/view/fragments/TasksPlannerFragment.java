@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Member;
+import com.platform.models.events.TaskForm;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventActivity;
@@ -88,6 +89,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         membersList.add(new Member("2", "Kishor Shevkar", "TC", false, false));
         membersList.add(new Member("3", "Jagruti Devare", "MT", true, true));
         membersList.add(new Member("4", "Sachin Kakade", "FA", false, false));
+
+        ArrayList<TaskForm> taskFormsList = new ArrayList<>();
+        taskFormsList.add(new TaskForm("1", "Testing Form 1", "Planned"));
+        taskFormsList.add(new TaskForm("2", "Testing Form 2", "Completed"));
+        taskFormsList.add(new TaskForm("3", "Testing Form 3", "Completed"));
 
         taskList.add(new Event("1", "meeting", "Title1", "01/01/2019", "10:00 am",
                 "11:00 am", "-", "test", "Wagholi,Pune.", "Sachin",
@@ -234,11 +240,13 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
                     .commit();
+            ivCalendarMode.setRotation(180);
         } else {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.WEEKS)
                     .commit();
+            ivCalendarMode.setRotation(0);
         }
 
         calendarView.setSelectedDate(instance.getTime());

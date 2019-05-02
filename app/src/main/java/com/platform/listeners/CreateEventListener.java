@@ -8,6 +8,8 @@ public interface CreateEventListener {
 
     void onEventsFetched(String response);
 
+    void onEventSummited(String response);
+
     void onFailureListener(String message);
 
     void onErrorListener(VolleyError error);

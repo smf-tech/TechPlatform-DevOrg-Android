@@ -9,7 +9,9 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
+import com.platform.listeners.AddMemberRequestCallListener;
 import com.platform.listeners.CreateEventListener;
+import com.platform.models.events.Event;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -19,11 +21,15 @@ import org.json.JSONObject;
 public class EventRequestCall {
 
     private Gson gson;
-    private CreateEventListener listener;
+    private CreateEventListener createEventListener;
+    private AddMemberRequestCallListener addMemberRequestCallListener;
     private final String TAG = EventRequestCall.class.getName();
     
-    public void setListener(CreateEventListener listener) {
-        this.listener=listener;
+    public void setCreateEventListener(CreateEventListener listener) {
+        this.createEventListener=listener;
+    }
+    public void setAddMemberRequestCallListener(AddMemberRequestCallListener listener) {
+        this.addMemberRequestCallListener=listener;
     }
 
     public void getCategory() {
@@ -33,15 +39,15 @@ public class EventRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getCategory - Resp: " + res);
-                    listener.onCategoryFetched(res);
+                    createEventListener.onCategoryFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+                createEventListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
-        Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
+        Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
         final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_CATEGORY;
 
@@ -68,19 +74,92 @@ public class EventRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getEvents - Resp: " + res);
-                    listener.onEventsFetched(res);
+                    createEventListener.onEventsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+                createEventListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
 
-        Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
+        Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
         final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS +"?status="+status;
 //        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS,status);
         Log.d(TAG, "getEvents: " + getOrgUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+    public void getMemberList() {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "getEvents - Resp: " + res);
+                    addMemberRequestCallListener.onMembersFetched(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                addMemberRequestCallListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
+
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST ;
+//        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST +"?role=<roleidsstr>" +
+//                "&project=<projectidstr>" +
+//                "&organization=<orgidstr>" +
+//                "&location=<locationobj>" +
+//                "&page=<page_id> ";
+
+        Log.d(TAG, "getEvents: " + getOrgUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+    public void submitEvent(Event event) {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "SubmitEvents - Resp: " + res);
+                    createEventListener.onEventSummited(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                createEventListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
+
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT ;
+
+        Log.d(TAG, "SubmitEvents: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

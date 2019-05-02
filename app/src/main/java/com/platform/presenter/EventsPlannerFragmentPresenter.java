@@ -21,7 +21,7 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     public void getEvents(String status) {
         EventRequestCall requestCall=new EventRequestCall();
-        requestCall.setListener(this);
+        requestCall.setCreateEventListener(this);
 
         fragmentWeakReference.get().showProgressBar();
         requestCall.getEvent(status);
@@ -44,6 +44,11 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 //                fragmentWeakReference.get().showOrganizations(orgResponse.getData());
 //            }
         }
+    }
+
+    @Override
+    public void onEventSummited(String response) {
+
     }
 
     @Override
