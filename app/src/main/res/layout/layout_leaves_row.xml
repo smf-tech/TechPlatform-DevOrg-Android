@@ -28,7 +28,6 @@
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_65dp"
         android:layout_toEndOf="@+id/img_user_leaves"
-        android:fontFamily="@font/roboto_medium"
         android:textColor="@color/attendance_list_item"
         android:textSize="@dimen/text_size_12"
         tools:ignore="RelativeOverlap" />

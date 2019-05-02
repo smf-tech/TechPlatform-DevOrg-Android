@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_60dp"
         android:layout_marginStart="@dimen/dimen_15dp"
-        android:layout_marginTop="@dimen/dimen_40dp"
+        android:layout_marginTop="@dimen/dimen_60dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
         android:background="@drawable/leaves_count_border">
 
@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_20" />
 
@@ -49,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_total_leaves_count"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/roboto_regular"
                 android:gravity="center_horizontal"
                 android:text="@string/total_leaves" />
         </RelativeLayout>
@@ -73,7 +71,6 @@
                     android:id="@+id/tv_leaves_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
                     android:textColor="@color/colorPrimary"
@@ -82,7 +79,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingBottom="@dimen/dimen_07dp"
                     android:text="@string/cl_leaves"
@@ -101,7 +97,6 @@
                     android:id="@+id/tv_leaves_paid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
                     android:textColor="@color/colorPrimary"
@@ -110,7 +105,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingBottom="@dimen/dimen_07dp"
                     android:text="@string/paid_leaves"
@@ -129,7 +123,6 @@
                     android:id="@+id/tv_leaves_unpaid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
                     android:textColor="@color/colorPrimary"
@@ -139,7 +132,6 @@
                     android:id="@+id/tv_str_unpaid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingBottom="@dimen/dimen_07dp"
                     android:text="@string/unpaid_leaves"
@@ -158,7 +150,6 @@
                     android:id="@+id/tv_leaves_com_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
                     android:textColor="@color/colorPrimary"
@@ -168,7 +159,6 @@
                     android:id="@+id/tv_str_comp_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:paddingBottom="@dimen/dimen_07dp"
                     android:text="@string/comp_off_leaves"
@@ -187,7 +177,6 @@
         android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_20dp"
         android:background="@drawable/bg_button"
-        android:fontFamily="@font/roboto_medium"
         android:gravity="center_horizontal|center_vertical"
         android:singleLine="true"
         android:text="@string/btn_leave_apply_str"
@@ -205,7 +194,6 @@
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginBottom="@dimen/dimen_20dp"
-        android:fontFamily="@font/roboto_regular"
         android:text="@string/link_leave_apply"
         android:textColor="@color/tab_selector"
         android:textSize="@dimen/text_size_14" />
