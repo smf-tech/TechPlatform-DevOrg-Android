@@ -19,7 +19,7 @@
         android:layout_height="@dimen/dimen_70dp"
         android:layout_marginStart="@dimen/dimen_12dp"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/add_img" />
+        android:src="@drawable/ic_add_img" />
 
     <TextView
         android:id="@+id/txt_file_name"

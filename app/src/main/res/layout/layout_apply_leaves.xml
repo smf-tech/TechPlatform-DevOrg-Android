@@ -21,7 +21,7 @@
             android:layout_height="@dimen/dimen_50dp"
             android:layout_marginStart="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
-            android:background="@drawable/leave_form_view_nonfocused"
+            android:background="@drawable/leave_form_view_unfocused"
             android:fontFamily="@font/roboto_regular"
             android:paddingStart="@dimen/dimen_15dp"
             android:paddingTop="@dimen/dimen_15dp"
@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/cl_leaves"
                 android:textAllCaps="false"
@@ -58,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/paid_leaves"
                 android:textAllCaps="false"
@@ -67,19 +67,18 @@
                 tools:ignore="ButtonStyle" />
 
             <Button
-                android:id="@+id/btn_coff"
+                android:id="@+id/btn_comp_off"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
                 android:fontFamily="@font/roboto_regular"
-                android:text="@string/coff_leaves"
+                android:text="@string/comp_off_leaves"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13"
                 tools:ignore="ButtonStyle" />
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/lv_category_type"
@@ -97,26 +96,26 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/full_day"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13"
                 tools:ignore="ButtonStyle" />
+
             <Button
                 android:id="@+id/btn_half_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/half_day"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13"
                 tools:ignore="ButtonStyle" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -135,13 +134,13 @@
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_marginEnd="@dimen/dimen_25dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
+                android:drawableEnd="@drawable/ic_calendar_ev"
                 android:fontFamily="@font/roboto_regular"
-                android:paddingStart="@dimen/dimen_15dp"
                 android:gravity="center_vertical"
+                android:paddingStart="@dimen/dimen_15dp"
                 android:paddingEnd="@dimen/dimen_15dp"
                 android:text="@string/start_date"
-                android:drawableEnd="@drawable/calender"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13" />
@@ -151,13 +150,13 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:background="@drawable/leave_form_view_nonfocused"
+                android:background="@drawable/leave_form_view_unfocused"
+                android:drawableEnd="@drawable/ic_calendar_ev"
                 android:drawablePadding="-10dp"
-                android:drawableEnd="@drawable/calender"
                 android:fontFamily="@font/roboto_regular"
-                android:paddingEnd="@dimen/dimen_15dp"
+                android:gravity="center_vertical"
                 android:paddingStart="@dimen/dimen_15dp"
+                android:paddingEnd="@dimen/dimen_15dp"
                 android:text="@string/end_date"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
@@ -171,19 +170,18 @@
             android:layout_below="@+id/lv_category_date"
             android:layout_marginStart="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
-            android:background="@drawable/leave_form_view_nonfocused"
+            android:background="@drawable/leave_form_view_unfocused"
             android:fontFamily="@font/roboto_regular"
             android:gravity="top"
             android:hint="@string/reason"
+            android:importantForAutofill="no"
             android:paddingStart="@dimen/dimen_15dp"
             android:paddingTop="@dimen/dimen_10dp"
             android:textAllCaps="false"
             android:textColor="@color/leave_form_text_color"
             android:textColorHint="@color/leave_form_text_color"
             android:textSize="@dimen/text_size_13"
-            tools:ignore="RtlSymmetry"
-            android:importantForAutofill="no" />
-
+            tools:ignore="RtlSymmetry,TextFields,UnusedAttribute" />
 
         <Button
             android:id="@+id/btn_apply_leave"
@@ -200,7 +198,5 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_16" />
-
     </RelativeLayout>
-
 </LinearLayout>

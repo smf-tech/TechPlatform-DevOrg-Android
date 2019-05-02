@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/ly_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/ly_main">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_member_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_14"
-        android:textColor="@color/tab_select"
-        android:textStyle="bold"
-        android:maxLines="1"
-        android:text="Sagar Mahajan"
+        android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
-        android:layout_marginStart="@dimen/dimen_10dp" />
+        android:maxLines="1"
+        android:text="Sagar Mahajan"
+        android:textColor="@color/tab_select"
+        android:textSize="@dimen/text_size_14"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_member_designation"
-        android:layout_below="@+id/tv_member_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_11"
-        android:textColor="@color/light_grey"
+        android:layout_below="@+id/tv_member_name"
+        android:layout_marginStart="@dimen/dimen_10dp"
         android:text="Taluka Coordinator"
-        android:layout_marginStart="@dimen/dimen_10dp" />
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/text_size_11" />
 
     <CheckBox
         android:id="@+id/cb_select_member"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/dimen_10dp" />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_below="@+id/tv_member_designation"
         android:layout_height="@dimen/dimen_03dp"
-        android:src="@drawable/dotted_line"
+        android:layout_below="@+id/tv_member_designation"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:layerType="software" />
-
-
+        android:contentDescription="@string/content_description"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
 </RelativeLayout>

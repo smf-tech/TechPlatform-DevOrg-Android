@@ -19,7 +19,7 @@ import com.platform.models.user.UserInfo;
 import com.platform.request.ImageRequestCall;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
-import com.platform.view.activities.ProfileActivity;
+import com.platform.view.activities.EditProfileActivity;
 
 import org.json.JSONObject;
 
@@ -31,9 +31,9 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         ImageRequestCallListener {
 
     private final String TAG = ProfileActivityPresenter.class.getName();
-    private WeakReference<ProfileActivity> profileActivity;
+    private WeakReference<EditProfileActivity> profileActivity;
 
-    public ProfileActivityPresenter(ProfileActivity activity) {
+    public ProfileActivityPresenter(EditProfileActivity activity) {
         profileActivity = new WeakReference<>(activity);
     }
 

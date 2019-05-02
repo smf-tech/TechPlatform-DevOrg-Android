@@ -50,11 +50,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         return new AttendanceAdapter.ViewHolder(v);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull AttendanceAdapter.ViewHolder viewHolder, int i) {
 
-        viewHolder.userImage.setBackgroundResource(R.drawable.add_img);
+        viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
         viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
         //viewHolder.leaveStatus.setText("Request status :"+"Not yet approved");
     }

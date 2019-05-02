@@ -8,57 +8,57 @@ import java.util.List;
 public class UserLocation {
 
     @SerializedName("state")
-    private List<String> stateId;
+    private List<JurisdictionType> stateId;
 
     @SerializedName("district")
-    private List<String> districtIds;
+    private List<JurisdictionType> districtIds;
 
     @SerializedName("taluka")
-    private List<String> talukaIds;
+    private List<JurisdictionType> talukaIds;
 
     @SerializedName("cluster")
-    private List<String> clusterIds;
+    private List<JurisdictionType> clusterIds;
 
     @SerializedName("village")
-    private List<String> villageIds;
+    private List<JurisdictionType> villageIds;
 
-    public List<String> getStateId() {
+    public List<JurisdictionType> getStateId() {
         return stateId;
     }
 
-    public void setStateId(List<String> stateId) {
+    public void setStateId(List<JurisdictionType> stateId) {
         this.stateId = stateId;
     }
 
-    public List<String> getDistrictIds() {
+    public List<JurisdictionType> getDistrictIds() {
         return districtIds;
     }
 
-    public void setDistrictIds(List<String> districtIds) {
+    public void setDistrictIds(List<JurisdictionType> districtIds) {
         this.districtIds = districtIds;
     }
 
-    public List<String> getTalukaIds() {
+    public List<JurisdictionType> getTalukaIds() {
         return talukaIds;
     }
 
-    public void setTalukaIds(List<String> talukaIds) {
+    public void setTalukaIds(List<JurisdictionType> talukaIds) {
         this.talukaIds = talukaIds;
     }
 
-    public List<String> getClusterIds() {
+    public List<JurisdictionType> getClusterIds() {
         return clusterIds;
     }
 
-    public void setClusterIds(List<String> clusterIds) {
+    public void setClusterIds(List<JurisdictionType> clusterIds) {
         this.clusterIds = clusterIds;
     }
 
-    public List<String> getVillageIds() {
+    public List<JurisdictionType> getVillageIds() {
         return villageIds;
     }
 
-    public void setVillageIds(List<String> villageIds) {
+    public void setVillageIds(List<JurisdictionType> villageIds) {
         this.villageIds = villageIds;
     }
 }

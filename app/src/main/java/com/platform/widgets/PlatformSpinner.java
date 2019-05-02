@@ -3,9 +3,7 @@ package com.platform.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import androidx.appcompat.widget.AppCompatSpinner;
-
-public class PlatformSpinner extends AppCompatSpinner {
+public class PlatformSpinner extends SearchableSpinner {
     public PlatformSpinner(Context context) {
         super(context);
     }
@@ -21,26 +19,20 @@ public class PlatformSpinner extends AppCompatSpinner {
     @Override
     public void
     setSelection(int position, boolean animate) {
-        boolean sameSelected = position == getSelectedItemPosition();
         super.setSelection(position, animate);
-        if (sameSelected) {
-            // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
-            if (getOnItemSelectedListener() != null) {
-                getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
-            }
+        // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
+        if (getOnItemSelectedListener() != null) {
+            getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
     }
 
     @Override
     public void
     setSelection(int position) {
-        boolean sameSelected = position == getSelectedItemPosition();
         super.setSelection(position);
-        if (sameSelected) {
-            // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
-            if (getOnItemSelectedListener() != null) {
-                getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
-            }
+//        if (sameSelected) {
+        if (getOnItemSelectedListener() != null) {
+            getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
     }
 

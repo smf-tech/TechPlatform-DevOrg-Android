@@ -39,6 +39,8 @@
     <string name="msg_auth_fail">Server issue, please try again later.</string>
 
     <!--Profile-->
+    <string name="profile">Profile</string>
+    <string name="add_photo">Add Photo</string>
     <string name="registration_title">Registration</string>
     <string name="btn_submit">Submit</string>
     <string name="first_name">First Name *</string>
@@ -58,6 +60,7 @@
     <string name="mandatory_project">Project *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
+    <string name="role">Role</string>
     <string name="mandatory_state">State *</string>
     <string name="state">State </string>
     <string name="mandatory_district">District *</string>
@@ -265,7 +268,7 @@
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>
-    <string name="thirsday">Thirsday</string>
+    <string name="thursday">Thursday</string>
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
@@ -343,7 +346,7 @@
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
     <string name="unpaid_leaves">Unpaid</string>
-    <string name="coff_leaves">Comp OFF</string>
+    <string name="comp_off_leaves">Comp OFF</string>
     <string name="total_leaves">Total Leaves</string>
     <string name="total">Total </string>
     <string name="btn_leave_apply_str">Apply for a leave</string>

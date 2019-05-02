@@ -39,6 +39,8 @@
     <string name="msg_auth_fail">सर्व्हर समस्या, कृपया नंतर पुन्हा प्रयत्न करा.</string>
 
     <!--Registration-->
+    <string name="profile">प्रोफाइल</string>
+    <string name="add_photo">फोटो जोडा</string>
     <string name="registration_title">नोंदणी</string>
     <string name="btn_submit">सबमिट</string>
     <string name="first_name">पहिले नाव *</string>
@@ -58,6 +60,7 @@
     <string name="mandatory_project">प्रकल्प *</string>
     <string name="project">प्रकल्प</string>
     <string name="mandatory_role">भूमिका *</string>
+    <string name="role">भूमिका</string>
     <string name="mandatory_state">राज्य *</string>
     <string name="state">राज्य</string>
     <string name="mandatory_district">जिल्हा *</string>
@@ -265,7 +268,7 @@
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">पगारी रजा</string>
     <string name="unpaid_leaves">बिनपगारी रजा</string>
-    <string name="coff_leaves">कॉम्प ऑफ</string>
+    <string name="comp_off_leaves">कॉम्प ऑफ</string>
     <string name="total_leaves">एकूण सुट्टी</string>
     <string name="total">एकूण</string>
     <string name="btn_leave_apply_str">सुट्टीसाठी अर्ज करा</string>
@@ -292,7 +295,7 @@
     <string name="monday">सोमवार</string>
     <string name="tuesday">मंगळवार</string>
     <string name="wednesday">बुधवार</string>
-    <string name="thirsday">गुरुवार</string>
+    <string name="thursday">गुरुवार</string>
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>

@@ -6,12 +6,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -20,7 +18,8 @@ import com.platform.widgets.MultiSelectSpinner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepeatEventActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
+public class RepeatEventActivity extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
 
     private ImageView ivBackIcon;
     private ImageView toolbarAction;
@@ -80,7 +79,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         whichDays.add(getString(R.string.monday));
         whichDays.add(getString(R.string.tuesday));
         whichDays.add(getString(R.string.wednesday));
-        whichDays.add(getString(R.string.thirsday));
+        whichDays.add(getString(R.string.thursday));
         whichDays.add(getString(R.string.friday));
         whichDays.add(getString(R.string.saturday));
         whichDays.add(getString(R.string.sunday));
@@ -121,54 +120,50 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     //singleSelection
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()) {
-            case R.id.sp_repeat:
-                this.selectedRepeat = spRepeat.getSelectedItem().toString();
-                if (selectedRepeat.equalsIgnoreCase("Daily")) {
-                    findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.GONE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.GONE);
-                } else if (selectedRepeat.equalsIgnoreCase("Weekly")) {
-                    findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.VISIBLE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.GONE);
-                } else if (selectedRepeat.equalsIgnoreCase("Monthly")) {
-                    findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.GONE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.VISIBLE);
-                } else {
-                    findViewById(R.id.tly_end_date).setVisibility(View.GONE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_which_days).setVisibility(View.GONE);
-                    findViewById(R.id.tly_which_date).setVisibility(View.GONE);
-                }
-                break;
+        if (parent.getId() == R.id.sp_repeat) {
+            this.selectedRepeat = spRepeat.getSelectedItem().toString();
+            if (selectedRepeat.equalsIgnoreCase("Daily")) {
+                findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_which_days).setVisibility(View.GONE);
+                findViewById(R.id.tly_which_date).setVisibility(View.GONE);
+            } else if (selectedRepeat.equalsIgnoreCase("Weekly")) {
+                findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_which_days).setVisibility(View.VISIBLE);
+                findViewById(R.id.tly_which_date).setVisibility(View.GONE);
+            } else if (selectedRepeat.equalsIgnoreCase("Monthly")) {
+                findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_which_days).setVisibility(View.GONE);
+                findViewById(R.id.tly_which_date).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.tly_end_date).setVisibility(View.GONE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_which_days).setVisibility(View.GONE);
+                findViewById(R.id.tly_which_date).setVisibility(View.GONE);
+            }
         }
     }
 
     //MultiSelect
     @Override
     public void onValuesSelected(boolean[] selected, String spinnerName) {
-        switch (spinnerName) {
-            case Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS:
-                whichDaysSelected.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        whichDaysSelected.add(whichDays.get(i));
-                    }
+        if (Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS.equals(spinnerName)) {
+            whichDaysSelected.clear();
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    whichDaysSelected.add(whichDays.get(i));
                 }
-                break;
+            }
         }
     }
 

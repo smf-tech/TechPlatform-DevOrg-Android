@@ -1,5 +1,7 @@
 package com.platform.models.profile;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 import com.platform.utility.Constants;
 
@@ -27,7 +29,7 @@ public class Organization {
     private String associateOrgId;
 
     public String getId() {
-        if (type.equalsIgnoreCase(Constants.AssociatesType.ORG)) {
+        if (!TextUtils.isEmpty(type) && type.equalsIgnoreCase(Constants.AssociatesType.ORG)) {
             return id;
         } else {
             return getAssociateOrgId();

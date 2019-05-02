@@ -19,22 +19,20 @@ import java.util.ArrayList;
 public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAdapter.ViewHolder> {
 
     private Context mContext;
-    private boolean isCheckVisibil;
-    private ArrayList<Member> membersList = null;
-    private ArrayList<Member> filterMembersList;
+    private boolean isCheckVisible;
+    private ArrayList<Member> membersList;
 
-    public AddMembersListAdapter(Context mContext, ArrayList<Member> membersList, boolean isCheckVisibil) {
+    public AddMembersListAdapter(Context mContext, ArrayList<Member> membersList, boolean isCheckVisible) {
         this.mContext = mContext;
         this.membersList = membersList;
-        this.isCheckVisibil = isCheckVisibil;
-        this.filterMembersList = new ArrayList<Member>();
-        this.filterMembersList = membersList;
+        this.isCheckVisible = isCheckVisible;
     }
 
     @NonNull
     @Override
     public AddMembersListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_add_member_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_add_member_list,
+                parent, false);
         return new AddMembersListAdapter.ViewHolder(v);
     }
 
@@ -71,7 +69,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             cbMemberSelect = itemView.findViewById(R.id.cb_select_member);
 //            lyMain = itemView.findViewById(R.id.ly_main);
 
-            if (!isCheckVisibil) {
+            if (!isCheckVisible) {
                 cbMemberSelect.setVisibility(View.GONE);
             }
 
@@ -79,14 +77,13 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
                 if (membersList.size() > getAdapterPosition()) {
                     if (((CheckBox) v).isChecked()) {
                         membersList.get(getAdapterPosition()).setMemberSelected(true);
-                        ((AddMembersListActivity) mContext).checkAllSelected((ArrayList<Member>) membersList);
+                        ((AddMembersListActivity) mContext).checkAllSelected(membersList);
                     } else {
                         membersList.get(getAdapterPosition()).setMemberSelected(false);
                         ((AddMembersListActivity) mContext).checkAllDeSelected();
                     }
                 }
             });
-
         }
     }
 

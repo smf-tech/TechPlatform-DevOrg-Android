@@ -65,7 +65,7 @@
         android:layout_margin="@dimen/dimen_05dp"
         android:visibility="visible">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,9 +94,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ly_calender"
         android:background="@color/lighter_grey_tab"
+        android:orientation="horizontal"
         android:paddingTop="@dimen/dimen_10dp"
-        android:paddingBottom="@dimen/dimen_10dp"
-        android:orientation="horizontal">
+        android:paddingBottom="@dimen/dimen_10dp">
 
         <RadioButton
             android:id="@+id/rb_all_events"
@@ -171,6 +171,7 @@
             app:fabSize="mini"
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

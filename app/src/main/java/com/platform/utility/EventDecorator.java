@@ -19,11 +19,14 @@ public class EventDecorator implements DayViewDecorator {
     private final Drawable mDrawable;
     private HashSet<CalendarDay> dates;
 
+    @SuppressWarnings("deprecation")
     public EventDecorator(Context context, Collection<CalendarDay> dates, Drawable drawable) {
-        if (drawable == null)
+        if (drawable == null) {
             mDrawable = context.getResources().getDrawable(R.drawable.circle_background);
-        else
+        } else {
             mDrawable = drawable;
+        }
+
         this.dates = new HashSet<>(dates);
     }
 

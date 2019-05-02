@@ -31,7 +31,7 @@ import java.util.Locale;
 
 public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Event event;
+    private Event event;
 
     private ImageView backButton;
     private ImageView editButton;
@@ -41,7 +41,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout lyGreyedOut;
     private Button btEditAttendance;
     private boolean isMemberListVisible;
-    String toOpen;
+    private String toOpen;
     private Snackbar snackbar;
 
     @Override
@@ -71,38 +71,62 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         ivAttendeesList = findViewById(R.id.iv_attendees_list);
         btEditAttendance = findViewById(R.id.bt_edit_attendance);
 
-        DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        SimpleDateFormat weekDay = new SimpleDateFormat("EEEE");
+        DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+        SimpleDateFormat weekDay = new SimpleDateFormat("EEEE", Locale.getDefault());
+
         Date date = null;
         try {
             date = originalFormat.parse(event.getStartDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         String finalDate = weekDay.format(date);
         finalDate = finalDate + ", " + targetFormat.format(date);
 
-        tvTitle.setText(event.getTital());
+        tvTitle.setText(event.getTitle());
         tvCategory.setText(event.getCategory());
         tvDescription.setText(event.getDescription());
         tvDate.setText(finalDate);
-        tvTime.setText(event.getStarTime() + " > " + event.getEndTime());
+        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvRepeat.setText(event.getRepeat());
         tvAddress.setText(event.getAddress());
 
+//        int attendedCount = 0;
+//        boolean isAttendanceMarked = false;
+//        for (Member m : event.getMembersList()) {
+//            if (m.getMemberAttended()) {
+//                attendedCount++;
+//                isAttendanceMarked = true;
+//            }
+//        }
+//
+//        if (isAttendanceMarked) {
+//            tvAttended.setText(String.format(Locale.getDefault(), "%d Attended", attendedCount));
+//            tvNotAttended.setText(String.format(Locale.getDefault(), "%d Not Attended",
+//                    event.getMembersList().size() - attendedCount));
+//        } else {
+//            tvAttended.setText("0 Attended");
+//            tvNotAttended.setText(String.format(Locale.getDefault(), "%d Not Attended",
+//                    event.getMembersList().size()));
+//        }
+
+        setAdapter(event.getMembersList());
+
         isMemberListVisible = true;
 
-        mySnackbar();
+        mySnackBar();
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
-            View vtaskStatusIndicator = findViewById(R.id.task_status_indicator);
-            vtaskStatusIndicator.setVisibility(View.VISIBLE);
+            View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
+            vTaskStatusIndicator.setVisibility(View.VISIBLE);
+
             if (event.getStatus().equals("Planned")) {
-                vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
+                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
                 btEditAttendance.setText("Mark As Completed.");
             } else if (event.getStatus().equals("Completed")) {
-                vtaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
+                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
                 btEditAttendance.setVisibility(View.GONE);
             }
             findViewById(R.id.ly_attended).setVisibility(View.GONE);
@@ -113,13 +137,15 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             setActionbar(getString(R.string.event_detail));
             rvAttendeesList = findViewById(R.id.rv_attendees_list);
             setAdapter(event.getMembersList());
+            getAttendedCount();
         }
 
         setListeners();
     }
 
     private void setAdapter(ArrayList<Member> membersList) {
-        AddMembersListAdapter addMembersListAdapter = new AddMembersListAdapter(EventDetailActivity.this, membersList, false);
+        AddMembersListAdapter addMembersListAdapter
+                = new AddMembersListAdapter(EventDetailActivity.this, membersList, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
@@ -172,6 +198,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             case R.id.toolbar_back_action:
                 onBackPressed();
                 break;
+
             case R.id.toolbar_edit_action:
                 if (snackbar.isShown()) {
                     snackbar.dismiss();
@@ -179,9 +206,9 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     snackbar.show();
                     lyGreyedOut.setVisibility(View.VISIBLE);
-
                 }
                 break;
+
             case R.id.iv_attendees_list:
                 if (isMemberListVisible) {
                     isMemberListVisible = false;
@@ -193,18 +220,22 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                     ivAttendeesList.setRotation(0);
                 }
                 break;
+
             case R.id.bt_edit_attendance:
                 Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
                 intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
                 intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
                 this.startActivity(intentAddMembersListActivity);
                 break;
+
             case R.id.tv_edit_this_event:
                 callCreateEvent("Edit This Event");
                 break;
+
             case R.id.tv_edit_all_event:
                 callCreateEvent("Edit All Events");
                 break;
+
             case R.id.ly_greyed_out:
                 lyGreyedOut.setVisibility(View.GONE);
                 snackbar.dismiss();
@@ -220,22 +251,20 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         lyGreyedOut.setVisibility(View.GONE);
         snackbar.dismiss();
     }
-
-    public void mySnackbar() {
-        // Create the Snackbar
+    public void mySnackBar() {
         CoordinatorLayout containerLayout = findViewById(R.id.ly_coordinator);
         snackbar = Snackbar.make(containerLayout, "", Snackbar.LENGTH_INDEFINITE);
 
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
 
-        View snackView = getLayoutInflater().inflate(R.layout.snackbar_cust, null);
+        View snackView = getLayoutInflater().inflate(R.layout.snackbar_cust, layout, false);
         TextView tvThisEvent = snackView.findViewById(R.id.tv_edit_this_event);
         tvThisEvent.setOnClickListener(this);
+
         TextView tvAllEvent = snackView.findViewById(R.id.tv_edit_all_event);
         tvAllEvent.setOnClickListener(this);
         layout.setPadding(0, 0, 0, 0);
 
         layout.addView(snackView, 0);
-
     }
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_leaves_count"
     android:layout_width="match_parent"
@@ -39,7 +38,6 @@
             android:textSize="@dimen/text_size_12" />
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/lv_lay1"
         android:layout_width="match_parent"
@@ -74,9 +72,7 @@
                 android:text="@string/cl_leaves"
                 android:textColor="@color/leave_type"
                 android:textSize="@dimen/text_size_12" />
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -113,7 +109,6 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-
             <TextView
                 android:id="@+id/tv_leaves_unpaid"
                 android:layout_width="wrap_content"
@@ -136,7 +131,6 @@
                 android:textSize="@dimen/text_size_12" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -144,9 +138,8 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-
             <TextView
-                android:id="@+id/tv_leaves_coff"
+                android:id="@+id/tv_leaves_com_off"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
@@ -156,20 +149,17 @@
                 android:textSize="@dimen/text_size_20" />
 
             <TextView
-                android:id="@+id/tv_str_coff"
+                android:id="@+id/tv_str_comp_off"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center_horizontal"
                 android:paddingBottom="@dimen/dimen_07dp"
-                android:text="@string/coff_leaves"
+                android:text="@string/comp_off_leaves"
                 android:textColor="@color/leave_type"
                 android:textSize="@dimen/text_size_12" />
         </LinearLayout>
-
     </LinearLayout>
-
-
 </RelativeLayout>
 
 

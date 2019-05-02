@@ -32,11 +32,10 @@ import java.util.ArrayList;
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
-    ArrayList<Member> membersList = new ArrayList<Member>();
-    Event event;
+    private ArrayList<Member> membersList = new ArrayList<>();
+    private Event event;
 
     private ImageView ivBackIcon;
-    private ImageView toolbarAction;
     private Spinner spCategory;
     private EditText etTitle;
     private EditText etStartDate;
@@ -46,13 +45,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private EditText etDescription;
     private EditText etAddress;
     private EditText etAddMembers;
-    private TextView tvRepeatDetail;
     private Button btRepeat;
     private Button btEventSubmit;
-    private RecyclerView rvAttendeesList;
-    TextInputLayout tlyEndDate;
-    LinearLayout lyRepeat;
-    TextInputLayout tlyAddress;
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
@@ -66,13 +60,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
 
-        CreateEventActivityPresenter createEventPresenter =new CreateEventActivityPresenter(this);
+        CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
         createEventPresenter.getEventCategory();
-
 
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
@@ -87,22 +79,23 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         etDescription = findViewById(R.id.et_description);
         etAddress = findViewById(R.id.et_address);
         etAddMembers = findViewById(R.id.et_add_members);
-        tvRepeatDetail = findViewById(R.id.tv_repeat_detail);
+
         btRepeat = findViewById(R.id.bt_repeat);
         btEventSubmit = findViewById(R.id.bt_event_submit);
-        rvAttendeesList = findViewById(R.id.rv_attendees_list);
+        RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
 
         btRepeat.setText("Never");
 
         // Task Module UI changes
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            tlyEndDate = findViewById(R.id.tly_end_date);
+            TextInputLayout tlyEndDate = findViewById(R.id.tly_end_date);
             tlyEndDate.setVisibility(View.VISIBLE);
-            lyRepeat = findViewById(R.id.ly_repeat);
+            LinearLayout lyRepeat = findViewById(R.id.ly_repeat);
             lyRepeat.setVisibility(View.GONE);
-            tlyAddress = findViewById(R.id.tly_address);
+            TextInputLayout tlyAddress = findViewById(R.id.tly_address);
             tlyAddress.setVisibility(View.GONE);
         }
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.category_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -119,9 +112,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             } else {
                 setActionbar(getString(R.string.edit_event));
             }
+
             btEventSubmit.setText(getString(R.string.btn_submit));
+
             setAllData();
-            toolbarAction = findViewById(R.id.toolbar_edit_action);
+
+            ImageView toolbarAction = findViewById(R.id.toolbar_edit_action);
             toolbarAction.setVisibility(View.VISIBLE);
             toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
         } else {
@@ -134,14 +130,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
 
         setListeners();
-
     }
 
     private void setAllData() {
-        ArrayAdapter myAdap = (ArrayAdapter) spCategory.getAdapter();
-        int spinnerPosition = myAdap.getPosition(event.getCategory());
+        ArrayAdapter myAdapter = (ArrayAdapter) spCategory.getAdapter();
+        int spinnerPosition = myAdapter.getPosition(event.getCategory());
         spCategory.setSelection(spinnerPosition);
-        etTitle.setText(event.getTital());
+        etTitle.setText(event.getTitle());
         etStartDate.setText(event.getStartDate());
         etStartTime.setText(event.getStarTime());
         etEndTime.setText(event.getEndTime());
@@ -171,32 +166,36 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         toolbar_title.setText(title);
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_back_action:
                 finish();
                 break;
+
             case R.id.et_start_date:
                 Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
                 break;
+
             case R.id.et_start_time:
                 Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_start_time));
                 break;
+
             case R.id.et_end_time:
                 Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_end_time));
                 break;
+
             case R.id.et_add_members:
                 Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
                 this.startActivity(intentAddMemberFilerActivity);
                 break;
+
             case R.id.bt_repeat:
                 Intent intentRepeatEventActivity = new Intent(this, RepeatEventActivity.class);
                 this.startActivityForResult(intentRepeatEventActivity, 001);
                 break;
-            case R.id.bt_event_submit:
 
+            case R.id.bt_event_submit:
                 break;
         }
     }

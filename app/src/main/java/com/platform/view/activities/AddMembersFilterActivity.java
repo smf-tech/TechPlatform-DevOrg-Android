@@ -2,7 +2,6 @@ package com.platform.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.events.Member;
-import com.platform.models.profile.Jurisdiction;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
@@ -385,32 +382,32 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
         }
     }
 
-    private void hideJurisdictionLevel() {
-        spState.setVisibility(View.GONE);
-        findViewById(R.id.txt_state).setVisibility(View.GONE);
-        states.clear();
-        selectedStates.clear();
-
-        spDistrict.setVisibility(View.GONE);
-        findViewById(R.id.txt_district).setVisibility(View.GONE);
-        districts.clear();
-        selectedDistricts.clear();
-
-        spTaluka.setVisibility(View.GONE);
-        findViewById(R.id.txt_taluka).setVisibility(View.GONE);
-        talukas.clear();
-        selectedTalukas.clear();
-
-        spCluster.setVisibility(View.GONE);
-        findViewById(R.id.txt_cluster).setVisibility(View.GONE);
-        clusters.clear();
-        selectedClusters.clear();
-
-        spVillage.setVisibility(View.GONE);
-        findViewById(R.id.txt_village).setVisibility(View.GONE);
-        villages.clear();
-        selectedVillages.clear();
-    }
+//    private void hideJurisdictionLevel() {
+//        spState.setVisibility(View.GONE);
+//        findViewById(R.id.txt_state).setVisibility(View.GONE);
+//        states.clear();
+//        selectedStates.clear();
+//
+//        spDistrict.setVisibility(View.GONE);
+//        findViewById(R.id.txt_district).setVisibility(View.GONE);
+//        districts.clear();
+//        selectedDistricts.clear();
+//
+//        spTaluka.setVisibility(View.GONE);
+//        findViewById(R.id.txt_taluka).setVisibility(View.GONE);
+//        talukas.clear();
+//        selectedTalukas.clear();
+//
+//        spCluster.setVisibility(View.GONE);
+//        findViewById(R.id.txt_cluster).setVisibility(View.GONE);
+//        clusters.clear();
+//        selectedClusters.clear();
+//
+//        spVillage.setVisibility(View.GONE);
+//        findViewById(R.id.txt_village).setVisibility(View.GONE);
+//        villages.clear();
+//        selectedVillages.clear();
+//    }
 
     @Override
     public void showOrganizations(List<Organization> organizations) {
@@ -524,9 +521,9 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
 
                         int id = 0;
                         UserInfo userInfo = Util.getUserObjectFromPref();
-                        List<String> stateId = userInfo.getUserLocation().getStateId();
+                        List<JurisdictionType> stateId = userInfo.getUserLocation().getStateId();
                         for (int i = 0; i < states.size(); i++) {
-                            if (stateId.get(0).equals(states.get(i).getId())) {
+                            if (stateId.get(0).getId().equals(states.get(i).getId())) {
                                 id = i;
                             }
                         }
@@ -554,12 +551,12 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
-                        List<String> districtIds = Util.getUserObjectFromPref().getUserLocation().getDistrictIds();
+                        List<JurisdictionType> districtIds = Util.getUserObjectFromPref().getUserLocation().getDistrictIds();
                         if (districtIds != null && districtIds.size() > 0) {
                             boolean[] selectedValues = new boolean[this.districts.size()];
                             for (int districtIndex = 0; districtIndex < this.districts.size(); districtIndex++) {
                                 for (int districtIdIndex = 0; districtIdIndex < districtIds.size(); districtIdIndex++) {
-                                    if (this.districts.get(districtIndex).getId().equals(districtIds.get(districtIdIndex))) {
+                                    if (this.districts.get(districtIndex).getId().equals(districtIds.get(districtIdIndex).getId())) {
                                         selectedValues[districtIndex] = true;
                                         break;
                                     } else {
@@ -597,12 +594,12 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
-                        List<String> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
+                        List<JurisdictionType> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
                         if (talukaIds != null && talukaIds.size() > 0) {
                             boolean[] selectedValues = new boolean[this.talukas.size()];
                             for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
                                 for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
-                                    if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex))) {
+                                    if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex).getId())) {
                                         selectedValues[talukaIndex] = true;
                                         break;
                                     } else {
@@ -645,12 +642,12 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
                     spVillage.setItems(villages, getString(R.string.village), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
-                        List<String> villageIds = Util.getUserObjectFromPref().getUserLocation().getVillageIds();
+                        List<JurisdictionType> villageIds = Util.getUserObjectFromPref().getUserLocation().getVillageIds();
                         if (villageIds != null && villageIds.size() > 0) {
                             boolean[] selectedValues = new boolean[this.villages.size()];
                             for (int villageIndex = 0; villageIndex < this.villages.size(); villageIndex++) {
                                 for (int villageIdIndex = 0; villageIdIndex < villageIds.size(); villageIdIndex++) {
-                                    if (this.villages.get(villageIndex).getId().equals(villageIds.get(villageIdIndex))) {
+                                    if (this.villages.get(villageIndex).getId().equals(villageIds.get(villageIdIndex).getId())) {
                                         selectedValues[villageIndex] = true;
                                         break;
                                     } else {
@@ -692,12 +689,12 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 
                     if (Util.getUserObjectFromPref().getUserLocation() != null) {
-                        List<String> clusterIds = Util.getUserObjectFromPref().getUserLocation().getClusterIds();
+                        List<JurisdictionType> clusterIds = Util.getUserObjectFromPref().getUserLocation().getClusterIds();
                         if (clusterIds != null && clusterIds.size() > 0) {
                             boolean[] selectedValues = new boolean[this.clusters.size()];
                             for (int clusterIndex = 0; clusterIndex < this.clusters.size(); clusterIndex++) {
                                 for (int clusterIdIndex = 0; clusterIdIndex < clusterIds.size(); clusterIdIndex++) {
-                                    if (this.clusters.get(clusterIndex).getId().equals(clusterIds.get(clusterIdIndex))) {
+                                    if (this.clusters.get(clusterIndex).getId().equals(clusterIds.get(clusterIdIndex).getId())) {
                                         selectedValues[clusterIndex] = true;
                                         break;
                                     } else {
@@ -718,8 +715,8 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
     }
 
 
-    private void submitDetails() {
-
+//    private void submitDetails() {
+//
 //        UserInfo userInfo = new UserInfo();
 //        userInfo.setUserFirstName(String.valueOf(etUserFirstName.getText()).trim());
 //        userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
@@ -793,7 +790,7 @@ public class AddMembersFilterActivity extends AppCompatActivity implements Profi
 //        Util.saveUserLocationInPref(userLocation);
 //
 //        addMemberFilerPresenter.submitProfile(userInfo);
-    }
+//    }
 
     @Override
     public void showProgressBar() {

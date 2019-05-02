@@ -24,222 +24,202 @@
             android:layout_marginTop="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
             android:background="@color/white"
-            android:paddingBottom="@dimen/dimen_10dp">
+            android:padding="@dimen/dimen_10dp">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/ly_status_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_10dp">
+                android:orientation="horizontal">
+                <View
+                    android:id="@+id/task_status_indicator"
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
 
-                <!--<View-->
-                <!--android:id="@+id/eww"-->
-                <!--android:layout_width="@dimen/dimen_05dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="#00ff00">-->
-                <!---->
-                <!--</View>-->
-
-                <LinearLayout
-                    android:id="@+id/ly_status_title"
+                <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:background="@drawable/bg_dark_blue_box"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_15dp"
+                    android:paddingBottom="@dimen/dimen_15dp"
+                    android:textColor="@color/tab_select"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-                    <View
-                        android:id="@+id/task_status_indicator"
-                        android:layout_width="@dimen/dimen_10dp"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"/>
+            <RelativeLayout
+                android:id="@+id/ly_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_status_title"
+                android:background="@drawable/bg_light_blue_box">
+
+                <TextView
+                    android:id="@+id/tv_label_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:text="@string/task_category"
+                    android:textColor="@color/tab_select"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_label_category"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ly_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_category"
+                android:background="@drawable/bg_light_blue_box">
+
+                <TextView
+                    android:id="@+id/tv_label_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:text="@string/task_description"
+                    android:textColor="@color/tab_select"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_label_description"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ly_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_description"
+                android:background="@drawable/bg_light_blue_box">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_date"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_repeat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_time"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_label_where"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_repeat"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_01dp"
+                    android:text="@string/where"
+                    android:textColor="@color/tab_select"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_label_where"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimen_01dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textSize="@dimen/text_size_13"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ly_attended"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_body"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:background="@drawable/bg_grey_box">
+
+                <LinearLayout
+                    android:id="@+id/ly_attended_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
                     <TextView
-                        android:id="@+id/tv_title"
+                        android:id="@+id/tv_attended"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_dark_blue_box"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/bg_attend_label"
                         android:gravity="center"
-                        android:paddingTop="@dimen/dimen_15dp"
-                        android:paddingBottom="@dimen/dimen_15dp"
-                        android:textColor="@color/tab_select"
+                        android:paddingTop="@dimen/dimen_07dp"
+                        android:paddingBottom="@dimen/dimen_07dp"
+                        android:textColor="@color/light_green"
+                        android:textSize="@dimen/text_size_16"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_not_attended"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/bg_attend_not_label"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dimen_05dp"
+                        android:paddingBottom="@dimen/dimen_05dp"
+                        android:textColor="@color/brown"
                         android:textSize="@dimen/text_size_16"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/ly_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_status_title"
-                    android:background="@drawable/bg_light_blue_box">
-
-                    <TextView
-                        android:id="@+id/tv_label_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_10dp"
-                        android:paddingBottom="@dimen/dimen_01dp"
-                        android:text="@string/task_category"
-                        android:textColor="@color/tab_select"
-                        android:textSize="@dimen/text_size_14"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_label_category"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_13"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ly_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_category"
-                    android:background="@drawable/bg_light_blue_box">
-
-                    <TextView
-                        android:id="@+id/tv_label_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_10dp"
-                        android:paddingBottom="@dimen/dimen_01dp"
-                        android:text="@string/task_description"
-                        android:textColor="@color/tab_select"
-                        android:textSize="@dimen/text_size_14"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_label_description"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_13"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ly_body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_description"
-                    android:background="@drawable/bg_light_blue_box">
-
-                    <TextView
-                        android:id="@+id/tv_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_10dp"
-                        android:paddingBottom="@dimen/dimen_01dp"
-                        android:textSize="@dimen/text_size_14"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_date"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_01dp"
-                        android:textSize="@dimen/text_size_13"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_repeat"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_time"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_13"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_label_where"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_repeat"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_10dp"
-                        android:paddingBottom="@dimen/dimen_01dp"
-                        android:text="@string/where"
-                        android:textColor="@color/tab_select"
-                        android:textSize="@dimen/text_size_14"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_label_where"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_13"
-                        android:textStyle="bold" />
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ly_attended"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_body"
-                    android:layout_marginTop="@dimen/dimen_20dp"
-                    android:background="@drawable/bg_grey_box">
-
-                    <LinearLayout
-                        android:id="@+id/ly_attended_tab"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
-
-                        <TextView
-                            android:id="@+id/tv_attended"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_10dp"
-                            android:layout_weight="5"
-                            android:background="@drawable/bg_attened_lable"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/dimen_07dp"
-                            android:paddingBottom="@dimen/dimen_07dp"
-                            android:textColor="@color/light_green"
-                            android:textSize="@dimen/text_size_16"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_not_attended"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_10dp"
-                            android:layout_weight="5"
-                            android:background="@drawable/bg_attened_not_lable"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/dimen_05dp"
-                            android:paddingBottom="@dimen/dimen_05dp"
-                            android:textColor="@color/brown"
-                            android:textSize="@dimen/text_size_16"
-                            android:textStyle="bold" />
-                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_attendees_list"
@@ -282,7 +262,7 @@
                         android:id="@+id/rv_forms_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_formlist_label"></androidx.recyclerview.widget.RecyclerView>
+                        android:layout_below="@+id/tv_formlist_label"/>
 
                 </RelativeLayout>
 
@@ -298,9 +278,6 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_22" />
             </RelativeLayout>
-
-
-        </RelativeLayout>
     </ScrollView>
 
     <FrameLayout

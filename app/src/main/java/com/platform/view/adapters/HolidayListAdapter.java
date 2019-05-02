@@ -47,7 +47,6 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
         return new HolidayListAdapter.ViewHolder(v);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull HolidayListAdapter.ViewHolder viewHolder, int i) {
 

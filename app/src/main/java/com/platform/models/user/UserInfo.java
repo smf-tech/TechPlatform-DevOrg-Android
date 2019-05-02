@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.UserLocation;
 
 import java.util.ArrayList;
@@ -59,13 +60,13 @@ public class UserInfo implements Parcelable {
     private Long userBirthDate;
     @SerializedName("org_id")
     @Expose
-    private String orgId;
+    private JurisdictionType orgId;
     @SerializedName("type")
     @Expose
     private String type;
     @SerializedName("role_id")
     @Expose
-    private String roleIds;
+    private JurisdictionType roleIds;
     @SerializedName("location")
     @Expose
     private UserLocation userLocation;
@@ -74,7 +75,7 @@ public class UserInfo implements Parcelable {
     private String firebaseId;
     @SerializedName("project_id")
     @Expose
-    private ArrayList<String> projectIds;
+    private ArrayList<JurisdictionType> projectIds;
     @SerializedName("profile_pic")
     @Expose
     private String profilePic;
@@ -91,10 +92,14 @@ public class UserInfo implements Parcelable {
     }
 
     public String getOrgId() {
-        return orgId;
+        return orgId.getId();
     }
 
-    public void setOrgId(String orgId) {
+    public String getOrgName() {
+        return orgId.getName();
+    }
+
+    public void setOrgId(JurisdictionType orgId) {
         this.orgId = orgId;
     }
 
@@ -115,18 +120,22 @@ public class UserInfo implements Parcelable {
     }
 
     public String getRoleIds() {
-        return roleIds;
+        return roleIds.getId();
     }
 
-    public void setRoleIds(String roleIds) {
+    public String getRoleNames() {
+        return roleIds.getName();
+    }
+
+    public void setRoleIds(JurisdictionType roleIds) {
         this.roleIds = roleIds;
     }
 
-    public ArrayList<String> getProjectIds() {
+    public ArrayList<JurisdictionType> getProjectIds() {
         return projectIds;
     }
 
-    public void setProjectIds(ArrayList<String> projectIds) {
+    public void setProjectIds(ArrayList<JurisdictionType> projectIds) {
         this.projectIds = projectIds;
     }
 

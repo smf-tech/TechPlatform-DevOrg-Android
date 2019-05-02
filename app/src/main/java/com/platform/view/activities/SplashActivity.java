@@ -39,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
                         TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
                 } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
-                    intent = new Intent(SplashActivity.this, ProfileActivity.class);
+                    intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
                     intent = new Intent(SplashActivity.this, HomeActivity.class);
                 }
