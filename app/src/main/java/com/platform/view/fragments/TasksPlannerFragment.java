@@ -22,7 +22,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.models.events.Event;
-import com.platform.models.events.Member;
+import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
@@ -84,22 +84,22 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         taskList = new ArrayList<>();
         sortedTaskList = new ArrayList<>();
 
-        ArrayList<Member> membersList = new ArrayList<>();
-        membersList.add(new Member("1", "Sagar Mahajan", "DM", true, true));
-        membersList.add(new Member("2", "Kishor Shevkar", "TC", false, false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT", true, true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA", false, false));
+        ArrayList<Participant> membersList = new ArrayList<>();
+        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true, true));
+        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false, false));
+        membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
+        membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
 
         ArrayList<TaskForm> taskFormsList = new ArrayList<>();
         taskFormsList.add(new TaskForm("1", "Testing Form 1", "Planned"));
         taskFormsList.add(new TaskForm("2", "Testing Form 2", "Completed"));
         taskFormsList.add(new TaskForm("3", "Testing Form 3", "Completed"));
 
-        taskList.add(new Event("1", "meeting", "Title1", "01/01/2019", "10:00 am",
+        taskList.add(new Event("1", "meeting", "Title1", 1556794660l, "10:00 am",
                 "11:00 am", "-", "test", "Wagholi,Pune.", "Sachin",
                 "1234", "Completed", membersList, null));
 
-        taskList.add(new Event("2", "visit", "Title2", "01/02/2019", "11:00 am",
+        taskList.add(new Event("2", "visit", "Title2", 1556794660l, "11:00 am",
                 "12:00 pm", "-", "test", "Hadpsar,Pune.", "Sagar",
                 "1235", "Planned", membersList, null));
 

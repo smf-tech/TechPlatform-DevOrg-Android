@@ -1,21 +1,13 @@
 package com.platform.models.events;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class Repeat implements Serializable {
-    String repeat;
+public class Recurrence implements Serializable {
     String interval;
     String dayOfWeek;
     String dayOfMonth;
     String lastDate;
-
-    public String getRepeat() {
-        return repeat;
-    }
-
-    public void setRepeat(String repeat) {
-        this.repeat = repeat;
-    }
 
     public String getInterval() {
         return interval;
@@ -48,4 +40,26 @@ public class Repeat implements Serializable {
     public void setLastDate(String lastDate) {
         this.lastDate = lastDate;
     }
+
+    //////
+
+    private String type;
+    private List<Integer> days = null;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<Integer> getDays() {
+        return days;
+    }
+
+    public void setDays(List<Integer> days) {
+        this.days = days;
+    }
+
 }
