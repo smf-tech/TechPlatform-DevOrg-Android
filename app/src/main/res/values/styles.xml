@@ -117,10 +117,10 @@
     <style name="CardHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_32dp</item>
-        <item name="android:layout_marginStart">@dimen/dimen_16dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_16dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen_15dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_15dp</item>
         <item name="android:layout_marginTop">@dimen/dimen_20dp</item>
-        <item name="android:background">@color/planner_label</item>
+        <item name="android:background">@drawable/bg_card_label</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">@dimen/dimen_20dp</item>
         <item name="android:paddingEnd">@dimen/dimen_20dp</item>
@@ -132,7 +132,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_225dp</item>
         <item name="android:layout_marginStart">@dimen/dimen_15dp</item>
-        <item name="android:layout_marginTop">19dp</item>
+        <item name="android:layout_marginTop">@dimen/dimen_20dp</item>
         <item name="android:layout_marginEnd">@dimen/dimen_15dp</item>
         <item name="android:layout_marginBottom">@dimen/dimen_05dp</item>
     </style>
