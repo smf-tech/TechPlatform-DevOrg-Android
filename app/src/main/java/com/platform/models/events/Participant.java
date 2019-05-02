@@ -2,28 +2,20 @@ package com.platform.models.events;
 
 import java.io.Serializable;
 
-public class Member implements Serializable {
-    private String id;
+public class Participant implements Serializable {
+
     private String name;
     private String role;
     private Boolean isMemberSelected;
-    private Boolean isMemberAttended;
 
 
-    public Member(String id, String name, String role, Boolean isMemberSelected, Boolean isMemberAttended) {
-        this.id = id;
+
+    public Participant(String id, String name, String role, Boolean isMemberSelected, Boolean isMemberAttended) {
+        this.participantId = id;
         this.name = name;
         this.role = role;
         this.isMemberSelected = isMemberSelected;
-        this.isMemberAttended = isMemberAttended;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.attended = isMemberAttended;
     }
 
     public String getName() {
@@ -50,12 +42,25 @@ public class Member implements Serializable {
         isMemberSelected = memberSelected;
     }
 
-    public Boolean getMemberAttended() {
-        return isMemberAttended;
+    //////////////////////////////////
+
+    private String participantId;
+    private Boolean attended;
+
+    public String getParticipantId() {
+        return participantId;
     }
 
-    public void setMemberAttended(Boolean memberAttended) {
-        isMemberAttended = memberAttended;
+    public void setParticipantId(String participantId) {
+        this.participantId = participantId;
+    }
+
+    public Boolean getAttended() {
+        return attended;
+    }
+
+    public void setAttended(Boolean attended) {
+        this.attended = attended;
     }
 
 }

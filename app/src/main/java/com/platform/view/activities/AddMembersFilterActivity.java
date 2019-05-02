@@ -3,30 +3,21 @@ package com.platform.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.platform.R;
 import com.platform.listeners.AddMemberListener;
-import com.platform.listeners.ProfileTaskListener;
-import com.platform.models.events.Member;
-
-import com.platform.models.events.ParametersFilterMember;
-import com.platform.models.profile.Jurisdiction;
-
+import com.platform.models.events.Participant;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
-import com.platform.models.profile.UserLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.AddMemberFilerActivityPresenter;
 import com.platform.utility.AppEvents;
@@ -648,20 +639,15 @@ public class AddMembersFilterActivity extends AppCompatActivity implements AddMe
 
         //put in response of above api
 
-        ArrayList<Member> membersList = new ArrayList<>();
-        membersList.add(new Member("1", "Sagar Mahajan", "DM", true,true));
-        membersList.add(new Member("2", "Kishor Shevkar", "TC", false,false));
-        membersList.add(new Member("3", "Jagruti Devare", "MT", true,true));
-        membersList.add(new Member("4", "Sachin Kakade", "FA", false,false));
+        ArrayList<Participant> membersList = new ArrayList<>();
+        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true,true));
+        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false,false));
+        membersList.add(new Participant("3", "Jagruti Devare", "MT", true,true));
+        membersList.add(new Participant("4", "Sachin Kakade", "FA", false,false));
         Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
         intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);
         intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,membersList);
         this.startActivity(intentAddMembersListActivity);
-
-    }
-
-    @Override
-    public void showMember(List<Member> memberList) {
 
     }
 
@@ -697,5 +683,8 @@ public class AddMembersFilterActivity extends AppCompatActivity implements AddMe
     }
 
 
+    @Override
+    public void showMember(List<Participant> memberList) {
 
+    }
 }

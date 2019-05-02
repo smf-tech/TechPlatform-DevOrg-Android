@@ -1,6 +1,8 @@
 package com.platform.view.activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,13 +16,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.platform.R;
-import com.platform.models.events.Repeat;
+import com.platform.models.events.Recurrence;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class RepeatEventActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
@@ -34,6 +38,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     private MultiSelectSpinner spWeekDay;
 
     private EditText etEndDate;
+    private EditText etWhichDate;
 
     List<String> whichDays = new ArrayList<>();
     List<String> whichDaysSelected = new ArrayList<>();
@@ -62,7 +67,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
 
         spDailyInterval = findViewById(R.id.sp_day_interval);
         ArrayAdapter<CharSequence> adapterDailyInterval = ArrayAdapter.createFromResource(this,
-                R.array.repeat_weeks, android.R.layout.simple_spinner_item);
+                R.array.repeat_daily, android.R.layout.simple_spinner_item);
         adapterDailyInterval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDailyInterval.setAdapter(adapterDailyInterval);
 
@@ -87,9 +92,10 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         whichDays.add(getString(R.string.friday));
         whichDays.add(getString(R.string.saturday));
         whichDays.add(getString(R.string.sunday));
-        spWeekDay.setItems(whichDays, "Monday", this);
+        spWeekDay.setItems(whichDays, getString(R.string.monday), this);
 
         etEndDate = findViewById(R.id.et_end_date);
+        etWhichDate = findViewById(R.id.et_which_date);
 
         setListener();
     }
@@ -100,6 +106,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         toolbarAction.setOnClickListener(this);
         spRepeat.setOnItemSelectedListener(this);
         etEndDate.setOnClickListener(this);
+        etWhichDate.setOnClickListener(this);
     }
 
     @Override
@@ -111,27 +118,43 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
             case R.id.toolbar_edit_action:
                 //Submit attendance
                 submitRepeatValues();
-
                 break;
             case R.id.et_end_date:
                 Util.showDateDialog(this, findViewById(R.id.et_end_date));
                 break;
+            case R.id.et_which_date:
+                showDateDialog(this, findViewById(R.id.et_end_date));
+                break;
+
         }
 
     }
 
     private void submitRepeatValues() {
 
-        Repeat repeatObj=new Repeat();
-        repeatObj.setRepeat(spRepeat.getSelectedItem().toString());
-        repeatObj.setInterval(spDailyInterval.getSelectedItem().toString());
-        repeatObj.setInterval(spWeeklyInterval.getSelectedItem().toString());
-        repeatObj.setInterval(spMonthlyInterval.getSelectedItem().toString());
+        Recurrence recurrence = new Recurrence();
+        recurrence.setType(spRepeat.getSelectedItem().toString());
+        String str[] = getResources().getStringArray(R.array.repeat_array);
 
+        if (selectedRepeat.equalsIgnoreCase(str[1])) {
+            //ly_day_interval
+            recurrence.setInterval(spDailyInterval.getSelectedItem().toString());
+            recurrence.setLastDate(etEndDate.getText().toString());
+        } else if (selectedRepeat.equalsIgnoreCase(str[2])) {
+            //ly_week_interval
+            recurrence.setInterval(spWeeklyInterval.getSelectedItem().toString());
+            recurrence.setDayOfWeek(whichDaysSelected.toString());
+            recurrence.setLastDate(etEndDate.getText().toString());
+        } else if (selectedRepeat.equalsIgnoreCase(str[3])) {
+            //ly_month_interval
+            recurrence.setInterval(spMonthlyInterval.getSelectedItem().toString());
+            recurrence.setDayOfMonth(etWhichDate.getText().toString());
+            recurrence.setLastDate(etEndDate.getText().toString());
+        }
 
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("result",repeatObj);
-        setResult(Activity.RESULT_OK,returnIntent);
+        returnIntent.putExtra("result", recurrence);
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 
@@ -143,20 +166,21 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     //singleSelection
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String str[] = getResources().getStringArray(R.array.repeat_array);
         switch (parent.getId()) {
             case R.id.sp_repeat:
                 this.selectedRepeat = spRepeat.getSelectedItem().toString();
-                if (selectedRepeat.equalsIgnoreCase("Daily")) {
+                if (selectedRepeat.equalsIgnoreCase(str[1])) {
                     findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_day_interval).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                } else if (selectedRepeat.equalsIgnoreCase("Weekly")) {
+                } else if (selectedRepeat.equalsIgnoreCase(str[2])) {
                     findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                } else if (selectedRepeat.equalsIgnoreCase("Monthly")) {
+                } else if (selectedRepeat.equalsIgnoreCase(str[3])) {
                     findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
                     findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
                     findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
@@ -188,4 +212,25 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    public void showDateDialog(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(),
+                    "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateDialog.show();
+    }
+
 }
