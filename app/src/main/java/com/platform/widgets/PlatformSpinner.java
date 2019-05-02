@@ -2,6 +2,10 @@ package com.platform.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+
+import com.platform.view.adapters.FormSpinnerAdapter;
 
 public class PlatformSpinner extends SearchableSpinner {
     public PlatformSpinner(Context context) {
@@ -30,10 +34,17 @@ public class PlatformSpinner extends SearchableSpinner {
     public void
     setSelection(int position) {
         super.setSelection(position);
-//        if (sameSelected) {
         if (getOnItemSelectedListener() != null) {
             getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        ((FormSpinnerAdapter) getAdapter()).setData(((FormSpinnerAdapter) getAdapter()).getOriginalObjects());
+        ((FormSpinnerAdapter) getAdapter()).notifyDataSetChanged();
+        super.onTouch(v, event);
+        return true;
     }
 
 }

@@ -25,12 +25,18 @@ public class Elements {
     @SerializedName("title")
     @Expose
     private LocaleData title;
+    @SerializedName("defaultValue")
+    @Expose
+    private String defaultValue;
     @SerializedName("inputType")
     @Expose
     private String inputType;
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
+    @SerializedName("readOnly")
+    @Expose
+    private Boolean readOnly;
     @SerializedName("maxLength")
     @Expose
     private Integer maxLength;
@@ -61,6 +67,22 @@ public class Elements {
     @SerializedName("keyDuplicationError")
     @Expose
     private LocaleData keyDuplicationError;
+
+    public Boolean getReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
     public List<HashMap<String, String>> getAnswerArray() {
         return mAnswerArray;
