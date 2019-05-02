@@ -92,7 +92,11 @@ public class UserInfo implements Parcelable {
     }
 
     public String getOrgId() {
-        return orgId.getId();
+        if (orgId != null) {
+            return orgId.getId();
+        }
+
+        return "";
     }
 
     public String getOrgName() {
@@ -120,7 +124,11 @@ public class UserInfo implements Parcelable {
     }
 
     public String getRoleIds() {
-        return roleIds.getId();
+        if (roleIds != null) {
+            return roleIds.getId();
+        }
+
+        return "";
     }
 
     public String getRoleNames() {
