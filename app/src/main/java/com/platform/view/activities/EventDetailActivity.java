@@ -92,7 +92,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvRepeat.setText(event.getRepeat());
         tvAddress.setText(event.getAddress());
-
+        rvAttendeesList = findViewById(R.id.rv_attendees_list);
 //        int attendedCount = 0;
 //        boolean isAttendanceMarked = false;
 //        for (Member m : event.getMembersList()) {
@@ -112,7 +112,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 //                    event.getMembersList().size()));
 //        }
 
-        setAdapter(event.getMembersList());
+//        setAdapter(event.getMembersList());
 
         isMemberListVisible = true;
 

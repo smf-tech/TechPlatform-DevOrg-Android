@@ -42,6 +42,10 @@ public class Event implements Serializable {
         }
     }
 
+    public Event() {
+
+    }
+
     public String getId() {
         return id;
     }
