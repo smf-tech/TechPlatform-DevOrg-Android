@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dimen_25dp"
     android:layout_marginTop="@dimen/dimen_15dp"
-    android:layout_marginEnd="@dimen/dimen_15dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
     android:background="@color/white"
     android:elevation="@dimen/dimen_03dp">
@@ -15,10 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_20dp"
-        android:layout_marginTop="@dimen/dimen_40dp"
+        android:layout_marginTop="@dimen/dimen_30dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_toStartOf="@id/tv_total_hours"
-        android:fontFamily="@font/roboto_medium"
         android:text="@string/total_hours"
         android:textSize="@dimen/text_size_14"
         tools:ignore="RelativeOverlap" />
@@ -28,10 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/dimen_40dp"
-        android:layout_marginEnd="@dimen/dimen_15dp"
         android:layout_marginStart="@dimen/dimen_10dp"
-        android:fontFamily="@font/roboto_regular"
+        android:layout_marginTop="@dimen/dimen_30dp"
+        android:layout_marginEnd="@dimen/dimen_15dp"
         android:text="4:2 Hours"
         android:textSize="@dimen/text_size_14"
         tools:ignore="HardcodedText" />
@@ -113,7 +109,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginTop="@dimen/dimen_25dp"
-        android:fontFamily="@font/roboto_regular"
+        android:layout_marginBottom="@dimen/dimen_15dp"
         android:text="@string/attendance_details"
         android:textColor="@color/tab_selector"
         android:textSize="@dimen/text_size_16" />
