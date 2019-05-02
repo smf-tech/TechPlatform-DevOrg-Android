@@ -10,7 +10,7 @@
 // is not liable for any losses of any kind, direct or indirect, which result
 // from the use of this software.
 
-package com.platform.models;
+package com.platform.utility;
 
 import java.util.Collections;
 import java.util.Map;
