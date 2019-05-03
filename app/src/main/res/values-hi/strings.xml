@@ -309,4 +309,9 @@
     <string name="edit">Edit</string>
     <string name="this_event_only">This event only</string>
     <string name="all_events_in_series">All events in series</string>
+    <string name="please_wait">कृपया प्रतीक्षा करें…</string>
+    <string name="holiday_list">छुट्टी की सूची</string>
+    <string name="edit_leave">अवकाश संपादित करें</string>
+    <string name="apply_leave">छुट्टी के लिए आवेदन करें</string>
+
 </resources>

@@ -37,6 +37,7 @@
 
             <TextView
                 android:id="@+id/tv_total_leaves_count"
+                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -69,6 +70,7 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_cl"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -95,6 +97,7 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_paid"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -121,6 +124,7 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_unpaid"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -148,6 +152,7 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_com_off"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"

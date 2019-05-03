@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,11 @@ import java.util.List;
 @SuppressWarnings("CanBeFinal")
 public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdapter.ViewHolder> {
     private LeaveAdapterListener leavesListener;
+    private List<String> leavesList;
 
-    public AppliedLeavesAdapter(final Context context, final List<String> leavesList, LeaveAdapterListener leavesListener) {
+    public AppliedLeavesAdapter(final List<String> leavesList, LeaveAdapterListener leavesListener) {
         this.leavesListener = leavesListener;
+        this.leavesList = leavesList;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +60,7 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
 
     @Override
     public int getItemCount() {
-        return 2;//leavesList.size();
+        return leavesList.size();
     }
 
     public interface LeaveAdapterListener {
