@@ -24,12 +24,13 @@ public class EventRequestCall {
     private CreateEventListener createEventListener;
     private AddMemberRequestCallListener addMemberRequestCallListener;
     private final String TAG = EventRequestCall.class.getName();
-    
+
     public void setCreateEventListener(CreateEventListener listener) {
-        this.createEventListener=listener;
+        this.createEventListener = listener;
     }
+
     public void setAddMemberRequestCallListener(AddMemberRequestCallListener listener) {
-        this.addMemberRequestCallListener=listener;
+        this.addMemberRequestCallListener = listener;
     }
 
     public void getCategory() {
@@ -65,7 +66,6 @@ public class EventRequestCall {
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-
     }
 
     public void getEvent(String status) {
@@ -84,7 +84,7 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS +"?status="+status;
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS + "?status=" + status;
 //        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS,status);
         Log.d(TAG, "getEvents: " + getOrgUrl);
 
@@ -118,13 +118,7 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST ;
-//        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST +"?role=<roleidsstr>" +
-//                "&project=<projectidstr>" +
-//                "&organization=<orgidstr>" +
-//                "&location=<locationobj>" +
-//                "&page=<page_id> ";
-
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST;
         Log.d(TAG, "getEvents: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
@@ -157,8 +151,7 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT ;
-
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT;
         Log.d(TAG, "SubmitEvents: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(

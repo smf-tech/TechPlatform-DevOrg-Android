@@ -264,65 +264,60 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/iv_attendees_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ly_attended_tab"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/content_description"
+                    android:paddingStart="@dimen/dimen_05dp"
+                    android:paddingEnd="@dimen/dimen_05dp"
+                    android:src="@drawable/ic_down_arrow_light_blue" />
 
-                    <ImageView
-                        android:id="@+id/iv_attendees_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/ly_attended_tab"
-                        android:layout_centerHorizontal="true"
-                        android:paddingStart="@dimen/dimen_05dp"
-                        android:paddingEnd="@dimen/dimen_05dp"
-                        android:src="@drawable/ic_down_arrow_light_blue"
-                        android:contentDescription="@string/drawer_open"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_attendees_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/iv_attendees_list"
-                        android:visibility="gone">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ly_task_forms"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_attendees_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_attended"
-                    android:background="@drawable/bg_light_blue_box"
-                    android:padding="@dimen/dimen_10dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/tv_formlist_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        android:text="@string/task_formlist_screen_msg" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_forms_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_formlist_label"/>
-
-                </RelativeLayout>
-
-                <Button
-                    android:id="@+id/bt_edit_attendance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_task_forms"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@drawable/bg_button"
-                    android:text="@string/edit_attendance"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_22" />
+                    android:layout_below="@+id/iv_attendees_list"
+                    android:visibility="gone" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ly_task_forms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_attended"
+                android:background="@drawable/bg_light_blue_box"
+                android:padding="@dimen/dimen_10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_form_list_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:text="@string/task_form_list_screen_msg" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_forms_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_form_list_label" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/bt_edit_attendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_task_forms"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:background="@drawable/bg_button"
+                android:text="@string/edit_attendance"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_22" />
+        </RelativeLayout>
     </ScrollView>
 
     <FrameLayout

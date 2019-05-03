@@ -3,6 +3,7 @@ package com.platform.view.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +127,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
             lyCalender.setVisibility(View.VISIBLE);
             //lyWorkingHours.setVisibility(View.VISIBLE);
-            tvAttendanceDetails.setVisibility(View.INVISIBLE);
+            tvAttendanceDetails.setVisibility(View.GONE);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -247,13 +248,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         try {
             dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
         cal.add(Calendar.DATE, 3);
         try {
             dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
         //noinspection deprecation
         calendarView.addDecorator(new EventDecorator(getActivity(),

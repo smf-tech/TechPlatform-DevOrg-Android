@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.platform.R;
 import com.platform.listeners.AddMemberListener;
 import com.platform.models.events.Participant;
