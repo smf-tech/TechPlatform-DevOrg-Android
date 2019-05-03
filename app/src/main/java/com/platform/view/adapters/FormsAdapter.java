@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
@@ -16,9 +19,6 @@ import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 public class FormsAdapter extends RecyclerView.Adapter<FormsAdapter.ViewHolder> {

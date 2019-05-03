@@ -11,13 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.home.HomeModel;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings({"CanBeFinal", "unused"})
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {

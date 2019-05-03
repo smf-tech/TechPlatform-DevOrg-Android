@@ -1,11 +1,11 @@
 package com.platform.models.common;
 
+import androidx.room.TypeConverters;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.database.DataConverter;
 import com.platform.models.LocaleData;
-
-import androidx.room.TypeConverters;
 
 @SuppressWarnings("unused")
 public class Category {

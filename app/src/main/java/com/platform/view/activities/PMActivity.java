@@ -8,6 +8,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.pm.ProcessData;
@@ -20,8 +22,6 @@ import com.platform.view.adapters.PMAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @SuppressWarnings("CanBeFinal")
 public class PMActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener,

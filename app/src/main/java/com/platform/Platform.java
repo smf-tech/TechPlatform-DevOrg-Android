@@ -4,6 +4,8 @@ import android.app.Application;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
@@ -18,7 +20,6 @@ import com.platform.utility.Util;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import io.fabric.sdk.android.Fabric;
 
 public class Platform extends Application {
