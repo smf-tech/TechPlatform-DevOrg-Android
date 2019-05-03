@@ -36,9 +36,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressWarnings("CanBeFinal")
 @SuppressLint("AppCompatCustomView")
 public class SearchableSpinner extends Spinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
-    public static final int NO_ITEM_SELECTED = -1;
+    private static final int NO_ITEM_SELECTED = -1;
 
     private transient Context _context;
 
@@ -82,6 +83,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
     }
 
 
+    @SuppressWarnings("unchecked")
     private void init() {
         _items = new ArrayList();
         _searchableListDialog = SearchableListDialog.newInstance(_items);
@@ -98,6 +100,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -120,6 +123,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
         if (!_isFromInit) {
@@ -155,16 +159,17 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
     }
 
 
+    @SuppressWarnings("unused")
     public void setPositiveButton(String strPositiveButtonText) {
         _searchableListDialog.setPositiveButton(strPositiveButtonText);
     }
 
-
+    @SuppressWarnings("unused")
     public void setPositiveButton(String strPositiveButtonText, DialogInterface.OnClickListener onClickListener) {
         _searchableListDialog.setPositiveButton(strPositiveButtonText, onClickListener);
     }
 
-
+    @SuppressWarnings("unused")
     public void setOnSearchTextChangedListener(SearchableListDialog.OnSearchTextChanged onSearchTextChanged) {
         _searchableListDialog.setOnSearchTextChangedListener(onSearchTextChanged);
     }
