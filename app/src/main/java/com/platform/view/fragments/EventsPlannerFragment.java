@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,13 +104,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
         membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
 
-        eventsList.add(new Event("1", "Meeting", "Title1", 1556794660l, "10:00 am",
+        eventsList.add(new Event("1", "Meeting", "Title1", 1556794660l, null, "10:00 am",
                 "11:00 am", "-", "test", "Wagholi,pune.", "Sachin",
-                "1234", "Completed", membersList, null));
+                "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
 
-        eventsList.add(new Event("2", "Event", "Title2", 1556794660l, "10:00 am",
+        eventsList.add(new Event("2", "Event", "Title2", 1556794660l, null, "10:00 am",
                 "11:30 am", "-", "test", "Hadpsar,pune.", "Sagar",
-                "1235", "Planned", membersList, null));
+                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -260,14 +261,14 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         try {
             dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
 
         cal.add(Calendar.DATE, 3);
         try {
             dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
 
         calendarView.addDecorator(new EventDecorator(getActivity(),

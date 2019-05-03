@@ -38,7 +38,7 @@ import java.util.List;
 
 @SuppressLint("AppCompatCustomView")
 public class SearchableSpinner extends Spinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
-    public static final int NO_ITEM_SELECTED = -1;
+    private static final int NO_ITEM_SELECTED = -1;
 
     private Context _context;
 

@@ -14,16 +14,17 @@
 
     <TextView
         android:id="@+id/tv_event_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
-        android:layout_toRightOf="@+id/task_status_indicator"
+        android:layout_toEndOf="@+id/task_status_indicator"
         android:maxLines="1"
         android:textColor="@color/tab_select"
         android:textSize="@dimen/text_size_14"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/tv_event_time"
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_event_title"
         android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_toRightOf="@+id/task_status_indicator"
+        android:layout_toEndOf="@+id/task_status_indicator"
         android:maxLength="11"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
@@ -41,9 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_event_title"
-        android:layout_marginLeft="@dimen/dimen_05dp"
-        android:layout_toRightOf="@+id/tv_event_time"
-        android:text="|"
+        android:layout_marginStart="@dimen/dimen_05dp"
+        android:layout_toEndOf="@+id/tv_event_time"
+        android:text="@string/differentiator_line"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
 
@@ -52,8 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_event_title"
-        android:layout_marginLeft="@dimen/dimen_05dp"
-        android:layout_toRightOf="@+id/tv_line1"
+        android:layout_marginStart="@dimen/dimen_05dp"
+        android:layout_toEndOf="@+id/tv_line1"
         android:maxLength="30"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
@@ -63,9 +64,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_event_title"
-        android:layout_marginLeft="@dimen/dimen_05dp"
-        android:layout_toRightOf="@+id/tv_event_address"
-        android:text="|"
+        android:layout_marginStart="@dimen/dimen_05dp"
+        android:layout_toEndOf="@+id/tv_event_address"
+        android:text="@string/differentiator_line"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
 

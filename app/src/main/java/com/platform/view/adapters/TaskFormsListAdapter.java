@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<TaskForm> taskFormsList = null;
+    private ArrayList<TaskForm> taskFormsList;
 
     public TaskFormsListAdapter(Context mContext, ArrayList<TaskForm> taskFormsList){
         this.mContext = mContext;
@@ -44,7 +44,7 @@ public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdap
 
     @Override
     public int getItemCount() {
-        return 0;
+        return this.taskFormsList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

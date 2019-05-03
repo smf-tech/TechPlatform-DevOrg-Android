@@ -69,7 +69,6 @@ public class EventRequestCall {
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-
     }
 
     public void getEvent(String status) {
@@ -156,7 +155,7 @@ public class EventRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "SubmitEvents - Resp: " + res);
-                    createEventListener.onEventSummited(res);
+                    createEventListener.onEventSubmitted(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

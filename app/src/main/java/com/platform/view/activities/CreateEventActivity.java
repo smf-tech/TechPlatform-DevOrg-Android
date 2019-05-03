@@ -3,6 +3,7 @@ package com.platform.view.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener {
@@ -41,12 +43,13 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
-    Recurrence recurrence;
+    private Recurrence recurrence;
 
     private ImageView ivBackIcon;
     private Spinner spCategory;
     private EditText etTitle;
     private EditText etStartDate;
+    private EditText etEndDate;
     private EditText etStartTime;
     private EditText etEndTime;
     private EditText etRepeat;
@@ -58,7 +61,8 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    CreateEventActivityPresenter createEventPresenter;
+    private CreateEventActivityPresenter createEventPresenter;
+    String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +78,14 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
         createEventPresenter.getEventCategory();
 
-        String str=getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
-        String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
+        toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         spCategory = findViewById(R.id.sp_category);
         etTitle = findViewById(R.id.et_title);
         etStartDate = findViewById(R.id.et_start_date);
+        etEndDate = findViewById(R.id.et_end_date);
         etStartTime = findViewById(R.id.et_start_time);
         etEndTime = findViewById(R.id.et_end_time);
         etRepeat = findViewById(R.id.et_repeat);
@@ -92,6 +96,8 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         btRepeat = findViewById(R.id.bt_repeat);
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
+
+        btRepeat.setText(R.string.never_label);
 
         // Task Module UI changes
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
@@ -116,6 +122,8 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
+                etEndDate.setText(event.getEndDate());
+                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
             }
@@ -130,6 +138,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.create_task));
+                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
                 btEventSubmit.setText(getString(R.string.create_task));
             } else {
                 setActionbar(getString(R.string.create_event));
@@ -150,12 +159,15 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         etRepeat.setText(event.getRepeat());
         etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
-        setAdapter(event.getMembersList());
+        if(toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+            setAdapter(event.getMembersList());
+        }
     }
 
     private void setListeners() {
         ivBackIcon.setOnClickListener(this);
         etStartDate.setOnClickListener(this);
+        etEndDate.setOnClickListener(this);
         etStartTime.setOnClickListener(this);
         etEndTime.setOnClickListener(this);
         etAddMembers.setOnClickListener(this);
@@ -182,6 +194,10 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.et_start_date:
                 Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
+                break;
+
+            case R.id.et_end_date:
+                Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_end_date));
                 break;
 
             case R.id.et_start_time:
@@ -213,7 +229,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
         event.setEventType(spCategory.getSelectedItem().toString());
         event.setTitle(etTitle.getText().toString());
-        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(),etStartTime.getText().toString()));
+        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
         event.setStarTime(etStartTime.getText().toString());
         event.setEndTime(etEndTime.getText().toString());
         event.setRepeat(recurrence.getType());
@@ -222,43 +238,47 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
         //put in response of above api
         createEventPresenter.submitEvent(event);
-
     }
 
-    public Long dateToTimeStamp(String strDate, String strTime) {
-        Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private Long dateToTimeStamp(String strDate, String strTime) {
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
-            date = (Date)formatter.parse(strDate +" "+strTime);
+            date = formatter.parse(strDate + " " + strTime);
+            return date.getTime();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", e.getMessage());
         }
-        return date.getTime();
+
+        return 0L;
     }
 
-    public String timeStampToDate(Long timeStamp) {
-        try{
+    private String timeStampToDate(Long timeStamp) {
+        try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timeStamp * 1000);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
-        }catch (Exception e) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date currentTimeZone = calendar.getTime();
+            return sdf.format(currentTimeZone);
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
         }
         return "";
     }
-    public String timeStampToTime(Long timeStamp) {
-        try{
+
+    private String timeStampToTime(Long timeStamp) {
+        try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timeStamp * 1000);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
-        }catch (Exception e) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date currentTimeZone = calendar.getTime();
+            return sdf.format(currentTimeZone);
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
         }
         return "";
     }
@@ -268,13 +288,14 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
         super.onActivityResult(requestCode, resultCode, data);
 //        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                recurrence = (Recurrence) data.getSerializableExtra("result");
-                btRepeat.setText(recurrence.getType());
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            recurrence = (Recurrence) data.getSerializableExtra("result");
+            btRepeat.setText(recurrence.getType());
+        }
+
+        if (resultCode == Activity.RESULT_CANCELED) {
+            //Write your code if there's no result
+        }
 //        }
     }
 

@@ -273,7 +273,14 @@
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
-    <string name="task_formlist_screen_msg">"Forms are required for this task."</string>
+    <string name="task_formlist_screen_msg">" प्रपत्र इस कार्य के लिए आवश्यक हैं"</string>
+    <string name="create_filter_screen_msg">"सदस्य जोड़ने से पहले फ़िल्टर बनाएं"</string>
+    <string name="owner_name">निर्माता का नाम</string>
+    <string name="select_all">सभी का चयन करे</string>
+    <string name="attended_label">" उपस्थित थे"</string>
+    <string name="not_attended_label">" उपस्थित नहीं थे"</string>
+    <string name="never_label">कभी नहीँ</string>
+    <string name="mark_completed">Mark as completed</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
@@ -309,8 +316,8 @@
     <string name="edit">Edit</string>
     <string name="this_event_only">This event only</string>
     <string name="all_events_in_series">All events in series</string>
+    <string name="differentiator_line">|</string>
     <string name="which_day">कौन से दिनों में</string>
-    <string name="select_all">सभी का चयन करे</string>
     <string-array name="repeat_array">
         <item>कभी नहीँ</item>
         <item>रोज</item>

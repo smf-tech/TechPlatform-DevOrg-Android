@@ -242,12 +242,14 @@ public class Constants {
         public static final Integer REPEAT_EVENT = 001;
 
         public static final String KEY_IS_DASHBOARD = "isDashboard";
-        public static final String TO_OPEN = "ToOpan";
+        public static final String TO_OPEN = "ToOpen";
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
         public static final String TASK_DETAIL = "TaskDetail";
         public static final String EVENTS_LABEL = "EVENTS";
         public static final String TASKS_LABEL = "TASKS";
+        public static final String PLANNED_STATUS = "PLANNED";
+        public static final String COMPLETED_STATUS = "COMPLETED";
     }
 }

@@ -1,7 +1,5 @@
 package com.platform.models.events;
 
-import com.platform.models.forms.Form;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +7,7 @@ import java.util.List;
 public class Event implements Serializable {
     private String id;
     private String title;
+    private String endDate;
     private String starTime;
     private String endTime;
     private String repeat;
@@ -23,19 +22,20 @@ public class Event implements Serializable {
 
     }
 
-    public Event(String id, String category, String title, Long startDate, String starTime,
-                 String endTime, String repeat, String description, String address, String owner,
+    public Event(String id, String category, String title, Long startDate, String endDate, String starTime,
+                 String endTime, String repeat, String description, String address, String organizer,
                  String ownerID, String status, ArrayList<Participant> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.eventType = category;
         this.title = title;
         this.eventStartDateTime = startDate;
+        this.endDate = endDate;
         this.starTime = starTime;
         this.endTime = endTime;
         this.repeat = repeat;
         this.eventDescription = description;
         this.address = address;
-        this.owner = owner;
+        this.organizer = organizer;
         this.ownerID = ownerID;
         this.status = status;
         this.membersList.addAll(membersList);
@@ -58,6 +58,14 @@ public class Event implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getStarTime() {

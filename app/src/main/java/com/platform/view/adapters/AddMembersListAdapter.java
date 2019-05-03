@@ -95,17 +95,4 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             });
         }
     }
-
-//    public void filter(String searchText) {
-//        searchText = searchText.toLowerCase(Locale.getDefault());
-//         if(searchText.length()>0) {
-//            membersList.clear();
-//            for (Member member : filterMembersList) {
-//                if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
-//                    membersList.add(member);
-//                }
-//            }
-//             notifyDataSetChanged();
-//        }
-//    }
 }
