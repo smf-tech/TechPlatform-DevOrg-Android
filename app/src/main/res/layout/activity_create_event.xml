@@ -232,7 +232,8 @@
                     android:id="@+id/rv_attendees_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_attendees_list">
+                    android:layout_below="@+id/iv_attendees_list"
+                    android:layout_marginTop="@dimen/dimen_05dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </com.google.android.material.textfield.TextInputLayout>

@@ -64,6 +64,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         TextView tvTitle = findViewById(R.id.tv_title);
         TextView tvCategory = findViewById(R.id.tv_category);
         TextView tvDescription = findViewById(R.id.tv_description);
+        TextView tvOwner = findViewById(R.id.tv_owner_name);
         TextView tvDate = findViewById(R.id.tv_date);
         TextView tvTime = findViewById(R.id.tv_time);
         TextView tvRepeat = findViewById(R.id.tv_repeat);
@@ -81,6 +82,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         tvTitle.setText(event.getTitle());
         tvCategory.setText(event.getEventType());
         tvDescription.setText(event.getEventDescription());
+        tvOwner.setText(event.getOrganizer());
         tvDate.setText(finalDate);
 //        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvAddress.setText(event.getAddress());
@@ -155,7 +157,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         } else {
             setActionbar(getString(R.string.event_detail));
             tvRepeat.setText(event.getRepeat());
-            tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
+            tvTime.setText(String.format("%s to %s", event.getStarTime(), event.getEndTime()));
             rvAttendeesList = findViewById(R.id.rv_attendees_list);
             setAdapter(event.getMembersList());
             getAttendedCount();

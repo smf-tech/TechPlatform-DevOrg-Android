@@ -273,6 +273,8 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
     <string name="task_formlist_screen_msg">"Forms are required for this task."</string>
+    <string name="create_filter_screen_msg">"Create filters before you add members."</string>
+    <string name="owner_name">Owner Name</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>

@@ -45,7 +45,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventTitle.setText(event.getTitle());
         holder.tvEventTime.setText(event.getStarTime());
         holder.tvEventAddress.setText(event.getAddress());
-        holder.tvEventOwner.setText(event.getOwner());
+        holder.tvEventOwner.setText(event.getOrganizer());
 
         if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             if (event.getStatus().equals(Constants.Planner.PLANNED_STATUS)) {

@@ -25,7 +25,7 @@ public class Event implements Serializable {
     }
 
     public Event(String id, String category, String title, Long startDate, String endDate, String starTime,
-                 String endTime, String repeat, String description, String address, String owner,
+                 String endTime, String repeat, String description, String address, String organizer,
                  String ownerID, String status, ArrayList<Participant> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.eventType = category;
@@ -37,7 +37,7 @@ public class Event implements Serializable {
         this.repeat = repeat;
         this.eventDescription = description;
         this.address = address;
-        this.owner = owner;
+        this.organizer = organizer;
         this.ownerID = ownerID;
         this.status = status;
         this.membersList.addAll(membersList);

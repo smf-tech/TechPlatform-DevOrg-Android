@@ -122,7 +122,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 setActionbar(getString(R.string.edit_task));
             } else {
                 setActionbar(getString(R.string.edit_event));
-                etEndDate.setOnClickListener(this);
                 etEndDate.setText(event.getEndDate());
             }
 
@@ -163,6 +162,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private void setListeners() {
         ivBackIcon.setOnClickListener(this);
         etStartDate.setOnClickListener(this);
+        etEndDate.setOnClickListener(this);
         etStartTime.setOnClickListener(this);
         etEndTime.setOnClickListener(this);
         etAddMembers.setOnClickListener(this);
