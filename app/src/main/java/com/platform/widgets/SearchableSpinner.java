@@ -31,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
 import com.platform.R;
+import com.platform.view.adapters.FormSpinnerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
                 // Description: The items were only set initially, not reloading the data in the
 
                 // spinner every time it is loaded with items in the adapter.
+                ((FormSpinnerAdapter) getAdapter()).setData(((FormSpinnerAdapter) getAdapter()).getOriginalObjects());
                 _items.clear();
                 for (int i = 0; i < _arrayAdapter.getCount(); i++)
                     _items.add(_arrayAdapter.getItem(i));
