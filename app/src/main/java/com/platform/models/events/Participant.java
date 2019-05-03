@@ -1,12 +1,15 @@
 package com.platform.models.events;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Participant implements Serializable {
 
-    private String name;
     private String role;
-    private Boolean isMemberSelected;
+    private Boolean isMemberSelected=false;
 
 
 
@@ -18,13 +21,6 @@ public class Participant implements Serializable {
         this.attended = isMemberAttended;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getRole() {
         return role;
@@ -45,7 +41,7 @@ public class Participant implements Serializable {
     //////////////////////////////////
 
     private String participantId;
-    private Boolean attended;
+    private Boolean attended=false;
 
     public String getParticipantId() {
         return participantId;
@@ -61,6 +57,76 @@ public class Participant implements Serializable {
 
     public void setAttended(Boolean attended) {
         this.attended = attended;
+    }
+
+
+    ///////////////////////////////////
+
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+    @SerializedName("project_id")
+    @Expose
+    private List<String> projectId = null;
+    @SerializedName("role_id")
+    @Expose
+    private String roleId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public List<String> getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(List<String> projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
 }

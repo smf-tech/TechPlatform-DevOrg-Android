@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
+public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
@@ -75,6 +74,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
         createEventPresenter.getEventCategory();
 
+        String str=getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
@@ -93,8 +93,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
 
-        btRepeat.setText("Never");
-
         // Task Module UI changes
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             TextInputLayout tlyEndDate = findViewById(R.id.tly_end_date);
@@ -110,7 +108,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false);
+        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false,false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);

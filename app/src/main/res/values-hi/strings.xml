@@ -309,4 +309,39 @@
     <string name="edit">Edit</string>
     <string name="this_event_only">This event only</string>
     <string name="all_events_in_series">All events in series</string>
+    <string name="which_day">कौन से दिनों में</string>
+    <string name="select_all">सभी का चयन करे</string>
+    <string-array name="repeat_array">
+        <item>कभी नहीँ</item>
+        <item>रोज</item>
+        <item>साप्ताहिक</item>
+        <item>महीने के</item>
+    </string-array>
+
+    <string-array name="repeat_daily">
+        <item>१ दिन</item>
+        <item>२ दिन</item>
+        <item>३ दिन</item>
+        <item>४ दिन</item>
+        <item>५ दिन</item>
+        <item>६ दिन</item>
+        <item>७ दिन</item>
+        <item>८ दिन</item>
+        <item>९ दिन</item>
+        <item>१० दिन</item>
+
+    </string-array>
+
+    <string-array name="repeat_weeks">
+        <item>१ सप्ताह</item>
+        <item>२ सप्ताह</item>
+        <item>३ सप्ताह</item>
+    </string-array>
+
+    <string-array name="repeat_months">
+        <item>1 महीना</item>
+        <item>2 महीने</item>
+        <item>3 महीने</item>
+    </string-array>
+
 </resources>

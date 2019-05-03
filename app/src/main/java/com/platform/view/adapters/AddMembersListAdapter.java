@@ -20,11 +20,14 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
 
     private Context mContext;
     private boolean isCheckVisible;
+    private boolean isAddMember;
     private ArrayList<Participant> membersList;
 
-    public AddMembersListAdapter(Context mContext, ArrayList<Participant> membersList, boolean isCheckVisible) {
+    public AddMembersListAdapter(Context mContext, ArrayList<Participant> membersList, boolean isCheckVisible,
+                                 boolean isAddMember) {
         this.mContext = mContext;
         this.membersList = membersList;
+        this.isAddMember = isAddMember;
         this.isCheckVisible = isCheckVisible;
     }
 
@@ -41,13 +44,19 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         Participant member = membersList.get(position);
         holder.tvMemberName.setText(member.getName());
         holder.tvMemberDesignation.setText(member.getRole());
-        holder.cbMemberSelect.setChecked(membersList.get(position).getMemberSelected());
+        if(isCheckVisible){
+            if(membersList.get(position).getMemberSelected()!= null && isAddMember){
+                holder.cbMemberSelect.setChecked(membersList.get(position).getMemberSelected());
+            } else {
 
-        if (membersList.get(position).getAttended()) {
-            holder.cbMemberSelect.setChecked(true);
-        } else {
-            holder.cbMemberSelect.setChecked(false);
+                if (membersList.get(position).getAttended()!=null && membersList.get(position).getAttended()) {
+                    holder.cbMemberSelect.setChecked(true);
+                } else {
+                    holder.cbMemberSelect.setChecked(false);
+                }
+            }
         }
+
     }
 
     @Override

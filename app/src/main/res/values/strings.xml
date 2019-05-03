@@ -273,6 +273,8 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
     <string name="task_formlist_screen_msg">"Forms are required for this task."</string>
+    <string name="which_day">Which days</string>
+    <string name="select_all">Select All</string>
     <string-array name="category_types">
         <item>Category</item>
         <item>Meeting</item>
@@ -391,4 +393,6 @@
     <string name="delete">Delete</string>
     <string name="leave_apply_msg1">You will able to see leave balance once you get approval from your manager</string>
     <string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>
+
+
 </resources>

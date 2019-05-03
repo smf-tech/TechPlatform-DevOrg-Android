@@ -1,6 +1,8 @@
 package com.platform.request;
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TimeUtils;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -12,6 +14,7 @@ import com.platform.R;
 import com.platform.listeners.AddMemberRequestCallListener;
 import com.platform.listeners.CreateEventListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.ParametersFilterMember;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -24,12 +27,13 @@ public class EventRequestCall {
     private CreateEventListener createEventListener;
     private AddMemberRequestCallListener addMemberRequestCallListener;
     private final String TAG = EventRequestCall.class.getName();
-    
+
     public void setCreateEventListener(CreateEventListener listener) {
-        this.createEventListener=listener;
+        this.createEventListener = listener;
     }
+
     public void setAddMemberRequestCallListener(AddMemberRequestCallListener listener) {
-        this.addMemberRequestCallListener=listener;
+        this.addMemberRequestCallListener = listener;
     }
 
     public void getCategory() {
@@ -84,7 +88,7 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS +"?status="+status;
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS + "?status=" + status;
 //        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS,status);
         Log.d(TAG, "getEvents: " + getOrgUrl);
 
@@ -102,7 +106,7 @@ public class EventRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getMemberList() {
+    public void getMemberList(ParametersFilterMember parametersFilter) {
         Response.Listener<JSONObject> orgSuccessListener = response -> {
             try {
                 if (response != null) {
@@ -118,12 +122,17 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST ;
-//        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST +"?role=<roleidsstr>" +
-//                "&project=<projectidstr>" +
-//                "&organization=<orgidstr>" +
-//                "&location=<locationobj>" +
-//                "&page=<page_id> ";
+//        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST ;
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_MEMBERS_LIST + "?" +
+                (!TextUtils.isEmpty(parametersFilter.getOrganizationIds()) ? "organization=" + parametersFilter.getOrganizationIds() + "&" : "") +
+                (!TextUtils.isEmpty(parametersFilter.getRoleIds()) ? "role=" + parametersFilter.getRoleIds() + "&" : "") +
+                (!TextUtils.isEmpty(parametersFilter.getState()) ? "location.state=" + parametersFilter.getState() + "&" : "") +
+                (!TextUtils.isEmpty(parametersFilter.getDistrict()) ? "location.district=" + parametersFilter.getDistrict() + "&" : "") +
+                (!TextUtils.isEmpty(parametersFilter.getTaluka()) ? "location.taluka=" + parametersFilter.getTaluka() + "&" : "") +
+                (!TextUtils.isEmpty(parametersFilter.getCluster()) ? "location.cluster=" + parametersFilter.getCluster() + "&" : "") +
+                (!TextUtils.isEmpty(parametersFilter.getVillage()) ? "location.village=" + parametersFilter.getVillage() + "&" : "") +
+//                "&page=1" +
+                "limit=50";
 
         Log.d(TAG, "getEvents: " + getOrgUrl);
 
@@ -157,7 +166,7 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT ;
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT;
 
         Log.d(TAG, "SubmitEvents: " + getOrgUrl);
 
