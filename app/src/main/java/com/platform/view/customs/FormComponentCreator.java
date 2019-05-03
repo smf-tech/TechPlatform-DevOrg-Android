@@ -327,6 +327,13 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         }
                     }
 
+//                    String testLex = "(tractor_trips)*3+(tipper_trips)*8";
+//                    Pattern pattern = Pattern.compile("(?=[/*])|(?<=[/*])");
+//                    final String[] split = pattern.split(testLex);
+//                    for(String curStr : split){
+//                        System.out.println("Token "+": "+ curStr);
+//                    }
+
                     if (!TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
                         if (!TextUtils.isEmpty(formData.getInputType()) &&
                                 formData.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {

@@ -106,7 +106,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.google.firebase:firebase-config:16.5.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
