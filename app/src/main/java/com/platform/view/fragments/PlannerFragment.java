@@ -91,7 +91,6 @@ public class PlannerFragment extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fly_leave, leavePlannerFragment, leavePlannerFragment.getClass()
                         .getSimpleName()).commit();
-
     }
 
     @Override
