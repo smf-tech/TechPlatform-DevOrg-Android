@@ -4,10 +4,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.platform.models.LocaleData;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
-public class Choice {
+public class Choice implements Serializable {
     @SerializedName("text")
     @Expose
     private LocaleData text;

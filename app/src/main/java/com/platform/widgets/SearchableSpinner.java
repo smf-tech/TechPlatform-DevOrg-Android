@@ -40,13 +40,13 @@ import java.util.List;
 public class SearchableSpinner extends Spinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
     public static final int NO_ITEM_SELECTED = -1;
 
-    private Context _context;
+    private transient Context _context;
 
     private List _items;
-    private SearchableListDialog _searchableListDialog;
+    private transient SearchableListDialog _searchableListDialog;
 
     private boolean _isDirty;
-    private ArrayAdapter _arrayAdapter;
+    private transient ArrayAdapter _arrayAdapter;
     private String _strHintText;
     private boolean _isFromInit;
 
