@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
@@ -42,7 +43,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
-    Recurrence recurrence;
+    private Recurrence recurrence;
 
     private ImageView ivBackIcon;
     private Spinner spCategory;
@@ -60,7 +61,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    CreateEventActivityPresenter createEventPresenter;
+    private CreateEventActivityPresenter createEventPresenter;
+    String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
         createEventPresenter.getEventCategory();
 
-        String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
+        toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
         ivBackIcon = findViewById(R.id.toolbar_back_action);
@@ -95,7 +97,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
 
-        btRepeat.setText("Never");
+        btRepeat.setText(R.string.never_label);
 
         // Task Module UI changes
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
@@ -120,6 +122,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
+                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
                 etEndDate.setText(event.getEndDate());
@@ -135,7 +138,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.create_task));
-                findViewById(R.id.txt_add_members).setVisibility(View.GONE);
+                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
                 btEventSubmit.setText(getString(R.string.create_task));
             } else {
                 setActionbar(getString(R.string.create_event));
@@ -156,7 +159,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         etRepeat.setText(event.getRepeat());
         etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
-        setAdapter(event.getMembersList());
+        if(toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+            setAdapter(event.getMembersList());
+        }
     }
 
     private void setListeners() {
@@ -236,9 +241,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public Long dateToTimeStamp(String strDate, String strTime) {
+    private Long dateToTimeStamp(String strDate, String strTime) {
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             date = (Date)formatter.parse(strDate +" "+strTime);
         } catch (ParseException e) {
@@ -247,29 +252,31 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         return date.getTime();
     }
 
-    public String timeStampToDate(Long timeStamp) {
+    private String timeStampToDate(Long timeStamp) {
         try{
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timeStamp * 1000);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date currentTimeZone = (Date) calendar.getTime();
+            return sdf.format(currentTimeZone);
         }catch (Exception e) {
+            e.printStackTrace();
         }
         return "";
     }
-    public String timeStampToTime(Long timeStamp) {
+    private String timeStampToTime(Long timeStamp) {
         try{
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
             calendar.setTimeInMillis(timeStamp * 1000);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Date currenTimeZone = (Date) calendar.getTime();
             return sdf.format(currenTimeZone);
         }catch (Exception e) {
+            e.printStackTrace();
         }
         return "";
     }

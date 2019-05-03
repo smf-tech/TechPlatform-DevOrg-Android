@@ -299,9 +299,15 @@
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
-    <string name="task_formlist_screen_msg">"फॉर्म या कार्यसाठी आवश्यक आहेत."</string>
+    <string name="task_formlist_screen_msg">" फॉर्म या कार्यसाठी आवश्यक आहेत."</string>
     <string name="create_filter_screen_msg">"सदस्य जोडण्यापूर्वी फिल्टर तयार करा."</string>
     <string name="owner_name">निर्माता नाव</string>
+    <string name="attended_label">" उपस्थित होते."</string>
+    <string name="not_attended_label">" उपस्थित नव्हते."</string>
+    <string name="select_all">सर्व निवडा</string>
+    <string name="never_label">कधीही नाही</string>
+    <string name="mark_completed">Mark as completed</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">प्रत्येक महिन्यासाठी समान तारीख</string>
     <string name="sure_to_delete">आपणास खात्री आहे की आपण ते हटवू इच्छिता ?</string>
@@ -311,4 +317,5 @@
     <string name="edit">Edit</string>
     <string name="this_event_only">This event only</string>
     <string name="all_events_in_series">All events in series</string>
+    <string name="differentiator_line">|</string>
 </resources>

@@ -273,7 +273,8 @@
                         android:layout_centerHorizontal="true"
                         android:paddingStart="@dimen/dimen_05dp"
                         android:paddingEnd="@dimen/dimen_05dp"
-                        android:src="@drawable/ic_down_arrow_light_blue" />
+                        android:src="@drawable/ic_down_arrow_light_blue"
+                        android:contentDescription="@string/drawer_open"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_attendees_list"

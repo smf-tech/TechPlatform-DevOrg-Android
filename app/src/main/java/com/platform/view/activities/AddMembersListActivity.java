@@ -26,11 +26,11 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     private AddMembersListAdapter addMembersListAdapter;
     private ArrayList<Participant> membersList = new ArrayList<>();
     private ArrayList<Participant> filterMembersList = new ArrayList<>();
-    SearchView editSearch;
-    CheckBox cbSelectAllMembers;
+    private SearchView editSearch;
+    private CheckBox cbSelectAllMembers;
     private ImageView toolbarAction;
     private ImageView ivBackIcon;
-    boolean isNewMembersList;
+    private boolean isNewMembersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,8 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
                 }
             }
 
-            tvAttended.setText(attendedCount + " Attended");
-            tvNotAttended.setText(membersList.size() - attendedCount + " Not Attended");
+            tvAttended.setText(attendedCount + getString(R.string.attended_label));
+            tvNotAttended.setText(membersList.size() - attendedCount + getString(R.string.not_attended_label));
         }
 
         filterMembersList.addAll(membersList);
@@ -127,7 +127,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         return false;
     }
 
-    public void filter(String searchText) {
+    private void filter(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
         membersList.clear();
         if (searchText.length() > 0) {

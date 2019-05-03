@@ -1,7 +1,5 @@
 package com.platform.models.events;
 
-import com.platform.models.forms.Form;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

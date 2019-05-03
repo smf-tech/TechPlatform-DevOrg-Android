@@ -75,7 +75,7 @@
                 style="@style/RegistrationTextInputLayout"
                 android:layout_below="@+id/tly_start_date"
                 app:hintTextAppearance="@style/TextInputLayoutHint"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_end_date"
@@ -212,10 +212,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Add Members-->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_add_members"
-                style="@style/RegistrationTextInputLayout"
+            <RelativeLayout
+                android:id="@+id/rl_add_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               android:background="@drawable/bg_blue_box"
                 android:layout_below="@+id/tly_address"
+                android:layout_margin="@dimen/dimen_10dp"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -226,23 +229,24 @@
                     android:focusable="false"
                     android:inputType="text|textCapWords"
                     android:drawableStart="@drawable/ic_add"
+                    android:padding="@dimen/dimen_10dp"
                     tools:ignore="Autofill" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_attendees_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_attendees_list"
+                    android:layout_below="@+id/et_add_members"
                     android:layout_marginTop="@dimen/dimen_05dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
-            </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/bt_event_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_add_members"
+                android:layout_below="@+id/rl_add_members"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/create_event"

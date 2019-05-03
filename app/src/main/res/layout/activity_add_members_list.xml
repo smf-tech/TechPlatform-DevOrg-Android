@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_toStartOf="@+id/cb_select_all_members"
-                android:text="Select All"
+                android:text="@string/select_all"
                 android:textColor="@color/medium_blue" />
 
         </RelativeLayout>

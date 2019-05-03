@@ -134,7 +134,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
             String finalEndDate = weekDay.format(endDate);
             finalEndDate = finalEndDate + ", " + targetFormat.format(endDate);
-            tvEndDate.setText(finalEndDate);
+            tvEndDate.setText(event.getEndDate());
 
             tvTime.setText(String.format(event.getStarTime()));
 
@@ -147,11 +147,11 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
                 btEditAttendance.setVisibility(View.GONE);
                 tvFormlistLabel.setVisibility(View.VISIBLE);
-                tvFormlistLabel.setText(event.getFormsList().size()+" "+getString(R.string.task_formlist_screen_msg));
+                tvFormlistLabel.setText(event.getFormsList().size()+getString(R.string.task_formlist_screen_msg));
                 rvFormsList = findViewById(R.id.rv_forms_list);
                 setFormListAdapter(event.getFormsList());
             }else{
-                btEditAttendance.setText("Mark As Completed.");
+                btEditAttendance.setText(getString(R.string.mark_completed));
                 tvFormlistLabel.setVisibility(View.GONE);
             }
         } else {
@@ -207,11 +207,11 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             }
         }
         if (isAttendanceMarked) {
-            tvAttended.setText(attendedCount + " Attended");
-            tvNotAttended.setText(event.getMembersList().size() - attendedCount + " Not Attended");
+            tvAttended.setText(attendedCount + getString(R.string.attended_label));
+            tvNotAttended.setText(event.getMembersList().size() - attendedCount + getString(R.string.not_attended_label));
         } else {
-            tvAttended.setText("0 Attended");
-            tvNotAttended.setText(event.getMembersList().size() + " Not Attended");
+            tvAttended.setText("0"+getString(R.string.attended_label));
+            tvNotAttended.setText(event.getMembersList().size() + getString(R.string.not_attended_label));
         }
     }
 
@@ -273,7 +273,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void callCreateEvent(String edit) {
+    private void callCreateEvent(String edit) {
         Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
         intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
         intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL, event);
@@ -281,7 +281,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         lyGreyedOut.setVisibility(View.GONE);
         snackbar.dismiss();
     }
-    public void mySnackBar() {
+    private void mySnackBar() {
         CoordinatorLayout containerLayout = findViewById(R.id.ly_coordinator);
         snackbar = Snackbar.make(containerLayout, "", Snackbar.LENGTH_INDEFINITE);
 
@@ -299,7 +299,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     public String timeStampToDate(int timeStamp) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
         return formatter.format(timeStamp);
     }
 }

@@ -55,7 +55,7 @@ public class CreateEventActivityPresenter implements CreateEventListener {
     }
 
     @Override
-    public void onEventSummited(String response) {
+    public void onEventSubmitted(String response) {
         createEventActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             Util.saveUserOrgInPref(response);

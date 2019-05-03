@@ -27,26 +27,31 @@ public class PlannerDetailActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, false);
 
-        if (toOpen.equals("ATTENDANCE")) {
+        switch (toOpen) {
+            case "ATTENDANCE":
 
-        } else if (toOpen.equals("EVENTS")) {
-            Fragment eventsPlannerFragment = new EventsPlannerFragment();
-            eventsPlannerFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fly_events_list, eventsPlannerFragment, eventsPlannerFragment.getClass()
-                            .getSimpleName()).commit();
-        } else if (toOpen.equals("TASKS")) {
-            Fragment tasksPlannerFragment = new TasksPlannerFragment();
-            tasksPlannerFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fly_events_list, tasksPlannerFragment, tasksPlannerFragment.getClass()
-                            .getSimpleName()).commit();
-        } else if (toOpen.equals("LEAVES")) {
-            Fragment leavePlannerFragment = new LeavePlannerFragment();
-            leavePlannerFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fly_events_list, leavePlannerFragment, leavePlannerFragment.getClass()
-                            .getSimpleName()).addToBackStack(null).commit();
+                break;
+            case "EVENTS":
+                Fragment eventsPlannerFragment = new EventsPlannerFragment();
+                eventsPlannerFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fly_events_list, eventsPlannerFragment, eventsPlannerFragment.getClass()
+                                .getSimpleName()).commit();
+                break;
+            case "TASKS":
+                Fragment tasksPlannerFragment = new TasksPlannerFragment();
+                tasksPlannerFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fly_events_list, tasksPlannerFragment, tasksPlannerFragment.getClass()
+                                .getSimpleName()).commit();
+                break;
+            case "LEAVES":
+                Fragment leavePlannerFragment = new LeavePlannerFragment();
+                leavePlannerFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fly_events_list, leavePlannerFragment, leavePlannerFragment.getClass()
+                                .getSimpleName()).addToBackStack(null).commit();
+                break;
         }
     }
 

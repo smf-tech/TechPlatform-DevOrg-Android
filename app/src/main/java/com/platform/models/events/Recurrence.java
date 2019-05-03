@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Recurrence implements Serializable {
-    String interval;
-    String dayOfWeek;
-    String dayOfMonth;
-    String lastDate;
+    private String interval;
+    private String dayOfWeek;
+    private String dayOfMonth;
+    private String lastDate;
 
     public String getInterval() {
         return interval;

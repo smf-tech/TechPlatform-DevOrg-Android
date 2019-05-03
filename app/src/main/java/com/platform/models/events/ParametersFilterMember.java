@@ -5,9 +5,9 @@ import com.platform.models.profile.UserLocation;
 import java.util.ArrayList;
 
 public class ParametersFilterMember {
-    ArrayList<String> organizationIds = new ArrayList<>();
-    ArrayList<String> roleIds = new ArrayList<>();
-    UserLocation userLocation = new UserLocation();
+    private ArrayList<String> organizationIds = new ArrayList<>();
+    private ArrayList<String> roleIds = new ArrayList<>();
+    private UserLocation userLocation = new UserLocation();
 
     public ArrayList<String> getOrganizationIds() {
         return organizationIds;

@@ -147,7 +147,7 @@ public class EventRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "SubmitEvents - Resp: " + res);
-                    createEventListener.onEventSummited(res);
+                    createEventListener.onEventSubmitted(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

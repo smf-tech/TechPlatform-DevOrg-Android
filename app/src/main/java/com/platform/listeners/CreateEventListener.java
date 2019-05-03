@@ -8,7 +8,7 @@ public interface CreateEventListener {
 
     void onEventsFetched(String response);
 
-    void onEventSummited(String response);
+    void onEventSubmitted(String response);
 
     void onFailureListener(String message);
 

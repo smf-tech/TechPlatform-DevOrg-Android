@@ -35,15 +35,14 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     private Spinner spDailyInterval;
     private Spinner spWeeklyInterval;
     private Spinner spMonthlyInterval;
-    private MultiSelectSpinner spWeekDay;
 
     private EditText etEndDate;
     private EditText etWhichDate;
 
-    List<String> whichDays = new ArrayList<>();
-    List<String> whichDaysSelected = new ArrayList<>();
+    private List<String> whichDays = new ArrayList<>();
+    private List<String> whichDaysSelected = new ArrayList<>();
 
-    String selectedRepeat;
+    private String selectedRepeat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +82,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         adapterMonthlyInterval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMonthlyInterval.setAdapter(adapterMonthlyInterval);
 
-        spWeekDay = findViewById(R.id.sp_which_days);
+        MultiSelectSpinner spWeekDay = findViewById(R.id.sp_which_days);
         spWeekDay.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS);
         whichDays.add(getString(R.string.monday));
         whichDays.add(getString(R.string.tuesday));
@@ -134,7 +133,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
 
         Recurrence recurrence = new Recurrence();
         recurrence.setType(spRepeat.getSelectedItem().toString());
-        String str[] = getResources().getStringArray(R.array.repeat_array);
+        String[] str = getResources().getStringArray(R.array.repeat_array);
 
         if (selectedRepeat.equalsIgnoreCase(str[1])) {
             //ly_day_interval
@@ -166,7 +165,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     //singleSelection
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String str[] = getResources().getStringArray(R.array.repeat_array);
+        String[] str = getResources().getStringArray(R.array.repeat_array);
         switch (parent.getId()) {
             case R.id.sp_repeat:
                 this.selectedRepeat = spRepeat.getSelectedItem().toString();
@@ -213,7 +212,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public void showDateDialog(Context context, final EditText editText) {
+    private void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
