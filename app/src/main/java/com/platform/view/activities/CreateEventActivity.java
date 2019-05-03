@@ -76,7 +76,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private void initView() {
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
-        CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
+        createEventPresenter = new CreateEventActivityPresenter(this);
+        recurrence = new Recurrence();
         createEventPresenter.getEventCategory();
 
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
@@ -227,13 +228,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private void submitDetails() {
 
         Event event = new Event();
-
         event.setEventType(spCategory.getSelectedItem().toString());
         event.setTitle(etTitle.getText().toString());
         event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
         event.setStarTime(etStartTime.getText().toString());
         event.setEndTime(etEndTime.getText().toString());
-        event.setRepeat(recurrence.getType());
+        event.setRecurrence(recurrence);
         event.setEventDescription(etDescription.getText().toString());
         event.setAddress(etAddress.getText().toString());
 
@@ -291,7 +291,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 //        if (requestCode == 1) {
         if (resultCode == Activity.RESULT_OK) {
             recurrence = (Recurrence) data.getSerializableExtra("result");
-            btRepeat.setText(recurrence.getType());
+            if(recurrence.getType()!= null){
+                btRepeat.setText(recurrence.getType());
+            }
         }
 
         if (resultCode == Activity.RESULT_CANCELED) {

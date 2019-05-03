@@ -10,7 +10,8 @@
         android:layout_width="@dimen/form_item_status_indicator_width"
         android:layout_height="35dp"
         android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp" />
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_event_title"
@@ -44,7 +45,7 @@
         android:layout_below="@+id/tv_event_title"
         android:layout_marginStart="@dimen/dimen_05dp"
         android:layout_toEndOf="@+id/tv_event_time"
-        android:text="@string/differentiator_line"
+        android:text="@string/separator"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
 
@@ -66,7 +67,7 @@
         android:layout_below="@+id/tv_event_title"
         android:layout_marginStart="@dimen/dimen_05dp"
         android:layout_toEndOf="@+id/tv_event_address"
-        android:text="@string/differentiator_line"
+        android:text="@string/separator"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
 

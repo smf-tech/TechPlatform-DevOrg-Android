@@ -97,11 +97,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         taskFormsList.add(new TaskForm("3", "Testing Form 3", Constants.Planner.COMPLETED_STATUS));
 
         taskList.add(new Event("1", "meeting", "Title1", 1556794660l, "03/01/2019", "10:00 am",
-                "11:00 am", "-", "test", "Wagholi,Pune.", "Sachin",
+                "11:00 am", null, "test", "Wagholi,Pune.", "Sachin",
                 "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
 
         taskList.add(new Event("2", "visit", "Title2", 1556794660l, "03/02/2019", "11:00 am",
-                "12:00 pm", "-", "test", "Hadpsar,Pune.", "Sagar",
+                "12:00 pm", null, "test", "Hadpsar,Pune.", "Sagar",
                 "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();

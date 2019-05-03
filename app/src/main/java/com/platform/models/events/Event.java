@@ -23,7 +23,7 @@ public class Event implements Serializable {
     }
 
     public Event(String id, String category, String title, Long startDate, String endDate, String starTime,
-                 String endTime, String repeat, String description, String address, String organizer,
+                 String endTime, Recurrence recurrence, String description, String address, String organizer,
                  String ownerID, String status, ArrayList<Participant> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.eventType = category;
@@ -32,7 +32,7 @@ public class Event implements Serializable {
         this.endDate = endDate;
         this.starTime = starTime;
         this.endTime = endTime;
-        this.repeat = repeat;
+        this.recurrence = recurrence;
         this.eventDescription = description;
         this.address = address;
         this.organizer = organizer;

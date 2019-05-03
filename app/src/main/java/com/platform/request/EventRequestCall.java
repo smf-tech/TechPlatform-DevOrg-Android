@@ -149,13 +149,13 @@ public class EventRequestCall {
             }
         };
 
-        Response.ErrorListener orgErrorListener = error -> addMemberRequestCallListener.onErrorListener(error);
+        Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
         final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT;
         Log.d(TAG, "SubmitEvents: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
+                Request.Method.POST,
                 getOrgUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
