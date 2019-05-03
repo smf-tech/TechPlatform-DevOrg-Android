@@ -123,10 +123,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
+                etEndDate.setText(event.getEndDate());
                 findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
-                etEndDate.setText(event.getEndDate());
             }
 
             btEventSubmit.setText(getString(R.string.btn_submit));
