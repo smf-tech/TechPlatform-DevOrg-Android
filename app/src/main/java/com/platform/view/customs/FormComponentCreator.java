@@ -32,7 +32,6 @@ import com.platform.listeners.DropDownValueSelectListener;
 import com.platform.listeners.MatrixDynamicValueChangeListener;
 import com.platform.listeners.TextValueChangeListener;
 import com.platform.models.LocaleData;
-import com.platform.utility.MathEval;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
@@ -40,6 +39,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.forms.Validator;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.MathEval;
 import com.platform.utility.Permissions;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
@@ -326,6 +326,13 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                             entry.getValue().setText(String.valueOf(math.evaluate(expression.toString())));
                         }
                     }
+
+//                    String testLex = "(tractor_trips)*3+(tipper_trips)*8";
+//                    Pattern pattern = Pattern.compile("(?=[/*])|(?<=[/*])");
+//                    final String[] split = pattern.split(testLex);
+//                    for(String curStr : split){
+//                        System.out.println("Token "+": "+ curStr);
+//                    }
 
                     if (!TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
                         if (!TextUtils.isEmpty(formData.getInputType()) &&
