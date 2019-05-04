@@ -30,7 +30,6 @@ public class PlatformSpinner extends SearchableSpinner {
     public void
     setSelection(int position) {
         super.setSelection(position);
-//        if (sameSelected) {
         if (getOnItemSelectedListener() != null) {
             getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
