@@ -2,7 +2,6 @@ package com.platform.view.activities;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.platform.R;
@@ -11,7 +10,7 @@ import com.platform.view.fragments.EventsPlannerFragment;
 import com.platform.view.fragments.LeavePlannerFragment;
 import com.platform.view.fragments.TasksPlannerFragment;
 
-public class PlannerDetailActivity extends AppCompatActivity {
+public class PlannerDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

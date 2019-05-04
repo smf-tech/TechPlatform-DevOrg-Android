@@ -304,7 +304,6 @@
     <string name="owner_name">निर्माता नाव</string>
     <string name="attended_label">" उपस्थित होते."</string>
     <string name="not_attended_label">" उपस्थित नव्हते."</string>
-    <string name="select_all">सर्व निवडा</string>
     <string name="never_label">कधीही नाही</string>
     <string name="mark_completed">Mark as completed</string>
 
@@ -314,6 +313,40 @@
     <string name="delete">हटवा</string>
     <string name="leave_apply_msg1">एकदा आपल्याला आपल्या व्यवस्थापकाकडून मंजुरी मिळाल्यावर आपण सुट्टी शिल्लक पाहू शकाल</string>
     <string name="leave_apply_msg">आपण %1$s वरून %2$s ते %3$s साठी अर्ज केला</string>
+    <string name="which_day">कोणते दिवस</string>
+    <string name="select_all">सर्व निवडा</string>
+    <string-array name="repeat_array">
+        <item>कधीही नाही</item>
+        <item>दररोज</item>
+        <item>साप्ताहिक</item>
+        <item>मासिक</item>
+    </string-array>
+
+    <string-array name="repeat_daily">
+        <item>१ दिवस</item>
+        <item>२ दिवस</item>
+        <item>३ दिवस</item>
+        <item>४ दिवस</item>
+        <item>५ दिवस</item>
+        <item>६ दिवस</item>
+        <item>७ दिवस</item>
+        <item>८ दिवस</item>
+        <item>९ दिवस</item>
+        <item>१० दिवस</item>
+    </string-array>
+
+    <string-array name="repeat_weeks">
+        <item>१ आठवडा</item>
+        <item>२ आठवडे</item>
+        <item>३ आठवडे</item>
+    </string-array>
+
+    <string-array name="repeat_months">
+        <item>1 महीना</item>
+        <item>2 महीने</item>
+        <item>3 महीने</item>
+    </string-array>
+
     <string name="edit">संपादित करा</string>
     <string name="this_event_only">केवळ हा कार्यक्रम</string>
     <string name="all_events_in_series">मालिका सर्व कार्यक्रम</string>

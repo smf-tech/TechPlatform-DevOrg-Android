@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class EventDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private Event event;
 
@@ -168,7 +167,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
     private void setAdapter(ArrayList<Participant> membersList) {
         AddMembersListAdapter addMembersListAdapter
-                = new AddMembersListAdapter(EventDetailActivity.this, membersList, false);
+                = new AddMembersListAdapter(EventDetailActivity.this, membersList, false,false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);

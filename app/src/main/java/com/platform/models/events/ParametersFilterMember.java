@@ -5,31 +5,67 @@ import com.platform.models.profile.UserLocation;
 import java.util.ArrayList;
 
 public class ParametersFilterMember {
-    private ArrayList<String> organizationIds = new ArrayList<>();
-    private ArrayList<String> roleIds = new ArrayList<>();
-    private UserLocation userLocation = new UserLocation();
+    String organizationIds;
+    String roleIds;
+    String state;
+    String district;
+    String taluka;
+    String cluster;
+    String village;
 
-    public ArrayList<String> getOrganizationIds() {
+    public String getOrganizationIds() {
         return organizationIds;
     }
 
-    public void setOrganizationIds(ArrayList<String> organizationIds) {
+    public void setOrganizationIds(String organizationIds) {
         this.organizationIds = organizationIds;
     }
 
-    public ArrayList<String> getRoleIds() {
+    public String getRoleIds() {
         return roleIds;
     }
 
-    public void setRoleIds(ArrayList<String> roleIds) {
+    public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
     }
 
-    public UserLocation getUserLocation() {
-        return userLocation;
+    public String getState() {
+        return state;
     }
 
-    public void setUserLocation(UserLocation userLocation) {
-        this.userLocation = userLocation;
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getTaluka() {
+        return taluka;
+    }
+
+    public void setTaluka(String taluka) {
+        this.taluka = taluka;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(String cluster) {
+        this.cluster = cluster;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
     }
 }

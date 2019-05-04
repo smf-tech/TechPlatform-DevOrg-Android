@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.AddMemberRequestCallListener;
+import com.platform.models.events.MemberListResponse;
 import com.platform.models.events.ParametersFilterMember;
+import com.platform.models.events.Participant;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
@@ -15,6 +17,7 @@ import com.platform.utility.Util;
 import com.platform.view.activities.AddMembersFilterActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class AddMemberFilerActivityPresenter implements AddMemberRequestCallListener {
     private final String TAG = AddMemberFilerActivityPresenter.class.getName();
@@ -54,7 +57,7 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
         requestCall.setAddMemberRequestCallListener(this);
 
         addMemberFilerActivity.get().showProgressBar();
-        requestCall.getMemberList();
+        requestCall.getMemberList(parametersFilter);
     }
 
     @Override
@@ -119,13 +122,12 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
         addMemberFilerActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             Util.saveUserOrgInPref(response);
-//            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
-//            if (orgResponse != null && orgResponse.getData() != null
-//                    && !orgResponse.getData().isEmpty()
-//                    && orgResponse.getData().size() > 0) {
-//                addMemberFilerActivity.get().showMember(orgResponse.getData());
-//                addMemberFilerActivity.get().showMember(memberList);
-//            }
+            MemberListResponse memberListResponse = new Gson().fromJson(response, MemberListResponse.class);
+            if (memberListResponse != null && memberListResponse.getData() != null
+                    && !memberListResponse.getData().isEmpty()
+                    && memberListResponse.getData().size() > 0) {
+                addMemberFilerActivity.get().showMember((ArrayList<Participant>) memberListResponse.getData());
+            }
         }
     }
 
