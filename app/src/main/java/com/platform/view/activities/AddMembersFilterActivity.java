@@ -529,8 +529,10 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 //        membersList.add(new Participant("3", "Jagruti Devare", "MT", true,true));
 //        membersList.add(new Participant("4", "Sachin Kakade", "FA", false,false));
         Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+        intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);
         intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,memberList);
         this.startActivity(intentAddMembersListActivity);
+        finish();
     }
 }

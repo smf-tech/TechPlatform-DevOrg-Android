@@ -151,7 +151,7 @@ public class RepeatEventActivity extends BaseActivity implements View.OnClickLis
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result", recurrence);
-        setResult(Activity.RESULT_OK, returnIntent);
+        setResult(Constants.Planner.REPEAT_EVENT, returnIntent);
         finish();
     }
 

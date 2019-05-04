@@ -114,7 +114,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false,false);
+        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
@@ -159,7 +159,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         etRepeat.setText(event.getRepeat());
         etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
-        if(toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
             setAdapter(event.getMembersList());
         }
     }
@@ -210,7 +210,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.et_add_members:
                 Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
-                this.startActivity(intentAddMemberFilerActivity);
+                this.startActivityForResult(intentAddMemberFilerActivity, Constants.Planner.MEMBER_LIST);
                 break;
 
             case R.id.bt_repeat:
@@ -285,18 +285,29 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1) {
-        if (resultCode == Activity.RESULT_OK) {
-            recurrence = (Recurrence) data.getSerializableExtra("result");
-            btRepeat.setText(recurrence.getType());
+        if (requestCode == Constants.Planner.REPEAT_EVENT) {
+//            if (resultCode == Activity.RESULT_OK) {
+                recurrence = (Recurrence) data.getSerializableExtra("result");
+                btRepeat.setText(recurrence.getType());
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
+        } else if(requestCode == Constants.Planner.MEMBER_LIST) {
+//            if (resultCode == Activity.RESULT_OK) {
+                membersList = (ArrayList<Participant>) data.getSerializableExtra("result");
+//                addMembersListAdapter.notifyDataSetChanged();
+            RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
+            addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            rvAttendeesList.setLayoutManager(mLayoutManager);
+            rvAttendeesList.setAdapter(addMembersListAdapter);
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
         }
-
-        if (resultCode == Activity.RESULT_CANCELED) {
-            //Write your code if there's no result
-        }
-//        }
     }
 
     @Override

@@ -240,6 +240,7 @@ public class Constants {
     public static class Planner {
 
         public static final Integer REPEAT_EVENT = 001;
+        public static final Integer MEMBER_LIST = 002;
 
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN = "ToOpen";
