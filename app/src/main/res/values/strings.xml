@@ -284,7 +284,8 @@
         <item>Category</item>
         <item>Meeting</item>
         <item>Event</item>
-        <item>Task</item>
+        <item>Tasks</item>
+        <item>Trainings</item>
     </string-array>
 
     <string-array name="repeat_array">

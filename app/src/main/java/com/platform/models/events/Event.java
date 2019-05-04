@@ -1,5 +1,8 @@
 package com.platform.models.events;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,6 @@ public class Event implements Serializable {
     private String address;
     private String owner;
     private String ownerID;
-    private String status;
     private ArrayList<Participant> membersList = new ArrayList<>();
     private ArrayList<TaskForm> formsList = new ArrayList<>();
 
@@ -116,14 +118,6 @@ public class Event implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public ArrayList<Participant> getMembersList() {
         return membersList;
     }
@@ -142,16 +136,41 @@ public class Event implements Serializable {
 
     ///////////////////////////////////
 
+    @SerializedName("eventType")
+    @Expose
     private String eventType;
+    @SerializedName("eventStartDateTime")
+    @Expose
     private Long eventStartDateTime;
+    @SerializedName("eventEndDateTime")
+    @Expose
     private Long eventEndDateTime;
+    @SerializedName("eventLocation")
+    @Expose
     private EventLocation eventLocation;
+    @SerializedName("organizer")
+    @Expose
     private String organizer;
+    @SerializedName("agenda")
+    @Expose
     private String agenda;
+    @SerializedName("eventDescription")
+    @Expose
     private String eventDescription;
+    @SerializedName("eventName")
+    @Expose
     private String eventName;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("duration")
+    @Expose
     private String duration;
+    @SerializedName("recurrence")
+    @Expose
     private Recurrence recurrence;
+    @SerializedName("participants")
+    @Expose
     private List<Participant> participants = null;
 
     public String getEventType() {
@@ -216,6 +235,14 @@ public class Event implements Serializable {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDuration() {

@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventLocation;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Recurrence;
 import com.platform.presenter.CreateEventActivityPresenter;
@@ -227,14 +228,20 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private void submitDetails() {
 
         Event event = new Event();
+        EventLocation eLocation = new EventLocation();
+        eLocation.setAddress(etAddress.getText().toString());
         event.setEventType(spCategory.getSelectedItem().toString());
-        event.setTitle(etTitle.getText().toString());
+        event.setEventName(etTitle.getText().toString());
         event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-        event.setStarTime(etStartTime.getText().toString());
-        event.setEndTime(etEndTime.getText().toString());
+        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+//        event.setStarTime(etStartTime.getText().toString());
+//        event.setEndTime(etEndTime.getText().toString());
+        event.setOrganizer(Util.getUserObjectFromPref().getId());
         event.setRecurrence(recurrence);
         event.setEventDescription(etDescription.getText().toString());
-        event.setAddress(etAddress.getText().toString());
+        event.setEventLocation(eLocation);
+        event.setStatus(Constants.Planner.PLANNED_STATUS);
+        event.setParticipants(membersList);
 
         //put in response of above api
         createEventPresenter.submitEvent(event);
