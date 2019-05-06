@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             ((HomeActivity) context).setSyncClickListener(this);
         }
 
+        String str=getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
         dialogNotApproved = new AlertDialog.Builder(context).create();
         AppEvents.trackAppEvent(getString(R.string.event_home_screen_visit));
     }

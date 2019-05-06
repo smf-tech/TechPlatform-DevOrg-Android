@@ -13,7 +13,6 @@
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
         android:maxLines="1"
-        android:text="Sagar Mahajan"
         android:textColor="@color/tab_select"
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold" />
@@ -24,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_member_name"
         android:layout_marginStart="@dimen/dimen_10dp"
-        android:text="Taluka Coordinator"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_11" />
 

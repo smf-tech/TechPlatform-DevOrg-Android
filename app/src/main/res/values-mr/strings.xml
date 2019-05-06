@@ -299,20 +299,61 @@
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
-    <string name="task_form_list_screen_msg">"Forms are required for this task."</string>
+    <string name="task_formlist_screen_msg">" फॉर्म या कार्यसाठी आवश्यक आहेत."</string>
+    <string name="create_filter_screen_msg">"सदस्य जोडण्यापूर्वी फिल्टर तयार करा."</string>
+    <string name="owner_name">निर्माता नाव</string>
+    <string name="attended_label">" उपस्थित होते."</string>
+    <string name="not_attended_label">" उपस्थित नव्हते."</string>
+    <string name="never_label">कधीही नाही</string>
+    <string name="mark_completed">Mark as completed</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">प्रत्येक महिन्यासाठी समान तारीख</string>
     <string name="sure_to_delete">आपणास खात्री आहे की आपण ते हटवू इच्छिता ?</string>
     <string name="delete">हटवा</string>
     <string name="leave_apply_msg1">एकदा आपल्याला आपल्या व्यवस्थापकाकडून मंजुरी मिळाल्यावर आपण सुट्टी शिल्लक पाहू शकाल</string>
     <string name="leave_apply_msg">आपण %1$s वरून %2$s ते %3$s साठी अर्ज केला</string>
-    <string name="edit">Edit</string>
-    <string name="this_event_only">This event only</string>
-    <string name="all_events_in_series">All events in series</string>
+    <string name="which_day">कोणते दिवस</string>
+    <string name="select_all">सर्व निवडा</string>
+    <string-array name="repeat_array">
+        <item>कधीही नाही</item>
+        <item>दररोज</item>
+        <item>साप्ताहिक</item>
+        <item>मासिक</item>
+    </string-array>
+
+    <string-array name="repeat_daily">
+        <item>१ दिवस</item>
+        <item>२ दिवस</item>
+        <item>३ दिवस</item>
+        <item>४ दिवस</item>
+        <item>५ दिवस</item>
+        <item>६ दिवस</item>
+        <item>७ दिवस</item>
+        <item>८ दिवस</item>
+        <item>९ दिवस</item>
+        <item>१० दिवस</item>
+    </string-array>
+
+    <string-array name="repeat_weeks">
+        <item>१ आठवडा</item>
+        <item>२ आठवडे</item>
+        <item>३ आठवडे</item>
+    </string-array>
+
+    <string-array name="repeat_months">
+        <item>1 महीना</item>
+        <item>2 महीने</item>
+        <item>3 महीने</item>
+    </string-array>
+
+    <string name="edit">संपादित करा</string>
+    <string name="this_event_only">केवळ हा कार्यक्रम</string>
+    <string name="all_events_in_series">मालिका सर्व कार्यक्रम</string>
+    <string name="separator">|</string>
     <string name="please_wait">कृपया थांबा…</string>
     <string name="holiday_list">सुट्टीची यादी</string>
     <string name="edit_leave">सुट्टी संपादित करा</string>
     <string name="apply_leave">सुट्टीसाठी अर्ज करा</string>
-
 
 </resources>

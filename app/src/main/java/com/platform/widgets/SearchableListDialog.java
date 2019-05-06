@@ -16,6 +16,7 @@
 
 package com.platform.widgets;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -52,8 +53,8 @@ public class SearchableListDialog extends DialogFragment implements
     private SearchView _searchView;
 
     private String _strTitle;
+    @SuppressWarnings("unused")
     private String _strPositiveButtonText;
-    private DialogInterface.OnClickListener _onClickListener;
 
     public SearchableListDialog() {
 
@@ -100,14 +101,14 @@ public class SearchableListDialog extends DialogFragment implements
         }
         // Change End
 
-        View rootView = inflater.inflate(R.layout.searchable_list_dialog, null);
+        @SuppressLint("InflateParams") View rootView = inflater.inflate(R.layout.searchable_list_dialog, null);
         setData(rootView);
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setView(rootView);
 
-        String strPositiveButton = _strPositiveButtonText == null ? "CLOSE" : _strPositiveButtonText;
-        alertDialog.setPositiveButton(strPositiveButton, _onClickListener);
+//        String strPositiveButton = _strPositiveButtonText == null ? "CLOSE" : _strPositiveButtonText;
+//        alertDialog.setPositiveButton(strPositiveButton, _onClickListener);
 
         String strTitle = _strTitle == null ? "Select Item" : _strTitle;
         alertDialog.setTitle(strTitle);
@@ -115,6 +116,7 @@ public class SearchableListDialog extends DialogFragment implements
         final AlertDialog dialog = alertDialog.create();
         Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        setCancelable(false);
         return dialog;
     }
 
@@ -139,9 +141,10 @@ public class SearchableListDialog extends DialogFragment implements
         _strPositiveButtonText = strPositiveButtonText;
     }
 
+    @SuppressWarnings({"UnnecessaryLocalVariable", "unused"})
     public void setPositiveButton(String strPositiveButtonText, DialogInterface.OnClickListener onClickListener) {
         _strPositiveButtonText = strPositiveButtonText;
-        _onClickListener = onClickListener;
+        DialogInterface.OnClickListener _onClickListener = onClickListener;
     }
 
     public void setOnSearchableItemClickListener(SearchableItem searchableItem) {
@@ -152,6 +155,7 @@ public class SearchableListDialog extends DialogFragment implements
         this._onSearchTextChanged = onSearchTextChanged;
     }
 
+    @SuppressWarnings({"ConstantConditions", "unchecked"})
     private void setData(View rootView) {
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
@@ -221,7 +225,7 @@ public class SearchableListDialog extends DialogFragment implements
         this._adapterFactory = adapterFactory;
     }
 
-
+    @SuppressWarnings("unused")
     public interface SearchableItem<T> extends Serializable {
         void onSearchableItemClicked(T item, int position);
     }

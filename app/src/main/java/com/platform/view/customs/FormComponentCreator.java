@@ -39,6 +39,7 @@ import com.platform.models.forms.FormData;
 import com.platform.models.forms.Validator;
 import com.platform.presenter.FormActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.MathEval;
 import com.platform.utility.Permissions;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
@@ -73,6 +74,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     private HashMap<DropDownTemplate, Elements> dropDownElementsHashMap = new HashMap<>();
     private HashMap<ImageView, Elements> imageViewElementsHashMap = new HashMap<>();
     private HashMap<String, List<DropDownTemplate>> dependencyMap = new HashMap<>();
+    private HashMap<List<String>, EditText> defaultValueMap = new HashMap<>();
     private HashMap<String, EditText> editTextWithNameMap = new HashMap<>();
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
@@ -303,6 +305,35 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    for (Map.Entry<List<String>, EditText> entry : defaultValueMap.entrySet()) {
+                        List<String> dependentElements = entry.getKey();
+                        StringBuilder expression = new StringBuilder();
+                        MathEval math = new MathEval();
+                        if (dependentElements.contains(formData.getName())) {
+                            for (int index = 0; index < dependentElements.size(); index++) {
+                                EditText dependentComponent = editTextWithNameMap.get("{" + dependentElements.get(index) + "}");
+                                expression.append(dependentElements.get(index));
+                                if (dependentComponent != null) {
+                                    if (!TextUtils.isEmpty(dependentComponent.getText().toString())) {
+                                        math.setVariable(dependentElements.get(index),
+                                                Double.parseDouble(dependentComponent.getText().toString()));
+                                    } else {
+                                        math.setVariable(dependentElements.get(index),
+                                                0);
+                                    }
+                                }
+                            }
+                            entry.getValue().setText(String.valueOf(math.evaluate(expression.toString())));
+                        }
+                    }
+
+//                    String testLex = "(tractor_trips)*3+(tipper_trips)*8";
+//                    Pattern pattern = Pattern.compile("(?=[/*])|(?<=[/*])");
+//                    final String[] split = pattern.split(testLex);
+//                    for(String curStr : split){
+//                        System.out.println("Token "+": "+ curStr);
+//                    }
+
                     if (!TextUtils.isEmpty(formData.getName()) && !TextUtils.isEmpty(charSequence.toString())) {
                         if (!TextUtils.isEmpty(formData.getInputType()) &&
                                 formData.getInputType().equalsIgnoreCase(Constants.FormInputType.INPUT_TYPE_DATE)) {
@@ -324,6 +355,21 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             editTexts.add(textInputField);
             editTextElementsHashMap.put(textInputField, formData);
             editTextWithNameMap.put("{" + formData.getName() + "}", textInputField);
+
+            if (!TextUtils.isEmpty(formData.getDefaultValue())) {
+                StringTokenizer defaultValueTokenizer = new StringTokenizer(formData.getDefaultValue(), "()");
+                List<String> dependentElements = new ArrayList<>();
+                while (defaultValueTokenizer.hasMoreTokens()) {
+                    dependentElements.add(defaultValueTokenizer.nextToken());
+                }
+                defaultValueMap.put(dependentElements, textInputField);
+            }
+
+            if (formData.getReadOnly() != null && formData.getReadOnly()) {
+                textInputField.setEnabled(!formData.getReadOnly());
+            } else {
+                textInputField.setEnabled(true);
+            }
 
             TextInputLayout textInputLayout = textTemplateView.findViewById(R.id.text_input_form_text_template);
             if (formData.isRequired() != null) {

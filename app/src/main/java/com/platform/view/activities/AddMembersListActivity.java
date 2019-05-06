@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,17 +19,17 @@ import com.platform.view.adapters.AddMembersListAdapter;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AddMembersListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
+public class AddMembersListActivity extends BaseActivity implements SearchView.OnQueryTextListener,
         View.OnClickListener {
 
     private AddMembersListAdapter addMembersListAdapter;
     private ArrayList<Participant> membersList = new ArrayList<>();
     private ArrayList<Participant> filterMembersList = new ArrayList<>();
-    SearchView editSearch;
-    CheckBox cbSelectAllMembers;
+    private SearchView editSearch;
+    private CheckBox cbSelectAllMembers;
     private ImageView toolbarAction;
     private ImageView ivBackIcon;
-    boolean isNewMembersList;
+    private boolean isNewMembersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +72,14 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
                 }
             }
 
-            tvAttended.setText(attendedCount + " Attended");
-            tvNotAttended.setText(membersList.size() - attendedCount + " Not Attended");
+            tvAttended.setText(attendedCount + getString(R.string.attended_label));
+            tvNotAttended.setText(membersList.size() - attendedCount + getString(R.string.not_attended_label));
         }
 
         filterMembersList.addAll(membersList);
         checkAllSelected(membersList);
         RecyclerView rvMembers = findViewById(R.id.rv_members);
-        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList, true);
+        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this, membersList, true,isNewMembersList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvMembers.setLayoutManager(mLayoutManager);
@@ -98,7 +97,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
     public void checkAllSelected(ArrayList<Participant> membersList) {
         boolean allCheck = true;
         for (int i = 0; i < membersList.size(); i++) {
-            if (!membersList.get(i).getMemberSelected()) {
+            if (membersList.get(i).getMemberSelected()!= null && !membersList.get(i).getMemberSelected()) {
                 allCheck = false;
                 break;
             }
@@ -127,7 +126,7 @@ public class AddMembersListActivity extends AppCompatActivity implements SearchV
         return false;
     }
 
-    public void filter(String searchText) {
+    private void filter(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
         membersList.clear();
         if (searchText.length() > 0) {

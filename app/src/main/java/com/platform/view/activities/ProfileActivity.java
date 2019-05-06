@@ -81,27 +81,27 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         UserLocation userLocation = userInfo.getUserLocation();
         if (userLocation.getStateId() != null && userLocation.getStateId().size() > 0) {
             String states = getStringValue(userLocation.getStateId());
-            setJurisdictionLevel(parent, Constants.JurisdictionLevelName.STATE_LEVEL, states);
+            setJurisdictionLevel(parent, getString(R.string.state), states);
         }
 
         if (userLocation.getDistrictIds() != null && userLocation.getDistrictIds().size() > 0) {
             String districts = getStringValue(userLocation.getDistrictIds());
-            setJurisdictionLevel(parent, Constants.JurisdictionLevelName.DISTRICT_LEVEL, districts);
+            setJurisdictionLevel(parent, getString(R.string.district), districts);
         }
 
         if (userLocation.getTalukaIds() != null && userLocation.getTalukaIds().size() > 0) {
             String taluka = getStringValue(userLocation.getTalukaIds());
-            setJurisdictionLevel(parent, Constants.JurisdictionLevelName.TALUKA_LEVEL, taluka);
+            setJurisdictionLevel(parent, getString(R.string.taluka), taluka);
         }
 
         if (userLocation.getVillageIds() != null && userLocation.getVillageIds().size() > 0) {
             String villages = getStringValue(userLocation.getVillageIds());
-            setJurisdictionLevel(parent, Constants.JurisdictionLevelName.VILLAGE_LEVEL, villages);
+            setJurisdictionLevel(parent, getString(R.string.village), villages);
         }
 
         if (userLocation.getClusterIds() != null && userLocation.getClusterIds().size() > 0) {
             String clusters = getStringValue(userLocation.getClusterIds());
-            setJurisdictionLevel(parent, Constants.JurisdictionLevelName.CLUSTER_LEVEL, clusters);
+            setJurisdictionLevel(parent, getString(R.string.cluster), clusters);
         }
     }
 

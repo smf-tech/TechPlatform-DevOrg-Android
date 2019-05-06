@@ -153,4 +153,12 @@ public class FormSpinnerAdapter extends ArrayAdapter<Choice> implements Filterab
 
         return filter;
     }
+
+    public void setData(List<Choice> filteredObjects) {
+        this.filteredObjects = filteredObjects;
+    }
+
+    public List<Choice> getOriginalObjects() {
+        return originalObjects;
+    }
 }

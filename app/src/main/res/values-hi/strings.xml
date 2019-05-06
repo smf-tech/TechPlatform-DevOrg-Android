@@ -273,7 +273,14 @@
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
-    <string name="task_form_list_screen_msg">"Forms are required for this task."</string>
+    <string name="task_formlist_screen_msg">" प्रपत्र इस कार्य के लिए आवश्यक हैं"</string>
+    <string name="create_filter_screen_msg">"सदस्य जोड़ने से पहले फ़िल्टर बनाएं"</string>
+    <string name="owner_name">निर्माता का नाम</string>
+    <string name="select_all">सभी का चयन करे</string>
+    <string name="attended_label">" उपस्थित थे"</string>
+    <string name="not_attended_label">" उपस्थित नहीं थे"</string>
+    <string name="never_label">कभी नहीँ</string>
+    <string name="mark_completed">Mark as completed</string>
 
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
@@ -306,9 +313,43 @@
     <string name="delete">हटाना</string>
     <string name="leave_apply_msg1">एक बार जब आप अपने प्रबंधक से स्वीकृति प्राप्त कर लेंगे, तो आप अवकाश शेष देख पाएंगे</string>
     <string name="leave_apply_msg">आपने %2$s से %3$s पर %1​​$s के पत्तों के लिए आवेदन किया</string>
-    <string name="edit">Edit</string>
-    <string name="this_event_only">This event only</string>
-    <string name="all_events_in_series">All events in series</string>
+    <string name="edit">संपादित करें</string>
+    <string name="this_event_only">केवल यह घटना</string>
+    <string name="all_events_in_series">श्रृंखला में सभी घटनाएँ</string>
+    <string name="separator">|</string>
+    <string name="which_day">कौन से दिनों में</string>
+    <string-array name="repeat_array">
+        <item>कभी नहीँ</item>
+        <item>रोज</item>
+        <item>साप्ताहिक</item>
+        <item>महीने के</item>
+    </string-array>
+
+    <string-array name="repeat_daily">
+        <item>१ दिन</item>
+        <item>२ दिन</item>
+        <item>३ दिन</item>
+        <item>४ दिन</item>
+        <item>५ दिन</item>
+        <item>६ दिन</item>
+        <item>७ दिन</item>
+        <item>८ दिन</item>
+        <item>९ दिन</item>
+        <item>१० दिन</item>
+
+    </string-array>
+
+    <string-array name="repeat_weeks">
+        <item>१ सप्ताह</item>
+        <item>२ सप्ताह</item>
+        <item>३ सप्ताह</item>
+    </string-array>
+
+    <string-array name="repeat_months">
+        <item>1 महीना</item>
+        <item>2 महीने</item>
+        <item>3 महीने</item>
+    </string-array>
     <string name="please_wait">कृपया प्रतीक्षा करें…</string>
     <string name="holiday_list">छुट्टी की सूची</string>
     <string name="edit_leave">अवकाश संपादित करें</string>

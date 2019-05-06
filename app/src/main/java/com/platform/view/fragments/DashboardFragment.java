@@ -75,9 +75,9 @@ public class DashboardFragment extends Fragment {
                     List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
                     for (final Modules tabName : tabNames) {
                         for (Modules module : defaultModules) {
-                           // if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
+                            if (tabName.getName().getLocaleValue().equalsIgnoreCase(module.getName().getLocaleValue())) {
                                 tabName.setActive(true);
-                           //}
+                            }
                         }
                     }
                 } else {

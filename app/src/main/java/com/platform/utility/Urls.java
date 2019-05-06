@@ -43,6 +43,6 @@ public class Urls {
         public static final String GET_CATEGORY = "api/event-types";
         public static final String GET_EVENTS = "api/events";
         public static final String GET_MEMBERS_LIST = "api/users";
-        public static final String SUBMIT_EVENT= "api/users";
+        public static final String SUBMIT_EVENT= "api/events";
     }
 }

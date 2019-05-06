@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.AddMemberRequestCallListener;
+import com.platform.models.events.MemberListResponse;
 import com.platform.models.events.ParametersFilterMember;
+import com.platform.models.events.Participant;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
@@ -15,21 +17,22 @@ import com.platform.utility.Util;
 import com.platform.view.activities.AddMembersFilterActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
-public class AddMemberFilerActivityPresenter implements AddMemberRequestCallListener {
-    private final String TAG = AddMemberFilerActivityPresenter.class.getName();
-    private WeakReference<AddMembersFilterActivity> addMemberFilerActivity;
+public class AddMemberFilterActivityPresenter implements AddMemberRequestCallListener {
+    private final String TAG = AddMemberFilterActivityPresenter.class.getName();
+    private WeakReference<AddMembersFilterActivity> addMemberFilterActivity;
 
 
-    public AddMemberFilerActivityPresenter(AddMembersFilterActivity addMembersFilterActivity) {
-        this.addMemberFilerActivity = new WeakReference<>(addMembersFilterActivity);
+    public AddMemberFilterActivityPresenter(AddMembersFilterActivity addMembersFilterActivity) {
+        this.addMemberFilterActivity = new WeakReference<>(addMembersFilterActivity);
     }
 
     public void getOrganizations() {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
-        addMemberFilerActivity.get().showProgressBar();
+        addMemberFilterActivity.get().showProgressBar();
         requestCall.getOrganizations();
     }
 
@@ -37,7 +40,7 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
-        addMemberFilerActivity.get().showProgressBar();
+        addMemberFilterActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);
     }
 
@@ -45,7 +48,7 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
-        addMemberFilerActivity.get().showProgressBar();
+        addMemberFilterActivity.get().showProgressBar();
         requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
     }
 
@@ -53,8 +56,8 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
         EventRequestCall requestCall=new EventRequestCall();
         requestCall.setAddMemberRequestCallListener(this);
 
-        addMemberFilerActivity.get().showProgressBar();
-        requestCall.getMemberList();
+        addMemberFilterActivity.get().showProgressBar();
+        requestCall.getMemberList(parametersFilter);
     }
 
     @Override
@@ -64,14 +67,14 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
 
     @Override
     public void onOrganizationsFetched(String response) {
-        addMemberFilerActivity.get().hideProgressBar();
+        addMemberFilterActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             Util.saveUserOrgInPref(response);
             OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
             if (orgResponse != null && orgResponse.getData() != null
                     && !orgResponse.getData().isEmpty()
                     && orgResponse.getData().size() > 0) {
-                addMemberFilerActivity.get().showOrganizations(orgResponse.getData());
+                addMemberFilterActivity.get().showOrganizations(orgResponse.getData());
             }
         }
     }
@@ -83,7 +86,7 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
 
     @Override
     public void onOrganizationRolesFetched(String orgId, String response) {
-        addMemberFilerActivity.get().hideProgressBar();
+        addMemberFilterActivity.get().hideProgressBar();
 
         if (!TextUtils.isEmpty(response)) {
             Util.saveUserRoleInPref(orgId, response);
@@ -92,14 +95,14 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
 
             if (orgRolesResponse != null && orgRolesResponse.getData() != null &&
                     !orgRolesResponse.getData().isEmpty() && orgRolesResponse.getData().size() > 0) {
-                addMemberFilerActivity.get().showOrganizationRoles(orgRolesResponse.getData());
+                addMemberFilterActivity.get().showOrganizationRoles(orgRolesResponse.getData());
             }
         }
     }
 
     @Override
     public void onJurisdictionFetched(String response, String level) {
-        addMemberFilerActivity.get().hideProgressBar();
+        addMemberFilterActivity.get().hideProgressBar();
 
         if (!TextUtils.isEmpty(response)) {
             JurisdictionLevelResponse jurisdictionLevelResponse
@@ -109,40 +112,39 @@ public class AddMemberFilerActivityPresenter implements AddMemberRequestCallList
                     && !jurisdictionLevelResponse.getData().isEmpty()
                     && jurisdictionLevelResponse.getData().size() > 0) {
 
-                addMemberFilerActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
+                addMemberFilterActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
             }
         }
     }
 
     @Override
     public void onMembersFetched(String response) {
-        addMemberFilerActivity.get().hideProgressBar();
+        addMemberFilterActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             Util.saveUserOrgInPref(response);
-//            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
-//            if (orgResponse != null && orgResponse.getData() != null
-//                    && !orgResponse.getData().isEmpty()
-//                    && orgResponse.getData().size() > 0) {
-//                addMemberFilerActivity.get().showMember(orgResponse.getData());
-//                addMemberFilerActivity.get().showMember(memberList);
-//            }
+            MemberListResponse memberListResponse = new Gson().fromJson(response, MemberListResponse.class);
+            if (memberListResponse != null && memberListResponse.getData() != null
+                    && !memberListResponse.getData().isEmpty()
+                    && memberListResponse.getData().size() > 0) {
+                addMemberFilterActivity.get().showMember((ArrayList<Participant>) memberListResponse.getData());
+            }
         }
     }
 
     @Override
     public void onFailureListener(String message) {
-        if (addMemberFilerActivity != null && addMemberFilerActivity.get() != null) {
-            addMemberFilerActivity.get().hideProgressBar();
-            addMemberFilerActivity.get().showErrorMessage(message);
+        if (addMemberFilterActivity != null && addMemberFilterActivity.get() != null) {
+            addMemberFilterActivity.get().hideProgressBar();
+            addMemberFilterActivity.get().showErrorMessage(message);
         }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        if (addMemberFilerActivity != null && addMemberFilerActivity.get() != null) {
-            addMemberFilerActivity.get().hideProgressBar();
+        if (addMemberFilterActivity != null && addMemberFilterActivity.get() != null) {
+            addMemberFilterActivity.get().hideProgressBar();
             if (error != null) {
-                addMemberFilerActivity.get().showErrorMessage(error.getLocalizedMessage());
+                addMemberFilterActivity.get().showErrorMessage(error.getLocalizedMessage());
             }
         }
     }

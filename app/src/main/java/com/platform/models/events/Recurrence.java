@@ -1,13 +1,16 @@
 package com.platform.models.events;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class Recurrence implements Serializable {
-    String interval;
-    String dayOfWeek;
-    String dayOfMonth;
-    String lastDate;
+    private String interval;
+    private String dayOfWeek;
+    private String dayOfMonth;
+    private String lastDate;
 
     public String getInterval() {
         return interval;
@@ -43,7 +46,11 @@ public class Recurrence implements Serializable {
 
     //////
 
+    @SerializedName("type")
+    @Expose
     private String type;
+    @SerializedName("days")
+    @Expose
     private List<Integer> days = null;
 
     public String getType() {

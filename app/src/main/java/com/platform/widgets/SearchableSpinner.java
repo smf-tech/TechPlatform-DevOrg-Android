@@ -31,22 +31,24 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
 import com.platform.R;
+import com.platform.view.adapters.FormSpinnerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressWarnings("CanBeFinal")
 @SuppressLint("AppCompatCustomView")
 public class SearchableSpinner extends Spinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
-    public static final int NO_ITEM_SELECTED = -1;
+    private static final int NO_ITEM_SELECTED = -1;
 
-    private Context _context;
+    private transient Context _context;
 
     private List _items;
-    private SearchableListDialog _searchableListDialog;
+    private transient SearchableListDialog _searchableListDialog;
 
     private boolean _isDirty;
-    private ArrayAdapter _arrayAdapter;
+    private transient ArrayAdapter _arrayAdapter;
     private String _strHintText;
     private boolean _isFromInit;
 
@@ -82,6 +84,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
     }
 
 
+    @SuppressWarnings("unchecked")
     private void init() {
         _items = new ArrayList();
         _searchableListDialog = SearchableListDialog.newInstance(_items);
@@ -98,6 +101,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -109,6 +113,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
                 // Description: The items were only set initially, not reloading the data in the
 
                 // spinner every time it is loaded with items in the adapter.
+                ((FormSpinnerAdapter) getAdapter()).setData(((FormSpinnerAdapter) getAdapter()).getOriginalObjects());
                 _items.clear();
                 for (int i = 0; i < _arrayAdapter.getCount(); i++)
                     _items.add(_arrayAdapter.getItem(i));
@@ -120,6 +125,7 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
         if (!_isFromInit) {
@@ -155,16 +161,17 @@ public class SearchableSpinner extends Spinner implements View.OnTouchListener, 
     }
 
 
+    @SuppressWarnings("unused")
     public void setPositiveButton(String strPositiveButtonText) {
         _searchableListDialog.setPositiveButton(strPositiveButtonText);
     }
 
-
+    @SuppressWarnings("unused")
     public void setPositiveButton(String strPositiveButtonText, DialogInterface.OnClickListener onClickListener) {
         _searchableListDialog.setPositiveButton(strPositiveButtonText, onClickListener);
     }
 
-
+    @SuppressWarnings("unused")
     public void setOnSearchTextChangedListener(SearchableListDialog.OnSearchTextChanged onSearchTextChanged) {
         _searchableListDialog.setOnSearchTextChangedListener(onSearchTextChanged);
     }

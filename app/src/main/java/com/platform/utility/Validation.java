@@ -83,7 +83,7 @@ public class Validation {
                                               String field3Value, String inputType, Validator validator,
                                               Context context) {
 
-        if (validator != null && !TextUtils.isEmpty(validator.getExpression())) {
+        if (validator != null && !TextUtils.isEmpty(validator.getExpression()) && !TextUtils.isEmpty(inputType)) {
             switch (inputType) {
                 case Constants.FormInputType.INPUT_TYPE_DATE:
                     SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());

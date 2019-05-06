@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventLocation;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Recurrence;
 import com.platform.presenter.CreateEventActivityPresenter;
@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, PlatformTaskListener {
+public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
@@ -50,6 +50,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private Spinner spCategory;
     private EditText etTitle;
     private EditText etStartDate;
+    private EditText etEndDate;
     private EditText etStartTime;
     private EditText etEndTime;
     private EditText etRepeat;
@@ -62,6 +63,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private CreateEventActivityPresenter createEventPresenter;
+    String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,16 +76,18 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private void initView() {
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
-        CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
+        createEventPresenter = new CreateEventActivityPresenter(this);
+        recurrence = new Recurrence();
         createEventPresenter.getEventCategory();
 
-        String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
+        toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         spCategory = findViewById(R.id.sp_category);
         etTitle = findViewById(R.id.et_title);
         etStartDate = findViewById(R.id.et_start_date);
+        etEndDate = findViewById(R.id.et_end_date);
         etStartTime = findViewById(R.id.et_start_time);
         etEndTime = findViewById(R.id.et_end_time);
         etRepeat = findViewById(R.id.et_repeat);
@@ -95,7 +99,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
 
-        btRepeat.setText("Never");
+        btRepeat.setText(R.string.never_label);
 
         // Task Module UI changes
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
@@ -112,7 +116,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false);
+        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false,false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
@@ -120,6 +124,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
+                etEndDate.setText(event.getEndDate());
+                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
             }
@@ -134,6 +140,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.create_task));
+                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
                 btEventSubmit.setText(getString(R.string.create_task));
             } else {
                 setActionbar(getString(R.string.create_event));
@@ -154,12 +161,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         etRepeat.setText(event.getRepeat());
         etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
-        setAdapter(event.getMembersList());
+        if(toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+            setAdapter(event.getMembersList());
+        }
     }
 
     private void setListeners() {
         ivBackIcon.setOnClickListener(this);
         etStartDate.setOnClickListener(this);
+        etEndDate.setOnClickListener(this);
         etStartTime.setOnClickListener(this);
         etEndTime.setOnClickListener(this);
         etAddMembers.setOnClickListener(this);
@@ -188,6 +198,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                 Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_start_date));
                 break;
 
+            case R.id.et_end_date:
+                Util.showDateDialog(CreateEventActivity.this, findViewById(R.id.et_end_date));
+                break;
+
             case R.id.et_start_time:
                 Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_start_time));
                 break;
@@ -214,21 +228,26 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private void submitDetails() {
 
         Event event = new Event();
-
+        EventLocation eLocation = new EventLocation();
+        eLocation.setAddress(etAddress.getText().toString());
         event.setEventType(spCategory.getSelectedItem().toString());
-        event.setTitle(etTitle.getText().toString());
+        event.setEventName(etTitle.getText().toString());
         event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-        event.setStarTime(etStartTime.getText().toString());
-        event.setEndTime(etEndTime.getText().toString());
-        event.setRepeat(recurrence.getType());
+        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+//        event.setStarTime(etStartTime.getText().toString());
+//        event.setEndTime(etEndTime.getText().toString());
+        event.setOrganizer(Util.getUserObjectFromPref().getId());
+        event.setRecurrence(recurrence);
         event.setEventDescription(etDescription.getText().toString());
-        event.setAddress(etAddress.getText().toString());
+        event.setEventLocation(eLocation);
+        event.setStatus(Constants.Planner.PLANNED_STATUS);
+        event.setParticipants(membersList);
 
         //put in response of above api
         createEventPresenter.submitEvent(event);
     }
 
-    public Long dateToTimeStamp(String strDate, String strTime) {
+    private Long dateToTimeStamp(String strDate, String strTime) {
         Date date;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
@@ -241,7 +260,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         return 0L;
     }
 
-    public String timeStampToDate(Long timeStamp) {
+    private String timeStampToDate(Long timeStamp) {
         try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
@@ -256,7 +275,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         return "";
     }
 
-    public String timeStampToTime(Long timeStamp) {
+    private String timeStampToTime(Long timeStamp) {
         try {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
@@ -278,7 +297,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 //        if (requestCode == 1) {
         if (resultCode == Activity.RESULT_OK) {
             recurrence = (Recurrence) data.getSerializableExtra("result");
-            btRepeat.setText(recurrence.getType());
+            if(recurrence.getType()!= null){
+                btRepeat.setText(recurrence.getType());
+            }
         }
 
         if (resultCode == Activity.RESULT_CANCELED) {
