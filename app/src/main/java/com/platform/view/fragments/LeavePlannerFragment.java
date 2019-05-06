@@ -21,6 +21,7 @@ import com.platform.listeners.LeaveDataListener;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.LeaveType;
 import com.platform.presenter.LeavesPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.GeneralActionsActivity;
@@ -129,12 +130,15 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
                     List<LeaveType> leaveTypes = leaveDetail.getLeaveTypes();
                     if (leaveTypes != null) {
                         for (LeaveType type : leaveTypes) {
-                            if (type.getLeaveType().equalsIgnoreCase("CL")) {
-                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                            } else if (type.getLeaveType().equalsIgnoreCase("Paid")) {
-                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                            } else if (type.getLeaveType().equalsIgnoreCase("CompOff")) {
-                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
+                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            } else if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
+                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            } else if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
+                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
                             }
                         }
 

@@ -29,6 +29,7 @@ import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.LeaveType;
 import com.platform.models.leaves.UserLeaves;
 import com.platform.presenter.LeavesPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 
@@ -64,7 +65,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public LeaveApplyFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,22 +127,25 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         int totalBalanceLeaves = leaveDetailModel.getBalanceLeaves();
                         tvTotalLeavesCount.setText(String.valueOf(totalBalanceLeaves));
                     }
+
                     List<LeaveType> leaveTypes = leaveDetailModel.getLeaveTypes();
                     if (leaveTypes != null) {
                         for (LeaveType type : leaveTypes) {
-                            if (type.getLeaveType().equalsIgnoreCase("CL")) {
-                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                            } else if (type.getLeaveType().equalsIgnoreCase("Paid")) {
-                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                            } else if (type.getLeaveType().equalsIgnoreCase("CompOff")) {
-                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
+                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            } else if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
+                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            } else if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
+                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
                             }
                         }
-
                     }
-
                 }
             }
+
             if (isEdit) {
                 String userLeaveDetail = bundle.getString("userLeaveDetails");
                 if (userLeaveDetail != null) {
@@ -158,7 +161,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private void setUserDataForEdit(UserLeaves leaveDetailModel) {
         edtReason.setText(leaveDetailModel.getReason());
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
         try {
             Date date = inputFormat.parse(leaveDetailModel.getFromDate());
             String formattedDate = outputFormat.format(date);
@@ -166,6 +169,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         try {
             Date date = inputFormat.parse(leaveDetailModel.getToDate());
             String formattedDate = outputFormat.format(date);
@@ -173,6 +177,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         boolean isHalfDay = leaveDetailModel.getIsHalfDay();
         if (isHalfDay) {
             onClick(btnHalfDay);
@@ -180,18 +185,19 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             onClick(btnFullDay);
         }
 
-        LeaveType leaveType = (leaveDetailModel.getLeaveTypes() != null && leaveDetailModel.getLeaveTypes().size() > 0) ? leaveDetailModel.getLeaveTypes().get(0) : null;
+        LeaveType leaveType = (leaveDetailModel.getLeaveTypes() != null &&
+                leaveDetailModel.getLeaveTypes().size() > 0) ? leaveDetailModel.getLeaveTypes().get(0) : null;
+
         if (leaveType != null) {
             String type = leaveType.getLeaveType();
-            if (type.equalsIgnoreCase("CL")) {
+            if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
                 onClick(btnCategoryCL);
-            } else if (type.equalsIgnoreCase("Paid")) {
+            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
                 onClick(btnCategoryPaid);
-            } else if (type.equalsIgnoreCase("CompOff")) {
+            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
                 onClick(btnCategoryCompOff);
             }
         }
-
     }
 
     @Override
@@ -257,7 +263,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         (datePicker, year12, month12, day12) -> {
                             Calendar calendar = Calendar.getInstance();
                             calendar.set(year12, month12, day12);
-                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
                             btnStartDate.setText(format.format(calendar.getTime()));
 
                         }, year, month, day);
@@ -274,7 +280,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
                             Calendar calendar = Calendar.getInstance();
                             calendar.set(year2, month2, day2);
-                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
                             btnEndDate.setText(format.format(calendar.getTime()));
 
                         }, year1, month1, day1);
@@ -291,7 +297,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             return;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
 
@@ -325,12 +331,12 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     @SuppressWarnings("deprecation")
     private String getCurrentDateInSpecificFormat(String currentCalDate, boolean isStart) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
         Date d = null;
         try {
             d = sdf.parse(currentCalDate);
             String dayNumberSuffix = getDayNumberSuffix(d.getDate());
-            @SuppressWarnings("SpellCheckingInspection") final String NEW_FORMAT = isStart ? " d'" + dayNumberSuffix + "' MMMM " : " d'" + dayNumberSuffix + "' MMMM yyyy";
+            final String NEW_FORMAT = isStart ? " d'" + dayNumberSuffix + "' MMMM " : " d'" + dayNumberSuffix + "' MMMM yyyy";
 
             sdf.applyPattern(NEW_FORMAT);
 
@@ -428,14 +434,14 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void onSuccessListener(String requestID,String response) {
         if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
             try {
-                showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected, getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
-                        getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false))
-                        , getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
+                showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected,
+                        getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
+                        getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false)),
+                        getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     @Override
