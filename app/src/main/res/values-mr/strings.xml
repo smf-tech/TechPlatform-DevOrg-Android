@@ -351,4 +351,9 @@
     <string name="this_event_only">केवळ हा कार्यक्रम</string>
     <string name="all_events_in_series">मालिका सर्व कार्यक्रम</string>
     <string name="separator">|</string>
+    <string name="please_wait">कृपया थांबा…</string>
+    <string name="holiday_list">सुट्टीची यादी</string>
+    <string name="edit_leave">सुट्टी संपादित करा</string>
+    <string name="apply_leave">सुट्टीसाठी अर्ज करा</string>
+
 </resources>

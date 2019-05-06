@@ -350,5 +350,9 @@
         <item>2 महीने</item>
         <item>3 महीने</item>
     </string-array>
+    <string name="please_wait">कृपया प्रतीक्षा करें…</string>
+    <string name="holiday_list">छुट्टी की सूची</string>
+    <string name="edit_leave">अवकाश संपादित करें</string>
+    <string name="apply_leave">छुट्टी के लिए आवेदन करें</string>
 
 </resources>
