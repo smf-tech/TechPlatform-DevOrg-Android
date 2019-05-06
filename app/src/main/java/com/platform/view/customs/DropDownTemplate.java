@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
@@ -20,8 +22,6 @@ import com.platform.widgets.PlatformSpinner;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.content.ContextCompat;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
@@ -157,12 +157,16 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         Choice selectedChoice = ((FormSpinnerAdapter) spinner.getAdapter()).getItem(i);
-        if (i != -1 && selectedChoice != null && !selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
-            TextView tv = (TextView) adapterView.getSelectedView();
-            if (tv != null) {
-                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
+        if (i != -1) {
+            if (selectedChoice != null && !selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
+                TextView tv = (TextView) adapterView.getSelectedView();
+                if (tv != null) {
+                    tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
+                }
+                dropDownValueSelectListener.onDropdownValueSelected(formData, selectedChoice.getValue(), formId);
+            } else if (selectedChoice != null && selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
+                dropDownValueSelectListener.onEmptyDropdownSelected(formData);
             }
-            dropDownValueSelectListener.onDropdownValueSelected(formData, selectedChoice.getValue(), formId);
         }
     }
 
