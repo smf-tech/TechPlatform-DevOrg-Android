@@ -5,16 +5,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.common.Template;
 import com.platform.view.adapters.TMAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings("CanBeFinal")
 public class TMActivity extends BaseActivity {

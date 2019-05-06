@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.MatrixDynamicDropDownValueSelectListener;
@@ -22,8 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
-import androidx.core.content.ContextCompat;
 
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListener {

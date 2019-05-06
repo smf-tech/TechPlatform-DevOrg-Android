@@ -11,14 +11,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.platform.R;
 import com.platform.models.forms.Choice;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class FormSpinnerAdapter extends ArrayAdapter<Choice> implements Filterable {
 

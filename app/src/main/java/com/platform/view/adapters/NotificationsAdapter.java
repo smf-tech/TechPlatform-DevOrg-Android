@@ -7,14 +7,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.platform.R;
 import com.platform.models.tm.PendingRequest;
 import com.platform.utility.Util;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.PendingRequestViewHolder> {

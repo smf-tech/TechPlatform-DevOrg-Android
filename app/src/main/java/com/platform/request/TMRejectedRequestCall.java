@@ -2,6 +2,8 @@ package com.platform.request;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -18,8 +20,6 @@ import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
 import org.json.JSONObject;
-
-import androidx.annotation.NonNull;
 
 public class TMRejectedRequestCall {
 

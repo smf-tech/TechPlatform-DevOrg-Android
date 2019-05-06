@@ -7,18 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-import com.platform.R;
-import com.platform.utility.AppEvents;
-import com.platform.utility.Util;
-import com.platform.view.activities.HomeActivity;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.platform.R;
+import com.platform.utility.AppEvents;
+import com.platform.utility.Util;
+import com.platform.view.activities.HomeActivity;
 
 public class PlannerFragment extends Fragment implements View.OnClickListener {
 

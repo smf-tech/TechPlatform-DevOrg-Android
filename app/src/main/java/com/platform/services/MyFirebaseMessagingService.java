@@ -9,18 +9,18 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.activities.EditProfileActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.LoginActivity;
-import com.platform.view.activities.EditProfileActivity;
-
-import androidx.core.app.NotificationCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 

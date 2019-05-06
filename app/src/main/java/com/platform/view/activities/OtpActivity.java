@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.platform.R;
 import com.platform.models.login.LoginInfo;
 import com.platform.utility.Constants;
 import com.platform.view.fragments.NewOtpFragment;
-
-import androidx.annotation.Nullable;
 
 public class OtpActivity extends BaseActivity implements View.OnClickListener {
 
