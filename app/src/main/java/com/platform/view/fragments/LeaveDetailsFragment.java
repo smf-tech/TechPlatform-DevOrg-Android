@@ -70,7 +70,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
 
         ImageView toolBarMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_edit_action);
-        toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
+    //    toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
+        toolBarMenu.setImageResource(R.drawable.ic_holiday_menu);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
 
         tvClickPending = view.findViewById(R.id.tv_tb_pending);

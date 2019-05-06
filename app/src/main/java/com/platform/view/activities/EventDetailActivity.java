@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -251,10 +252,14 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.bt_edit_attendance:
+                if(toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)){
                 Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
                 intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
                 intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
                 this.startActivity(intentAddMembersListActivity);
+                } else if(toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)){
+                    Toast.makeText(this, "Status marked as Completed.", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.tv_edit_this_event:
