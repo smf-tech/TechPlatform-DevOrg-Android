@@ -739,7 +739,14 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 for (DropDownTemplate dropDownTemplate :
                         dropDownTemplates) {
                     Elements dependentElement = dropDownTemplate.getFormData();
+
                     List<Choice> choiceValues = new ArrayList<>();
+                    Choice selectChoice = new Choice();
+                    selectChoice.setValue(fragment.get().getString(R.string.default_select));
+                    LocaleData localeData = new LocaleData(fragment.get().getString(R.string.default_select));
+                    selectChoice.setText(localeData);
+                    choiceValues.add(0, selectChoice);
+
                     dependentElement.setChoices(choiceValues);
                     dropDownTemplate.setFormData(dependentElement);
                     dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
