@@ -1,5 +1,8 @@
 package com.platform.models.events;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +10,13 @@ import java.util.List;
 public class Event implements Serializable {
     private String id;
     private String title;
+    private String endDate;
     private String starTime;
     private String endTime;
     private String repeat;
     private String address;
     private String owner;
     private String ownerID;
-    private String status;
     private ArrayList<Participant> membersList = new ArrayList<>();
     private ArrayList<TaskForm> formsList = new ArrayList<>();
 
@@ -21,19 +24,20 @@ public class Event implements Serializable {
 
     }
 
-    public Event(String id, String category, String title, Long startDate, String starTime,
-                 String endTime, String repeat, String description, String address, String owner,
+    public Event(String id, String category, String title, Long startDate, String endDate, String starTime,
+                 String endTime, Recurrence recurrence, String description, String address, String organizer,
                  String ownerID, String status, ArrayList<Participant> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.eventType = category;
         this.title = title;
         this.eventStartDateTime = startDate;
+        this.endDate = endDate;
         this.starTime = starTime;
         this.endTime = endTime;
-        this.repeat = repeat;
+        this.recurrence = recurrence;
         this.eventDescription = description;
         this.address = address;
-        this.owner = owner;
+        this.organizer = organizer;
         this.ownerID = ownerID;
         this.status = status;
         this.membersList.addAll(membersList);
@@ -56,6 +60,14 @@ public class Event implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getStarTime() {
@@ -106,14 +118,6 @@ public class Event implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public ArrayList<Participant> getMembersList() {
         return membersList;
     }
@@ -132,16 +136,41 @@ public class Event implements Serializable {
 
     ///////////////////////////////////
 
+    @SerializedName("eventType")
+    @Expose
     private String eventType;
+    @SerializedName("eventStartDateTime")
+    @Expose
     private Long eventStartDateTime;
+    @SerializedName("eventEndDateTime")
+    @Expose
     private Long eventEndDateTime;
+    @SerializedName("eventLocation")
+    @Expose
     private EventLocation eventLocation;
+    @SerializedName("organizer")
+    @Expose
     private String organizer;
+    @SerializedName("agenda")
+    @Expose
     private String agenda;
+    @SerializedName("eventDescription")
+    @Expose
     private String eventDescription;
+    @SerializedName("eventName")
+    @Expose
     private String eventName;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("duration")
+    @Expose
     private String duration;
+    @SerializedName("recurrence")
+    @Expose
     private Recurrence recurrence;
+    @SerializedName("participants")
+    @Expose
     private List<Participant> participants = null;
 
     public String getEventType() {
@@ -206,6 +235,14 @@ public class Event implements Serializable {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDuration() {

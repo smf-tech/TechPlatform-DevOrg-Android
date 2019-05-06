@@ -19,6 +19,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:text="@string/create_filter_screen_msg"/>
+
             <!--Organization-->
             <TextView
                 style="@style/FormLabel"

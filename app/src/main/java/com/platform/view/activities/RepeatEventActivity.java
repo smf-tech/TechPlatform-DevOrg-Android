@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.platform.R;
 import com.platform.models.events.Recurrence;
 import com.platform.utility.Constants;
@@ -26,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class RepeatEventActivity extends AppCompatActivity implements View.OnClickListener,
+public class RepeatEventActivity extends BaseActivity implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
 
     private ImageView ivBackIcon;
@@ -35,15 +33,14 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     private Spinner spDailyInterval;
     private Spinner spWeeklyInterval;
     private Spinner spMonthlyInterval;
-    private MultiSelectSpinner spWeekDay;
 
     private EditText etEndDate;
     private EditText etWhichDate;
 
-    List<String> whichDays = new ArrayList<>();
-    List<String> whichDaysSelected = new ArrayList<>();
+    private List<String> whichDays = new ArrayList<>();
+    private List<String> whichDaysSelected = new ArrayList<>();
 
-    String selectedRepeat;
+    private String selectedRepeat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +80,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         adapterMonthlyInterval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMonthlyInterval.setAdapter(adapterMonthlyInterval);
 
-        spWeekDay = findViewById(R.id.sp_which_days);
+        MultiSelectSpinner spWeekDay = findViewById(R.id.sp_which_days);
         spWeekDay.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS);
         whichDays.add(getString(R.string.monday));
         whichDays.add(getString(R.string.tuesday));
@@ -92,7 +89,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
         whichDays.add(getString(R.string.friday));
         whichDays.add(getString(R.string.saturday));
         whichDays.add(getString(R.string.sunday));
-        spWeekDay.setItems(whichDays, getString(R.string.monday), this);
+        spWeekDay.setItems(whichDays, getString(R.string.which_day), this);
 
         etEndDate = findViewById(R.id.et_end_date);
         etWhichDate = findViewById(R.id.et_which_date);
@@ -123,7 +120,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
                 Util.showDateDialog(this, findViewById(R.id.et_end_date));
                 break;
             case R.id.et_which_date:
-                showDateDialog(this, findViewById(R.id.et_end_date));
+                showDateDialog(this, findViewById(R.id.et_which_date));
                 break;
 
         }
@@ -134,7 +131,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
 
         Recurrence recurrence = new Recurrence();
         recurrence.setType(spRepeat.getSelectedItem().toString());
-        String str[] = getResources().getStringArray(R.array.repeat_array);
+        String[] str = getResources().getStringArray(R.array.repeat_array);
 
         if (selectedRepeat.equalsIgnoreCase(str[1])) {
             //ly_day_interval
@@ -166,7 +163,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     //singleSelection
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String str[] = getResources().getStringArray(R.array.repeat_array);
+        String[] str = getResources().getStringArray(R.array.repeat_array);
         switch (parent.getId()) {
             case R.id.sp_repeat:
                 this.selectedRepeat = spRepeat.getSelectedItem().toString();
@@ -198,7 +195,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
     //MultiSelect
     @Override
     public void onValuesSelected(boolean[] selected, String spinnerName) {
-        if (Constants.MultiSelectSpinnerType.SPINNER_WHICH_DAYS.equals(spinnerName)) {
+        if (getResources().getString(R.string.which_day).equals(spinnerName)) {
             whichDaysSelected.clear();
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
@@ -213,7 +210,7 @@ public class RepeatEventActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public void showDateDialog(Context context, final EditText editText) {
+    private void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);

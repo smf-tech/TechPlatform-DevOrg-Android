@@ -92,17 +92,17 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
 
         ArrayList<TaskForm> taskFormsList = new ArrayList<>();
-        taskFormsList.add(new TaskForm("1", "Testing Form 1", "Planned"));
-        taskFormsList.add(new TaskForm("2", "Testing Form 2", "Completed"));
-        taskFormsList.add(new TaskForm("3", "Testing Form 3", "Completed"));
+        taskFormsList.add(new TaskForm("1", "Testing Form 1", Constants.Planner.PLANNED_STATUS));
+        taskFormsList.add(new TaskForm("2", "Testing Form 2", Constants.Planner.COMPLETED_STATUS));
+        taskFormsList.add(new TaskForm("3", "Testing Form 3", Constants.Planner.COMPLETED_STATUS));
 
-        taskList.add(new Event("1", "meeting", "Title1", 1556794660l, "10:00 am",
-                "11:00 am", "-", "test", "Wagholi,Pune.", "Sachin",
-                "1234", "Completed", membersList, null));
+        taskList.add(new Event("1", "meeting", "Title1", 1556794660l, "03/01/2019", "10:00 am",
+                "11:00 am", null, "test", "Wagholi,Pune.", "Sachin",
+                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
 
-        taskList.add(new Event("2", "visit", "Title2", 1556794660l, "11:00 am",
-                "12:00 pm", "-", "test", "Hadpsar,Pune.", "Sagar",
-                "1235", "Planned", membersList, null));
+        taskList.add(new Event("2", "visit", "Title2", 1556794660l, "03/02/2019", "11:00 am",
+                "12:00 pm", null, "test", "Hadpsar,Pune.", "Sagar",
+                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
