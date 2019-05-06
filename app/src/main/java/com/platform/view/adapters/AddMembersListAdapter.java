@@ -16,6 +16,7 @@ import com.platform.view.activities.AddMembersListActivity;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("CanBeFinal")
 public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAdapter.ViewHolder> {
 
     private Context mContext;
@@ -70,7 +71,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         TextView tvMemberDesignation;
         CheckBox cbMemberSelect;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvMemberName = itemView.findViewById(R.id.tv_member_name);

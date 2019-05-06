@@ -37,12 +37,13 @@
 
             <TextView
                 android:id="@+id/tv_total_leaves_count"
-                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:text="0"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_20" />
+                android:textSize="@dimen/text_size_20"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -70,13 +71,14 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_cl"
-                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
+                    android:text="0"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20" />
+                    android:textSize="@dimen/text_size_20"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -97,13 +99,14 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_paid"
-                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
+                    android:text="0"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20" />
+                    android:textSize="@dimen/text_size_20"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -124,13 +127,14 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_unpaid"
-                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
+                    android:text="0"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20" />
+                    android:textSize="@dimen/text_size_20"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tv_str_unpaid"
@@ -152,13 +156,14 @@
 
                 <TextView
                     android:id="@+id/tv_leaves_com_off"
-                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:paddingTop="@dimen/dimen_05dp"
+                    android:text="0"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20" />
+                    android:textSize="@dimen/text_size_20"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tv_str_comp_off"

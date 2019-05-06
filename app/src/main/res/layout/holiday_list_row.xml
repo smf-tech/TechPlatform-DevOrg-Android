@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/dimen_20dp"
@@ -15,7 +16,8 @@
         android:layout_marginBottom="@dimen/dimen_15dp"
         android:text="14 Apr"
         android:textColor="@color/holiday_text"
-        android:textSize="@dimen/text_size_14" />
+        android:textSize="@dimen/text_size_14"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/tv_holiday_desc"
@@ -27,7 +29,8 @@
         android:layout_marginBottom="@dimen/dimen_15dp"
         android:text="Ganapati"
         android:textColor="@color/holiday_text"
-        android:textSize="@dimen/text_size_14" />
+        android:textSize="@dimen/text_size_14"
+        tools:ignore="HardcodedText" />
 
     <View
         android:layout_width="match_parent"

@@ -13,14 +13,14 @@ import java.lang.ref.WeakReference;
 
 public class CreateEventActivityPresenter implements CreateEventListener {
 
-    private WeakReference<CreateEventActivity> createEventActivity;
+    private final WeakReference<CreateEventActivity> createEventActivity;
 
     public CreateEventActivityPresenter(CreateEventActivity createEventActivity) {
-        this.createEventActivity=new WeakReference<> (createEventActivity);
+        this.createEventActivity = new WeakReference<>(createEventActivity);
     }
 
-    public void getEventCategory(){
-        EventRequestCall requestCall=new EventRequestCall();
+    public void getEventCategory() {
+        EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
         createEventActivity.get().showProgressBar();
@@ -28,7 +28,7 @@ public class CreateEventActivityPresenter implements CreateEventListener {
     }
 
     public void submitEvent(Event event) {
-        EventRequestCall requestCall=new EventRequestCall();
+        EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
         createEventActivity.get().showProgressBar();
@@ -70,7 +70,7 @@ public class CreateEventActivityPresenter implements CreateEventListener {
 
     @Override
     public void onFailureListener(String message) {
-        if (createEventActivity != null && createEventActivity.get() != null) {
+        if (createEventActivity.get() != null) {
             createEventActivity.get().hideProgressBar();
             createEventActivity.get().showErrorMessage(message);
         }
@@ -78,14 +78,11 @@ public class CreateEventActivityPresenter implements CreateEventListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-        if (createEventActivity != null && createEventActivity.get() != null) {
+        if (createEventActivity.get() != null) {
             createEventActivity.get().hideProgressBar();
             if (error != null) {
                 createEventActivity.get().showErrorMessage(error.getLocalizedMessage());
             }
         }
     }
-
-
-
 }

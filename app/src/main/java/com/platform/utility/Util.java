@@ -147,7 +147,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         String languageCode = preferences.getString(Constants.App.LANGUAGE_CODE, "");
-        if (languageCode != null && languageCode.contentEquals("")) {
+        if (languageCode.contentEquals("")) {
             setLocaleLanguageCode("en");
         } else {
             setLocaleLanguageCode(languageCode);

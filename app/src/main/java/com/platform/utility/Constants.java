@@ -247,8 +247,8 @@ public class Constants {
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
         public static final String EVENTS_LABEL = "EVENTS";
         public static final String TASKS_LABEL = "TASKS";
-        public static final String PLANNED_STATUS = "PLANNED";
-        public static final String COMPLETED_STATUS = "COMPLETED";
+        public static final String PLANNED_STATUS = "planned";
+        public static final String COMPLETED_STATUS = "completed";
 
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";

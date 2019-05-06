@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.events.TaskForm;
+import com.platform.utility.Constants;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("CanBeFinal")
 public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<TaskForm> taskFormsList;
 
-    public TaskFormsListAdapter(Context mContext, ArrayList<TaskForm> taskFormsList){
+    public TaskFormsListAdapter(Context mContext, ArrayList<TaskForm> taskFormsList) {
         this.mContext = mContext;
         this.taskFormsList = taskFormsList;
     }
@@ -35,9 +37,9 @@ public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdap
     public void onBindViewHolder(@NonNull TaskFormsListAdapter.ViewHolder holder, int position) {
         TaskForm taskForm = taskFormsList.get(position);
         holder.tvFormTitle.setText(taskForm.getTitle());
-        if(taskForm.getStatus().equalsIgnoreCase("Planned")){
+        if (taskForm.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
             holder.vFormStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-        }else if(taskForm.getStatus().equalsIgnoreCase("Completed")){
+        } else if (taskForm.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
             holder.vFormStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
         }
     }
@@ -51,7 +53,7 @@ public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdap
         TextView tvFormTitle;
         View vFormStatusIndicator;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvFormTitle = itemView.findViewById(R.id.tv_form_title);

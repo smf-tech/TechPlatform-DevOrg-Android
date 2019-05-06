@@ -2,7 +2,6 @@ package com.platform.request;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TimeUtils;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -87,7 +86,7 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS + "?status=" + status;
+        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS, status);
 //        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS,status);
         Log.d(TAG, "getEvents: " + getOrgUrl);
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.platform.R;
 import com.platform.listeners.AddMemberListener;
 import com.platform.models.events.ParametersFilterMember;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class AddMembersFilterActivity extends BaseActivity implements AddMemberListener,
         View.OnClickListener, MultiSelectSpinner.MultiSpinnerListener {
 

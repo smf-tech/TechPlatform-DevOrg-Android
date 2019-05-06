@@ -23,10 +23,6 @@ public class HolidayListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static HolidayListFragment newInstance() {
-        return new HolidayListFragment();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +52,5 @@ public class HolidayListFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }
