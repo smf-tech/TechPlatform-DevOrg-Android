@@ -47,7 +47,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, AppliedLeavesAdapter.LeaveAdapterListener,OnDateSelectedListener,LeaveDataListener {
+import static com.platform.presenter.LeavesPresenter.GET_USER_LEAVE_DETAILS;
+
+public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, LeaveDataListener {
 
     private RecyclerView leavesList;
     private final ArrayList<String> leavesListData = new ArrayList<>();
@@ -339,7 +341,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onFailureListener(String message) {
+    public void onFailureListener(String requestID, String message) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), message,
@@ -348,7 +350,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onErrorListener(VolleyError error) {
+    public void onErrorListener(String requestID, VolleyError error) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), error.getMessage(),
@@ -358,11 +360,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onSuccessListener(String response) {
-        userLeaveDetailsResponse = response;
-        UserLeaves leaveDetail = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, UserLeaves.class);
-        if (leaveDetail != null) {
-            List<LeaveType> leavesList = leaveDetail.getLeaveTypes();
+    public void onSuccessListener(String requestID, String response) {
+        if (GET_USER_LEAVE_DETAILS.equals(requestID)) {
+            userLeaveDetailsResponse = response;
+            UserLeaves leaveDetail = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, UserLeaves.class);
+            if (leaveDetail != null) {
+                List<LeaveType> leavesList = leaveDetail.getLeaveTypes();
+            }
         }
     }
 

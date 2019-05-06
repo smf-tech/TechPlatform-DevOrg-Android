@@ -1,165 +1,82 @@
 package com.platform.presenter;
 
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.android.volley.VolleyError;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import com.platform.Platform;
 import com.platform.listeners.LeaveDataListener;
-import com.platform.utility.GsonRequestFactory;
-import com.platform.utility.Util;
-
-import org.json.JSONObject;
+import com.platform.listeners.LeavePresenterListener;
+import com.platform.request.LeavesRequestCall;
 
 import java.lang.ref.WeakReference;
 
-public class LeavesPresenter {
+public class LeavesPresenter implements LeavePresenterListener {
 
     private WeakReference<LeaveDataListener> fragmentWeakReference;
-    private Gson gson;
+
+    public static final String GET_USER_LEAVE_DETAILS ="getUsersAllLeavesDetails";
+    public static final String GET_LEAVE_DETAILS ="getLeavesData";
+    public static final String POST_USER_DETAILS ="postUserLeave";
 
     public LeavesPresenter(LeaveDataListener tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
-        gson = new GsonBuilder().serializeNulls()
-                .create();
+
     }
 
     public void clearData() {
         fragmentWeakReference = null;
-        gson = null;
-
     }
 
+
+
     public void getLeavesData() {
-
-        Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (fragmentWeakReference == null) {
-                return;
-            }
-            fragmentWeakReference.get().hideProgressBar();
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    fragmentWeakReference.get().onSuccessListener(res);
-
-                }
-            } catch (Exception e) {
-                fragmentWeakReference.get().onFailureListener(e.getMessage());
-            }
-        };
-
-        Response.ErrorListener getModulesErrorListener = error -> fragmentWeakReference.get().onErrorListener(error);
-
-
-        final String getModulesUrl = ""; //BuildConfig.BASE_URL
-        //+ String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
-                getModulesUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                getModulesResponseListener,
-                getModulesErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(new JsonObject());
-        gsonRequest.setShouldCache(false);
-        //if(fragmentWeakReference != null) {
-        //    fragmentWeakReference.get().showProgressBar();
-        //}
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.getLeavesData(GET_LEAVE_DETAILS);
     }
 
     public void getUsersAllLeavesDetails() {
-
-        Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (fragmentWeakReference == null) {
-                return;
-            }
-            fragmentWeakReference.get().hideProgressBar();
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    fragmentWeakReference.get().onSuccessListener(res);
-
-                }
-            } catch (Exception e) {
-                fragmentWeakReference.get().onFailureListener(e.getMessage());
-            }
-        };
-
-        Response.ErrorListener getModulesErrorListener = error -> fragmentWeakReference.get().onErrorListener(error);
-
-
-        final String getModulesUrl = ""; //BuildConfig.BASE_URL
-        //+ String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
-                getModulesUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                getModulesResponseListener,
-                getModulesErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(new JsonObject());
-        gsonRequest.setShouldCache(false);
-        //if(fragmentWeakReference != null) {
-        //    fragmentWeakReference.get().showProgressBar();
-        //}
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.getUsersAllLeavesDetails(GET_USER_LEAVE_DETAILS);
     }
 
-
     public void postUserLeave(JsonObject jsonObject) {
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.postUserLeave(POST_USER_DETAILS,jsonObject);
+    }
 
-        Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (fragmentWeakReference == null) {
-                return;
-            }
+    @Override
+    public void onFailureListener(String requestID,String message) {
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    fragmentWeakReference.get().onSuccessListener(res);
+            fragmentWeakReference.get().onFailureListener(requestID,message);
+        }
+    }
 
-                }
-            } catch (Exception e) {
-                fragmentWeakReference.get().onFailureListener(e.getMessage());
+    @Override
+    public void onErrorListener(String requestID,VolleyError error) {
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
+            if (error != null) {
+                fragmentWeakReference.get().onErrorListener(requestID,error);
             }
-        };
+        }
+    }
 
-        Response.ErrorListener getModulesErrorListener = error -> fragmentWeakReference.get().onErrorListener(error);
+    @Override
+    public void onSuccessListener(String requestID,String response) {
+        if (fragmentWeakReference == null) {
+            return;
+        }
+        fragmentWeakReference.get().hideProgressBar();
+        try {
+            if (response != null) {
+                fragmentWeakReference.get().onSuccessListener(requestID, response);
 
-
-        final String getModulesUrl = ""; //BuildConfig.BASE_URL
-        //+ String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.POST,
-                getModulesUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                getModulesResponseListener,
-                getModulesErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(jsonObject);
-        gsonRequest.setShouldCache(false);
-        //if(fragmentWeakReference != null) {
-        //    fragmentWeakReference.get().showProgressBar();
-        //}
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+            }
+        } catch (Exception e) {
+            fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
+        }
     }
 }

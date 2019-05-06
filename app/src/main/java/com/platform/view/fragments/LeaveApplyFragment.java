@@ -406,7 +406,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onFailureListener(String message) {
+    public void onFailureListener(String requestID,String message) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), message,
@@ -415,7 +415,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onErrorListener(VolleyError error) {
+    public void onErrorListener(String requestID,VolleyError error) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), error.getMessage(),
@@ -425,13 +425,15 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     @SuppressLint("StringFormatInvalid")
     @Override
-    public void onSuccessListener(String response) {
-        try {
-            showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected, getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
-                    getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false))
-                    , getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void onSuccessListener(String requestID,String response) {
+        if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
+            try {
+                showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected, getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
+                        getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false))
+                        , getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

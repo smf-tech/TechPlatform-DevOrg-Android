@@ -70,7 +70,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
         imgClickAddLeaves.setOnClickListener(this);
         presenter = new LeavesPresenter(this);
         presenter.getLeavesData();
-        onSuccessListener("");
+        onSuccessListener(LeavesPresenter.GET_LEAVE_DETAILS, "");
     }
 
 
@@ -96,7 +96,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onFailureListener(String message) {
+    public void onFailureListener(String requestID, String message) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), message,
@@ -105,7 +105,7 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onErrorListener(VolleyError error) {
+    public void onErrorListener(String requestID, VolleyError error) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), error.getMessage(),
@@ -114,41 +114,42 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onSuccessListener(String response) {
-        if (response != null) {
-            serverResponse = response;
-            serverResponse = "{\"year\": 2019,\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2},{\"leaveType\": \"Paid\",\"allocatedLeaves\": 4}],\"balanceLeaves\": 10}";
-            LeaveDetail leaveDetail = PlatformGson.getPlatformGsonInstance().fromJson(serverResponse, LeaveDetail.class);
-            if (leaveDetail != null) {
-                rlLeavesCount.setVisibility(View.VISIBLE);
-                if (leaveDetail.getBalanceLeaves() != null) {
-                    int totalBalanceLeaves = leaveDetail.getBalanceLeaves();
-                    tvTotalLeavesCount.setText(String.valueOf(totalBalanceLeaves));
-                }
-                List<LeaveType> leaveTypes = leaveDetail.getLeaveTypes();
-                if (leaveTypes != null) {
-                    for (LeaveType type : leaveTypes) {
-                        if (type.getLeaveType().equalsIgnoreCase("CL")) {
-                            tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                        } else if (type.getLeaveType().equalsIgnoreCase("Paid")) {
-                            tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                        } else if (type.getLeaveType().equalsIgnoreCase("CompOff")) {
-                            tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
-                        }
+    public void onSuccessListener(String requestID, String response) {
+        if (LeavesPresenter.GET_LEAVE_DETAILS.equals(requestID)) {
+            if (response != null) {
+                serverResponse = response;
+                serverResponse = "{\"year\": 2019,\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2},{\"leaveType\": \"Paid\",\"allocatedLeaves\": 4}],\"balanceLeaves\": 10}";
+                LeaveDetail leaveDetail = PlatformGson.getPlatformGsonInstance().fromJson(serverResponse, LeaveDetail.class);
+                if (leaveDetail != null) {
+                    rlLeavesCount.setVisibility(View.VISIBLE);
+                    if (leaveDetail.getBalanceLeaves() != null) {
+                        int totalBalanceLeaves = leaveDetail.getBalanceLeaves();
+                        tvTotalLeavesCount.setText(String.valueOf(totalBalanceLeaves));
                     }
+                    List<LeaveType> leaveTypes = leaveDetail.getLeaveTypes();
+                    if (leaveTypes != null) {
+                        for (LeaveType type : leaveTypes) {
+                            if (type.getLeaveType().equalsIgnoreCase("CL")) {
+                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            } else if (type.getLeaveType().equalsIgnoreCase("Paid")) {
+                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            } else if (type.getLeaveType().equalsIgnoreCase("CompOff")) {
+                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves())) ? "0" : String.valueOf(type.getAllocatedLeaves()));
+                            }
+                        }
 
+                    }
+                } else {
+
+                    rlLeavesCount.setVisibility(View.GONE);
+                    tvNoLeavesBalance.setVisibility(View.VISIBLE);
                 }
             } else {
 
                 rlLeavesCount.setVisibility(View.GONE);
                 tvNoLeavesBalance.setVisibility(View.VISIBLE);
             }
-        } else {
-
-            rlLeavesCount.setVisibility(View.GONE);
-            tvNoLeavesBalance.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
