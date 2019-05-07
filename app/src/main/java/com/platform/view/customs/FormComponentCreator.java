@@ -48,6 +48,7 @@ import com.platform.view.fragments.FormFragment;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -323,7 +324,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                                     }
                                 }
                             }
-                            entry.getValue().setText(String.valueOf(math.evaluate(expression.toString())));
+                            DecimalFormat decimalFormat = new DecimalFormat(Constants.DECIMAL_FORMAT);
+                            entry.getValue().setText(decimalFormat.format(math.evaluate(expression.toString())));
                         }
                     }
 
