@@ -1,7 +1,10 @@
 package com.platform.view.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +32,8 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
     private CheckBox cbSelectAllMembers;
     private ImageView toolbarAction;
     private ImageView ivBackIcon;
+    private Button btAddMembers;
+    private boolean isNewMembersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
         LinearLayout lyAttendedTab = findViewById(R.id.ly_attended_tab);
         TextView tvInfoLabel = findViewById(R.id.tv_info_label);
-
+        btAddMembers=findViewById(R.id.bt_add_members);
         if (isNewMembersList) {
             toolbarAction.setVisibility(View.GONE);
             lyAttendedTab.setVisibility(View.GONE);
@@ -58,7 +63,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             toolbarAction.setVisibility(View.VISIBLE);
             toolbarAction.setImageResource(R.drawable.ic_check_white);
             setActionbar(getResources().getString(R.string.mark_attendance));
-            findViewById(R.id.bt_apply_filters).setVisibility(View.GONE);
+            btAddMembers.setVisibility(View.GONE);
             tvInfoLabel.setVisibility(View.GONE);
             lyAttendedTab.setVisibility(View.VISIBLE);
             TextView tvAttended = findViewById(R.id.tv_attended);
@@ -94,6 +99,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         cbSelectAllMembers.setOnClickListener(this);
         toolbarAction.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
+        btAddMembers.setOnClickListener(this);
     }
 
     public void checkAllSelected(ArrayList<Participant> membersList) {
@@ -153,6 +159,11 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
             case R.id.toolbar_edit_action:
                 //Submit attendance
+
+                break;
+
+            case R.id.bt_add_members:
+                addMembersToEvent();
                 break;
 
             case R.id.cb_select_all_members:
@@ -168,6 +179,19 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
                 addMembersListAdapter.notifyDataSetChanged();
                 break;
         }
+    }
+
+    private void addMembersToEvent() {
+        ArrayList<Participant> list = new ArrayList<>();
+        for(Participant p:filterMembersList){
+            if(p.getMemberSelected()!= null && p.getMemberSelected()){
+                list.add(p);
+            }
+        }
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_DATA, list);
+        setResult(Constants.Planner.MEMBER_LIST, returnIntent);
+        finish();
     }
 
     private void setActionbar(String title) {

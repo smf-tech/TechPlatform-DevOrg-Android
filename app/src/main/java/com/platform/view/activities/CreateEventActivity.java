@@ -33,10 +33,8 @@ import com.platform.view.adapters.AddMembersListAdapter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener {
 
@@ -116,7 +114,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false,false);
+        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
@@ -124,7 +122,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
-                etEndDate.setText(event.getEndDate());
+                etEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
                 findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
@@ -155,13 +153,13 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         int spinnerPosition = myAdapter.getPosition(event.getEventType());
         spCategory.setSelection(spinnerPosition);
         etTitle.setText(event.getTitle());
-        etStartDate.setText(timeStampToDate(event.getEventStartDateTime()));
-        etStartTime.setText(timeStampToTime(event.getEventStartDateTime()));
-        etEndTime.setText(event.getEndTime());
+        etStartDate.setText(Util.getDateFromTimestamp(event.getEventStartDateTime()));
+        etStartTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
+        etEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
         etRepeat.setText(event.getRepeat());
         etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
-        if(toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
             setAdapter(event.getMembersList());
         }
     }
@@ -212,7 +210,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.et_add_members:
                 Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
-                this.startActivity(intentAddMemberFilerActivity);
+                this.startActivityForResult(intentAddMemberFilerActivity, Constants.Planner.MEMBER_LIST);
                 break;
 
             case R.id.bt_repeat:
@@ -260,52 +258,22 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         return 0L;
     }
 
-    private String timeStampToDate(Long timeStamp) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
-            Log.e("TAG", e.getMessage());
-        }
-        return "";
-    }
-
-    private String timeStampToTime(Long timeStamp) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
-            Log.e("TAG", e.getMessage());
-        }
-        return "";
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1) {
-        if (resultCode == Activity.RESULT_OK) {
-            recurrence = (Recurrence) data.getSerializableExtra("result");
-            if(recurrence.getType()!= null){
-                btRepeat.setText(recurrence.getType());
-            }
+        if (requestCode == Constants.Planner.REPEAT_EVENT && data!= null) {
+                recurrence = (Recurrence) data.getSerializableExtra(Constants.Planner.REPEAT_EVENT_DATA);
+                if (recurrence.getType() != null) {
+                    btRepeat.setText(recurrence.getType());
+                }
+        } else if (requestCode == Constants.Planner.MEMBER_LIST && data!= null) {
+            membersList = (ArrayList<Participant>) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
+            RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
+            addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            rvAttendeesList.setLayoutManager(mLayoutManager);
+            rvAttendeesList.setAdapter(addMembersListAdapter);
         }
-
-//        if (resultCode == Activity.RESULT_CANCELED) {
-            //Write your code if there's no result
-//        }
-//        }
     }
 
     @Override

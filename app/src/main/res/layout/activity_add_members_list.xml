@@ -100,7 +100,7 @@
             android:layout_marginTop="@dimen/dimen_10dp" />
 
         <Button
-            android:id="@+id/bt_apply_filters"
+            android:id="@+id/bt_add_members"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
