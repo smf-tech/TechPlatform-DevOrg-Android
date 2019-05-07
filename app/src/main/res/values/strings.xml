@@ -389,7 +389,6 @@
     <string name="holiday_list_title">Holiday List for 2019</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="same_day">Same date for each month</string>
     <string name="edit">Edit</string>
     <string name="this_event_only">This event only</string>
@@ -401,4 +400,9 @@
     <string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>
     <string name="separator">|</string>
     <string name="never_label">Never</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="holiday_list">Holiday List</string>
+    <string name="edit_leave">Edit Leave</string>
+    <string name="apply_leave">Apply For Leave</string>
+
 </resources>

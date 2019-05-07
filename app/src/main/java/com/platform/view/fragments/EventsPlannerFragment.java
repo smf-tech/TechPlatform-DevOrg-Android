@@ -93,7 +93,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
 
         EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
-        eventsPlannerPresenter.getEvents("");
+        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
 
 
         eventsList = new ArrayList<>();

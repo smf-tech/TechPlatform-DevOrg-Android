@@ -173,7 +173,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             case R.id.tv_attendance_details:
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                 intent.putExtra(Constants.Planner.KEY_IS_DASHBOARD, false);
-                intent.putExtra("title", "Attendance");
+                intent.putExtra("title", getString(R.string.attendance));
                 intent.putExtra("switch_fragments", "AttendancePlannerFragment");
                 startActivity(intent);
                 break;

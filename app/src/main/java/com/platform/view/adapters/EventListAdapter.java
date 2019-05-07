@@ -20,6 +20,7 @@ import com.platform.view.activities.EventDetailActivity;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("CanBeFinal")
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
     private Context mContext;
@@ -50,9 +51,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
         if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             holder.vTaskStatusIndicator.setVisibility(View.VISIBLE);
-            if (event.getStatus().equals(Constants.Planner.PLANNED_STATUS)) {
+            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
                 holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-            } else if (event.getStatus().equals(Constants.Planner.COMPLETED_STATUS)) {
+            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
                 holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             }
         }
@@ -84,7 +85,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         ImageView ivDottedLine;
         View vTaskStatusIndicator;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             lyEvent = itemView.findViewById(R.id.ly_event);

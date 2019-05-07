@@ -53,6 +53,7 @@
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_edit"
+                android:tint="@color/white"
                 android:visibility="invisible" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>

@@ -20,9 +20,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class AddMemberFilterActivityPresenter implements AddMemberRequestCallListener {
-    private final String TAG = AddMemberFilterActivityPresenter.class.getName();
-    private WeakReference<AddMembersFilterActivity> addMemberFilterActivity;
 
+    private final WeakReference<AddMembersFilterActivity> addMemberFilterActivity;
 
     public AddMemberFilterActivityPresenter(AddMembersFilterActivity addMembersFilterActivity) {
         this.addMemberFilterActivity = new WeakReference<>(addMembersFilterActivity);
@@ -53,7 +52,7 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     }
 
     public void getFilterMemberList(ParametersFilterMember parametersFilter) {
-        EventRequestCall requestCall=new EventRequestCall();
+        EventRequestCall requestCall = new EventRequestCall();
         requestCall.setAddMemberRequestCallListener(this);
 
         addMemberFilterActivity.get().showProgressBar();
@@ -133,7 +132,7 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 
     @Override
     public void onFailureListener(String message) {
-        if (addMemberFilterActivity != null && addMemberFilterActivity.get() != null) {
+        if (addMemberFilterActivity.get() != null) {
             addMemberFilterActivity.get().hideProgressBar();
             addMemberFilterActivity.get().showErrorMessage(message);
         }
@@ -141,13 +140,11 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 
     @Override
     public void onErrorListener(VolleyError error) {
-        if (addMemberFilterActivity != null && addMemberFilterActivity.get() != null) {
+        if (addMemberFilterActivity.get() != null) {
             addMemberFilterActivity.get().hideProgressBar();
             if (error != null) {
                 addMemberFilterActivity.get().showErrorMessage(error.getLocalizedMessage());
             }
         }
     }
-
-
 }

@@ -40,7 +40,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private AddMembersListAdapter addMembersListAdapter;
 
-    private ArrayList<Participant> membersList = new ArrayList<>();
+    private final ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
     private Recurrence recurrence;
 
@@ -61,7 +61,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private CreateEventActivityPresenter createEventPresenter;
-    String toOpen;
+    private String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
             ImageView toolbarAction = findViewById(R.id.toolbar_edit_action);
             toolbarAction.setVisibility(View.VISIBLE);
-            toolbarAction.setImageResource(R.drawable.ic_down_arrow_light_blue);
+            toolbarAction.setImageResource(R.drawable.ic_delete);
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.create_task));

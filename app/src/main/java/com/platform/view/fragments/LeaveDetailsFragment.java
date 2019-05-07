@@ -21,8 +21,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
+import com.platform.listeners.LeaveDataListener;
+import com.platform.models.leaves.LeaveType;
+import com.platform.models.leaves.UserLeaves;
+import com.platform.presenter.LeavesPresenter;
 import com.platform.utility.EventDecorator;
+import com.platform.utility.PlatformGson;
+import com.platform.utility.Util;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.AppliedLeavesAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -34,20 +43,30 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class LeaveDetailsFragment extends Fragment implements View.OnClickListener,
-        OnDateSelectedListener, AppliedLeavesAdapter.LeaveAdapterListener {
+import static com.platform.presenter.LeavesPresenter.GET_USER_LEAVE_DETAILS;
+
+public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, LeaveDataListener {
 
     private RecyclerView leavesList;
+    private final ArrayList<String> leavesListData = new ArrayList<>();
+    private AppliedLeavesAdapter leavesAdapter;
     private MaterialCalendarView calendarView;
+    private TabLayout tabLayout;
+    private final int[] tabIcons = {
+            R.drawable.selector_pending_tab,
+            R.drawable.selector_approved_tab,
+            R.drawable.selector_rejected_tab
+    };
 
-    private TextView tvClickPending;
-    private TextView tvClickApproved;
-    private TextView tvClickRejected;
-    private int tabClicked = -1;
+    private String[] tabNames;
     private boolean isMonth = true;
+    private String serverResponse;
+    private String userLeaveDetailsResponse;
+    private LeavesPresenter presenter;
 
     public LeaveDetailsFragment() {
         // Required empty public constructor
@@ -56,6 +75,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tabNames = new String[]{
+                getString(R.string.cat_pending),
+                getString(R.string.cat_approved),
+                getString(R.string.cat_rejected)};
     }
 
     @Override
@@ -70,49 +93,98 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
 
         ImageView toolBarMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_edit_action);
-        toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
+    //    toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
+        toolBarMenu.setImageResource(R.drawable.ic_holiday_menu);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
-
-        tvClickPending = view.findViewById(R.id.tv_tb_pending);
-        tvClickPending.setOnClickListener(this);
-        tvClickApproved = view.findViewById(R.id.tv_tb_approved);
-        tvClickApproved.setOnClickListener(this);
-        tvClickRejected = view.findViewById(R.id.tv_tb_rejected);
-        tvClickRejected.setOnClickListener(this);
-
+        tabLayout = view.findViewById(R.id.leave_cat_tabs);
         ImageView tvCalendarMode = view.findViewById(R.id.tv_calendar_mode);
         tvCalendarMode.setOnClickListener(this);
         calendarView = view.findViewById(R.id.calendarView);
-
         ImageView imgAddLeaves = view.findViewById(R.id.iv_add_leaves);
         imgAddLeaves.setOnClickListener(this);
-
         toolBarMenu.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-            intent.putExtra("title", "Holiday List");
+            intent.putExtra("title", getString(R.string.holiday_list));
             intent.putExtra("switch_fragments", "HolidayListFragment");
             startActivity(intent);
         });
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            serverResponse = bundle.getString("leaveDetail");
+        }
+        presenter = new LeavesPresenter(this);
+        presenter.getUsersAllLeavesDetails();
+        setTabData();
         setUIData();
+
     }
+
+    private void setTabData() {
+        setupTabIcons();
+        setListData();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    setTabData(1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    setTabData(2);
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
+                    setTabData(3);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    private void setListData() {
+        leavesAdapter = new AppliedLeavesAdapter(leavesListData, this);
+        leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        leavesList.setAdapter(leavesAdapter);
+        setTabData(1);
+    }
+
+    private void setupTabIcons() {
+        for (int i = 0; i < tabNames.length; i++) {
+            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
+                    .inflate(R.layout.layout_leaves_attendance_tab, tabLayout, false);
+            tabOne.setText(tabNames[i]);
+            tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+
+            tabLayout.addTab(tabLayout.newTab().setCustomView(tabOne));
+        }
+    }
+
 
     private void setUIData() {
         //initCalender(view);
-
-        ArrayList<String> leaves = new ArrayList<>();
-        leaves.add("1");
-        leaves.add("2");
-
-        AppliedLeavesAdapter adapter = new AppliedLeavesAdapter(getActivity(), leaves, this);
-        leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        leavesList.setAdapter(adapter);
 
         calendarView.setOnMonthChangedListener((widget, date) ->
                 Toast.makeText(getActivity(), "Month Changed:" + date, Toast.LENGTH_SHORT).show());
 
         isMonth = !isMonth;
         setCalendar();
+    }
+
+    private void setTabData(int size) {
+        ArrayList<String> leaves = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            leaves.add("1");
+        }
+        leavesListData.clear();
+        leavesListData.addAll(leaves);
+        leavesAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -123,6 +195,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onDetach() {
         super.onDetach();
+        if (presenter != null) {
+            presenter.clearData();
+            presenter = null;
+        }
     }
 
     @Override
@@ -130,37 +206,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.iv_add_leaves:
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                intent.putExtra("title", "Apply For Leave");
+                intent.putExtra("title", getString(R.string.apply_leave));
+                intent.putExtra("isEdit", false);
+                intent.putExtra("leaveDetail", serverResponse);
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
                 startActivity(intent);
                 break;
 
-            case R.id.tv_tb_pending:
-                if (tabClicked != 1) {
-                    tabClicked = 1;
-                    tvClickPending.setTextColor(getResources().getColor(R.color.black_green));
-                    tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickRejected.setTextColor(getResources().getColor(R.color.blur_tab));
-                }
-                break;
-
-            case R.id.tv_tb_approved:
-                if (tabClicked != 2) {
-                    tabClicked = 2;
-                    tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickApproved.setTextColor(getResources().getColor(R.color.black_green));
-                    tvClickRejected.setTextColor(getResources().getColor(R.color.blur_tab));
-                }
-                break;
-
-            case R.id.tv_tb_rejected:
-                if (tabClicked != 3) {
-                    tabClicked = 3;
-                    tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickRejected.setTextColor(getResources().getColor(R.color.black_green));
-                }
-                break;
 
             case R.id.tv_calendar_mode:
                 isMonth = !isMonth;
@@ -234,6 +286,15 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void editLeaves() {
+        userLeaveDetailsResponse = "{\"userId\": \"12345\",\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2 }],\"fromDate\": \"2019-03-11T18:30:00.000Z\",\"toDate\": \"2019-03-16T18:30:00.000Z\",\"isHalfDay\": false,\"reason\": \"NA\",\"numberOfDays\": 3,\"status\": \"pending\" }";
+        Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+        intent.putExtra("title", getString(R.string.edit_leave));
+        intent.putExtra("isEdit", true);
+        intent.putExtra("leaveDetail", serverResponse);
+        intent.putExtra("userLeaveDetails", userLeaveDetailsResponse);
+        intent.putExtra("switch_fragments", "LeaveApplyFragment");
+
+        startActivity(intent);
 
     }
 
@@ -278,4 +339,52 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         dialog.setCancelable(false);
         dialog.show();      // if decline button is clicked, close the custom dialog
     }
- }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        if (getActivity() != null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), message,
+                    Snackbar.LENGTH_LONG);
+        }
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        if (getActivity() != null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), error.getMessage(),
+                    Snackbar.LENGTH_LONG);
+        }
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        if (GET_USER_LEAVE_DETAILS.equals(requestID)) {
+            userLeaveDetailsResponse = response;
+            UserLeaves leaveDetail = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, UserLeaves.class);
+            if (leaveDetail != null) {
+                List<LeaveType> leavesList = leaveDetail.getLeaveTypes();
+            }
+        }
+    }
+
+    @Override
+    public void showProgressBar() {
+        Util.showSimpleProgressDialog(getActivity(), null, getString(R.string.please_wait), false);
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+        Util.removeSimpleProgressDialog();
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
+    }
+}
