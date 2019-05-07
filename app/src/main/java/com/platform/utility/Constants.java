@@ -28,6 +28,8 @@ public class Constants {
     static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
 
+    public static final String DECIMAL_FORMAT = "#0.00";
+
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
