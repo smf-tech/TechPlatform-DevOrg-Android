@@ -17,7 +17,7 @@ import java.util.HashSet;
 public class EventDecorator implements DayViewDecorator {
 
     private final Drawable mDrawable;
-    private HashSet<CalendarDay> dates;
+    private final HashSet<CalendarDay> dates;
 
     @SuppressWarnings("deprecation")
     public EventDecorator(Context context, Collection<CalendarDay> dates, Drawable drawable) {

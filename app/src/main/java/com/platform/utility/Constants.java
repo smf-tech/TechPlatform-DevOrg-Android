@@ -24,6 +24,7 @@ public class Constants {
     public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
     public static final String FORM_DATE = "yyyy-MM-dd";
+    public static final String DAY_MONTH_YEAR = "dd/MM/yyyy";
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
     static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
@@ -238,19 +239,19 @@ public class Constants {
     }
 
     public static class Planner {
-
-        public static final Integer REPEAT_EVENT = 001;
-
+        public static final Integer REPEAT_EVENT = 1;
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN = "ToOpen";
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
-        public static final String TASK_DETAIL = "TaskDetail";
         public static final String EVENTS_LABEL = "EVENTS";
         public static final String TASKS_LABEL = "TASKS";
-        public static final String PLANNED_STATUS = "PLANNED";
-        public static final String COMPLETED_STATUS = "COMPLETED";
+        public static final String PLANNED_STATUS = "planned";
+        public static final String COMPLETED_STATUS = "completed";
 
+        public static final String LEAVE_TYPE_CL = "CL";
+        public static final String LEAVE_TYPE_PAID = "Paid";
+        public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
     }
 }

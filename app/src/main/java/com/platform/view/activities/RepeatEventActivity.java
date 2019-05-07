@@ -37,8 +37,8 @@ public class RepeatEventActivity extends BaseActivity implements View.OnClickLis
     private EditText etEndDate;
     private EditText etWhichDate;
 
-    private List<String> whichDays = new ArrayList<>();
-    private List<String> whichDaysSelected = new ArrayList<>();
+    private final List<String> whichDays = new ArrayList<>();
+    private final List<String> whichDaysSelected = new ArrayList<>();
 
     private String selectedRepeat;
 
@@ -164,31 +164,29 @@ public class RepeatEventActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String[] str = getResources().getStringArray(R.array.repeat_array);
-        switch (parent.getId()) {
-            case R.id.sp_repeat:
-                this.selectedRepeat = spRepeat.getSelectedItem().toString();
-                if (selectedRepeat.equalsIgnoreCase(str[1])) {
-                    findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                } else if (selectedRepeat.equalsIgnoreCase(str[2])) {
-                    findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                } else if (selectedRepeat.equalsIgnoreCase(str[3])) {
-                    findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.VISIBLE);
-                } else {
-                    findViewById(R.id.tly_end_date).setVisibility(View.GONE);
-                    findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
-                    findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
-                }
-                break;
+        if (parent.getId() == R.id.sp_repeat) {
+            this.selectedRepeat = spRepeat.getSelectedItem().toString();
+            if (selectedRepeat.equalsIgnoreCase(str[1])) {
+                findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
+            } else if (selectedRepeat.equalsIgnoreCase(str[2])) {
+                findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
+            } else if (selectedRepeat.equalsIgnoreCase(str[3])) {
+                findViewById(R.id.tly_end_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.tly_end_date).setVisibility(View.GONE);
+                findViewById(R.id.ly_day_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_week_interval).setVisibility(View.GONE);
+                findViewById(R.id.ly_month_interval).setVisibility(View.GONE);
+            }
         }
     }
 

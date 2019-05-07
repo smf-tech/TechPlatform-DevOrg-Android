@@ -93,7 +93,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
 
         EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
-        eventsPlannerPresenter.getEvents("");
+        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
 
 
         eventsList = new ArrayList<>();
@@ -108,11 +108,11 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         Recurrence r = new Recurrence();
         r.setType("Monthly");
 
-        eventsList.add(new Event("1", "Meeting", "Title1", 1556794660l, null, "10:00 am",
+        eventsList.add(new Event("1", "Meeting", "Title1", 1556794660L, null, "10:00 am",
                 "11:00 am", r, "test", "Wagholi,pune.", "Sachin",
                 "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
 
-        eventsList.add(new Event("2", "Event", "Title2", 1556794660l, null, "10:00 am",
+        eventsList.add(new Event("2", "Event", "Title2", 1556794660L, null, "10:00 am",
                 "11:30 am", r, "test", "Hadpsar,pune.", "Sagar",
                 "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 

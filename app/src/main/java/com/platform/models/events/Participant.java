@@ -9,9 +9,7 @@ import java.util.List;
 public class Participant implements Serializable {
 
     private String role;
-    private Boolean isMemberSelected=false;
-
-
+    private Boolean isMemberSelected;
 
     public Participant(String id, String name, String role, Boolean isMemberSelected, Boolean isMemberAttended) {
         this.participantId = id;
@@ -20,7 +18,6 @@ public class Participant implements Serializable {
         this.isMemberSelected = isMemberSelected;
         this.attended = isMemberAttended;
     }
-
 
     public String getRole() {
         return role;

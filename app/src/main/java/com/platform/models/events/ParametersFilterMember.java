@@ -1,17 +1,13 @@
 package com.platform.models.events;
 
-import com.platform.models.profile.UserLocation;
-
-import java.util.ArrayList;
-
 public class ParametersFilterMember {
-    String organizationIds;
-    String roleIds;
-    String state;
-    String district;
-    String taluka;
-    String cluster;
-    String village;
+    private String organizationIds;
+    private String roleIds;
+    private String state;
+    private String district;
+    private String taluka;
+    private String cluster;
+    private String village;
 
     public String getOrganizationIds() {
         return organizationIds;

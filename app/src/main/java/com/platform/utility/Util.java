@@ -2,6 +2,7 @@ package com.platform.utility;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,9 +26,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
@@ -67,7 +70,7 @@ import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
-
+    private static ProgressDialog mProgressDialog;
     private static final String TAG = Util.class.getSimpleName();
 
     public static void setError(final EditText inputEditText, String errorMessage) {
@@ -718,5 +721,47 @@ public class Util {
 
         timePicker.setTitle(context.getString(R.string.select_time_title));
         timePicker.show();
+    }
+
+    public static void showSimpleProgressDialog(Context context, String title,
+                                                String msg, boolean isCancelable) {
+        try {
+            if (mProgressDialog == null) {
+                mProgressDialog = ProgressDialog.show(context, title, msg);
+                mProgressDialog.setCancelable(isCancelable);
+            }
+            if (!mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeSimpleProgressDialog() {
+        try {
+            if (mProgressDialog != null) {
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                    mProgressDialog = null;
+                }
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void snackBarToShowMsg(@NonNull View view, @NonNull CharSequence text, int duration) {
+        Snackbar snackbar = Snackbar.make(view, text, duration);
+        snackbar.show();
+        //return snackbar;
     }
 }

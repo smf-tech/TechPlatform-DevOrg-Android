@@ -41,7 +41,7 @@ public class Urls {
 
     public class Events {
         public static final String GET_CATEGORY = "api/event-types";
-        public static final String GET_EVENTS = "api/events";
+        public static final String GET_EVENTS = "api/events?status=%1$s";
         public static final String GET_MEMBERS_LIST = "api/users";
         public static final String SUBMIT_EVENT= "api/events";
     }

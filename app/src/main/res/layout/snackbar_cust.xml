@@ -31,7 +31,7 @@
             android:id="@+id/tv_edit_all_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/all_events_active"
+            android:drawableStart="@drawable/ic_all_events_active"
             android:drawablePadding="@dimen/dimen_10dp"
             android:layout_margin="@dimen/dimen_05dp"
             android:paddingTop="@dimen/dimen_05dp"

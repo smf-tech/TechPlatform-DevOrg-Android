@@ -42,7 +42,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private AddMembersListAdapter addMembersListAdapter;
 
-    private ArrayList<Participant> membersList = new ArrayList<>();
+    private final ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
     private Recurrence recurrence;
 
@@ -63,7 +63,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private CreateEventActivityPresenter createEventPresenter;
-    String toOpen;
+    private String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -302,9 +302,9 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
             }
         }
 
-        if (resultCode == Activity.RESULT_CANCELED) {
+//        if (resultCode == Activity.RESULT_CANCELED) {
             //Write your code if there's no result
-        }
+//        }
 //        }
     }
 

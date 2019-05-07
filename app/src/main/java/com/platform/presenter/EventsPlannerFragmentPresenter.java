@@ -12,15 +12,14 @@ import java.lang.ref.WeakReference;
 
 public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
-    private final String TAG = this.getClass().getName();
-    private WeakReference<EventsPlannerFragment> fragmentWeakReference;
+    private final WeakReference<EventsPlannerFragment> fragmentWeakReference;
 
     public EventsPlannerFragmentPresenter(EventsPlannerFragment fragmentWeakReference) {
-        this.fragmentWeakReference=new WeakReference<>(fragmentWeakReference);
+        this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);
     }
 
     public void getEvents(String status) {
-        EventRequestCall requestCall=new EventRequestCall();
+        EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
         fragmentWeakReference.get().showProgressBar();
@@ -53,7 +52,7 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     @Override
     public void onFailureListener(String message) {
-        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+        if (fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
             fragmentWeakReference.get().showErrorMessage(message);
         }
@@ -61,7 +60,7 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+        if (fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
             if (error != null) {
                 fragmentWeakReference.get().showErrorMessage(error.getLocalizedMessage());
