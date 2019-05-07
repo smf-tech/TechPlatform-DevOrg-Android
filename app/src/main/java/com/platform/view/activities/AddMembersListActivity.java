@@ -186,7 +186,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             }
         }
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("result", list);
+        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_DATA, list);
         setResult(Constants.Planner.MEMBER_LIST, returnIntent);
         finish();
     }

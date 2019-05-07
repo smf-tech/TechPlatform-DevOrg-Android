@@ -313,9 +313,6 @@
     <string name="delete">हटवा</string>
     <string name="leave_apply_msg1">एकदा आपल्याला आपल्या व्यवस्थापकाकडून मंजुरी मिळाल्यावर आपण सुट्टी शिल्लक पाहू शकाल</string>
     <string name="leave_apply_msg">आपण %1$s वरून %2$s ते %3$s साठी अर्ज केला</string>
-    <string name="edit">Edit</string>
-    <string name="this_event_only">This event only</string>
-    <string name="all_events_in_series">All events in series</string>
     <string name="which_day">कोणते दिवस</string>
     <string name="select_all">सर्व निवडा</string>
     <string-array name="repeat_array">
@@ -350,5 +347,8 @@
         <item>3 महीने</item>
     </string-array>
 
-    <string name="differentiator_line">|</string>
+    <string name="edit">संपादित करा</string>
+    <string name="this_event_only">केवळ हा कार्यक्रम</string>
+    <string name="all_events_in_series">मालिका सर्व कार्यक्रम</string>
+    <string name="separator">|</string>
 </resources>

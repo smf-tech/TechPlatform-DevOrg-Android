@@ -40,8 +40,12 @@ public class Participant implements Serializable {
 
     //////////////////////////////////
 
+    @SerializedName("participantId")
+    @Expose
     private String participantId;
-    private Boolean attended=false;
+    @SerializedName("attended")
+    @Expose
+    private Boolean attended;
 
     public String getParticipantId() {
         return participantId;

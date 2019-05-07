@@ -25,6 +25,7 @@ import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
 import com.platform.models.events.Participant;
+import com.platform.models.events.Recurrence;
 import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
@@ -104,12 +105,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
         membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
 
-        eventsList.add(new Event("1", "Meeting", "Title1", 1556794660l, null, "10:00 am",
-                "11:00 am", "-", "test", "Wagholi,pune.", "Sachin",
+        Recurrence r = new Recurrence();
+        r.setType("Monthly");
+
+        eventsList.add(new Event("1", "Meeting", "Title1", 1557206071l, 1557206071l, r, "test", "Wagholi,pune.", "Sachin",
                 "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
 
-        eventsList.add(new Event("2", "Event", "Title2", 1556794660l, null, "10:00 am",
-                "11:30 am", "-", "test", "Hadpsar,pune.", "Sagar",
+        eventsList.add(new Event("2", "Event", "Title2", 1557206071l, 1557206071l, r, "test", "Hadpsar,pune.", "Sagar",
                 "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();

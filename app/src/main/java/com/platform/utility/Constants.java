@@ -252,5 +252,8 @@ public class Constants {
         public static final String TASKS_LABEL = "TASKS";
         public static final String PLANNED_STATUS = "PLANNED";
         public static final String COMPLETED_STATUS = "COMPLETED";
+        public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
+        public static final String MEMBER_LIST_DATA = "RepeatEventDta";
+
     }
 }

@@ -2,6 +2,7 @@ package com.platform.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -18,6 +19,7 @@ import com.platform.models.events.Event;
 import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
 import com.platform.view.adapters.TaskFormsListAdapter;
 
@@ -25,8 +27,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class EventDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -121,21 +125,21 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
             tvEndDate.setVisibility(View.VISIBLE);
             TextView tvEndTime = findViewById(R.id.tv_end_time);
             tvEndTime.setVisibility(View.VISIBLE);
-            tvEndTime.setText(event.getEndTime());
+            tvEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
             tvRepeat.setVisibility(View.GONE);
 
             Date endDate = null;
             try {
-                endDate = originalFormat.parse(event.getEndDate());
+                endDate = originalFormat.parse(Util.getDateFromTimestamp(event.getEventEndDateTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
             String finalEndDate = weekDay.format(endDate);
             finalEndDate = finalEndDate + ", " + targetFormat.format(endDate);
-            tvEndDate.setText(event.getEndDate());
+            tvEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
 
-            tvTime.setText(String.format(event.getStarTime()));
+            tvTime.setText(String.format(Util.getTimeFromTimeStamp(event.getEventStartDateTime())));
 
             if (event.getStatus().equals(Constants.Planner.PLANNED_STATUS)) {
                 vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
@@ -156,7 +160,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         } else {
             setActionbar(getString(R.string.event_detail));
             tvRepeat.setText(event.getRepeat());
-            tvTime.setText(String.format("%s to %s", event.getStarTime(), event.getEndTime()));
+            tvTime.setText(String.format("%s to %s", Util.getTimeFromTimeStamp(event.getEventStartDateTime()), Util.getTimeFromTimeStamp(event.getEventEndDateTime())));
             rvAttendeesList = findViewById(R.id.rv_attendees_list);
             setAdapter(event.getMembersList());
             getAttendedCount();
@@ -297,8 +301,4 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         layout.addView(snackView, 0);
     }
 
-    public String timeStampToDate(int timeStamp) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
-        return formatter.format(timeStamp);
-    }
 }

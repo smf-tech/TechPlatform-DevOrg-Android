@@ -1,8 +1,17 @@
 package com.platform.models.events;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class EventLocation {
+    @SerializedName("lat")
+    @Expose
     private String lat;
+    @SerializedName("lon")
+    @Expose
     private String lon;
+    @SerializedName("address")
+    @Expose
     private String address;
 
     public String getLat() {
@@ -28,4 +37,5 @@ public class EventLocation {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }

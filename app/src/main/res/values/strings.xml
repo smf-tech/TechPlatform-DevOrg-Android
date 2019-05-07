@@ -284,7 +284,8 @@
         <item>Category</item>
         <item>Meeting</item>
         <item>Event</item>
-        <item>Task</item>
+        <item>Tasks</item>
+        <item>Trainings</item>
     </string-array>
 
     <string-array name="repeat_array">
@@ -398,6 +399,6 @@
     <string name="delete">Delete</string>
     <string name="leave_apply_msg1">You will able to see leave balance once you get approval from your manager</string>
     <string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>
-    <string name="differentiator_line">|</string>
+    <string name="separator">|</string>
     <string name="never_label">Never</string>
 </resources>

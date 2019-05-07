@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
@@ -464,6 +465,21 @@ public class Util {
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        }
+        return "";
+    }
+
+    public static String getTimeFromTimeStamp(Long timeStamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timeStamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date currentTimeZone = calendar.getTime();
+            return sdf.format(currentTimeZone);
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
         }
         return "";
     }

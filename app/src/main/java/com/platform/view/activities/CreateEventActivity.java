@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventLocation;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Recurrence;
 import com.platform.presenter.CreateEventActivityPresenter;
@@ -32,10 +33,8 @@ import com.platform.view.adapters.AddMembersListAdapter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener {
 
@@ -75,7 +74,8 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private void initView() {
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
-        CreateEventActivityPresenter createEventPresenter = new CreateEventActivityPresenter(this);
+        createEventPresenter = new CreateEventActivityPresenter(this);
+        recurrence = new Recurrence();
         createEventPresenter.getEventCategory();
 
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
@@ -122,7 +122,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
-                etEndDate.setText(event.getEndDate());
+                etEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
                 findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
@@ -153,9 +153,9 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         int spinnerPosition = myAdapter.getPosition(event.getEventType());
         spCategory.setSelection(spinnerPosition);
         etTitle.setText(event.getTitle());
-        etStartDate.setText(timeStampToDate(event.getEventStartDateTime()));
-        etStartTime.setText(timeStampToTime(event.getEventStartDateTime()));
-        etEndTime.setText(event.getEndTime());
+        etStartDate.setText(Util.getDateFromTimestamp(event.getEventStartDateTime()));
+        etStartTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
+        etEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
         etRepeat.setText(event.getRepeat());
         etDescription.setText(event.getEventDescription());
         etAddress.setText(event.getAddress());
@@ -226,15 +226,20 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private void submitDetails() {
 
         Event event = new Event();
-
+        EventLocation eLocation = new EventLocation();
+        eLocation.setAddress(etAddress.getText().toString());
         event.setEventType(spCategory.getSelectedItem().toString());
-        event.setTitle(etTitle.getText().toString());
+        event.setEventName(etTitle.getText().toString());
         event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-        event.setStarTime(etStartTime.getText().toString());
-        event.setEndTime(etEndTime.getText().toString());
-        event.setRepeat(recurrence.getType());
+        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+//        event.setStarTime(etStartTime.getText().toString());
+//        event.setEndTime(etEndTime.getText().toString());
+        event.setOrganizer(Util.getUserObjectFromPref().getId());
+        event.setRecurrence(recurrence);
         event.setEventDescription(etDescription.getText().toString());
-        event.setAddress(etAddress.getText().toString());
+        event.setEventLocation(eLocation);
+        event.setStatus(Constants.Planner.PLANNED_STATUS);
+        event.setParticipants(membersList);
 
         //put in response of above api
         createEventPresenter.submitEvent(event);
@@ -253,60 +258,21 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         return 0L;
     }
 
-    private String timeStampToDate(Long timeStamp) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
-            Log.e("TAG", e.getMessage());
-        }
-        return "";
-    }
-
-    private String timeStampToTime(Long timeStamp) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
-            Log.e("TAG", e.getMessage());
-        }
-        return "";
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.Planner.REPEAT_EVENT) {
-//            if (resultCode == Activity.RESULT_OK) {
-                recurrence = (Recurrence) data.getSerializableExtra("result");
-                btRepeat.setText(recurrence.getType());
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
-        } else if(requestCode == Constants.Planner.MEMBER_LIST) {
-//            if (resultCode == Activity.RESULT_OK) {
-                membersList = (ArrayList<Participant>) data.getSerializableExtra("result");
-//                addMembersListAdapter.notifyDataSetChanged();
+        if (requestCode == Constants.Planner.REPEAT_EVENT && data!= null) {
+                recurrence = (Recurrence) data.getSerializableExtra(Constants.Planner.REPEAT_EVENT_DATA);
+                if (recurrence.getType() != null) {
+                    btRepeat.setText(recurrence.getType());
+                }
+        } else if (requestCode == Constants.Planner.MEMBER_LIST && data!= null) {
+            membersList = (ArrayList<Participant>) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
             RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
             addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             rvAttendeesList.setLayoutManager(mLayoutManager);
             rvAttendeesList.setAdapter(addMembersListAdapter);
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
         }
     }
 

@@ -17,8 +17,7 @@ import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
-import com.platform.models.user.UserInfo;
-import com.platform.presenter.AddMemberFilerActivityPresenter;
+import com.platform.presenter.AddMemberFilterActivityPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -65,7 +64,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     private ImageView backButton;
     private Button btApplyFilters;
 
-    private AddMemberFilerActivityPresenter addMemberFilerPresenter;
+    private AddMemberFilterActivityPresenter addMemberFilerPresenter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
 
@@ -74,7 +73,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member_filer);
 
-        addMemberFilerPresenter = new AddMemberFilerActivityPresenter(this);
+        addMemberFilerPresenter = new AddMemberFilterActivityPresenter(this);
         addMemberFilerPresenter.getOrganizations();
 
         initView();
