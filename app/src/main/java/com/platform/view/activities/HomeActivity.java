@@ -82,7 +82,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     public void showBackArrow() {
-        if (toggle!= null) {
+        if (toggle != null) {
             toggle.setDrawerIndicatorEnabled(false);
             toolbar.setNavigationIcon(R.drawable.ic_back_white);
             toolbar.setNavigationOnClickListener(view -> {
@@ -524,30 +524,37 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
         } else {
-            getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            String tag = null;
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                for (final Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment instanceof HomeFragment) {
-                        tag = fragment.getTag();
+            try {
+                getSupportFragmentManager().popBackStackImmediate(null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                String tag = null;
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    for (final Fragment fragment : getSupportFragmentManager().getFragments()) {
+                        if (fragment instanceof HomeFragment) {
+                            tag = fragment.getTag();
+                        }
+                    }
+                    if (TextUtils.isEmpty(tag)) {
+                        tag = getString(R.string.app_name_ss);
                     }
                 }
-                if (TextUtils.isEmpty(tag)) {
-                    tag = getString(R.string.app_name_ss);
-                }
-            }
-            setActionBarTitle(tag);
+                setActionBarTitle(tag);
 
-            if (tag != null && tag.equals(getString(R.string.app_name_ss))) {
-                if (findViewById(R.id.home_bell_icon).getVisibility() == View.GONE) {
-                    findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
-                    updateUnreadNotificationsCount();
+                if (tag != null && tag.equals(getString(R.string.app_name_ss))) {
+                    if (findViewById(R.id.home_bell_icon).getVisibility() == View.GONE) {
+                        findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
+                        updateUnreadNotificationsCount();
+                    }
                 }
-            }
 
-            if (!toggle.isDrawerIndicatorEnabled()) {
-                toggle.setDrawerIndicatorEnabled(true);
-                setSyncButtonVisibility(true);
+                if (!toggle.isDrawerIndicatorEnabled()) {
+                    toggle.setDrawerIndicatorEnabled(true);
+                    setSyncButtonVisibility(true);
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, "Exception :: HomeActivity : onBackPressed");
             }
         }
     }
