@@ -203,7 +203,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                             data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
                     presenter.getSubmittedForms(data.getId(), url);
                 }
-            } else if ((submitCount == null || submitCount.equals("0")) &&
+            } else if ((submitCount == null || submitCount.equals("0")) ||
                     (localFormResults == null || localFormResults.isEmpty())) {
 
                 if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {

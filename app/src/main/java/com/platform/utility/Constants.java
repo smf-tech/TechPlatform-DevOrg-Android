@@ -31,6 +31,8 @@ public class Constants {
     public static final String MONTH_DAY_FORMAT = "MMMM dd";
     public static final String TIME_FORMAT = "hh:mm aa";
 
+    public static final String DECIMAL_FORMAT = "#0.00";
+
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
