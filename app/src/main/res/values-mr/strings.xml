@@ -299,7 +299,7 @@
     <string name="friday">शुक्रवार</string>
     <string name="saturday">शनिवार</string>
     <string name="sunday">रविवार</string>
-    <string name="task_formlist_screen_msg">" फॉर्म या कार्यसाठी आवश्यक आहेत."</string>
+    <string name="task_form_list_screen_msg">" फॉर्म या कार्यसाठी आवश्यक आहेत."</string>
     <string name="create_filter_screen_msg">"सदस्य जोडण्यापूर्वी फिल्टर तयार करा."</string>
     <string name="owner_name">निर्माता नाव</string>
     <string name="attended_label">" उपस्थित होते."</string>

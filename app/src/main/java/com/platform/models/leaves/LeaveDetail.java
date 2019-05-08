@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class LeaveDetail implements Serializable {
+
     @SerializedName("year")
     @Expose
     private Integer year;

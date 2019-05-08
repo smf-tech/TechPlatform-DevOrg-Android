@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Recurrence implements Serializable {
+
     private String interval;
     private String dayOfWeek;
     private String dayOfMonth;

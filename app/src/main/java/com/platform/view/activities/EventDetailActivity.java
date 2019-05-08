@@ -114,7 +114,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
             View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
-            TextView tvFormlistLabel = findViewById(R.id.tv_form_list_label);
+            TextView tvFormListLabel = findViewById(R.id.tv_form_list_label);
             vTaskStatusIndicator.setVisibility(View.VISIBLE);
             findViewById(R.id.ly_attended).setVisibility(View.GONE);
             findViewById(R.id.ly_category).setVisibility(View.GONE);
@@ -147,14 +147,14 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
             if (event.getFormsList().size() > 0) {
                 findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
                 btEditAttendance.setVisibility(View.GONE);
-                tvFormlistLabel.setVisibility(View.VISIBLE);
-                tvFormlistLabel.setText(String.format(Locale.getDefault(), "%d%s",
-                        event.getFormsList().size(), getString(R.string.task_formlist_screen_msg)));
+                tvFormListLabel.setVisibility(View.VISIBLE);
+                tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
+                        event.getFormsList().size(), getString(R.string.task_form_list_screen_msg)));
                 rvFormsList = findViewById(R.id.rv_forms_list);
                 setFormListAdapter(event.getFormsList());
             } else {
                 btEditAttendance.setText(getString(R.string.mark_completed));
-                tvFormlistLabel.setVisibility(View.GONE);
+                tvFormListLabel.setVisibility(View.GONE);
             }
         } else {
             setActionbar(getString(R.string.event_detail));
