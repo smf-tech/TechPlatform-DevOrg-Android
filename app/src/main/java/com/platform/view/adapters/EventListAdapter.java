@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.EventDetailActivity;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
         Event event = eventsList.get(position);
         holder.tvEventTitle.setText(event.getTitle());
-        holder.tvEventTime.setText(event.getStarTime());
+        holder.tvEventTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
         holder.tvEventAddress.setText(event.getAddress());
         holder.tvEventOwner.setText(event.getOrganizer());
 

@@ -241,7 +241,9 @@ public class Constants {
     }
 
     public static class Planner {
-        public static final Integer REPEAT_EVENT = 1;
+        public static final Integer REPEAT_EVENT = 001;
+        public static final Integer MEMBER_LIST = 002;
+
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN = "ToOpen";
         public static final String EVENT_DETAIL = "EventDetail";
@@ -249,6 +251,8 @@ public class Constants {
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
         public static final String EVENTS_LABEL = "EVENTS";
         public static final String TASKS_LABEL = "TASKS";
+        public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
+        public static final String MEMBER_LIST_DATA = "RepeatEventDta";
         public static final String PLANNED_STATUS = "planned";
         public static final String COMPLETED_STATUS = "completed";
 

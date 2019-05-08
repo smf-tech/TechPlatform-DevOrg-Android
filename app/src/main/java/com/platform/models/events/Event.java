@@ -12,9 +12,6 @@ public class Event implements Serializable {
 
     private String id;
     private String title;
-    private String endDate;
-    private String starTime;
-    private String endTime;
     private String repeat;
     private String address;
     private String owner;
@@ -26,16 +23,13 @@ public class Event implements Serializable {
 
     }
 
-    public Event(String id, String category, String title, Long startDate, String endDate, String starTime,
-                 String endTime, Recurrence recurrence, String description, String address, String organizer,
+    public Event(String id, String category, String title, Long startDate,Long eventEndDateTime , Recurrence recurrence, String description, String address, String organizer,
                  String ownerID, String status, ArrayList<Participant> membersList, ArrayList<TaskForm> formsList) {
         this.id = id;
         this.eventType = category;
         this.title = title;
         this.eventStartDateTime = startDate;
-        this.endDate = endDate;
-        this.starTime = starTime;
-        this.endTime = endTime;
+        this.eventEndDateTime = eventEndDateTime;
         this.recurrence = recurrence;
         this.eventDescription = description;
         this.address = address;
@@ -62,30 +56,6 @@ public class Event implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getStarTime() {
-        return starTime;
-    }
-
-    public void setStarTime(String starTime) {
-        this.starTime = starTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public String getRepeat() {
