@@ -3,13 +3,19 @@ package com.platform.presenter;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
+import com.google.gson.JsonObject;
 import com.platform.listeners.CreateEventListener;
 import com.platform.models.events.Event;
 import com.platform.request.EventRequestCall;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateEventActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class CreateEventActivityPresenter implements CreateEventListener {
 
@@ -39,7 +45,18 @@ public class CreateEventActivityPresenter implements CreateEventListener {
     public void onCategoryFetched(String response) {
         createEventActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserOrgInPref(response);
+            try {
+                JSONObject categoryResponse = new JSONObject(response);
+                JSONArray data = categoryResponse.getJSONArray("data");
+                ArrayList categoryTypes = new ArrayList();
+                for(int i=0; i<data.length();i++){
+                    categoryTypes.add(data.getJSONObject(i).getString("name"));
+                }
+                createEventActivity.get().showCategoryTypes(categoryTypes);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            // Util.saveUserOrgInPref(response);
 //            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
 //            if (orgResponse != null && orgResponse.getData() != null
 //                    && !orgResponse.getData().isEmpty()
