@@ -25,6 +25,9 @@ public class Column {
     @SerializedName("inputType")
     @Expose
     private String inputType;
+    @SerializedName("enableIf")
+    @Expose
+    private String enableIf;
     @SerializedName("isRequired")
     @Expose
     private Boolean isRequired;
@@ -71,6 +74,14 @@ public class Column {
 
     public void setChoicesByUrl(ChoicesByUrl choicesByUrl) {
         this.choicesByUrl = choicesByUrl;
+    }
+
+    public String getEnableIf() {
+        return enableIf;
+    }
+
+    public void setEnableIf(String enableIf) {
+        this.enableIf = enableIf;
     }
 
     public Boolean getRequired() {

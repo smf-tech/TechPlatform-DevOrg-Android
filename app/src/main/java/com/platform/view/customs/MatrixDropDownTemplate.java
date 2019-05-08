@@ -57,6 +57,14 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
         this.tag = tag;
     }
 
+    public Elements getFormData() {
+        return formData;
+    }
+
+    public Column getColumn() {
+        return column;
+    }
+
     MatrixDropDownTemplate(FormFragment context, Elements formData, Column column,
                            String formId,
                            HashMap<String, String> matrixDynamicInnerMap,
@@ -73,6 +81,10 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
 
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    public HashMap<String, String> getMatrixDynamicInnerMap() {
+        return matrixDynamicInnerMap;
     }
 
     synchronized public View init(String mandatory) {
