@@ -647,6 +647,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
                 } else {
+                    formFragmentView.findViewById(R.id.btn_submit).setEnabled(false);
+
                     if (Util.isConnected(getActivity())) {
                         Location location = gpsTracker.getLocation();
                         String strLat, strLong;
