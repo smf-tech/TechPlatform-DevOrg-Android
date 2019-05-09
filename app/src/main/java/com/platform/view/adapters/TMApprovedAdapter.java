@@ -120,9 +120,9 @@ public class TMApprovedAdapter extends BaseExpandableListAdapter {
         if (requests != null) {
             PendingRequest data = requests.get(childPosition);
 
-            if (data != null && data.getEntity() != null && data.getEntity().getUserInfo() != null) {
+            if (data != null && data.getEntity() != null && data.getEntity().getUser() != null) {
                 ((TextView) view.findViewById(R.id.txt_pending_request_title))
-                        .setText(data.getEntity().getUserInfo().getUserName());
+                        .setText(data.getEntity().getUser().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
                         .setText(String.format("%s",
                                 Util.getDateFromTimestamp(data.getUpdatedDateTime())));

@@ -154,6 +154,7 @@
     <string name="approvals">मंजूरी</string>
     <string name="who_working">कोण कार्यरत आहे</string>
     <string name="team_user_approval">वापरकर्ता मंजूरी</string>
+    <string name="no_notification_available">आपल्यासाठी कोणत्याही सूचना नाहीत!</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">काहीतरी चूक झाली</string>

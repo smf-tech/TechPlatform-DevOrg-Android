@@ -51,6 +51,8 @@ public class Constants {
         static final String LANGUAGE_LOCALE = "LanguageLocale";
         static final String LANGUAGE_CODE = "languageCode";
 
+        public static final String[] APP_LANGUAGE = {"English", "मराठी", "हिंदी"};
+
         public static final String LANGUAGE_ENGLISH = "en";
         public static final String LANGUAGE_MARATHI = "mr";
         public static final String LANGUAGE_HINDI = "hi";
