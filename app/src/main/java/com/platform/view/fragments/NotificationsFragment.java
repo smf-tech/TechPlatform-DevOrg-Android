@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -44,14 +43,6 @@ public class NotificationsFragment extends Fragment implements TMTaskListener,
 
     public NotificationsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     */
-    public static NotificationsFragment newInstance() {
-        return new NotificationsFragment();
     }
 
     @Override

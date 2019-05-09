@@ -116,12 +116,10 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void showLanguageSelectionDialog() {
-        final String[] items = {"English", "मराठी", "हिंदी"};
-
         AlertDialog languageSelectionDialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
                 .setCancelable(false)
-                .setSingleChoiceItems(items, 0, (dialogInterface, i) -> {
+                .setSingleChoiceItems(Constants.App.APP_LANGUAGE, 0, (dialogInterface, i) -> {
                 })
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
 

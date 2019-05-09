@@ -154,6 +154,7 @@
     <string name="approvals">Approvals</string>
     <string name="who_working">"Who's Working"</string>
     <string name="team_user_approval">User Approval</string>
+    <string name="no_notification_available">There are no notifications for you!</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>

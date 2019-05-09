@@ -2,7 +2,6 @@ package com.platform.models.tm;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.models.common.Entity;
 
 import java.util.List;
 
@@ -76,7 +75,10 @@ public class PendingRequest {
     private Long updatedDateTime;
     @SerializedName("entity")
     @Expose
-    private Entity entity;
+    private TMEntity entity;
+    @SerializedName("approver_ids")
+    @Expose
+    private List<String> approverIds = null;
 
     public String getId() {
         return id;
@@ -254,11 +256,11 @@ public class PendingRequest {
         this.updatedDateTime = updatedDateTime;
     }
 
-    public Entity getEntity() {
+    public TMEntity getEntity() {
         return entity;
     }
 
-    public void setEntity(Entity entity) {
+    public void setEntity(TMEntity entity) {
         this.entity = entity;
     }
 }

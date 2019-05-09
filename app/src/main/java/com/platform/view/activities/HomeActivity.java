@@ -398,8 +398,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void showLanguageChangeDialog() {
-        final String[] items = {"English", "मराठी", "हिंदी "};
-
         int checkId = 0;
         if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
             checkId = 1;
@@ -410,7 +408,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         AlertDialog languageSelectionDialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
                 .setCancelable(true)
-                .setSingleChoiceItems(items, checkId, (dialogInterface, i) -> {
+                .setSingleChoiceItems(Constants.App.APP_LANGUAGE, checkId, (dialogInterface, i) -> {
                 })
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
                     ListView listView = ((AlertDialog) dialog).getListView();
@@ -587,7 +585,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
                 findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
 
-                Util.launchFragment(NotificationsFragment.newInstance(), this,
+                Util.launchFragment(new NotificationsFragment(), this,
                         getString(R.string.notifications), true);
 
                 break;
