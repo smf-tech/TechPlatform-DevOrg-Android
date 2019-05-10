@@ -232,8 +232,8 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         eLocation.setAddress(etAddress.getText().toString());
         event.setEventType(spCategory.getSelectedItem().toString());
         event.setEventName(etTitle.getText().toString());
-        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+//        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+//        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
 //        event.setStarTime(etStartTime.getText().toString());
 //        event.setEndTime(etEndTime.getText().toString());
         event.setOrganizer(Util.getUserObjectFromPref().getId());

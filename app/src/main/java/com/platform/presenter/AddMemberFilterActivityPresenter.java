@@ -68,7 +68,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     public void onOrganizationsFetched(String response) {
         addMemberFilterActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserOrgInPref(response);
             OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
             if (orgResponse != null && orgResponse.getData() != null
                     && !orgResponse.getData().isEmpty()
@@ -120,7 +119,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     public void onMembersFetched(String response) {
         addMemberFilterActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserOrgInPref(response);
             MemberListResponse memberListResponse = new Gson().fromJson(response, MemberListResponse.class);
             if (memberListResponse != null && memberListResponse.getData() != null
                     && !memberListResponse.getData().isEmpty()

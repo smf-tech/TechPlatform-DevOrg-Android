@@ -3,7 +3,9 @@ package com.platform.models.events;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class EventLocation {
+import java.io.Serializable;
+
+public class EventLocation implements Serializable {
     @SerializedName("address")
     @Expose
     private String address;

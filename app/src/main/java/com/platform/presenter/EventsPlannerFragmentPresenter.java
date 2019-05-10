@@ -4,18 +4,32 @@ import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.platform.listeners.CreateEventListener;
+import com.platform.models.events.EventsResponse;
 import com.platform.request.EventRequestCall;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.fragments.EventsPlannerFragment;
+import com.platform.view.fragments.TasksPlannerFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
 public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     private final WeakReference<EventsPlannerFragment> fragmentWeakReference;
+    private final WeakReference<TasksPlannerFragment> tasksPlannerFragmentWeakReference;
 
     public EventsPlannerFragmentPresenter(EventsPlannerFragment fragmentWeakReference) {
         this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);
+        this.tasksPlannerFragmentWeakReference = null;
+    }
+
+    public EventsPlannerFragmentPresenter(TasksPlannerFragment tasksPlannerFragmentWeakReference) {
+        this.tasksPlannerFragmentWeakReference = new WeakReference<>(tasksPlannerFragmentWeakReference);
+        this.fragmentWeakReference = null;
     }
 
     public void getEvents(String status) {
@@ -35,13 +49,20 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
     public void onEventsFetched(String response) {
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserOrgInPref(response);
-//            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
-//            if (orgResponse != null && orgResponse.getData() != null
-//                    && !orgResponse.getData().isEmpty()
-//                    && orgResponse.getData().size() > 0) {
-//                fragmentWeakReference.get().showOrganizations(orgResponse.getData());
+
+//            try {
+//                JSONObject eventsResponse = new JSONObject(response);
+//                JSONArray eventsData = eventsResponse.getJSONArray("data");
+//                fragmentWeakReference.get().displayEventsList(eventsData);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
 //            }
+            EventsResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, EventsResponse.class);
+
+            if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+                fragmentWeakReference.get().hideProgressBar();
+                fragmentWeakReference.get().showNextScreen(data);
+            }
         }
     }
 

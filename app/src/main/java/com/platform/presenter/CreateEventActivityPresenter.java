@@ -56,13 +56,6 @@ public class CreateEventActivityPresenter implements CreateEventListener {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            // Util.saveUserOrgInPref(response);
-//            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
-//            if (orgResponse != null && orgResponse.getData() != null
-//                    && !orgResponse.getData().isEmpty()
-//                    && orgResponse.getData().size() > 0) {
-//                createEventActivity.get().showOrganizations(orgResponse.getData());
-//            }
         }
     }
 
@@ -74,15 +67,7 @@ public class CreateEventActivityPresenter implements CreateEventListener {
     @Override
     public void onEventSubmitted(String response) {
         createEventActivity.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            Util.saveUserOrgInPref(response);
-//            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
-//            if (orgResponse != null && orgResponse.getData() != null
-//                    && !orgResponse.getData().isEmpty()
-//                    && orgResponse.getData().size() > 0) {
-//                createEventActivity.get().showOrganizations(orgResponse.getData());
-//            }
-        }
+
     }
 
     @Override

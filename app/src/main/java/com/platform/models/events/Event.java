@@ -164,10 +164,10 @@ public class Event implements Serializable {
     private String eventType;
     @SerializedName("formsList")
     @Expose
-    private List<Object> formsList = null;
+    private ArrayList<TaskForm> formsList = new ArrayList<>();
     @SerializedName("membersList")
     @Expose
-    private ArrayList<Participant> membersList = null;
+    private ArrayList<Participant> membersList = new ArrayList<>();
     @SerializedName("organizer")
     @Expose
     private String organizer;
@@ -241,11 +241,11 @@ public class Event implements Serializable {
         this.eventType = eventType;
     }
 
-    public List<Object> getFormsList() {
+    public ArrayList<TaskForm> getFormsList() {
         return formsList;
     }
 
-    public void setFormsList(List<Object> formsList) {
+    public void setFormsList(ArrayList<TaskForm> formsList) {
         this.formsList = formsList;
     }
 
