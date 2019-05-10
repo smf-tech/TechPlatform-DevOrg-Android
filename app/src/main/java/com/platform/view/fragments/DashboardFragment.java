@@ -47,6 +47,7 @@ public class DashboardFragment extends Fragment {
     };
     private List<Modules> tabNames = new ArrayList<>();
     private static int mApprovalCount = 0;
+    private final int TAB_COUNT = 4;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,7 +83,7 @@ public class DashboardFragment extends Fragment {
                     }
                 } else {
                     isUserApproved = true;
-                    for (int i = 0; i < tabNames.size(); i++) {
+                    for (int i = 0; i < getTabCount(); i++) {
                         tabNames.get(i).setActive(true);
                     }
                 }
@@ -92,8 +93,21 @@ public class DashboardFragment extends Fragment {
         initViews();
     }
 
+    private int getTabCount() {
+        int tabCount = 0;
+
+        if (tabNames != null && tabNames.size() > 0) {
+            tabCount = tabNames.size();
+            if (tabCount > TAB_COUNT) {
+                tabCount = TAB_COUNT;
+            }
+        }
+
+        return tabCount;
+    }
+
     private void setMenuResourceId() {
-        for (int i = 0; i < tabNames.size(); i++) {
+        for (int i = 0; i < getTabCount(); i++) {
             switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
                     tabNames.get(i).setResId(R.id.action_menu_forms);
@@ -116,7 +130,7 @@ public class DashboardFragment extends Fragment {
 
     private void initViews() {
         CustomViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
-        int pageLimit = 4;
+        int pageLimit = TAB_COUNT;
         if (tabNames.size() < pageLimit) {
             pageLimit = tabNames.size();
         }
@@ -169,7 +183,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setupTabIcons() {
-        for (int i = 0; i < tabNames.size(); i++) {
+        for (int i = 0; i < getTabCount(); i++) {
             if (getContext() == null) continue;
 
             RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
@@ -276,7 +290,7 @@ public class DashboardFragment extends Fragment {
     }
 
     public void updateBadgeCount() {
-        for (int i = 0; i < tabNames.size(); i++) {
+        for (int i = 0; i < getTabCount(); i++) {
             if (getContext() == null) continue;
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
