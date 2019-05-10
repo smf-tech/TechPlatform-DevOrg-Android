@@ -40,7 +40,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private AddMembersListAdapter addMembersListAdapter;
 
-    private final ArrayList<Participant> membersList = new ArrayList<>();
+    private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
     private Recurrence recurrence;
 
@@ -52,6 +52,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private EditText etStartTime;
     private EditText etEndTime;
     private EditText etRepeat;
+    private TextView tvRepeatDetail;
     private EditText etDescription;
     private EditText etAddress;
     private EditText etAddMembers;
@@ -89,6 +90,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         etStartTime = findViewById(R.id.et_start_time);
         etEndTime = findViewById(R.id.et_end_time);
         etRepeat = findViewById(R.id.et_repeat);
+        tvRepeatDetail = findViewById(R.id.tv_repeat_detail);
         etDescription = findViewById(R.id.et_description);
         etAddress = findViewById(R.id.et_address);
         etAddMembers = findViewById(R.id.et_add_members);
@@ -265,6 +267,16 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
                 recurrence = (Recurrence) data.getSerializableExtra(Constants.Planner.REPEAT_EVENT_DATA);
                 if (recurrence.getType() != null) {
                     btRepeat.setText(recurrence.getType());
+                    tvRepeatDetail.setVisibility(View.VISIBLE);
+                    tvRepeatDetail.setText("Repeats every "+recurrence.getInterval()+", ends on "+recurrence.getLastDate());
+//                    String[] str = getResources().getStringArray(R.array.repeat_array);
+//                    if (recurrence.getType().equalsIgnoreCase(str[1])) {
+//                        ly_day_interval
+//                    } else if (recurrence.getType().equalsIgnoreCase(str[2])) {
+//                        ly_week_interval
+//                    } else if (recurrence.getType().equalsIgnoreCase(str[3])) {
+//                        ly_month_interval
+//                    }
                 }
         } else if (requestCode == Constants.Planner.MEMBER_LIST && data!= null) {
             membersList = (ArrayList<Participant>) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);

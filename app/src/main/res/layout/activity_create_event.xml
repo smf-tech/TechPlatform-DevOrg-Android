@@ -157,8 +157,9 @@
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/task_repeat"
                         android:inputType="text|textCapWords"
+                        android:clickable="false"
+                        android:focusable="false"
                         tools:ignore="Autofill" />
-
 
                 </com.google.android.material.textfield.TextInputLayout>
 
