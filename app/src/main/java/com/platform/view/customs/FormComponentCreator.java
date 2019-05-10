@@ -69,6 +69,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     private String mImageName;
     private boolean mIsInEditMode;
     private boolean mIsPartiallySaved;
+    Elements parentElementForMD;
+    String valueForMD;
+    String formIdForMD;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
@@ -212,7 +215,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         if (matrixDynamics != null && !matrixDynamics.isEmpty()) {
             matrixDynamics.get(0).updateDropDownValues(column, choiceValues,
-                    matrixDynamicInnerMap, rowIndex);
+                    matrixDynamicInnerMap, rowIndex, true);
         }
     }
 
@@ -739,7 +742,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     @Override
     public void onEmptyDropdownSelected(Elements parentElement) {
-        //It means dependency is there
+        //It means dependency is there for dropdown template
         String key = "{" + parentElement.getName() + "} notempty";
         if (dependencyMap.get(key) != null) {
             List<DropDownTemplate> dropDownTemplates = dependencyMap.get(key);
@@ -759,6 +762,27 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     dropDownTemplate.setFormData(dependentElement);
                     dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
                 }
+            }
+        }
+
+        //It means dependency is there for matrix dropdown template
+        if (dependencyMatrixDynamicMap.get(key) != null && !dependencyMatrixDynamicMap.get(key).isEmpty()) {
+            this.formIdForMD = "";
+            this.parentElementForMD = null;
+            this.valueForMD = "";
+            for (MatrixDropDownTemplate matrixDropDownTemplate :
+                    dependencyMatrixDynamicMap.get(key)) {
+                Elements dependentElement = matrixDropDownTemplate.getFormData();
+
+                List<Choice> choiceValues = new ArrayList<>();
+                Choice selectChoice = new Choice();
+                selectChoice.setValue(fragment.get().getString(R.string.default_select));
+                LocaleData localeData = new LocaleData(fragment.get().getString(R.string.default_select));
+                selectChoice.setText(localeData);
+                choiceValues.add(0, selectChoice);
+
+                dependentElement.setChoices(choiceValues);
+                matrixDropDownTemplate.setListData(choiceValues, matrixDropDownTemplate.getMatrixDynamicInnerMap());
             }
         }
 
@@ -908,6 +932,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         //It means dependency is there for matrix dropdown template
         if (dependencyMatrixDynamicMap.get(key) != null && !dependencyMatrixDynamicMap.get(key).isEmpty()) {
+            this.formIdForMD = formId;
+            this.parentElementForMD = parentElement;
+            this.valueForMD = value;
             for (MatrixDropDownTemplate matrixDropDownTemplate :
                     dependencyMatrixDynamicMap.get(key)) {
                 Elements dependentElement = matrixDropDownTemplate.getFormData();
@@ -935,8 +962,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         }
     }
 
-    private List<Choice> filterData(String response, String dependentResponse, ChoicesByUrl choicesByUrl,
-                                    Elements parentElement, String value) {
+    List<Choice> filterData(String response, String dependentResponse, ChoicesByUrl choicesByUrl,
+                            Elements parentElement, String value) {
         List<Choice> choiceValues = new ArrayList<>();
         List<JsonObject> dependentObjectsList = new ArrayList<>();
 
