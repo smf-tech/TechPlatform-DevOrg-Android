@@ -6,6 +6,9 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
@@ -14,10 +17,13 @@ import com.platform.listeners.AddMemberRequestCallListener;
 import com.platform.listeners.CreateEventListener;
 import com.platform.models.events.Event;
 import com.platform.models.events.ParametersFilterMember;
+import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EventRequestCall {
@@ -164,13 +170,13 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT;
+        final String eventSubmitUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT;
 
-        Log.d(TAG, "SubmitEvents: " + getOrgUrl);
+        Log.d(TAG, "SubmitEvents: " + eventSubmitUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
-                getOrgUrl,
+                eventSubmitUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
                 gson,
@@ -179,6 +185,19 @@ public class EventRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(event));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+    private JSONObject createBodyParams(Event event) {
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(event);
+        Log.d(TAG, "SubmitRequest: " + json);
+        try {
+            return  new JSONObject(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

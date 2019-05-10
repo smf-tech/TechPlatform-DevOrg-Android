@@ -58,6 +58,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private EditText etAddMembers;
     private Button btRepeat;
     private Button btEventSubmit;
+    private ArrayList categoryTypes = new ArrayList();
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
@@ -111,10 +112,12 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
             tlyAddress.setVisibility(View.GONE);
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.category_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(adapter);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.category_types, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spCategory.setAdapter(adapter);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spCategory.setAdapter(adapter);
 
         addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -226,23 +229,22 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void submitDetails() {
-
         Event event = new Event();
         EventLocation eLocation = new EventLocation();
         eLocation.setAddress(etAddress.getText().toString());
         event.setEventType(spCategory.getSelectedItem().toString());
         event.setEventName(etTitle.getText().toString());
-        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+//        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+//        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
 //        event.setStarTime(etStartTime.getText().toString());
 //        event.setEndTime(etEndTime.getText().toString());
         event.setOrganizer(Util.getUserObjectFromPref().getId());
         event.setRecurrence(recurrence);
+        event.setDuration("");
         event.setEventDescription(etDescription.getText().toString());
         event.setEventLocation(eLocation);
         event.setStatus(Constants.Planner.PLANNED_STATUS);
         event.setParticipants(membersList);
-
         //put in response of above api
         createEventPresenter.submitEvent(event);
     }
@@ -316,5 +318,16 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void showErrorMessage(String result) {
         runOnUiThread(() -> Util.showToast(result, this));
+    }
+
+    public void showCategoryTypes(ArrayList Categoty){
+        this.categoryTypes = Categoty;
+        ArrayAdapter<Integer> categoryAdapter = new ArrayAdapter<Integer>(
+                this,
+                android.R.layout.simple_spinner_item,
+                categoryTypes
+        );
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(categoryAdapter);
     }
 }

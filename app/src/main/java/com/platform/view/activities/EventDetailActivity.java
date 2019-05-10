@@ -80,14 +80,14 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
         DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
         SimpleDateFormat weekDay = new SimpleDateFormat("EEEE", Locale.getDefault());
 
-        String finalDate = weekDay.format(event.getEventStartDateTime());
-        finalDate = finalDate + ", " + targetFormat.format(event.getEventStartDateTime());
+//        String finalDate = weekDay.format(event.getEventStartDateTime());
+//        finalDate = finalDate + ", " + targetFormat.format(event.getEventStartDateTime());
 
-        tvTitle.setText(event.getTitle());
+        tvTitle.setText(event.getEventName());
         tvCategory.setText(event.getEventType());
         tvDescription.setText(event.getEventDescription());
         tvOwner.setText(event.getOrganizer());
-        tvDate.setText(finalDate);
+    //    tvDate.setText(finalDate);
 //        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
         tvAddress.setText(event.getAddress());
 //        rvAttendeesList = findViewById(R.id.rv_attendees_list);

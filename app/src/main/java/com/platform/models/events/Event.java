@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Event implements Serializable {
-    private String id;
+    //private String id;
     private String title;
     private String repeat;
     private String address;
     private String owner;
     private String ownerID;
-    private ArrayList<Participant> membersList = new ArrayList<>();
-    private ArrayList<TaskForm> formsList = new ArrayList<>();
+//    private ArrayList<Participant> membersList = new ArrayList<>();
+//    private ArrayList<TaskForm> formsList = new ArrayList<>();
 
     public Event() {
 
@@ -40,13 +40,13 @@ public class Event implements Serializable {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
     public String getTitle() {
         return title;
@@ -88,68 +88,33 @@ public class Event implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public ArrayList<Participant> getMembersList() {
-        return membersList;
-    }
-
-    public void setMembersList(ArrayList<Participant> membersList) {
-        this.membersList = membersList;
-    }
-
-    public ArrayList<TaskForm> getFormsList() {
-        return formsList;
-    }
-
-    public void setFormsList(ArrayList<TaskForm> formsList) {
-        this.formsList = formsList;
-    }
+//    public ArrayList<Participant> getMembersList() {
+//        return membersList;
+//    }
+//
+//    public void setMembersList(ArrayList<Participant> membersList) {
+//        this.membersList = membersList;
+//    }
+//
+//    public ArrayList<TaskForm> getFormsList() {
+//        return formsList;
+//    }
+//
+//    public void setFormsList(ArrayList<TaskForm> formsList) {
+//        this.formsList = formsList;
+//    }
 
     ///////////////////////////////////
 
-    @SerializedName("eventType")
-    @Expose
-    private String eventType;
     @SerializedName("eventStartDateTime")
     @Expose
     private Long eventStartDateTime;
     @SerializedName("eventEndDateTime")
     @Expose
     private Long eventEndDateTime;
-    @SerializedName("eventLocation")
-    @Expose
-    private EventLocation eventLocation;
-    @SerializedName("organizer")
-    @Expose
-    private String organizer;
-    @SerializedName("agenda")
-    @Expose
-    private String agenda;
-    @SerializedName("eventDescription")
-    @Expose
-    private String eventDescription;
-    @SerializedName("eventName")
-    @Expose
-    private String eventName;
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("duration")
-    @Expose
-    private String duration;
     @SerializedName("recurrence")
     @Expose
     private Recurrence recurrence;
-    @SerializedName("participants")
-    @Expose
-    private List<Participant> participants = null;
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
 
     public Long getEventStartDateTime() {
         return eventStartDateTime;
@@ -167,52 +132,73 @@ public class Event implements Serializable {
         this.eventEndDateTime = eventEndDateTime;
     }
 
-    public EventLocation getEventLocation() {
-        return eventLocation;
+    public Recurrence getRecurrence() {
+        return recurrence;
     }
 
-    public void setEventLocation(EventLocation eventLocation) {
-        this.eventLocation = eventLocation;
+    public void setRecurrence(Recurrence recurrence) {
+        this.recurrence = recurrence;
     }
 
-    public String getOrganizer() {
-        return organizer;
+
+
+
+
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("duration")
+    @Expose
+    private String duration;
+    @SerializedName("eventDescription")
+    @Expose
+    private String eventDescription;
+    @SerializedName("eventLocation")
+    @Expose
+    private EventLocation eventLocation;
+    @SerializedName("eventName")
+    @Expose
+    private String eventName;
+    @SerializedName("eventType")
+    @Expose
+    private String eventType;
+    @SerializedName("formsList")
+    @Expose
+    private ArrayList<TaskForm> formsList = new ArrayList<>();
+    @SerializedName("membersList")
+    @Expose
+    private ArrayList<Participant> membersList = new ArrayList<>();
+    @SerializedName("organizer")
+    @Expose
+    private String organizer;
+    @SerializedName("participants")
+    @Expose
+    private List<Participant> participants = null;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("parent")
+    @Expose
+    private String parent;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("createdDateTime")
+    @Expose
+    private Integer createdDateTime;
+    @SerializedName("updatedDateTime")
+    @Expose
+    private Integer updatedDateTime;
+    @SerializedName("agenda")
+    @Expose
+    private String agenda;
+
+    public String getId() {
+        return id;
     }
 
-    public void setOrganizer(String organizer) {
-        this.organizer = organizer;
-    }
-
-    public String getAgenda() {
-        return agenda;
-    }
-
-    public void setAgenda(String agenda) {
-        this.agenda = agenda;
-    }
-
-    public String getEventDescription() {
-        return eventDescription;
-    }
-
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
-    }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDuration() {
@@ -223,12 +209,60 @@ public class Event implements Serializable {
         this.duration = duration;
     }
 
-    public Recurrence getRecurrence() {
-        return recurrence;
+    public String getEventDescription() {
+        return eventDescription;
     }
 
-    public void setRecurrence(Recurrence recurrence) {
-        this.recurrence = recurrence;
+    public void setEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
+    }
+
+    public EventLocation getEventLocation() {
+        return eventLocation;
+    }
+
+    public void setEventLocation(EventLocation eventLocation) {
+        this.eventLocation = eventLocation;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public ArrayList<TaskForm> getFormsList() {
+        return formsList;
+    }
+
+    public void setFormsList(ArrayList<TaskForm> formsList) {
+        this.formsList = formsList;
+    }
+
+    public ArrayList<Participant> getMembersList() {
+        return membersList;
+    }
+
+    public void setMembersList(ArrayList<Participant> membersList) {
+        this.membersList = membersList;
+    }
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
     }
 
     public List<Participant> getParticipants() {
@@ -239,5 +273,51 @@ public class Event implements Serializable {
         this.participants = participants;
     }
 
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Integer getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(Integer createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public Integer getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    public void setUpdatedDateTime(Integer updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
+    }
+
+    public String getAgenda() {
+        return agenda;
+    }
+
+    public void setAgenda(String agenda) {
+        this.agenda = agenda;
+    }
 }

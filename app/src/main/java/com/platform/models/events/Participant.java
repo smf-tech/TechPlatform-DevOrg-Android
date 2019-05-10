@@ -13,7 +13,7 @@ public class Participant implements Serializable {
 
     public Participant(String id, String name, String role, Boolean isMemberSelected, Boolean isMemberAttended) {
         this.participantId = id;
-        this.name = name;
+//        this.name = name;
         this.role = role;
         this.isMemberSelected = isMemberSelected;
         this.attended = isMemberAttended;
@@ -37,12 +37,41 @@ public class Participant implements Serializable {
 
     //////////////////////////////////
 
+    @SerializedName("_id")
+    @Expose
+    private String id;
     @SerializedName("participantId")
     @Expose
     private String participantId;
     @SerializedName("attended")
     @Expose
     private Boolean attended;
+    @SerializedName("accepted")
+    @Expose
+    private Boolean accepted;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("isDeleted")
+    @Expose
+    private Boolean isDeleted;
+    @SerializedName("event_id")
+    @Expose
+    private String eventId;
+    @SerializedName("createdDateTime")
+    @Expose
+    private Integer createdDateTime;
+    @SerializedName("updatedDateTime")
+    @Expose
+    private Integer updatedDateTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getParticipantId() {
         return participantId;
@@ -60,74 +89,51 @@ public class Participant implements Serializable {
         this.attended = attended;
     }
 
-
-    ///////////////////////////////////
-
-    @SerializedName("_id")
-    @Expose
-    private String id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("email")
-    @Expose
-    private String email;
-    @SerializedName("gender")
-    @Expose
-    private String gender;
-    @SerializedName("project_id")
-    @Expose
-    private List<String> projectId = null;
-    @SerializedName("role_id")
-    @Expose
-    private String roleId;
-
-    public String getId() {
-        return id;
+    public Boolean getAccepted() {
+        return accepted;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getEmail() {
-        return email;
+    public Boolean getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
-    public String getGender() {
-        return gender;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
-    public List<String> getProjectId() {
-        return projectId;
+    public Integer getCreatedDateTime() {
+        return createdDateTime;
     }
 
-    public void setProjectId(List<String> projectId) {
-        this.projectId = projectId;
+    public void setCreatedDateTime(Integer createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public Integer getUpdatedDateTime() {
+        return updatedDateTime;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setUpdatedDateTime(Integer updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
     }
-
 }

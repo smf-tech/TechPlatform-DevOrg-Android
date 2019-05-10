@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
+import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventActivity;
@@ -53,6 +55,8 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private RadioGroup radioGroup;
     private FloatingActionButton btAddEvents;
     private MaterialCalendarView calendarView;
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
 
     // flag to check th calender mode
     private boolean isMonth;
@@ -82,6 +86,15 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void initView() {
+        if (getActivity() == null) {
+            return;
+        }
+        progressBarLayout = tasksPlannerView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = tasksPlannerView.findViewById(R.id.pb_profile_act);
+
+        EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
+        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
+
         taskList = new ArrayList<>();
         sortedTaskList = new ArrayList<>();
 

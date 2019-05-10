@@ -43,7 +43,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
     @Override
     public void onBindViewHolder(@NonNull AddMembersListAdapter.ViewHolder holder, int position) {
         Participant member = membersList.get(position);
-        holder.tvMemberName.setText(member.getName());
+        holder.tvMemberName.setText(member.getUserName());
         holder.tvMemberDesignation.setText(member.getRole());
         if(isCheckVisible){
             if(membersList.get(position).getMemberSelected()!= null && isAddMember){

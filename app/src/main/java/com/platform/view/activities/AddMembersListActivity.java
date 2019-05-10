@@ -139,7 +139,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         membersList.clear();
         if (searchText.length() > 0) {
             for (Participant member : filterMembersList) {
-                if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
+                if (member.getUserName().toLowerCase(Locale.getDefault()).contains(searchText)) {
                     membersList.add(member);
                 }
             }
