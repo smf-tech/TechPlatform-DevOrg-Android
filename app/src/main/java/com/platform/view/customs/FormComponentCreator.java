@@ -69,8 +69,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     private String mImageName;
     private boolean mIsInEditMode;
     private boolean mIsPartiallySaved;
-    Elements parentElementForMD;
-    String valueForMD;
+    List<Elements> parentElementForMD = new ArrayList<>();
+    List<String> valueForMD = new ArrayList<>();
     String formIdForMD;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
@@ -179,17 +179,28 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
-            List<DropDownTemplate> dependentDropDowns = dependencyMap.get(formData.getEnableIf());
-            if (dependentDropDowns != null && !dependentDropDowns.isEmpty()) {
-                dependentDropDowns.add(template);
+            if (formData.getEnableIf().contains(Constants.AND)) {
+                StringTokenizer enableIfTokenizer = new StringTokenizer(formData.getEnableIf(), Constants.AND);
+                while (enableIfTokenizer.hasMoreTokens()) {
+                    updateDependencyMap(template, enableIfTokenizer.nextToken().trim());
+                }
             } else {
-                dependentDropDowns = new ArrayList<>();
-                dependentDropDowns.add(template);
+                updateDependencyMap(template, formData.getEnableIf());
             }
-            dependencyMap.put(formData.getEnableIf(), dependentDropDowns);
         }
 
         return view;
+    }
+
+    private void updateDependencyMap(DropDownTemplate template, String enableIf) {
+        List<DropDownTemplate> dependentDropDowns = dependencyMap.get(enableIf);
+        if (dependentDropDowns != null && !dependentDropDowns.isEmpty()) {
+            dependentDropDowns.add(template);
+        } else {
+            dependentDropDowns = new ArrayList<>();
+            dependentDropDowns.add(template);
+        }
+        dependencyMap.put(enableIf, dependentDropDowns);
     }
 
     public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
@@ -769,7 +780,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         if (dependencyMatrixDynamicMap.get(key) != null && !dependencyMatrixDynamicMap.get(key).isEmpty()) {
             this.formIdForMD = "";
             this.parentElementForMD = null;
-            this.valueForMD = "";
+            this.valueForMD = null;
             for (MatrixDropDownTemplate matrixDropDownTemplate :
                     dependencyMatrixDynamicMap.get(key)) {
                 Elements dependentElement = matrixDropDownTemplate.getFormData();
@@ -900,18 +911,40 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     private void updateValues(Elements parentElement, String value, String formId) {
         String key = "{" + parentElement.getName() + "} notempty";
+        List<Elements> parentElements = new ArrayList<>();
+        parentElements.add(parentElement);
+
+        List<String> valuesList = new ArrayList<>();
+        valuesList.add(value);
 
         //It means dependency is there for dropdown template
         if (dependencyMap.get(key) != null && !dependencyMap.get(key).isEmpty()) {
             for (DropDownTemplate dropDownTemplate :
                     dependencyMap.get(key)) {
                 Elements dependentElement = dropDownTemplate.getFormData();
+                //Check if dependent element has more than 1 parent element
+                if (!TextUtils.isEmpty(dependentElement.getEnableIf()) && dependentElement.getEnableIf().contains(Constants.AND)) {
+                    StringTokenizer enableIfTokenizer = new StringTokenizer(dependentElement.getEnableIf(), Constants.AND);
+                    while (enableIfTokenizer.hasMoreTokens()) {
+                        String token = enableIfTokenizer.nextToken().trim();
+                        if (!key.equals(token)) {
+                            for (DropDownTemplate dropdownT :
+                                    dropDowns) {
+                                if (token.contains(dropdownT.getTag())) {
+                                    Choice otherSelectedChoice = dropdownT.getSelectedItem();
+                                    parentElements.add(dropdownT.getFormData());
+                                    valuesList.add(otherSelectedChoice.getValue());
+                                }
+                            }
+                        }
+                    }
+                }
                 String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
                 String response = Util.readFromInternalStorage(fragment.get().getContext(),
                         formId + "_" + dependentElement.getName());
                 ChoicesByUrl choicesByUrl = dependentElement.getChoicesByUrl();
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
-                        parentElement, value);
+                        parentElements, valuesList);
 
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
@@ -933,8 +966,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         //It means dependency is there for matrix dropdown template
         if (dependencyMatrixDynamicMap.get(key) != null && !dependencyMatrixDynamicMap.get(key).isEmpty()) {
             this.formIdForMD = formId;
-            this.parentElementForMD = parentElement;
-            this.valueForMD = value;
+            this.parentElementForMD = parentElements;
+            this.valueForMD = valuesList;
             for (MatrixDropDownTemplate matrixDropDownTemplate :
                     dependencyMatrixDynamicMap.get(key)) {
                 Elements dependentElement = matrixDropDownTemplate.getFormData();
@@ -943,7 +976,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         + "_" + dependentElement.getName() + "_" + matrixDropDownTemplate.getColumn().getName());
                 ChoicesByUrl choicesByUrl = matrixDropDownTemplate.getColumn().getChoicesByUrl();
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
-                        parentElement, value);
+                        parentElements, valuesList);
 
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
@@ -963,7 +996,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     }
 
     List<Choice> filterData(String response, String dependentResponse, ChoicesByUrl choicesByUrl,
-                            Elements parentElement, String value) {
+                            List<Elements> parentElements, List<String> valueList) {
         List<Choice> choiceValues = new ArrayList<>();
         List<JsonObject> dependentObjectsList = new ArrayList<>();
 
@@ -979,29 +1012,45 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 dependentObjectsList = PlatformGson.getPlatformGsonInstance().fromJson(dependentDataArray, listType);
             }
 
-            String pValue;
-            Predicate<JsonObject> byParentSelection;
-            //Apply condition to match selected value in dependentObjects
-            //If parent has object in choicesByUrl
-            if (parentElement.getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
-                StringTokenizer parentValueTokenizer = new StringTokenizer(
-                        parentElement.getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
+            List<Predicate<JsonObject>> byParentSelections = new ArrayList<>();
+            Predicate<JsonObject> predicate;
+            //Check for all parent elements' selected value
+            for (int index = 0; index < parentElements.size(); index++) {
+                //Apply condition to match selected value in dependentObjects
+                //If parent has object in choicesByUrl
+                if (parentElements.get(index).getChoicesByUrl().getValueName().contains(Constants.KEY_SEPARATOR)) {
+                    StringTokenizer parentValueTokenizer = new StringTokenizer(
+                            parentElements.get(index).getChoicesByUrl().getValueName(), Constants.KEY_SEPARATOR);
 
-                //Ignore first value of valueToken
-                String outerObjName = parentValueTokenizer.nextToken();
-                pValue = parentValueTokenizer.nextToken();
-                byParentSelection = innerDependentObject -> innerDependentObject
-                        .get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value);
+                    //Ignore first value of valueToken
+                    String outerObjName = parentValueTokenizer.nextToken();
+                    String pValue = parentValueTokenizer.nextToken();
+                    String value = valueList.get(index);
+
+                    byParentSelections.add(innerDependentObject -> innerDependentObject
+                            .get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value));
+                }
+                //If parent has string in choicesByUrl
+                else {
+                    String pValue = parentElements.get(index).getChoicesByUrl().getValueName();
+                    String value = valueList.get(index);
+                    byParentSelections.add(innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value));
+                }
             }
-            //If parent has string in choicesByUrl
-            else {
-                pValue = parentElement.getChoicesByUrl().getValueName();
-                byParentSelection = innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value);
+
+            predicate = byParentSelections.get(0);
+
+            if (parentElements.size() > 1) {
+                for (int index = 1; index < parentElements.size(); index++) {
+                    if (parentElements.get(index) != null) {
+                        predicate = Predicate.Util.and(predicate, byParentSelections.get(index));
+                    }
+                }
             }
 
             //Filter dependentObjects
             List<JsonObject> filteredDependentObjects
-                    = Stream.of(dependentObjectsList).filter(byParentSelection).collect(Collectors.toList());
+                    = Stream.of(dependentObjectsList).filter(predicate).collect(Collectors.toList());
 
             String dTitle, dValue;
             LocaleData choiceText;

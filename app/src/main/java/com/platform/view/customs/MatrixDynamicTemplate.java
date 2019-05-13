@@ -486,7 +486,8 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
             matrixDropDownTemplate.setColumn(column);
             matrixDropDownTemplate.setListData(choiceValues, matrixDynamicInnerMap);
 
-            if (shouldFilter && !TextUtils.isEmpty(formComponentCreator.valueForMD) && !TextUtils.isEmpty(formComponentCreator.formIdForMD)) {
+            if (shouldFilter && formComponentCreator.valueForMD != null &&
+                    !formComponentCreator.valueForMD.isEmpty() && !TextUtils.isEmpty(formComponentCreator.formIdForMD)) {
                 Elements dependentElement = matrixDropDownTemplate.getFormData();
                 String dependentResponse = matrixDropDownTemplate.getColumn().getChoicesByUrlResponsePath();
                 String response = Util.readFromInternalStorage(Objects.requireNonNull(context.get().getContext()),
