@@ -719,4 +719,11 @@ public class Util {
         timePicker.setTitle(context.getString(R.string.select_time_title));
         timePicker.show();
     }
+
+    public static boolean isUserApproved() {
+        UserInfo userInfo = getUserObjectFromPref();
+//        return true;
+        return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
+                !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
+    }
 }
