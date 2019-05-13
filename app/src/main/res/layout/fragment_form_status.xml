@@ -29,7 +29,7 @@
             android:layout_height="@dimen/dimen_35dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dimen_10dp"
-            android:background="@drawable/bg_circle_grey"
+            android:background="@drawable/bg_button_circle"
             android:contentDescription="@string/content_description"
             android:src="@drawable/ic_sync"
             tools:ignore="RelativeOverlap" />

@@ -138,16 +138,20 @@ public class SavedFormsListAdapter extends BaseExpandableListAdapter {
                 .setOnClickListener(v -> showFormDeletePopUp(processData, finalFormResult));
 
         view.setOnClickListener(v -> {
-            if (finalFormResult != null) {
-                final String formID = finalFormResult.getFormId();
-                final String processID = finalFormResult.get_id();
+            if (Util.isUserApproved()) {
+                if (finalFormResult != null) {
+                    final String formID = finalFormResult.getFormId();
+                    final String processID = finalFormResult.get_id();
 
-                Intent intent = new Intent(mContext, FormActivity.class);
-                intent.putExtra(Constants.PM.PROCESS_ID, processID);
-                intent.putExtra(Constants.PM.FORM_ID, formID);
-                intent.putExtra(Constants.PM.EDIT_MODE, true);
-                intent.putExtra(Constants.PM.PARTIAL_FORM, true);
-                mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, FormActivity.class);
+                    intent.putExtra(Constants.PM.PROCESS_ID, processID);
+                    intent.putExtra(Constants.PM.FORM_ID, formID);
+                    intent.putExtra(Constants.PM.EDIT_MODE, true);
+                    intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+                    mContext.startActivity(intent);
+                }
+            } else {
+                Util.showToast(mContext.getString(R.string.approve_profile), mContext);
             }
         });
 

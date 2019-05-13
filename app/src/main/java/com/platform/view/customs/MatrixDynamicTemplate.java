@@ -299,6 +299,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        layoutParams.setMargins(0, 40, 0, 0);
         layoutParams.weight = 0.10f;
         addLnr.setLayoutParams(layoutParams);
 
@@ -320,6 +321,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        layoutParams.setMargins(0, 40, 0, 0);
         layoutParams.weight = 0.10f;
         deleteLnr.setLayoutParams(layoutParams);
         ImageButton deleteImg = deleteLnr.findViewById(R.id.iv_matrix_dynamic_delete);
@@ -351,7 +353,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         if (isMultipleRows) {
             layoutParams.setMargins(10, 120, 10, 0);
         } else {
-            layoutParams.setMarginEnd(10);
+            layoutParams.setMargins(10, 40, 10, 10);
         }
 
         textInputField.setPadding(15, 25, 10, 25);
