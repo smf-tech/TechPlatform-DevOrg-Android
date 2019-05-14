@@ -911,16 +911,16 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     private void updateValues(Elements parentElement, String value, String formId) {
         String key = "{" + parentElement.getName() + "} notempty";
-        List<Elements> parentElements = new ArrayList<>();
-        parentElements.add(parentElement);
-
-        List<String> valuesList = new ArrayList<>();
-        valuesList.add(value);
 
         //It means dependency is there for dropdown template
         if (dependencyMap.get(key) != null && !dependencyMap.get(key).isEmpty()) {
             for (DropDownTemplate dropDownTemplate :
                     dependencyMap.get(key)) {
+                List<Elements> parentElements = new ArrayList<>();
+                parentElements.add(parentElement);
+
+                List<String> valuesList = new ArrayList<>();
+                valuesList.add(value);
                 Elements dependentElement = dropDownTemplate.getFormData();
                 //Check if dependent element has more than 1 parent element
                 if (!TextUtils.isEmpty(dependentElement.getEnableIf()) && dependentElement.getEnableIf().contains(Constants.AND)) {
@@ -965,6 +965,11 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         //It means dependency is there for matrix dropdown template
         if (dependencyMatrixDynamicMap.get(key) != null && !dependencyMatrixDynamicMap.get(key).isEmpty()) {
+            List<Elements> parentElements = new ArrayList<>();
+            parentElements.add(parentElement);
+
+            List<String> valuesList = new ArrayList<>();
+            valuesList.add(value);
             this.formIdForMD = formId;
             this.parentElementForMD = parentElements;
             this.valueForMD = valuesList;
