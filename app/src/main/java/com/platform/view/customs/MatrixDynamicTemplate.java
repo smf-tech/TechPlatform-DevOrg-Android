@@ -20,6 +20,7 @@ import com.platform.listeners.MatrixDynamicDropDownValueSelectListener;
 import com.platform.listeners.MatrixDynamicValueChangeListener;
 import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
+import com.platform.models.forms.ChoicesByUrl;
 import com.platform.models.forms.Column;
 import com.platform.models.forms.Elements;
 import com.platform.models.forms.FormData;
@@ -185,7 +186,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
 
                         if (currentColumn.getChoicesByUrl() == null) {
                             updateDropDownValues(currentColumn, currentColumn.getChoices(),
-                                    matrixDynamicInnerMap, template.getRowIndex());
+                                    matrixDynamicInnerMap, template.getRowIndex(), false);
                         } else if (currentColumn.getChoicesByUrl() != null) {
                             //Online
                             if (Util.isConnected(context.get().getContext())) {
@@ -298,6 +299,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        layoutParams.setMargins(0, 40, 0, 0);
         layoutParams.weight = 0.10f;
         addLnr.setLayoutParams(layoutParams);
 
@@ -319,6 +321,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        layoutParams.setMargins(0, 40, 0, 0);
         layoutParams.weight = 0.10f;
         deleteLnr.setLayoutParams(layoutParams);
         ImageButton deleteImg = deleteLnr.findViewById(R.id.iv_matrix_dynamic_delete);
@@ -350,7 +353,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         if (isMultipleRows) {
             layoutParams.setMargins(10, 120, 10, 0);
         } else {
-            layoutParams.setMarginEnd(10);
+            layoutParams.setMargins(10, 40, 10, 10);
         }
 
         textInputField.setPadding(15, 25, 10, 25);
@@ -466,12 +469,13 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
     }
 
     void updateDropDownValues(Column column, List<Choice> choiceValues, HashMap<String,
-            String> matrixDynamicInnerMap, long rowIndex) {
+            String> matrixDynamicInnerMap, long rowIndex, boolean shouldFilter) {
 
         Predicate<MatrixDropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(column.getName() + "_" + rowIndex);
         List<MatrixDropDownTemplate> matchedTemplates = Stream.of(matrixDropDownTemplateList).filter(byTag).collect(Collectors.toList());
 
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
+            MatrixDropDownTemplate matrixDropDownTemplate = matchedTemplates.get(0);
             Choice selectChoice = new Choice();
             selectChoice.setValue(context.get().getString(R.string.default_select));
             LocaleData localeData = new LocaleData(context.get().getString(R.string.default_select));
@@ -481,8 +485,34 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
                 choiceValues.add(0, selectChoice);
             }
             column.setChoices(choiceValues);
-            matchedTemplates.get(0).setColumn(column);
-            matchedTemplates.get(0).setListData(choiceValues, matrixDynamicInnerMap);
+            matrixDropDownTemplate.setColumn(column);
+            matrixDropDownTemplate.setListData(choiceValues, matrixDynamicInnerMap);
+
+            if (shouldFilter && formComponentCreator.valueForMD != null &&
+                    !formComponentCreator.valueForMD.isEmpty() && !TextUtils.isEmpty(formComponentCreator.formIdForMD)) {
+                Elements dependentElement = matrixDropDownTemplate.getFormData();
+                String dependentResponse = matrixDropDownTemplate.getColumn().getChoicesByUrlResponsePath();
+                String response = Util.readFromInternalStorage(Objects.requireNonNull(context.get().getContext()),
+                        formComponentCreator.formIdForMD
+                                + "_" + dependentElement.getName() + "_" + matrixDropDownTemplate.getColumn().getName());
+                ChoicesByUrl choicesByUrl = matrixDropDownTemplate.getColumn().getChoicesByUrl();
+                List<Choice> newChoiceValues = formComponentCreator.filterData(response, dependentResponse, choicesByUrl,
+                        formComponentCreator.parentElementForMD, formComponentCreator.valueForMD);
+
+                //Update UI on UI thread
+                if (newChoiceValues != null && context.get().getActivity() != null) {
+                    Objects.requireNonNull(context.get().getActivity()).runOnUiThread(() -> {
+                        Choice newSelectChoice = new Choice();
+                        newSelectChoice.setValue(context.get().getString(R.string.default_select));
+                        LocaleData newLocaleData = new LocaleData(context.get().getString(R.string.default_select));
+                        newSelectChoice.setText(newLocaleData);
+                        newChoiceValues.add(0, newSelectChoice);
+
+                        dependentElement.setChoices(newChoiceValues);
+                        matrixDropDownTemplate.setListData(newChoiceValues, matrixDropDownTemplate.getMatrixDynamicInnerMap());
+                    });
+                }
+            }
         }
     }
 
