@@ -164,6 +164,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
             if (formFragment != null && formFragment.get() != null) {
                 formFragment.get().hideProgressBar();
                 AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
+
+                formFragment.get().enableSubmitButton(true);
             }
 
             if (!TextUtils.isEmpty(message)) {
@@ -203,6 +205,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
                             "Unexpected response code " + error.networkResponse.statusCode);
                 }
             }
+
+            formFragment.get().enableSubmitButton(true);
         }
     }
 
@@ -238,6 +242,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
                                 formFragment.get().getActivity());
                     }
+
+                    formFragment.get().enableSubmitButton(true);
                 }
             } else {
                 if (formFragment != null && formFragment.get() != null) {
@@ -346,7 +352,8 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
     @Override
     public void onChoicesPopulated(String response, Elements elements, int pageIndex, int elementIndex,
-                                   int columnIndex, long rowIndex, FormData formData, HashMap<String, String> matrixDynamicInnerMap) {
+                                   int columnIndex, long rowIndex, FormData formData,
+                                   HashMap<String, String> matrixDynamicInnerMap) {
 
         if (formFragment == null || formFragment.get() == null) {
             return;

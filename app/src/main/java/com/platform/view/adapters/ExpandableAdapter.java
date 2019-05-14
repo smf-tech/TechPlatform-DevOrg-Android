@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -137,7 +138,10 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             //TODO: Fix submitted count issue and change visibility
             view.findViewById(R.id.submitted_count_label).setVisibility(View.GONE);
 
-            view.findViewById(R.id.add_form_button).setOnClickListener(v -> {
+            ImageButton addButton = view.findViewById(R.id.add_form_button);
+            addButton.setEnabled(Util.isUserApproved());
+
+            addButton.setOnClickListener(v -> {
                 Intent intent = new Intent(mContext, FormActivity.class);
                 intent.putExtra(Constants.PM.FORM_ID, data.getId());
                 mContext.startActivity(intent);

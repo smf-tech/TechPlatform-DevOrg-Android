@@ -270,6 +270,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
                 if (!TextUtils.isEmpty(data.getId())) {
                     ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
+                    imgCreateForm.setEnabled(Util.isUserApproved());
+
                     imgCreateForm.setOnClickListener(v -> {
                         Intent intent = new Intent(getActivity(), FormActivity.class);
                         intent.putExtra(Constants.PM.FORM_ID, data.getId());

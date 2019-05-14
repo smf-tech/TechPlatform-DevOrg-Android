@@ -103,7 +103,7 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(10, 0, 0, 0);
+        layoutParams.setMargins(10, -60, 0, 0);
         layoutParams.weight = this.weight;
         baseLayout.setLayoutParams(layoutParams);
 
