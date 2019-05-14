@@ -107,7 +107,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setMenuResourceId() {
-        for (int i = 0; i < getTabCount(); i++) {
+        for (int i = 0; i < tabNames.size(); i++) {
             switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
                     tabNames.get(i).setResId(R.id.action_menu_forms);
@@ -151,7 +151,9 @@ public class DashboardFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
-        for (Modules modules : tabNames) {
+        for (int i = 0; i < getTabCount(); i++) {
+            Modules modules = tabNames.get(i);
+
             switch (modules.getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
                     Bundle b = new Bundle();
@@ -202,7 +204,9 @@ public class DashboardFragment extends Fragment {
         }
 
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-        for (int i = 0; i < tabStrip.getChildCount(); i++) {
+        int tabCount = tabStrip.getChildCount() > TAB_COUNT ? TAB_COUNT : tabStrip.getChildCount();
+
+        for (int i = 0; i < tabCount; i++) {
             View child = tabStrip.getChildAt(i);
             child.setId(i);
             child.setEnabled(tabNames.get(i).isActive());
