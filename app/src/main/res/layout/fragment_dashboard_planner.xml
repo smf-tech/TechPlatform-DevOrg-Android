@@ -25,7 +25,8 @@
         <RelativeLayout
             android:id="@+id/events_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -51,7 +52,8 @@
         <RelativeLayout
             android:id="@+id/tasks_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -77,7 +79,8 @@
         <RelativeLayout
             android:id="@+id/attendance_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -104,7 +107,8 @@
         <RelativeLayout
             android:id="@+id/leave_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"

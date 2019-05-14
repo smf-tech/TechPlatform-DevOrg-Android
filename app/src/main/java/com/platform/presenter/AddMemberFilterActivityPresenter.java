@@ -87,7 +87,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
         addMemberFilterActivity.get().hideProgressBar();
 
         if (!TextUtils.isEmpty(response)) {
-            Util.saveUserRoleInPref(orgId, response);
             OrganizationRolesResponse orgRolesResponse
                     = new Gson().fromJson(response, OrganizationRolesResponse.class);
 

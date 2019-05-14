@@ -262,5 +262,10 @@ public class Constants {
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";
         public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
+        public static final String EVENTS_KEY = "Events";
+        public static final String TASKS_KEY = "Tasks";
+        public static final String ATTENDANCE_KEY = "Attendance";
+        public static final String LEAVES_KEY = "Leaves";
+
     }
 }
