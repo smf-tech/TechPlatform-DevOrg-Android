@@ -135,16 +135,16 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
 
             DatabaseManager.getDBInstance(getContext()).insertReportData(temp);
 
-            if (reportsList.containsKey(reportData.get(i).getCategory().getName())) {
-                List<ReportData> item = reportsList.get(reportData.get(i).getCategory().getName());
+            if (reportsList.containsKey(reportData.get(i).getCategory().getName().getLocaleValue())) {
+                List<ReportData> item = reportsList.get(reportData.get(i).getCategory().getName().getLocaleValue());
                 if (item != null) {
                     item.add(temp);
-                    reportsList.put(reportData.get(i).getCategory().getName(), item);
+                    reportsList.put(reportData.get(i).getCategory().getName().getLocaleValue(), item);
                 }
             } else {
                 List<ReportData> item = new ArrayList<>();
                 item.add(temp);
-                reportsList.put(reportData.get(i).getCategory().getName(), item);
+                reportsList.put(reportData.get(i).getCategory().getName().getLocaleValue(), item);
             }
         }
 

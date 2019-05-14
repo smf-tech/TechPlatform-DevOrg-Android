@@ -213,7 +213,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
             if (sPendingRequest != null) {
                 ((TextView) view.findViewById(R.id.txt_pending_request_title))
-                        .setText(sPendingRequest.getEntity().getUserInfo().getUserName());
+                        .setText(sPendingRequest.getEntity().getUser().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
                         .setText(Util.getDateFromTimestamp(sPendingRequest.getCreatedDateTime()));
 

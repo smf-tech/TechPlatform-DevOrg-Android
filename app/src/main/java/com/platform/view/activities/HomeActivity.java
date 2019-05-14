@@ -398,8 +398,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void showLanguageChangeDialog() {
-        final String[] items = {"English", "मराठी", "हिंदी "};
-
         int checkId = 0;
         if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
             checkId = 1;
@@ -410,7 +408,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         AlertDialog languageSelectionDialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
                 .setCancelable(true)
-                .setSingleChoiceItems(items, checkId, (dialogInterface, i) -> {
+                .setSingleChoiceItems(Constants.App.APP_LANGUAGE, checkId, (dialogInterface, i) -> {
                 })
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
                     ListView listView = ((AlertDialog) dialog).getListView();
@@ -524,30 +522,37 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
         } else {
-            getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            String tag = null;
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                for (final Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment instanceof HomeFragment) {
-                        tag = fragment.getTag();
+            try {
+                getSupportFragmentManager().popBackStackImmediate(null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                String tag = null;
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    for (final Fragment fragment : getSupportFragmentManager().getFragments()) {
+                        if (fragment instanceof HomeFragment) {
+                            tag = fragment.getTag();
+                        }
+                    }
+                    if (TextUtils.isEmpty(tag)) {
+                        tag = getString(R.string.app_name_ss);
                     }
                 }
-                if (TextUtils.isEmpty(tag)) {
-                    tag = getString(R.string.app_name_ss);
-                }
-            }
-            setActionBarTitle(tag);
+                setActionBarTitle(tag);
 
-            if (tag != null && tag.equals(getString(R.string.app_name_ss))) {
-                if (findViewById(R.id.home_bell_icon).getVisibility() == View.GONE) {
-                    findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
-                    updateUnreadNotificationsCount();
+                if (tag != null && tag.equals(getString(R.string.app_name_ss))) {
+                    if (findViewById(R.id.home_bell_icon).getVisibility() == View.GONE) {
+                        findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
+                        updateUnreadNotificationsCount();
+                    }
                 }
-            }
 
-            if (!toggle.isDrawerIndicatorEnabled()) {
-                toggle.setDrawerIndicatorEnabled(true);
-                setSyncButtonVisibility(true);
+                if (!toggle.isDrawerIndicatorEnabled()) {
+                    toggle.setDrawerIndicatorEnabled(true);
+                    setSyncButtonVisibility(true);
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, "Exception :: HomeActivity : onBackPressed");
             }
         }
     }
@@ -580,7 +585,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
                 findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
 
-                Util.launchFragment(NotificationsFragment.newInstance(), this,
+                Util.launchFragment(new NotificationsFragment(), this,
                         getString(R.string.notifications), true);
 
                 break;

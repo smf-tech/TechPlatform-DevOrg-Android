@@ -47,11 +47,13 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
     private final FormData formData;
     private final FormActivityPresenter formActivityPresenter;
     private final List<MatrixDropDownTemplate> matrixDropDownTemplateList = new ArrayList<>();
+    private FormComponentCreator formComponentCreator;
 
     MatrixDynamicTemplate(FormFragment context, FormData formData, Elements elements,
                           FormActivityPresenter formActivityPresenter,
                           boolean mIsInEditMode, boolean mIsPartiallySaved,
-                          MatrixDynamicValueChangeListener matrixDynamicValueChangeListener) {
+                          MatrixDynamicValueChangeListener matrixDynamicValueChangeListener,
+                          FormComponentCreator formComponentCreator) {
 
         this.context = new WeakReference<>(context);
         this.elements = elements;
@@ -60,6 +62,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
         this.mIsPartiallySaved = mIsPartiallySaved;
         this.formData = formData;
         this.formActivityPresenter = formActivityPresenter;
+        this.formComponentCreator = formComponentCreator;
     }
 
     public Elements getElements() {
@@ -164,6 +167,17 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
 
                         template.setTag(currentColumn.getName() + "_" + template.getRowIndex());
                         matrixDropDownTemplateList.add(template);
+
+                        if (!TextUtils.isEmpty(currentColumn.getEnableIf())) {
+                            List<MatrixDropDownTemplate> dependentDropDowns = formComponentCreator.getDependencyMatrixDynamicMap().get(currentColumn.getEnableIf());
+                            if (dependentDropDowns != null && !dependentDropDowns.isEmpty()) {
+                                dependentDropDowns.add(template);
+                            } else {
+                                dependentDropDowns = new ArrayList<>();
+                                dependentDropDowns.add(template);
+                            }
+                            formComponentCreator.getDependencyMatrixDynamicMap().put(currentColumn.getEnableIf(), dependentDropDowns);
+                        }
 
                         if (innerLinearLayout != null) {
                             innerLinearLayout.addView(dropdownView);

@@ -154,6 +154,7 @@
     <string name="approvals">Approvals</string>
     <string name="who_working">"Who's Working"</string>
     <string name="team_user_approval">User Approval</string>
+    <string name="no_notification_available">There are no notifications for you!</string>
 
     <!--App Error Message-->
     <string name="msg_something_went_wrong">Something went wrong</string>
@@ -272,7 +273,7 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
-    <string name="task_formlist_screen_msg">"Forms are required for this task."</string>
+    <string name="task_form_list_screen_msg">"Forms are required for this task."</string>
     <string name="which_day">Which days</string>
     <string name="create_filter_screen_msg">"Create filters before you add members."</string>
     <string name="owner_name">Owner Name</string>
