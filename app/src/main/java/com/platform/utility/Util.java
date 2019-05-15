@@ -780,4 +780,12 @@ public class Util {
         snackbar.show();
         //return snackbar;
     }
+
+    public static boolean isUserApproved() {
+        UserInfo userInfo = getUserObjectFromPref();
+//        return true;
+        return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
+                !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
+
+    }
 }

@@ -194,7 +194,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     }
 
-    static class ApprovalDialogFragment extends DialogFragment {
+    public static class ApprovalDialogFragment extends DialogFragment {
 
         private static PendingRequest sPendingRequest;
         @SuppressLint("StaticFieldLeak")

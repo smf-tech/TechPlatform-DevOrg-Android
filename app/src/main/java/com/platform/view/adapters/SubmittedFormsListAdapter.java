@@ -129,22 +129,26 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
         final ProcessData finalFormResult = data;
         view.setOnClickListener(v -> {
-            if (finalFormResult != null) {
-                final String formID = finalFormResult.getId();
-                final String processID = finalFormResult.getMicroservice().getId();
+            if (Util.isUserApproved()) {
+                if (finalFormResult != null) {
+                    final String formID = finalFormResult.getId();
+                    final String processID = finalFormResult.getMicroservice().getId();
 
-                Intent intent = new Intent(mContext, FormActivity.class);
-                intent.putExtra(Constants.PM.PROCESS_ID, formID);
-                intent.putExtra(Constants.PM.FORM_ID, processID);
-                intent.putExtra(Constants.PM.EDIT_MODE, true);
-                intent.putExtra(Constants.PM.PARTIAL_FORM, false);
+                    Intent intent = new Intent(mContext, FormActivity.class);
+                    intent.putExtra(Constants.PM.PROCESS_ID, formID);
+                    intent.putExtra(Constants.PM.FORM_ID, processID);
+                    intent.putExtra(Constants.PM.EDIT_MODE, true);
+                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
 
-                if (cat.equals(mContext.getString(R.string.syncing_pending))) {
-                    intent.putExtra(Constants.PM.FORM_ID, formID);
-                    intent.putExtra(Constants.PM.PROCESS_ID, processID);
-                    intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+                    if (cat.equals(mContext.getString(R.string.syncing_pending))) {
+                        intent.putExtra(Constants.PM.FORM_ID, formID);
+                        intent.putExtra(Constants.PM.PROCESS_ID, processID);
+                        intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+                    }
+                    mContext.startActivity(intent);
                 }
-                mContext.startActivity(intent);
+            } else {
+                Util.showToast(mContext.getString(R.string.approve_profile), mContext);
             }
         });
 

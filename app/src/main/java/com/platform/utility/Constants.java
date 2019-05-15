@@ -16,6 +16,7 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
     public static final String PUSH_NOTIFICATION = "pushNotification";
+    public static final String AND = "&";
 //    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
@@ -261,5 +262,10 @@ public class Constants {
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";
         public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
+        public static final String EVENTS_KEY = "Events";
+        public static final String TASKS_KEY = "Tasks";
+        public static final String ATTENDANCE_KEY = "Attendance";
+        public static final String LEAVES_KEY = "Leaves";
+
     }
 }

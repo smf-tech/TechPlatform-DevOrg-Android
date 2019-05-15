@@ -625,6 +625,10 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
+    public void enableSubmitButton(boolean isEnable) {
+        formFragmentView.findViewById(R.id.btn_submit).setEnabled(isEnable);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -647,7 +651,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 if (!formComponentCreator.isValid()) {
                     Util.showToast(errorMsg, this);
                 } else {
-                    formFragmentView.findViewById(R.id.btn_submit).setEnabled(false);
+                    enableSubmitButton(false);
 
                     if (Util.isConnected(getActivity())) {
                         Location location = gpsTracker.getLocation();
@@ -842,6 +846,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (formComponentCreator != null && formComponentCreator.getRequestObject() != null) {
             String json = PlatformGson.getPlatformGsonInstance().toJson(formComponentCreator.getRequestObject());
             JsonObject obj = PlatformGson.getPlatformGsonInstance().fromJson(json, JsonObject.class);
+
+            if (mUploadedImageUrlList != null && !mUploadedImageUrlList.isEmpty()) {
+                for (final Map<String, String> map : mUploadedImageUrlList) {
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        obj.addProperty(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
 
             //Save matrix dynamic values to JsonObject
             if (formComponentCreator.getMatrixDynamicValuesMap() != null &&
