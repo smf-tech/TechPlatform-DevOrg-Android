@@ -31,6 +31,8 @@ public class Constants {
     public static final String MONTH_DAY_FORMAT = "MMMM dd";
     public static final String TIME_FORMAT = "hh:mm aa";
 
+    public static final String DECIMAL_FORMAT = "#0.00";
+
     public static class App {
         static final String APP_DATA = "AppData";
         public static final String BJS_MODE = "BJS";
@@ -48,6 +50,8 @@ public class Constants {
 
         static final String LANGUAGE_LOCALE = "LanguageLocale";
         static final String LANGUAGE_CODE = "languageCode";
+
+        public static final String[] APP_LANGUAGE = {"English", "मराठी", "हिंदी"};
 
         public static final String LANGUAGE_ENGLISH = "en";
         public static final String LANGUAGE_MARATHI = "mr";

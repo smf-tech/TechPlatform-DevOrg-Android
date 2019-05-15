@@ -3,7 +3,9 @@ package com.platform.models.events;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class MetaData {
+
     @SerializedName("Per Page")
     @Expose
     private Integer perPage;

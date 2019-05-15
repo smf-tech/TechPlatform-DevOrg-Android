@@ -297,7 +297,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_05dp"
-                    android:text="@string/task_formlist_screen_msg" />
+                    android:text="@string/task_form_list_screen_msg" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_forms_list"

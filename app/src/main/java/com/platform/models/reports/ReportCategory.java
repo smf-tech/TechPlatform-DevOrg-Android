@@ -1,7 +1,11 @@
 package com.platform.models.reports;
 
+import androidx.room.TypeConverters;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
+import com.platform.models.LocaleData;
 
 @SuppressWarnings("unused")
 public class ReportCategory {
@@ -9,9 +13,12 @@ public class ReportCategory {
     @SerializedName("_id")
     @Expose
     private String id;
+
+    @TypeConverters(DataConverter.class)
     @SerializedName("name")
     @Expose
-    private String name;
+    private LocaleData name;
+
     @SerializedName("type")
     @Expose
     private String type;
@@ -33,11 +40,11 @@ public class ReportCategory {
         this.id = id;
     }
 
-    public String getName() {
+    public LocaleData getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LocaleData name) {
         this.name = name;
     }
 

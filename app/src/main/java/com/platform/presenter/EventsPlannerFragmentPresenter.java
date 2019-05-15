@@ -20,17 +20,17 @@ import java.lang.ref.WeakReference;
 public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     private final WeakReference<EventsPlannerFragment> fragmentWeakReference;
-    private final WeakReference<TasksPlannerFragment> tasksPlannerFragmentWeakReference;
+//    private final WeakReference<TasksPlannerFragment> tasksPlannerFragmentWeakReference;
 
     public EventsPlannerFragmentPresenter(EventsPlannerFragment fragmentWeakReference) {
         this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);
-        this.tasksPlannerFragmentWeakReference = null;
+//        this.tasksPlannerFragmentWeakReference = null;
     }
 
-    public EventsPlannerFragmentPresenter(TasksPlannerFragment tasksPlannerFragmentWeakReference) {
-        this.tasksPlannerFragmentWeakReference = new WeakReference<>(tasksPlannerFragmentWeakReference);
-        this.fragmentWeakReference = null;
-    }
+//    public EventsPlannerFragmentPresenter(TasksPlannerFragment tasksPlannerFragmentWeakReference) {
+//        this.tasksPlannerFragmentWeakReference = new WeakReference<>(tasksPlannerFragmentWeakReference);
+//        this.fragmentWeakReference = null;
+//    }
 
     public void getEvents(String status) {
         EventRequestCall requestCall = new EventRequestCall();

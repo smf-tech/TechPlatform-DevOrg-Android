@@ -2,12 +2,13 @@ package com.platform.models.events;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public class TaskForm implements Serializable {
     private String id;
     private String title;
     private String status;
 
-    public TaskForm(String id, String title, String status){
+    public TaskForm(String id, String title, String status) {
         this.id = id;
         this.title = title;
         this.status = status;

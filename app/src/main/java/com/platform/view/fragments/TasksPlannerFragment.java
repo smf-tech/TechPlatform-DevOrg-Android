@@ -92,8 +92,8 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         progressBarLayout = tasksPlannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = tasksPlannerView.findViewById(R.id.pb_profile_act);
 
-        EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
-        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
+//        EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
+//        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
 
         taskList = new ArrayList<>();
         sortedTaskList = new ArrayList<>();

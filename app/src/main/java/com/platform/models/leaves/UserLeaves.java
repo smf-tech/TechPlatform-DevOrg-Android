@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class UserLeaves implements Serializable {
+
     @SerializedName("userId")
     @Expose
     private String userId;

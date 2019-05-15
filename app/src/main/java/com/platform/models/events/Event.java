@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Event implements Serializable {
     //private String id;
     private String title;
@@ -35,7 +36,7 @@ public class Event implements Serializable {
         this.ownerID = ownerID;
         this.status = status;
         this.membersList.addAll(membersList);
-        if (formsList!=null) {
+        if (formsList != null) {
             this.formsList.addAll(formsList);
         }
     }

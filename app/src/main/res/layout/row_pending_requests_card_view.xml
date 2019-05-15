@@ -7,7 +7,9 @@
     android:layout_marginTop="@dimen/dimen_10dp"
     android:background="@color/white"
     android:paddingStart="@dimen/dimen_10dp"
-    android:paddingEnd="@dimen/dimen_10dp">
+    android:paddingTop="@dimen/dimen_05dp"
+    android:paddingEnd="@dimen/dimen_10dp"
+    android:paddingBottom="@dimen/dimen_05dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
