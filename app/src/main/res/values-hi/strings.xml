@@ -97,6 +97,7 @@
     <string name="msg_select_taluka">कृपया तहसील चुनें</string>
     <string name="msg_select_cluster">कृपया तहसील चुनें</string>
     <string name="msg_select_village">कृपया गांव का चयन करें</string>
+    <string name="msg_big_image">छवि का आकार 5 एमबी से अधिक नहीं होना चाहिए</string>
 
     <!--Home Menu Items-->
     <string name="menu_home">होम</string>
