@@ -750,11 +750,11 @@ public class Util {
                 mProgressDialog.show();
             }
         } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException");
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            Log.e(TAG, "RuntimeException");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
     }
 
@@ -767,11 +767,11 @@ public class Util {
                 }
             }
         } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException");
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            Log.e(TAG, "RuntimeException");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
     }
 
