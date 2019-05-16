@@ -726,4 +726,23 @@ public class Util {
         return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
                 !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
     }
+
+    public static boolean isValidImageSize(File f) {
+        if (f != null) {
+            try {
+                // Get length of file in bytes
+                long fileSizeInBytes = f.length();
+                // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                long fileSizeInKB = fileSizeInBytes / 1024;
+                //  Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                long fileSizeInMB = fileSizeInKB / 1024;
+
+                return fileSizeInMB <= 2;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        return false;
+    }
 }

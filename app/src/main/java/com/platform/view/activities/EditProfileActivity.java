@@ -588,7 +588,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
-                    profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
+                    if (Util.isValidImageSize(imageFile)) {
+                        profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }

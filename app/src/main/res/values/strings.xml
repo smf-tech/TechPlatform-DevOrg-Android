@@ -97,6 +97,7 @@
     <string name="msg_select_taluka">Please select Taluka</string>
     <string name="msg_select_cluster">Please select Cluster</string>
     <string name="msg_select_village">Please select Village</string>
+    <string name="msg_big_image">Image size should not be more than 5MB</string>
 
     <!--Home Menu Items-->
     <string name="menu_home">Home</string>

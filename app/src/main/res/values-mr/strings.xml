@@ -97,6 +97,7 @@
     <string name="msg_select_taluka">कृपया तालुका निवडा</string>
     <string name="msg_select_cluster">कृपया तालुका निवडा</string>
     <string name="msg_select_village">कृपया गाव निवडा</string>
+    <string name="msg_big_image">प्रतिमा आकार 5 एमबी पेक्षा जास्त नसावा</string>
 
     <!--Home Menu Items-->
     <string name="menu_home">होम</string>
