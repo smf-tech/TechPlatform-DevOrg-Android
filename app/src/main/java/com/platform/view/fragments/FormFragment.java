@@ -332,7 +332,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         if (elements != null && elements.getChoicesByUrl() == null && elements.getChoices() != null) {
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
-                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices(), false);
                         } else if (elements.getChoicesByUrl() != null) {
                             //Online
                             if (Util.isConnected(getContext())) {
@@ -562,7 +562,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
+            getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues, true));
         }
     }
 

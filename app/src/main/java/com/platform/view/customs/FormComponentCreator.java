@@ -72,6 +72,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     List<Elements> parentElementForMD = new ArrayList<>();
     List<String> valueForMD = new ArrayList<>();
     String formIdForMD;
+    private String formIdForDD;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
@@ -82,6 +83,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     private HashMap<String, List<MatrixDropDownTemplate>> dependencyMatrixDynamicMap = new HashMap<>();
     private HashMap<List<String>, EditText> defaultValueMap = new HashMap<>();
     private HashMap<String, EditText> editTextWithNameMap = new HashMap<>();
+    private HashMap<String, List<Elements>> parentMap = new HashMap<>();
+    private HashMap<String, List<String>> parentValuesMap = new HashMap<>();
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
@@ -203,10 +206,11 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         dependencyMap.put(enableIf, dependentDropDowns);
     }
 
-    public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
+    public void updateDropDownValues(Elements elements, List<Choice> choiceValues, boolean shouldFilter) {
         Predicate<DropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(elements.getName());
         List<DropDownTemplate> matchedTemplates = Stream.of(dropDowns).filter(byTag).collect(Collectors.toList());
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
+            DropDownTemplate dropDownTemplate = matchedTemplates.get(0);
             Choice selectChoice = new Choice();
             selectChoice.setValue(fragment.get().getString(R.string.default_select));
             LocaleData localeData = new LocaleData(fragment.get().getString(R.string.default_select));
@@ -216,8 +220,36 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             }
 
             elements.setChoices(choiceValues);
-            matchedTemplates.get(0).setFormData(elements);
-            matchedTemplates.get(0).setListData(choiceValues);
+            dropDownTemplate.setFormData(elements);
+            dropDownTemplate.setListData(choiceValues);
+
+            if (shouldFilter && parentValuesMap != null && parentMap != null &&
+                    parentMap.get(dropDownTemplate.getFormData().getName()) != null &&
+                    parentValuesMap.get(dropDownTemplate.getFormData().getName()) != null && !TextUtils.isEmpty(formIdForDD)) {
+
+                Elements dependentElement = dropDownTemplate.getFormData();
+                String dependentResponse = dropDownTemplate.getFormData().getChoicesByUrlResponsePath();
+                String response = Util.readFromInternalStorage(fragment.get().getContext(),
+                        formIdForDD + "_" + dependentElement.getName());
+                ChoicesByUrl choicesByUrl = dependentElement.getChoicesByUrl();
+                List<Choice> newChoiceValues = filterData(response, dependentResponse, choicesByUrl,
+                        parentMap.get(dropDownTemplate.getFormData().getName()), parentValuesMap.get(dropDownTemplate.getFormData().getName()));
+
+                //Update UI on UI thread
+                if (newChoiceValues != null && fragment.get().getActivity() != null) {
+                    fragment.get().getActivity().runOnUiThread(() -> {
+                        Choice newSelectChoice = new Choice();
+                        newSelectChoice.setValue(fragment.get().getString(R.string.default_select));
+                        LocaleData newLocaleData = new LocaleData(fragment.get().getString(R.string.default_select));
+                        newSelectChoice.setText(newLocaleData);
+                        newChoiceValues.add(0, newSelectChoice);
+
+                        dependentElement.setChoices(newChoiceValues);
+                        dropDownTemplate.setFormData(dependentElement);
+                        dropDownTemplate.setListData(newChoiceValues);
+                    });
+                }
+            }
         }
     }
 
@@ -939,6 +971,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         }
                     }
                 }
+                this.formIdForDD = formId;
+                parentMap.put(dependentElement.getName(), parentElements);
+                parentValuesMap.put(dependentElement.getName(), valuesList);
                 String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
                 String response = Util.readFromInternalStorage(fragment.get().getContext(),
                         formId + "_" + dependentElement.getName());
@@ -946,21 +981,23 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
                         parentElements, valuesList);
 
-                // This code will add submitted value in list and update the adapter, in API response
-                // submitted value is not coming hence this is workaround.
-                Choice ch = new Choice();
-                LocaleData ld = new LocaleData(dependentElement.getAnswer());
-                ch.setText(ld);
-                ch.setValue(ld.getLocaleValue());
+                if (mIsInEditMode && !mIsPartiallySaved) {
+                    // This code will add submitted value in list and update the adapter, in API response
+                    // submitted value is not coming hence this is workaround.
+                    Choice ch = new Choice();
+                    LocaleData ld = new LocaleData(dependentElement.getAnswer());
+                    ch.setText(ld);
+                    ch.setValue(ld.getLocaleValue());
 
-                if (!TextUtils.isEmpty(dependentElement.getAnswer())
-                        && !choiceValues.contains(ch)) {
-                    choiceValues.add(ch);
+                    if (!TextUtils.isEmpty(dependentElement.getAnswer())
+                            && !choiceValues.contains(ch)) {
+                        choiceValues.add(ch);
+                    }
+
+                    //Sort choices in ascending order
+                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                            .compareTo(o2.getText().getLocaleValue()));
                 }
-
-                //Sort choices in ascending order
-                Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
-                        .compareTo(o2.getText().getLocaleValue()));
 
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
@@ -999,21 +1036,23 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
                         parentElements, valuesList);
 
-                // This code will add submitted value in list and update the adapter, in API response
-                // submitted value is not coming hence this is workaround.
-                Choice ch = new Choice();
-                LocaleData ld = new LocaleData(matrixDropDownTemplate.getMatrixDynamicInnerMap().get(matrixDropDownTemplate.getColumn().getName()));
-                ch.setText(ld);
-                ch.setValue(ld.getLocaleValue());
+                if (mIsInEditMode && !mIsPartiallySaved) {
+                    // This code will add submitted value in list and update the adapter, in API response
+                    // submitted value is not coming hence this is workaround.
+                    Choice ch = new Choice();
+                    LocaleData ld = new LocaleData(matrixDropDownTemplate.getMatrixDynamicInnerMap().get(matrixDropDownTemplate.getColumn().getName()));
+                    ch.setText(ld);
+                    ch.setValue(ld.getLocaleValue());
 
-                if (!TextUtils.isEmpty(matrixDropDownTemplate.getMatrixDynamicInnerMap().get(matrixDropDownTemplate.getColumn().getName()))
-                        && !choiceValues.contains(ch)) {
-                    choiceValues.add(ch);
+                    if (!TextUtils.isEmpty(matrixDropDownTemplate.getMatrixDynamicInnerMap().get(matrixDropDownTemplate.getColumn().getName()))
+                            && !choiceValues.contains(ch)) {
+                        choiceValues.add(ch);
+                    }
+
+                    //Sort choices in ascending order
+                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                            .compareTo(o2.getText().getLocaleValue()));
                 }
-
-                //Sort choices in ascending order
-                Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
-                        .compareTo(o2.getText().getLocaleValue()));
 
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
