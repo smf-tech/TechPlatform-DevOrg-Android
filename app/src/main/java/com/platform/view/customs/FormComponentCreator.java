@@ -217,7 +217,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
             elements.setChoices(choiceValues);
             matchedTemplates.get(0).setFormData(elements);
-            matchedTemplates.get(0).setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+            matchedTemplates.get(0).setListData(choiceValues);
         }
     }
 
@@ -771,7 +771,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                     dependentElement.setChoices(choiceValues);
                     dropDownTemplate.setFormData(dependentElement);
-                    dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+                    dropDownTemplate.setListData(choiceValues);
                 }
             }
         }
@@ -946,6 +946,22 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
                         parentElements, valuesList);
 
+                // This code will add submitted value in list and update the adapter, in API response
+                // submitted value is not coming hence this is workaround.
+                Choice ch = new Choice();
+                LocaleData ld = new LocaleData(dependentElement.getAnswer());
+                ch.setText(ld);
+                ch.setValue(ld.getLocaleValue());
+
+                if (!TextUtils.isEmpty(dependentElement.getAnswer())
+                        && !choiceValues.contains(ch)) {
+                    choiceValues.add(ch);
+                }
+
+                //Sort choices in ascending order
+                Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                        .compareTo(o2.getText().getLocaleValue()));
+
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
                     fragment.get().getActivity().runOnUiThread(() -> {
@@ -957,7 +973,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                         dependentElement.setChoices(choiceValues);
                         dropDownTemplate.setFormData(dependentElement);
-                        dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+                        dropDownTemplate.setListData(choiceValues);
                     });
                 }
             }
