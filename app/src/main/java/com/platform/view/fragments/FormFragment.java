@@ -1095,10 +1095,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File compressedImageFile = Util.decodeFile(imageFile);
 
                 if (Util.isConnected(getContext())) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        formPresenter.uploadProfileImage(compressedImageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
