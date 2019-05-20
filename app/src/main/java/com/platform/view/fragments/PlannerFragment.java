@@ -84,7 +84,7 @@ public class PlannerFragment extends Fragment implements View.OnClickListener {
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         ViewPagerAdapter(@NonNull FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @NonNull

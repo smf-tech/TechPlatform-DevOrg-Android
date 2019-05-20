@@ -48,7 +48,7 @@ class MatrixDynamicTemplate implements MatrixDynamicDropDownValueSelectListener 
     private final FormData formData;
     private final FormActivityPresenter formActivityPresenter;
     private final List<MatrixDropDownTemplate> matrixDropDownTemplateList = new ArrayList<>();
-    private FormComponentCreator formComponentCreator;
+    private final FormComponentCreator formComponentCreator;
 
     MatrixDynamicTemplate(FormFragment context, FormData formData, Elements elements,
                           FormActivityPresenter formActivityPresenter,

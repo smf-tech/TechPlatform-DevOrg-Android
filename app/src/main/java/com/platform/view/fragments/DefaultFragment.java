@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.platform.R;
 import com.platform.view.activities.HomeActivity;
 
-@SuppressWarnings("WeakerAccess")
 public class DefaultFragment extends Fragment {
 
     @Override
