@@ -202,7 +202,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         protected String doInBackground(String... params) {
             showChoicesByUrlMD(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
-                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2], HashMap.class), Long.parseLong(params[3]));
+                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2],
+                            HashMap.class), Long.parseLong(params[3]));
             return null;
         }
 
@@ -390,8 +391,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(), elements,
-                                mIsInEditMode, mIsPartiallySaved, formPresenter));
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(),
+                                elements, mIsInEditMode, mIsPartiallySaved, formPresenter));
                         break;
                 }
             }
@@ -491,7 +492,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
-    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
+    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String,
+            String> matrixDynamicInnerMap, long rowIndex) {
+
         new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column),
                 PlatformGson.getPlatformGsonInstance().toJson(matrixDynamicInnerMap),
                 String.valueOf(rowIndex));
@@ -562,11 +565,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues, true));
+            getActivity().runOnUiThread(() -> formComponentCreator
+                    .updateDropDownValues(elements, choiceValues, true));
         }
     }
 
-    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, final long rowIndex) {
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String,
+            String> matrixDynamicInnerMap, final long rowIndex) {
+
         List<Choice> choiceValues = new ArrayList<>();
         try {
             LocaleData text;
@@ -1095,11 +1101,12 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                final File compressedImageFile = Util.decodeFile(imageFile);
+                final File compressedImageFile = Util.compressFile(imageFile);
 
                 if (Util.isConnected(getContext())) {
                     if (Util.isValidImageSize(compressedImageFile)) {
-                        formPresenter.uploadProfileImage(compressedImageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                        formPresenter.uploadProfileImage(compressedImageFile,
+                                Constants.Image.IMAGE_TYPE_FILE, mFormName);
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -1114,7 +1121,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case Constants.CAMERA_REQUEST:
                 Log.e(TAG, "Camera Permission Granted");

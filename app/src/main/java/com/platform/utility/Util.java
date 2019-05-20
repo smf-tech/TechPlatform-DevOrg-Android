@@ -750,7 +750,7 @@ public class Util {
         return false;
     }
 
-    public static File decodeFile(File f) {
+    public static File compressFile(File f) {
         Bitmap b = null;
 
         //Decode image size
