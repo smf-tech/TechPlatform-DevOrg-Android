@@ -182,8 +182,9 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
-            if (formData.getEnableIf().contains(Constants.AND)) {
-                StringTokenizer enableIfTokenizer = new StringTokenizer(formData.getEnableIf(), Constants.AND);
+            if (formData.getEnableIf().contains(Constants.AND) || formData.getEnableIf().contains(Constants.AND_CHARACTER)) {
+                String enableIf = formData.getEnableIf().replace(Constants.AND, Constants.AND_CHARACTER);
+                StringTokenizer enableIfTokenizer = new StringTokenizer(enableIf, Constants.AND_CHARACTER);
                 while (enableIfTokenizer.hasMoreTokens()) {
                     updateDependencyMap(template, enableIfTokenizer.nextToken().trim());
                 }
@@ -955,8 +956,10 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 valuesList.add(value);
                 Elements dependentElement = dropDownTemplate.getFormData();
                 //Check if dependent element has more than 1 parent element
-                if (!TextUtils.isEmpty(dependentElement.getEnableIf()) && dependentElement.getEnableIf().contains(Constants.AND)) {
-                    StringTokenizer enableIfTokenizer = new StringTokenizer(dependentElement.getEnableIf(), Constants.AND);
+                if (!TextUtils.isEmpty(dependentElement.getEnableIf()) &&
+                        (dependentElement.getEnableIf().contains(Constants.AND) || dependentElement.getEnableIf().contains(Constants.AND_CHARACTER))) {
+                    String enableIf = dependentElement.getEnableIf().replace(Constants.AND, Constants.AND_CHARACTER);
+                    StringTokenizer enableIfTokenizer = new StringTokenizer(enableIf, Constants.AND_CHARACTER);
                     while (enableIfTokenizer.hasMoreTokens()) {
                         String token = enableIfTokenizer.nextToken().trim();
                         if (!key.equals(token)) {
