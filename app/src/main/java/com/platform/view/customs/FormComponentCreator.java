@@ -1106,14 +1106,28 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     String pValue = parentValueTokenizer.nextToken();
                     String value = valueList.get(index);
 
-                    byParentSelections.add(innerDependentObject -> innerDependentObject
-                            .get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value));
+                    Predicate<JsonObject> localPredicate = innerDependentObject -> {
+                        try {
+                            return innerDependentObject.get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value);
+                        } catch (IllegalStateException e) {
+                            return false;
+                        }
+                    };
+                    byParentSelections.add(localPredicate);
                 }
                 //If parent has string in choicesByUrl
                 else {
                     String pValue = parentElements.get(index).getChoicesByUrl().getValueName();
                     String value = valueList.get(index);
-                    byParentSelections.add(innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value));
+
+                    Predicate<JsonObject> localPredicate = innerDependentObject -> {
+                        try {
+                            return innerDependentObject.get(pValue).getAsString().equals(value);
+                        } catch (IllegalStateException e) {
+                            return false;
+                        }
+                    };
+                    byParentSelections.add(localPredicate);
                 }
             }
 
