@@ -4,12 +4,16 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.platform.Platform;
+import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.forms.FormResult;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
+import com.platform.utility.Util;
 import com.platform.view.fragments.PMFragment;
 
 import java.lang.ref.WeakReference;
@@ -62,6 +66,29 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
         Log.i(TAG, "Error: " + error);
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
+
+            if (error != null && error.networkResponse != null) {
+                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
+                    if (error.networkResponse.data != null) {
+                        String json = new String(error.networkResponse.data);
+                        json = Util.trimMessage(json);
+                        if (json != null) {
+                            Util.showToast(json, fragmentWeakReference.get().getActivity());
+                        } else {
+                            Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                    fragmentWeakReference.get().getActivity());
+                        }
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                fragmentWeakReference.get().getActivity());
+                    }
+                } else {
+                    Util.showToast(fragmentWeakReference.get().getString(R.string.unexpected_error_occurred),
+                            fragmentWeakReference.get().getActivity());
+                    Log.e("onErrorListener",
+                            "Unexpected response code " + error.networkResponse.statusCode);
+                }
+            }
         }
     }
 }

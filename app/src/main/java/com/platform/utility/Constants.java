@@ -15,10 +15,11 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
+    public static final Integer TIMEOUT_ERROR_CODE = 504;
+
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String AND = "and";
     public static final String AND_CHARACTER = "&";
-//    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
@@ -28,7 +29,7 @@ public class Constants {
     public static final String FORM_DATE = "yyyy-MM-dd";
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
     static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
+    static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
 
     public static final String DECIMAL_FORMAT = "#0.00";
 

@@ -186,6 +186,7 @@
     <string name="msg_no_pending_req">अनुमोदन के लिए कोई लंबित अनुरोध नहीं हैं।</string>
     <string name="msg_no_form_offline">यह फॉर्म ऑफलाइन में उपलब्ध नहीं है। इस फ़ॉर्म को ऑफ़लाइन उपयोग करने के लिए, कृपया इसे एक बार नेटवर्क में उपयोग करें।</string>
     <string name="msg_form_duplicate_error">डुप्लिकेट प्रविष्टियों की अनुमति नहीं है।</string>
+    <string name="msg_slow_network">नेटवर्क धीमा है, कृपया पुन: प्रयास करें</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
     <string name="msg_no_network">नेटवर्क उपलब्ध नहीं है, कृपया बाद में पुनः प्रयास करें।</string>
