@@ -11,6 +11,7 @@ import com.platform.listeners.TMRejectedRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMRejectedRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.fragments.TMUserRejectedFragment;
 
@@ -77,7 +78,7 @@ public class RejectedFragmentPresenter implements TMRejectedRequestCallListener 
             fragmentWeakReference.get().hideProgressBar();
 
             if (error != null && error.networkResponse != null) {
-                if (error.networkResponse.statusCode == 504) {
+                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                     if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = Util.trimMessage(json);

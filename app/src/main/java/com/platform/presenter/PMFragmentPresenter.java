@@ -11,6 +11,7 @@ import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.forms.FormResult;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.fragments.PMFragment;
@@ -67,7 +68,7 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
             fragmentWeakReference.get().hideProgressBar();
 
             if (error != null && error.networkResponse != null) {
-                if (error.networkResponse.statusCode == 504) {
+                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                     if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = Util.trimMessage(json);

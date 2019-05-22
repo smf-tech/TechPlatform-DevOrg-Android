@@ -115,7 +115,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
 
         otpFragment.get().hideProgressBar();
         if (error != null && error.networkResponse != null) {
-            if (error.networkResponse.statusCode == 504) {
+            if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                 if (error.networkResponse.data != null) {
                     String json = new String(error.networkResponse.data);
                     json = Util.trimMessage(json);

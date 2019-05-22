@@ -141,7 +141,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         Log.e(TAG, "onErrorListener: " + error.getMessage());
 
         if (error.networkResponse != null) {
-            if (error.networkResponse.statusCode == 504) {
+            if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                 if (error.networkResponse.data != null) {
                     String json = new String(error.networkResponse.data);
                     json = Util.trimMessage(json);

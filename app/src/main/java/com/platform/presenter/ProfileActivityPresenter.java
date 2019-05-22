@@ -19,6 +19,7 @@ import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.ImageRequestCall;
 import com.platform.request.ProfileRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.EditProfileActivity;
 
@@ -183,7 +184,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         if (profileActivity != null && profileActivity.get() != null) {
             profileActivity.get().hideProgressBar();
             if (error != null && error.networkResponse != null) {
-                if (error.networkResponse.statusCode == 504) {
+                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                     if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = Util.trimMessage(json);

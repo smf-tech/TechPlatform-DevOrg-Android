@@ -13,6 +13,8 @@ import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.HomeRequestCall;
 import com.platform.request.LoginRequestCall;
+import com.platform.utility.Config;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.fragments.HomeFragment;
@@ -71,7 +73,7 @@ public class HomeActivityPresenter implements UserRequestCallListener {
         Log.e(TAG, "onErrorListener :" + error);
 
         if (error.networkResponse != null) {
-            if (error.networkResponse.statusCode == 504) {
+            if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                 if (error.networkResponse.data != null) {
                     String json = new String(error.networkResponse.data);
                     json = Util.trimMessage(json);

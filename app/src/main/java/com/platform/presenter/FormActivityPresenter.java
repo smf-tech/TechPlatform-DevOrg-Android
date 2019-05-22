@@ -199,7 +199,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
                                 formFragment.get().getActivity());
                     }
-                } else if (error.networkResponse.statusCode == 504) {
+                } else if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                     if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = Util.trimMessage(json);

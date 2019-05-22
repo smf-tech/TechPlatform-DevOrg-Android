@@ -10,6 +10,7 @@ import com.platform.R;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.pm.Processes;
 import com.platform.request.PMRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.PMActivity;
 
@@ -53,7 +54,7 @@ public class PMActivityPresenter implements PlatformRequestCallListener {
         if (pmActivity != null && pmActivity.get() != null) {
             pmActivity.get().hideProgressBar();
             if (error != null && error.networkResponse != null) {
-                if (error.networkResponse.statusCode == 504) {
+                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                     if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
                         json = Util.trimMessage(json);
