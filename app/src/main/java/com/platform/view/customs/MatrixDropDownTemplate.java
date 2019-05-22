@@ -162,13 +162,17 @@ public class MatrixDropDownTemplate implements AdapterView.OnItemSelectedListene
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         Choice selectedChoice = ((FormSpinnerAdapter) spinner.getAdapter()).getItem(i);
-        if (i != -1 && selectedChoice != null && !selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
-            TextView tv = (TextView) adapterView.getSelectedView();
-            if (tv != null) {
-                tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
+        if (i != -1) {
+            if (selectedChoice != null && !selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
+                TextView tv = (TextView) adapterView.getSelectedView();
+                if (tv != null) {
+                    tv.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.colorPrimaryDark));
+                }
+                dropDownValueSelectListener.onDropdownValueSelected(matrixDynamicInnerMap, column,
+                        selectedChoice.getValue(), formId);
+            } else if (selectedChoice != null && selectedChoice.getValue().equals(context.get().getString(R.string.default_select))) {
+                dropDownValueSelectListener.onEmptyDropdownSelected(matrixDynamicInnerMap, column);
             }
-            dropDownValueSelectListener.onDropdownValueSelected(matrixDynamicInnerMap, column,
-                    selectedChoice.getValue(), formId);
         }
     }
 

@@ -16,7 +16,8 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    public static final String AND = "&";
+    public static final String AND = "and";
+    public static final String AND_CHARACTER = "&";
 //    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";

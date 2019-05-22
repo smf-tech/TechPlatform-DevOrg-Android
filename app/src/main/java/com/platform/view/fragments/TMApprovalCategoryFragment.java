@@ -19,7 +19,6 @@ import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("WeakerAccess")
 public class TMApprovalCategoryFragment extends Fragment {
 
     private TabLayout tabLayout;

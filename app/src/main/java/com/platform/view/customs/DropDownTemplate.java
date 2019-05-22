@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.DropDownValueSelectListener;
-import com.platform.models.LocaleData;
 import com.platform.models.forms.Choice;
 import com.platform.models.forms.Elements;
 import com.platform.view.adapters.FormSpinnerAdapter;
@@ -96,9 +95,8 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
         return baseLayout;
     }
 
-    void setListData(List<Choice> valueList, boolean isInEditMode, boolean isPartiallySaved) {
+    void setListData(List<Choice> valueList) {
         if (valueList != null) {
-            boolean isValueSet = false;
             this.valueList = valueList;
 
             FormSpinnerAdapter adapter = (FormSpinnerAdapter) spinner.getAdapter();
@@ -117,25 +115,8 @@ public class DropDownTemplate implements AdapterView.OnItemSelectedListener {
                             !TextUtils.isEmpty(formData.getChoices().get(index).getText().getLocaleValue()) &&
                             formData.getAnswer().equals(formData.getChoices().get(index).getValue())) {
 
-                        isValueSet = true;
                         this.setSelectedItem(index);
                     }
-                }
-            }
-
-            if (isInEditMode && !isPartiallySaved) {
-                if (!isValueSet && !TextUtils.isEmpty(formData.getAnswer())) {
-                    Choice ch = new Choice();
-                    LocaleData ld = new LocaleData(formData.getAnswer());
-                    ch.setValue(formData.getAnswer());
-                    ch.setText(ld);
-
-                    this.valueList.add(ch);
-                    valueList.add(ch);
-                    adapter.clear();
-                    adapter.addAll(valueList);
-                    adapter.notifyDataSetChanged();
-                    this.setSelectedItem(valueList.size() - 1);
                 }
             }
         }
