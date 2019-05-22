@@ -45,6 +45,9 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.fragments.HomeFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -729,6 +732,20 @@ public class Util {
 //        return true;
         return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
                 !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
+    }
+
+    public static String trimMessage(String json) {
+        String trimmedString;
+
+        try {
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString("message");
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+            return null;
+        }
+
+        return trimmedString;
     }
 
     public static boolean isValidImageSize(File f) {

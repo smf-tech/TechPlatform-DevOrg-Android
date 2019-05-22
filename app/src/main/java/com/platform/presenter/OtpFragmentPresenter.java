@@ -1,5 +1,7 @@
 package com.platform.presenter;
 
+import android.util.Log;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.Platform;
@@ -112,8 +114,26 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         }
 
         otpFragment.get().hideProgressBar();
-        if (error != null) {
-            otpFragment.get().showErrorMessage(error.getLocalizedMessage());
+        if (error != null && error.networkResponse != null) {
+            if (error.networkResponse.statusCode == 504) {
+                if (error.networkResponse.data != null) {
+                    String json = new String(error.networkResponse.data);
+                    json = Util.trimMessage(json);
+                    if (json != null) {
+                        Util.showToast(json, otpFragment.get().getActivity());
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                otpFragment.get().getActivity());
+                    }
+                } else {
+                    Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                            otpFragment.get().getActivity());
+                }
+            } else {
+                otpFragment.get().showErrorMessage(error.getLocalizedMessage());
+                Log.e("onErrorListener",
+                        "Unexpected response code " + error.networkResponse.statusCode);
+            }
         }
     }
 }

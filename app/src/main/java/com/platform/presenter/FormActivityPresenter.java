@@ -188,7 +188,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
                 if (error.networkResponse.statusCode == 400) {
                     if (error.networkResponse.data != null) {
                         String json = new String(error.networkResponse.data);
-                        json = trimMessage(json);
+                        json = Util.trimMessage(json);
                         if (json != null) {
                             Util.showToast(json, formFragment.get().getActivity());
                         } else {
@@ -197,6 +197,20 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         }
                     } else {
                         Util.showToast(Platform.getInstance().getString(R.string.msg_form_duplicate_error),
+                                formFragment.get().getActivity());
+                    }
+                } else if (error.networkResponse.statusCode == 504) {
+                    if (error.networkResponse.data != null) {
+                        String json = new String(error.networkResponse.data);
+                        json = Util.trimMessage(json);
+                        if (json != null) {
+                            Util.showToast(json, formFragment.get().getActivity());
+                        } else {
+                            Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                    formFragment.get().getActivity());
+                        }
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
                                 formFragment.get().getActivity());
                     }
                 } else {
@@ -208,20 +222,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
             formFragment.get().enableSubmitButton(true);
         }
-    }
-
-    private String trimMessage(String json) {
-        String trimmedString;
-
-        try {
-            JSONObject obj = new JSONObject(json);
-            trimmedString = obj.getString("message");
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
-            return null;
-        }
-
-        return trimmedString;
     }
 
     @Override

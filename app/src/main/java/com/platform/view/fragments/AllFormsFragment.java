@@ -22,6 +22,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.FormStatusCallListener;
@@ -138,7 +139,28 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onErrorListener(VolleyError error) {
         hideProgressBar();
         Log.e(TAG, "onErrorListener: " + error.getMessage());
-        Util.showToast(error.getMessage(), getContext());
+
+        if (error.networkResponse != null) {
+            if (error.networkResponse.statusCode == 504) {
+                if (error.networkResponse.data != null) {
+                    String json = new String(error.networkResponse.data);
+                    json = Util.trimMessage(json);
+                    if (json != null) {
+                        Util.showToast(json, this.getActivity());
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                this.getActivity());
+                    }
+                } else {
+                    Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                            this.getActivity());
+                }
+            } else {
+                Util.showToast(this.getString(R.string.unexpected_error_occurred), this.getActivity());
+                Log.e("onErrorListener",
+                        "Unexpected response code " + error.networkResponse.statusCode);
+            }
+        }
     }
 
     @Override

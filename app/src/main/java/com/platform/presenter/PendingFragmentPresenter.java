@@ -5,10 +5,13 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.Platform;
+import com.platform.R;
 import com.platform.listeners.TMPendingRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMPendingRequestCall;
+import com.platform.utility.Util;
 import com.platform.view.fragments.TMUserPendingFragment;
 
 import java.lang.ref.WeakReference;
@@ -70,14 +73,32 @@ public class PendingFragmentPresenter implements TMPendingRequestCallListener {
     }
 
     @Override
-    public void onErrorListener(VolleyError volleyError) {
+    public void onErrorListener(VolleyError error) {
+        if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+            fragmentWeakReference.get().hideProgressBar();
 
-        if (volleyError.networkResponse != null && volleyError.networkResponse.data != null) {
-            VolleyError error = new VolleyError(new String(volleyError.networkResponse.data));
-            String message = error.getMessage();
-            Log.i(TAG, "Error: " + message);
+            if (error != null && error.networkResponse != null) {
+                if (error.networkResponse.statusCode == 504) {
+                    if (error.networkResponse.data != null) {
+                        String json = new String(error.networkResponse.data);
+                        json = Util.trimMessage(json);
+                        if (json != null) {
+                            Util.showToast(json, fragmentWeakReference.get().getActivity());
+                        } else {
+                            Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                    fragmentWeakReference.get().getActivity());
+                        }
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                fragmentWeakReference.get().getActivity());
+                    }
+                } else {
+                    Util.showToast(fragmentWeakReference.get().getString(R.string.unexpected_error_occurred),
+                            fragmentWeakReference.get().getActivity());
+                    Log.e("onErrorListener",
+                            "Unexpected response code " + error.networkResponse.statusCode);
+                }
+            }
         }
-
-        fragmentWeakReference.get().hideProgressBar();
     }
 }
