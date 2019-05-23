@@ -13,7 +13,6 @@ import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.HomeRequestCall;
 import com.platform.request.LoginRequestCall;
-import com.platform.utility.Config;
 import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
