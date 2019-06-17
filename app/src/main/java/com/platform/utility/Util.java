@@ -304,6 +304,7 @@ public class Util {
 //        return new Gson().fromJson(obj, UserLocation.class);
 //    }
 
+
     public static void saveUserLocationInPref(UserLocation location) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
@@ -311,6 +312,7 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(location);
+
         editor.putString(Constants.App.USER_LOC_OBJ, json);
         editor.apply();
     }
