@@ -166,6 +166,7 @@ public class Util {
                     loginObj.getLoginData().getAccessToken() != null) {
                 headers.put(Constants.Login.AUTHORIZATION,
                         "Bearer " + loginObj.getLoginData().getAccessToken());
+                Log.i("Token","111"+loginObj.getLoginData().getAccessToken());
             }
         }
 
@@ -250,7 +251,7 @@ public class Util {
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.USER_ORG, "{}");
 
-        return new Gson().fromJson(obj, OrganizationResponse.class);
+        return new Gson().fromJson(obj,OrganizationResponse.class);
     }
 
     public static void saveUserOrgInPref(String userData) {
@@ -307,7 +308,6 @@ public class Util {
     public static void saveUserLocationInPref(UserLocation location) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(location);

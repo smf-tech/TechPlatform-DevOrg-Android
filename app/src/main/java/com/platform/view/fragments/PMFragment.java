@@ -92,7 +92,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         if (processDataArrayList != null && !processDataArrayList.isEmpty() && !isSyncRequired) {
             Processes processes = new Processes();
             processes.setData(processDataArrayList);
-
             populateData(processes);
 
         } else {
@@ -261,29 +260,62 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             final ProcessData data = childList.get(i);
             if (i >= 2) break;
 
-            if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
-                View formTypeView = LayoutInflater.from(getContext().getApplicationContext())
-                        .inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
+            try{
+                if(data!=null) {
+                if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
+                    View formTypeView = LayoutInflater.from(getContext().getApplicationContext())
+                            .inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
 
-                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title))
-                        .setText(data.getName().getLocaleValue().trim());
+                    ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title))
+                            .setText(data.getName().getLocaleValue().trim());
 
-                if (!TextUtils.isEmpty(data.getId())) {
-                    ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
-                    imgCreateForm.setEnabled(Util.isUserApproved());
+                    if (!TextUtils.isEmpty(data.getId())) {
+                        ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
+                        imgCreateForm.setEnabled(Util.isUserApproved());
 
-                    imgCreateForm.setOnClickListener(v -> {
-                        Intent intent = new Intent(getActivity(), FormActivity.class);
-                        intent.putExtra(Constants.PM.FORM_ID, data.getId());
-                        startActivity(intent);
-                    });
-                }
-                lnrInner.addView(formTypeView);
+                        imgCreateForm.setOnClickListener(v -> {
+                            Intent intent = new Intent(getActivity(), FormActivity.class);
+                            intent.putExtra(Constants.PM.FORM_ID, data.getId());
+                            startActivity(intent);
+                        });
+                    }
+                    lnrInner.addView(formTypeView);
 
-                if (childList.size() == 1 || i == 1) {
-                    formTypeView.findViewById(R.id.dashboard_category_item_divider).setVisibility(View.GONE);
+                    if (childList.size() == 1 || i == 1) {
+                        formTypeView.findViewById(R.id.dashboard_category_item_divider).setVisibility(View.GONE);
+                    }
                 }
             }
+
+            }catch (Exception e){
+                    e.printStackTrace();
+            }
+
+            /*if(data!=null) {
+                if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
+                    View formTypeView = LayoutInflater.from(getContext().getApplicationContext())
+                            .inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
+
+                    ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title))
+                            .setText(data.getName().getLocaleValue().trim());
+
+                    if (!TextUtils.isEmpty(data.getId())) {
+                        ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
+                        imgCreateForm.setEnabled(Util.isUserApproved());
+
+                        imgCreateForm.setOnClickListener(v -> {
+                            Intent intent = new Intent(getActivity(), FormActivity.class);
+                            intent.putExtra(Constants.PM.FORM_ID, data.getId());
+                            startActivity(intent);
+                        });
+                    }
+                    lnrInner.addView(formTypeView);
+
+                    if (childList.size() == 1 || i == 1) {
+                        formTypeView.findViewById(R.id.dashboard_category_item_divider).setVisibility(View.GONE);
+                    }
+                }
+            }*/
         }
         lnrOuter.addView(lnrInner);
     }

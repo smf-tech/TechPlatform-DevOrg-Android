@@ -381,7 +381,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             timer = null;
         }
 
-        timer = new CountDownTimer(30000, 1000) {
+        timer = new CountDownTimer(300000, 1000) {
 
             @Override
             public void onTick(long l) {
@@ -529,7 +529,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     @Override
     public void onDestroy() {
-        Platform.getInstance().unregisterReceiver(mIntentReceiver);
-        super.onDestroy();
+
+        Platform.getInstance().unregisterReceiver(mIntentReceiver);super.onDestroy();
     }
 }

@@ -1,5 +1,6 @@
 package com.platform.view.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +12,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
+import com.platform.models.attendance.AttendanceStatus;
+import com.platform.view.fragments.AttendancePlannerFragment;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @SuppressWarnings("CanBeFinal")
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
 
     private Context mContext;
     private List<String> leavesList;
+    private String type;
 
-    public AttendanceAdapter(final Context context, final List<String> leavesList) {
+    public AttendanceAdapter(final Context context, final List<String> leavesList,String type) {
         this.mContext = context;
         this.leavesList = leavesList;
+        this.type=type;
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,13 +64,35 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull AttendanceAdapter.ViewHolder viewHolder, int i) {
 
+        String date=leavesList.get(i);
+        Long TimeStamp=Long.parseLong(date);
+
+
+        Date d1 = new Date(TimeStamp);
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String FinalDate=df.format(d1);
+
         viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
-        viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
+        viewHolder.leaveDesc.setText("Sample Text"+FinalDate);
+
+
+       /* Date StringTodate=null;
+        try {
+            StringTodate=new SimpleDateFormat("dd/MM/YYYY").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
+        viewHolder.leaveDesc.setText("Sample Text"+StringTodate);*/
+
+        //viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
+        //viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
         //viewHolder.leaveStatus.setText("Request status :"+"Not yet approved");
     }
 
     @Override
     public int getItemCount() {
-        return 2;//leavesList.size();
+        return leavesList.size();//leavesList.size();
     }
 }

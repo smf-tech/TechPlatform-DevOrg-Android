@@ -1,5 +1,6 @@
 package com.platform.utility;
 
+
 public class Urls {
 
     public class Login {
@@ -44,5 +45,11 @@ public class Urls {
         public static final String GET_EVENTS = "api/events?status=%1$s";
         public static final String GET_MEMBERS_LIST = "api/users";
         public static final String SUBMIT_EVENT= "api/events";
+    }
+
+    public class Attendance
+    {
+        public static final String GET_ALL_MONTH="api/getuserattendance/";
+
     }
 }

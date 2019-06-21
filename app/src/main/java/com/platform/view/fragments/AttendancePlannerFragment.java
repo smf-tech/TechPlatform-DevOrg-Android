@@ -21,8 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
+import com.platform.models.attendance.AttendanceStatus;
+import com.platform.models.attendance.Datum;
+import com.platform.models.attendance.MonthlyAttendance;
+import com.platform.presenter.MonthlyAttendanceFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
+import com.platform.utility.Urls;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.AttendanceAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -35,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -61,6 +67,23 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private LinearLayout lvAttendanceStatus;
     private MaterialCalendarView calendarView;
 
+
+
+    private String status,dateTimeStamp;
+    public static final String APPROVED="Approve";
+    public static final String PENDING="Pending";
+    public static final String REJECTED="Rejected";
+
+    ArrayList<String>pendingList;
+    ArrayList<String>approveList;
+    ArrayList<String>rejectList;
+
+
+    private List<AttendanceStatus>attendanceStatusList;
+    String TAG=AttendancePlannerFragment.class.getSimpleName();
+    MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter;
+    private int year,month;
+
     public AttendancePlannerFragment() {
         // Required empty public constructor
     }
@@ -70,14 +93,15 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         plannerView = inflater.inflate(R.layout.fragment_attendance_planner, container, false);
+
         return plannerView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initView();
+
     }
 
     private void initView() {
@@ -85,6 +109,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         if (bundle != null) {
             isDashboard = bundle.getBoolean(Constants.Planner.KEY_IS_DASHBOARD);
         }
+
+
 
         lyCalender = plannerView.findViewById(R.id.ly_calender);
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
@@ -111,7 +137,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         ivCalendarMode.setOnClickListener(this);
 
         attendanceCardLayout = plannerView.findViewById(R.id.rv_card_attendance);
+
         setUIData();
+
     }
 
     private void setUIData() {
@@ -134,19 +162,100 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             lp.setMargins(70, 50, 70, 50);
             attendanceCardLayout.setLayoutParams(lp);
 
-            attendanceListData();
+
+            CalendarDay calendarDay=calendarView.getCurrentDate();
+            year=calendarDay.getYear();
+            month=calendarDay.getMonth()+1;
+
+            MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
+            monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,month);
+
+
+            //attendanceListData();
         }
 
         isMonth = !isMonth;
         setCalendar();
     }
 
-    private void attendanceListData() {
+    public void getAttendanceInfo(MonthlyAttendance data) {
+     Log.i("AttendanceData","222"+data);
+     // get dates and status
+       List<Datum>listAttDate=data.getData();
+       // create list depend on status
+       attendanceStatusList=new ArrayList<>();
 
-        AttendanceAdapter adapter = new AttendanceAdapter(getActivity(), new ArrayList<>());
-        rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
+       pendingList=new ArrayList<>();
+       approveList=new ArrayList<>();
+       rejectList=new ArrayList<>();
 
-        rvAttendanceList.setAdapter(adapter);
+
+       for(int i=0;i<listAttDate.size();i++){
+
+           status=listAttDate.get(i).getStatus();
+
+           if(status.equalsIgnoreCase("Approve"))
+           {
+               dateTimeStamp=listAttDate.get(i).getCreatedOn().getDate().getNumberLong();
+               approveList.add(dateTimeStamp);
+
+               /*AttendanceStatus attendanceStatus=new AttendanceStatus();
+               attendanceStatus.setStatus(status);
+               attendanceStatus.setDatetimestamp(dateTimeStamp);
+               attendanceStatusList.add(attendanceStatus);*/
+
+
+           }
+           if(status.equalsIgnoreCase("Pending"))
+           {
+               dateTimeStamp=listAttDate.get(i).getCreatedOn().getDate().getNumberLong();
+               pendingList.add(dateTimeStamp);
+             /*  AttendanceStatus attendanceStatus=new AttendanceStatus();
+               attendanceStatus.setStatus(status);
+               attendanceStatus.setDatetimestamp(dateTimeStamp);
+               attendanceStatusList.add(attendanceStatus);*/
+
+           }
+
+           if(status.equalsIgnoreCase("Rejected"))
+           {
+               dateTimeStamp=listAttDate.get(i).getCreatedOn().getDate().getNumberLong();
+               rejectList.add(dateTimeStamp);
+               /*AttendanceStatus attendanceStatus=new AttendanceStatus();
+               attendanceStatus.setStatus(status);
+               attendanceStatus.setDatetimestamp(dateTimeStamp);
+               attendanceStatusList.add(attendanceStatus);*/
+           }
+
+       }
+       attendanceListData(PENDING);
+
+
+    }
+
+    public void attendanceListData(String type) {
+
+
+
+        if(type.equalsIgnoreCase(PENDING))
+        {
+            AttendanceAdapter adapter = new AttendanceAdapter(getActivity(),pendingList,type);
+            rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvAttendanceList.setAdapter(adapter);
+        }
+        if(type.equalsIgnoreCase(APPROVED))
+        {
+            AttendanceAdapter adapter = new AttendanceAdapter(getActivity(),approveList,type);
+            rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvAttendanceList.setAdapter(adapter);
+        }
+        if(type.equalsIgnoreCase(REJECTED))
+        {
+            AttendanceAdapter adapter = new AttendanceAdapter(getActivity(),rejectList,type);
+            rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvAttendanceList.setAdapter(adapter);
+        }
+
     }
 
     @Override
@@ -156,6 +265,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         switch (v.getId()) {
             case R.id.bt_check_in:
                 tvCheckInTime.setText(time);
+                tvCheckInTime.setVisibility(View.VISIBLE);
                 //noinspection deprecation
                 btCheckIn.setBackground(Objects.requireNonNull(getActivity())
                         .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
@@ -171,7 +281,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 break;
 
             case R.id.tv_attendance_details:
-                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                Intent intent = new Intent(getActivity(),GeneralActionsActivity.class);
                 intent.putExtra(Constants.Planner.KEY_IS_DASHBOARD, false);
                 intent.putExtra("title", getString(R.string.attendance));
                 intent.putExtra("switch_fragments", "AttendancePlannerFragment");
@@ -185,6 +295,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
                     tvClickRejected.setTextColor(getResources().getColor(R.color.blur_tab));
                 }
+                attendanceListData(PENDING);
+
+
                 break;
 
             case R.id.tv_tb_approved:
@@ -193,7 +306,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
                     tvClickApproved.setTextColor(getResources().getColor(R.color.black_green));
                     tvClickRejected.setTextColor(getResources().getColor(R.color.blur_tab));
+
                 }
+                attendanceListData(APPROVED);
                 break;
 
             case R.id.tv_tb_rejected:
@@ -203,6 +318,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
                     tvClickRejected.setTextColor(getResources().getColor(R.color.black_green));
                 }
+                attendanceListData(REJECTED);
                 break;
 
             case R.id.iv_calendar_mode:
@@ -259,6 +375,24 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         //noinspection deprecation
         calendarView.addDecorator(new EventDecorator(getActivity(),
                 dateList, getResources().getDrawable(R.drawable.circle_background)));
+        // list for holiday
+
+        ArrayList<CalendarDay> holidayList = new ArrayList<>();
+        try {
+            holidayList.add(CalendarDay.from(formatter.parse("2019/06/19")));
+            holidayList.add(CalendarDay.from(formatter.parse("2019/06/21")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+        calendarView.addDecorator(new EventDecorator(getActivity(),
+                holidayList, getResources().getDrawable(R.drawable.circle_background)));
+
+
+
+
     }
 
     @Override
@@ -267,4 +401,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
     }
+
+    public void showError(String error){
+        Toast.makeText(getActivity(),"error"+error,Toast.LENGTH_LONG).show();
+
+    }
+
 }

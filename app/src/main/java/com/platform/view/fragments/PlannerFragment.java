@@ -81,6 +81,7 @@ public class PlannerFragment extends Fragment {
         bundle.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, true);
 
         for (Modules m:approveModules) {
+
             switch (m.getName().getDefaultValue()){
                 case Constants.Planner.EVENTS_KEY:
                     rl_events.setVisibility(View.VISIBLE);
