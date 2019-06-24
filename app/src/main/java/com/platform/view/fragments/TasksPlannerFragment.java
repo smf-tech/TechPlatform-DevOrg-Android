@@ -99,23 +99,23 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         sortedTaskList = new ArrayList<>();
 
         ArrayList<Participant> membersList = new ArrayList<>();
-        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true, true));
-        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false, false));
-        membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
-        membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
+        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true));
+        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false));
+        membersList.add(new Participant("3", "Jagruti Devare", "MT", true));
+        membersList.add(new Participant("4", "Sachin Kakade", "FA", false));
 
         ArrayList<TaskForm> taskFormsList = new ArrayList<>();
         taskFormsList.add(new TaskForm("1", "Testing Form 1", Constants.Planner.PLANNED_STATUS));
         taskFormsList.add(new TaskForm("2", "Testing Form 2", Constants.Planner.COMPLETED_STATUS));
         taskFormsList.add(new TaskForm("3", "Testing Form 3", Constants.Planner.COMPLETED_STATUS));
 
-        taskList.add(new Event("1", "meeting", "Title1", 1557206071l,
-                1557206071l, null, "test", "Wagholi,Pune.", "Sachin",
-                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
-
-        taskList.add(new Event("2", "visit", "Title2", 1557206071l,
-                1557206071l, null, "test", "Hadpsar,Pune.", "Sagar",
-                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
+//        taskList.add(new Event("1", "meeting", "Title1", 1557206071l,
+//                1557206071l, null, "test", "Wagholi,Pune.", "Sachin",
+//                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
+//
+//        taskList.add(new Event("2", "visit", "Title2", 1557206071l,
+//                1557206071l, null, "test", "Hadpsar,Pune.", "Sagar",
+//                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -232,11 +232,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
             sortedTaskList.addAll(taskList);
         } else {
             String ownerID = "1234";
-            for (Event event : taskList) {
-                if (ownerID.equals(event.getOwnerID())) {
-                    sortedTaskList.add(event);
-                }
-            }
+//            for (Event event : taskList) {
+//                if (ownerID.equals(event.getOwnerID())) {
+//                    sortedTaskList.add(event);
+//                }
+//            }
         }
         taskListAdapter.notifyDataSetChanged();
     }

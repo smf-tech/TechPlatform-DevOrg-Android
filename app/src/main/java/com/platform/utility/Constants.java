@@ -246,6 +246,7 @@ public class Constants {
     public static class Planner {
         public static final Integer REPEAT_EVENT = 001;
         public static final Integer MEMBER_LIST = 002;
+        public static final String SPINNER_ADD_FORMS = "add_forms";
 
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN = "ToOpen";
@@ -262,10 +263,10 @@ public class Constants {
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";
         public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
-        public static final String EVENTS_KEY = "Events";
-        public static final String TASKS_KEY = "Tasks";
-        public static final String ATTENDANCE_KEY = "Attendance";
-        public static final String LEAVES_KEY = "Leaves";
+        public static final String EVENTS_KEY = "event";
+        public static final String TASKS_KEY = "task";
+        public static final String ATTENDANCE_KEY = "attendance";
+        public static final String LEAVES_KEY = "leave";
 
     }
 }

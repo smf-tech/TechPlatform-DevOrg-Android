@@ -1,6 +1,5 @@
 package com.platform.view.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,26 +8,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.events.AddForm;
 import com.platform.models.events.Event;
 import com.platform.models.events.EventLocation;
+import com.platform.models.events.EventsResponse;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Recurrence;
 import com.platform.presenter.CreateEventActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
+import com.platform.widgets.MultiSelectSpinner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,13 +34,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener {
+public class CreateEventActivity extends BaseActivity implements View.OnClickListener, PlatformTaskListener,MultiSelectSpinner.MultiSpinnerListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
     private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
-    private Recurrence recurrence;
 
     private ImageView ivBackIcon;
     private Spinner spCategory;
@@ -51,15 +48,14 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private EditText etEndDate;
     private EditText etStartTime;
     private EditText etEndTime;
-    private EditText etRepeat;
-    private TextView tvRepeatDetail;
     private EditText etDescription;
     private EditText etAddress;
     private EditText etAddMembers;
-    private Button btRepeat;
     private Button btEventSubmit;
-    private ArrayList categoryTypes = new ArrayList();
+    private MultiSelectSpinner spAddForms;
 
+    ArrayList<AddForm> formsList;
+    private ArrayList<String> selectedForms = new ArrayList<>();
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private CreateEventActivityPresenter createEventPresenter;
@@ -77,8 +73,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
         createEventPresenter = new CreateEventActivityPresenter(this);
-        recurrence = new Recurrence();
-        createEventPresenter.getEventCategory();
+        createEventPresenter.getFormData(Util.getUserObjectFromPref().getProjectIds());
 
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
@@ -90,28 +85,25 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         etEndDate = findViewById(R.id.et_end_date);
         etStartTime = findViewById(R.id.et_start_time);
         etEndTime = findViewById(R.id.et_end_time);
-        etRepeat = findViewById(R.id.et_repeat);
-        tvRepeatDetail = findViewById(R.id.tv_repeat_detail);
         etDescription = findViewById(R.id.et_description);
         etAddress = findViewById(R.id.et_address);
         etAddMembers = findViewById(R.id.et_add_members);
 
-        btRepeat = findViewById(R.id.bt_repeat);
+        spAddForms = findViewById(R.id.sp_add_forms);
+        spAddForms.setSpinnerName(Constants.Planner.SPINNER_ADD_FORMS);
+
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
 
-        btRepeat.setText(R.string.never_label);
+
 
         // Task Module UI changes
-        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            TextInputLayout tlyEndDate = findViewById(R.id.tly_end_date);
-            tlyEndDate.setVisibility(View.VISIBLE);
-            LinearLayout lyRepeat = findViewById(R.id.ly_repeat);
-            lyRepeat.setVisibility(View.GONE);
-            TextInputLayout tlyAddress = findViewById(R.id.tly_address);
-            tlyAddress.setVisibility(View.GONE);
-        }
-
+//        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+//            TextInputLayout tlyEndDate = findViewById(R.id.tly_end_date);
+//            tlyEndDate.setVisibility(View.VISIBLE);
+//            TextInputLayout tlyAddress = findViewById(R.id.tly_address);
+//            tlyAddress.setVisibility(View.GONE);
+//        }
 //        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 //                R.array.category_types, android.R.layout.simple_spinner_item);
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -127,7 +119,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
-                etEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
+//                etEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
                 findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
@@ -155,18 +147,17 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private void setAllData() {
         ArrayAdapter myAdapter = (ArrayAdapter) spCategory.getAdapter();
-        int spinnerPosition = myAdapter.getPosition(event.getEventType());
-        spCategory.setSelection(spinnerPosition);
-        etTitle.setText(event.getTitle());
-        etStartDate.setText(Util.getDateFromTimestamp(event.getEventStartDateTime()));
-        etStartTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
-        etEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
-        etRepeat.setText(event.getRepeat());
-        etDescription.setText(event.getEventDescription());
-        etAddress.setText(event.getAddress());
-        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
-            setAdapter(event.getMembersList());
-        }
+//        int spinnerPosition = myAdapter.getPosition(event.getEventType());
+//        spCategory.setSelection(spinnerPosition);
+//        etTitle.setText(event.getTitle());
+//        etStartDate.setText(Util.getDateFromTimestamp(event.getEventStartDateTime()));
+//        etStartTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
+//        etEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
+//        etDescription.setText(event.getEventDescription());
+//        etAddress.setText(event.getAddress());
+//        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+//            setAdapter(event.getMembersList());
+//        }
     }
 
     private void setListeners() {
@@ -176,7 +167,6 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         etStartTime.setOnClickListener(this);
         etEndTime.setOnClickListener(this);
         etAddMembers.setOnClickListener(this);
-        btRepeat.setOnClickListener(this);
         btEventSubmit.setOnClickListener(this);
     }
 
@@ -218,13 +208,24 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
                 this.startActivityForResult(intentAddMemberFilerActivity, Constants.Planner.MEMBER_LIST);
                 break;
 
-            case R.id.bt_repeat:
-                Intent intentRepeatEventActivity = new Intent(this, RepeatEventActivity.class);
-                this.startActivityForResult(intentRepeatEventActivity, Constants.Planner.REPEAT_EVENT);
-                break;
             case R.id.bt_event_submit:
                 submitDetails();
                 break;
+        }
+    }
+
+    @Override
+    public void onValuesSelected(boolean[] selected, String spinnerName) {
+        switch (spinnerName) {
+            case Constants.Planner.SPINNER_ADD_FORMS:
+                selectedForms.clear();
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        selectedForms.add(formsList.get(i).getId());
+                    }
+                }
+                break;
+
         }
     }
 
@@ -232,19 +233,18 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         Event event = new Event();
         EventLocation eLocation = new EventLocation();
         eLocation.setAddress(etAddress.getText().toString());
-        event.setEventType(spCategory.getSelectedItem().toString());
-        event.setEventName(etTitle.getText().toString());
-//        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-//        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
-//        event.setStarTime(etStartTime.getText().toString());
-//        event.setEndTime(etEndTime.getText().toString());
-        event.setOrganizer(Util.getUserObjectFromPref().getId());
-        event.setRecurrence(recurrence);
-        event.setDuration("");
-        event.setEventDescription(etDescription.getText().toString());
-        event.setEventLocation(eLocation);
-        event.setStatus(Constants.Planner.PLANNED_STATUS);
-        event.setParticipants(membersList);
+//        event.setEventType(spCategory.getSelectedItem().toString());
+//        event.setEventName(etTitle.getText().toString());
+////        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+////        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+////        event.setStarTime(etStartTime.getText().toString());
+////        event.setEndTime(etEndTime.getText().toString());
+//        event.setOrganizer(Util.getUserObjectFromPref().getId());
+//        event.setDuration("");
+//        event.setEventDescription(etDescription.getText().toString());
+//        event.setEventLocation(eLocation);
+//        event.setStatus(Constants.Planner.PLANNED_STATUS);
+//        event.setParticipants(membersList);
         //put in response of above api
         createEventPresenter.submitEvent(event);
     }
@@ -265,22 +265,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.Planner.REPEAT_EVENT && data!= null) {
-                recurrence = (Recurrence) data.getSerializableExtra(Constants.Planner.REPEAT_EVENT_DATA);
-                if (recurrence.getType() != null) {
-                    btRepeat.setText(recurrence.getType());
-                    tvRepeatDetail.setVisibility(View.VISIBLE);
-                    tvRepeatDetail.setText("Repeats every "+recurrence.getInterval()+", ends on "+recurrence.getLastDate());
-//                    String[] str = getResources().getStringArray(R.array.repeat_array);
-//                    if (recurrence.getType().equalsIgnoreCase(str[1])) {
-//                        ly_day_interval
-//                    } else if (recurrence.getType().equalsIgnoreCase(str[2])) {
-//                        ly_week_interval
-//                    } else if (recurrence.getType().equalsIgnoreCase(str[3])) {
-//                        ly_month_interval
-//                    }
-                }
-        } else if (requestCode == Constants.Planner.MEMBER_LIST && data!= null) {
+        if (requestCode == Constants.Planner.MEMBER_LIST && data!= null) {
             membersList = (ArrayList<Participant>) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
             RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
             addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
@@ -320,14 +305,19 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         runOnUiThread(() -> Util.showToast(result, this));
     }
 
-    public void showCategoryTypes(ArrayList Categoty){
-        this.categoryTypes = Categoty;
-        ArrayAdapter<Integer> categoryAdapter = new ArrayAdapter<Integer>(
-                this,
-                android.R.layout.simple_spinner_item,
-                categoryTypes
-        );
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(categoryAdapter);
+    public void onFormsListFatched(ArrayList<AddForm> formslist){
+        formsList.addAll(formslist);
+        ArrayList<String>displayFormList = new ArrayList<>();
+        String CurrentLang = Locale.getDefault().getLanguage();
+        for(AddForm obj:formsList){
+            if(CurrentLang.equalsIgnoreCase("mr"))
+                displayFormList.add(obj.getName().getMr());
+            else if(CurrentLang.equalsIgnoreCase("hi"))
+                displayFormList.add(obj.getName().getHi());
+            else
+                displayFormList.add(obj.getName().getDefault());
+        }
+        spAddForms.setItems(displayFormList, "Select forms", this);
     }
+
 }

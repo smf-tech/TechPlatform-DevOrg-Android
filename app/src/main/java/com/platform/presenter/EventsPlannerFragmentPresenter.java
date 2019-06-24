@@ -20,43 +20,25 @@ import java.lang.ref.WeakReference;
 public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     private final WeakReference<EventsPlannerFragment> fragmentWeakReference;
-//    private final WeakReference<TasksPlannerFragment> tasksPlannerFragmentWeakReference;
 
     public EventsPlannerFragmentPresenter(EventsPlannerFragment fragmentWeakReference) {
         this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);
-//        this.tasksPlannerFragmentWeakReference = null;
-    }
 
-//    public EventsPlannerFragmentPresenter(TasksPlannerFragment tasksPlannerFragmentWeakReference) {
-//        this.tasksPlannerFragmentWeakReference = new WeakReference<>(tasksPlannerFragmentWeakReference);
-//        this.fragmentWeakReference = null;
-//    }
+    }
 
     public void getEvents(String status) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
-
         fragmentWeakReference.get().showProgressBar();
         requestCall.getEvent(status);
     }
 
-    @Override
-    public void onCategoryFetched(String response) {
-
-    }
 
     @Override
     public void onEventsFetched(String response) {
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
 
-//            try {
-//                JSONObject eventsResponse = new JSONObject(response);
-//                JSONArray eventsData = eventsResponse.getJSONArray("data");
-//                fragmentWeakReference.get().displayEventsList(eventsData);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
             EventsResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, EventsResponse.class);
 
             if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
@@ -64,6 +46,11 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
                 fragmentWeakReference.get().showNextScreen(data);
             }
         }
+    }
+
+    @Override
+    public void onFormsFetched(String response) {
+        // not used
     }
 
     @Override

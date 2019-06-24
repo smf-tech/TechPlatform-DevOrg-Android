@@ -130,63 +130,11 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ly_repeat"
-                android:layout_below="@+id/ly_start_end_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:background="@drawable/bg_blue_box">
-
-                <!--Repeat-->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tly_repeat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:padding="@dimen/dimen_10dp"
-                    android:theme="@style/TextInputLayoutForLabel"
-                    android:visibility="visible"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
-
-                    <EditText
-                        android:id="@+id/et_repeat"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/task_repeat"
-                        android:inputType="text|textCapWords"
-                        android:clickable="false"
-                        android:focusable="false"
-                        tools:ignore="Autofill" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/bt_repeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/medium_blue"
-                    android:layout_gravity="center" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_repeat_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_repeat"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:visibility="gone" />
-
             <!--Description-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_description"
                 style="@style/RegistrationTextInputLayout"
-                android:layout_below="@+id/tv_repeat_detail"
+                android:layout_below="@+id/ly_start_end_time"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -243,11 +191,26 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </RelativeLayout>
 
+            <!--Add Forms-->
+            <TextView
+                android:id="@+id/tv_add_forms"
+                style="@style/FormLabel"
+                android:layout_below="@+id/rl_add_members"
+                android:text="Add Forms"
+                />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_add_forms"
+                android:layout_below="@+id/tv_add_forms"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
+
             <Button
                 android:id="@+id/bt_event_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rl_add_members"
+                android:layout_below="@+id/sp_add_forms"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/create_event"

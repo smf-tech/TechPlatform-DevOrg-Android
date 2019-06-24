@@ -83,13 +83,13 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 //        String finalDate = weekDay.format(event.getEventStartDateTime());
 //        finalDate = finalDate + ", " + targetFormat.format(event.getEventStartDateTime());
 
-        tvTitle.setText(event.getEventName());
-        tvCategory.setText(event.getEventType());
-        tvDescription.setText(event.getEventDescription());
-        tvOwner.setText(event.getOrganizer());
-    //    tvDate.setText(finalDate);
-//        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
-        tvAddress.setText(event.getAddress());
+//        tvTitle.setText(event.getEventName());
+//        tvCategory.setText(event.getEventType());
+//        tvDescription.setText(event.getEventDescription());
+//        tvOwner.setText(event.getOrganizer());
+//    //    tvDate.setText(finalDate);
+////        tvTime.setText(String.format("%s > %s", event.getStarTime(), event.getEndTime()));
+//        tvAddress.setText(event.getAddress());
 //        rvAttendeesList = findViewById(R.id.rv_attendees_list);
 //        int attendedCount = 0;
 //        boolean isAttendanceMarked = false;
@@ -126,7 +126,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
             tvEndDate.setVisibility(View.VISIBLE);
             TextView tvEndTime = findViewById(R.id.tv_end_time);
             tvEndTime.setVisibility(View.VISIBLE);
-            tvEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
+//            tvEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
             tvRepeat.setVisibility(View.GONE);
 
 //            Date endDate = null;
@@ -138,35 +138,35 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 
 //            String finalEndDate = weekDay.format(endDate);
 //            finalEndDate = finalEndDate + ", " + targetFormat.format(endDate);
-            tvEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
-
-            tvTime.setText(String.format(Util.getTimeFromTimeStamp(event.getEventStartDateTime())));
-
-            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
-                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
-            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
-                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
-            }
-
-            if (event.getFormsList().size() > 0) {
-                findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
-                btEditAttendance.setVisibility(View.GONE);
-                tvFormListLabel.setVisibility(View.VISIBLE);
-                tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
-                        event.getFormsList().size(), getString(R.string.task_form_list_screen_msg)));
-                rvFormsList = findViewById(R.id.rv_forms_list);
-                setFormListAdapter(event.getFormsList());
-            } else {
-                btEditAttendance.setText(getString(R.string.mark_completed));
-                tvFormListLabel.setVisibility(View.GONE);
-            }
-        } else {
-            setActionbar(getString(R.string.event_detail));
-            tvRepeat.setText(event.getRepeat());
-            tvTime.setText(String.format("%s to %s", Util.getTimeFromTimeStamp(event.getEventStartDateTime()), Util.getTimeFromTimeStamp(event.getEventEndDateTime())));
-            rvAttendeesList = findViewById(R.id.rv_attendees_list);
-            setAdapter(event.getMembersList());
-            getAttendedCount();
+//            tvEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
+//
+//            tvTime.setText(String.format(Util.getTimeFromTimeStamp(event.getEventStartDateTime())));
+//
+//            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
+//                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
+//            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
+//                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
+//            }
+//
+//            if (event.getFormsList().size() > 0) {
+//                findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
+//                btEditAttendance.setVisibility(View.GONE);
+//                tvFormListLabel.setVisibility(View.VISIBLE);
+//                tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
+//                        event.getFormsList().size(), getString(R.string.task_form_list_screen_msg)));
+//                rvFormsList = findViewById(R.id.rv_forms_list);
+//                setFormListAdapter(event.getFormsList());
+//            } else {
+//                btEditAttendance.setText(getString(R.string.mark_completed));
+//                tvFormListLabel.setVisibility(View.GONE);
+//            }
+//        } else {
+//            setActionbar(getString(R.string.event_detail));
+//            tvRepeat.setText(event.getRepeat());
+//            tvTime.setText(String.format("%s to %s", Util.getTimeFromTimeStamp(event.getEventStartDateTime()), Util.getTimeFromTimeStamp(event.getEventEndDateTime())));
+//            rvAttendeesList = findViewById(R.id.rv_attendees_list);
+//            setAdapter(event.getMembersList());
+//            getAttendedCount();
         }
 
         setListeners();
@@ -208,22 +208,22 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
 
         int attendedCount = 0;
         boolean isAttendanceMarked = false;
-        for (Participant m : event.getMembersList()) {
-            if (m.getAttended()) {
-                attendedCount++;
-                isAttendanceMarked = true;
-            }
-        }
-        if (isAttendanceMarked) {
-            tvAttended.setText(String.format(Locale.getDefault(), "%d%s", attendedCount,
-                    getString(R.string.attended_label)));
-            tvNotAttended.setText(String.format(Locale.getDefault(), "%d%s",
-                    event.getMembersList().size() - attendedCount, getString(R.string.not_attended_label)));
-        } else {
-            tvAttended.setText(String.format("0%s", getString(R.string.attended_label)));
-            tvNotAttended.setText(String.format(Locale.getDefault(), "%d%s",
-                    event.getMembersList().size(), getString(R.string.not_attended_label)));
-        }
+//        for (Participant m : event.getMembersList()) {
+//            if (m.getMemberSelected()) {
+//                attendedCount++;
+//                isAttendanceMarked = true;
+//            }
+//        }
+//        if (isAttendanceMarked) {
+//            tvAttended.setText(String.format(Locale.getDefault(), "%d%s", attendedCount,
+//                    getString(R.string.attended_label)));
+//            tvNotAttended.setText(String.format(Locale.getDefault(), "%d%s",
+//                    event.getMembersList().size() - attendedCount, getString(R.string.not_attended_label)));
+//        } else {
+//            tvAttended.setText(String.format("0%s", getString(R.string.attended_label)));
+//            tvNotAttended.setText(String.format(Locale.getDefault(), "%d%s",
+//                    event.getMembersList().size(), getString(R.string.not_attended_label)));
+//        }
     }
 
     @Override
@@ -266,7 +266,7 @@ public class EventDetailActivity extends BaseActivity implements View.OnClickLis
                 if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
                     Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
                     intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
-                    intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
+//                    intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
                     this.startActivity(intentAddMembersListActivity);
                 } else if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                     Toast.makeText(this, "Status marked as Completed.", Toast.LENGTH_SHORT).show();

@@ -5,8 +5,13 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.google.gson.JsonObject;
 import com.platform.listeners.CreateEventListener;
+import com.platform.models.events.AddForm;
+import com.platform.models.events.AddFormsResponse;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventsResponse;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.request.EventRequestCall;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateEventActivity;
 
@@ -25,12 +30,12 @@ public class CreateEventActivityPresenter implements CreateEventListener {
         this.createEventActivity = new WeakReference<>(createEventActivity);
     }
 
-    public void getEventCategory() {
+    public void getFormData(ArrayList<JurisdictionType> projectIds) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
         createEventActivity.get().showProgressBar();
-        requestCall.getCategory();
+        requestCall.getFormData(projectIds);
     }
 
     public void submitEvent(Event event) {
@@ -42,26 +47,23 @@ public class CreateEventActivityPresenter implements CreateEventListener {
     }
 
     @Override
-    public void onCategoryFetched(String response) {
-        createEventActivity.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            try {
-                JSONObject categoryResponse = new JSONObject(response);
-                JSONArray data = categoryResponse.getJSONArray("data");
-                ArrayList categoryTypes = new ArrayList();
-                for(int i=0; i<data.length();i++){
-                    categoryTypes.add(data.getJSONObject(i).getString("name"));
-                }
-                createEventActivity.get().showCategoryTypes(categoryTypes);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    public void onEventsFetched(String response) {
+
     }
 
     @Override
-    public void onEventsFetched(String response) {
+    public void onFormsFetched(String response) {
+        if (createEventActivity.get() != null) {
+            createEventActivity.get().hideProgressBar();
+            if (!TextUtils.isEmpty(response)) {
 
+                AddFormsResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, AddFormsResponse.class);
+
+                if (createEventActivity != null && createEventActivity.get() != null) {
+                    createEventActivity.get().onFormsListFatched((ArrayList< AddForm > )data.getData());
+                }
+            }
+        }
     }
 
     @Override
