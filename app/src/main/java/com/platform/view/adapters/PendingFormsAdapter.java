@@ -69,7 +69,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         notifyDataSetChanged();
         Util.showToast(context.getString(R.string.form_deleted), context);
 
-        mFragment.onFormDeletedListener();
+        //mFragment.onFormDeletedListener();
     }
 
     private void showFormDeletePopUp(FormResult savedForm) {

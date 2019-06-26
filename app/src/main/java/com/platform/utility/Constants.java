@@ -129,6 +129,8 @@ public class Constants {
         //public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
+        public static final String WEBMODULE = "Webmodule";
+        public static final String WEBMODULE_NAME = "webmodule";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -141,6 +143,13 @@ public class Constants {
         public static final String FORM_ID = "formId";
         public static final String EDIT_MODE = "editMode";
         public static final String PARTIAL_FORM = "partialForm";
+        public  static final String NO_FILTER = "No_Filter";
+        public  static final String PENDING_STATUS = "Pending";
+        public  static final String APPROVED_STATUS = "Approved";
+        public  static final String REJECTED_STATUS = "Rejected";
+        public  static final String SAVED_STATUS = "Saved";
+        public  static final String UNSYNC_STATUS = "Unsync";
+        public  static final String SYNC_STATUS = "Sync";
     }
 
     public static class TM {

@@ -16,7 +16,7 @@
         android:id="@+id/sv_form_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_submit"
+        android:layout_above="@+id/button_lay"
         android:layout_below="@id/gen_form_toolbar"
         android:fillViewport="true">
 
@@ -32,22 +32,55 @@
         android:id="@+id/read_only_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_submit"
+        android:layout_above="@+id/button_lay"
         android:layout_below="@id/gen_form_toolbar"
         android:background="#66FFFFFF"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/button_lay"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@drawable/bg_button"
-        android:text="@string/submit"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_20"
-        android:visibility="gone" />
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_button"
+            android:text="@string/submit"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_button"
+            android:text="@string/save"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_submit"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_margin="@dimen/dimen_05dp"-->
+        <!--android:background="@drawable/bg_button"-->
+        <!--android:text="@string/submit"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="@dimen/text_size_20"-->
+        <!--android:visibility="gone" />-->
 
     <TextView
         android:id="@+id/no_offline_form"

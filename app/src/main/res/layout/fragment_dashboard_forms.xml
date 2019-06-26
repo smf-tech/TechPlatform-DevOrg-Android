@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:ignore="Overdraw">
+
+    <ScrollView
+        android:id="@+id/sv_dashboard_form_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_forms_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_forms_divider1"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:layerType="software"
+                android:layout_margin="@dimen/dimen_15dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<TextView-->
+        <!--android:id="@+id/txt_view_all_forms"-->
+        <!--style="@style/roboto_medium_pink_16"-->
+        <!--android:layout_width="@dimen/dimen_50dp"-->
+        <!--android:layout_height="@dimen/dimen_50dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_margin="@dimen/dimen_10dp"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:background="@drawable/circle_background"-->
+        <!--android:textStyle="bold" />-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/txt_view_all_forms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:backgroundTint="#3d5c6b"
+        android:src="@drawable/ic_view_all_icon"/>
+
+    <RelativeLayout
+        android:id="@+id/gen_frag_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_gen_form_fragment"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

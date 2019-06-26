@@ -283,6 +283,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     result.setFormId(formID);
                     result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                     result.setCreatedAt(formResult.updatedDateTime);
+                    result.setFormApprovalStatus(formResult.formStatus);
 
                     JSONObject obj = (JSONObject) values.get(i);
                     if (obj == null) {

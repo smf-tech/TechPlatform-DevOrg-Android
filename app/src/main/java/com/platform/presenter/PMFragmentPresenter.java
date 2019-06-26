@@ -7,7 +7,9 @@ import com.android.volley.VolleyError;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformRequestCallListener;
 import com.platform.models.forms.FormResult;
+import com.platform.models.forms.FormStatusCount;
 import com.platform.models.pm.Processes;
+import com.platform.models.user.UserInfo;
 import com.platform.request.PMRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.view.fragments.PMFragment;
@@ -33,6 +35,14 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
         requestCall.getAllProcess();
     }
 
+    public void getAllFormsCount(UserInfo user) {
+        PMRequestCall requestCall = new PMRequestCall();
+        requestCall.setListener(this);
+
+        fragmentWeakReference.get().showProgressBar();
+        requestCall.getAllFormsCount(user);
+    }
+
     public static List<FormResult> getAllNonSyncedSavedForms(Context context) {
         return DatabaseManager.getDBInstance(context).getNonSyncedPendingForms();
     }
@@ -41,7 +51,9 @@ public class PMFragmentPresenter implements PlatformRequestCallListener {
     public void onSuccessListener(String response) {
         Log.i(TAG, "Success: " + response);
 
-        Processes data = PlatformGson.getPlatformGsonInstance().fromJson(response, Processes.class);
+        //Processes data = PlatformGson.getPlatformGsonInstance().fromJson(response, Processes.class);
+
+        FormStatusCount data = PlatformGson.getPlatformGsonInstance().fromJson(response, FormStatusCount.class);
 
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();

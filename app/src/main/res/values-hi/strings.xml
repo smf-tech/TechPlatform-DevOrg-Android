@@ -141,6 +141,7 @@
     <!--Program management-->
     <string name="saved_forms_cat">सहेजे गए फ़ॉर्म</string>
     <string name="submit">जमा करें</string>
+    <string name="save">जतन करें</string>
     <string name="no_data_available">डेटा उपलब्ध नहीं है</string>
 
     <string name="view_all_forms">सभी प्रपत्र देखें</string>
@@ -174,6 +175,7 @@
     <string name="reports">रिपोर्ट</string>
     <string name="submitted_form_count">प्रस्तुत प्रपत्रों की कुल गणना : %1$s</string>
     <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को सहेजना चाहते हैं?</string>
+    <string name="msg_discard">क्या आप वाकई इस फ़ॉर्म को हटाना चाहते हैं??</string>
     <string name="form_saved_offline">आप ऑफ़लाइन हैं, फॉर्म ऑफलाइन जमा किया जाता है।</string>
     <string name="form_submit_success">फॉर्म सफलतापूर्वक सबमिट किया गया!</string>
     <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
@@ -207,6 +209,7 @@
     <string name="syncing_pending">सिंकिंग लंबित हुआ</string>
     <string name="sync_started">सिंक शुरू हुआ</string>
     <string name="submitted_and_synced">प्रस्तुत और समन्वित</string>
+    <string name="submitted_forms_label">सबमिट किये फॉर्म्स</string>
     <string name="unexpected_error_occurred">अनपेक्षित त्रुटि हुई।</string>
 
     <string name="value_should_not_be_less_than">मान से कम नहीं होना चाहिए</string>
