@@ -309,7 +309,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             this.roles.clear();
             this.roles.addAll(organizationRoles);
 
-            spRole.setItems(roles, getString(R.string.organization), this);
+            spRole.setItems(roles, getString(R.string.role), this);
 
         }
     }

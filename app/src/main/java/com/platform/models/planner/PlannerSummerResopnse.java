@@ -1,13 +1,11 @@
-package com.platform.models.events;
+package com.platform.models.planner;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
-public class MemberListResponse {
-
+public class PlannerSummerResopnse {
     @SerializedName("status")
     @Expose
     private String status;
@@ -16,7 +14,7 @@ public class MemberListResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private List<Participant> data = null;
+    private List<SubmoduleData> data = null;
 
     public String getStatus() {
         return status;
@@ -34,12 +32,11 @@ public class MemberListResponse {
         this.message = message;
     }
 
-    public List<Participant> getData() {
+    public List<SubmoduleData> getData() {
         return data;
     }
 
-    public void setData(List<Participant> data) {
+    public void setData(List<SubmoduleData> data) {
         this.data = data;
     }
-
 }

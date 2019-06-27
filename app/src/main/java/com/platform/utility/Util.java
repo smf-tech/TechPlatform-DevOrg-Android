@@ -702,6 +702,28 @@ public class Util {
         }
     }
 
+    public static void showDateDialogMin(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        dateDialog.show();
+    }
+
+
     public static void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
