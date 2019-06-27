@@ -296,9 +296,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         layer.setVisibility(View.GONE);
         layer.setOnClickListener(null);
 
+        LinearLayout btnLayout = formFragmentView.findViewById(R.id.button_lay);
+        btnLayout.setVisibility(View.VISIBLE);
+
         Button submit = formFragmentView.findViewById(R.id.btn_submit);
-        submit.setVisibility(View.VISIBLE);
         submit.setOnClickListener(this);
+
+        Button save = formFragmentView.findViewById(R.id.btn_save);
+        save.setOnClickListener(this);
     }
 
     private void setActionbar(String Title) {
@@ -651,7 +656,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         switch (view.getId()) {
             case R.id.toolbar_back_action:
                 if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
-                    showConfirmPopUp();
+                    showDiscardPopUp();
                 } else {
                     getActivity().finish();
                 }
@@ -729,6 +734,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         }
                     }
                 }
+                break;
+
+            case R.id.btn_save:
+                if (formModel != null && formModel.getData() != null) {
+                    AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
+                    if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+                        storePartiallySavedForm();
+                    }
+                }
+                getActivity().finish();
+                    //showConfirmPopUp();
                 break;
         }
     }
@@ -810,26 +826,27 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
-    private void showConfirmPopUp() {
+    private void showDiscardPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name_ss));
         // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.msg_confirm));
+        alertDialog.setMessage(getString(R.string.msg_discard));
         // Setting Icon to Dialog
         alertDialog.setIcon(R.mipmap.app_logo);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
-                (dialogInterface, i) -> getActivity().finish());
+                (dialogInterface, i) -> alertDialog.dismiss());
+                        //getActivity().finish());
 
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
-            if (formModel != null && formModel.getData() != null) {
-                AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
-                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
-                    storePartiallySavedForm();
-                }
-            }
+//            if (formModel != null && formModel.getData() != null) {
+//                AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
+//                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+//                    storePartiallySavedForm();
+//                }
+//            }
             getActivity().finish();
         });
 
@@ -1157,7 +1174,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE) {
             getActivity().finish();
         } else {
-            showConfirmPopUp();
+            showDiscardPopUp();
         }
     }
 

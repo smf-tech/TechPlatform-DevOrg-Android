@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.platform.Platform;
@@ -60,23 +61,35 @@ import static com.platform.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMOVED;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 @SuppressWarnings("CanBeFinal")
-public class SubmittedFormsFragment extends Fragment implements FormStatusCallListener, FormTaskListener {
+public class SubmittedFormsFragment extends Fragment implements FormStatusCallListener, FormTaskListener, View.OnClickListener {
 
     private static final String TAG = SubmittedFormsFragment.class.getSimpleName();
 
     private ArrayList<String> processCategoryList = new ArrayList<>();
     private HashMap<String, List<ProcessData>> processMap = new HashMap<>();
     private HashMap<String, List<ProcessData>> mProcessDataMap = new HashMap<>();
+    private HashMap<String, List<ProcessData>> mFilteredProcessDataMap = new HashMap<>();
+    private ArrayList<String> processFormList = new ArrayList<>();
+    private ArrayList<String> processSyncStatus = new ArrayList<>();
 
     private boolean showNoDataText = true;
-    private View dividerView;
     private TextView mNoRecordsView;
     private ExpandableListView mExpandableListView;
-    private RelativeLayout mPendingFormsView;
     private RelativeLayout progressBarLayout;
-    private LinearLayout mPendingFormsContainer;
-    private TextView mSubmittedFormsTitleView;
     private ProgressBar progressBar;
+    private SubmittedFormsListAdapter adapter;
+    private FloatingActionButton btnFilter,btnNoFilter,btnFilter1,btnFilter2,btnFilter3;
+    private boolean isFABOpen = false;
+    private ArrayList<String> unSyncProcessNameList = new ArrayList<>();
+    private HashMap<String, String> processSyncStatusHashmap = new HashMap<>();
+    private int selectedFilter = 0;
+
+    // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
+    // commenting this code for now.
+   /* private View dividerView;
+    private RelativeLayout mPendingFormsView;
+    private LinearLayout mPendingFormsContainer;
+    private TextView mSubmittedFormsTitleView;*/
 
     public SubmittedFormsFragment() {
         // Required empty public constructor
@@ -94,11 +107,24 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         mNoRecordsView = view.findViewById(R.id.no_records_view);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
+        btnFilter = view.findViewById(R.id.btn_filter);
+        btnFilter.setOnClickListener(this);
+        btnNoFilter = view.findViewById(R.id.btn_no_filter);
+        btnNoFilter.setOnClickListener(this);
+        btnFilter1 = view.findViewById(R.id.btn_filter1);
+        btnFilter1.setOnClickListener(this);
+        btnFilter2 = view.findViewById(R.id.btn_filter2);
+        btnFilter2.setOnClickListener(this);
+        btnFilter3 = view.findViewById(R.id.btn_filter3);
+        btnFilter3.setOnClickListener(this);
 
         progressBarLayout = FormsFragment.getProgressBarView();
         progressBar = FormsFragment.getProgressBar();
 
-        dividerView = view.findViewById(R.id.submitted_forms_divider);
+        // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
+        // commenting this code for now.
+
+        /*dividerView = view.findViewById(R.id.submitted_forms_divider);
         mPendingFormsView = view.findViewById(R.id.pending_forms_view);
         mPendingFormsContainer = view.findViewById(R.id.pending_forms_container);
 
@@ -106,7 +132,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 .setText(getString(R.string.syncing_pending));
 
         mSubmittedFormsTitleView = view.findViewById(R.id.submitted_form_category_name);
-        mSubmittedFormsTitleView.setText(getString(R.string.submitted_and_synced));
+        mSubmittedFormsTitleView.setText(getString(R.string.submitted_forms_label));
 
         view.findViewById(R.id.sync_button).setOnClickListener(v -> {
             if (Util.isConnected(getContext())) {
@@ -115,7 +141,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             } else {
                 Util.showToast(getString(R.string.msg_no_network), getContext());
             }
-        });
+        });*/
 
         setPendingForms();
         getProcessData();
@@ -167,20 +193,34 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     }
 
     private void setPendingForms() {
+        mProcessDataMap.clear();
         List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
         if (savedForms != null && !savedForms.isEmpty()) {
 
-            mPendingFormsContainer.removeAllViews();
+            // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
+            // commenting this code for now.
+            /*mPendingFormsContainer.removeAllViews();
             mPendingFormsView.setVisibility(View.VISIBLE);
             dividerView.setVisibility(View.VISIBLE);
-
+*/
             showNoDataText = false;
+            for (com.platform.models.forms.FormResult formResult : savedForms) {
+                if (!unSyncProcessNameList.contains(formResult.getFormName())) {
+                    unSyncProcessNameList.add(formResult.getFormName());
+                }
+            }
+
+            for (String processName : unSyncProcessNameList) {
+
+                List<ProcessData> unSyncProcessData = new ArrayList<>();
 
             for (com.platform.models.forms.FormResult formResult : savedForms) {
-                ProcessData object = new ProcessData();
+                if (formResult.getFormName().equalsIgnoreCase(processName)){
+                    ProcessData object = new ProcessData();
                 object.setId(formResult.getFormId());
                 object.setFormTitle(formResult.getFormTitle());
                 object.setName(new LocaleData(formResult.getFormName()));
+                object.setFormApprovalStatus(Constants.PM.UNSYNC_STATUS);
                 Microservice microservice = new Microservice();
                 microservice.setUpdatedAt(formResult.getCreatedAt());
                 microservice.setId(formResult.get_id());
@@ -190,7 +230,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     continue;
                 }
 
-                View formView = LayoutInflater.from(getContext())
+                // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
+                    // commenting this code for now.
+                /*View formView = LayoutInflater.from(getContext())
                         .inflate(R.layout.form_sub_item, mPendingFormsContainer, false);
 
                 ((TextView) formView.findViewById(R.id.form_title))
@@ -210,11 +252,27 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     intent.putExtra(Constants.PM.PARTIAL_FORM, true);
                     startActivity(intent);
                 });
-                mPendingFormsContainer.addView(formView);
+                mPendingFormsContainer.addView(formView);*/
+
+                unSyncProcessData.add(object);
             }
+            }
+                if (!unSyncProcessData.isEmpty()) {
+                    Util.sortProcessDataListByCreatedDate(unSyncProcessData);
+
+                    mProcessDataMap.put(unSyncProcessData.get(0).getName().getLocaleValue(), unSyncProcessData);
+                    processFormList.add(unSyncProcessData.get(0).getName().getLocaleValue());
+                    processSyncStatus.add(Constants.PM.UNSYNC_STATUS);
+                    processSyncStatusHashmap.put(unSyncProcessData.get(0).getName().getLocaleValue(),Constants.PM.UNSYNC_STATUS);
+                    showNoDataText = false;
+                }
+        }
+
         } else {
-            mPendingFormsView.setVisibility(View.GONE);
-            dividerView.setVisibility(View.GONE);
+            // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
+            // commenting this code for now.
+           /* mPendingFormsView.setVisibility(View.GONE);
+            dividerView.setVisibility(View.GONE);*/
         }
     }
 
@@ -222,7 +280,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         if (process != null) {
             processCategoryList.clear();
             processMap.clear();
-            mProcessDataMap.clear();
+//            mProcessDataMap.clear();
+            mFilteredProcessDataMap.clear();
 
             for (ProcessData data : process.getData()) {
                 if (data != null && data.getCategory() != null &&
@@ -245,7 +304,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             }
 
             for (int index = 0; index < processMap.size(); index++) {
-
                 List<ProcessData> pData = processMap.get(processCategoryList.get(index));
                 if (!TextUtils.isEmpty(processCategoryList.get(index)) && pData != null) {
 
@@ -299,6 +357,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                                 object.setFormTitle(data.getName().getLocaleValue());
                                 object.setName(new LocaleData(formResult.formTitle));
+                                object.setFormApprovalStatus(formResult.formStatus);
                                 Microservice microservice = new Microservice();
                                 microservice.setUpdatedAt(formResult.updatedDateTime);
                                 microservice.setId(formID);
@@ -308,7 +367,17 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                             if (!processData.isEmpty()) {
                                 Util.sortProcessDataListByCreatedDate(processData);
+
+                                if(mProcessDataMap.containsKey(processData.get(0).getFormTitle())){
+                                    processData.addAll(mProcessDataMap.get(processData.get(0).getFormTitle()));
+                                }else{
+                                    processSyncStatus.add(Constants.PM.SYNC_STATUS);
+                                    processSyncStatusHashmap.put(processData.get(0).getFormTitle(),Constants.PM.SYNC_STATUS);
+                                }
                                 mProcessDataMap.put(processData.get(0).getFormTitle(), processData);
+                                if(!processFormList.contains(processData.get(0).getFormTitle())){
+                                    processFormList.add(processData.get(0).getFormTitle());
+                                }
                                 showNoDataText = false;
                             }
                         }
@@ -316,7 +385,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
             }
 
-            SubmittedFormsListAdapter adapter = new SubmittedFormsListAdapter(getContext(), mProcessDataMap);
+            mFilteredProcessDataMap.putAll(mProcessDataMap);
+            adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
             mExpandableListView.setAdapter(adapter);
 
             updateView();
@@ -325,9 +395,34 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void updateView() {
         mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
-        if (showNoDataText) {
+        // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
+        // commenting this code for now.
+        /*if (showNoDataText) {
             mSubmittedFormsTitleView.setVisibility(View.GONE);
+        }*/
+    }
+
+    private void filterData(String status){
+        mFilteredProcessDataMap.clear();
+        //List<ProcessData> filterProcessData = new ArrayList<>();
+        if(status.equalsIgnoreCase("NO_FILTER")){
+            mFilteredProcessDataMap.putAll(mProcessDataMap);
+        }else {
+            for (int i = 0; i < mProcessDataMap.size(); i++) {
+                List<ProcessData> filterStatusProcessData = new ArrayList<ProcessData>();
+                List<ProcessData> filterProcessData = new ArrayList<ProcessData>();
+                filterProcessData.addAll(mProcessDataMap.get(processFormList.get(i)));       //= mProcessDataMap.get(processFormList.get(i));
+                for (ProcessData pd : filterProcessData) {
+                    if (pd.getFormApprovalStatus() != null && pd.getFormApprovalStatus().equalsIgnoreCase(status)) {
+                        filterStatusProcessData.add(pd);
+                    }
+                }
+                if (filterProcessData.size() > 0 && filterStatusProcessData.size() > 0) {
+                    mFilteredProcessDataMap.put(filterProcessData.get(0).getFormTitle(), filterStatusProcessData);
+                }
+            }
         }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -433,6 +528,75 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_filter:
+                selectedFilter = 0;
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+                break;
+            case R.id.btn_no_filter:
+                selectedFilter = 1;
+                filterData(Constants.PM.NO_FILTER);
+                closeFABMenu();
+                break;
+            case R.id.btn_filter1:
+                selectedFilter = 2;
+                filterData(Constants.PM.PENDING_STATUS);
+                closeFABMenu();
+                break;
+            case R.id.btn_filter2:
+                selectedFilter = 3;
+                filterData(Constants.PM.APPROVED_STATUS);
+                closeFABMenu();
+                break;
+            case R.id.btn_filter3:
+                selectedFilter = 4;
+                filterData(Constants.PM.REJECTED_STATUS);
+                closeFABMenu();
+                break;
+        }
+    }
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        btnNoFilter.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+        btnFilter1.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        btnFilter2.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
+        btnFilter3.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        btnNoFilter.animate().translationY(0);
+        btnFilter1.animate().translationY(0);
+        btnFilter2.animate().translationY(0);
+        btnFilter3.animate().translationY(0);
+
+        switch (selectedFilter){
+            case 0:
+                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_filter_icon_list));
+                break;
+            case 1:
+                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_view_all_icon));
+                break;
+            case 2:
+                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_pending_icon_db));
+                break;
+            case 3:
+                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_approved_icon_db));
+                break;
+            case 4:
+                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_rejcted_icon_db));
+                break;
+        }
+    }
+
     static class FormResult {
         @SuppressWarnings("unused")
         @SerializedName("form_title")
@@ -445,6 +609,10 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         @SuppressWarnings("unused")
         @SerializedName("updatedDateTime")
         Long updatedDateTime;
+
+        @SuppressWarnings("unused")
+        @SerializedName("status")
+        String formStatus;
 
         @SuppressWarnings("unused")
         @SerializedName("_id")

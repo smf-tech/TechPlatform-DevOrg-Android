@@ -9,79 +9,28 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Participant implements Serializable {
 
-    private String role;
-    private Boolean isMemberSelected;
-
-    public Participant(String id, String name, String role, Boolean isMemberSelected, Boolean isMemberAttended) {
-        this.participantId = id;
-        this.name = name;
-        this.role = role;
-        this.isMemberSelected = isMemberSelected;
-        this.attended = isMemberAttended;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Boolean getMemberSelected() {
-        return isMemberSelected;
-    }
-
-    public void setMemberSelected(Boolean memberSelected) {
-        isMemberSelected = memberSelected;
-    }
-
-    //////////////////////////////////
-
-    @SerializedName("participantId")
-    @Expose
-    private String participantId;
-    @SerializedName("attended")
-    @Expose
-    private Boolean attended;
-
-    public String getParticipantId() {
-        return participantId;
-    }
-
-    public void setParticipantId(String participantId) {
-        this.participantId = participantId;
-    }
-
-    public Boolean getAttended() {
-        return attended;
-    }
-
-    public void setAttended(Boolean attended) {
-        this.attended = attended;
-    }
-
-
-    ///////////////////////////////////
-
-    @SerializedName("_id")
+    @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("email")
+    @SerializedName("role_name")
     @Expose
-    private String email;
-    @SerializedName("gender")
+    private String roleName;
+    @SerializedName("attended")
     @Expose
-    private String gender;
-    @SerializedName("project_id")
+    private String attended;
+    @SerializedName("MemberSelected")
     @Expose
-    private List<String> projectId = null;
-    @SerializedName("role_id")
-    @Expose
-    private String roleId;
+    private boolean memberSelected;
+
+    public Participant(String id, String name, String roleName, boolean memberSelected) {
+        this.id = id;
+        this.name = name;
+        this.roleName = roleName;
+        this.memberSelected = memberSelected;
+    }
 
     public String getId() {
         return id;
@@ -99,36 +48,27 @@ public class Participant implements Serializable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public String getGender() {
-        return gender;
+    public boolean isMemberSelected() {
+        return memberSelected;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setMemberSelected(boolean memberSelected) {
+        this.memberSelected = memberSelected;
     }
 
-    public List<String> getProjectId() {
-        return projectId;
+    public String getAttended() {
+        return attended;
     }
 
-    public void setProjectId(List<String> projectId) {
-        this.projectId = projectId;
+    public void setAttended(String attended) {
+        this.attended = attended;
     }
-
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
-
 }

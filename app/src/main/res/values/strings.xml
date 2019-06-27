@@ -142,6 +142,7 @@
     <!--Program management-->
     <string name="saved_forms_cat">Saved Forms</string>
     <string name="submit">Submit</string>
+    <string name="save">Save</string>
     <string name="no_data_available">No data available</string>
 
     <string name="view_all_forms">View All Forms</string>
@@ -175,6 +176,7 @@
     <string name="reports">Reports</string>
     <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
     <string name="msg_confirm">Are you sure you want to save this form?</string>
+    <string name="msg_discard">Are you sure you want to discard this form?</string>
     <string name="form_saved_offline">You are offline, form is submitted offline.</string>
     <string name="form_submit_success">Form submitted successfully!</string>
     <string name="image_upload_success">Image uploaded successfully!</string>
@@ -209,6 +211,7 @@
     <string name="syncing_pending">Syncing Pending</string>
     <string name="sync_started">Sync Started</string>
     <string name="submitted_and_synced">Submitted &amp; Synced</string>
+    <string name="submitted_forms_label">Submitted Forms</string>
     <string name="unexpected_error_occurred">Unexpected error occurred.</string>
 
     <string name="value_should_not_be_less_than">value should not be less than</string>
@@ -289,38 +292,6 @@
         <item>Event</item>
         <item>Tasks</item>
         <item>Trainings</item>
-    </string-array>
-
-    <string-array name="repeat_array">
-        <item>Never</item>
-        <item>Daily</item>
-        <item>Weekly</item>
-        <item>Monthly</item>
-    </string-array>
-
-    <string-array name="repeat_daily">
-        <item>1 Day</item>
-        <item>2 Days</item>
-        <item>3 Days</item>
-        <item>4 Days</item>
-        <item>5 Days</item>
-        <item>6 Days</item>
-        <item>7 Days</item>
-        <item>8 Days</item>
-        <item>9 Days</item>
-        <item>10 Days</item>
-    </string-array>
-
-    <string-array name="repeat_weeks">
-        <item>1 Week</item>
-        <item>2 Weeks</item>
-        <item>3 Weeks</item>
-    </string-array>
-
-    <string-array name="repeat_months">
-        <item>1 Month</item>
-        <item>2 Months</item>
-        <item>3 Months</item>
     </string-array>
 
     <!--App Events-->
@@ -407,5 +378,22 @@
     <string name="holiday_list">Holiday List</string>
     <string name="edit_leave">Edit Leave</string>
     <string name="apply_leave">Apply For Leave</string>
+    <string name="is_attendance_required">Is attendance required</string>
+    <string name="is_registration_required">Is registration required</string>
+    <string name="registration_start_date">Registration start date</string>
+    <string name="registration_end_date">Registration end date</string>
+    <string name="select_forms">Select forms</string>
+    <string name="event_pic">Add photo</string>
+    <string name="msg_enter_title">Please enter the title.</string>
+    <string name="msg_enter_start_date">Please enter the start date.</string>
+    <string name="msg_enter_end_date">Please enter the end date.</string>
+    <string name="msg_enter_ned_date">Please enter the end time.</string>
+    <string name="msg_enter_start_time">Please enter the start time.</string>
+    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
+    <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

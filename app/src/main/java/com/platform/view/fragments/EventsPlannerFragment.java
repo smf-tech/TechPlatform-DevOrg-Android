@@ -24,11 +24,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventsResponse;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Recurrence;
 import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateEventActivity;
 import com.platform.view.activities.PlannerDetailActivity;
@@ -37,6 +39,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import org.json.JSONArray;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,6 +67,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
     private EventListAdapter eventListAdapter;
     private ArrayList<Event> eventsList;
+    private ArrayList<Event> dashboardEventsList;
     private ArrayList<Event> sortedEventsList;
 
     public EventsPlannerFragment() {
@@ -91,28 +96,27 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         progressBarLayout = eventsPlannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = eventsPlannerView.findViewById(R.id.pb_profile_act);
 
-
         EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
         eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
 
-
         eventsList = new ArrayList<>();
+        dashboardEventsList = new ArrayList<>();
         sortedEventsList = new ArrayList<>();
 
-        ArrayList<Participant> membersList = new ArrayList<>();
-        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true, true));
-        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false, false));
-        membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
-        membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
+//        ArrayList<Participant> membersList = new ArrayList<>();
+//        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true, true));
+//        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false, false));
+//        membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
+//        membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
 
-        Recurrence r = new Recurrence();
-        r.setType("Monthly");
+//        Recurrence r = new Recurrence();
+//        r.setType("Monthly");
 
-        eventsList.add(new Event("1", "Meeting", "Title1", 1557206071l, 1557206071l, r, "test", "Wagholi,pune.", "Sachin",
-                "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
-
-        eventsList.add(new Event("2", "Event", "Title2", 1557206071l, 1557206071l, r, "test", "Hadpsar,pune.", "Sagar",
-                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
+//        eventsList.add(new Event("1", "Meeting", "Title1", 1557206071l, 1557206071l, r, "test", "Wagholi,pune.", "Sachin",
+//                "1234", Constants.Planner.COMPLETED_STATUS, membersList, null));
+//
+//        eventsList.add(new Event("2", "Event", "Title2", 1557206071l, 1557206071l, r, "test", "Hadpsar,pune.", "Sagar",
+//                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -132,12 +136,15 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
         radioGroup = eventsPlannerView.findViewById(R.id.radio_group_filter);
 
-        eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, Constants.Planner.EVENTS_LABEL);
+        if(isDashboard){
+            eventListAdapter = new EventListAdapter(getActivity(), dashboardEventsList, Constants.Planner.EVENTS_LABEL);
+        }else{
+            eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, Constants.Planner.EVENTS_LABEL);
+        }
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvEvents.setLayoutManager(mLayoutManager);
         rvEvents.setAdapter(eventListAdapter);
 
-        sortEventsList(true);
         setCalendar();
         setListeners();
 
@@ -218,12 +225,11 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         } else {
             String ownerID = "1234";
             for (Event event : eventsList) {
-                if (ownerID.equals(event.getOwnerID())) {
-                    sortedEventsList.add(event);
-                }
+//                if (ownerID.equals(event.getOwnerID())) {
+//                    sortedEventsList.add(event);
+//                }
             }
         }
-
         eventListAdapter.notifyDataSetChanged();
     }
 
@@ -310,13 +316,31 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
     @Override
     public <T> void showNextScreen(T data) {
-
+        displayEventsList((EventsResponse) data);
     }
 
     @Override
     public void showErrorMessage(String result) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> Util.showToast(result, this));
+        }
+    }
+
+    public void displayEventsList(EventsResponse eventsData){
+        if(eventsData != null){
+            for(Event event : eventsData.getData()){
+                if(event != null){
+                    eventsList.add(event);
+                }
+            }
+            if(isDashboard){
+                for(int i=0;i<2;i++){
+                    dashboardEventsList.add(eventsList.get(i));
+                }
+                eventListAdapter.notifyDataSetChanged();
+            }else {
+                sortEventsList(true);
+            }
         }
     }
 }

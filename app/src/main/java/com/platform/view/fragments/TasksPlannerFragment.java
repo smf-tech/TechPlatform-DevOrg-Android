@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
+import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventActivity;
@@ -53,6 +55,8 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private RadioGroup radioGroup;
     private FloatingActionButton btAddEvents;
     private MaterialCalendarView calendarView;
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
 
     // flag to check th calender mode
     private boolean isMonth;
@@ -82,27 +86,36 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void initView() {
+        if (getActivity() == null) {
+            return;
+        }
+        progressBarLayout = tasksPlannerView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = tasksPlannerView.findViewById(R.id.pb_profile_act);
+
+//        EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
+//        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
+
         taskList = new ArrayList<>();
         sortedTaskList = new ArrayList<>();
 
         ArrayList<Participant> membersList = new ArrayList<>();
-        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true, true));
-        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false, false));
-        membersList.add(new Participant("3", "Jagruti Devare", "MT", true, true));
-        membersList.add(new Participant("4", "Sachin Kakade", "FA", false, false));
+        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true));
+        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false));
+        membersList.add(new Participant("3", "Jagruti Devare", "MT", true));
+        membersList.add(new Participant("4", "Sachin Kakade", "FA", false));
 
         ArrayList<TaskForm> taskFormsList = new ArrayList<>();
         taskFormsList.add(new TaskForm("1", "Testing Form 1", Constants.Planner.PLANNED_STATUS));
         taskFormsList.add(new TaskForm("2", "Testing Form 2", Constants.Planner.COMPLETED_STATUS));
         taskFormsList.add(new TaskForm("3", "Testing Form 3", Constants.Planner.COMPLETED_STATUS));
 
-        taskList.add(new Event("1", "meeting", "Title1", 1557206071l,
-                1557206071l, null, "test", "Wagholi,Pune.", "Sachin",
-                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
-
-        taskList.add(new Event("2", "visit", "Title2", 1557206071l,
-                1557206071l, null, "test", "Hadpsar,Pune.", "Sagar",
-                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
+//        taskList.add(new Event("1", "meeting", "Title1", 1557206071l,
+//                1557206071l, null, "test", "Wagholi,Pune.", "Sachin",
+//                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
+//
+//        taskList.add(new Event("2", "visit", "Title2", 1557206071l,
+//                1557206071l, null, "test", "Hadpsar,Pune.", "Sagar",
+//                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -219,11 +232,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
             sortedTaskList.addAll(taskList);
         } else {
             String ownerID = "1234";
-            for (Event event : taskList) {
-                if (ownerID.equals(event.getOwnerID())) {
-                    sortedTaskList.add(event);
-                }
-            }
+//            for (Event event : taskList) {
+//                if (ownerID.equals(event.getOwnerID())) {
+//                    sortedTaskList.add(event);
+//                }
+//            }
         }
         taskListAdapter.notifyDataSetChanged();
     }

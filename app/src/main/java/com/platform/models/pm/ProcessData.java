@@ -78,6 +78,11 @@ public class ProcessData {
     @Expose
     private Entity entity;
 
+    @ColumnInfo(name = "form_approvalStatus")
+    @SerializedName("form_approvalStatus")
+    @Expose
+    private String formApprovalStatus;
+
     @NonNull
     public String getId() {
         return id;
@@ -165,5 +170,13 @@ public class ProcessData {
 
     public void setFormTitle(String formTitle) {
         this.formTitle = formTitle;
+    }
+
+    public String getFormApprovalStatus() {
+        return formApprovalStatus;
+    }
+
+    public void setFormApprovalStatus(String formApprovalStatus) {
+        this.formApprovalStatus = formApprovalStatus;
     }
 }

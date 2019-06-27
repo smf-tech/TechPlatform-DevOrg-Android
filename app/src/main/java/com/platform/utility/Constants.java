@@ -131,6 +131,8 @@ public class Constants {
         //public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
+        public static final String WEBMODULE = "Webmodule";
+        public static final String WEBMODULE_NAME = "webmodule";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -143,6 +145,13 @@ public class Constants {
         public static final String FORM_ID = "formId";
         public static final String EDIT_MODE = "editMode";
         public static final String PARTIAL_FORM = "partialForm";
+        public  static final String NO_FILTER = "No_Filter";
+        public  static final String PENDING_STATUS = "Pending";
+        public  static final String APPROVED_STATUS = "Approved";
+        public  static final String REJECTED_STATUS = "Rejected";
+        public  static final String SAVED_STATUS = "Saved";
+        public  static final String UNSYNC_STATUS = "Unsync";
+        public  static final String SYNC_STATUS = "Sync";
     }
 
     public static class TM {
@@ -209,6 +218,7 @@ public class Constants {
         public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
+        public static final String IMAGE_TYPE_EVENT = "event";
     }
 
     public class Notification {
@@ -248,6 +258,7 @@ public class Constants {
     public static class Planner {
         public static final Integer REPEAT_EVENT = 001;
         public static final Integer MEMBER_LIST = 002;
+        public static final String SPINNER_ADD_FORMS = "add_forms";
 
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN = "ToOpen";
@@ -264,5 +275,15 @@ public class Constants {
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";
         public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
+        public static final String EVENTS_KEY_ = "Events";
+        public static final String TASKS_KEY_ = "Tasks";
+        public static final String ATTENDANCE_KEY_ = "Attendance";
+        public static final String LEAVES_KEY_ = "Leaves";
+        public static final String EVENTS_KEY = "event";
+        public static final String TASKS_KEY = "task";
+        public static final String ATTENDANCE_KEY = "attendance";
+        public static final String LEAVES_KEY = "leave";
+
+
     }
 }

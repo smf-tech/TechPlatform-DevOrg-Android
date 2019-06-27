@@ -309,7 +309,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             this.roles.clear();
             this.roles.addAll(organizationRoles);
 
-            spRole.setItems(roles, getString(R.string.organization), this);
+            spRole.setItems(roles, getString(R.string.role), this);
 
         }
     }
@@ -482,11 +482,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
         }
         parametersFilter.setVillage(android.text.TextUtils.join(",", s));
 
-
         addMemberFilerPresenter.getFilterMemberList(parametersFilter);
-
-
-
     }
 
     @Override
@@ -519,8 +515,6 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
         AppEvents.trackAppEvent(getString(R.string.event_update_profile_fail));
         runOnUiThread(() -> Util.showToast(result, this));
     }
-
-
 
     @Override
     public void showMember(ArrayList<Participant> memberList) {

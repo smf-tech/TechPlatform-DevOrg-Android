@@ -7,12 +7,18 @@
     tools:ignore="PrivateResource">
 
     <LinearLayout
+        android:id="@+id/ly_form_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/form_image"
-        android:orientation="vertical"
-        android:padding="@dimen/dimen_07dp">
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_07dp"
+        android:weightSum="10">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="8">
 
         <TextView
             android:id="@+id/form_title"
@@ -30,23 +36,37 @@
             style="@style/FormLabel.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/form_title"
             android:layout_marginTop="@dimen/dimen_05dp"
             android:text="@string/form_count"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/text_size_10" />
+</RelativeLayout>
+
+        <ImageView
+            android:id="@+id/form_status_icon"
+            android:layout_width="@dimen/dimen_35dp"
+            android:layout_height="@dimen/dimen_35dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_non_sync_icon"
+            android:layout_weight="1"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/form_image"
+            android:layout_width="@dimen/dimen_35dp"
+            android:layout_height="@dimen/dimen_35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:contentDescription="@string/content_description"
+            android:rotation="90"
+            android:src="@drawable/ic_right_arrow_grey"
+            android:tint="@color/black"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/form_image"
-        android:layout_width="@dimen/dimen_10dp"
-        android:layout_height="@dimen/dimen_10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dimen_20dp"
-        android:layout_marginEnd="@dimen/dimen_20dp"
-        android:contentDescription="@string/content_description"
-        android:rotation="90"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_right_arrow_grey"
-        android:tint="@color/black" />
+
 </RelativeLayout>
