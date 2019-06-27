@@ -97,6 +97,7 @@
     <string name="msg_select_taluka">Please select Taluka</string>
     <string name="msg_select_cluster">Please select Cluster</string>
     <string name="msg_select_village">Please select Village</string>
+    <string name="msg_big_image">Image size should not be more than 5MB</string>
 
     <!--Home Menu Items-->
     <string name="menu_home">Home</string>
@@ -170,7 +171,7 @@
     <string name="verification_code">Verification Code</string>
     <string name="verify">Verify</string>
     <string name="please_type_the_verification_code_n_sent_to">Please type the verification code\nsent to %1$s</string>
-    <string name="forms_are_not_available">Forms are not available</string>
+    <!--<string name="forms_are_not_available">Forms are not available</string>-->
     <string name="reports">Reports</string>
     <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
     <string name="msg_confirm">Are you sure you want to save this form?</string>
@@ -185,6 +186,7 @@
     <string name="msg_no_pending_req">There are no pending requests for approvals.</string>
     <string name="msg_no_form_offline">This form is not available in offline. To use this form in offline, please use it once in network.</string>
     <string name="msg_form_duplicate_error">Duplicate entries are not allowed.</string>
+    <string name="msg_slow_network">Network is slow, please try again</string>
 
     <string name="coming_soon">Coming Soon&#8230;</string>
     <string name="msg_no_network">Network not available, please try again later.</string>

@@ -202,7 +202,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         protected String doInBackground(String... params) {
             showChoicesByUrlMD(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
-                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2], HashMap.class), Long.parseLong(params[3]));
+                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2],
+                            HashMap.class), Long.parseLong(params[3]));
             return null;
         }
 
@@ -332,7 +333,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         if (elements != null && elements.getChoicesByUrl() == null && elements.getChoices() != null) {
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
-                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices(), false);
                         } else if (elements.getChoicesByUrl() != null) {
                             //Online
                             if (Util.isConnected(getContext())) {
@@ -390,8 +391,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(), elements,
-                                mIsInEditMode, mIsPartiallySaved, formPresenter));
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(),
+                                elements, mIsInEditMode, mIsPartiallySaved, formPresenter));
                         break;
                 }
             }
@@ -491,7 +492,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
-    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
+    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String,
+            String> matrixDynamicInnerMap, long rowIndex) {
+
         new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column),
                 PlatformGson.getPlatformGsonInstance().toJson(matrixDynamicInnerMap),
                 String.valueOf(rowIndex));
@@ -545,17 +548,31 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
 
+            // This code will add submitted value in list and update the adapter, in API response
+            // submitted value is not coming hence this is workaround.
+            Choice ch = new Choice();
+            LocaleData ld = new LocaleData(elements.getAnswer());
+            ch.setText(ld);
+            ch.setValue(ld.getLocaleValue());
+
+            if (!TextUtils.isEmpty(elements.getAnswer()) && !choiceValues.contains(ch)) {
+                choiceValues.add(ch);
+            }
+
             Collections.sort(choiceValues,
                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
+            getActivity().runOnUiThread(() -> formComponentCreator
+                    .updateDropDownValues(elements, choiceValues, true));
         }
     }
 
-    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, final long rowIndex) {
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String,
+            String> matrixDynamicInnerMap, final long rowIndex) {
+
         List<Choice> choiceValues = new ArrayList<>();
         try {
             LocaleData text;
@@ -1084,9 +1101,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File compressedImageFile = Util.compressFile(imageFile);
 
                 if (Util.isConnected(getContext())) {
-                    formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        formPresenter.uploadProfileImage(compressedImageFile,
+                                Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
@@ -1098,7 +1121,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case Constants.CAMERA_REQUEST:
                 Log.e(TAG, "Camera Permission Granted");

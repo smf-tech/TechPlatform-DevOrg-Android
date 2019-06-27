@@ -23,7 +23,6 @@ import java.util.List;
 
 import static com.platform.utility.Constants.TM.USER_APPROVALS;
 
-@SuppressWarnings("WeakerAccess")
 public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
 
     private View tmFragmentView;
@@ -65,6 +64,7 @@ public class TMUserApprovedFragment extends Fragment implements TMTaskListener {
         isVisible = true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

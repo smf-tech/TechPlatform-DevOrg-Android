@@ -31,7 +31,7 @@ public class PlannerFragment extends Fragment {
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
-            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }

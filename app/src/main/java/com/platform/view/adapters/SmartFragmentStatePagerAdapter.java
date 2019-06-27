@@ -14,7 +14,7 @@ public abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerA
     private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     protected SmartFragmentStatePagerAdapter(FragmentManager fragmentManager) {
-        super(fragmentManager);
+        super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     // Register the fragment when the item is instantiated
