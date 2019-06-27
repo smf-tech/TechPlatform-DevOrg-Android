@@ -315,38 +315,6 @@
     <string name="leave_apply_msg">तुम्ही %1$s दिवसांच्या सुट्टीसाठी %2$s ते %3$s पर्यंत अर्ज केला आहे</string>
     <string name="which_day">कोणते दिवस</string>
     <string name="select_all">सर्व निवडा</string>
-    <string-array name="repeat_array">
-        <item>कधीही नाही</item>
-        <item>दररोज</item>
-        <item>साप्ताहिक</item>
-        <item>मासिक</item>
-    </string-array>
-
-    <string-array name="repeat_daily">
-        <item>१ दिवस</item>
-        <item>२ दिवस</item>
-        <item>३ दिवस</item>
-        <item>४ दिवस</item>
-        <item>५ दिवस</item>
-        <item>६ दिवस</item>
-        <item>७ दिवस</item>
-        <item>८ दिवस</item>
-        <item>९ दिवस</item>
-        <item>१० दिवस</item>
-    </string-array>
-
-    <string-array name="repeat_weeks">
-        <item>१ आठवडा</item>
-        <item>२ आठवडे</item>
-        <item>३ आठवडे</item>
-    </string-array>
-
-    <string-array name="repeat_months">
-        <item>1 महीना</item>
-        <item>2 महीने</item>
-        <item>3 महीने</item>
-    </string-array>
-
     <string name="edit">संपादित करा</string>
     <string name="this_event_only">केवळ हा कार्यक्रम</string>
     <string name="all_events_in_series">मालिका सर्व कार्यक्रम</string>
@@ -355,5 +323,19 @@
     <string name="holiday_list">सुट्टीची यादी</string>
     <string name="edit_leave">सुट्टी संपादित करा</string>
     <string name="apply_leave">सुट्टीसाठी अर्ज करा</string>
+    <string name="is_attendance_required">उपस्थित असणे आवश्यक आहे</string>
+    <string name="is_registration_required">नोंदणी आवश्यक आहे</string>
+    <string name="registration_start_date">नोंदणी प्रारंभ तारीख</string>
+    <string name="registration_end_date">नोंदणी समाप्ती तारीख</string>
+    <string name="select_forms">फॉर्म निवडा</string>
+    <string name="event_pic">Add photo</string>
+    <string name="msg_enter_title">Please enter the title.</string>
+    <string name="msg_enter_start_date">Please enter the start date.</string>
+    <string name="msg_enter_end_date">Please enter the end date.</string>
+    <string name="msg_enter_ned_date">Please enter the end time.</string>
+    <string name="msg_enter_start_time">Please enter the start time.</string>
+    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
+    <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
 
 </resources>

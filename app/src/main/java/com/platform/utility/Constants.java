@@ -207,6 +207,7 @@ public class Constants {
         public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
+        public static final String IMAGE_TYPE_EVENT = "event";
     }
 
     public class Notification {
@@ -263,10 +264,15 @@ public class Constants {
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";
         public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
+        public static final String EVENTS_KEY_ = "Events";
+        public static final String TASKS_KEY_ = "Tasks";
+        public static final String ATTENDANCE_KEY_ = "Attendance";
+        public static final String LEAVES_KEY_ = "Leaves";
         public static final String EVENTS_KEY = "event";
         public static final String TASKS_KEY = "task";
         public static final String ATTENDANCE_KEY = "attendance";
         public static final String LEAVES_KEY = "leave";
+
 
     }
 }

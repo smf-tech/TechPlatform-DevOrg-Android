@@ -18,6 +18,9 @@ public class Participant implements Serializable {
     @SerializedName("role_name")
     @Expose
     private String roleName;
+    @SerializedName("attended")
+    @Expose
+    private String attended;
     @SerializedName("MemberSelected")
     @Expose
     private boolean memberSelected;
@@ -53,11 +56,19 @@ public class Participant implements Serializable {
         this.roleName = roleName;
     }
 
-    public boolean getMemberSelected() {
+    public boolean isMemberSelected() {
         return memberSelected;
     }
 
     public void setMemberSelected(boolean memberSelected) {
         this.memberSelected = memberSelected;
+    }
+
+    public String getAttended() {
+        return attended;
+    }
+
+    public void setAttended(String attended) {
+        this.attended = attended;
     }
 }

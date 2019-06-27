@@ -47,10 +47,10 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.tvMemberDesignation.setText(member.getRoleName());
         if(isCheckVisible){
             if( isAddMember){
-                holder.cbMemberSelect.setChecked(membersList.get(position).getMemberSelected());
+                holder.cbMemberSelect.setChecked(membersList.get(position).isMemberSelected());
             } else {
 
-                if ( membersList.get(position).getMemberSelected()) {
+                if ( membersList.get(position).isMemberSelected()) {
                     holder.cbMemberSelect.setChecked(true);
                 } else {
                     holder.cbMemberSelect.setChecked(false);

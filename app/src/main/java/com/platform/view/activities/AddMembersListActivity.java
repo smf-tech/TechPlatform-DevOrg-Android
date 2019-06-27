@@ -105,7 +105,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
     public void checkAllSelected(ArrayList<Participant> membersList) {
         boolean allCheck = true;
         for (int i = 0; i < membersList.size(); i++) {
-            if (!membersList.get(i).getMemberSelected()) {
+            if (!membersList.get(i).isMemberSelected()) {
                 allCheck = false;
                 break;
             }
@@ -184,7 +184,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
     private void addMembersToEvent() {
         ArrayList<Participant> list = new ArrayList<>();
         for(Participant p:filterMembersList){
-            if(p.getMemberSelected()){
+            if(p.isMemberSelected()){
                 list.add(p);
             }
         }

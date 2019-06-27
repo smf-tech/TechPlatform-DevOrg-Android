@@ -282,7 +282,6 @@
     <string name="not_attended_label">" उपस्थित नहीं थे"</string>
     <string name="never_label">कभी नहीँ</string>
     <string name="mark_completed">Mark as completed</string>
-
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
     <string name="unpaid_leaves">अवैतनिक</string>
@@ -291,9 +290,7 @@
     <string name="total">कुल </string>
     <string name="btn_leave_apply_str">छुट्टी के लिए आवेदन करें</string>
     <string name="leaves_applied">Leave Applied</string>
-
     <string name="same_day">प्रत्येक माह के लिए एक ही तारीख</string>
-
     <string name="link_leave_apply">चेक छुट्टी विवरण</string>
     <string name="leave_details">छुट्टी विवरण</string>
     <string name="tv_no_leaves_balance">कोई छुट्टी शेष नहीं!</string>
@@ -318,41 +315,23 @@
     <string name="all_events_in_series">श्रृंखला में सभी घटनाएँ</string>
     <string name="separator">|</string>
     <string name="which_day">कौन से दिनों में</string>
-    <string-array name="repeat_array">
-        <item>कभी नहीँ</item>
-        <item>रोज</item>
-        <item>साप्ताहिक</item>
-        <item>महीने के</item>
-    </string-array>
-
-    <string-array name="repeat_daily">
-        <item>१ दिन</item>
-        <item>२ दिन</item>
-        <item>३ दिन</item>
-        <item>४ दिन</item>
-        <item>५ दिन</item>
-        <item>६ दिन</item>
-        <item>७ दिन</item>
-        <item>८ दिन</item>
-        <item>९ दिन</item>
-        <item>१० दिन</item>
-
-    </string-array>
-
-    <string-array name="repeat_weeks">
-        <item>१ सप्ताह</item>
-        <item>२ सप्ताह</item>
-        <item>३ सप्ताह</item>
-    </string-array>
-
-    <string-array name="repeat_months">
-        <item>1 महीना</item>
-        <item>2 महीने</item>
-        <item>3 महीने</item>
-    </string-array>
     <string name="please_wait">कृपया प्रतीक्षा करें…</string>
     <string name="holiday_list">छुट्टी की सूची</string>
     <string name="edit_leave">अवकाश संपादित करें</string>
     <string name="apply_leave">छुट्टी के लिए आवेदन करें</string>
+    <string name="is_attendance_required">क्या उपस्थिति आवश्यक है</string>
+    <string name="is_registration_required">क्या पंजीकरण आवश्यक है</string>
+    <string name="registration_start_date">पंजीकरण की शुरुआत की तारीख</string>
+    <string name="registration_end_date">पंजीकरण की अंतिम तिथि</string>
+    <string name="select_forms">रूपों का चयन करें</string>
+    <string name="event_pic">Add photo</string>
+    <string name="msg_enter_title">Please enter the title.</string>
+    <string name="msg_enter_start_date">Please enter the start date.</string>
+    <string name="msg_enter_end_date">Please enter the end date.</string>
+    <string name="msg_enter_ned_date">Please enter the end time.</string>
+    <string name="msg_enter_start_time">Please enter the start time.</string>
+    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
+    <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
 
 </resources>
