@@ -40,7 +40,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private AddMembersListAdapter addMembersListAdapter;
 
-    private final ArrayList<Participant> membersList = new ArrayList<>();
+    private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
     private Recurrence recurrence;
 
