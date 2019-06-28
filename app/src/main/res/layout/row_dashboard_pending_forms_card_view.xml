@@ -6,21 +6,22 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/dimen_10dp"
     android:layout_marginBottom="@dimen/dimen_10dp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingStart="@dimen/dimen_20dp"
     android:paddingEnd="@dimen/dimen_10dp"
     tools:keep="@layout/row_dashboard_pending_forms_card_view">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_50dp"
+        android:layout_height="wrap_content"
         tools:ignore="UselessParent">
 
         <View
             android:id="@+id/form_status_indicator"
             android:layout_width="@dimen/form_item_status_indicator_width"
             android:layout_height="wrap_content"
-            android:background="@color/red" />
+            android:background="@color/red"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/iv_dashboard_pending_form"
@@ -34,39 +35,80 @@
             android:tint="@color/partial_form_color"
             android:visibility="gone" />
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/rl_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dimen_15dp"
-            android:layout_toStartOf="@id/iv_dashboard_delete_form"
-            android:layout_toEndOf="@+id/iv_dashboard_pending_form">
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:layout_toEndOf="@+id/iv_dashboard_pending_form"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8">
             <TextView
                 android:id="@+id/txt_dashboard_pending_form_title"
                 style="@style/roboto_medium_dark_grey_14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="hhhhhhhhhhhhh"
+                />
 
             <TextView
                 android:id="@+id/txt_dashboard_pending_form_created_at"
                 style="@style/roboto_regular_light_grey_11"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:singleLine="true"
+                android:text="hhhhhhhhhhhhhffff"
                 android:layout_below="@+id/txt_dashboard_pending_form_title" />
-        </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/iv_dashboard_delete_form"
-            android:layout_width="@dimen/dimen_35dp"
-            android:layout_height="@dimen/dimen_35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/content_description"
-            android:paddingStart="@dimen/dimen_07dp"
-            android:paddingTop="@dimen/dimen_07dp"
-            android:paddingEnd="0dp"
-            android:paddingBottom="@dimen/dimen_07dp"
-            android:src="@drawable/ic_delete" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_status_icon"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/iv_dashboard_delete_form"
+                android:layout_toRightOf="@+id/rl_form"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/dimen_07dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_non_sync_icon"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/iv_dashboard_delete_form"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_toRightOf="@+id/iv_status_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/content_description"
+                android:paddingStart="@dimen/dimen_07dp"
+                android:paddingTop="@dimen/dimen_07dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="@dimen/dimen_07dp"
+                android:src="@drawable/ic_delete"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+
+
+        <View
+            android:id="@+id/submitted_forms_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_01dp"
+            android:layout_below="@+id/rl_form"
+            android:background="@drawable/dotted_line"
+            android:layout_marginTop="@dimen/dimen_10dp"/>
+
     </RelativeLayout>
 </LinearLayout>

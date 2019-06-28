@@ -15,9 +15,11 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
 
+    public static final Integer TIMEOUT_ERROR_CODE = 504;
+
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    public static final String AND = "&";
-//    public static final String SMS_RECEIVE_IDENTIFIER = "android.provider.Telephony.SMS_RECEIVED";
+    public static final String AND = "and";
+    public static final String AND_CHARACTER = "&";
 
     public static final String ONLINE_SUBMIT_FORM_TYPE = "Online";
     public static final String OFFLINE_SUBMIT_FORM_TYPE = "Offline";
@@ -129,6 +131,8 @@ public class Constants {
         //public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
+        public static final String WEBMODULE = "Webmodule";
+        public static final String WEBMODULE_NAME = "webmodule";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -141,6 +145,13 @@ public class Constants {
         public static final String FORM_ID = "formId";
         public static final String EDIT_MODE = "editMode";
         public static final String PARTIAL_FORM = "partialForm";
+        public  static final String NO_FILTER = "No_Filter";
+        public  static final String PENDING_STATUS = "Pending";
+        public  static final String APPROVED_STATUS = "Approved";
+        public  static final String REJECTED_STATUS = "Rejected";
+        public  static final String SAVED_STATUS = "Saved";
+        public  static final String UNSYNC_STATUS = "Unsync";
+        public  static final String SYNC_STATUS = "Sync";
     }
 
     public static class TM {

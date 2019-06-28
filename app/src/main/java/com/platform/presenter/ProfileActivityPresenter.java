@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.ProfileRequestCallListener;
@@ -18,6 +19,7 @@ import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.ImageRequestCall;
 import com.platform.request.ProfileRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.EditProfileActivity;
 
@@ -181,8 +183,26 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     public void onErrorListener(VolleyError error) {
         if (profileActivity != null && profileActivity.get() != null) {
             profileActivity.get().hideProgressBar();
-            if (error != null) {
-                profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+            if (error != null && error.networkResponse != null) {
+                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
+                    if (error.networkResponse.data != null) {
+                        String json = new String(error.networkResponse.data);
+                        json = Util.trimMessage(json);
+                        if (json != null) {
+                            Util.showToast(json, profileActivity);
+                        } else {
+                            Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                    profileActivity);
+                        }
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                profileActivity);
+                    }
+                } else {
+                    profileActivity.get().showErrorMessage(error.getLocalizedMessage());
+                    Log.e("onErrorListener",
+                            "Unexpected response code " + error.networkResponse.statusCode);
+                }
             }
         }
     }

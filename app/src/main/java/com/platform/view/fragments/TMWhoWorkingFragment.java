@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 
 import com.platform.R;
 
-@SuppressWarnings("WeakerAccess")
 public class TMWhoWorkingFragment extends Fragment {
 
     @Override
