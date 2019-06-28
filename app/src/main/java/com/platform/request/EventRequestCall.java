@@ -16,6 +16,7 @@ import com.platform.R;
 import com.platform.listeners.AddMemberRequestCallListener;
 import com.platform.listeners.CreateEventListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventParams;
 import com.platform.models.events.ParametersFilterMember;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.utility.Constants;
@@ -46,13 +47,13 @@ public class EventRequestCall {
         this.addMemberRequestCallListener = listener;
     }
 
-    public void getEvent(String status) {
+    public void getEventOfDay(EventParams eventParams) {
         Response.Listener<JSONObject> orgSuccessListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getEvents - Resp: " + res);
-                    createEventListener.onEventsFetched(res);
+                    createEventListener.onEventsFetchedOfDay(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -62,12 +63,13 @@ public class EventRequestCall {
 
         Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
-        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS, status);
-//        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS,status);
-        Log.d(TAG, "getEvents: " + getOrgUrl);
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS_BY_DAY;
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(eventParams);
+        Log.d(TAG, "GET_EVENTS_BY_DAY: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
+                Request.Method.POST,
                 getOrgUrl,
                 new TypeToken<JSONObject>() {
                 }.getType(),
@@ -77,6 +79,7 @@ public class EventRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(json));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
@@ -200,6 +203,42 @@ public class EventRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void getEventOfMonth(EventParams eventParams) {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "getEvents - Resp: " + res);
+                    createEventListener.onEventsFetchedOfMonth(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                createEventListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
+
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_EVENTS_BY_MONTH;
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(eventParams);
+        Log.d(TAG, "GET_EVENTS_BY_MONTH: " + getOrgUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(json));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     private JSONObject createBodyParams(String json) {
 
         Log.d(TAG, "Request json: " + json);
@@ -210,4 +249,6 @@ public class EventRequestCall {
         }
         return null;
     }
+
+
 }

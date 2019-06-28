@@ -4,7 +4,9 @@ import com.android.volley.VolleyError;
 
 public interface CreateEventListener {
 
-    void onEventsFetched(String response);
+    void onEventsFetchedOfDay(String response);
+
+    void onEventsFetchedOfMonth(String response);
 
     void onFormsFetched(String response);
 

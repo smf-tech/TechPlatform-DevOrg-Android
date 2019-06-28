@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.Event;
+import com.platform.models.events.EventParams;
 import com.platform.models.events.EventsResponse;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Recurrence;
@@ -46,6 +48,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class EventsPlannerFragment extends Fragment implements View.OnClickListener,
@@ -59,8 +63,6 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     private RadioGroup radioGroup;
     private FloatingActionButton btAddEvents;
     private MaterialCalendarView calendarView;
-    private RelativeLayout progressBarLayout;
-    private ProgressBar progressBar;
 
     private boolean isDashboard;
     private boolean isMonth;
@@ -69,6 +71,10 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     private ArrayList<Event> eventsList;
     private ArrayList<Event> dashboardEventsList;
     private ArrayList<Event> sortedEventsList;
+
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
+    EventsPlannerFragmentPresenter presenter;
 
     public EventsPlannerFragment() {
         // Required empty public constructor
@@ -96,8 +102,17 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         progressBarLayout = eventsPlannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = eventsPlannerView.findViewById(R.id.pb_profile_act);
 
-        EventsPlannerFragmentPresenter eventsPlannerPresenter = new EventsPlannerFragmentPresenter(this);
-        eventsPlannerPresenter.getEvents(Constants.Planner.PLANNED_STATUS);
+        Date d = new Date();
+        DateFormat.format("MMMM d, yyyy ", d.getTime());
+        EventParams eventParams = new EventParams();
+        eventParams.setDay(DateFormat.format("dd", d.getTime()).toString());
+        eventParams.setMonth(DateFormat.format("MM", d.getTime()).toString());
+        eventParams.setYear(DateFormat.format("YYYY", d.getTime()).toString());
+        eventParams.setUserId(Util.getUserObjectFromPref().getId());
+
+        presenter = new EventsPlannerFragmentPresenter(this);
+        presenter.getEventsOfMonth(eventParams);
+        presenter.getEventsOfDay(eventParams);
 
         eventsList = new ArrayList<>();
         dashboardEventsList = new ArrayList<>();
@@ -316,7 +331,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
     @Override
     public <T> void showNextScreen(T data) {
-        displayEventsList((EventsResponse) data);
+
     }
 
     @Override
@@ -326,21 +341,15 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void displayEventsList(EventsResponse eventsData){
-        if(eventsData != null){
-            for(Event event : eventsData.getData()){
-                if(event != null){
-                    eventsList.add(event);
-                }
-            }
-            if(isDashboard){
-                for(int i=0;i<2;i++){
-                    dashboardEventsList.add(eventsList.get(i));
-                }
-                eventListAdapter.notifyDataSetChanged();
-            }else {
-                sortEventsList(true);
-            }
+    public void displayEventsListOfDay(List<Event> data){
+        if (data != null) {
+            dashboardEventsList.addAll(data);
+            eventListAdapter.notifyDataSetChanged();
+        } else {
+            sortEventsList(true);
         }
+    }
+
+    public void displayEventsListOfMonth(List<String> data) {
     }
 }

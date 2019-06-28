@@ -67,10 +67,13 @@ public class CreateEventActivityPresenter implements CreateEventListener, ImageR
         }.execute();
     }
 
+    @Override
+    public void onEventsFetchedOfDay(String response) {
 
+    }
 
     @Override
-    public void onEventsFetched(String response) {
+    public void onEventsFetchedOfMonth(String response) {
 
     }
 

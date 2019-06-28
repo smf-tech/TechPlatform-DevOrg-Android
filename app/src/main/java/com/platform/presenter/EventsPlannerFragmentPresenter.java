@@ -4,7 +4,9 @@ import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.platform.listeners.CreateEventListener;
+import com.platform.models.events.EventParams;
 import com.platform.models.events.EventsResponse;
+import com.platform.models.events.EventsResponseOfMonth;
 import com.platform.request.EventRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
@@ -26,24 +28,44 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
     }
 
-    public void getEvents(String status) {
+    public void getEventsOfMonth(EventParams eventParams) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
         fragmentWeakReference.get().showProgressBar();
-        requestCall.getEvent(status);
+        requestCall.getEventOfMonth(eventParams);
+    }
+
+    public void getEventsOfDay(EventParams eventParams) {
+        EventRequestCall requestCall = new EventRequestCall();
+        requestCall.setCreateEventListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        requestCall.getEventOfDay(eventParams);
     }
 
 
     @Override
-    public void onEventsFetched(String response) {
+    public void onEventsFetchedOfDay(String response) {
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-
             EventsResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, EventsResponse.class);
 
             if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
                 fragmentWeakReference.get().hideProgressBar();
-                fragmentWeakReference.get().showNextScreen(data);
+                fragmentWeakReference.get().displayEventsListOfDay(data.getData());
+            }
+        }
+    }
+
+    @Override
+    public void onEventsFetchedOfMonth(String response) {
+        fragmentWeakReference.get().hideProgressBar();
+        if (!TextUtils.isEmpty(response)) {
+
+            EventsResponseOfMonth data = PlatformGson.getPlatformGsonInstance().fromJson(response, EventsResponseOfMonth.class);
+
+            if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
+                fragmentWeakReference.get().hideProgressBar();
+                fragmentWeakReference.get().displayEventsListOfMonth(data.getData());
             }
         }
     }
@@ -75,4 +97,6 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
             }
         }
     }
+
+
 }

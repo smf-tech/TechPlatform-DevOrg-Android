@@ -45,7 +45,8 @@ public class Urls {
     }
 
     public class Events {
-        public static final String GET_EVENTS = "api/events?status=%1$s";
+        public static final String GET_EVENTS_BY_DAY = "api/getEventByDay";
+        public static final String GET_EVENTS_BY_MONTH = "api/getEventByMonth";
         public static final String GET_MEMBERS_LIST = "api/addmember";
         public static final String GET_FORMS_LIST= "api/addform";
         public static final String SUBMIT_EVENT= "api/createEvent";
