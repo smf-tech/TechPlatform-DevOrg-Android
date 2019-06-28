@@ -309,8 +309,10 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
             event.setType("Event");
             event.setTitle(etTitle.getText().toString());
             event.setDescription(etDescription.getText().toString());
-            event.setStartdatetime(etStartDate.getText().toString() + " " + etStartTime.getText().toString());
-            event.setEnddatetime(etEndDate.getText().toString() + " " + etEndTime.getText().toString());
+//            event.setStartdatetime(etStartDate.getText().toString() + " " + etStartTime.getText().toString());
+            event.setStartdatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()).toString());
+//            event.setEnddatetime(etEndDate.getText().toString() + " " + etEndTime.getText().toString());
+            event.setEnddatetime(dateTimeToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()).toString());
             event.setAddress(etAddress.getText().toString());
 //          event.setOrganizer(Util.getUserObjectFromPref().getId());
             event.setRegistrationRequired(cbIsRegistrationRequired.isChecked());
@@ -318,8 +320,10 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
 
             if(cbIsRegistrationRequired.isChecked()){
                 RegistrationSchedule obj = new RegistrationSchedule();
-                obj.setStartdatetime(etRegistrationStartDate.getText().toString());
-                obj.setEnddatetime(etRegistrationEndDate.getText().toString());
+//                obj.setStartdatetime(etRegistrationStartDate.getText().toString());
+//                obj.setEnddatetime(etRegistrationEndDate.getText().toString());
+                obj.setStartdatetime(dateToTimeStamp(etRegistrationStartDate.getText().toString()).toString());
+                obj.setEnddatetime(dateToTimeStamp(etRegistrationEndDate.getText().toString()).toString());
                 event.setRegistrationSchedule(obj);
             }
 
@@ -370,30 +374,30 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         return false;
     }
 
-//    private Long dateTimeToTimeStamp(String strDate, String strTime) {
-//        Date date;
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-//        try {
-//            date = formatter.parse(strDate + " " + strTime);
-//            return date.getTime();
-//        } catch (ParseException e) {
-//            Log.e("TAG", e.getMessage());
-//        }
-//
-//        return 0L;
-//    }
-//    private Long dateToTimeStamp(String myDate) {
-//        Date date;
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//        try {
-//            date = formatter.parse(myDate);
-//            return date.getTime();
-//        } catch (ParseException e) {
-//            Log.e("TAG", e.getMessage());
-//        }
-//
-//        return 0L;
-//    }
+    private Long dateTimeToTimeStamp(String strDate, String strTime) {
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        try {
+            date = formatter.parse(strDate + " " + strTime);
+            return date.getTime()/1000;
+        } catch (ParseException e) {
+            Log.e("TAG", e.getMessage());
+        }
+
+        return 0L;
+    }
+    private Long dateToTimeStamp(String myDate) {
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            date = formatter.parse(myDate);
+            return date.getTime()/1000;
+        } catch (ParseException e) {
+            Log.e("TAG", e.getMessage());
+        }
+
+        return 0L;
+    }
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
