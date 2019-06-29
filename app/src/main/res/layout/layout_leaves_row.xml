@@ -24,9 +24,10 @@
     <TextView
         android:id="@+id/tv_leave_desc"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_32dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_65dp"
+        android:layout_alignBaseline="@+id/img_user_leaves"
         android:layout_toEndOf="@+id/img_user_leaves"
         android:textColor="@color/attendance_list_item"
         android:textSize="@dimen/text_size_12"

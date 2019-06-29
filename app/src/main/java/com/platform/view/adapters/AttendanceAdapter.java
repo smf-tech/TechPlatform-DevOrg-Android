@@ -1,6 +1,5 @@
 package com.platform.view.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
-import com.platform.models.attendance.AttendanceStatus;
-import com.platform.view.fragments.AttendancePlannerFragment;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -64,17 +59,21 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull AttendanceAdapter.ViewHolder viewHolder, int i) {
 
+
         String date=leavesList.get(i);
-        Long TimeStamp=Long.parseLong(date);
+        if(date!=null){
+            Long TimeStamp=Long.parseLong(date);
 
 
-        Date d1 = new Date(TimeStamp);
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String FinalDate=df.format(d1);
+            Date d1 = new Date(TimeStamp);
+            DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String FinalDate=df.format(d1);
 
-        viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
-        viewHolder.leaveDesc.setText("Sample Text"+FinalDate);
+            viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
+            viewHolder.leaveDesc.setText("Sample Text"+FinalDate);
+        }
+
 
 
        /* Date StringTodate=null;
@@ -93,6 +92,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return leavesList.size();//leavesList.size();
+        if(leavesList!=null){
+            return leavesList.size();
+        }
+       //leavesList.size();
+        return 0;
     }
 }

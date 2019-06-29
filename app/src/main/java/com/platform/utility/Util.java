@@ -68,6 +68,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -392,7 +393,7 @@ public class Util {
         }
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE,Locale.getDefault());
             Date date = sdf.parse(dateString);
             return date.getTime();
 
@@ -787,5 +788,21 @@ public class Util {
         return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
                 !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
 
+    }
+
+    public static String getFormattedDateFromTimestamp(long date) {
+        if (date > 0) {
+            try {
+                int length = (int) (Math.log10(date) + 1);
+                if (length == 10) {
+                    date = date * 1000;
+                }
+                Date d = new Timestamp(date);
+                return getFormattedDate(d.toString(), DAY_MONTH_YEAR);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return "";
     }
 }

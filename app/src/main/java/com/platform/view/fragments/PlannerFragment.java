@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,12 @@ import com.platform.database.DatabaseManager;
 import com.platform.models.home.Modules;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +61,8 @@ public class PlannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initCardView();
+
+
     }
 
     private void initCardView() {
@@ -74,7 +81,7 @@ public class PlannerFragment extends Fragment {
         TextView todayDate = plannerView.findViewById(R.id.tv_today_date);
         todayDate.setText(date);
 
-        List<Modules> approveModules = DatabaseManager.getDBInstance(getActivity().getApplicationContext())
+    List<Modules> approveModules = DatabaseManager.getDBInstance(getActivity().getApplicationContext())
                 .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
 
         Bundle bundle = new Bundle();

@@ -73,7 +73,7 @@ public class MonthlyAttendaceCall {
 
       try{
           gsonRequest.setHeaderParams(Util.requestHeader(true));
-          //gsonRequest.setShouldCache(false);
+          gsonRequest.setShouldCache(false);
           Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
       }catch (Exception e){
          Log.i("NetworkException","111"+e.toString());

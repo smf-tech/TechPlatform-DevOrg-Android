@@ -2,45 +2,46 @@
 package com.platform.models.attendance;
 
 import java.io.Serializable;
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Datum implements Serializable
 {
 
-    @SerializedName("_id")
+    @SerializedName("subModule")
     @Expose
-    private String id;
-    @SerializedName("status")
+    private String subModule;
+    @SerializedName("attendance")
     @Expose
-    private String status;
-    @SerializedName("created_on")
+    private List<Attendance> attendance = null;
+    @SerializedName("holidayList")
     @Expose
-    private CreatedOn createdOn;
-    private final static long serialVersionUID = -7771610564330069720L;
+    private List<HolidayList> holidayList = null;
+    private final static long serialVersionUID = 214296246910665796L;
 
-    public String getId() {
-        return id;
+    public String getSubModule() {
+        return subModule;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSubModule(String subModule) {
+        this.subModule = subModule;
     }
 
-    public String getStatus() {
-        return status;
+    public List<Attendance> getAttendance() {
+        return attendance;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAttendance(List<Attendance> attendance) {
+        this.attendance = attendance;
     }
 
-    public CreatedOn getCreatedOn() {
-        return createdOn;
+    public List<HolidayList> getHolidayList() {
+        return holidayList;
     }
 
-    public void setCreatedOn(CreatedOn createdOn) {
-        this.createdOn = createdOn;
+    public void setHolidayList(List<HolidayList> holidayList) {
+        this.holidayList = holidayList;
     }
 
 }

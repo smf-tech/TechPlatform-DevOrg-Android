@@ -13,6 +13,8 @@ import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
+import com.platform.dao.UserAttendanceDao;
+import com.platform.models.attendance.AttendaceData;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
@@ -194,4 +196,10 @@ public class DatabaseManager {
         modulesDao.insertAll(home);
         Log.d(TAG, "insertModule");
     }
+
+    public UserAttendanceDao getAttendaceSchema(){
+        UserAttendanceDao userAttendanceDao=appDatabase.userAttendanceDao();
+        return  userAttendanceDao;
+    }
+
 }

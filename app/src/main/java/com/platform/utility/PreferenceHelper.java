@@ -21,6 +21,7 @@ public class PreferenceHelper {
         editor.apply();
     }
 
+
     public String getString(String key) {
         return pref.getString(key, "");
     }

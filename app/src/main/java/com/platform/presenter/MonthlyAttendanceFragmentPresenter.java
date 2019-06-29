@@ -1,7 +1,6 @@
 package com.platform.presenter;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.platform.listeners.MonthlyAttendaceListener;
@@ -27,7 +26,7 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
 
         String ValidString=response.replace("$","");
         try {
-            MonthlyAttendance monthlyAttendance=new Gson().fromJson(ValidString,MonthlyAttendance.class);
+            MonthlyAttendance monthlyAttendance=new Gson().fromJson(ValidString, MonthlyAttendance.class);
             fragmentWeakReference.get().getAttendanceInfo(monthlyAttendance);
 
         } catch (Exception e) {
