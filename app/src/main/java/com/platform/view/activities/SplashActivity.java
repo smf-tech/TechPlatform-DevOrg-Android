@@ -16,6 +16,7 @@ import com.platform.utility.Util;
 public class SplashActivity extends AppCompatActivity {
 
     private final static int SPLASH_TIME_OUT = 2000;
+
     private final String TAG = SplashActivity.class.getName();
 
     @Override
