@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.platform.database.DatabaseManager;
 import com.platform.listeners.CreateEventListener;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.home.Modules;
+import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.planner.SubmoduleData;
 import com.platform.presenter.PlannerFragmentPresenter;
 import com.platform.utility.AppEvents;
@@ -36,6 +38,7 @@ import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.adapters.EventListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +57,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private PlannerFragmentPresenter plannerFragmentPresenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
+    private List<LeaveDetail> leaveBalance = new ArrayList<>();
+    public static ArrayList<Integer> leaveBackground = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -177,7 +182,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         getActivity().runOnUiThread(() -> Util.showToast(result, this));
     }
 
-    public void showPlannerSummer(ArrayList<SubmoduleData> submoduleList) {
+    public void showPlannerSummary(ArrayList<SubmoduleData> submoduleList) {
 
         for(SubmoduleData obj:submoduleList){
             switch (obj.getSubModule()) {
@@ -211,13 +216,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     }
                     break;
                 case Constants.Planner.LEAVES_KEY:
-
                     if(obj.getLeave()!=null && obj.getLeave().size()>0){
-
+                        leaveBalance.addAll(obj.getLeave());
                         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
                                 LinearLayoutManager.HORIZONTAL, true);
-                        LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(getActivity(),
-                                obj.getLeave());
+                        LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(
+                                obj.getLeave(),"LeaveBalance");
                         RecyclerView rvLeaveBalance = plannerView.findViewById(R.id.rv_leave_balance);
                         rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
                         rvLeaveBalance.setAdapter(LeaveAdapter);
@@ -225,7 +229,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
             }
         }
-
 
     }
 
@@ -330,6 +333,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                 intent.putExtra("title", getActivity().getString(R.string.leave));
                 intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
 //                    intent.putExtra("leaveDetail", serverResponse);
                 getActivity().startActivity(intent);
             }
@@ -341,7 +345,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 intent.putExtra("title", getActivity().getString(R.string.apply_leave));
                 intent.putExtra("isEdit", false);
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
-//                    intent.putExtra("leaveDetail", serverResponse);
+                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                 getActivity().startActivity(intent);
             }
         });

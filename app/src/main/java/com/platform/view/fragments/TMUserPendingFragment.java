@@ -19,7 +19,6 @@ import com.platform.R;
 import com.platform.listeners.TMTaskListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.PendingFragmentPresenter;
-import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.PendingApprovalsListAdapter;
@@ -216,7 +215,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
                 ((TextView) view.findViewById(R.id.txt_pending_request_title))
                         .setText(sPendingRequest.getEntity().getUser().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
-                        .setText(Util.getDateFromTimestamp(sPendingRequest.getCreatedDateTime()));
+                        .setText(Util.getDateTimeFromTimestamp(sPendingRequest.getCreatedDateTime()));
 
                 view.findViewById(R.id.iv_approve_request).setOnClickListener(v1 -> {
                     sAdapter.approveUserRequest(sPendingRequest);

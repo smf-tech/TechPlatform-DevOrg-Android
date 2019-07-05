@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.listeners.LeaveDataListener;
+import com.platform.models.leaves.LeaveData;
+import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.LeaveType;
+import com.platform.models.leaves.MonthlyLeaveDataAPIResponse;
+import com.platform.models.leaves.MonthlyLeaveHolidayData;
 import com.platform.models.leaves.UserLeaves;
 import com.platform.presenter.LeavesPresenter;
 import com.platform.utility.EventDecorator;
@@ -39,10 +44,12 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -52,7 +59,7 @@ import static com.platform.presenter.LeavesPresenter.GET_USER_LEAVE_DETAILS;
 public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, LeaveDataListener {
 
     private RecyclerView leavesList;
-    private final ArrayList<String> leavesListData = new ArrayList<>();
+    private final ArrayList<LeaveData> leavesListData = new ArrayList<>();
     private AppliedLeavesAdapter leavesAdapter;
     private MaterialCalendarView calendarView;
     private TabLayout tabLayout;
@@ -66,6 +73,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private boolean isMonth = true;
     private String serverResponse;
     private String userLeaveDetailsResponse;
+    private List<LeaveDetail> leaveBalance = new ArrayList<>();
     private LeavesPresenter presenter;
 
     public LeaveDetailsFragment() {
@@ -112,9 +120,14 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             serverResponse = bundle.getString("leaveDetail");
+            if(bundle.getSerializable("leaveBalance")!=null) {
+                leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
+            }
         }
+        Date d = new Date();
         presenter = new LeavesPresenter(this);
-        presenter.getUsersAllLeavesDetails();
+        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
+
         setTabData();
         setUIData();
 
@@ -127,11 +140,11 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tabLayout.getSelectedTabPosition() == 0) {
-                    setTabData(1);
+                    //setTabData(1);
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
-                    setTabData(2);
+                    //setTabData(2);
                 } else if (tabLayout.getSelectedTabPosition() == 2) {
-                    setTabData(3);
+                    //setTabData(3);
                 }
             }
 
@@ -151,7 +164,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         leavesAdapter = new AppliedLeavesAdapter(leavesListData, this);
         leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         leavesList.setAdapter(leavesAdapter);
-        setTabData(1);
+        //setTabData(1);
     }
 
     private void setupTabIcons() {
@@ -176,16 +189,16 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         setCalendar();
     }
 
-    private void setTabData(int size) {
-        ArrayList<String> leaves = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            leaves.add("1");
-        }
-        leavesListData.clear();
-        leavesListData.addAll(leaves);
-        leavesAdapter.notifyDataSetChanged();
-
-    }
+//    private void setTabData(int size) {
+//        ArrayList<String> leaves = new ArrayList<>();
+//        for (int i = 0; i < size; i++) {
+//            leaves.add("1");
+//        }
+//        leavesListData.clear();
+//        //leavesListData.addAll(leaves);
+//        leavesAdapter.notifyDataSetChanged();
+//
+//    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -280,18 +293,22 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void deleteLeaves() {
-        showAlertDialog(getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+    public void deleteLeaves(String leaveId) {
+        presenter.deleteUserLeave(leaveId);
+        //showAlertDialog(getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+
     }
 
     @Override
-    public void editLeaves() {
-        userLeaveDetailsResponse = "{\"userId\": \"12345\",\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2 }],\"fromDate\": \"2019-03-11T18:30:00.000Z\",\"toDate\": \"2019-03-16T18:30:00.000Z\",\"isHalfDay\": false,\"reason\": \"NA\",\"numberOfDays\": 3,\"status\": \"pending\" }";
+    public void editLeaves(LeaveData leaveData) {
+        //userLeaveDetailsResponse = "{\"userId\": \"12345\",\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2 }],\"fromDate\": \"2019-03-11T18:30:00.000Z\",\"toDate\": \"2019-03-16T18:30:00.000Z\",\"isHalfDay\": false,\"reason\": \"NA\",\"numberOfDays\": 3,\"status\": \"pending\" }";
         Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
         intent.putExtra("title", getString(R.string.edit_leave));
         intent.putExtra("isEdit", true);
-        intent.putExtra("leaveDetail", serverResponse);
-        intent.putExtra("userLeaveDetails", userLeaveDetailsResponse);
+        intent.putExtra("userLeaveDetails", (Serializable) leaveData);
+        intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+//        intent.putExtra("leaveDetail", serverResponse);
+//        intent.putExtra("userLeaveDetails", userLeaveDetailsResponse);
         intent.putExtra("switch_fragments", "LeaveApplyFragment");
 
         startActivity(intent);
@@ -336,7 +353,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             });
         }
 
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();      // if decline button is clicked, close the custom dialog
     }
 
@@ -363,9 +380,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void onSuccessListener(String requestID, String response) {
         if (GET_USER_LEAVE_DETAILS.equals(requestID)) {
             userLeaveDetailsResponse = response;
-            UserLeaves leaveDetail = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, UserLeaves.class);
-            if (leaveDetail != null) {
-                List<LeaveType> leavesList = leaveDetail.getLeaveTypes();
+            MonthlyLeaveDataAPIResponse monthlyLeaveDataAPIResponse = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, MonthlyLeaveDataAPIResponse.class);
+            if (monthlyLeaveDataAPIResponse != null) {
+                leavesListData.clear();
+                MonthlyLeaveHolidayData monthlyLeaveHolidayData = monthlyLeaveDataAPIResponse.getData();
+                List<LeaveData> monthlyLeaveData = monthlyLeaveHolidayData.getLeaveData();
+                leavesListData.addAll(monthlyLeaveData);
+                leavesAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -373,7 +394,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void showProgressBar() {
         Util.showSimpleProgressDialog(getActivity(), null, getString(R.string.please_wait), false);
-
     }
 
     @Override

@@ -13,11 +13,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,43 +29,58 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.LeaveDataListener;
+import com.platform.models.leaves.LeaveData;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.LeaveType;
 import com.platform.models.leaves.UserLeaves;
 import com.platform.presenter.LeavesPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.adapters.LeaveBalanceAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Util.getDateFromTimestamp;
+
 public class LeaveApplyFragment extends Fragment implements View.OnClickListener, LeaveDataListener {
 
-    private TextView tvCLSLLeavesCount;
+    /*private TextView tvCLSLLeavesCount;
     private TextView tvPaidLeavesCount;
     private TextView tvCOffLeavesCount;
-    private TextView tvTotalLeavesCount;
-    private Button btnCategoryCL;
-    private Button btnCategoryPaid;
-    private Button btnCategoryCompOff;
+    private TextView tvTotalLeavesCount;*/
+    RecyclerView rvLeaveBalance;
+    RecyclerView rvLeaveCategory;
+    LeaveBalanceAdapter LeaveAdapterCategory;
+    RecyclerView.LayoutManager mLayoutManagerLeaveCategory;
+//    private Button btnCategoryCL;
+//    private Button btnCategoryPaid;
+//    private Button btnCategoryCompOff;
 
     private Button btnHalfDay;
     private Button btnFullDay;
 
     private EditText edtReason;
-    private TextView btnStartDate;
-    private TextView btnEndDate;
+    private EditText btnStartDate;
+    private EditText btnEndDate;
     private final Calendar c = Calendar.getInstance();
     private String leaveTypeSelected = null;
     private int dayLeaveType = -1;
     private LeavesPresenter presenter;
-
+    private ArrayList<LeaveDetail> leaveBalance = new ArrayList<>();
+    public static ArrayList<Integer> leaveBackground = new ArrayList<>();
+    public String selectedLeaveCatgory;
+    private RelativeLayout progressBarLayout;
+    private ProgressBar progressBar;
     public LeaveApplyFragment() {
         // Required empty public constructor
     }
@@ -81,19 +100,22 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvCLSLLeavesCount = view.findViewById(R.id.tv_leaves_cl);
+        /*tvCLSLLeavesCount = view.findViewById(R.id.tv_leaves_cl);
         tvPaidLeavesCount = view.findViewById(R.id.tv_leaves_paid);
         tvCOffLeavesCount = view.findViewById(R.id.tv_leaves_com_off);
-        tvTotalLeavesCount = view.findViewById(R.id.tv_total_leaves_count);
+        tvTotalLeavesCount = view.findViewById(R.id.tv_total_leaves_count);*/
+
+        rvLeaveBalance = view.findViewById(R.id.rv_leave_balance);
+        rvLeaveCategory = view.findViewById(R.id.rv_leave_category);
 
         edtReason = view.findViewById(R.id.edt_reason);
 
-        btnCategoryCL = view.findViewById(R.id.btn_cl);
+        /*btnCategoryCL = view.findViewById(R.id.btn_cl);
         btnCategoryCL.setOnClickListener(this);
         btnCategoryPaid = view.findViewById(R.id.btn_paid);
         btnCategoryPaid.setOnClickListener(this);
         btnCategoryCompOff = view.findViewById(R.id.btn_comp_off);
-        btnCategoryCompOff.setOnClickListener(this);
+        btnCategoryCompOff.setOnClickListener(this);*/
 
         btnHalfDay = view.findViewById(R.id.btn_half_day);
         btnHalfDay.setOnClickListener(this);
@@ -107,7 +129,8 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
         Button btnApplyLeaves = view.findViewById(R.id.btn_apply_leave);
         btnApplyLeaves.setOnClickListener(this);
-
+        progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
+        progressBar = view.findViewById(R.id.pb_profile_act);
         presenter = new LeavesPresenter(this);
 
         setUIData();
@@ -119,27 +142,49 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         if (bundle != null) {
             String leaveDetail = bundle.getString("leaveDetail");
             boolean isEdit = bundle.getBoolean("isEdit");
+            leaveBalance.clear();
+            leaveBackground.clear();
+            if(bundle.getSerializable("leaveBalance")!=null) {
+                leaveBalance.addAll((ArrayList<LeaveDetail>)bundle.getSerializable("leaveBalance"));
+                for (LeaveDetail l : leaveBalance) {
+                    leaveBackground.add(R.drawable.leave_form_view_unfocused);
+                }
+                RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
+                        LinearLayoutManager.HORIZONTAL, true);
+                LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(
+                        leaveBalance, "LeaveBalance");
+                rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
+                rvLeaveBalance.setAdapter(LeaveAdapter);
+
+                mLayoutManagerLeaveCategory = new LinearLayoutManager(getActivity(),
+                        LinearLayoutManager.HORIZONTAL, true);
+                LeaveAdapterCategory = new LeaveBalanceAdapter(this,
+                        leaveBalance, leaveBackground,"Category");
+                rvLeaveCategory.setLayoutManager(mLayoutManagerLeaveCategory);
+                rvLeaveCategory.setAdapter(LeaveAdapterCategory);
+            }
+
             if (leaveDetail != null) {
                 LeaveDetail leaveDetailModel = PlatformGson.getPlatformGsonInstance().fromJson(leaveDetail, LeaveDetail.class);
                 if (leaveDetailModel != null) {
 
                     if (leaveDetailModel.getBalanceLeaves() != null) {
                         int totalBalanceLeaves = leaveDetailModel.getBalanceLeaves();
-                        tvTotalLeavesCount.setText(String.valueOf(totalBalanceLeaves));
+                        //tvTotalLeavesCount.setText(String.valueOf(totalBalanceLeaves));
                     }
 
                     List<LeaveType> leaveTypes = leaveDetailModel.getLeaveTypes();
                     if (leaveTypes != null) {
                         for (LeaveType type : leaveTypes) {
                             if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
-                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
-                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+//                                tvCLSLLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+//                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
                             } else if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
-                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
-                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+//                                tvPaidLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+//                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
                             } else if (type.getLeaveType().equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
-                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
-                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
+//                                tvCOffLeavesCount.setText(TextUtils.isEmpty(String.valueOf(type.getAllocatedLeaves()))
+//                                        ? "0" : String.valueOf(type.getAllocatedLeaves()));
                             }
                         }
                     }
@@ -147,57 +192,56 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             }
 
             if (isEdit) {
-                String userLeaveDetail = bundle.getString("userLeaveDetails");
+                LeaveData userLeaveDetail = (LeaveData) bundle.getSerializable("userLeaveDetails");
                 if (userLeaveDetail != null) {
-                    UserLeaves leaveDetailModel = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetail, UserLeaves.class);
-                    if (leaveDetailModel != null) {
-                        setUserDataForEdit(leaveDetailModel);
+                    //LeaveData leaveDetailModel = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetail, LeaveData.class);
+                    if (userLeaveDetail != null) {
+                        setUserDataForEdit(userLeaveDetail);
                     }
                 }
             }
         }
     }
 
-    private void setUserDataForEdit(UserLeaves leaveDetailModel) {
+    private void setUserDataForEdit(LeaveData leaveDetailModel) {
+
         edtReason.setText(leaveDetailModel.getReason());
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-        SimpleDateFormat outputFormat = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
-        try {
-            Date date = inputFormat.parse(leaveDetailModel.getFromDate());
-            String formattedDate = outputFormat.format(date);
-            btnStartDate.setText(formattedDate);
-        } catch (ParseException e) {
-            Log.e("TAG", "ParseException");
-        }
+        btnStartDate.setText(getDateFromTimestamp(leaveDetailModel.getStartdate(), DAY_MONTH_YEAR));
+        btnEndDate.setText(getDateFromTimestamp(leaveDetailModel.getEnddate(), DAY_MONTH_YEAR));
 
-        try {
-            Date date = inputFormat.parse(leaveDetailModel.getToDate());
-            String formattedDate = outputFormat.format(date);
-            btnEndDate.setText(formattedDate);
-        } catch (ParseException e) {
-            Log.e("TAG", "ParseException");
-        }
-
-        boolean isHalfDay = leaveDetailModel.getIsHalfDay();
-        if (isHalfDay) {
+        String isHalfDay = leaveDetailModel.getFullHalfDay();
+        if (isHalfDay.equalsIgnoreCase("half day")) {
             onClick(btnHalfDay);
         } else {
             onClick(btnFullDay);
         }
 
-        LeaveType leaveType = (leaveDetailModel.getLeaveTypes() != null &&
-                leaveDetailModel.getLeaveTypes().size() > 0) ? leaveDetailModel.getLeaveTypes().get(0) : null;
-
-        if (leaveType != null) {
-            String type = leaveType.getLeaveType();
-            if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
-                onClick(btnCategoryCL);
-            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
-                onClick(btnCategoryPaid);
-            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
-                onClick(btnCategoryCompOff);
+        String leaveCategory = leaveDetailModel.getLeaveType();
+        for (int i = 0; i<leaveBalance.size(); i++) {
+            if(leaveBalance.get(i).getType().equalsIgnoreCase(leaveCategory)){
+                leaveBackground.remove(i);
+                leaveBackground.add(i, R.drawable.leave_form_view_focused);
+                selectedLeaveCatgory = leaveBalance.get(i).getType();
+            }else{
+//                leaveBackground.remove(i);
+//                leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
             }
         }
+        LeaveAdapterCategory.notifyDataSetChanged();
+
+//        LeaveType leaveType = (leaveDetailModel.getLeaveTypes() != null &&
+//                leaveDetailModel.getLeaveTypes().size() > 0) ? leaveDetailModel.getLeaveTypes().get(0) : null;
+//
+//        if (leaveType != null) {
+//            String type = leaveType.getLeaveType();
+//            if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
+//                onClick(btnCategoryCL);
+//            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
+//                onClick(btnCategoryPaid);
+//            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
+//                onClick(btnCategoryCompOff);
+//            }
+//        }
     }
 
     @Override
@@ -217,7 +261,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_cl:
+            /*case R.id.btn_cl:
                 leaveTypeSelected = btnCategoryCL.getText().toString();
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_focused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_unfocused);
@@ -236,7 +280,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_unfocused);
                 btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_unfocused);
                 btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_focused);
-                break;
+                break;*/
 
             case R.id.btn_half_day:
                 dayLeaveType = 0;
@@ -259,33 +303,35 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
-                        (datePicker, year12, month12, day12) -> {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(year12, month12, day12);
-                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
-                            btnStartDate.setText(format.format(calendar.getTime()));
-
-                        }, year, month, day);
-                datePickerDialog.show();
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
+//                        (datePicker, year12, month12, day12) -> {
+//                            Calendar calendar = Calendar.getInstance();
+//                            calendar.set(year12, month12, day12);
+//                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
+//                            btnStartDate.setText(format.format(calendar.getTime()));
+//
+//                        }, year, month, day);
+//                datePickerDialog.show();
+                Util.showDateDialogMin(getActivity(), btnStartDate);
                 break;
 
             case R.id.btn_end_date:
-                int year1 = c.get(Calendar.YEAR);
-                int month1 = c.get(Calendar.MONTH);
-                int day1 = c.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog endDatePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
-                        (datePicker, year2, month2, day2) -> {
-
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(year2, month2, day2);
-                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
-                            btnEndDate.setText(format.format(calendar.getTime()));
-
-                        }, year1, month1, day1);
-
-                endDatePickerDialog.show();
+//                int year1 = c.get(Calendar.YEAR);
+//                int month1 = c.get(Calendar.MONTH);
+//                int day1 = c.get(Calendar.DAY_OF_MONTH);
+//
+//                DatePickerDialog endDatePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
+//                        (datePicker, year2, month2, day2) -> {
+//
+//                            Calendar calendar = Calendar.getInstance();
+//                            calendar.set(year2, month2, day2);
+//                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
+//                            btnEndDate.setText(format.format(calendar.getTime()));
+//
+//                        }, year1, month1, day1);
+//
+//                endDatePickerDialog.show();
+                Util.showDateDialogMin(getActivity(), btnEndDate);
                 break;
         }
     }
@@ -313,20 +359,33 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         } catch (ParseException e) {
             Log.e("TAG", "ParseException");
         }
-        jsonData.addProperty("fromDate", startDate != null ? startDate.toString() : btnStartDate.getText().toString());
-        jsonData.addProperty("toDate", endDate != null ? endDate.toString() : btnEndDate.getText().toString());
-        jsonData.addProperty("isHalfDay", "12345");
-        jsonData.addProperty("reason", edtReason.getText().toString());
-        jsonData.addProperty("numberOfDays", (endDate != null && startDate != null) ? endDate.getTime() - startDate.getTime() : 0);
-        JsonObject leave = new JsonObject();
-        leave.addProperty("leaveType", leaveTypeSelected);
-        leave.addProperty("allocatedLeaves", 5);
-        JsonArray jsonArray = new JsonArray();
-        jsonArray.add(leave);
-        jsonData.add("leaveTypes", jsonArray);
-        // jsonData.addProperty("status","pending");
+//        jsonData.addProperty("fromDate", startDate != null ? startDate.toString() : btnStartDate.getText().toString());
+//        jsonData.addProperty("toDate", endDate != null ? endDate.toString() : btnEndDate.getText().toString());
+//        jsonData.addProperty("isHalfDay", "12345");
+//        jsonData.addProperty("reason", edtReason.getText().toString());
+//        jsonData.addProperty("numberOfDays", (endDate != null && startDate != null) ? endDate.getTime() - startDate.getTime() : 0);
+//        JsonObject leave = new JsonObject();
+//        leave.addProperty("leaveType", leaveTypeSelected);
+//        leave.addProperty("allocatedLeaves", 5);
+//        JsonArray jsonArray = new JsonArray();
+//        jsonArray.add(leave);
+//        jsonData.add("leaveTypes", jsonArray);
+//        // jsonData.addProperty("status","pending");
 
-        presenter.postUserLeave(jsonData);
+        LeaveData leaveData = new LeaveData();
+        leaveData.setUserId(Util.getUserObjectFromPref().getId());
+        leaveData.setLeaveType(selectedLeaveCatgory);
+        leaveData.setStartdate(Util.dateTimeToTimeStamp(btnStartDate.getText().toString(),"00:00"));
+
+        leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(),"00:00"));
+        if(dayLeaveType==0){
+            leaveData.setFullHalfDay("half day");
+        }else if(dayLeaveType==1){
+            leaveData.setFullHalfDay("full day");
+        }
+        leaveData.setReason(edtReason.getText().toString());
+
+        presenter.postUserLeave(leaveData);
     }
 
     @SuppressWarnings("deprecation")
@@ -446,12 +505,22 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void showProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

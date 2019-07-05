@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,7 +38,6 @@ import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
-import com.platform.view.activities.FormActivity;
 import com.platform.view.adapters.SubmittedFormsListAdapter;
 
 import java.text.DateFormat;
@@ -239,7 +237,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         .setText(object.getName().getLocaleValue());
 
                 ((TextView) formView.findViewById(R.id.form_date))
-                        .setText(Util.getDateFromTimestamp(object.getMicroservice().getUpdatedAt()));
+                        .setText(Util.getDateTimeFromTimestamp(object.getMicroservice().getUpdatedAt()));
 
                 int bgColor = getResources().getColor(R.color.red);
                 formView.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
@@ -486,7 +484,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             Date eventStartDate;
             DateFormat inputFormat = new SimpleDateFormat(FORM_DATE_FORMAT, Locale.getDefault());
             try {
-                eventStartDate = inputFormat.parse(Util.getDateFromTimestamp(updatedAt));
+                eventStartDate = inputFormat.parse(Util.getDateTimeFromTimestamp(updatedAt));
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DAY_OF_MONTH, -30);
                 Date days30 = calendar.getTime();

@@ -125,7 +125,7 @@ public class TMApprovedAdapter extends BaseExpandableListAdapter {
                         .setText(data.getEntity().getUser().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
                         .setText(String.format("%s",
-                                Util.getDateFromTimestamp(data.getUpdatedDateTime())));
+                                Util.getDateTimeFromTimestamp(data.getUpdatedDateTime())));
             }
 
             view.findViewById(R.id.iv_approve_request).setVisibility(View.GONE);

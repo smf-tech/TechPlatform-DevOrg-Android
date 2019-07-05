@@ -5,6 +5,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.JsonObject;
 import com.platform.listeners.LeaveDataListener;
 import com.platform.listeners.LeavePresenterListener;
+import com.platform.models.leaves.LeaveData;
 import com.platform.request.LeavesRequestCall;
 
 import java.lang.ref.WeakReference;
@@ -16,6 +17,7 @@ public class LeavesPresenter implements LeavePresenterListener {
     public static final String GET_USER_LEAVE_DETAILS ="getUsersAllLeavesDetails";
     public static final String GET_LEAVE_DETAILS ="getLeavesData";
     public static final String POST_USER_DETAILS ="postUserLeave";
+    public static final String DELETE_USER_LEAVE ="deleteUserLeave";
 
     public LeavesPresenter(LeaveDataListener tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -34,16 +36,22 @@ public class LeavesPresenter implements LeavePresenterListener {
         requestCall.getLeavesData(GET_LEAVE_DETAILS);
     }
 
-    public void getUsersAllLeavesDetails() {
+    public void getUsersAllLeavesDetails(String year, String month) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
-        requestCall.getUsersAllLeavesDetails(GET_USER_LEAVE_DETAILS);
+        requestCall.getUsersAllLeavesDetails(GET_USER_LEAVE_DETAILS, year, month);
     }
 
-    public void postUserLeave(JsonObject jsonObject) {
+    public void postUserLeave(LeaveData leaveData) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
-        requestCall.postUserLeave(POST_USER_DETAILS,jsonObject);
+        requestCall.postUserLeave(POST_USER_DETAILS,leaveData);
+    }
+
+    public void deleteUserLeave(String leaveId) {
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.deleteUserLeave(DELETE_USER_LEAVE, leaveId);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class LeavesPresenter implements LeavePresenterListener {
         try {
             if (response != null) {
                 fragmentWeakReference.get().onSuccessListener(requestID, response);
-
+                //fragmentWeakReference.get().closeCurrentActivity();
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());

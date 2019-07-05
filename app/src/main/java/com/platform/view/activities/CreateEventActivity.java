@@ -152,7 +152,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         if (event != null) {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
-//                etEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
+//                etEndDate.setText(Util.getDateTimeFromTimestamp(event.getEventEndDateTime()));
                 findViewById(R.id.rl_add_members).setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
@@ -183,7 +183,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
 //        int spinnerPosition = myAdapter.getPosition(event.getEventType());
 //        spCategory.setSelection(spinnerPosition);
 //        etTitle.setText(event.getTitle());
-//        etStartDate.setText(Util.getDateFromTimestamp(event.getEventStartDateTime()));
+//        etStartDate.setText(Util.getDateTimeFromTimestamp(event.getEventStartDateTime()));
 //        etStartTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
 //        etEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
 //        etDescription.setText(event.getEventDescription());

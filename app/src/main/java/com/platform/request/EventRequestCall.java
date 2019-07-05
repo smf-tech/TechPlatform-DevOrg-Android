@@ -63,7 +63,6 @@ public class EventRequestCall {
         Response.ErrorListener orgErrorListener = error -> createEventListener.onErrorListener(error);
 
         final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS, status);
-//        final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.Events.GET_EVENTS,status);
         Log.d(TAG, "getEvents: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(

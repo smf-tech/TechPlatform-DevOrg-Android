@@ -4,39 +4,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
+import com.platform.models.leaves.LeaveData;
 
 import java.util.List;
+
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Util.getDateFromTimestamp;
+import static com.platform.utility.Util.getDateTimeFromTimestamp;
 
 @SuppressWarnings("CanBeFinal")
 public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdapter.ViewHolder> {
     private LeaveAdapterListener leavesListener;
-    private List<String> leavesList;
+    private List<LeaveData> leavesList;
 
-    public AppliedLeavesAdapter(final List<String> leavesList, LeaveAdapterListener leavesListener) {
+    public AppliedLeavesAdapter(final List<LeaveData> leavesList, LeaveAdapterListener leavesListener) {
         this.leavesListener = leavesListener;
         this.leavesList = leavesList;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView userImage;
-        TextView leaveDesc;
+        LinearLayout leaveTitleLayout;
+        TextView leaveHeader, leaveSubHeader;
         ImageView deleteClick;
         ImageView editClick;
-
-        //TextView leaveStatus;
-
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            leaveDesc = itemView.findViewById(R.id.tv_leave_desc);
-            userImage = itemView.findViewById(R.id.img_user_leaves);
+            leaveTitleLayout = itemView.findViewById(R.id.leave_title_layout);
+            leaveHeader = itemView.findViewById(R.id.tv_leave_header);
+            leaveSubHeader = itemView.findViewById(R.id.tv_leave_sub_header);
             deleteClick = itemView.findViewById(R.id.img_delete);
             editClick = itemView.findViewById(R.id.img_edit);
         }
@@ -51,11 +54,12 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
-        viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
-        viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves());
-        viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves());
+    public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int position) {
+        viewHolder.leaveSubHeader.setText("from "+ getDateFromTimestamp
+                (leavesList.get(position).getStartdate(), DAY_MONTH_YEAR)+ " to " + getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
+        viewHolder.leaveTitleLayout.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
+        viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves(leavesList.get(position).getId()));
+        viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
     }
 
     @Override
@@ -64,8 +68,8 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     }
 
     public interface LeaveAdapterListener {
-        void deleteLeaves();
+        void deleteLeaves(String leaveId);
 
-        void editLeaves();
+        void editLeaves(LeaveData leaveData);
     }
 }

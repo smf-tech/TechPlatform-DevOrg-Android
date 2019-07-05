@@ -49,7 +49,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         FormResult savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
         holder.txtCreatedAt.setText(String.format("%s",
-                Util.getDateFromTimestamp(savedForm.getCreatedAt())));
+                Util.getDateTimeFromTimestamp(savedForm.getCreatedAt())));
 
         holder.delete.setOnClickListener(v -> showFormDeletePopUp(savedForm));
 

@@ -129,7 +129,7 @@ public class SavedFormsListAdapter extends BaseExpandableListAdapter {
             ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title))
                     .setText(formResult.getFormName().trim());
             ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
-                    .setText(Util.getDateFromTimestamp(formResult.getCreatedAt()));
+                    .setText(Util.getDateTimeFromTimestamp(formResult.getCreatedAt()));
         }
 
         final FormResult finalFormResult = formResult;

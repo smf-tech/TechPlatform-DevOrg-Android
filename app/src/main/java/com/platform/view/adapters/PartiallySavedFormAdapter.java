@@ -20,7 +20,7 @@ import com.platform.view.activities.FormActivity;
 
 import java.util.List;
 
-import static com.platform.utility.Util.getDateFromTimestamp;
+import static com.platform.utility.Util.getDateTimeFromTimestamp;
 
 @SuppressWarnings({"CanBeFinal", "SameParameterValue"})
 class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormAdapter.ViewHolder> {
@@ -73,7 +73,7 @@ class PartiallySavedFormAdapter extends RecyclerView.Adapter<PartiallySavedFormA
             viewHolder.mName.setText(savedForm.getFormName());
 
             if (savedForm.getCreatedAt() != null) {
-                String formattedDate = getDateFromTimestamp(savedForm.getCreatedAt());
+                String formattedDate = getDateTimeFromTimestamp(savedForm.getCreatedAt());
                 viewHolder.mDate.setText(String.format("%s", formattedDate));
             }
         }
