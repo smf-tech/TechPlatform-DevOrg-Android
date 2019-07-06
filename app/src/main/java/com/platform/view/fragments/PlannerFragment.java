@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
-import com.platform.listeners.CreateEventListener;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.home.Modules;
 import com.platform.models.planner.SubmoduleData;
@@ -29,7 +28,7 @@ import com.platform.presenter.PlannerFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.activities.CreateEventActivity;
+import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.PlannerDetailActivity;
@@ -39,7 +38,6 @@ import com.platform.view.adapters.LeaveBalanceAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
@@ -286,7 +284,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         btAddEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 getActivity().startActivity(intentCreateEvent);
             }
@@ -312,7 +310,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         btAddEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
                 getActivity().startActivity(intentCreateEvent);
             }

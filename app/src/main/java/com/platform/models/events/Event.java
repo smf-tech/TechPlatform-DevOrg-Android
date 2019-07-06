@@ -1,7 +1,13 @@
 package com.platform.models.events;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.platform.database.DataConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,42 +15,124 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class Event implements Serializable {
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    @SerializedName("_id")
+    @NonNull
+    @Expose
+    private String id;
+
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("ownerid")
+    @Expose
+    private String ownerid;
+
+    @ColumnInfo(name = "ownername")
+    @SerializedName("ownername")
+    @Expose
+    private String ownername;
+
+    @ColumnInfo(name = "type")
     @SerializedName("type")
     @Expose
     private String type;
+
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
     private String title;
+
+    @ColumnInfo(name = "description")
     @SerializedName("description")
     @Expose
     private String description;
+
+    @ColumnInfo(name = "thumbnail_image")
     @SerializedName("thumbnail_image")
     @Expose
     private String thumbnailImage;
-    @SerializedName("startdatetime")
-    @Expose
-    private String startdatetime;
-    @SerializedName("enddatetime")
-    @Expose
-    private String enddatetime;
+
+    @ColumnInfo(name = "address")
     @SerializedName("address")
     @Expose
     private String address;
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "participants")
     @SerializedName("participants")
     @Expose
     private List<Participant> participants = null;
+
+    @ColumnInfo(name = "ownerid")
     @SerializedName("registration_required")
     @Expose
     private boolean registrationRequired;
+
+    @ColumnInfo(name = "ownerid")
     @SerializedName("registration_schedule")
     @Expose
-    private RegistrationSchedule registrationSchedule = null;
+    private Schedule registrationSchedule = null;
+
+    @ColumnInfo(name = "ownerid")
     @SerializedName("is_mark_attendance_required")
     @Expose
     private boolean isMarkAttendanceRequired;
 
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("schedule")
+    @Expose
+    private Schedule schedule;
 
-    private ArrayList<String> selectedForms;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("required_forms")
+    @Expose
+    private ArrayList<AddForm> requiredForms = null;
+
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("event_status")
+    @Expose
+    private String eventStatus;
+
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("mark_complete")
+    @Expose
+    private Boolean markComplete;
+
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("participants_count")
+    @Expose
+    private Integer participantsCount;
+
+    @ColumnInfo(name = "ownerid")
+    @SerializedName("attended_completed")
+    @Expose
+    private Integer attendedCompleted;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getOwnerid() {
+        return ownerid;
+    }
+
+    public void setOwnerid(String ownerid) {
+        this.ownerid = ownerid;
+    }
+
+    public String getOwnername() {
+        return ownername;
+    }
+
+    public void setOwnername(String ownername) {
+        this.ownername = ownername;
+    }
 
     public String getType() {
         return type;
@@ -78,10 +166,6 @@ public class Event implements Serializable {
         this.thumbnailImage = thumbnailImage;
     }
 
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -90,32 +174,12 @@ public class Event implements Serializable {
         this.address = address;
     }
 
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
     public void setParticipants(List<Participant> participants) {
         this.participants = participants;
-    }
-
-    public RegistrationSchedule getRegistrationSchedule() {
-        return registrationSchedule;
-    }
-
-    public void setRegistrationSchedule(RegistrationSchedule registrationSchedule) {
-        this.registrationSchedule = registrationSchedule;
-    }
-
-    public String getStartdatetime() {
-        return startdatetime;
-    }
-
-    public void setStartdatetime(String startdatetime) {
-        this.startdatetime = startdatetime;
-    }
-
-    public String getEnddatetime() {
-        return enddatetime;
-    }
-
-    public void setEnddatetime(String enddatetime) {
-        this.enddatetime = enddatetime;
     }
 
     public boolean isRegistrationRequired() {
@@ -126,6 +190,14 @@ public class Event implements Serializable {
         this.registrationRequired = registrationRequired;
     }
 
+    public Schedule getRegistrationSchedule() {
+        return registrationSchedule;
+    }
+
+    public void setRegistrationSchedule(Schedule registrationSchedule) {
+        this.registrationSchedule = registrationSchedule;
+    }
+
     public boolean isMarkAttendanceRequired() {
         return isMarkAttendanceRequired;
     }
@@ -134,12 +206,51 @@ public class Event implements Serializable {
         isMarkAttendanceRequired = markAttendanceRequired;
     }
 
-    public ArrayList<String> getSelectedForms() {
-        return selectedForms;
+    public Schedule getSchedule() {
+        return schedule;
     }
 
-    public void setSelectedForms(ArrayList<String> selectedForms) {
-        this.selectedForms = selectedForms;
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
+    public ArrayList<AddForm> getRequiredForms() {
+        return requiredForms;
+    }
+
+    public void setRequiredForms(ArrayList<AddForm> requiredForms) {
+        this.requiredForms = requiredForms;
+    }
+
+    public String getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(String eventStatus) {
+        this.eventStatus = eventStatus;
+    }
+
+    public Boolean getMarkComplete() {
+        return markComplete;
+    }
+
+    public void setMarkComplete(Boolean markComplete) {
+        this.markComplete = markComplete;
+    }
+
+    public Integer getParticipantsCount() {
+        return participantsCount;
+    }
+
+    public void setParticipantsCount(Integer participantsCount) {
+        this.participantsCount = participantsCount;
+    }
+
+    public Integer getAttendedCompleted() {
+        return attendedCompleted;
+    }
+
+    public void setAttendedCompleted(Integer attendedCompleted) {
+        this.attendedCompleted = attendedCompleted;
+    }
 }

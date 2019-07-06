@@ -8,11 +8,13 @@ import androidx.room.Room;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.platform.dao.EventTaskDao;
 import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
+import com.platform.models.events.Event;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
@@ -194,4 +196,9 @@ public class DatabaseManager {
         modulesDao.insertAll(home);
         Log.d(TAG, "insertModule");
     }
+
+//    public void insertEventTask(Event... eventTask) {
+//        EventTaskDao eventTaskDao = appDatabase.eventTaskDao();
+//        eventTaskDao.insertAll(eventTask);
+//    }
 }

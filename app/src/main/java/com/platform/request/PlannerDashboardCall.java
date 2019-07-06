@@ -32,7 +32,7 @@ public class PlannerDashboardCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "getEvents - Resp: " + res);
+                    Log.d(TAG, "GET_PLANNER_DASHBOARD - Resp: " + res);
                     plannerFragmetListener.onPlannerDashboardDataFetched(res);
                 }
             } catch (Exception e) {

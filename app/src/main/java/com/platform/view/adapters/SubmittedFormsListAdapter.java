@@ -130,7 +130,7 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
                 ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
-                        .setText(Util.getDateFromTimestamp(data.getMicroservice().getUpdatedAt()));
+                        .setText(Util.getDateTimeFromTimestamp(data.getMicroservice().getUpdatedAt()));
             }
         }
 

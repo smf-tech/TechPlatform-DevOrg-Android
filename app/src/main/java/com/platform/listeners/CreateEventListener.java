@@ -10,7 +10,11 @@ public interface CreateEventListener {
 
     void onFormsFetched(String response);
 
+    void onTaskMembersFetched(String response);
+
     void onEventSubmitted(String response);
+
+    void onDeleted(String response);
 
     void onFailureListener(String message);
 

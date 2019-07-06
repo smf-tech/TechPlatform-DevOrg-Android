@@ -3,13 +3,18 @@ package com.platform.models.events;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AddForm {
+import java.io.Serializable;
+
+public class AddForm implements Serializable {
     @SerializedName("_id")
     @Expose
     private String id;
     @SerializedName("name")
     @Expose
     private FormName name;
+    @SerializedName("entity_id")
+    @Expose
+    private String entityId;
 
     public String getId() {
         return id;
@@ -27,7 +32,15 @@ public class AddForm {
         this.name = name;
     }
 
-    public class FormName{
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    public class FormName implements Serializable{
         @SerializedName("default")
         @Expose
         private String _default;

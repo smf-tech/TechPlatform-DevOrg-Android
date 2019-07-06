@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.platform.models.LocaleData;
 import com.platform.models.common.Category;
 import com.platform.models.common.Microservice;
+import com.platform.models.events.Participant;
 import com.platform.models.forms.Components;
 import com.platform.models.reports.ReportCategory;
 
@@ -127,4 +128,27 @@ public class DataConverter implements Serializable {
         }.getType();
         return gson.fromJson(category, type);
     }
+
+//    @TypeConverter // note this annotation
+//    public String fromParticipant(Participant category) {
+//        if (category == null) {
+//            return (null);
+//        }
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<ReportCategory>() {
+//        }.getType();
+//        return gson.toJson(category, type);
+//    }
+//
+//    @TypeConverter // note this annotation
+//    public Participant toParticipant(String category) {
+//        if (category == null) {
+//            return (null);
+//        }
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<Participant>() {
+//        }.getType();
+//        return gson.fromJson(category, type);
+//    }
+
 }

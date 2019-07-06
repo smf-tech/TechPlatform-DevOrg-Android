@@ -75,6 +75,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
+import static com.platform.utility.Constants.DATE_TIME_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -463,7 +464,7 @@ public class Util {
         return timestamp.getTime();
     }
 
-    public static String getDateFromTimestamp(long date) {
+    public static String getDateTimeFromTimestamp(long date) {
         if (date > 0) {
             try {
                 int length = (int) (Math.log10(date) + 1);
@@ -479,17 +480,33 @@ public class Util {
         return "";
     }
 
-    public static String getTimeFromTimeStamp(Long timeStamp) {
+    public static Long dateTimeToTimeStamp(String strDate, String strTime) {
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault());
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
+            date = formatter.parse(strDate + " " + strTime);
+            return date.getTime();
+        } catch (ParseException e) {
             Log.e("TAG", e.getMessage());
+        }
+
+        return 0L;
+    }
+
+
+    public static String getDateFromTimestamp(Long timeStamp, String dateTimeFormat) {
+        if (timeStamp > 0) {
+            try {
+                int length = (int) (Math.log10(timeStamp) + 1);
+                if (length == 10) {
+                    timeStamp = timeStamp * 1000;
+                }
+                Date d = new Timestamp(timeStamp);
+
+                return getFormattedDate(d.toString(), dateTimeFormat);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
         return "";
     }

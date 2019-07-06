@@ -338,5 +338,7 @@
     <string name="msg_enter_address">Please enter the address.</string>
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+    <string name="generate_code">Generate attendance code</string>
+    <string name="details">Details</string>
 
 </resources>

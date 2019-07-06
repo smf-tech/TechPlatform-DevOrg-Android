@@ -24,11 +24,10 @@
                 android:background="?attr/colorPrimary">
 
                 <TextView
-                    android:id="@+id/events_toolbar_title"
+                    android:id="@+id/tv_toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/events"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18"
                     android:textStyle="bold" />
@@ -157,7 +156,8 @@
             android:layout_marginBottom="@dimen/dimen_20dp"
             android:text="@string/all_events"
             android:textColor="@color/tab_selector"
-            android:textSize="@dimen/text_size_16" />
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bt_add_events"

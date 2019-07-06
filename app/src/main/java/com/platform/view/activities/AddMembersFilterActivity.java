@@ -518,11 +518,6 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
     @Override
     public void showMember(ArrayList<Participant> memberList) {
-//        ArrayList<Participant> membersList = new ArrayList<>();
-//        membersList.add(new Participant("1", "Sagar Mahajan", "DM", true,true));
-//        membersList.add(new Participant("2", "Kishor Shevkar", "TC", false,false));
-//        membersList.add(new Participant("3", "Jagruti Devare", "MT", true,true));
-//        membersList.add(new Participant("4", "Sachin Kakade", "FA", false,false));
         Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
         intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);

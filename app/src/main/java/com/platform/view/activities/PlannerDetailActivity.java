@@ -24,21 +24,22 @@ public class PlannerDetailActivity extends BaseActivity {
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, false);
-
         switch (toOpen) {
             case "ATTENDANCE":
 
                 break;
-            case "EVENTS":
+            case "Event":
+                bundle.putString(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 Fragment eventsPlannerFragment = new EventsPlannerFragment();
                 eventsPlannerFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fly_events_list, eventsPlannerFragment, eventsPlannerFragment.getClass()
                                 .getSimpleName()).commit();
                 break;
-            case "TASKS":
-                Fragment tasksPlannerFragment = new TasksPlannerFragment();
+            case "Task":
+                bundle.putString(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+//                Fragment tasksPlannerFragment = new TasksPlannerFragment();
+                Fragment tasksPlannerFragment = new EventsPlannerFragment();
                 tasksPlannerFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fly_events_list, tasksPlannerFragment, tasksPlannerFragment.getClass()

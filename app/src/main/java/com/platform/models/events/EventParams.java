@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class EventParams {
+    @SerializedName("type")
+    @Expose
+    private String type;
     @SerializedName("month")
     @Expose
     private String month;
@@ -16,6 +19,14 @@ public class EventParams {
     @SerializedName("userId")
     @Expose
     private String userId;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getMonth() {
         return month;

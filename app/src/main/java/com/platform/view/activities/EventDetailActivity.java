@@ -1,40 +1,40 @@
 package com.platform.view.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.events.AddForm;
 import com.platform.models.events.Event;
+import com.platform.models.events.GetAttendanceCodeResponse;
 import com.platform.models.events.Participant;
-import com.platform.models.events.TaskForm;
+import com.platform.models.events.SetAttendanceCodeRequest;
 import com.platform.presenter.EventDetailPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.adapters.AddMembersListAdapter;
 import com.platform.view.adapters.TaskFormsListAdapter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class EventDetailActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
 
@@ -42,12 +42,12 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
     private ImageView backButton;
     private ImageView editButton;
-    private RecyclerView rvAttendeesList;
     private RecyclerView rvFormsList;
+    private LinearLayout lyMembarlistCode;
     private FrameLayout lyGreyedOut;
-    private Button btAttendance;
-    private Button btParticipantsList;
-    private boolean isMemberListVisible;
+    private Button btGetCode, btSetCode;
+    private Button btParticipants;
+    private Button btCompleteTask;
     private String toOpen;
     private Snackbar snackbar;
 
@@ -73,45 +73,48 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         backButton = findViewById(R.id.toolbar_back_action);
         editButton = findViewById(R.id.toolbar_edit_action);
-        editButton.setVisibility(View.VISIBLE);
         lyGreyedOut = findViewById(R.id.ly_greyed_out);
+        lyMembarlistCode = findViewById(R.id.ly_membarlist_code);
 
         TextView tvTitle = findViewById(R.id.tv_title);
         TextView tvDescription = findViewById(R.id.tv_description);
         TextView tvOwner = findViewById(R.id.tv_owner_name);
         TextView tvStartDate = findViewById(R.id.tv_start_date);
-        TextView tvEndDate = findViewById(R.id.tv_start_date);
-        TextView tvTime = findViewById(R.id.tv_time);
+        TextView tvEndDate = findViewById(R.id.tv_end_date);
+        TextView tvStartTime = findViewById(R.id.tv_start_time);
+        TextView tvEndTime = findViewById(R.id.tv_end_time);
         TextView tvAddress = findViewById(R.id.tv_address);
+        ImageView ivEventPic = findViewById(R.id.event_pic);
+        TextView tvMemberCount = findViewById(R.id.tv_member_count);
 
-        btAttendance = findViewById(R.id.bt_attendance);
-        btParticipantsList = findViewById(R.id.bt_participants_list);
-
-        DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        DateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-        SimpleDateFormat weekDay = new SimpleDateFormat("EEEE", Locale.getDefault());
+        btGetCode = findViewById(R.id.bt_get_code);
+        btSetCode = findViewById(R.id.bt_set_code);
+        btParticipants = findViewById(R.id.bt_participants);
+        btCompleteTask = findViewById(R.id.bt_complete_task);
 
         tvTitle.setText(event.getTitle());
         tvDescription.setText(event.getDescription());
-        tvTime.setText(String.format("%s > %s", event.getStartdatetime(), event.getEnddatetime()));
+        tvStartTime.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
+        tvEndTime.setText(Util.getDateFromTimestamp(event.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
         tvAddress.setText(event.getAddress());
-        rvAttendeesList = findViewById(R.id.rv_attendees_list);
+        tvOwner.setText(event.getOwnername());
+        tvStartDate.setText(Util.getDateTimeFromTimestamp(event.getSchedule().getStartdatetime()));
+        tvEndDate.setText(Util.getDateTimeFromTimestamp(event.getSchedule().getEnddatetime()));
+        tvMemberCount.setText(event.getParticipantsCount()+"member added");
+//        event.getAttendedCompleted();
 
-        isMemberListVisible = true;
+        if(event.getThumbnailImage().equals("")){
+            ivEventPic.setVisibility(View.GONE);
+        } else {
+            Glide.with(this)
+                    .load(event.getThumbnailImage())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivEventPic);
+        }
 
-        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            setActionbar(getString(R.string.task_detail));
-            View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
-            TextView tvFormListLabel = findViewById(R.id.tv_form_list_label);
-            vTaskStatusIndicator.setVisibility(View.VISIBLE);
-            tvEndDate.setVisibility(View.VISIBLE);
-            TextView tvEndTime = findViewById(R.id.tv_end_time);
-            tvEndTime.setVisibility(View.VISIBLE);
-            tvEndTime.setText(event.getEnddatetime());
-
-            tvEndDate.setText(event.getEnddatetime());
-
-            tvTime.setText(String.format(event.getStartdatetime()));
+        View vTaskStatusIndicator = findViewById(R.id.task_status_indicator);
+        TextView tvFormListLabel = findViewById(R.id.tv_form_list_label);
+        vTaskStatusIndicator.setVisibility(View.GONE);
 
 //            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
 //                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
@@ -119,25 +122,43 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 //                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
 //            }
 
-//            if (event.getFormsList().size() > 0) {
-//                findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
-//                btEditAttendance.setVisibility(View.GONE);
-//                tvFormListLabel.setVisibility(View.VISIBLE);
-//                tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
-//                        event.getFormsList().size(), getString(R.string.task_form_list_screen_msg)));
-//                rvFormsList = findViewById(R.id.rv_forms_list);
-//                setFormListAdapter(event.getFormsList());
-//            } else {
-//                btEditAttendance.setText(getString(R.string.mark_completed));
-//                tvFormListLabel.setVisibility(View.GONE);
-//            }
+        if (event.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
+            editButton.setVisibility(View.VISIBLE);
+        } else {
+            editButton.setVisibility(View.GONE);
         }
+
+        if (event.getRequiredForms().size() > 0) {
+            findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
+
+            tvFormListLabel.setVisibility(View.VISIBLE);
+            tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
+                    event.getRequiredForms().size(), getString(R.string.task_form_list_screen_msg)));
+            rvFormsList = findViewById(R.id.rv_forms_list);
+            setFormListAdapter(event.getRequiredForms());
+        }
+        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            setActionbar(getString(R.string.task_detail));
+            ivEventPic.setVisibility(View.GONE);
+            tvMemberCount.setVisibility(View.GONE);
+            btCompleteTask.setVisibility(View.VISIBLE);
+        } else {
+            setActionbar(getString(R.string.event_detail));
+            //handling attendance button
+            if (event.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
+                lyMembarlistCode.setVisibility(View.VISIBLE);
+            } else {
+                btSetCode.setVisibility(View.VISIBLE);
+            }
+        }
+
         setListeners();
     }
 
-    private void setFormListAdapter(ArrayList<TaskForm> taskFormsList) {
+    private void setFormListAdapter(ArrayList<AddForm> taskFormsList) {
         TaskFormsListAdapter taskFormsListAdapter = new TaskFormsListAdapter(
-                EventDetailActivity.this, taskFormsList);
+                EventDetailActivity.this, taskFormsList,
+                Locale.getDefault().getLanguage());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvFormsList.setLayoutManager(mLayoutManager);
         rvFormsList.setAdapter(taskFormsListAdapter);
@@ -146,8 +167,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void setListeners() {
         backButton.setOnClickListener(this);
         editButton.setOnClickListener(this);
-        btAttendance.setOnClickListener(this);
-        btParticipantsList.setOnClickListener(this);
+        btGetCode.setOnClickListener(this);
+        btSetCode.setOnClickListener(this);
+        btParticipants.setOnClickListener(this);
+        btCompleteTask.setOnClickListener(this);
         lyGreyedOut.setOnClickListener(this);
     }
 
@@ -164,28 +187,28 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 break;
 
             case R.id.toolbar_edit_action:
-                Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(this, CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
                 intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL, event);
                 this.startActivity(intentCreateEvent);
+                finish();
                 break;
 
-            case R.id.bt_participants_list:
-                if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
-                    Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-                    intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
-//                    intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, event.getMembersList());
-                    this.startActivity(intentAddMembersListActivity);
-                } else if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-//                    Toast.makeText(this, "Status marked as Completed.", Toast.LENGTH_SHORT).show();
-                }
+            case R.id.bt_participants:
+                //see showMemberList()
+                presenter.memberList(event.getId());
                 break;
 
-            case R.id.bt_attendance:
-//                if (Util.isConnected(this))
-                    presenter.getAttendanceCode();
-//                else
-//                    Toast.makeText(this, getString(R.string.interval), Toast.LENGTH_SHORT).show();
+            case R.id.bt_get_code:
+                presenter.getAttendanceCode(event.getId());
+                break;
+
+            case R.id.bt_set_code:
+                setAttendanceCode();
+                break;
+
+            case R.id.bt_complete_task:
+                presenter.setTaskMarkComplete(event.getId());
                 break;
 
             case R.id.ly_greyed_out:
@@ -195,6 +218,71 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         }
     }
 
+    public void getAttendanceCode(GetAttendanceCodeResponse response) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_getattendancecode, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView editText = (TextView) dialogView.findViewById(R.id.tv_code);
+        editText.setText(String.valueOf(response.getAttencdenceCode()));
+//        editText.setText("123456");
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.setTitle("Attendance Code");
+        alertDialog.setMessage("Attendance code to mark attendance is:");
+        alertDialog.setCancelable(false);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void setAttendanceCode() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_setattendance_code, null);
+        dialogBuilder.setView(dialogView);
+
+        EditText editText = (EditText) dialogView.findViewById(R.id.et_code);
+//        editText.setText("123456");
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.setTitle("Attendance Code");
+        alertDialog.setMessage("Please enter attendance code:");
+        alertDialog.setCancelable(false);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (editText.getText().toString().equals("")) {
+                    editText.setError("Please Enter code");
+                } else {
+                    SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
+                    request.setAttendanceCode(editText.getText().toString());
+                    request.setEventId(event.getId());
+                    request.setUserId(Util.getUserObjectFromPref().getId());
+                    alertDialog.dismiss();
+                    presenter.setAttendanceCode(request);
+                }
+
+            }
+        });
+        alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void showMemberList(ArrayList<Participant> memberList) {
+        Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+        intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+        intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
+        this.startActivity(intentAddMembersListActivity);
+    }
 
     @Override
     public void showProgressBar() {

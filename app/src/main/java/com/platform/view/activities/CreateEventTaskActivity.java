@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +29,9 @@ import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.AddForm;
 import com.platform.models.events.Event;
-import com.platform.models.events.EventLocation;
-import com.platform.models.events.EventsResponse;
 import com.platform.models.events.Participant;
-import com.platform.models.events.Recurrence;
-import com.platform.models.events.RegistrationSchedule;
-import com.platform.models.user.UserInfo;
+import com.platform.models.events.Schedule;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.presenter.CreateEventActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -53,7 +48,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class CreateEventActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener,View.OnClickListener, PlatformTaskListener, MultiSelectSpinner.MultiSpinnerListener {
+public class CreateEventTaskActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener,View.OnClickListener, PlatformTaskListener, MultiSelectSpinner.MultiSpinnerListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
@@ -76,6 +71,8 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
     private CheckBox cbIsAttendanceRequired;
     private CheckBox cbIsRegistrationRequired;
     private ImageView eventPic;
+    private ImageView toolbarAction;
+    private RelativeLayout lyEventPic;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -83,10 +80,10 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
     private String mUploadedImageUrl;
 
     ArrayList<AddForm> formsList;
-    private ArrayList<String> selectedForms = new ArrayList<>();
+    private ArrayList<AddForm> selectedForms = new ArrayList<>();
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    private CreateEventActivityPresenter createEventPresenter;
+    private CreateEventActivityPresenter presenter;
     private String toOpen;
     private final String TAG = EditProfileActivity.class.getName();
 
@@ -104,8 +101,8 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
 
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
-        createEventPresenter = new CreateEventActivityPresenter(this);
-        createEventPresenter.getFormData(Util.getUserObjectFromPref().getProjectIds());
+        presenter = new CreateEventActivityPresenter(this);
+        presenter.getFormData(Util.getUserObjectFromPref().getProjectIds());
 
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
@@ -128,6 +125,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         eventPic = findViewById(R.id.event_pic);
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
+        lyEventPic = findViewById(R.id.ly_event_pic);
 
 
         // Task Module UI changes
@@ -144,53 +142,63 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spCategory.setAdapter(adapter);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
+        addMembersListAdapter = new AddMembersListAdapter(CreateEventTaskActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
         rvAttendeesList.setAdapter(addMembersListAdapter);
 
+        btEventSubmit.setText(getString(R.string.btn_submit));
         if (event != null) {
+            setAllData();
+            toolbarAction = findViewById(R.id.toolbar_edit_action);
+            toolbarAction.setVisibility(View.VISIBLE);
+            toolbarAction.setImageResource(R.drawable.ic_delete);
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
-//                etEndDate.setText(Util.getDateFromTimestamp(event.getEventEndDateTime()));
-                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
+                cbIsAttendanceRequired.setVisibility(View.GONE);
+                cbIsRegistrationRequired.setVisibility(View.GONE);
+                lyEventPic.setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.edit_event));
             }
-
-            btEventSubmit.setText(getString(R.string.btn_submit));
-
-            setAllData();
-
-            ImageView toolbarAction = findViewById(R.id.toolbar_edit_action);
-            toolbarAction.setVisibility(View.VISIBLE);
-            toolbarAction.setImageResource(R.drawable.ic_delete);
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-                setActionbar(getString(R.string.create_task));
-                findViewById(R.id.rl_add_members).setVisibility(View.GONE);
-                btEventSubmit.setText(getString(R.string.create_task));
+                setActionbar(getString(R.string.edit_task));
+                cbIsAttendanceRequired.setVisibility(View.GONE);
+                cbIsRegistrationRequired.setVisibility(View.GONE);
+                lyEventPic.setVisibility(View.GONE);
             } else {
                 setActionbar(getString(R.string.create_event));
             }
+
         }
 
         setListeners();
     }
 
     private void setAllData() {
-//        ArrayAdapter myAdapter = (ArrayAdapter) spCategory.getAdapter();
-//        int spinnerPosition = myAdapter.getPosition(event.getEventType());
-//        spCategory.setSelection(spinnerPosition);
-//        etTitle.setText(event.getTitle());
-//        etStartDate.setText(Util.getDateFromTimestamp(event.getEventStartDateTime()));
-//        etStartTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
-//        etEndTime.setText(Util.getTimeFromTimeStamp(event.getEventEndDateTime()));
-//        etDescription.setText(event.getEventDescription());
-//        etAddress.setText(event.getAddress());
-//        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+        etTitle.setText(event.getTitle());
+        etStartDate.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.FORM_DATE));
+        etEndDate.setText(Util.getDateFromTimestamp(event.getSchedule().getEnddatetime(),Constants.FORM_DATE));
+        etStartTime.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.TIME_FORMAT_));
+        etEndTime.setText(Util.getDateFromTimestamp(event.getSchedule().getEnddatetime(),Constants.TIME_FORMAT_));
+        etDescription.setText(event.getDescription());
+        etAddress.setText(event.getAddress());
+
+        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
 //            setAdapter(event.getMembersList());
-//        }
+            cbIsAttendanceRequired.setChecked(event.isMarkAttendanceRequired());
+            cbIsRegistrationRequired.setChecked(event.isRegistrationRequired());
+            if(event.isRegistrationRequired()){
+                findViewById(R.id.tly_registration_start_date).setVisibility(View.VISIBLE);
+                findViewById(R.id.tly_registration_end_date).setVisibility(View.VISIBLE);
+                etRegistrationStartDate.setText(Util.getDateFromTimestamp(event.getRegistrationSchedule()
+                        .getStartdatetime(),Constants.FORM_DATE));
+                etRegistrationEndDate.setText(Util.getDateFromTimestamp(event.getRegistrationSchedule()
+                        .getStartdatetime(),Constants.FORM_DATE));
+            }
+        }
+
     }
 
     private void setListeners() {
@@ -206,6 +214,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         etRegistrationStartDate.setOnClickListener(this);
         etRegistrationEndDate.setOnClickListener(this);
         eventPic.setOnClickListener(this);
+        toolbarAction.setOnClickListener(this);
     }
 
     private void setAdapter(ArrayList<Participant> participants) {
@@ -224,34 +233,42 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
             case R.id.toolbar_back_action:
                 finish();
                 break;
+            case R.id.toolbar_edit_action:
+                presenter.delete(event.getId());
+                break;
 
             case R.id.et_start_date:
-                Util.showDateDialogMin(CreateEventActivity.this, findViewById(R.id.et_start_date));
+                Util.showDateDialogMin(CreateEventTaskActivity.this, findViewById(R.id.et_start_date));
                 break;
 
             case R.id.et_end_date:
-                Util.showDateDialogMin(CreateEventActivity.this, findViewById(R.id.et_end_date));
+                Util.showDateDialogMin(CreateEventTaskActivity.this, findViewById(R.id.et_end_date));
                 break;
 
             case R.id.et_start_time:
-                Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_start_time));
+                Util.showTimeDialog(CreateEventTaskActivity.this, findViewById(R.id.et_start_time));
                 break;
 
             case R.id.et_end_time:
-                Util.showTimeDialog(CreateEventActivity.this, findViewById(R.id.et_end_time));
+                Util.showTimeDialog(CreateEventTaskActivity.this, findViewById(R.id.et_end_time));
                 break;
 
             case R.id.et_add_members:
-                Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
-                this.startActivityForResult(intentAddMemberFilerActivity, Constants.Planner.MEMBER_LIST);
+                if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+                    presenter.taskMemberList();
+                } else {
+                    Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
+                    this.startActivityForResult(intentAddMemberFilerActivity, Constants.Planner.MEMBER_LIST);
+                }
+
                 break;
 
             case R.id.et_registration_start_date:
-                Util.showDateDialogMin(CreateEventActivity.this, findViewById(R.id.et_registration_start_date));
+                Util.showDateDialogMin(CreateEventTaskActivity.this, findViewById(R.id.et_registration_start_date));
                 break;
 
             case R.id.et_registration_end_date:
-                Util.showDateDialogMin(CreateEventActivity.this, findViewById(R.id.et_registration_end_date));
+                Util.showDateDialogMin(CreateEventTaskActivity.this, findViewById(R.id.et_registration_end_date));
                 break;
 
             case R.id.event_pic:
@@ -295,7 +312,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
                 selectedForms.clear();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
-                        selectedForms.add(formsList.get(i).getId());
+                        selectedForms.add(formsList.get(i));
                     }
                 }
                 break;
@@ -306,40 +323,43 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
     private void submitDetails() {
         if(isAllInputsValid()){
             Event event = new Event();
-            event.setType("Event");
+            if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+                event.setType(toOpen);
+            } else {
+                event.setType(toOpen);
+            }
+
             event.setTitle(etTitle.getText().toString());
             event.setDescription(etDescription.getText().toString());
-//            event.setStartdatetime(etStartDate.getText().toString() + " " + etStartTime.getText().toString());
-            event.setStartdatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()).toString());
-//            event.setEnddatetime(etEndDate.getText().toString() + " " + etEndTime.getText().toString());
-            event.setEnddatetime(dateTimeToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()).toString());
+            Schedule eventSchedule = new Schedule();
+            eventSchedule.setStartdatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+            eventSchedule.setEnddatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+            event.setSchedule(eventSchedule);
             event.setAddress(etAddress.getText().toString());
 //          event.setOrganizer(Util.getUserObjectFromPref().getId());
             event.setRegistrationRequired(cbIsRegistrationRequired.isChecked());
             event.setMarkAttendanceRequired(cbIsAttendanceRequired.isChecked());
 
             if(cbIsRegistrationRequired.isChecked()){
-                RegistrationSchedule obj = new RegistrationSchedule();
-//                obj.setStartdatetime(etRegistrationStartDate.getText().toString());
-//                obj.setEnddatetime(etRegistrationEndDate.getText().toString());
-                obj.setStartdatetime(dateToTimeStamp(etRegistrationStartDate.getText().toString()).toString());
-                obj.setEnddatetime(dateToTimeStamp(etRegistrationEndDate.getText().toString()).toString());
+                Schedule obj = new Schedule();
+                obj.setStartdatetime(dateTimeToTimeStamp(etRegistrationStartDate.getText().toString(),"00:00"));
+                obj.setEnddatetime(dateTimeToTimeStamp(etRegistrationEndDate.getText().toString(),"00:00"));
                 event.setRegistrationSchedule(obj);
             }
 
-            event.setSelectedForms(selectedForms);
+            event.setRequiredForms(selectedForms);
             event.setParticipants(membersList);
             if (mImageUploaded && !TextUtils.isEmpty(mUploadedImageUrl)) {
                 event.setThumbnailImage(mUploadedImageUrl);
             } else {
-                // Set old profile url if profile unchanged
+                // Set old image url if image unchanged
                 if (!TextUtils.isEmpty(event.getThumbnailImage())) {
                     event.setThumbnailImage(event.getThumbnailImage());
                 }
             }
 
             //put in response of above api
-            createEventPresenter.submitEvent(event);
+            presenter.submitEvent(event);
         }
     }
 
@@ -379,7 +399,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             date = formatter.parse(strDate + " " + strTime);
-            return date.getTime()/1000;
+            return date.getTime();
         } catch (ParseException e) {
             Log.e("TAG", e.getMessage());
         }
@@ -391,7 +411,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
             date = formatter.parse(myDate);
-            return date.getTime()/1000;
+            return date.getTime();
         } catch (ParseException e) {
             Log.e("TAG", e.getMessage());
         }
@@ -479,10 +499,11 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         if (requestCode == Constants.Planner.MEMBER_LIST && data != null) {
             membersList = (ArrayList<Participant>) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
             RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
-            addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
+            addMembersListAdapter = new AddMembersListAdapter(CreateEventTaskActivity.this, membersList, false, false);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             rvAttendeesList.setLayoutManager(mLayoutManager);
             rvAttendeesList.setAdapter(addMembersListAdapter);
+            etAddMembers.setText(membersList.size()+" members selected");
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
                 String imageFilePath = getImageName();
@@ -512,7 +533,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
 
                 if (Util.isConnected(this)) {
-                    createEventPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_EVENT);
+                    presenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_EVENT);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
@@ -547,6 +568,7 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
 
     @Override
     public <T> void showNextScreen(T data) {
+        runOnUiThread(() -> Util.showToast(data.toString(), this));
         finish();
     }
 
@@ -568,6 +590,29 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
                 displayFormList.add(obj.getName().getDefault());
         }
         spAddForms.setItems(displayFormList, getString(R.string.select_forms), this);
+        if (event != null) {
+            if (event.getRequiredForms() != null && event.getRequiredForms().size() > 0) {
+//            showOrganizationProjects(projectData);
+
+                boolean[] selectedValues = new boolean[formslist.size()];
+                for (int formIndex = 0; formIndex < formslist.size(); formIndex++) {
+                    selectedValues[formIndex]
+                            = isContainsValue(event.getRequiredForms(), formslist.get(formIndex).getId());
+                }
+
+                spAddForms.setSelectedValues(selectedValues);
+                spAddForms.setPreFilledText();
+            }
+        }
+    }
+
+    private boolean isContainsValue(ArrayList<AddForm> projects, String value) {
+        for (AddForm project : projects) {
+            if (project.getId().equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onImageUploaded(String uploadedImageUrl) {
@@ -575,4 +620,11 @@ public class CreateEventActivity extends BaseActivity implements CompoundButton.
         mUploadedImageUrl = uploadedImageUrl;
     }
 
+    public void showMemberList(ArrayList<Participant> data) {
+        Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+        intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+        intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, data);
+        this.startActivity(intentAddMembersListActivity);
+    }
 }

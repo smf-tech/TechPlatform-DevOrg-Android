@@ -44,26 +44,19 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public void onBindViewHolder(@NonNull EventListAdapter.ViewHolder holder, int position) {
 
         Event event = eventsList.get(position);
-//        holder.tvEventTitle.setText(event.getEventName());
-//        holder.tvEventTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
-//        holder.tvEventAddress.setText(event.getAddress());
-//        holder.tvEventOwner.setText(event.getOrganizer());
-//
-//        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-//            holder.vTaskStatusIndicator.setVisibility(View.VISIBLE);
+        holder.tvEventTitle.setText(event.getTitle());
+        holder.tvEventTime.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.DAY_MONTH_YEAR));
+        holder.tvEventAddress.setText(event.getAddress());
+        holder.tvEventOwner.setText(event.getOwnername());
+
+        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+            holder.vTaskStatusIndicator.setVisibility(View.VISIBLE);
 //            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
 //                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
 //            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
 //                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
 //            }
-//        }
-
-        holder.lyEvent.setOnClickListener(v -> {
-            Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
-            intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL, event);
-            intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN, type);
-            mContext.startActivity(intentEventDetailActivity);
-        });
+        }
 
         if (position == (eventsList.size() - 1)) {
             holder.ivDottedLine.setVisibility(View.GONE);
@@ -96,6 +89,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             imgArrow = itemView.findViewById(R.id.iv_left_icon);
             vTaskStatusIndicator = itemView.findViewById(R.id.task_status_indicator);
             ivDottedLine = itemView.findViewById(R.id.iv_dotted_line);
+
+            lyEvent.setOnClickListener(v -> {
+                Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
+                intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL, eventsList.get(getAdapterPosition()));
+                intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN, type);
+                mContext.startActivity(intentEventDetailActivity);
+            });
         }
     }
 }

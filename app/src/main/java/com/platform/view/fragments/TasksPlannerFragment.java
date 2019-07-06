@@ -26,10 +26,9 @@ import com.platform.R;
 import com.platform.models.events.Event;
 import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
-import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
-import com.platform.view.activities.CreateEventActivity;
+import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.adapters.EventListAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -168,8 +167,8 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void setActionbar(String title) {
-        TextView toolbar_title = tasksPlannerView.findViewById(R.id.events_toolbar_title);
-        toolbar_title.setText(title);
+//        TextView toolbar_title = tasksPlannerView.findViewById(R.id.events_toolbar_title);
+//        toolbar_title.setText(title);
     }
 
     private void setListeners() {
@@ -200,7 +199,7 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
                 break;
 
             case R.id.bt_add_events:
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
                 this.startActivity(intentCreateEvent);
                 break;

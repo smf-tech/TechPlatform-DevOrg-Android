@@ -76,7 +76,17 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
     }
 
     @Override
+    public void onTaskMembersFetched(String response) {
+        // not used
+    }
+
+    @Override
     public void onEventSubmitted(String response) {
+
+    }
+
+    @Override
+    public void onDeleted(String response) {
 
     }
 
