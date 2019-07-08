@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.leaves.LeaveData;
+import com.platform.utility.Constants;
 
 import java.util.List;
 
@@ -58,8 +59,14 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
         viewHolder.leaveSubHeader.setText("from "+ getDateFromTimestamp
                 (leavesList.get(position).getStartdate(), DAY_MONTH_YEAR)+ " to " + getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
         viewHolder.leaveTitleLayout.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
-        viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves(leavesList.get(position).getId()));
-        viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
+        if(leavesList.get(position).getStatus().equalsIgnoreCase(Constants.Leave.PENDING_STATUS)){
+            viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves(leavesList.get(position).getId()));
+            viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
+        }else{
+            viewHolder.editClick.setVisibility(View.GONE);
+            viewHolder.deleteClick.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

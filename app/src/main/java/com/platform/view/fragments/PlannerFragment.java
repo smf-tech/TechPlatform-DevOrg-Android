@@ -334,7 +334,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 intent.putExtra("title", getActivity().getString(R.string.leave));
                 intent.putExtra("switch_fragments", "LeaveDetailsFragment");
                 intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-//                    intent.putExtra("leaveDetail", serverResponse);
                 getActivity().startActivity(intent);
             }
         });

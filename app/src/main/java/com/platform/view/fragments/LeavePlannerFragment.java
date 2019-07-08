@@ -82,7 +82,6 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
             case R.id.tv_link_check_leaves:
                 intent.putExtra("title", getString(R.string.leave));
                 intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                intent.putExtra("leaveDetail", serverResponse);
                 startActivity(intent);
                 break;
 

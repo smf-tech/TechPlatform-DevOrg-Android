@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,8 +40,10 @@ import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -263,26 +266,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            /*case R.id.btn_cl:
-                leaveTypeSelected = btnCategoryCL.getText().toString();
-                btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_focused);
-                btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                break;
-
-            case R.id.btn_paid:
-                leaveTypeSelected = btnCategoryPaid.getText().toString();
-                btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_focused);
-                btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                break;
-
-            case R.id.btn_comp_off:
-                leaveTypeSelected = btnCategoryCompOff.getText().toString();
-                btnCategoryCL.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                btnCategoryPaid.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                btnCategoryCompOff.setBackgroundResource(R.drawable.leave_form_view_focused);
-                break;*/
 
             case R.id.btn_half_day:
                 dayLeaveType = 0;
@@ -362,8 +345,8 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     @SuppressLint("SimpleDateFormat")
     private void applyForLeave() {
-        if (selectedLeaveCatgory == null || dayLeaveType == -1 && TextUtils.isEmpty(btnStartDate.getText().toString())
-                && TextUtils.isEmpty(btnEndDate.getText().toString()) ) {
+        if (selectedLeaveCatgory == null || dayLeaveType == -1 || TextUtils.isEmpty(btnStartDate.getText().toString())
+                || TextUtils.isEmpty(btnEndDate.getText().toString()) ) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please enter correct details.",
                     Snackbar.LENGTH_LONG);
@@ -601,6 +584,13 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void closeCurrentActivity() {
         if (getActivity() != null) {
             getActivity().onBackPressed();
+            //getActivity().finish();
+
+//            Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+//            intent.putExtra("title", getActivity().getString(R.string.leave));
+//            intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+//            intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+            //getActivity().startActivity(intent);
         }
     }
 }

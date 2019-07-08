@@ -59,53 +59,6 @@
             app:tabIndicatorColor="@color/white"
             app:tabMode="fixed" />
 
-
-        <!--TextView
-            android:id="@+id/tv_tb_pending"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_pending_tab"
-            android:drawablePadding="-15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/tab_pending_leaves"
-            android:textAllCaps="true"
-            android:textColor="@color/black_green"
-            android:textSize="@dimen/text_size_12" />
-
-        <TextView
-            android:id="@+id/tv_tb_approved"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_approved"
-            android:drawablePadding="-15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/tab_approved_leaves"
-            android:textAllCaps="true"
-            android:textColor="@color/blur_tab"
-            android:textSize="@dimen/text_size_12" />
-
-        <TextView
-            android:id="@+id/tv_tb_rejected"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_rejected"
-            android:drawablePadding="-15dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/tab_rejected_leaves"
-            android:textAllCaps="true"
-            android:textColor="@color/blur_tab"
-            android:textSize="@dimen/text_size_12" /-->
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_applied_leaves_list"
             android:layout_width="match_parent"
@@ -126,6 +79,7 @@
         android:contentDescription="@string/content_description"
         android:elevation="@dimen/dimen_03dp"
         android:scaleType="centerInside"
+        app:layout_anchor="@id/rv_applied_leaves_list"
         android:src="@drawable/ic_plus" />
 
 </FrameLayout>

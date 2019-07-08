@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
@@ -126,14 +127,25 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            serverResponse = bundle.getString("leaveDetail");
             if(bundle.getSerializable("leaveBalance")!=null) {
                 leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
             }
         }
-        Date d = new Date();
-        presenter = new LeavesPresenter(this);
-        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
+        leavesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy < -5 && imgAddLeaves.getVisibility() != View.VISIBLE) {
+                    imgAddLeaves.setVisibility(View.VISIBLE);
+                } else if (dy > 5 && imgAddLeaves.getVisibility() == View.VISIBLE) {
+                    imgAddLeaves.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        //Date d = new Date();
+//        presenter = new LeavesPresenter(this);
+//        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
         setListData();
         setTabData();
         setUIData();
@@ -232,6 +244,14 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Date d = new Date();
+        presenter = new LeavesPresenter(this);
+        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_add_leaves:
@@ -239,7 +259,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 intent.putExtra("title", getString(R.string.apply_leave));
                 intent.putExtra("isEdit", false);
                 intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-                //intent.putExtra("leaveDetail", serverResponse);
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
                 startActivity(intent);
                 break;
@@ -330,7 +349,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         intent.putExtra("switch_fragments", "LeaveApplyFragment");
 
         startActivity(intent);
-
     }
 
     private void showAlertDialog(String message, String btn1String, String btn2String) {
@@ -414,15 +432,20 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 displayHolidaysOfMonth(holidaysListData);
             }
         }else if(requestID.equals(DELETE_LEAVE)){
-            //serverResponse = response;
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Leave has been deleted successfully.",
+                    Snackbar.LENGTH_LONG);
             int deletePosition = -1;
             for (int i = 0; i<leavesListData.size(); i++) {
                 if(leavesListData.get(i).getId().equals(deleteLeaveId)){
                     deletePosition = i;
+                    break;
                 }
             }
             if(deletePosition>0){
                 leavesListData.remove(deletePosition);
+                filteredLeavesListData.clear();
+                filteredLeavesListData.addAll(leavesListData);
             }
             leavesAdapter.notifyDataSetChanged();
         }
