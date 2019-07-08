@@ -3,16 +3,17 @@ package com.platform.models.leaves;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HolidayData {
+public class YearlyHolidayData {
+
     @SerializedName("_id")
     @Expose
     private String id;
+    @SerializedName("Name")
+    @Expose
+    private String name;
     @SerializedName("holiday_date")
     @Expose
     private long holidayDate;
-    @SerializedName("type")
-    @Expose
-    private String type;
 
     public String getId() {
         return id;
@@ -22,6 +23,14 @@ public class HolidayData {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public long getHolidayDate() {
         return holidayDate;
     }
@@ -29,14 +38,5 @@ public class HolidayData {
     public void setHolidayDate(long holidayDate) {
         this.holidayDate = holidayDate;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
 
 }

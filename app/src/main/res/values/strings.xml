@@ -371,7 +371,8 @@
     <string name="sure_to_delete">Are you sure you want to delete it ?</string>
     <string name="delete">Delete</string>
     <string name="leave_apply_msg1">You will able to see leave balance once you get approval from your manager</string>
-    <string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>
+    <!--<string name="leave_apply_msg">You applied for %1$s leaves from %2$s to %3$s</string>-->
+    <string name="leave_apply_msg">You applied leaves from %1$s to %2$s</string>
     <string name="separator">|</string>
     <string name="never_label">Never</string>
     <string name="please_wait">Please wait…</string>

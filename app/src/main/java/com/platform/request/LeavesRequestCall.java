@@ -198,6 +198,44 @@ public class LeavesRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void getHolidayList(String requestID) {
+
+        Response.Listener<JSONObject> getModulesResponseListener = response -> {
+            if (leavePresenterListener == null) {
+                return;
+            }
+
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    leavePresenterListener.onSuccessListener(requestID,res);
+
+                }
+            } catch (Exception e) {
+                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+            }
+        };
+
+        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+
+        final String getMontlyLeavesUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Leaves.HOLIDAY_LIST);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getMontlyLeavesUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                getModulesResponseListener,
+                getModulesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     private JSONObject createBodyParams(String json) {
         Log.d(TAG, "Request json: " + json);
         try {

@@ -58,5 +58,6 @@ public class Urls {
         public static final String APPLY_LEAVE= "api/createLeave";
         public static final String GET_MONTHLY_LEAVES = "api/getLeavesSummary/%1$s/%2$s";
         public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
+        public static final String HOLIDAY_LIST= "api/getYearHolidayList";
     }
 }

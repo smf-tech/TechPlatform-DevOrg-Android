@@ -317,7 +317,8 @@
     <string name="sure_to_delete">आपणास खात्री आहे की आपण ते हटवू इच्छिता ?</string>
     <string name="delete">हटवा</string>
     <string name="leave_apply_msg1">एकदा आपल्याला आपल्या व्यवस्थापकाकडून मंजुरी मिळाल्यावर आपण सुट्टी शिल्लक पाहू शकाल</string>
-    <string name="leave_apply_msg">तुम्ही %1$s दिवसांच्या सुट्टीसाठी %2$s ते %3$s पर्यंत अर्ज केला आहे</string>
+    <!--<string name="leave_apply_msg">तुम्ही %1$s दिवसांच्या सुट्टीसाठी %2$s ते %3$s पर्यंत अर्ज केला आहे</string>-->
+    <string name="leave_apply_msg">तुम्ही सुट्टीसाठी %1$s ते %2$s पर्यंत अर्ज केला आहे</string>
     <string name="which_day">कोणते दिवस</string>
     <string name="select_all">सर्व निवडा</string>
     <string name="edit">संपादित करा</string>

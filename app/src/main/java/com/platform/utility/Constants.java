@@ -284,7 +284,11 @@ public class Constants {
         public static final String TASKS_KEY = "task";
         public static final String ATTENDANCE_KEY = "attendance";
         public static final String LEAVES_KEY = "leave";
+    }
 
-
+    public static class Leave {
+        public static final String PENDING_STATUS = "Pending";
+        public static final String APPROVED_STATUS = "Approved";
+        public static final String REJECTED_STATUS = "Rejected";
     }
 }

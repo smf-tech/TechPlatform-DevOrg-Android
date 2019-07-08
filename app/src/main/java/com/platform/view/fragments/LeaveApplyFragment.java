@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -286,12 +288,20 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 dayLeaveType = 0;
                 btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_focused);
                 btnFullDay.setBackgroundResource(R.drawable.leave_form_view_unfocused);
+
+                btnEndDate.setEnabled(false);
+                if(!btnStartDate.getText().toString().equalsIgnoreCase("Start Date")){
+                    btnEndDate.setText(btnStartDate.getText().toString());
+                }
                 break;
 
             case R.id.btn_full_day:
                 dayLeaveType = 1;
                 btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_unfocused);
                 btnFullDay.setBackgroundResource(R.drawable.leave_form_view_focused);
+
+                btnEndDate.setEnabled(true);
+                //btnEndDate.setText("");
                 break;
 
             case R.id.btn_apply_leave:
@@ -299,20 +309,28 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btn_start_date:
-                int year = c.get(Calendar.YEAR);
+                /*int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
-//                        (datePicker, year12, month12, day12) -> {
-//                            Calendar calendar = Calendar.getInstance();
-//                            calendar.set(year12, month12, day12);
-//                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
-//                            btnStartDate.setText(format.format(calendar.getTime()));
-//
-//                        }, year, month, day);
-//                datePickerDialog.show();
-                Util.showDateDialogMin(getActivity(), btnStartDate);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
+                        (datePicker, year12, month12, day12) -> {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year12, month12, day12);
+                            SimpleDateFormat format = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
+                            btnStartDate.setText(format.format(calendar.getTime()));
+
+                        }, year, month, day);
+                datePickerDialog.show();*/
+
+                showDateDialogMin(getActivity(), btnStartDate, "StartDate");
+                /*if(dayLeaveType == 0){
+                    btnEndDate.setEnabled(false);
+                    btnEndDate.setText(btnStartDate.getText().toString());
+                }else if(dayLeaveType == 1){
+                    btnEndDate.setEnabled(true);
+                    btnEndDate.setText("");
+                }*/
                 break;
 
             case R.id.btn_end_date:
@@ -331,19 +349,27 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 //                        }, year1, month1, day1);
 //
 //                endDatePickerDialog.show();
-                Util.showDateDialogMin(getActivity(), btnEndDate);
+                if(btnStartDate.getText().length()>0){
+                    showDateDialogMin(getActivity(), btnEndDate, "EndDate");
+                }else{
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please enter start date.",
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
         }
     }
 
     @SuppressLint("SimpleDateFormat")
     private void applyForLeave() {
-        if (leaveTypeSelected != null && dayLeaveType != -1 && !TextUtils.isEmpty(btnStartDate.getText().toString())
-                && !TextUtils.isEmpty(btnEndDate.getText().toString())) {
-            return;
+        if (selectedLeaveCatgory == null || dayLeaveType == -1 && TextUtils.isEmpty(btnStartDate.getText().toString())
+                && TextUtils.isEmpty(btnEndDate.getText().toString()) ) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please enter correct details.",
+                    Snackbar.LENGTH_LONG);
         }
-
-        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
+        else {
+        /*SimpleDateFormat sdf = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
 
@@ -358,34 +384,60 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             endDate = sdf.parse(btnEndDate.getText().toString());
         } catch (ParseException e) {
             Log.e("TAG", "ParseException");
+        }*/
+
+            LeaveData leaveData = new LeaveData();
+            leaveData.setUserId(Util.getUserObjectFromPref().getId());
+            leaveData.setLeaveType(selectedLeaveCatgory);
+            leaveData.setStartdate(Util.dateTimeToTimeStamp(btnStartDate.getText().toString(), "00:00"));
+
+            leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
+            if (dayLeaveType == 0) {
+                leaveData.setFullHalfDay("half day");
+            } else if (dayLeaveType == 1) {
+                leaveData.setFullHalfDay("full day");
+            }
+            leaveData.setReason(edtReason.getText().toString());
+
+            presenter.postUserLeave(leaveData);
         }
-//        jsonData.addProperty("fromDate", startDate != null ? startDate.toString() : btnStartDate.getText().toString());
-//        jsonData.addProperty("toDate", endDate != null ? endDate.toString() : btnEndDate.getText().toString());
-//        jsonData.addProperty("isHalfDay", "12345");
-//        jsonData.addProperty("reason", edtReason.getText().toString());
-//        jsonData.addProperty("numberOfDays", (endDate != null && startDate != null) ? endDate.getTime() - startDate.getTime() : 0);
-//        JsonObject leave = new JsonObject();
-//        leave.addProperty("leaveType", leaveTypeSelected);
-//        leave.addProperty("allocatedLeaves", 5);
-//        JsonArray jsonArray = new JsonArray();
-//        jsonArray.add(leave);
-//        jsonData.add("leaveTypes", jsonArray);
-//        // jsonData.addProperty("status","pending");
+    }
 
-        LeaveData leaveData = new LeaveData();
-        leaveData.setUserId(Util.getUserObjectFromPref().getId());
-        leaveData.setLeaveType(selectedLeaveCatgory);
-        leaveData.setStartdate(Util.dateTimeToTimeStamp(btnStartDate.getText().toString(),"00:00"));
+    private void showDateDialogMin(Context context, final EditText editText, String dateType) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(),"00:00"));
-        if(dayLeaveType==0){
-            leaveData.setFullHalfDay("half day");
-        }else if(dayLeaveType==1){
-            leaveData.setFullHalfDay("full day");
-        }
-        leaveData.setReason(edtReason.getText().toString());
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
 
-        presenter.postUserLeave(leaveData);
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+            if (dateType.equalsIgnoreCase("StartDate")){
+                if (dayLeaveType == 0) {
+                    btnEndDate.setEnabled(false);
+                    btnEndDate.setText(btnStartDate.getText().toString());
+                } else if (dayLeaveType == 1) {
+                    btnEndDate.setEnabled(true);
+                    btnEndDate.setText("");
+                }
+             }else if(dateType.equalsIgnoreCase("EndDate")){
+                if(!isDatesAreValid(btnStartDate.getText().toString(),btnEndDate.getText().toString())){
+                    btnEndDate.setText("");
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please enter proper date range.",
+                            Snackbar.LENGTH_LONG);
+                }
+            }
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        dateDialog.show();
     }
 
     @SuppressWarnings("deprecation")
@@ -466,8 +518,26 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             });
         }
 
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();      // if decline button is clicked, close the custom dialog
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private boolean isDatesAreValid(String startDate, String endDate) {
+        try {
+            DateFormat formatter;
+            Date fromDate, toDate;
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            fromDate = formatter.parse(startDate);
+            toDate = formatter.parse(endDate);
+
+            if (fromDate.before(toDate) || fromDate.equals(toDate)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -493,9 +563,13 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void onSuccessListener(String requestID,String response) {
         if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
             try {
-                showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected,
-                        getCurrentDateInSpecificFormat(btnStartDate.getText().toString(), true),
-                        getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false)),
+                /*showAlertDialog(getString(R.string.leave_apply_msg, leaveTypeSelected,
+                        btnStartDate.getText().toString(),
+                        btnEndDate.getText().toString()),
+                        getString(R.string.leave_apply_msg1), getString(R.string.ok), "");*/
+                showAlertDialog(getString(R.string.leave_apply_msg,
+                        btnStartDate.getText().toString(),
+                        btnEndDate.getText().toString()),
                         getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
             } catch (Exception e) {
                 Log.e("TAG", "Exception");
