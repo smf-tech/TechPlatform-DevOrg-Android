@@ -17,6 +17,7 @@ public class LeavesPresenter implements LeavePresenterListener {
     public static final String GET_USER_LEAVE_DETAILS ="getUsersAllLeavesDetails";
     public static final String GET_LEAVE_DETAILS ="getLeavesData";
     public static final String POST_USER_DETAILS ="postUserLeave";
+    public static final String REQUEST_USER_COMPOFF ="requestUserCompoff";
     public static final String DELETE_LEAVE ="deleteUserLeave";
     public static final String HOLIDAY_LIST ="holiday_list";
 
@@ -47,6 +48,12 @@ public class LeavesPresenter implements LeavePresenterListener {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
         requestCall.postUserLeave(POST_USER_DETAILS,leaveData);
+    }
+
+    public void requestCompOff(LeaveData leaveData) {
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.requestUserCompoff(REQUEST_USER_COMPOFF,leaveData);
     }
 
     public void deleteUserLeave(String leaveId) {

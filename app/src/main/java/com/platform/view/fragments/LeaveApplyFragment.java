@@ -59,17 +59,10 @@ import static com.platform.utility.Util.getDateFromTimestamp;
 
 public class LeaveApplyFragment extends Fragment implements View.OnClickListener, LeaveDataListener {
 
-    /*private TextView tvCLSLLeavesCount;
-    private TextView tvPaidLeavesCount;
-    private TextView tvCOffLeavesCount;
-    private TextView tvTotalLeavesCount;*/
     RecyclerView rvLeaveBalance;
     RecyclerView rvLeaveCategory;
     LeaveBalanceAdapter LeaveAdapterCategory;
     RecyclerView.LayoutManager mLayoutManagerLeaveCategory;
-//    private Button btnCategoryCL;
-//    private Button btnCategoryPaid;
-//    private Button btnCategoryCompOff;
 
     private Button btnHalfDay;
     private Button btnFullDay;
@@ -78,7 +71,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private EditText btnStartDate;
     private EditText btnEndDate;
     private final Calendar c = Calendar.getInstance();
-    private String leaveTypeSelected = null;
+    private String applyType;
     private int dayLeaveType = -1;
     private LeavesPresenter presenter;
     private ArrayList<LeaveDetail> leaveBalance = new ArrayList<>();
@@ -105,22 +98,11 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*tvCLSLLeavesCount = view.findViewById(R.id.tv_leaves_cl);
-        tvPaidLeavesCount = view.findViewById(R.id.tv_leaves_paid);
-        tvCOffLeavesCount = view.findViewById(R.id.tv_leaves_com_off);
-        tvTotalLeavesCount = view.findViewById(R.id.tv_total_leaves_count);*/
 
         rvLeaveBalance = view.findViewById(R.id.rv_leave_balance);
         rvLeaveCategory = view.findViewById(R.id.rv_leave_category);
 
         edtReason = view.findViewById(R.id.edt_reason);
-
-        /*btnCategoryCL = view.findViewById(R.id.btn_cl);
-        btnCategoryCL.setOnClickListener(this);
-        btnCategoryPaid = view.findViewById(R.id.btn_paid);
-        btnCategoryPaid.setOnClickListener(this);
-        btnCategoryCompOff = view.findViewById(R.id.btn_comp_off);
-        btnCategoryCompOff.setOnClickListener(this);*/
 
         btnHalfDay = view.findViewById(R.id.btn_half_day);
         btnHalfDay.setOnClickListener(this);
@@ -147,10 +129,11 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         if (bundle != null) {
             String leaveDetail = bundle.getString("leaveDetail");
             boolean isEdit = bundle.getBoolean("isEdit");
+            applyType = bundle.getString("apply_type");
             leaveBalance.clear();
             leaveBackground.clear();
             if(bundle.getSerializable("leaveBalance")!=null) {
-                leaveBalance.addAll((ArrayList<LeaveDetail>)bundle.getSerializable("leaveBalance"));
+                leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
                 for (LeaveDetail l : leaveBalance) {
                     leaveBackground.add(R.drawable.leave_form_view_unfocused);
                 }
@@ -161,12 +144,14 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
                 rvLeaveBalance.setAdapter(LeaveAdapter);
 
-                mLayoutManagerLeaveCategory = new LinearLayoutManager(getActivity(),
-                        LinearLayoutManager.HORIZONTAL, true);
+                if (applyType.equalsIgnoreCase("Leave")){
+                    mLayoutManagerLeaveCategory = new LinearLayoutManager(getActivity(),
+                            LinearLayoutManager.HORIZONTAL, true);
                 LeaveAdapterCategory = new LeaveBalanceAdapter(this,
-                        leaveBalance, leaveBackground,"Category");
+                        leaveBalance, leaveBackground, "Category");
                 rvLeaveCategory.setLayoutManager(mLayoutManagerLeaveCategory);
                 rvLeaveCategory.setAdapter(LeaveAdapterCategory);
+                }
             }
 
             if (leaveDetail != null) {
@@ -204,6 +189,9 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         setUserDataForEdit(userLeaveDetail);
                     }
                 }
+            }
+            if(applyType.equalsIgnoreCase("Comp-Off")){
+                rvLeaveCategory.setVisibility(View.GONE);
             }
         }
     }
@@ -288,7 +276,12 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btn_apply_leave:
-                applyForLeave();
+                if(applyType.equalsIgnoreCase("Leave")){
+                    applyForLeave();
+                }else if(applyType.equalsIgnoreCase("")){
+                    applyForCompOff();
+                }
+
                 break;
 
             case R.id.btn_start_date:
@@ -340,6 +333,29 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                             Snackbar.LENGTH_LONG);
                 }
                 break;
+        }
+    }
+
+    private void applyForCompOff() {
+        if (dayLeaveType == -1 || TextUtils.isEmpty(btnStartDate.getText().toString())
+                || TextUtils.isEmpty(btnEndDate.getText().toString()) ) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please enter correct details.",
+                    Snackbar.LENGTH_LONG);
+        }else{
+            LeaveData leaveData = new LeaveData();
+            leaveData.setUserId(Util.getUserObjectFromPref().getId());
+            leaveData.setStartdate(Util.dateTimeToTimeStamp(btnStartDate.getText().toString(), "00:00"));
+
+            leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
+            if (dayLeaveType == 0) {
+                leaveData.setFullHalfDay("half day");
+            } else if (dayLeaveType == 1) {
+                leaveData.setFullHalfDay("full day");
+            }
+            leaveData.setReason(edtReason.getText().toString());
+
+            presenter.requestCompOff(leaveData);
         }
     }
 
@@ -554,6 +570,16 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         btnStartDate.getText().toString(),
                         btnEndDate.getText().toString()),
                         getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
+            } catch (Exception e) {
+                Log.e("TAG", "Exception");
+            }
+        }
+        if(requestID.equalsIgnoreCase(LeavesPresenter.REQUEST_USER_COMPOFF)) {
+            try {
+                showAlertDialog(getString(R.string.compoff_requested_msg,
+                        btnStartDate.getText().toString(),
+                        btnEndDate.getText().toString()),
+                        getString(R.string.compoff_requested_msg1), getString(R.string.ok), "");
             } catch (Exception e) {
                 Log.e("TAG", "Exception");
             }

@@ -156,6 +156,46 @@ public class LeavesRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void requestUserCompoff(String requestID, LeaveData leaveData) {
+
+        Response.Listener<JSONObject> getModulesResponseListener = response -> {
+            if (leavePresenterListener == null) {
+                return;
+            }
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "requestUserCompoff - Resp: " + res);
+                    leavePresenterListener.onSuccessListener(requestID,res);
+                }
+            } catch (Exception e) {
+                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+            }
+        };
+
+        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+
+        final String requestUserCompoffUrl = BuildConfig.BASE_URL + String.format(Urls.Leaves.APPLY_LEAVE);
+        Gson gson = new GsonBuilder().create();
+        String parmjson = gson.toJson(leaveData);
+        Log.d(TAG, "requestUserCompoff: url" + requestUserCompoffUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                requestUserCompoffUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                getModulesResponseListener,
+                getModulesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(parmjson));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void deleteUserLeave(String requestID, String leaveId) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {

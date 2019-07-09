@@ -82,4 +82,12 @@
         app:layout_anchor="@id/rv_applied_leaves_list"
         android:src="@drawable/ic_plus" />
 
+    <Button
+        android:id="@+id/btn_compoff_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="@dimen/dimen_25dp"
+        android:text="Request for Comp Off" />
+
 </FrameLayout>

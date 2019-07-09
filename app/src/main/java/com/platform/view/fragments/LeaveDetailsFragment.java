@@ -118,6 +118,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         calendarView = view.findViewById(R.id.calendarView);
         ImageView imgAddLeaves = view.findViewById(R.id.iv_add_leaves);
         imgAddLeaves.setOnClickListener(this);
+        Button btnRequestCompoff = view.findViewById(R.id.btn_compoff_request);
+        btnRequestCompoff.setOnClickListener(this);
         toolBarMenu.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
             intent.putExtra("title", getString(R.string.holiday_list));
@@ -258,9 +260,20 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                 intent.putExtra("title", getString(R.string.apply_leave));
                 intent.putExtra("isEdit", false);
+                intent.putExtra("apply_type", "Leave");
                 intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
                 startActivity(intent);
+                break;
+
+            case R.id.btn_compoff_request:
+                Intent compoffIntent = new Intent(getActivity(), GeneralActionsActivity.class);
+                compoffIntent.putExtra("title", getString(R.string.compoff_request));
+                compoffIntent.putExtra("isEdit", false);
+                compoffIntent.putExtra("apply_type", "Comp-Off");
+                compoffIntent.putExtra("leaveBalance", (Serializable) leaveBalance);
+                compoffIntent.putExtra("switch_fragments", "LeaveApplyFragment");
+                startActivity(compoffIntent);
                 break;
 
             case R.id.tv_calendar_mode:
