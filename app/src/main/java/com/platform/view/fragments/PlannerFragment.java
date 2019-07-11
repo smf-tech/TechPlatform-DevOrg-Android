@@ -202,7 +202,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setAdapter(eventListAdapter);
                     }
 
-
                     break;
                 case Constants.Planner.TASKS_KEY:
                     if(obj.getTaskData()!=null && obj.getTaskData().size()>0) {
