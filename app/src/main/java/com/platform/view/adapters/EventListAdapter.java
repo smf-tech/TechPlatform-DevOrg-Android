@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.EventDetailActivity;
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<Event> eventsList;
+    private ArrayList<EventTask> eventsList;
     private String type;
 
-    public EventListAdapter(Context mContext, ArrayList<Event> eventsList, String type) {
+    public EventListAdapter(Context mContext, ArrayList<EventTask> eventsList, String type) {
         this.mContext = mContext;
         this.eventsList = eventsList;
         this.type = type;
@@ -43,24 +43,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull EventListAdapter.ViewHolder holder, int position) {
 
-        Event event = eventsList.get(position);
-        holder.tvEventTitle.setText(event.getTitle());
-        holder.tvEventTime.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.DAY_MONTH_YEAR));
-        holder.tvEventAddress.setText(event.getAddress());
-        holder.tvEventOwner.setText(event.getOwnername());
+        EventTask eventTask = eventsList.get(position);
+        holder.tvTitle.setText(eventTask.getTitle());
+        holder.tvTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.TIME_FORMAT));
+        holder.tvDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.DAY_MONTH_FORMAT));
+        holder.tvOwner.setText(eventTask.getOwnername());
+        holder.tvAddress.setText(eventTask.getAddress());
+        holder.tvOwner.setText(eventTask.getOwnername());
 
-        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            holder.vTaskStatusIndicator.setVisibility(View.VISIBLE);
-//            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
-//                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-//            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
-//                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-//            }
-        }
-
-        if (position == (eventsList.size() - 1)) {
-            holder.ivDottedLine.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -69,28 +59,29 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout lyEvent;
-        TextView tvEventTitle;
-        TextView tvEventTime;
-        TextView tvEventAddress;
-        TextView tvEventOwner;
-        ImageView imgArrow;
-        ImageView ivDottedLine;
-        View vTaskStatusIndicator;
+        RelativeLayout lyEventTask;
+        TextView tvTitle;
+        TextView tvTime,tvDate;
+        TextView tvAddress;
+        TextView tvOwner;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            lyEvent = itemView.findViewById(R.id.ly_event);
-            tvEventTitle = itemView.findViewById(R.id.tv_event_title);
-            tvEventTime = itemView.findViewById(R.id.tv_event_time);
-            tvEventAddress = itemView.findViewById(R.id.tv_event_address);
-            tvEventOwner = itemView.findViewById(R.id.tv_event_owner);
-            imgArrow = itemView.findViewById(R.id.iv_left_icon);
-            vTaskStatusIndicator = itemView.findViewById(R.id.task_status_indicator);
-            ivDottedLine = itemView.findViewById(R.id.iv_dotted_line);
+            lyEventTask = itemView.findViewById(R.id.ly_event_task);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvTime = itemView.findViewById(R.id.tv_time);
+            tvDate = itemView.findViewById(R.id.tv_date);
+            tvAddress = itemView.findViewById(R.id.tv_address);
+            tvOwner = itemView.findViewById(R.id.tv_owner);
 
-            lyEvent.setOnClickListener(v -> {
+            if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+//                task
+            } else {
+//                event
+            }
+
+            lyEventTask.setOnClickListener(v -> {
                 Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);
                 intentEventDetailActivity.putExtra(Constants.Planner.EVENT_DETAIL, eventsList.get(getAdapterPosition()));
                 intentEventDetailActivity.putExtra(Constants.Planner.TO_OPEN, type);

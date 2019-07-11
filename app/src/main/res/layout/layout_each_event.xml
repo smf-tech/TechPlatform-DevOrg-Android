@@ -1,104 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ly_event"
+    android:id="@+id/ly_event_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/task_status_indicator"
-        android:layout_width="@dimen/form_item_status_indicator_width"
-        android:layout_height="35dp"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/tv_event_title"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_05dp"
-        android:layout_toEndOf="@+id/task_status_indicator"
-        android:maxLines="1"
-        android:textColor="@color/tab_select"
-        android:textSize="@dimen/text_size_14"
-        android:textStyle="bold"
-        android:singleLine="true"/>
+        android:layout_margin="@dimen/dimen_05dp"
+        >
 
-    <TextView
-        android:id="@+id/tv_event_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_event_title"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_toEndOf="@+id/task_status_indicator"
-        android:maxLength="11"
-        android:textColor="@color/light_grey"
-        android:textSize="@dimen/text_size_11" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_circular_rect_white"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_10dp"
+            android:weightSum="10">
 
-    <TextView
-        android:id="@+id/tv_line1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_event_title"
-        android:layout_marginStart="@dimen/dimen_05dp"
-        android:layout_toEndOf="@+id/tv_event_time"
-        android:text="@string/separator"
-        android:textColor="@color/light_grey"
-        android:textSize="@dimen/text_size_11" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:background="@drawable/bg_circular_rect_pink">
 
-    <TextView
-        android:id="@+id/tv_event_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_event_title"
-        android:layout_marginStart="@dimen/dimen_05dp"
-        android:layout_toEndOf="@+id/tv_line1"
-        android:maxLength="30"
-        android:textColor="@color/light_grey"
-        android:textSize="@dimen/text_size_11" />
+                <TextView
+                    android:id="@+id/tv_date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:text="Date"
+                    android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/tv_line2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_event_title"
-        android:layout_marginStart="@dimen/dimen_05dp"
-        android:layout_toEndOf="@+id/tv_event_address"
-        android:text="@string/separator"
-        android:textColor="@color/light_grey"
-        android:textSize="@dimen/text_size_11" />
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_date_label"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:maxLength="11"
+                    android:text="03 may"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_event_owner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_event_title"
-        android:layout_marginStart="@dimen/dimen_05dp"
-        android:layout_toEndOf="@+id/tv_line2"
-        android:maxLength="22"
-        android:textColor="@color/light_grey"
-        android:textSize="@dimen/text_size_11" />
+                <ImageView
+                    android:id="@+id/iv_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_03dp"
+                    android:layout_below="@+id/tv_date"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:contentDescription="@string/content_description"
+                    android:layerType="software"
+                    android:src="@drawable/line" />
 
-    <ImageView
-        android:id="@+id/iv_left_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:contentDescription="@string/content_description"
-        android:src="@drawable/ic_right_arrow_grey" />
+                <TextView
+                    android:id="@+id/tv_time_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_line"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:text="Time"
+                    android:textColor="@color/white" />
 
-    <ImageView
-        android:id="@+id/iv_dotted_line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_03dp"
-        android:layout_below="@+id/tv_event_time"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:contentDescription="@string/content_description"
-        android:layerType="software"
-        android:src="@drawable/dotted_line" />
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_time_label"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:maxLength="11"
+                    android:text="10:30 AM"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="8">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Title "
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:maxLength="30"
+                    android:text="SB road, pune, maharashtra."
+                    android:textSize="@dimen/text_size_11" />
+
+                <TextView
+                    android:id="@+id/tv_owner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_address"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:maxLength="22"
+                    android:text="Sachin Kakade"
+                    android:textSize="@dimen/text_size_11" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

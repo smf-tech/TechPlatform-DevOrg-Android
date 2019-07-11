@@ -2,6 +2,8 @@ package com.platform.models.events;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -14,98 +16,75 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class Event implements Serializable {
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+public class EventTask implements Serializable {
     @SerializedName("_id")
-    @NonNull
     @Expose
     private String id;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("ownerid")
     @Expose
     private String ownerid;
 
-    @ColumnInfo(name = "ownername")
     @SerializedName("ownername")
     @Expose
     private String ownername;
 
-    @ColumnInfo(name = "type")
     @SerializedName("type")
     @Expose
     private String type;
 
-    @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
     private String title;
 
-    @ColumnInfo(name = "description")
     @SerializedName("description")
     @Expose
     private String description;
 
-    @ColumnInfo(name = "thumbnail_image")
     @SerializedName("thumbnail_image")
     @Expose
     private String thumbnailImage;
 
-    @ColumnInfo(name = "address")
     @SerializedName("address")
     @Expose
     private String address;
 
-    @TypeConverters(DataConverter.class)
-    @ColumnInfo(name = "participants")
     @SerializedName("participants")
     @Expose
-    private List<Participant> participants = null;
+    private List<Participant> participants;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("registration_required")
     @Expose
     private boolean registrationRequired;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("registration_schedule")
     @Expose
-    private Schedule registrationSchedule = null;
+    private Schedule registrationSchedule;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("is_mark_attendance_required")
     @Expose
     private boolean isMarkAttendanceRequired;
 
-    @TypeConverters(DataConverter.class)
-    @ColumnInfo(name = "ownerid")
     @SerializedName("schedule")
     @Expose
     private Schedule schedule;
 
-    @TypeConverters(DataConverter.class)
-    @ColumnInfo(name = "ownerid")
     @SerializedName("required_forms")
     @Expose
-    private ArrayList<AddForm> requiredForms = null;
+    private ArrayList<AddForm> requiredForms;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("event_status")
     @Expose
     private String eventStatus;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("mark_complete")
     @Expose
     private Boolean markComplete;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("participants_count")
     @Expose
     private Integer participantsCount;
 
-    @ColumnInfo(name = "ownerid")
     @SerializedName("attended_completed")
     @Expose
     private Integer attendedCompleted;

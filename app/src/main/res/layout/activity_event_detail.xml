@@ -67,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
+                        android:textSize="@dimen/text_size_16"
                         android:text="@string/task_description"
 
                         />
@@ -88,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_description"
                         android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/text_size_16"
                         android:gravity="center"
                         android:text="@string/details" />
 
@@ -204,6 +206,7 @@
                         android:layout_below="@+id/tv_end_time"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dimen_05dp"
+                        android:textSize="@dimen/text_size_16"
                         android:gravity="center"
                         android:text="@string/where" />
 

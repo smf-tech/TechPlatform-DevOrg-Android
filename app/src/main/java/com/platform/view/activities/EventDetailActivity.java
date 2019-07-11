@@ -24,7 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.AddForm;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.events.GetAttendanceCodeResponse;
 import com.platform.models.events.Participant;
 import com.platform.models.events.SetAttendanceCodeRequest;
@@ -38,7 +38,7 @@ import java.util.Locale;
 
 public class EventDetailActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
 
-    private Event event;
+    private EventTask eventTask;
 
     private ImageView backButton;
     private ImageView editButton;
@@ -65,7 +65,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
     private void initView() {
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
-        event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
+        eventTask = (EventTask) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
@@ -92,22 +92,22 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         btParticipants = findViewById(R.id.bt_participants);
         btCompleteTask = findViewById(R.id.bt_complete_task);
 
-        tvTitle.setText(event.getTitle());
-        tvDescription.setText(event.getDescription());
-        tvStartTime.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
-        tvEndTime.setText(Util.getDateFromTimestamp(event.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
-        tvAddress.setText(event.getAddress());
-        tvOwner.setText(event.getOwnername());
-        tvStartDate.setText(Util.getDateTimeFromTimestamp(event.getSchedule().getStartdatetime()));
-        tvEndDate.setText(Util.getDateTimeFromTimestamp(event.getSchedule().getEnddatetime()));
-        tvMemberCount.setText(event.getParticipantsCount()+"member added");
-//        event.getAttendedCompleted();
+        tvTitle.setText(eventTask.getTitle());
+        tvDescription.setText(eventTask.getDescription());
+        tvStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
+        tvEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
+        tvAddress.setText(eventTask.getAddress());
+        tvOwner.setText(eventTask.getOwnername());
+        tvStartDate.setText(Util.getDateTimeFromTimestamp(eventTask.getSchedule().getStartdatetime()));
+        tvEndDate.setText(Util.getDateTimeFromTimestamp(eventTask.getSchedule().getEnddatetime()));
+        tvMemberCount.setText(eventTask.getParticipantsCount()+" member added");
+//        eventTask.getAttendedCompleted();
 
-        if(event.getThumbnailImage().equals("")){
+        if(eventTask.getThumbnailImage().equals("")){
             ivEventPic.setVisibility(View.GONE);
         } else {
             Glide.with(this)
-                    .load(event.getThumbnailImage())
+                    .load(eventTask.getThumbnailImage())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivEventPic);
         }
@@ -116,26 +116,26 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         TextView tvFormListLabel = findViewById(R.id.tv_form_list_label);
         vTaskStatusIndicator.setVisibility(View.GONE);
 
-//            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
+//            if (eventTask.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
 //                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
-//            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
+//            } else if (eventTask.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
 //                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
 //            }
 
-        if (event.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
+        if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
             editButton.setVisibility(View.VISIBLE);
         } else {
             editButton.setVisibility(View.GONE);
         }
 
-        if (event.getRequiredForms().size() > 0) {
+        if (eventTask.getRequiredForms().size() > 0) {
             findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
 
             tvFormListLabel.setVisibility(View.VISIBLE);
             tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
-                    event.getRequiredForms().size(), getString(R.string.task_form_list_screen_msg)));
+                    eventTask.getRequiredForms().size(), getString(R.string.task_form_list_screen_msg)));
             rvFormsList = findViewById(R.id.rv_forms_list);
-            setFormListAdapter(event.getRequiredForms());
+            setFormListAdapter(eventTask.getRequiredForms());
         }
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
@@ -145,7 +145,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         } else {
             setActionbar(getString(R.string.event_detail));
             //handling attendance button
-            if (event.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
+            if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
                 lyMembarlistCode.setVisibility(View.VISIBLE);
             } else {
                 btSetCode.setVisibility(View.VISIBLE);
@@ -189,18 +189,18 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             case R.id.toolbar_edit_action:
                 Intent intentCreateEvent = new Intent(this, CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
-                intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL, event);
+                intentCreateEvent.putExtra(Constants.Planner.EVENT_DETAIL, eventTask);
                 this.startActivity(intentCreateEvent);
                 finish();
                 break;
 
             case R.id.bt_participants:
                 //see showMemberList()
-                presenter.memberList(event.getId());
+                presenter.memberList(eventTask.getId());
                 break;
 
             case R.id.bt_get_code:
-                presenter.getAttendanceCode(event.getId());
+                presenter.getAttendanceCode(eventTask.getId());
                 break;
 
             case R.id.bt_set_code:
@@ -208,7 +208,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 break;
 
             case R.id.bt_complete_task:
-                presenter.setTaskMarkComplete(event.getId());
+                presenter.setTaskMarkComplete(eventTask.getId());
                 break;
 
             case R.id.ly_greyed_out:
@@ -260,7 +260,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 } else {
                     SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
                     request.setAttendanceCode(editText.getText().toString());
-                    request.setEventId(event.getId());
+                    request.setEventId(eventTask.getId());
                     request.setUserId(Util.getUserObjectFromPref().getId());
                     alertDialog.dismiss();
                     presenter.setAttendanceCode(request);

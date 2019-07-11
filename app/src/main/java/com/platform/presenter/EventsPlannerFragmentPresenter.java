@@ -51,7 +51,12 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
             if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
                 fragmentWeakReference.get().hideProgressBar();
-                fragmentWeakReference.get().displayEventsListOfDay(data.getData());
+                if(data.getStatus()==200){
+                    fragmentWeakReference.get().displayEventsListOfDay(data.getData());
+                } else {
+                    onFailureListener(data.getMessage());
+                }
+
             }
         }
     }
@@ -65,7 +70,11 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
             if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
                 fragmentWeakReference.get().hideProgressBar();
-                fragmentWeakReference.get().displayEventsListOfMonth(data.getData());
+                if(data.getStatus()==200){
+                    fragmentWeakReference.get().displayEventsListOfMonth(data.getData());
+                } else {
+                    onFailureListener(data.getMessage());
+                }
             }
         }
     }

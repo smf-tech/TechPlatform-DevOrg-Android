@@ -11,7 +11,7 @@ import com.platform.listeners.ImageRequestCallListener;
 import com.platform.models.events.AddForm;
 import com.platform.models.events.AddFormsResponse;
 import com.platform.models.events.CommonResponse;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.events.EventMemberLestResponse;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.request.EventRequestCall;
@@ -42,12 +42,12 @@ public class CreateEventActivityPresenter implements CreateEventListener, ImageR
         requestCall.getFormData(projectIds);
     }
 
-    public void submitEvent(Event event) {
+    public void submitEvent(EventTask eventTask) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
         activity.get().showProgressBar();
-        requestCall.submitEvent(event);
+        requestCall.submitEvent(eventTask);
     }
 
     public void taskMemberList() {

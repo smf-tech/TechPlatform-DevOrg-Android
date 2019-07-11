@@ -1,31 +1,25 @@
 package com.platform.request;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.AddMemberRequestCallListener;
 import com.platform.listeners.CreateEventListener;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.events.EventParams;
 import com.platform.models.events.ParametersFilterMember;
 import com.platform.models.profile.JurisdictionType;
-import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
-import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -122,7 +116,7 @@ public class EventRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void submitEvent(Event event) {
+    public void submitEvent(EventTask eventTask) {
         Response.Listener<JSONObject> orgSuccessListener = response -> {
             try {
                 if (response != null) {
@@ -140,7 +134,7 @@ public class EventRequestCall {
 
         final String eventSubmitUrl = BuildConfig.BASE_URL + Urls.Events.SUBMIT_EVENT_TASK;
         Gson gson = new GsonBuilder().create();
-        String parmjson = gson.toJson(event);
+        String parmjson = gson.toJson(eventTask);
         Log.d(TAG, "SUBMIT_EVENT_TASK: url" + eventSubmitUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(

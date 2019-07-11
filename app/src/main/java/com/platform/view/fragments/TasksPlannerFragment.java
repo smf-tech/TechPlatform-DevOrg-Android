@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
 import com.platform.utility.Constants;
@@ -62,8 +62,8 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private boolean isDashboard;
 
     private EventListAdapter taskListAdapter;
-    private ArrayList<Event> taskList;
-    private ArrayList<Event> sortedTaskList;
+    private ArrayList<EventTask> taskList;
+    private ArrayList<EventTask> sortedTaskList;
 
     public TasksPlannerFragment() {
         // Required empty public constructor
@@ -108,11 +108,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         taskFormsList.add(new TaskForm("2", "Testing Form 2", Constants.Planner.COMPLETED_STATUS));
         taskFormsList.add(new TaskForm("3", "Testing Form 3", Constants.Planner.COMPLETED_STATUS));
 
-//        taskList.add(new Event("1", "meeting", "Title1", 1557206071l,
+//        taskList.add(new EventTask("1", "meeting", "Title1", 1557206071l,
 //                1557206071l, null, "test", "Wagholi,Pune.", "Sachin",
 //                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
 //
-//        taskList.add(new Event("2", "visit", "Title2", 1557206071l,
+//        taskList.add(new EventTask("2", "visit", "Title2", 1557206071l,
 //                1557206071l, null, "test", "Hadpsar,Pune.", "Sagar",
 //                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
@@ -231,7 +231,7 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
             sortedTaskList.addAll(taskList);
         } else {
             String ownerID = "1234";
-//            for (Event event : taskList) {
+//            for (EventTask event : taskList) {
 //                if (ownerID.equals(event.getOwnerID())) {
 //                    sortedTaskList.add(event);
 //                }

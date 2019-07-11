@@ -28,7 +28,7 @@ public class PlannerDetailActivity extends BaseActivity {
             case "ATTENDANCE":
 
                 break;
-            case "Event":
+            case "EventTask":
                 bundle.putString(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 Fragment eventsPlannerFragment = new EventsPlannerFragment();
                 eventsPlannerFragment.setArguments(bundle);

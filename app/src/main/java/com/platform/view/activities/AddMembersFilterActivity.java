@@ -159,7 +159,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 }
                 //Change this "selectedOrganizations.get(0)" after API changes
                 if(this.selectedOrganizations.size()!=0){
-                    addMemberFilerPresenter.getOrganizationRoles(this.selectedOrganizations.get(0));
+                    addMemberFilerPresenter.getOrganizationRoles(android.text.TextUtils.join(",", selectedOrganizations));
+//                    addMemberFilerPresenter.getOrganizationRoles(this.selectedOrganizations.get(0));
                 }
                 break;
 
@@ -175,9 +176,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 //                addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
 //                        selectedRoles.get(0),selectedRole.getProject().getJurisdictionTypeId(),
 //                        Constants.JurisdictionLevelName.STATE_LEVEL);
-                addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
-                        selectedRolesJurisdictionTypeId.get(0),
-                        Constants.JurisdictionLevelName.STATE_LEVEL);
+                if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
+                    addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                            selectedRolesJurisdictionTypeId.get(0),
+                            Constants.JurisdictionLevelName.STATE_LEVEL);
+                }
                 break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_STATE:
@@ -188,9 +191,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     }
                 }
                 if (spDistrict.getVisibility() == View.VISIBLE) {
-                    addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
-                            selectedRolesJurisdictionTypeId.get(0),
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
+                        addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                                selectedRolesJurisdictionTypeId.get(0),
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    }
                 }
                 break;
 
@@ -203,9 +208,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 }
 
                 if (spTaluka.getVisibility() == View.VISIBLE) {
-                    addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
-                            selectedRolesJurisdictionTypeId.get(0),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
+                        addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                                selectedRolesJurisdictionTypeId.get(0),
+                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    }
                 }
                 break;
 
@@ -218,9 +225,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 }
 
                 if (spVillage.getVisibility() == View.VISIBLE) {
-                    addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
-                            selectedRolesJurisdictionTypeId.get(0),
-                            Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                    if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
+                        addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                                selectedRolesJurisdictionTypeId.get(0),
+                                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                    }
                 }
                 break;
 
@@ -451,38 +460,21 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
         ParametersFilterMember parametersFilter = new ParametersFilterMember();
         parametersFilter.setOrganizationIds(android.text.TextUtils.join(",", selectedOrganizations));
         parametersFilter.setRoleIds(android.text.TextUtils.join(",", selectedRolesId));
+        parametersFilter.setState(commaSeparatedString(selectedStates));
+        parametersFilter.setDistrict(commaSeparatedString(selectedDistricts));
+        parametersFilter.setTaluka(commaSeparatedString(selectedTalukas));
+        parametersFilter.setCluster(commaSeparatedString(selectedClusters));
+        parametersFilter.setVillage(commaSeparatedString(selectedVillages));
 
+        addMemberFilerPresenter.getFilterMemberList(parametersFilter);
+    }
+
+    public String commaSeparatedString(ArrayList<JurisdictionType> jurisdictionList){
         ArrayList<String> s = new ArrayList<>();
-        for (JurisdictionType state : selectedStates) {
-            s.add(state.getId());
-        }
-        parametersFilter.setState(android.text.TextUtils.join(",", s));
-
-        s = new ArrayList<>();
-        for (JurisdictionType district : selectedDistricts) {
-            s.add(district.getId());
-        }
-        parametersFilter.setDistrict(android.text.TextUtils.join(",", s));
-
-        s = new ArrayList<>();
-        for (JurisdictionType taluka : selectedTalukas) {
-            s.add(taluka.getId());
-        }
-        parametersFilter.setTaluka(android.text.TextUtils.join(",", s));
-
-        s = new ArrayList<>();
-        for (JurisdictionType cluster : selectedClusters) {
-            s.add(cluster.getId());
-        }
-        parametersFilter.setCluster(android.text.TextUtils.join(",", s));
-
-        s = new ArrayList<>();
         for (JurisdictionType village : selectedVillages) {
             s.add(village.getId());
         }
-        parametersFilter.setVillage(android.text.TextUtils.join(",", s));
-
-        addMemberFilerPresenter.getFilterMemberList(parametersFilter);
+        return android.text.TextUtils.join(",", s);
     }
 
     @Override

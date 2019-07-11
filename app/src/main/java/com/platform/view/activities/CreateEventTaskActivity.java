@@ -28,10 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.AddForm;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.events.Participant;
 import com.platform.models.events.Schedule;
-import com.platform.models.profile.JurisdictionType;
 import com.platform.presenter.CreateEventActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -53,7 +52,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     private AddMembersListAdapter addMembersListAdapter;
 
     private ArrayList<Participant> membersList = new ArrayList<>();
-    private Event event;
+    private EventTask eventTask;
 
     private ImageView ivBackIcon;
     private EditText etTitle;
@@ -105,7 +104,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         presenter.getFormData(Util.getUserObjectFromPref().getProjectIds());
 
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
-        event = (Event) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
+        eventTask = (EventTask) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
 
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         etTitle = findViewById(R.id.et_title);
@@ -126,7 +125,8 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
         lyEventPic = findViewById(R.id.ly_event_pic);
-
+        toolbarAction = findViewById(R.id.toolbar_edit_action);
+        toolbarAction.setImageResource(R.drawable.ic_delete);
 
         // Task Module UI changes
 //        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
@@ -148,11 +148,11 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         rvAttendeesList.setAdapter(addMembersListAdapter);
 
         btEventSubmit.setText(getString(R.string.btn_submit));
-        if (event != null) {
+        if (eventTask != null) {
             setAllData();
-            toolbarAction = findViewById(R.id.toolbar_edit_action);
+
             toolbarAction.setVisibility(View.VISIBLE);
-            toolbarAction.setImageResource(R.drawable.ic_delete);
+
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
                 cbIsAttendanceRequired.setVisibility(View.GONE);
@@ -177,24 +177,24 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     }
 
     private void setAllData() {
-        etTitle.setText(event.getTitle());
-        etStartDate.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.FORM_DATE));
-        etEndDate.setText(Util.getDateFromTimestamp(event.getSchedule().getEnddatetime(),Constants.FORM_DATE));
-        etStartTime.setText(Util.getDateFromTimestamp(event.getSchedule().getStartdatetime(),Constants.TIME_FORMAT_));
-        etEndTime.setText(Util.getDateFromTimestamp(event.getSchedule().getEnddatetime(),Constants.TIME_FORMAT_));
-        etDescription.setText(event.getDescription());
-        etAddress.setText(event.getAddress());
+        etTitle.setText(eventTask.getTitle());
+        etStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE));
+        etEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE));
+        etStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.TIME_FORMAT_));
+        etEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.TIME_FORMAT_));
+        etDescription.setText(eventTask.getDescription());
+        etAddress.setText(eventTask.getAddress());
 
         if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
-//            setAdapter(event.getMembersList());
-            cbIsAttendanceRequired.setChecked(event.isMarkAttendanceRequired());
-            cbIsRegistrationRequired.setChecked(event.isRegistrationRequired());
-            if(event.isRegistrationRequired()){
+//            setAdapter(eventTask.getMembersList());
+            cbIsAttendanceRequired.setChecked(eventTask.isMarkAttendanceRequired());
+            cbIsRegistrationRequired.setChecked(eventTask.isRegistrationRequired());
+            if(eventTask.isRegistrationRequired()){
                 findViewById(R.id.tly_registration_start_date).setVisibility(View.VISIBLE);
                 findViewById(R.id.tly_registration_end_date).setVisibility(View.VISIBLE);
-                etRegistrationStartDate.setText(Util.getDateFromTimestamp(event.getRegistrationSchedule()
+                etRegistrationStartDate.setText(Util.getDateFromTimestamp(eventTask.getRegistrationSchedule()
                         .getStartdatetime(),Constants.FORM_DATE));
-                etRegistrationEndDate.setText(Util.getDateFromTimestamp(event.getRegistrationSchedule()
+                etRegistrationEndDate.setText(Util.getDateFromTimestamp(eventTask.getRegistrationSchedule()
                         .getStartdatetime(),Constants.FORM_DATE));
             }
         }
@@ -234,7 +234,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 finish();
                 break;
             case R.id.toolbar_edit_action:
-                presenter.delete(event.getId());
+                presenter.delete(eventTask.getId());
                 break;
 
             case R.id.et_start_date:
@@ -322,44 +322,44 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     private void submitDetails() {
         if(isAllInputsValid()){
-            Event event = new Event();
+            EventTask eventTask = new EventTask();
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-                event.setType(toOpen);
+                eventTask.setType(toOpen);
             } else {
-                event.setType(toOpen);
+                eventTask.setType(toOpen);
             }
 
-            event.setTitle(etTitle.getText().toString());
-            event.setDescription(etDescription.getText().toString());
+            eventTask.setTitle(etTitle.getText().toString());
+            eventTask.setDescription(etDescription.getText().toString());
             Schedule eventSchedule = new Schedule();
             eventSchedule.setStartdatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
             eventSchedule.setEnddatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-            event.setSchedule(eventSchedule);
-            event.setAddress(etAddress.getText().toString());
-//          event.setOrganizer(Util.getUserObjectFromPref().getId());
-            event.setRegistrationRequired(cbIsRegistrationRequired.isChecked());
-            event.setMarkAttendanceRequired(cbIsAttendanceRequired.isChecked());
+            eventTask.setSchedule(eventSchedule);
+            eventTask.setAddress(etAddress.getText().toString());
+//          eventTask.setOrganizer(Util.getUserObjectFromPref().getId());
+            eventTask.setRegistrationRequired(cbIsRegistrationRequired.isChecked());
+            eventTask.setMarkAttendanceRequired(cbIsAttendanceRequired.isChecked());
 
             if(cbIsRegistrationRequired.isChecked()){
                 Schedule obj = new Schedule();
                 obj.setStartdatetime(dateTimeToTimeStamp(etRegistrationStartDate.getText().toString(),"00:00"));
                 obj.setEnddatetime(dateTimeToTimeStamp(etRegistrationEndDate.getText().toString(),"00:00"));
-                event.setRegistrationSchedule(obj);
+                eventTask.setRegistrationSchedule(obj);
             }
 
-            event.setRequiredForms(selectedForms);
-            event.setParticipants(membersList);
+            eventTask.setRequiredForms(selectedForms);
+            eventTask.setParticipants(membersList);
             if (mImageUploaded && !TextUtils.isEmpty(mUploadedImageUrl)) {
-                event.setThumbnailImage(mUploadedImageUrl);
+                eventTask.setThumbnailImage(mUploadedImageUrl);
             } else {
                 // Set old image url if image unchanged
-                if (!TextUtils.isEmpty(event.getThumbnailImage())) {
-                    event.setThumbnailImage(event.getThumbnailImage());
+                if (!TextUtils.isEmpty(eventTask.getThumbnailImage())) {
+                    eventTask.setThumbnailImage(eventTask.getThumbnailImage());
                 }
             }
 
             //put in response of above api
-            presenter.submitEvent(event);
+            presenter.submitEvent(eventTask);
         }
     }
 
@@ -590,14 +590,14 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 displayFormList.add(obj.getName().getDefault());
         }
         spAddForms.setItems(displayFormList, getString(R.string.select_forms), this);
-        if (event != null) {
-            if (event.getRequiredForms() != null && event.getRequiredForms().size() > 0) {
+        if (eventTask != null) {
+            if (eventTask.getRequiredForms() != null && eventTask.getRequiredForms().size() > 0) {
 //            showOrganizationProjects(projectData);
 
                 boolean[] selectedValues = new boolean[formslist.size()];
                 for (int formIndex = 0; formIndex < formslist.size(); formIndex++) {
                     selectedValues[formIndex]
-                            = isContainsValue(event.getRequiredForms(), formslist.get(formIndex).getId());
+                            = isContainsValue(eventTask.getRequiredForms(), formslist.get(formIndex).getId());
                 }
 
                 spAddForms.setSelectedValues(selectedValues);

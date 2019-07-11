@@ -9,22 +9,22 @@ public class EventsResponse {
 
     @SerializedName("status")
     @Expose
-    private String status;
+    private int status;
     @SerializedName("metadata")
     @Expose
     private List<Object> metadata = null;
     @SerializedName("data")
     @Expose
-    private List<Event> data = null;
+    private List<EventTask> data = null;
     @SerializedName("message ")
     @Expose
     private String message;
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -36,11 +36,11 @@ public class EventsResponse {
         this.metadata = metadata;
     }
 
-    public List<Event> getData() {
+    public List<EventTask> getData() {
         return data;
     }
 
-    public void setData(List<Event> data) {
+    public void setData(List<EventTask> data) {
         this.data = data;
     }
 

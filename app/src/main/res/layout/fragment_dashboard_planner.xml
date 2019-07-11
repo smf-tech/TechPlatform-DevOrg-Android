@@ -18,13 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/attendance_card_view"
-                style="@style/PlannerCard"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
                 <RelativeLayout
+                    android:id="@+id/ly_attendance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -115,19 +110,13 @@
                         android:textColor="@color/tab_selector"
                         android:textSize="@dimen/text_size_14" />
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/events_card_view"
-                style="@style/PlannerCard"
-                android:layout_below="@+id/attendance_card_view"
-                android:visibility="gone">
 
                 <RelativeLayout
                     android:id="@+id/ly_events"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/radio_group_filter"
+                    android:layout_height="300dp"
+                    android:layout_below="@+id/ly_attendance"
                     android:visibility="visible">
 
                     <TextView
@@ -136,70 +125,59 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_05dp"
                         android:text="@string/no_events"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/tv_event_label"
-                        style="@style/CardHeader"
-                        android:text="@string/today_events" />
+                    <LinearLayout
+                        android:id="@+id/card_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10">
+
+                        <TextView
+                            android:id="@+id/tv_event_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/today_events"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="8"/>
+
+                        <TextView
+                            android:id="@+id/tv_all_events_list"
+                            style="@style/StyleLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all_events"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/bt_add_events"
+                            style="@style/StyleLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+Add event"
+                            android:layout_weight="1"
+                            />
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_events"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_above="@id/card_fotter"
-                        android:layout_below="@+id/tv_event_label"
+                        android:layout_below="@+id/card_header"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginEnd="0dp"
                         android:layout_marginBottom="@dimen/dimen_10dp" />
 
-                    <RelativeLayout
-                        android:id="@+id/card_fotter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true">
-
-                        <TextView
-                            android:id="@+id/tv_all_events_list"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="@dimen/dimen_10dp"
-                            android:text="@string/all_events"
-                            android:textColor="@color/tab_selector"
-                            android:textSize="@dimen/text_size_16"
-                            />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/bt_add_events"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/dimen_10dp"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
-                            android:src="@android:drawable/ic_input_add"
-                            android:tint="@color/white"
-                            app:backgroundTint="@color/tab_selector"
-                            app:fabSize="mini"
-                            tools:ignore="RelativeOverlap" />
-                    </RelativeLayout>
-
-
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/task_card_view"
-                style="@style/PlannerCard"
-                android:layout_below="@+id/events_card_view"
-                android:visibility="gone">
 
                 <RelativeLayout
                     android:id="@+id/ly_task"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/radio_group_filter"
+                    android:layout_height="@dimen/dimen_150dp"
+                    android:layout_below="@+id/ly_events"
                     android:visibility="visible">
 
 
@@ -240,7 +218,7 @@
                             android:textColor="@color/tab_selector"
                             android:textSize="@dimen/text_size_16" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        <TextView
                             android:id="@+id/bt_add_task"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -250,24 +228,19 @@
                             android:src="@android:drawable/ic_input_add"
                             android:tint="@color/white"
                             app:backgroundTint="@color/tab_selector"
+                            android:text="Add Task"
                             app:fabSize="mini"
                             tools:ignore="RelativeOverlap" />
                     </RelativeLayout>
 
 
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leave_card_view"
-                style="@style/PlannerCard"
-                android:layout_height="180dp"
-                android:layout_below="@+id/task_card_view"
-                android:visibility="gone">
 
                 <RelativeLayout
+                    android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="@dimen/dimen_150dp"
+                    android:layout_below="@+id/ly_task">
 
                     <TextView
                         android:id="@+id/tv_leaves_label"
@@ -297,7 +270,7 @@
                             android:textColor="@color/tab_selector"
                             android:textSize="@dimen/text_size_16" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        <TextView
                             android:id="@+id/fab_add_leaves"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -307,143 +280,12 @@
                             android:src="@android:drawable/ic_input_add"
                             android:tint="@color/white"
                             app:backgroundTint="@color/tab_selector"
+                            android:text="Add event"
                             app:fabSize="mini"
                             tools:ignore="RelativeOverlap" />
                     </RelativeLayout>
-
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
         </RelativeLayout>
-        <!--<androidx.recyclerview.widget.RecyclerView-->
-        <!--android:id="@+id/rv_submodules"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
-        <!-- <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="vertical">
-
-             <TextView
-                 android:id="@+id/tv_today_date"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="@dimen/dimen_15dp"
-                 android:layout_marginTop="@dimen/dimen_05dp"
-                 android:layout_marginRight="@dimen/dimen_15dp"
-                 android:textSize="@dimen/text_size_22" />
-
-             <RelativeLayout
-                 android:id="@+id/events_card"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:visibility="visible">
-
-                 <FrameLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content">
-
-                     <androidx.cardview.widget.CardView
-                         android:id="@+id/events_card_view"
-                         style="@style/PlannerCard">
-
-                         <FrameLayout
-                             android:id="@+id/fly_events"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content" />
-                     </androidx.cardview.widget.CardView>
-                 </FrameLayout>
-
-                 <TextView
-                     android:id="@+id/tv_event_label"
-                     style="@style/CardHeader"
-                     android:text="@string/today_events" />
-             </RelativeLayout>
-
-             <RelativeLayout
-                 android:id="@+id/tasks_card"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:visibility="gone">
-
-                 <FrameLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content">
-
-                     <androidx.cardview.widget.CardView
-                         android:id="@+id/tasks_card_view"
-                         style="@style/PlannerCard">
-
-                         <FrameLayout
-                             android:id="@+id/fly_tasks"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content" />
-                     </androidx.cardview.widget.CardView>
-                 </FrameLayout>
-
-                 <TextView
-                     android:id="@+id/tv_task_label"
-                     style="@style/CardHeader"
-                     android:text="@string/today_tasks" />
-             </RelativeLayout>
-
-             <RelativeLayout
-                 android:id="@+id/attendance_card"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:visibility="gone">
-
-                 <FrameLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content">
-
-                     <androidx.cardview.widget.CardView
-                         android:id="@+id/attendance_card_view"
-                         style="@style/PlannerCard"
-                         android:layout_height="wrap_content">
-
-                         <FrameLayout
-                             android:id="@+id/fly_attendance"
-                             android:layout_width="match_parent"
-                             android:layout_height="180dp" />
-                     </androidx.cardview.widget.CardView>
-                 </FrameLayout>
-
-                 <TextView
-                     android:id="@+id/tv_attendance_label"
-                     style="@style/CardHeader"
-                     android:text="@string/mark_attendance" />
-             </RelativeLayout>
-
-             <RelativeLayout
-                 android:id="@+id/leave_card"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:visibility="gone">
-
-                 <FrameLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content">
-
-                     <androidx.cardview.widget.CardView
-                         android:id="@+id/leave_card_view"
-                         style="@style/PlannerCard"
-                         android:layout_height="180dp">
-
-                         <FrameLayout
-                             android:id="@+id/fly_leave"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content" />
-                     </androidx.cardview.widget.CardView>
-                 </FrameLayout>
-
-                 <TextView
-                     android:id="@+id/tv_leaves_label"
-                     style="@style/CardHeader"
-                     android:text="@string/leave_details" />
-             </RelativeLayout>
-         </LinearLayout>-->
 
     </ScrollView>
 

@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
@@ -95,10 +94,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         plannerFragmentPresenter = new PlannerFragmentPresenter(this);
         plannerFragmentPresenter.getPlannerData();
 
-        CardView rl_events = plannerView.findViewById(R.id.events_card_view);
-        CardView rl_tasks = plannerView.findViewById(R.id.task_card_view);
-        CardView rl_attendance = plannerView.findViewById(R.id.attendance_card_view);
-        CardView rl_leaves = plannerView.findViewById(R.id.leave_card_view);
+        RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
+        RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
+        RelativeLayout rl_attendance = plannerView.findViewById(R.id.ly_attendance);
+        RelativeLayout rl_leaves = plannerView.findViewById(R.id.ly_leave);
 
 //        Date d = new Date();
 //        CharSequence date = DateFormat.format(Constants.MONTH_DAY_FORMAT, d.getTime());
@@ -185,11 +184,11 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                     break;
                 case Constants.Planner.EVENTS_KEY:
-                    if(obj.getEventData()!=null && obj.getEventData().size()>0){
+                    if(obj.getEventTaskData()!=null && obj.getEventTaskData().size()>0){
 
                         RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
                         EventListAdapter eventListAdapter = new EventListAdapter(getActivity(),
-                                obj.getEventData(), Constants.Planner.EVENTS_LABEL);
+                                obj.getEventTaskData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_events);
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventListAdapter);
@@ -271,7 +270,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void setEventView() {
 
         TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_events_list);
-        FloatingActionButton btAddEvents = plannerView.findViewById(R.id.bt_add_events);
+        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_events);
 
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -297,7 +296,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_task);
         TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_task_list);
-        FloatingActionButton btAddEvents = plannerView.findViewById(R.id.bt_add_task);
+        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_task);
 
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,7 +319,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
     public void setLeaveView() {
         TextView tvCheckLeaveDetailsLink = plannerView.findViewById(R.id.tv_link_check_leaves);
-        FloatingActionButton imgClickAddLeaves = plannerView.findViewById(R.id.fab_add_leaves);
+        TextView imgClickAddLeaves = plannerView.findViewById(R.id.fab_add_leaves);
 
         tvCheckLeaveDetailsLink.setOnClickListener(new View.OnClickListener() {
             @Override
