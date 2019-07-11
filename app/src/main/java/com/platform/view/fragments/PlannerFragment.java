@@ -52,6 +52,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
