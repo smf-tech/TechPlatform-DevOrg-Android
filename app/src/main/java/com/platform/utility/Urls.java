@@ -24,6 +24,7 @@ public class Urls {
     }
 
     public class PM {
+        public static final String GET_DASHBOARD_DETAILS = "api/statuscount/%1$s/%2$s";
         public static final String GET_PROCESS = "api/forms/schema";
         public static final String GET_PROCESS_DETAILS = "api/forms/schema/%1$s";
     }
@@ -40,11 +41,16 @@ public class Urls {
         public static final String GET_ALL_REPORTS = "api/reports";
     }
 
+    public class PlannerDashboard {
+        public static final String GET_PLANNER_DASHBOARD = "api/plannersummary";
+    }
+
     public class Events {
-        public static final String GET_CATEGORY = "api/event-types";
         public static final String GET_EVENTS = "api/events?status=%1$s";
-        public static final String GET_MEMBERS_LIST = "api/users";
-        public static final String SUBMIT_EVENT= "api/events";
+        public static final String GET_MEMBERS_LIST = "api/addmember";
+        public static final String GET_FORMS_LIST= "api/addform";
+        public static final String SUBMIT_EVENT= "api/createEvent";
+        public static final String GET_ATTENDANCE_CODE = "api/generateAttendanceCode";
     }
 
     public class Attendance

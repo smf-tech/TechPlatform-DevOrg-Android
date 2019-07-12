@@ -5,12 +5,15 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.Platform;
+import com.platform.R;
 import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.home.Home;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.request.HomeRequestCall;
 import com.platform.request.LoginRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
 import com.platform.view.fragments.HomeFragment;
@@ -67,6 +70,27 @@ public class HomeActivityPresenter implements UserRequestCallListener {
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-        Util.showToast(error.getMessage(), homeFragment.get().getActivity());
+
+        if (error.networkResponse != null) {
+            if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
+                if (error.networkResponse.data != null) {
+                    String json = new String(error.networkResponse.data);
+                    json = Util.trimMessage(json);
+                    if (json != null) {
+                        Util.showToast(json, homeFragment.get().getActivity());
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                homeFragment.get().getActivity());
+                    }
+                } else {
+                    Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                            homeFragment.get().getActivity());
+                }
+            } else {
+                Util.showToast(homeFragment.get().getString(R.string.unexpected_error_occurred), homeFragment.get().getActivity());
+                Log.e("onErrorListener",
+                        "Unexpected response code " + error.networkResponse.statusCode);
+            }
+        }
     }
 }

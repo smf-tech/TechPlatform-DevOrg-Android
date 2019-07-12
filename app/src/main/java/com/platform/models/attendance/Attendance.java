@@ -16,7 +16,7 @@ public class Attendance implements Serializable
     private String status;
     @SerializedName("created_on")
     @Expose
-    private CreatedOn createdOn;
+    private String createdOn;
     private final static long serialVersionUID = 4821275104015454198L;
 
     public String getId() {
@@ -35,11 +35,11 @@ public class Attendance implements Serializable
         this.status = status;
     }
 
-    public CreatedOn getCreatedOn() {
+    public String getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(CreatedOn createdOn) {
+    public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
     }
 

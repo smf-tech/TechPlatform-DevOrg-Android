@@ -145,9 +145,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             viewPager.setOffscreenPageLimit(3);
             setupViewPager(viewPager);
 
+
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
             tabLayout.setupWithViewPager(viewPager);
-
             return;
         }
 

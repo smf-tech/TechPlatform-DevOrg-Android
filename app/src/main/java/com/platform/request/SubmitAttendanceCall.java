@@ -32,8 +32,8 @@ public class SubmitAttendanceCall  {
     public String KEY_LAT="lattitude";
     public String KEY_LONG="longitude";
     public String KEY_ADDRESS="address";
-    private int MARK_IN=1;
-    private int MARK_OUT=2;
+    public int MARK_IN=1;
+    public int MARK_OUT=2;
     public String KEY_ATTID="attendanceId";
 
 
@@ -63,7 +63,7 @@ public class SubmitAttendanceCall  {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "MonthlyAttendance - Error: " +error);
-                submitAttendanceListener.onError(error.toString());
+                submitAttendanceListener.onError(MARK_IN,error.toString());
             }
         };
 
@@ -97,6 +97,7 @@ public class SubmitAttendanceCall  {
 
 
     }
+
 
     public JsonObject getSubmitAttendaceJson(String type, Long d, String time, String chktype, String strLat, String strLong, String strAdd){
         String validType=type.replace(" ","");
@@ -140,7 +141,7 @@ public class SubmitAttendanceCall  {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "MonthlyAttendance - Error: " +error);
-                submitAttendanceListener.onError(error.toString());
+                submitAttendanceListener.onError(MARK_OUT,error.toString());
             }
         };
 

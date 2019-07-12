@@ -482,7 +482,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
 
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA,sLoginInfo);
 
             OtpActivity activity = (OtpActivity) getActivity();
             if (activity != null) {

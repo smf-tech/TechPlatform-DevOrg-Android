@@ -4,5 +4,5 @@ import com.android.volley.NetworkError;
 
 public interface SubmitAttendanceListener {
     void onSuccess(int id,String response);
-    void onError(String error);
+    void onError(int id,String error);
 }

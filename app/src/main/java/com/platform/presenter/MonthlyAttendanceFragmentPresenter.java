@@ -33,8 +33,7 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
             e.printStackTrace();
 
         }
-        //Data attaendaceeData=new Gson().fromJson(response,Data.class);
-        //fragmentWeakReference.get().getAttendanceInfo(attaendaceeData);
+
 
     }
 

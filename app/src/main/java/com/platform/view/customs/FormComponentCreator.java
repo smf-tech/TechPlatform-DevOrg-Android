@@ -72,6 +72,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     List<Elements> parentElementForMD = new ArrayList<>();
     List<String> valueForMD = new ArrayList<>();
     String formIdForMD;
+    private String formIdForDD;
 
     private HashMap<String, String> requestObjectMap = new HashMap<>();
     private HashMap<String, List<HashMap<String, String>>> matrixDynamicValuesMap = new HashMap<>();
@@ -82,6 +83,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
     private HashMap<String, List<MatrixDropDownTemplate>> dependencyMatrixDynamicMap = new HashMap<>();
     private HashMap<List<String>, EditText> defaultValueMap = new HashMap<>();
     private HashMap<String, EditText> editTextWithNameMap = new HashMap<>();
+    private HashMap<String, List<Elements>> parentMap = new HashMap<>();
+    private HashMap<String, List<String>> parentValuesMap = new HashMap<>();
 
     private ArrayList<EditText> editTexts = new ArrayList<>();
     private ArrayList<DropDownTemplate> dropDowns = new ArrayList<>();
@@ -179,8 +182,12 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         dropDownElementsHashMap.put(template, formData);
 
         if (!TextUtils.isEmpty(formData.getEnableIf())) {
-            if (formData.getEnableIf().contains(Constants.AND)) {
-                StringTokenizer enableIfTokenizer = new StringTokenizer(formData.getEnableIf(), Constants.AND);
+            if (formData.getEnableIf().contains(Constants.AND) ||
+                    formData.getEnableIf().contains(Constants.AND_CHARACTER)) {
+
+                String enableIf = formData.getEnableIf().replace(Constants.AND, Constants.AND_CHARACTER);
+                StringTokenizer enableIfTokenizer = new StringTokenizer(enableIf, Constants.AND_CHARACTER);
+
                 while (enableIfTokenizer.hasMoreTokens()) {
                     updateDependencyMap(template, enableIfTokenizer.nextToken().trim());
                 }
@@ -203,10 +210,11 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         dependencyMap.put(enableIf, dependentDropDowns);
     }
 
-    public void updateDropDownValues(Elements elements, List<Choice> choiceValues) {
+    public void updateDropDownValues(Elements elements, List<Choice> choiceValues, boolean shouldFilter) {
         Predicate<DropDownTemplate> byTag = dropDownTemplate -> dropDownTemplate.getTag().equals(elements.getName());
         List<DropDownTemplate> matchedTemplates = Stream.of(dropDowns).filter(byTag).collect(Collectors.toList());
         if (matchedTemplates != null && !matchedTemplates.isEmpty()) {
+            DropDownTemplate dropDownTemplate = matchedTemplates.get(0);
             Choice selectChoice = new Choice();
             selectChoice.setValue(fragment.get().getString(R.string.default_select));
             LocaleData localeData = new LocaleData(fragment.get().getString(R.string.default_select));
@@ -216,8 +224,39 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             }
 
             elements.setChoices(choiceValues);
-            matchedTemplates.get(0).setFormData(elements);
-            matchedTemplates.get(0).setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+            dropDownTemplate.setFormData(elements);
+            dropDownTemplate.setListData(choiceValues);
+
+            if (shouldFilter && parentValuesMap != null && parentMap != null &&
+                    parentMap.get(dropDownTemplate.getFormData().getName()) != null &&
+                    parentValuesMap.get(dropDownTemplate.getFormData().getName()) != null &&
+                    !TextUtils.isEmpty(formIdForDD)) {
+
+                Elements dependentElement = dropDownTemplate.getFormData();
+                String dependentResponse = dropDownTemplate.getFormData().getChoicesByUrlResponsePath();
+                String response = Util.readFromInternalStorage(fragment.get().getContext(),
+                        formIdForDD + "_" + dependentElement.getName());
+                ChoicesByUrl choicesByUrl = dependentElement.getChoicesByUrl();
+
+                List<Choice> newChoiceValues = filterData(response, dependentResponse, choicesByUrl,
+                        parentMap.get(dropDownTemplate.getFormData().getName()),
+                        parentValuesMap.get(dropDownTemplate.getFormData().getName()));
+
+                //Update UI on UI thread
+                if (newChoiceValues != null && fragment.get().getActivity() != null) {
+                    fragment.get().getActivity().runOnUiThread(() -> {
+                        Choice newSelectChoice = new Choice();
+                        newSelectChoice.setValue(fragment.get().getString(R.string.default_select));
+                        LocaleData newLocaleData = new LocaleData(fragment.get().getString(R.string.default_select));
+                        newSelectChoice.setText(newLocaleData);
+                        newChoiceValues.add(0, newSelectChoice);
+
+                        dependentElement.setChoices(newChoiceValues);
+                        dropDownTemplate.setFormData(dependentElement);
+                        dropDownTemplate.setListData(newChoiceValues);
+                    });
+                }
+            }
         }
     }
 
@@ -455,7 +494,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
         this.mIsPartiallySaved = isPartiallySaved;
 
         MatrixDynamicTemplate template = new MatrixDynamicTemplate(fragment.get(), formData, elements,
-                formActivityPresenter, mIsInEditMode, mIsPartiallySaved, this, FormComponentCreator.this);
+                formActivityPresenter, mIsInEditMode, mIsPartiallySaved, this,
+                FormComponentCreator.this);
 
         matrixDynamics.add(template);
 
@@ -771,7 +811,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                     dependentElement.setChoices(choiceValues);
                     dropDownTemplate.setFormData(dependentElement);
-                    dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+                    dropDownTemplate.setListData(choiceValues);
                 }
             }
         }
@@ -793,7 +833,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 choiceValues.add(0, selectChoice);
 
                 dependentElement.setChoices(choiceValues);
-                matrixDropDownTemplate.setListData(choiceValues, matrixDropDownTemplate.getMatrixDynamicInnerMap());
+                matrixDropDownTemplate.setListData(choiceValues,
+                        matrixDropDownTemplate.getMatrixDynamicInnerMap());
             }
         }
 
@@ -911,25 +952,30 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
     private void updateValues(Elements parentElement, String value, String formId) {
         String key = "{" + parentElement.getName() + "} notempty";
-        List<Elements> parentElements = new ArrayList<>();
-        parentElements.add(parentElement);
-
-        List<String> valuesList = new ArrayList<>();
-        valuesList.add(value);
 
         //It means dependency is there for dropdown template
         if (dependencyMap.get(key) != null && !dependencyMap.get(key).isEmpty()) {
             for (DropDownTemplate dropDownTemplate :
                     dependencyMap.get(key)) {
+                List<Elements> parentElements = new ArrayList<>();
+                parentElements.add(parentElement);
+
+                List<String> valuesList = new ArrayList<>();
+                valuesList.add(value);
                 Elements dependentElement = dropDownTemplate.getFormData();
                 //Check if dependent element has more than 1 parent element
-                if (!TextUtils.isEmpty(dependentElement.getEnableIf()) && dependentElement.getEnableIf().contains(Constants.AND)) {
-                    StringTokenizer enableIfTokenizer = new StringTokenizer(dependentElement.getEnableIf(), Constants.AND);
+                if (!TextUtils.isEmpty(dependentElement.getEnableIf()) &&
+                        (dependentElement.getEnableIf().contains(Constants.AND) ||
+                                dependentElement.getEnableIf().contains(Constants.AND_CHARACTER))) {
+
+                    String enableIf = dependentElement.getEnableIf().replace(Constants.AND, Constants.AND_CHARACTER);
+                    StringTokenizer enableIfTokenizer = new StringTokenizer(enableIf, Constants.AND_CHARACTER);
+
                     while (enableIfTokenizer.hasMoreTokens()) {
                         String token = enableIfTokenizer.nextToken().trim();
+
                         if (!key.equals(token)) {
-                            for (DropDownTemplate dropdownT :
-                                    dropDowns) {
+                            for (DropDownTemplate dropdownT : dropDowns) {
                                 if (token.contains(dropdownT.getTag())) {
                                     Choice otherSelectedChoice = dropdownT.getSelectedItem();
                                     parentElements.add(dropdownT.getFormData());
@@ -939,12 +985,36 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         }
                     }
                 }
+
+                this.formIdForDD = formId;
+                parentMap.put(dependentElement.getName(), parentElements);
+                parentValuesMap.put(dependentElement.getName(), valuesList);
+
                 String dependentResponse = dependentElement.getChoicesByUrlResponsePath();
                 String response = Util.readFromInternalStorage(fragment.get().getContext(),
                         formId + "_" + dependentElement.getName());
+
                 ChoicesByUrl choicesByUrl = dependentElement.getChoicesByUrl();
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
                         parentElements, valuesList);
+
+                if (mIsInEditMode && !mIsPartiallySaved) {
+                    // This code will add submitted value in list and update the adapter, in API response
+                    // submitted value is not coming hence this is workaround.
+                    Choice ch = new Choice();
+                    LocaleData ld = new LocaleData(dependentElement.getAnswer());
+                    ch.setText(ld);
+                    ch.setValue(ld.getLocaleValue());
+
+                    if (!TextUtils.isEmpty(dependentElement.getAnswer())
+                            && !choiceValues.contains(ch)) {
+                        choiceValues.add(ch);
+                    }
+
+                    //Sort choices in ascending order
+                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                            .compareTo(o2.getText().getLocaleValue()));
+                }
 
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
@@ -957,7 +1027,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
                         dependentElement.setChoices(choiceValues);
                         dropDownTemplate.setFormData(dependentElement);
-                        dropDownTemplate.setListData(choiceValues, mIsInEditMode, mIsPartiallySaved);
+                        dropDownTemplate.setListData(choiceValues);
                     });
                 }
             }
@@ -965,9 +1035,15 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
 
         //It means dependency is there for matrix dropdown template
         if (dependencyMatrixDynamicMap.get(key) != null && !dependencyMatrixDynamicMap.get(key).isEmpty()) {
+            List<Elements> parentElements = new ArrayList<>();
+            parentElements.add(parentElement);
+
+            List<String> valuesList = new ArrayList<>();
+            valuesList.add(value);
             this.formIdForMD = formId;
             this.parentElementForMD = parentElements;
             this.valueForMD = valuesList;
+
             for (MatrixDropDownTemplate matrixDropDownTemplate :
                     dependencyMatrixDynamicMap.get(key)) {
                 Elements dependentElement = matrixDropDownTemplate.getFormData();
@@ -977,6 +1053,26 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 ChoicesByUrl choicesByUrl = matrixDropDownTemplate.getColumn().getChoicesByUrl();
                 List<Choice> choiceValues = filterData(response, dependentResponse, choicesByUrl,
                         parentElements, valuesList);
+
+                if (mIsInEditMode && !mIsPartiallySaved) {
+                    // This code will add submitted value in list and update the adapter, in API response
+                    // submitted value is not coming hence this is workaround.
+                    Choice ch = new Choice();
+                    LocaleData ld = new LocaleData(matrixDropDownTemplate.getMatrixDynamicInnerMap()
+                            .get(matrixDropDownTemplate.getColumn().getName()));
+
+                    ch.setText(ld);
+                    ch.setValue(ld.getLocaleValue());
+
+                    if (!TextUtils.isEmpty(matrixDropDownTemplate.getMatrixDynamicInnerMap()
+                            .get(matrixDropDownTemplate.getColumn().getName())) && !choiceValues.contains(ch)) {
+                        choiceValues.add(ch);
+                    }
+
+                    //Sort choices in ascending order
+                    Collections.sort(choiceValues, (o1, o2) -> o1.getText().getLocaleValue()
+                            .compareTo(o2.getText().getLocaleValue()));
+                }
 
                 //Update UI on UI thread
                 if (choiceValues != null && fragment.get().getActivity() != null) {
@@ -988,7 +1084,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                         choiceValues.add(0, selectChoice);
 
                         dependentElement.setChoices(choiceValues);
-                        matrixDropDownTemplate.setListData(choiceValues, matrixDropDownTemplate.getMatrixDynamicInnerMap());
+                        matrixDropDownTemplate.setListData(choiceValues,
+                                matrixDropDownTemplate.getMatrixDynamicInnerMap());
                     });
                 }
             }
@@ -1027,14 +1124,30 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     String pValue = parentValueTokenizer.nextToken();
                     String value = valueList.get(index);
 
-                    byParentSelections.add(innerDependentObject -> innerDependentObject
-                            .get(outerObjName).getAsJsonObject().get(pValue).getAsString().equals(value));
+                    Predicate<JsonObject> localPredicate = innerDependentObject -> {
+                        try {
+                            return innerDependentObject.get(outerObjName).getAsJsonObject()
+                                    .get(pValue).getAsString().equals(value);
+                        } catch (IllegalStateException e) {
+                            return false;
+                        }
+                    };
+                    byParentSelections.add(localPredicate);
                 }
+
                 //If parent has string in choicesByUrl
                 else {
                     String pValue = parentElements.get(index).getChoicesByUrl().getValueName();
                     String value = valueList.get(index);
-                    byParentSelections.add(innerDependentObject -> innerDependentObject.get(pValue).getAsString().equals(value));
+
+                    Predicate<JsonObject> localPredicate = innerDependentObject -> {
+                        try {
+                            return innerDependentObject.get(pValue).getAsString().equals(value);
+                        } catch (IllegalStateException e) {
+                            return false;
+                        }
+                    };
+                    byParentSelections.add(localPredicate);
                 }
             }
 
@@ -1057,7 +1170,8 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
             String choiceValue;
 
             //Fill choiceValues list with filtered object's title and value
-            for (int filteredDependentIndex = 0; filteredDependentIndex < filteredDependentObjects.size(); filteredDependentIndex++) {
+            for (int filteredDependentIndex = 0;
+                 filteredDependentIndex < filteredDependentObjects.size(); filteredDependentIndex++) {
 
                 JsonObject dependentInnerObject = filteredDependentObjects.get(filteredDependentIndex);
                 //If dependent has object in choicesByUrl
@@ -1084,6 +1198,7 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                     }
                     choiceValue = dObj.get(dValue).getAsString();
                 }
+
                 //If dependent has string in choicesByUrl
                 else {
                     dTitle = choicesByUrl.getTitleName();

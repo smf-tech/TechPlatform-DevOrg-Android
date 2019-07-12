@@ -5,6 +5,9 @@
     <string name="back_string">कृपया बाहेर पडण्यासाठी पुन्हा परत क्लिक करा</string>
     <string name="select_lang">भाषा निवडा</string>
 
+
+
+
     <string name="ok">ठीक</string>
     <string name="yes">हो</string>
     <string name="no">नाही</string>
@@ -97,6 +100,7 @@
     <string name="msg_select_taluka">कृपया तालुका निवडा</string>
     <string name="msg_select_cluster">कृपया तालुका निवडा</string>
     <string name="msg_select_village">कृपया गाव निवडा</string>
+    <string name="msg_big_image">प्रतिमा आकार 5 एमबी पेक्षा जास्त नसावा</string>
 
     <!--Home Menu Items-->
     <string name="menu_home">होम</string>
@@ -141,6 +145,7 @@
     <!--Program management-->
     <string name="saved_forms_cat">जतन केलेले फॉर्म</string>
     <string name="submit">सबमिट</string>
+    <string name="save">जतन करा</string>
     <string name="no_data_available">माहिती उपलब्ध नाही</string>
 
     <string name="view_all_forms">सर्व फॉर्म पहा</string>
@@ -170,10 +175,11 @@
     <string name="verification_code">पडताळणी कोड</string>
     <string name="verify">सबमिट करा</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s वर पाठविलेले सत्यापन कोड टाइप करा</string>
-    <string name="forms_are_not_available">फॉर्म उपलब्ध नाहीत</string>
+    <!--<string name="forms_are_not_available">फॉर्म उपलब्ध नाहीत</string>-->
     <string name="reports">अहवाल</string>
     <string name="submitted_form_count">सबमिट केलेल्या फॉर्मची एकूण संख्या : %1$s</string>
     <string name="msg_confirm">आपणास खात्री आहे की आपण हा फॉर्म जतन करू इच्छिता?</string>
+    <string name="msg_discard">आपणास खात्री आहे की आपण हा फॉर्म हटवू इच्छिता?</string>
     <string name="form_saved_offline">आपण ऑफलाइन आहात, फॉर्म ऑफलाइन सबमिट केला आहे.</string>
     <string name="form_submit_success">फॉर्म यशस्वीरित्या सबमिट केला!</string>
     <string name="image_upload_success">प्रतिमा यशस्वीरित्या अपलोड केली!</string>
@@ -185,6 +191,7 @@
     <string name="msg_no_pending_req">मंजूरीसाठी कोणत्याही प्रलंबित विनंत्या नाहीत.</string>
     <string name="msg_no_form_offline">हा फॉर्म ऑफलाइन उपलब्ध नाही. हे फॉर्म ऑफलाइन वापरण्यासाठी, कृपया नेटवर्कमध्ये एकदा त्याचा वापर करा.</string>
     <string name="msg_form_duplicate_error">डुप्लीकेट नोंदी परवानगी नाही.</string>
+    <string name="msg_slow_network">नेटवर्क धीमे आहे, कृपया पुन्हा प्रयत्न करा</string>
 
     <string name="coming_soon">लवकरच येत आहे&#8230;</string>
     <string name="msg_no_network">नेटवर्क उपलब्ध नाही, कृपया नंतर पुन्हा प्रयत्न करा.</string>
@@ -207,6 +214,7 @@
     <string name="syncing_pending">संकालन करीत आहे</string>
     <string name="sync_started">समक्रमण सुरू झाले</string>
     <string name="submitted_and_synced">सबमिट आणि समक्रमित</string>
+    <string name="submitted_forms_label">सबमिट केलेले फॉर्म्स </string>
     <string name="unexpected_error_occurred">अनपेक्षित त्रुटी आली.</string>
 
     <string name="value_should_not_be_less_than">मूल्य पेक्षा कमी असू नये</string>
@@ -315,38 +323,6 @@
     <string name="leave_apply_msg">तुम्ही %1$s दिवसांच्या सुट्टीसाठी %2$s ते %3$s पर्यंत अर्ज केला आहे</string>
     <string name="which_day">कोणते दिवस</string>
     <string name="select_all">सर्व निवडा</string>
-    <string-array name="repeat_array">
-        <item>कधीही नाही</item>
-        <item>दररोज</item>
-        <item>साप्ताहिक</item>
-        <item>मासिक</item>
-    </string-array>
-
-    <string-array name="repeat_daily">
-        <item>१ दिवस</item>
-        <item>२ दिवस</item>
-        <item>३ दिवस</item>
-        <item>४ दिवस</item>
-        <item>५ दिवस</item>
-        <item>६ दिवस</item>
-        <item>७ दिवस</item>
-        <item>८ दिवस</item>
-        <item>९ दिवस</item>
-        <item>१० दिवस</item>
-    </string-array>
-
-    <string-array name="repeat_weeks">
-        <item>१ आठवडा</item>
-        <item>२ आठवडे</item>
-        <item>३ आठवडे</item>
-    </string-array>
-
-    <string-array name="repeat_months">
-        <item>1 महीना</item>
-        <item>2 महीने</item>
-        <item>3 महीने</item>
-    </string-array>
-
     <string name="edit">संपादित करा</string>
     <string name="this_event_only">केवळ हा कार्यक्रम</string>
     <string name="all_events_in_series">मालिका सर्व कार्यक्रम</string>
@@ -355,5 +331,22 @@
     <string name="holiday_list">सुट्टीची यादी</string>
     <string name="edit_leave">सुट्टी संपादित करा</string>
     <string name="apply_leave">सुट्टीसाठी अर्ज करा</string>
+    <string name="is_attendance_required">उपस्थित असणे आवश्यक आहे</string>
+    <string name="is_registration_required">नोंदणी आवश्यक आहे</string>
+    <string name="registration_start_date">नोंदणी प्रारंभ तारीख</string>
+    <string name="registration_end_date">नोंदणी समाप्ती तारीख</string>
+    <string name="select_forms">फॉर्म निवडा</string>
+    <string name="event_pic">Add photo</string>
+    <string name="msg_enter_title">Please enter the title.</string>
+    <string name="msg_enter_start_date">Please enter the start date.</string>
+    <string name="msg_enter_end_date">Please enter the end date.</string>
+    <string name="msg_enter_ned_date">Please enter the end time.</string>
+    <string name="msg_enter_start_time">Please enter the start time.</string>
+    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
+    <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+    <string name="delayedin_checkin">Delayed in chek in and found</string>
+    <string name="delayin_checkin_title">please provide a reason</string>
+
 
 </resources>

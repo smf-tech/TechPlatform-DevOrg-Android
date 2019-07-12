@@ -167,7 +167,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             String formattedDate = outputFormat.format(date);
             btnStartDate.setText(formattedDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", "ParseException");
         }
 
         try {
@@ -175,7 +175,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             String formattedDate = outputFormat.format(date);
             btnEndDate.setText(formattedDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", "ParseException");
         }
 
         boolean isHalfDay = leaveDetailModel.getIsHalfDay();
@@ -306,12 +306,12 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         try {
             startDate = sdf.parse(btnStartDate.getText().toString());
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", "ParseException");
         }
         try {
             endDate = sdf.parse(btnEndDate.getText().toString());
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("TAG", "ParseException");
         }
         jsonData.addProperty("fromDate", startDate != null ? startDate.toString() : btnStartDate.getText().toString());
         jsonData.addProperty("toDate", endDate != null ? endDate.toString() : btnEndDate.getText().toString());
@@ -439,7 +439,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         getCurrentDateInSpecificFormat(btnEndDate.getText().toString(), false)),
                         getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("TAG", "Exception");
             }
         }
     }

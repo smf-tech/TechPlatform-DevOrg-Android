@@ -98,7 +98,6 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
 
                     case "AttendancePlannerFragment":
                         fragment = new AttendancePlannerFragment();
-
                         data.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, false);
                         toolBarMenu.setVisibility(View.GONE);
                         fragment.setArguments(data);

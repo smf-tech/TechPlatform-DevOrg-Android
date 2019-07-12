@@ -44,19 +44,19 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public void onBindViewHolder(@NonNull EventListAdapter.ViewHolder holder, int position) {
 
         Event event = eventsList.get(position);
-        holder.tvEventTitle.setText(event.getEventName());
-        holder.tvEventTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
-        holder.tvEventAddress.setText(event.getAddress());
-        holder.tvEventOwner.setText(event.getOrganizer());
-
-        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-            holder.vTaskStatusIndicator.setVisibility(View.VISIBLE);
-            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
-                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
-                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-            }
-        }
+//        holder.tvEventTitle.setText(event.getEventName());
+//        holder.tvEventTime.setText(Util.getTimeFromTimeStamp(event.getEventStartDateTime()));
+//        holder.tvEventAddress.setText(event.getAddress());
+//        holder.tvEventOwner.setText(event.getOrganizer());
+//
+//        if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+//            holder.vTaskStatusIndicator.setVisibility(View.VISIBLE);
+//            if (event.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
+//                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+//            } else if (event.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
+//                holder.vTaskStatusIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+//            }
+//        }
 
         holder.lyEvent.setOnClickListener(v -> {
             Intent intentEventDetailActivity = new Intent(mContext, EventDetailActivity.class);

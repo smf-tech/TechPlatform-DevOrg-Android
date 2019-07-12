@@ -51,40 +51,10 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/ly_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_status_title"
-                android:background="@drawable/bg_light_blue_box">
-
-                <TextView
-                    android:id="@+id/tv_label_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_01dp"
-                    android:text="@string/task_category"
-                    android:textColor="@color/tab_select"
-                    android:textSize="@dimen/text_size_14"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_label_category"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/dimen_01dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:textSize="@dimen/text_size_13" />
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/ly_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_category"
+                android:layout_below="@+id/ly_status_title"
                 android:background="@drawable/bg_light_blue_box">
 
                 <TextView
@@ -140,7 +110,7 @@
                     android:textSize="@dimen/text_size_13" />
 
                 <TextView
-                    android:id="@+id/tv_date"
+                    android:id="@+id/tv_start_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -154,13 +124,12 @@
                     android:id="@+id/tv_end_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_date"
+                    android:layout_below="@+id/tv_start_date"
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_01dp"
                     android:textSize="@dimen/text_size_13"
-                    android:textStyle="bold"
-                    android:visibility="gone"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_time"
@@ -182,25 +151,13 @@
                     android:paddingTop="@dimen/dimen_01dp"
                     android:paddingBottom="@dimen/dimen_01dp"
                     android:textSize="@dimen/text_size_13"
-                    android:textStyle="bold"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_repeat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_end_time"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/dimen_01dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:textSize="@dimen/text_size_13"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_label_where"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_repeat"
+                    android:layout_below="@+id/tv_end_time"
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_01dp"
@@ -220,7 +177,7 @@
                     android:textSize="@dimen/text_size_13" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:id="@+id/ly_attended"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -282,12 +239,13 @@
                     android:layout_below="@+id/iv_attendees_list"
                     android:visibility="gone" />
             </RelativeLayout>
+-->
 
             <RelativeLayout
                 android:id="@+id/ly_task_forms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_attended"
+                android:layout_below="@+id/ly_body"
                 android:background="@drawable/bg_light_blue_box"
                 android:padding="@dimen/dimen_10dp"
                 android:visibility="gone">
@@ -307,13 +265,24 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/bt_edit_attendance"
+                android:id="@+id/bt_attendance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_task_forms"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/edit_attendance"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_22" />
+            <Button
+                android:id="@+id/bt_participants_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bt_attendance"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:background="@drawable/bg_button"
+                android:text="Members list"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_22" />
@@ -328,4 +297,23 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone" />
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

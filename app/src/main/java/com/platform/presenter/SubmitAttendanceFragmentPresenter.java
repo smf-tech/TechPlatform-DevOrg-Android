@@ -6,16 +6,20 @@ import com.android.volley.NetworkError;
 import com.platform.listeners.SubmitAttendanceListener;
 import com.platform.request.SubmitAttendanceCall;
 import com.platform.view.fragments.AttendancePlannerFragment;
+import com.platform.view.fragments.PlannerFragment;
 
 import java.lang.ref.WeakReference;
 
 public class SubmitAttendanceFragmentPresenter implements SubmitAttendanceListener {
 
-    private WeakReference<AttendancePlannerFragment> fragmentWeakReference;
+    private WeakReference<PlannerFragment> fragmentWeakReference;
 
-    public SubmitAttendanceFragmentPresenter(AttendancePlannerFragment tmFragment) {
+
+    public SubmitAttendanceFragmentPresenter(PlannerFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
+
+
     @Override
     public void onSuccess(int id,String response) {
         Log.i("Response","111"+response);
@@ -32,9 +36,18 @@ public class SubmitAttendanceFragmentPresenter implements SubmitAttendanceListen
     }
 
     @Override
-    public void onError(String error) {
+    public void onError(int id,String error) {
         Log.i("Error","111");
-        fragmentWeakReference.get().showError(error);
+        //fragmentWeakReference.get().showError(error);
+        switch(id){
+            case 1:
+                fragmentWeakReference.get().checkInError(error);
+                break;
+            case 2:
+                fragmentWeakReference.get().checkOutError(error);
+                break;
+            default:
+        }
     }
     // make a request call
     public void markAttendace(String type, Long d, String time, String chktype , String strLat, String strLong, String strAdd)
@@ -45,8 +58,8 @@ public class SubmitAttendanceFragmentPresenter implements SubmitAttendanceListen
 
     }
 
-    public void markOutAttendance(String att_id,String type,Long date,String lat,String log){
-
+    public void markOutAttendance(String att_id,String type,Long date,String lat,String log)
+    {
         SubmitAttendanceCall markOutAttendancCall=new SubmitAttendanceCall();
         markOutAttendancCall.addListener(this);
         markOutAttendancCall.AttendanceCheckOut(att_id,type,date,lat,log);

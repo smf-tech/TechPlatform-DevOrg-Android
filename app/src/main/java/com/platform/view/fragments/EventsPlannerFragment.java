@@ -225,9 +225,9 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         } else {
             String ownerID = "1234";
             for (Event event : eventsList) {
-                if (ownerID.equals(event.getOwnerID())) {
-                    sortedEventsList.add(event);
-                }
+//                if (ownerID.equals(event.getOwnerID())) {
+//                    sortedEventsList.add(event);
+//                }
             }
         }
         eventListAdapter.notifyDataSetChanged();

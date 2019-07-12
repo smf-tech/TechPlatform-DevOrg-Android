@@ -25,4 +25,6 @@ public class PreferenceHelper {
     public String getString(String key) {
         return pref.getString(key, "");
     }
+
+
 }

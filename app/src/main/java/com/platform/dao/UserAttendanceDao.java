@@ -16,7 +16,7 @@ import java.util.List;
 
 @Dao
 public interface UserAttendanceDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     public void insert(AttendaceData...attendaceData);
     @Update
     public void update(AttendaceData...attendaceData);
@@ -28,8 +28,8 @@ public interface UserAttendanceDao {
     public List<AttendaceData> getUserAttendace(String userId);
     @Query("SELECT * FROM userattendance WHERE isSync=:isonline")
     public List<AttendaceData> getUserAttendace(Boolean isonline);
-    @Query("SELECT * FROM userattendance WHERE attendanceType=:type")
-    public List<AttendaceData> getUserCheckOut(String type);
+    @Query("SELECT * FROM userattendance WHERE attendanceType=:type AND attendanceFormattedDate=:formatdate")
+    public List<AttendaceData> getUserAttendanceType(String type,String formatdate);
     @Query("SELECT uid FROM userattendance WHERE attendanceFormattedDate=:cdate")
     public String getUserId(String cdate);
     @Insert(onConflict = OnConflictStrategy.REPLACE)

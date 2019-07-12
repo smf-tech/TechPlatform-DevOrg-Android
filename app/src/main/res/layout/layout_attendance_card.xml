@@ -27,7 +27,7 @@
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
-        android:text="4:2 Hours"
+        android:text=""
         android:textSize="@dimen/text_size_14"
         tools:ignore="HardcodedText" />
 

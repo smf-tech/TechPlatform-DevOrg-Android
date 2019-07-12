@@ -52,7 +52,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @NonNull
     @Override
     public AttendanceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_leaves_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_attendance_row, viewGroup, false);
         return new AttendanceAdapter.ViewHolder(v);
     }
 
@@ -95,7 +95,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         if(leavesList!=null){
             return leavesList.size();
         }
-       //leavesList.size();
+        //leavesList.size();
         return 0;
     }
 }

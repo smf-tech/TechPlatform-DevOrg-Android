@@ -2,12 +2,15 @@ package com.platform.utility;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -46,8 +51,13 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.fragments.HomeFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -74,6 +84,8 @@ import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 public class Util {
     private static ProgressDialog mProgressDialog;
     private static final String TAG = Util.class.getSimpleName();
+    private String todayAsString;
+    private ProgressDialog pd;
 
     public static void setError(final EditText inputEditText, String errorMessage) {
         final int padding = 10;
@@ -140,7 +152,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.LANGUAGE_CODE, languageCode);
+        editor.putString(Constants.App.LANGUAGE_CODE,languageCode);
         editor.apply();
     }
 
@@ -492,7 +504,7 @@ public class Util {
                                       final boolean addToBackStack) {
         try {
             Bundle b = new Bundle();
-            b.putSerializable("TITLE", titleName);
+            b.putSerializable("TITLE",titleName);
             b.putBoolean("SHOW_ALL", false);
             if (fragment instanceof HomeFragment) {
                 b.putBoolean("SHOW_BACK", false);
@@ -703,6 +715,28 @@ public class Util {
         }
     }
 
+    public static void showDateDialogMin(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        dateDialog.show();
+    }
+
+
     public static void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
@@ -751,11 +785,11 @@ public class Util {
                 mProgressDialog.show();
             }
         } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException");
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            Log.e(TAG, "RuntimeException");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
     }
 
@@ -768,11 +802,11 @@ public class Util {
                 }
             }
         } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException");
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            Log.e(TAG, "RuntimeException");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
     }
 
@@ -787,7 +821,39 @@ public class Util {
 //        return true;
         return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
                 !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
+    }
 
+    public static String trimMessage(String json) {
+        String trimmedString;
+
+        try {
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString("message");
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+            return null;
+        }
+
+        return trimmedString;
+    }
+
+    public static boolean isValidImageSize(File f) {
+        if (f != null) {
+            try {
+                // Get length of file in bytes
+                long fileSizeInBytes = f.length();
+                // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                long fileSizeInKB = fileSizeInBytes / 1024;
+                //  Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                long fileSizeInMB = fileSizeInKB / 1024;
+
+                return fileSizeInMB <= 8;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        return false;
     }
 
     public static String getFormattedDateFromTimestamp(long date) {
@@ -805,4 +871,218 @@ public class Util {
         }
         return "";
     }
+
+    public static File compressFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        FileInputStream fis;
+
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            Objects.requireNonNull(b).compress(Bitmap.CompressFormat.PNG, 40, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return f;
+    }
+
+    /*private static final float maxHeight = 1280.0f;
+    private static final float maxWidth = 1280.0f;
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        final float totalPixels = width * height;
+        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+            inSampleSize++;
+        }
+        return inSampleSize;
+    }
+
+    public static File compressImage(File file) {
+        Bitmap scaledBitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap bmp = BitmapFactory.decodeFile(file.getPath(), options);
+
+        int actualHeight = options.outHeight;
+        int actualWidth = options.outWidth;
+
+        float imgRatio = (float) actualWidth / (float) actualHeight;
+        float maxRatio = maxWidth / maxHeight;
+
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                imgRatio = maxHeight / actualHeight;
+                actualWidth = (int) (imgRatio * actualWidth);
+                actualHeight = (int) maxHeight;
+            } else if (imgRatio > maxRatio) {
+                imgRatio = maxWidth / actualWidth;
+                actualHeight = (int) (imgRatio * actualHeight);
+                actualWidth = (int) maxWidth;
+            } else {
+                actualHeight = (int) maxHeight;
+                actualWidth = (int) maxWidth;
+            }
+        }
+        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+        options.inJustDecodeBounds = false;
+        options.inDither = false;
+        options.inTempStorage = new byte[16 * 1024];
+        try {
+            bmp = BitmapFactory.decodeFile(file.getPath(), options);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+        }
+        try {
+            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.RGB_565);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+        }
+
+        float ratioX = actualWidth / (float) options.outWidth;
+        float ratioY = actualHeight / (float) options.outHeight;
+        float middleX = actualWidth / 2.0f;
+        float middleY = actualHeight / 2.0f;
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+        Canvas canvas = new Canvas(Objects.requireNonNull(scaledBitmap));
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bmp, middleX - (float) bmp.getWidth() / 2, middleY - (float) bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        bmp.recycle();
+        ExifInterface exif;
+        try {
+            exif = new ExifInterface(file.getPath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+            Matrix matrix = new Matrix();
+            if (orientation == 6) {
+                matrix.postRotate(90);
+            } else if (orientation == 3) {
+                matrix.postRotate(180);
+            } else if (orientation == 8) {
+                matrix.postRotate(270);
+            }
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileOutputStream out;
+        try {
+            //new File(imageFilePath).delete();
+            out = new FileOutputStream(file);
+
+            //write the compressed bitmap at the destination specified by filename.
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
+    }*/
+
+    public static String getTodaysDate()
+    {
+        Date d = new Date();
+        String pattern = "MM/dd/yyyy";
+        SimpleDateFormat df = new SimpleDateFormat(pattern);
+// Get the today date using Calendar object.
+        Date today = Calendar.getInstance().getTime();
+// Using DateFormat format method we can create a string
+// representation of a date with the defined format.
+        return df.format(today);
+
+    }
+
+    public void startProgressDialog(Activity activity,String message)
+    {
+       pd=new ProgressDialog(activity);
+       pd.setMessage(message);
+       pd.setCanceledOnTouchOutside(false);
+       pd.show();
+    }
+
+    public void stopProgressDialog()
+    {
+        if(pd.isShowing()){
+            pd.dismiss();
+        }
+
+    }
+
+    public static void showDelayInCheckInDialog(Context context, String header, String msg, boolean b){
+        final Dialog dialog=new Dialog(context);
+        dialog.setCancelable(b);
+        dialog.setContentView(R.layout.attendance_dialog);
+
+        AppCompatTextView textHeader=dialog.findViewById(R.id.txt_delaycheck_header);
+        textHeader.setText(header);
+
+        AppCompatTextView textMsg=dialog.findViewById(R.id.txt_delaycheck_title);
+        textMsg.setText(msg);
+
+        AppCompatButton button=dialog.findViewById(R.id.btn_delaycheckin);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    public static Calendar setHours(int hours,int min){
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,hours);
+        calendar.set(Calendar.MINUTE,min);
+        return  calendar;
+    }
+
 }

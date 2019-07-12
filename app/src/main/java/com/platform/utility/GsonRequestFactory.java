@@ -32,7 +32,7 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
     private Object bodyParams;
     private Map<String, String> headerParams;
 
-    final int currentTimeout = 30000;
+    final int currentTimeout = 60 * 1000; //1 min
     final int maxNumRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
 
     public GsonRequestFactory(final int requestMethod,
