@@ -16,7 +16,7 @@ public class EventsResponse {
     @SerializedName("data")
     @Expose
     private List<EventTask> data = null;
-    @SerializedName("message ")
+    @SerializedName("message")
     @Expose
     private String message;
 

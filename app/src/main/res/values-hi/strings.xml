@@ -340,5 +340,6 @@
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
     <string name="generate_code">Generate attendance code</string>
     <string name="details">Details</string>
+    <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
 
 </resources>

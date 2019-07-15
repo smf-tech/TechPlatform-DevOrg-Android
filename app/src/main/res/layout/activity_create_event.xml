@@ -271,7 +271,7 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </RelativeLayout>
 
-            <!--Profile Pic-->
+            <!--EVENT Pic-->
             <RelativeLayout
                 android:id="@+id/ly_event_pic"
                 android:layout_width="wrap_content"

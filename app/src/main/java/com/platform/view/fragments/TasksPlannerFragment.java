@@ -30,7 +30,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.PlannerDetailActivity;
-import com.platform.view.adapters.EventListAdapter;
+import com.platform.view.adapters.EventTaskListAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -61,7 +61,7 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private boolean isMonth;
     private boolean isDashboard;
 
-    private EventListAdapter taskListAdapter;
+    private EventTaskListAdapter taskListAdapter;
     private ArrayList<EventTask> taskList;
     private ArrayList<EventTask> sortedTaskList;
 
@@ -133,15 +133,15 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         RecyclerView rvTasks = tasksPlannerView.findViewById(R.id.rv_events);
         calendarView = tasksPlannerView.findViewById(R.id.calendarView);
         radioGroup = tasksPlannerView.findViewById(R.id.radio_group_filter);
-        RadioButton allTasksButton = tasksPlannerView.findViewById(R.id.rb_all_events);
-        RadioButton myTasksButton = tasksPlannerView.findViewById(R.id.rb_my_events);
+        RadioButton allTasksButton = tasksPlannerView.findViewById(R.id.rb_all_events_task);
+        RadioButton myTasksButton = tasksPlannerView.findViewById(R.id.rb_my_events_task);
 
         allTasksButton.setText(R.string.all_tasks);
         myTasksButton.setText(R.string.my_tasks);
 
         tvAllEventsDetail.setText(R.string.all_tasks);
 
-        taskListAdapter = new EventListAdapter(getActivity(), sortedTaskList, Constants.Planner.TASKS_LABEL);
+        taskListAdapter = new EventTaskListAdapter(getActivity(), sortedTaskList, Constants.Planner.TASKS_LABEL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rvTasks.setLayoutManager(mLayoutManager);
         rvTasks.setAdapter(taskListAdapter);
@@ -215,11 +215,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rb_all_events:
+            case R.id.rb_all_events_task:
                 sortEventsList(true);
                 break;
 
-            case R.id.rb_my_events:
+            case R.id.rb_my_events_task:
                 sortEventsList(false);
                 break;
         }

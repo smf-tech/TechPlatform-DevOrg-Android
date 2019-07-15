@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +30,7 @@ import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.PlannerDetailActivity;
-import com.platform.view.adapters.EventListAdapter;
+import com.platform.view.adapters.EventTaskListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
 import java.util.ArrayList;
@@ -188,11 +187,11 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     if(obj.getEventTaskData()!=null && obj.getEventTaskData().size()>0){
 
                         RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
-                        EventListAdapter eventListAdapter = new EventListAdapter(getActivity(),
+                        EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(getActivity(),
                                 obj.getEventTaskData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_events);
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
-                        rvEvents.setAdapter(eventListAdapter);
+                        rvEvents.setAdapter(eventTaskListAdapter);
                     }
 
 
@@ -201,7 +200,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     if(obj.getTaskData()!=null && obj.getTaskData().size()>0) {
 
                         RecyclerView.LayoutManager mLayoutManagerTask = new LinearLayoutManager(getActivity().getApplicationContext());
-                        EventListAdapter taskListAdapter = new EventListAdapter(getActivity(),
+                        EventTaskListAdapter taskListAdapter = new EventTaskListAdapter(getActivity(),
                                 obj.getTaskData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvTask = plannerView.findViewById(R.id.rv_events);
                         rvTask.setLayoutManager(mLayoutManagerTask);

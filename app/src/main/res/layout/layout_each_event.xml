@@ -16,15 +16,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/bg_circular_rect_white"
-            android:layout_margin="@dimen/dimen_10dp"
-            android:padding="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_08dp"
             android:weightSum="10">
 
             <RelativeLayout
+                android:id="@+id/ly_schedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.5"
-                android:background="@drawable/bg_circular_rect_pink">
+                android:padding="@dimen/dimen_05dp">
 
                 <TextView
                     android:id="@+id/tv_date_label"

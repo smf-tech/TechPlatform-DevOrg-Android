@@ -167,7 +167,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            android:text="Start Date: "
+                            android:text="End Date: "
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 

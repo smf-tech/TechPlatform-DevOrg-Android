@@ -29,7 +29,7 @@ public class Constants {
     public static final String FORM_DATE = "yyyy-MM-dd";
     public static final String DAY_MONTH_YEAR = "dd/MM/yyyy";
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
-    static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
+    public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String DAY_MONTH_FORMAT = "dd MMM";
@@ -267,7 +267,7 @@ public class Constants {
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
-        public static final String EVENTS_LABEL = "EventTask";
+        public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
         public static final String MEMBER_LIST_DATA = "RepeatEventDta";

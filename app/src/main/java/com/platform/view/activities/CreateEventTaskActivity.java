@@ -25,6 +25,8 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.AddForm;
@@ -128,20 +130,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         toolbarAction = findViewById(R.id.toolbar_edit_action);
         toolbarAction.setImageResource(R.drawable.ic_delete);
 
-        // Task Module UI changes
-//        if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-//            TextInputLayout tlyEndDate = findViewById(R.id.tly_end_date);
-//            tlyEndDate.setVisibility(View.VISIBLE);
-//            TextInputLayout tlyAddress = findViewById(R.id.tly_address);
-//            tlyAddress.setVisibility(View.GONE);
-//        }
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.category_types, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spCategory.setAdapter(adapter);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spCategory.setAdapter(adapter);
-
         addMembersListAdapter = new AddMembersListAdapter(CreateEventTaskActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvAttendeesList.setLayoutManager(mLayoutManager);
@@ -163,7 +151,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             }
         } else {
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
-                setActionbar(getString(R.string.edit_task));
+                setActionbar(getString(R.string.create_task));
                 cbIsAttendanceRequired.setVisibility(View.GONE);
                 cbIsRegistrationRequired.setVisibility(View.GONE);
                 lyEventPic.setVisibility(View.GONE);
@@ -195,7 +183,15 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 etRegistrationStartDate.setText(Util.getDateFromTimestamp(eventTask.getRegistrationSchedule()
                         .getStartdatetime(),Constants.FORM_DATE));
                 etRegistrationEndDate.setText(Util.getDateFromTimestamp(eventTask.getRegistrationSchedule()
-                        .getStartdatetime(),Constants.FORM_DATE));
+                        .getEnddatetime(),Constants.FORM_DATE));
+            }
+            if(eventTask.getThumbnailImage().equals("")){
+//                eventPic.setVisibility(View.GONE);
+            } else {
+                Glide.with(this)
+                        .load(eventTask.getThumbnailImage())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(eventPic);
             }
         }
 
@@ -217,10 +213,10 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         toolbarAction.setOnClickListener(this);
     }
 
-    private void setAdapter(ArrayList<Participant> participants) {
-        membersList.addAll(participants);
-        addMembersListAdapter.notifyDataSetChanged();
-    }
+//    private void setAdapter(ArrayList<Participant> participants) {
+//        membersList.addAll(participants);
+//        addMembersListAdapter.notifyDataSetChanged();
+//    }
 
     private void setActionbar(String title) {
         TextView toolbar_title = findViewById(R.id.toolbar_title);
@@ -328,12 +324,14 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             } else {
                 eventTask.setType(toOpen);
             }
-
+            if (this.eventTask != null) {
+                eventTask.setId(this.eventTask.getId());
+            }
             eventTask.setTitle(etTitle.getText().toString());
             eventTask.setDescription(etDescription.getText().toString());
             Schedule eventSchedule = new Schedule();
             eventSchedule.setStartdatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-            eventSchedule.setEnddatetime(dateTimeToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+            eventSchedule.setEnddatetime(dateTimeToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
             eventTask.setSchedule(eventSchedule);
             eventTask.setAddress(etAddress.getText().toString());
 //          eventTask.setOrganizer(Util.getUserObjectFromPref().getId());
@@ -359,30 +357,59 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             }
 
             //put in response of above api
-            presenter.submitEvent(eventTask);
+//            presenter.submitEvent(eventTask);
         }
     }
 
     private boolean isAllInputsValid() {
         String msg = "";
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(etStartDate.getText().toString().trim());
+            endDate = sdf.parse(etEndDate.getText().toString().trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         if (etTitle.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_title);
         } else if (etStartDate.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_start_date);
-        } else if (etStartTime.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_start_time);
         } else if (etEndDate.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_end_date);
+        } else if (startDate.getTime() > endDate.getTime()) {
+            msg = getResources().getString(R.string.msg_enter_proper_date);
+        } else if (etStartTime.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_enter_start_time);
         } else if (etEndTime.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_ned_date);
         } else if (etAddress.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_address);
         } else if (cbIsRegistrationRequired.isChecked()) {
+            Date rStartDate = null;
+            Date rEndDate = null;
+            try {
+                rStartDate = sdf.parse(etRegistrationStartDate.getText().toString().trim());
+                rEndDate = sdf.parse(etRegistrationEndDate.getText().toString().trim());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             if (etRegistrationStartDate.getText().toString().trim().length() == 0) {
                 msg = getResources().getString(R.string.msg_enter_registration_start_date);
             } else if (etRegistrationEndDate.getText().toString().trim().length() == 0) {
                 msg = getResources().getString(R.string.msg_enter_registration_end_date);
+            } else if (rStartDate.getTime() > endDate.getTime()) {
+//                msg = getResources().getString(R.string.msg_enter_proper_date);
+                msg = "Registration start date should not be greter than end date";
+            } else if (rEndDate.getTime() > endDate.getTime()) {
+//                msg = getResources().getString(R.string.msg_enter_proper_date);
+                msg = "Registration end date should not be greter than end date";
+            } else if (rStartDate.getTime() > rEndDate.getTime()) {
+//                msg = getResources().getString(R.string.msg_enter_proper_date);
+                msg = "Registration start date should not be greter than registration end date";
             }
         }
 
@@ -396,21 +423,9 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     private Long dateTimeToTimeStamp(String strDate, String strTime) {
         Date date;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
         try {
             date = formatter.parse(strDate + " " + strTime);
-            return date.getTime();
-        } catch (ParseException e) {
-            Log.e("TAG", e.getMessage());
-        }
-
-        return 0L;
-    }
-    private Long dateToTimeStamp(String myDate) {
-        Date date;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        try {
-            date = formatter.parse(myDate);
             return date.getTime();
         } catch (ParseException e) {
             Log.e("TAG", e.getMessage());

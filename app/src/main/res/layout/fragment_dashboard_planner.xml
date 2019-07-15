@@ -111,24 +111,29 @@
                         android:textSize="@dimen/text_size_14" />
                 </RelativeLayout>
 
-
+                <!-- Events tab -->
                 <RelativeLayout
                     android:id="@+id/ly_events"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
                     android:layout_below="@+id/ly_attendance"
+                    android:layout_height="@dimen/dimen_305dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
                     android:visibility="visible">
 
                     <TextView
                         android:id="@+id/tv_no_events_msg"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
                         android:text="@string/no_events"
                         android:visibility="gone" />
 
                     <LinearLayout
-                        android:id="@+id/card_header"
+                        android:id="@+id/event_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:weightSum="10">
@@ -148,6 +153,7 @@
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dimen_05dp"
                             android:text="@string/all_events"
                             android:layout_weight="1"
                             />
@@ -165,10 +171,7 @@
                         android:id="@+id/rv_events"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/card_header"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_marginEnd="0dp"
+                        android:layout_below="@+id/event_header"
                         android:layout_marginBottom="@dimen/dimen_10dp" />
 
                 </RelativeLayout>
@@ -176,8 +179,11 @@
                 <RelativeLayout
                     android:id="@+id/ly_task"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_150dp"
+                    android:layout_height="@dimen/dimen_305dp"
                     android:layout_below="@+id/ly_events"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
                     android:visibility="visible">
 
 
@@ -189,18 +195,47 @@
                         android:text="@string/no_events"
                         android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/tv_task_label"
-                        style="@style/CardHeader"
-                        android:text="@string/today_tasks" />
+                    <LinearLayout
+                        android:id="@+id/task_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="10">
+
+                        <TextView
+                            android:id="@+id/tv_task_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/today_events"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="8"/>
+
+                        <TextView
+                            android:id="@+id/tv_all_task_list"
+                            style="@style/StyleLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:text="@string/all_tasks"
+                            android:layout_weight="1"
+                            />
+                        <TextView
+                            android:id="@+id/bt_add_task"
+                            style="@style/StyleLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+Add task"
+                            android:layout_weight="1"
+                            />
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_task"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/card_fotter_"
-                        android:layout_below="@+id/tv_task_label"
-                        android:layout_margin="@dimen/dimen_10dp" />
+                        android:layout_below="@+id/task_header" />
 
                     <RelativeLayout
                         android:id="@+id/card_fotter_"
@@ -208,29 +243,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true">
 
-                        <TextView
-                            android:id="@+id/tv_all_task_list"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="@dimen/dimen_10dp"
-                            android:text="@string/all_tasks"
-                            android:textColor="@color/tab_selector"
-                            android:textSize="@dimen/text_size_16" />
 
-                        <TextView
-                            android:id="@+id/bt_add_task"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/dimen_10dp"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
-                            android:src="@android:drawable/ic_input_add"
-                            android:tint="@color/white"
-                            app:backgroundTint="@color/tab_selector"
-                            android:text="Add Task"
-                            app:fabSize="mini"
-                            tools:ignore="RelativeOverlap" />
                     </RelativeLayout>
 
 

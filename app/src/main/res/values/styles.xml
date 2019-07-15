@@ -45,7 +45,7 @@
         <item name="android:background">@drawable/bg_button</item>
     </style>
     <style name="StyleLabel">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/bg_circular_border</item>
         <item name="android:gravity">center</item>

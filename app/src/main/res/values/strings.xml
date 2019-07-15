@@ -244,11 +244,11 @@
     <string name="today_events">Today\'s Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
+    <string name="create_task">Create Task</string>
     <string name="all_tasks">All Tasks</string>
     <string name="my_tasks">My Tasks</string>
     <string name="today_tasks">Today\'s Tasks</string>
     <string name="no_tasks">No tasks today!</string>
-    <string name="create_task">CREATE TASK</string>
     <string name="task_category">Category</string>
     <string name="task_title">Title</string>
     <string name="task_start_date">Start Date</string>
@@ -397,5 +397,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generate_code">Get attendance code</string>
     <string name="details">Details</string>
+    <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
 
 </resources>

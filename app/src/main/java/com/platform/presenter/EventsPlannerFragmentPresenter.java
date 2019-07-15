@@ -9,21 +9,15 @@ import com.platform.models.events.EventsResponse;
 import com.platform.models.events.EventsResponseOfMonth;
 import com.platform.request.EventRequestCall;
 import com.platform.utility.PlatformGson;
-import com.platform.utility.Util;
-import com.platform.view.fragments.EventsPlannerFragment;
-import com.platform.view.fragments.TasksPlannerFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.platform.view.fragments.EventsTaskLandingFragment;
 
 import java.lang.ref.WeakReference;
 
 public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
-    private final WeakReference<EventsPlannerFragment> fragmentWeakReference;
+    private final WeakReference<EventsTaskLandingFragment> fragmentWeakReference;
 
-    public EventsPlannerFragmentPresenter(EventsPlannerFragment fragmentWeakReference) {
+    public EventsPlannerFragmentPresenter(EventsTaskLandingFragment fragmentWeakReference) {
         this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);
 
     }

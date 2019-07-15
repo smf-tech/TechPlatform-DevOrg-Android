@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
-import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.EventTask;
 import com.platform.models.events.EventParams;
@@ -32,7 +30,7 @@ import com.platform.utility.EventDecorator;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.PlannerDetailActivity;
-import com.platform.view.adapters.EventListAdapter;
+import com.platform.view.adapters.EventTaskListAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -47,7 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class EventsPlannerFragment extends Fragment implements View.OnClickListener,
+public class EventsTaskLandingFragment extends Fragment implements View.OnClickListener,
         OnDateSelectedListener, OnMonthChangedListener, RadioGroup.OnCheckedChangeListener, PlatformTaskListener {
 
     private ImageView ivBackIcon;
@@ -60,7 +58,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     private FloatingActionButton btAddEvents;
     private MaterialCalendarView calendarView;
 
-    private EventListAdapter eventListAdapter;
+    private EventTaskListAdapter eventTaskListAdapter;
     private ArrayList<EventTask> eventsList;
     private ArrayList<EventTask> sortedEventsList;
 
@@ -73,7 +71,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     private EventParams eventParams;
     private int selectedMonth;
 
-    public EventsPlannerFragment() {
+    public EventsTaskLandingFragment() {
         // Required empty public constructor
     }
 
@@ -115,7 +113,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
         presenter = new EventsPlannerFragmentPresenter(this);
         presenter.getEventsOfMonth(eventParams);
-        presenter.getEventsOfDay(eventParams);
+
 
         eventsList = new ArrayList<>();
         sortedEventsList = new ArrayList<>();
@@ -132,26 +130,34 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         RecyclerView rvEvents = eventsPlannerView.findViewById(R.id.rv_events);
         calendarView = eventsPlannerView.findViewById(R.id.calendarView);
         radioGroup = eventsPlannerView.findViewById(R.id.radio_group_filter);
+        RadioButton rbAllEventTask = eventsPlannerView.findViewById(R.id.rb_all_events_task);
+        RadioButton rbMyEventTask = eventsPlannerView.findViewById(R.id.rb_my_events_task);
 
-
-        eventListAdapter = new EventListAdapter(getActivity(), sortedEventsList, toOpen);
+        eventTaskListAdapter = new EventTaskListAdapter(getActivity(), sortedEventsList, toOpen);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         rvEvents.setLayoutManager(mLayoutManager);
-        rvEvents.setAdapter(eventListAdapter);
+        rvEvents.setAdapter(eventTaskListAdapter);
 
         setCalendar();
+        calendarView.setSelectedDate(Calendar.getInstance().getTime());
         setListeners();
-
-//        calendarView.setOnMonthChangedListener((widget, date) ->
-//                Toast.makeText(getActivity(), "Month Changed:" + date, Toast.LENGTH_SHORT).show());
-//        selectedMonth = Integer.parseInt(eventParams.getMonth());
 
         if (toOpen.equals(Constants.Planner.EVENTS_LABEL)) {
             tvToolbarTitle.setText(getResources().getString(R.string.events));
+            rbAllEventTask.setText(getString(R.string.all_events));
+            rbMyEventTask.setText(getString(R.string.my_events));
         } else {
             tvToolbarTitle.setText(getResources().getString(R.string.tasks));
+            rbAllEventTask.setText(getString(R.string.all_tasks));
+            rbMyEventTask.setText(getString(R.string.my_tasks));
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.getEventsOfDay(eventParams);
     }
 
     // On clicking the date
@@ -172,14 +178,16 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     @Override
     public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
 //        Toast.makeText(getActivity(), "Month Changed:" + calendarDay, Toast.LENGTH_SHORT).show();
-        eventParams = new EventParams();
-        eventParams.setType(toOpen);
-        eventParams.setDay(DateFormat.format("dd", calendarDay.getDate()).toString());
-        eventParams.setMonth(DateFormat.format("MM", calendarDay.getDate()).toString());
-        eventParams.setYear(DateFormat.format("yyyy", calendarDay.getDate()).toString());
-        eventParams.setUserId(Util.getUserObjectFromPref().getId());
+        if(selectedMonth!=Integer.parseInt(DateFormat.format("MM", calendarDay.getDate()).toString())){
+            eventParams = new EventParams();
+            eventParams.setType(toOpen);
+            eventParams.setDay(DateFormat.format("dd", calendarDay.getDate()).toString());
+            eventParams.setMonth(DateFormat.format("MM", calendarDay.getDate()).toString());
+            eventParams.setYear(DateFormat.format("yyyy", calendarDay.getDate()).toString());
+            eventParams.setUserId(Util.getUserObjectFromPref().getId());
 
-        presenter.getEventsOfDay(eventParams);
+            presenter.getEventsOfMonth(eventParams);
+        }
     }
 
     private void setListeners() {
@@ -213,13 +221,13 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
 
             case R.id.bt_add_events:
                 Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
                 this.startActivity(intentCreateEvent);
                 break;
 
             case R.id.tv_all_events_list:
                 Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                intentEventList.putExtra(Constants.Planner.TO_OPEN, toOpen);
                 this.startActivity(intentEventList);
                 break;
         }
@@ -228,11 +236,11 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rb_all_events:
+            case R.id.rb_all_events_task:
                 sortEventsList(true);
                 break;
 
-            case R.id.rb_my_events:
+            case R.id.rb_my_events_task:
                 sortEventsList(false);
                 break;
         }
@@ -249,13 +257,12 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
                 }
             }
         }
-        eventListAdapter.notifyDataSetChanged();
+        eventTaskListAdapter.notifyDataSetChanged();
     }
 
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         Calendar instance = Calendar.getInstance();
-        calendarView.setSelectedDate(instance.getTime());
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
@@ -272,8 +279,8 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
                     .commit();
             ivCalendarMode.setRotation(0);
         }
-        calendarView.setSelectedDate(instance.getTime());
-        calendarView.setCurrentDate(instance.getTime());
+//        calendarView.setSelectedDate(instance.getTime());
+//        calendarView.setCurrentDate(instance.getTime());
     }
 
 
@@ -319,7 +326,7 @@ public class EventsPlannerFragment extends Fragment implements View.OnClickListe
         if (data != null) {
             eventsList.addAll(data);
             sortedEventsList.addAll(data);
-            eventListAdapter.notifyDataSetChanged();
+            eventTaskListAdapter.notifyDataSetChanged();
         } else {
             sortEventsList(true);
         }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,13 +20,13 @@ import com.platform.view.activities.EventDetailActivity;
 import java.util.ArrayList;
 
 @SuppressWarnings("CanBeFinal")
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
+public class EventTaskListAdapter extends RecyclerView.Adapter<EventTaskListAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<EventTask> eventsList;
     private String type;
 
-    public EventListAdapter(Context mContext, ArrayList<EventTask> eventsList, String type) {
+    public EventTaskListAdapter(Context mContext, ArrayList<EventTask> eventsList, String type) {
         this.mContext = mContext;
         this.eventsList = eventsList;
         this.type = type;
@@ -35,13 +34,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @NonNull
     @Override
-    public EventListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EventTaskListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_event, parent, false);
-        return new EventListAdapter.ViewHolder(v);
+        return new EventTaskListAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EventTaskListAdapter.ViewHolder holder, int position) {
 
         EventTask eventTask = eventsList.get(position);
         holder.tvTitle.setText(eventTask.getTitle());
@@ -59,7 +58,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout lyEventTask;
+        RelativeLayout lyEventTask,lySchedule;
         TextView tvTitle;
         TextView tvTime,tvDate;
         TextView tvAddress;
@@ -69,6 +68,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             super(itemView);
 
             lyEventTask = itemView.findViewById(R.id.ly_event_task);
+            lySchedule = itemView.findViewById(R.id.ly_schedule);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvTime = itemView.findViewById(R.id.tv_time);
             tvDate = itemView.findViewById(R.id.tv_date);
@@ -77,8 +77,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
             if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
 //                task
+                lySchedule.setBackground(mContext.getDrawable(R.drawable.bg_circular_rect_yellow));
             } else {
 //                event
+                lySchedule.setBackground(mContext.getDrawable(R.drawable.bg_circular_rect_pink));
             }
 
             lyEventTask.setOnClickListener(v -> {

@@ -81,8 +81,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         TextView tvOwner = findViewById(R.id.tv_owner_name);
         TextView tvStartDate = findViewById(R.id.tv_start_date);
         TextView tvEndDate = findViewById(R.id.tv_end_date);
-        TextView tvStartTime = findViewById(R.id.tv_start_time);
-        TextView tvEndTime = findViewById(R.id.tv_end_time);
+//        TextView tvStartTime = findViewById(R.id.tv_start_time);
+//        TextView tvEndTime = findViewById(R.id.tv_end_time);
         TextView tvAddress = findViewById(R.id.tv_address);
         ImageView ivEventPic = findViewById(R.id.event_pic);
         TextView tvMemberCount = findViewById(R.id.tv_member_count);
@@ -94,12 +94,12 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         tvTitle.setText(eventTask.getTitle());
         tvDescription.setText(eventTask.getDescription());
-        tvStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
-        tvEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
+//        tvStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
+//        tvEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
         tvAddress.setText(eventTask.getAddress());
         tvOwner.setText(eventTask.getOwnername());
-        tvStartDate.setText(Util.getDateTimeFromTimestamp(eventTask.getSchedule().getStartdatetime()));
-        tvEndDate.setText(Util.getDateTimeFromTimestamp(eventTask.getSchedule().getEnddatetime()));
+        tvStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
+        tvEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
         tvMemberCount.setText(eventTask.getParticipantsCount()+" member added");
 //        eventTask.getAttendedCompleted();
 

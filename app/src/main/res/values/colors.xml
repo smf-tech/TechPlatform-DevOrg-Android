@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#482880</color>
-    <color name="colorPrimary">#532e92</color>
+    <color name="colorPrimaryDark">#6246e7</color>
+    <color name="colorPrimary">#6246e7</color>
     <color name="colorAccent">#4daaf6</color>
 
     <color name="black_green">#093245</color>
@@ -26,7 +26,7 @@
     <color name="purple">#800080</color>
     <!--<color name="orange">#F75C4B</color>-->
     <!--<color name="pink">#F00A6B</color>-->
-    <!--<color name="yellow">#FFCD00</color>-->
+    <color name="yellow">#ffab19</color>
 
     <color name="light_blue">#C3D0E6</color>
     <color name="medium_blue">#75A2CE</color>
@@ -36,7 +36,7 @@
     <color name="lightest_blue">#EFF3FC</color>
 
     <color name="tab_normal">#91B4C4</color>
-    <color name="tab_select">#214A5D</color>
+    <color name="tab_select">#fc7660</color>
     <color name="tab_bg">#2C627B</color>
     <color name="light_green">#5DA238</color>
     <color name="brown">#A23838</color>
