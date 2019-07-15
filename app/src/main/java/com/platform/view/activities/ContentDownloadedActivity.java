@@ -1,16 +1,110 @@
 package com.platform.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.platform.R;
+import com.platform.adapter.DownloadListAdapter;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContentDownloadedActivity extends AppCompatActivity {
 
+    RecyclerView recyclerView;
+    Context context;
+    private SearchView searchView;
+    private String path= Environment.getExternalStorageDirectory().getPath()+"/MV";
+    private ArrayList<String>filenames;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_downloaded);
+        context=ContentDownloadedActivity.this;
+        initViews();
+        getFilesFromDirectory(path);
+        setUpRecycleView();
+
+
+    }
+
+    private void getFilesFromDirectory(String path) {
+        File directory=new File(path);
+
+
+        if(directory.exists()){
+
+            if(directory.isDirectory()){
+
+                filenames=new ArrayList<>();
+                File[] files=directory.listFiles();
+                for(int i=0;i<files.length;i++){
+                    filenames.add(files[i].getName());
+                }
+            }
+        }
+
+    }
+
+    private void setUpRecycleView() {
+        DownloadListAdapter downloadListAdapter=new DownloadListAdapter(context,filenames);
+        recyclerView.setAdapter(downloadListAdapter);
+    }
+
+    private void initViews() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Content Management");
+
+        recyclerView=findViewById(R.id.list_download);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_download_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                //adapter.getFilter().filter(query);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id=item.getItemId();
+        if(id==R.id.action_search){
+            return  true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

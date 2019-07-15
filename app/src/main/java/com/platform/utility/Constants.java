@@ -5,6 +5,7 @@ public class Constants {
     public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
+    public static final int READ_EXTERNAL_STORAGE=4;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
