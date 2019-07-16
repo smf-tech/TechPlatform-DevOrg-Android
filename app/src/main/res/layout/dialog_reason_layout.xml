@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/dimen_10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="300dp"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/txt_dialog_title"
+            android:textStyle="bold"
+            android:textColor="@color/black_green"
+            android:text="Please enter the reason below"
+            android:layout_height="wrap_content" />
+        <!--<EditText
+            android:layout_width="wrap_content"
+            android:id="@+id/edt_reason"
+            android:layout_gravity="center_horizontal"
+            android:hint="Please enter reason"
+            android:textColorHint="@color/black_green"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:gravity="center"
+            android:maxLength="100"
+            android:layout_height="wrap_content" />-->
+
+        <EditText
+            android:id="@+id/edt_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:layout_marginTop="10dp"
+            android:hint="Please enter reason"
+            android:textColor="@color/black"
+
+            android:gravity="left|top"
+            android:inputType="textShortMessage|textMultiLine"
+            android:lines="7"
+            android:maxLength="200"
+            android:textSize="@dimen/text_size_16"
+            android:maxLines="6"
+            android:background="@drawable/edittext_border"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:text="Cancel"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:id="@+id/btn_cancel"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:text="Submit"
+                android:layout_weight="1"
+                android:id="@+id/btn_submit"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

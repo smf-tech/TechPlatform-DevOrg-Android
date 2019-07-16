@@ -28,7 +28,7 @@ public class NotificationsFragmentPresenter implements TMPendingRequestCallListe
         requestCall.setListener(this);
 
         fragmentWeakReference.get().showProgressBar();
-        requestCall.getAllPendingRequests();
+        //requestCall.getAllPendingRequests();
     }
 
     @Override
