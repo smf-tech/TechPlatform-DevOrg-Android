@@ -142,7 +142,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/task_description"
-                    android:inputType="text|textCapWords"
+                    android:maxLines="10"
+                    android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16"
                     tools:ignore="Autofill" />
@@ -160,8 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/task_address"
-                    android:inputType="text|textCapWords"
-
+                    android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16"
                     tools:ignore="Autofill" />

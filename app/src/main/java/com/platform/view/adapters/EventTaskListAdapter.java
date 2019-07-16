@@ -49,7 +49,7 @@ public class EventTaskListAdapter extends RecyclerView.Adapter<EventTaskListAdap
         holder.tvOwner.setText(eventTask.getOwnername());
         holder.tvAddress.setText(eventTask.getAddress());
         holder.tvOwner.setText(eventTask.getOwnername());
-
+        holder.tvStatus.setText(eventTask.getEventStatus());
     }
 
     @Override
@@ -63,6 +63,7 @@ public class EventTaskListAdapter extends RecyclerView.Adapter<EventTaskListAdap
         TextView tvTime,tvDate;
         TextView tvAddress;
         TextView tvOwner;
+        TextView tvStatus;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,13 +75,16 @@ public class EventTaskListAdapter extends RecyclerView.Adapter<EventTaskListAdap
             tvDate = itemView.findViewById(R.id.tv_date);
             tvAddress = itemView.findViewById(R.id.tv_address);
             tvOwner = itemView.findViewById(R.id.tv_owner);
+            tvStatus = itemView.findViewById(R.id.tv_status);
 
             if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
 //                task
                 lySchedule.setBackground(mContext.getDrawable(R.drawable.bg_circular_rect_yellow));
+                tvStatus.setVisibility(View.VISIBLE);
             } else {
 //                event
                 lySchedule.setBackground(mContext.getDrawable(R.drawable.bg_circular_rect_pink));
+                tvOwner.setVisibility(View.VISIBLE);
             }
 
             lyEventTask.setOnClickListener(v -> {

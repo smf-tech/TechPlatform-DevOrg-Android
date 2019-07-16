@@ -42,6 +42,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
     private ImageView backButton;
     private ImageView editButton;
+    private ImageView toolbarAction;
     private RecyclerView rvFormsList;
     private LinearLayout lyMembarlistCode;
     private FrameLayout lyGreyedOut;
@@ -73,6 +74,9 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         backButton = findViewById(R.id.toolbar_back_action);
         editButton = findViewById(R.id.toolbar_edit_action);
+        toolbarAction = findViewById(R.id.toolbar_action);
+        toolbarAction.setVisibility(View.VISIBLE);
+        toolbarAction.setImageResource(R.drawable.ic_delete);
         lyGreyedOut = findViewById(R.id.ly_greyed_out);
         lyMembarlistCode = findViewById(R.id.ly_membarlist_code);
 
@@ -124,8 +128,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
             editButton.setVisibility(View.VISIBLE);
+            toolbarAction.setVisibility(View.VISIBLE);
         } else {
             editButton.setVisibility(View.GONE);
+            toolbarAction.setVisibility(View.GONE);
         }
 
         if (eventTask.getRequiredForms().size() > 0) {
@@ -167,6 +173,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void setListeners() {
         backButton.setOnClickListener(this);
         editButton.setOnClickListener(this);
+        toolbarAction.setOnClickListener(this);
         btGetCode.setOnClickListener(this);
         btSetCode.setOnClickListener(this);
         btParticipants.setOnClickListener(this);
@@ -193,7 +200,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 this.startActivity(intentCreateEvent);
                 finish();
                 break;
-
+            case R.id.toolbar_action:
+                // delete()
+                showDeleteAlert();
+                break;
             case R.id.bt_participants:
                 //see showMemberList()
                 presenter.memberList(eventTask.getId());
@@ -276,6 +286,28 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         alertDialog.show();
     }
 
+    public void showDeleteAlert(){
+        AlertDialog alertDialog=null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete alert")
+                .setMessage("Are you shore, do you want to delete")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                        presenter.delete(eventTask.getId());
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.cancel();
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertDialog=builder.create();
+        alertDialog.show();
+    }
+
     public void showMemberList(ArrayList<Participant> memberList) {
         Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
         intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
@@ -306,7 +338,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
     @Override
     public <T> void showNextScreen(T data) {
-
+        runOnUiThread(() -> Util.showToast(data.toString(), this));
+        finish();
     }
 
     @Override

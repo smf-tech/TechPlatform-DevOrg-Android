@@ -58,14 +58,6 @@ public class CreateEventActivityPresenter implements CreateEventListener, ImageR
         requestCall.getTaskMemberList();
     }
 
-    public void delete(String id) {
-        EventRequestCall requestCall = new EventRequestCall();
-        requestCall.setCreateEventListener(this);
-
-        activity.get().showProgressBar();
-        requestCall.delete(id);
-    }
-
     public void uploadProfileImage(File imageFile, String imageTypeProfile) {
         ImageRequestCall requestCall = new ImageRequestCall();
         requestCall.setListener(this);
@@ -128,19 +120,6 @@ public class CreateEventActivityPresenter implements CreateEventListener, ImageR
     public void onEventSubmitted(String response) {
 //        activity.get().hideProgressBar();
 //        activity.get().showNextScreen("Finish");
-        if (activity != null) {
-            activity.get().hideProgressBar();
-            if (!TextUtils.isEmpty(response)) {
-                CommonResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, CommonResponse.class);
-                if (activity != null) {
-                    activity.get().showNextScreen(data.getMessage());
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onDeleted(String response) {
         if (activity != null) {
             activity.get().hideProgressBar();
             if (!TextUtils.isEmpty(response)) {

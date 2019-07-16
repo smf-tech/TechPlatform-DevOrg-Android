@@ -46,11 +46,12 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.tvMemberName.setText(member.getName());
         holder.tvMemberDesignation.setText(member.getRoleName());
         if(isCheckVisible){
-            if( isAddMember){
-                holder.cbMemberSelect.setVisibility(View.GONE);
-            } else {
-                member.getAttended();
-            }
+
+        }
+        if( isAddMember){
+            member.getAttended();
+        } else {
+            holder.cbMemberSelect.setVisibility(View.GONE);
         }
 
     }
