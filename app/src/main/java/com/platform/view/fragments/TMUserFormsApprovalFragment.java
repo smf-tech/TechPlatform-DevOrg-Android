@@ -102,7 +102,9 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
     }
 
     public void updateRequestStatus(String response, int position) {
-        Util.showToast("form is approved or rejected",getActivity());
+        //Util.showToast("form is approved or rejected",getActivity());
+        tmUserFormsApplicationsList.remove(position);
+        tmUserFormsApprovalRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override

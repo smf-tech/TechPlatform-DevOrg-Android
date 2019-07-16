@@ -229,8 +229,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onFilterButtonClicked(JSONObject requestobject) {
-        pendingRequestList.clear();
-        mAdapter.notifyDataSetChanged();
+        this.pendingRequestList.clear();
+        if (mAdapter!=null) {
+            mAdapter.notifyDataSetChanged();
+        }
         Toast.makeText(getActivity(), "Filter applied in activtiy using interface", Toast.LENGTH_SHORT).show();
         filterRequestObject = requestobject;
         pendingFragmentPresenter.getAllPendingRequests(requestobject);
