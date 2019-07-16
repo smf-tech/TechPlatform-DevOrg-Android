@@ -11,15 +11,12 @@ public class MemberListResponse {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("metadata")
+    @SerializedName("message")
     @Expose
-    private List<MetaData> metadata = null;
+    private String message;
     @SerializedName("data")
     @Expose
     private List<Participant> data = null;
-    @SerializedName("message ")
-    @Expose
-    private String message;
 
     public String getStatus() {
         return status;
@@ -29,12 +26,12 @@ public class MemberListResponse {
         this.status = status;
     }
 
-    public List<MetaData> getMetadata() {
-        return metadata;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMetadata(List<MetaData> metadata) {
-        this.metadata = metadata;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public List<Participant> getData() {
@@ -45,11 +42,4 @@ public class MemberListResponse {
         this.data = data;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

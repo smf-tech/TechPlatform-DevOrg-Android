@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_dashboard_item"
+    android:layout_marginBottom="@dimen/dimen_25dp">
+
+    <ImageView
+        android:id="@+id/img_status_icon"
+        android:layout_width="@dimen/dimen_35dp"
+        android:layout_height="@dimen/dimen_35dp"
+        android:src="@drawable/bg_light_blue_box"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/dimen_05dp"
+        android:layout_margin="@dimen/dimen_10dp" />
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_status_icon"
+        android:layout_toLeftOf="@+id/text_status_count"
+        android:text="Number of Rejected Forms: "
+        android:singleLine="false"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/text_status_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="105"
+        android:layout_marginLeft="@dimen/dimen_05dp"
+        android:layout_marginRight="@dimen/dimen_15dp"
+        android:layout_centerVertical="true"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

@@ -33,6 +33,16 @@ public class Modules implements Serializable {
     @Expose
     private LocaleData name;
 
+    @ColumnInfo(name = "type")
+    @SerializedName("type")
+    @Expose
+    private String moduleType;
+
+    @ColumnInfo(name = "weblink")
+    @SerializedName("weblink")
+    @Expose
+    private String weblink;
+
     @ColumnInfo(name = "module")
     @Expose
     private String module;
@@ -88,5 +98,21 @@ public class Modules implements Serializable {
 
     public void setResId(int resId) {
         this.resId = resId;
+    }
+
+    public String getModuleType() {
+        return moduleType;
+    }
+
+    public void setModuleType(String moduleType) {
+        this.moduleType = moduleType;
+    }
+
+    public String getWeblink() {
+        return weblink;
+    }
+
+    public void setWeblink(String weblink) {
+        this.weblink = weblink;
     }
 }

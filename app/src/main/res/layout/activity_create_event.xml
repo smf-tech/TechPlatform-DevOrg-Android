@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.platform.view.activities.CreateEventActivity">
+    android:background="@color/white"
+    tools:context="com.platform.view.activities.CreateEventTaskActivity">
 
     <include
-        android:id="@+id/ly_app_bar"
-        layout="@layout/app_toolbar" />
+    android:id="@+id/ly_app_bar"
+    layout="@layout/app_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,25 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--Category-->
-            <TextView
-                android:id="@+id/tv_category"
-                style="@style/FormLabel"
-                android:text="@string/category" />
-
-            <Spinner
-                android:id="@+id/sp_category"
-                android:layout_below="@+id/tv_category"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_marginTop="@dimen/dimen_05dp" />
-
             <!--Title-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_title"
                 style="@style/RegistrationTextInputLayout"
-                android:layout_below="@+id/sp_category"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -51,63 +37,77 @@
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Start Date-->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tly_start_date"
-                style="@style/RegistrationTextInputLayout"
+
+            <LinearLayout
+                android:id="@+id/ly_start_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/tly_title"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-                <EditText
-                    android:id="@+id/et_start_date"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/task_start_date"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:inputType="date"
-                    android:drawableEnd="@drawable/ic_calendar_ev"
-                    tools:ignore="Autofill" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_start_date"
+                    style="@style/RegistrationTextInputLayout"
+                    android:layout_below="@+id/tly_title"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
 
-            <!--End Date-->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tly_end_date"
-                style="@style/RegistrationTextInputLayout"
-                android:layout_below="@+id/tly_start_date"
-                app:hintTextAppearance="@style/TextInputLayoutHint"
-                android:visibility="gone">
+                    <EditText
+                        android:id="@+id/et_start_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_calendar_ev"
+                        android:focusable="false"
+                        android:hint="@string/task_start_date"
+                        android:inputType="date"
+                        tools:ignore="Autofill" />
+                    <!--android:drawableEnd="@drawable/ic_cal"-->
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/et_end_date"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/task_end_date"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:inputType="date"
-                    android:drawableEnd="@drawable/ic_calendar_ev"
-                    tools:ignore="Autofill" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_end_date"
+                    style="@style/RegistrationTextInputLayout"
+                    android:layout_below="@+id/tly_start_date"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_end_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_calendar_ev"
+                        android:focusable="false"
+                        android:hint="@string/task_end_date"
+                        android:inputType="date"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ly_start_end_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tly_end_date"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:layout_below="@+id/ly_start_end_date"
+                android:baselineAligned="false"
+                android:weightSum="10"
+                android:orientation="horizontal">
                 <!--Start Time-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_start_time"
-                    android:layout_weight="5"
                     style="@style/RegistrationTextInputLayout"
+                    android:layout_weight="5"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
                     <EditText
                         android:id="@+id/et_start_time"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/task_start_time"
                         android:clickable="false"
                         android:focusable="false"
+                        android:hint="@string/task_start_time"
                         android:inputType="time"
                         tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -115,85 +115,37 @@
                 <!--End Time-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_end_time"
-                    android:layout_weight="5"
                     style="@style/RegistrationTextInputLayout"
+                    android:layout_weight="5"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
                     <EditText
                         android:id="@+id/et_end_time"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/task_end_time"
                         android:clickable="false"
                         android:focusable="false"
+                        android:hint="@string/task_end_time"
                         android:inputType="time"
                         tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ly_repeat"
-                android:layout_below="@+id/ly_start_end_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:background="@drawable/bg_blue_box">
-
-                <!--Repeat-->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tly_repeat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:padding="@dimen/dimen_10dp"
-                    android:theme="@style/TextInputLayoutForLabel"
-                    android:visibility="visible"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
-
-                    <EditText
-                        android:id="@+id/et_repeat"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/task_repeat"
-                        android:inputType="text|textCapWords"
-                        android:clickable="false"
-                        android:focusable="false"
-                        tools:ignore="Autofill" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/bt_repeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/medium_blue"
-                    android:layout_gravity="center" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_repeat_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_repeat"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:visibility="gone" />
-
             <!--Description-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_description"
                 style="@style/RegistrationTextInputLayout"
-                android:layout_below="@+id/tv_repeat_detail"
+                android:layout_below="@+id/ly_start_end_time"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/et_description"
-                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="@string/task_description"
-                    android:inputType="text|textCapWords"
+                    android:maxLines="10"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -206,30 +158,106 @@
 
                 <EditText
                     android:id="@+id/et_address"
-                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="@string/task_address"
-                    android:inputType="text|textCapWords"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cb_is_attendance_required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tly_address"
+                android:layout_marginStart="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:text="@string/is_attendance_required" />
+
+            <CheckBox
+                android:id="@+id/cb_is_registration_required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cb_is_attendance_required"
+                android:layout_marginStart="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:text="@string/is_registration_required" />
+
+            <!--Registration Start Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_registration_start_date"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/cb_is_registration_required"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_registration_start_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:drawableEnd="@drawable/ic_calendar_ev"
+                    android:focusable="false"
+                    android:hint="@string/registration_start_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Registration End Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_registration_end_date"
+                style="@style/RegistrationTextInputLayout"
+                android:layout_below="@+id/tly_registration_start_date"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_registration_end_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:drawableEnd="@drawable/ic_calendar_ev"
+                    android:focusable="false"
+                    android:hint="@string/registration_end_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Add Forms-->
+            <TextView
+                android:id="@+id/tv_add_forms"
+                style="@style/FormLabel"
+                android:layout_below="@+id/tly_registration_end_date"
+                android:layout_marginStart="@dimen/dimen_20dp"
+                android:text="Add Forms" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_add_forms"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_below="@+id/tv_add_forms" />
 
             <!--Add Members-->
             <RelativeLayout
                 android:id="@+id/rl_add_members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:background="@drawable/bg_blue_box"
-                android:layout_below="@+id/tly_address"
+                android:layout_below="@+id/sp_add_forms"
                 android:layout_margin="@dimen/dimen_10dp"
+                android:background="@drawable/bg_blue_box"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/et_add_members"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/task_add_members"
                     android:clickable="false"
-                    android:focusable="false"
-                    android:inputType="text|textCapWords"
                     android:drawableStart="@drawable/ic_add"
+                    android:focusable="false"
+                    android:hint="@string/task_add_members"
+                    android:inputType="text|textCapWords"
                     android:padding="@dimen/dimen_10dp"
                     tools:ignore="Autofill" />
 
@@ -243,14 +271,43 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </RelativeLayout>
 
+            <!--EVENT Pic-->
+            <RelativeLayout
+                android:id="@+id/ly_event_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/rl_add_members">
+
+                <ImageView
+                    android:id="@+id/event_pic"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/ic_img" />
+
+                <TextView
+                    android:id="@+id/event_pic_label"
+                    style="@style/FormLabel"
+                    android:layout_below="@+id/event_pic"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:text="@string/event_pic"
+                    android:textSize="@dimen/text_size_16" />
+
+            </RelativeLayout>
+
+
             <Button
                 android:id="@+id/bt_event_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rl_add_members"
+                android:layout_below="@+id/ly_event_pic"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
-                android:text="@string/create_event"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_22" />
@@ -258,6 +315,7 @@
         </RelativeLayout>
 
     </ScrollView>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"
@@ -277,4 +335,6 @@
             android:indeterminateOnly="true"
             android:visibility="gone" />
     </RelativeLayout>
+
+
 </RelativeLayout>

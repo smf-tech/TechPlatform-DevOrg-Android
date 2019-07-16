@@ -50,6 +50,17 @@ public class FormResult {
     @ColumnInfo(name = "createdDateTime")
     private Long createdAt;
 
+    public String getFormApprovalStatus() {
+        return formApprovalStatus;
+    }
+
+    public void setFormApprovalStatus(String formApprovalStatus) {
+        this.formApprovalStatus = formApprovalStatus;
+    }
+
+    @ColumnInfo(name = "form_approvalStatus")
+    private String formApprovalStatus;
+
     @ColumnInfo(name = "oid")
     private String oid;
 

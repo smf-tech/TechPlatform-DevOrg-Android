@@ -3,6 +3,7 @@ package com.platform.models.tm;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class TMEntity {
 
     @SerializedName("user")

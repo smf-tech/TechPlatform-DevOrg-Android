@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.tm.TMUserAttendanceApprovalRequest;
+import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 
@@ -42,7 +43,7 @@ public class TMUserAttendanceApprovalRecyclerAdapter extends RecyclerView.Adapte
 
         @Override
         public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-            holder.tv_title_checkin.setText("Check in : "+ Util.getDateFromTimestamp(Long.parseLong(dataList.get(position).getCheck_in().getTime())));
+            holder.tv_title_checkin.setText("Check in : "+ Util.getDateFromTimestamp(Long.parseLong(dataList.get(position).getCheck_in().getTime()), Constants.FORM_DATE));
             holder.tv_address_checkin.setText("Address : "+dataList.get(position).getCheck_in().getAddress());
             holder.tv_title_checkout.setText("Check out : "+dataList.get(position).getCheck_out().getTime());
             holder.tv_address_checkout.setText("Address : "+dataList.get(position).getCheck_out().getAddress());

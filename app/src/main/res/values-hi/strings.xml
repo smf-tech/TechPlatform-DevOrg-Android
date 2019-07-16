@@ -142,6 +142,7 @@
     <!--Program management-->
     <string name="saved_forms_cat">सहेजे गए फ़ॉर्म</string>
     <string name="submit">जमा करें</string>
+    <string name="save">जतन करें</string>
     <string name="no_data_available">डेटा उपलब्ध नहीं है</string>
 
     <string name="view_all_forms">सभी प्रपत्र देखें</string>
@@ -171,10 +172,11 @@
     <string name="verification_code">पुष्टि संख्या</string>
     <string name="verify">सत्यापित करें</string>
     <string name="please_type_the_verification_code_n_sent_to">कृपया %1$s पर भेजा गया सत्यापन कोड टाइप करें</string>
-    <string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>
+    <!--<string name="forms_are_not_available">प्रपत्र उपलब्ध नहीं हैं</string>-->
     <string name="reports">रिपोर्ट</string>
     <string name="submitted_form_count">प्रस्तुत प्रपत्रों की कुल गणना : %1$s</string>
     <string name="msg_confirm">क्या आप वाकई इस फ़ॉर्म को सहेजना चाहते हैं?</string>
+    <string name="msg_discard">क्या आप वाकई इस फ़ॉर्म को हटाना चाहते हैं??</string>
     <string name="form_saved_offline">आप ऑफ़लाइन हैं, फॉर्म ऑफलाइन जमा किया जाता है।</string>
     <string name="form_submit_success">फॉर्म सफलतापूर्वक सबमिट किया गया!</string>
     <string name="image_upload_success">छवि सफलतापूर्वक अपलोड की गई!</string>
@@ -186,6 +188,7 @@
     <string name="msg_no_pending_req">अनुमोदन के लिए कोई लंबित अनुरोध नहीं हैं।</string>
     <string name="msg_no_form_offline">यह फॉर्म ऑफलाइन में उपलब्ध नहीं है। इस फ़ॉर्म को ऑफ़लाइन उपयोग करने के लिए, कृपया इसे एक बार नेटवर्क में उपयोग करें।</string>
     <string name="msg_form_duplicate_error">डुप्लिकेट प्रविष्टियों की अनुमति नहीं है।</string>
+    <string name="msg_slow_network">नेटवर्क धीमा है, कृपया पुन: प्रयास करें</string>
 
     <string name="coming_soon">जल्द आ रहा है&#8230;</string>
     <string name="msg_no_network">नेटवर्क उपलब्ध नहीं है, कृपया बाद में पुनः प्रयास करें।</string>
@@ -208,6 +211,7 @@
     <string name="syncing_pending">सिंकिंग लंबित हुआ</string>
     <string name="sync_started">सिंक शुरू हुआ</string>
     <string name="submitted_and_synced">प्रस्तुत और समन्वित</string>
+    <string name="submitted_forms_label">सबमिट किये फॉर्म्स</string>
     <string name="unexpected_error_occurred">अनपेक्षित त्रुटि हुई।</string>
 
     <string name="value_should_not_be_less_than">मान से कम नहीं होना चाहिए</string>
@@ -283,7 +287,6 @@
     <string name="not_attended_label">" उपस्थित नहीं थे"</string>
     <string name="never_label">कभी नहीँ</string>
     <string name="mark_completed">Mark as completed</string>
-
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
     <string name="unpaid_leaves">अवैतनिक</string>
@@ -292,9 +295,7 @@
     <string name="total">कुल </string>
     <string name="btn_leave_apply_str">छुट्टी के लिए आवेदन करें</string>
     <string name="leaves_applied">Leave Applied</string>
-
     <string name="same_day">प्रत्येक माह के लिए एक ही तारीख</string>
-
     <string name="link_leave_apply">चेक छुट्टी विवरण</string>
     <string name="leave_details">छुट्टी विवरण</string>
     <string name="tv_no_leaves_balance">कोई छुट्टी शेष नहीं!</string>
@@ -319,41 +320,26 @@
     <string name="all_events_in_series">श्रृंखला में सभी घटनाएँ</string>
     <string name="separator">|</string>
     <string name="which_day">कौन से दिनों में</string>
-    <string-array name="repeat_array">
-        <item>कभी नहीँ</item>
-        <item>रोज</item>
-        <item>साप्ताहिक</item>
-        <item>महीने के</item>
-    </string-array>
-
-    <string-array name="repeat_daily">
-        <item>१ दिन</item>
-        <item>२ दिन</item>
-        <item>३ दिन</item>
-        <item>४ दिन</item>
-        <item>५ दिन</item>
-        <item>६ दिन</item>
-        <item>७ दिन</item>
-        <item>८ दिन</item>
-        <item>९ दिन</item>
-        <item>१० दिन</item>
-
-    </string-array>
-
-    <string-array name="repeat_weeks">
-        <item>१ सप्ताह</item>
-        <item>२ सप्ताह</item>
-        <item>३ सप्ताह</item>
-    </string-array>
-
-    <string-array name="repeat_months">
-        <item>1 महीना</item>
-        <item>2 महीने</item>
-        <item>3 महीने</item>
-    </string-array>
     <string name="please_wait">कृपया प्रतीक्षा करें…</string>
     <string name="holiday_list">छुट्टी की सूची</string>
     <string name="edit_leave">अवकाश संपादित करें</string>
     <string name="apply_leave">छुट्टी के लिए आवेदन करें</string>
+    <string name="is_attendance_required">क्या उपस्थिति आवश्यक है</string>
+    <string name="is_registration_required">क्या पंजीकरण आवश्यक है</string>
+    <string name="registration_start_date">पंजीकरण की शुरुआत की तारीख</string>
+    <string name="registration_end_date">पंजीकरण की अंतिम तिथि</string>
+    <string name="select_forms">रूपों का चयन करें</string>
+    <string name="event_pic">Add photo</string>
+    <string name="msg_enter_title">Please enter the title.</string>
+    <string name="msg_enter_start_date">Please enter the start date.</string>
+    <string name="msg_enter_end_date">Please enter the end date.</string>
+    <string name="msg_enter_ned_date">Please enter the end time.</string>
+    <string name="msg_enter_start_time">Please enter the start time.</string>
+    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
+    <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+    <string name="generate_code">Generate attendance code</string>
+    <string name="details">Details</string>
+    <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
 
 </resources>

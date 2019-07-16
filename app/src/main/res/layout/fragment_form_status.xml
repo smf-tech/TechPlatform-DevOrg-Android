@@ -14,7 +14,7 @@
         android:textColor="@android:color/black"
         android:visibility="gone" />
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/pending_forms_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,30 +62,78 @@
         android:layout_above="@id/submitted_form_category_name"
         android:layout_marginTop="@dimen/dimen_25dp"
         android:background="@color/lighter_grey"
-        android:visibility="gone" />
+        android:visibility="gone" />-->
 
-    <TextView
+    <!--<TextView
         android:id="@+id/submitted_form_category_name"
         style="@style/roboto_medium_light_grey_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pending_forms_view"
         android:layout_marginStart="@dimen/dimen_15dp"
-        android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:gravity="start"
         android:textColor="@color/dark_grey"
-        android:textSize="@dimen/text_size_14" />
+        android:textSize="@dimen/text_size_14" />-->
 
     <ExpandableListView
         android:id="@+id/forms_expandable_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/submitted_form_category_name"
         android:divider="@android:color/transparent"
         android:dividerHeight="@dimen/dimen_05dp"
         android:groupIndicator="@null"
         android:scrollbars="none"
         android:transitionGroup="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_filter3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:backgroundTint="#3d5c6b"
+        android:src="@drawable/ic_rejcted_icon_db"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_filter2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:backgroundTint="#3d5c6b"
+        android:src="@drawable/ic_approved_icon_db"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_filter1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:backgroundTint="#3d5c6b"
+        android:src="@drawable/ic_pending_icon_db" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_no_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:backgroundTint="#3d5c6b"
+        android:src="@drawable/ic_view_all_icon" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:backgroundTint="#3d5c6b"
+        android:src="@drawable/ic_filter_icon_list"/>
+
 </RelativeLayout>

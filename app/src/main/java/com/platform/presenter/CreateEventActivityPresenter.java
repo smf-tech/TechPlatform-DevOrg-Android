@@ -1,89 +1,172 @@
 package com.platform.presenter;
 
+import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.google.gson.JsonObject;
+import com.platform.R;
 import com.platform.listeners.CreateEventListener;
-import com.platform.models.events.Event;
+import com.platform.listeners.ImageRequestCallListener;
+import com.platform.models.events.AddForm;
+import com.platform.models.events.AddFormsResponse;
+import com.platform.models.events.CommonResponse;
+import com.platform.models.events.EventTask;
+import com.platform.models.events.EventMemberLestResponse;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.request.EventRequestCall;
+import com.platform.request.ImageRequestCall;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
-import com.platform.view.activities.CreateEventActivity;
+import com.platform.view.activities.CreateEventTaskActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class CreateEventActivityPresenter implements CreateEventListener {
+public class CreateEventActivityPresenter implements CreateEventListener, ImageRequestCallListener {
 
-    private final WeakReference<CreateEventActivity> createEventActivity;
-
-    public CreateEventActivityPresenter(CreateEventActivity createEventActivity) {
-        this.createEventActivity = new WeakReference<>(createEventActivity);
+    private final WeakReference<CreateEventTaskActivity> activity;
+    private final String TAG = ProfileActivityPresenter.class.getName();
+    public CreateEventActivityPresenter(CreateEventTaskActivity activity) {
+        this.activity = new WeakReference<>(activity);
     }
 
-    public void getEventCategory() {
+    public void getFormData(ArrayList<JurisdictionType> projectIds) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
-        createEventActivity.get().showProgressBar();
-        requestCall.getCategory();
+        activity.get().showProgressBar();
+        requestCall.getFormData(projectIds);
     }
 
-    public void submitEvent(Event event) {
+    public void submitEvent(EventTask eventTask) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setCreateEventListener(this);
 
-        createEventActivity.get().showProgressBar();
-        requestCall.submitEvent(event);
+        activity.get().showProgressBar();
+        requestCall.submitEvent(eventTask);
+    }
+
+    public void taskMemberList() {
+        EventRequestCall requestCall = new EventRequestCall();
+        requestCall.setCreateEventListener(this);
+
+        activity.get().showProgressBar();
+        requestCall.getTaskMemberList();
+    }
+
+    public void uploadProfileImage(File imageFile, String imageTypeProfile) {
+        ImageRequestCall requestCall = new ImageRequestCall();
+        requestCall.setListener(this);
+
+        activity.get().showProgressBar();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                requestCall.uploadImageUsingHttpURLEncoded(imageFile, imageTypeProfile, null);
+                return null;
+            }
+        }.execute();
     }
 
     @Override
-    public void onCategoryFetched(String response) {
-        createEventActivity.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            try {
-                JSONObject categoryResponse = new JSONObject(response);
-                JSONArray data = categoryResponse.getJSONArray("data");
-                ArrayList categoryTypes = new ArrayList();
-                for(int i=0; i<data.length();i++){
-                    categoryTypes.add(data.getJSONObject(i).getString("name"));
+    public void onEventsFetchedOfDay(String response) {
+
+    }
+
+    @Override
+    public void onEventsFetchedOfMonth(String response) {
+
+    }
+
+    @Override
+    public void onFormsFetched(String response) {
+        if (activity.get() != null) {
+            activity.get().hideProgressBar();
+            if (!TextUtils.isEmpty(response)) {
+
+                AddFormsResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, AddFormsResponse.class);
+
+                if (activity != null && activity.get() != null) {
+                    activity.get().onFormsListFatched((ArrayList< AddForm > )data.getData());
                 }
-                createEventActivity.get().showCategoryTypes(categoryTypes);
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
     }
 
     @Override
-    public void onEventsFetched(String response) {
+    public void onTaskMembersFetched(String response) {
+        if (activity != null) {
+            activity.get().hideProgressBar();
+            if (!TextUtils.isEmpty(response)) {
+                EventMemberLestResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, EventMemberLestResponse.class);
+                if (activity != null) {
+                    if(data.getStatus()==200){
+                        activity.get().showMemberList(data.getData());
+                    } else {
+                        onFailureListener(data.getMessage());
+                    }
 
+                }
+            }
+        }
     }
 
     @Override
     public void onEventSubmitted(String response) {
-        createEventActivity.get().hideProgressBar();
+//        activity.get().hideProgressBar();
+//        activity.get().showNextScreen("Finish");
+        if (activity != null) {
+            activity.get().hideProgressBar();
+            if (!TextUtils.isEmpty(response)) {
+                CommonResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, CommonResponse.class);
+                if (activity != null) {
+                    activity.get().showNextScreen(data.getMessage());
+                }
+            }
+        }
+    }
 
+    @Override
+    public void onImageUploadedListener(String response, String formName) {
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+        activity.get().runOnUiThread(() -> Util.showToast(
+                activity.get().getResources().getString(R.string.image_upload_success), activity));
+        activity.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+
+                activity.get().onImageUploaded(url);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
     public void onFailureListener(String message) {
-        if (createEventActivity.get() != null) {
-            createEventActivity.get().hideProgressBar();
-            createEventActivity.get().showErrorMessage(message);
+        if (activity.get() != null) {
+            activity.get().hideProgressBar();
+            activity.get().showErrorMessage(message);
         }
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-        if (createEventActivity.get() != null) {
-            createEventActivity.get().hideProgressBar();
+        if (activity.get() != null) {
+            activity.get().hideProgressBar();
             if (error != null) {
-                createEventActivity.get().showErrorMessage(error.getLocalizedMessage());
+                activity.get().showErrorMessage(error.getLocalizedMessage());
             }
         }
     }

@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment;
 
 import com.platform.R;
 import com.platform.utility.Constants;
-import com.platform.view.fragments.EventsPlannerFragment;
+import com.platform.view.fragments.EventsTaskLandingFragment;
 import com.platform.view.fragments.LeavePlannerFragment;
-import com.platform.view.fragments.TasksPlannerFragment;
 
 public class PlannerDetailActivity extends BaseActivity {
 
@@ -24,21 +23,22 @@ public class PlannerDetailActivity extends BaseActivity {
         String toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, false);
-
         switch (toOpen) {
             case "ATTENDANCE":
 
                 break;
-            case "EVENTS":
-                Fragment eventsPlannerFragment = new EventsPlannerFragment();
+            case "Event":
+                bundle.putString(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                Fragment eventsPlannerFragment = new EventsTaskLandingFragment();
                 eventsPlannerFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fly_events_list, eventsPlannerFragment, eventsPlannerFragment.getClass()
                                 .getSimpleName()).commit();
                 break;
-            case "TASKS":
-                Fragment tasksPlannerFragment = new TasksPlannerFragment();
+            case "Task":
+                bundle.putString(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+//                Fragment tasksPlannerFragment = new TasksPlannerFragment();
+                Fragment tasksPlannerFragment = new EventsTaskLandingFragment();
                 tasksPlannerFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fly_events_list, tasksPlannerFragment, tasksPlannerFragment.getClass()

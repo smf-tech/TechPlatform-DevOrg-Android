@@ -130,7 +130,7 @@ public class PendingApprovalsListAdapter extends BaseExpandableListAdapter {
                 ((TextView) view.findViewById(R.id.txt_pending_request_title))
                         .setText(data.getEntity().getUser().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
-                        .setText(Util.getDateFromTimestamp(data.getCreatedDateTime()));
+                        .setText(Util.getDateTimeFromTimestamp(data.getCreatedDateTime()));
             }
 
             view.setOnClickListener(v -> clickListener.onItemClicked(childPosition));

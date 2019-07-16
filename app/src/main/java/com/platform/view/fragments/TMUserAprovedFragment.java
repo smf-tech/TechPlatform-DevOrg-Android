@@ -23,6 +23,7 @@ import com.platform.models.tm.PendingApprovalsRequest;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.RejectedFragmentPresenter;
 import com.platform.presenter.TMUserAprovedFragmentPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 import com.platform.view.activities.TMFiltersListActivity;
@@ -262,7 +263,7 @@ public class TMUserAprovedFragment extends Fragment implements View.OnClickListe
                 ((TextView) view.findViewById(R.id.txt_pending_request_title))
                         .setText(sPendingRequest.getEntity().getUser().getUserName());
                 ((TextView) view.findViewById(R.id.txt_pending_request_created_at))
-                        .setText(Util.getDateFromTimestamp(sPendingRequest.getCreatedDateTime()));
+                        .setText(Util.getDateFromTimestamp(sPendingRequest.getCreatedDateTime(), Constants.FORM_DATE));
 
                 view.findViewById(R.id.iv_approve_request).setOnClickListener(v1 -> {
                     sAdapter.approveUserRequest(sPendingRequest);
