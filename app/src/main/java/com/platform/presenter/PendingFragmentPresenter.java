@@ -6,10 +6,14 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.listeners.TMPendingRequestCallListener;
+import com.platform.models.tm.PendingApprovalsRequestsResponse;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.PendingRequestsResponse;
 import com.platform.request.TMPendingRequestCall;
 import com.platform.view.fragments.TMUserPendingFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
@@ -17,18 +21,24 @@ import java.lang.ref.WeakReference;
 public class PendingFragmentPresenter implements TMPendingRequestCallListener {
 
     private final String TAG = this.getClass().getName();
+    private  String selectedFiltertype = "";
     private WeakReference<TMUserPendingFragment> fragmentWeakReference;
 
     public PendingFragmentPresenter(TMUserPendingFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
 
-    public void getAllPendingRequests() {
+    public void getAllPendingRequests(JSONObject requestObject) {
         TMPendingRequestCall requestCall = new TMPendingRequestCall();
         requestCall.setListener(this);
 
         fragmentWeakReference.get().showProgressBar();
-        requestCall.getAllPendingRequests();
+        try {
+            selectedFiltertype = requestObject.getString("type");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        requestCall.getAllPendingRequests(requestObject);
     }
 
     public void approveRejectRequest(String requestStatus, PendingRequest pendingRequest) {
@@ -43,12 +53,12 @@ public class PendingFragmentPresenter implements TMPendingRequestCallListener {
     public void onPendingRequestsFetched(String response) {
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            PendingRequestsResponse pendingRequestsResponse
-                    = new Gson().fromJson(response, PendingRequestsResponse.class);
+            PendingApprovalsRequestsResponse pendingRequestsResponse
+                    = new Gson().fromJson(response, PendingApprovalsRequestsResponse.class);
             if (pendingRequestsResponse != null && pendingRequestsResponse.getData() != null
                     && !pendingRequestsResponse.getData().isEmpty()
                     && pendingRequestsResponse.getData().size() > 0) {
-                fragmentWeakReference.get().showPendingRequests(pendingRequestsResponse.getData());
+                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getData());
             }
         }
     }
@@ -79,5 +89,9 @@ public class PendingFragmentPresenter implements TMPendingRequestCallListener {
         }
 
         fragmentWeakReference.get().hideProgressBar();
+    }
+
+    public String getSelectedFiltertype() {
+        return selectedFiltertype;
     }
 }

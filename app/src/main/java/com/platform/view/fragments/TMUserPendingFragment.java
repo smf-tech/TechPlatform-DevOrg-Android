@@ -1,48 +1,54 @@
 package com.platform.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.listeners.TMTaskListener;
+import com.platform.models.tm.PendingApprovalsRequest;
 import com.platform.models.tm.PendingRequest;
 import com.platform.presenter.PendingFragmentPresenter;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
-import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.TMFiltersListActivity;
+import com.platform.view.activities.TMUserProfileListActivity;
 import com.platform.view.adapters.PendingApprovalsListAdapter;
+import com.platform.view.adapters.TMPendingApprovalPageRecyclerAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.platform.utility.Constants.TM.USER_APPROVALS;
 
 @SuppressWarnings("CanBeFinal")
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
-        TMTaskListener, PendingApprovalsListAdapter.OnRequestItemClicked {
+        TMTaskListener, TMPendingApprovalPageRecyclerAdapter.OnRequestItemClicked, TMFiltersListActivity.OnFilterSelected {
 
     private View tmFragmentView;
     private TextView txtNoData;
-    private ExpandableListView rvPendingRequests;
+    //private ExpandableListView rvPendingRequests;
+    private RecyclerView rvPendingRequests;
     private PendingFragmentPresenter pendingFragmentPresenter;
     private boolean mShowAllApprovalsText = true;
-    private PendingApprovalsListAdapter mAdapter;
+    private TMPendingApprovalPageRecyclerAdapter mAdapter;
+    private JSONObject filterRequestObject;
 
-    private Map<String, List<PendingRequest>> map = new HashMap<>();
-    private List<PendingRequest> pendingRequestList = new ArrayList<>();
+    private List<PendingApprovalsRequest> pendingRequestList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -53,9 +59,9 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             if (TextUtils.isEmpty(title)) {
                 title = getString(R.string.approvals);
             }
-            ((HomeActivity) getActivity()).setActionBarTitle(title);
-            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
-
+            /*((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);*/
+            ((TMFiltersListActivity) getActivity()).setFilterClickListener(this);
             mShowAllApprovalsText = getArguments().getBoolean("SHOW_ALL", true);
         }
     }
@@ -64,7 +70,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        tmFragmentView = inflater.inflate(R.layout.fragment_dashboard_tm, container, false);
+        tmFragmentView = inflater.inflate(R.layout.fragment_approvals_pending, container, false);
         return tmFragmentView;
     }
 
@@ -73,18 +79,20 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         super.onViewCreated(view, savedInstanceState);
 
         pendingFragmentPresenter = new PendingFragmentPresenter(this);
-        pendingFragmentPresenter.getAllPendingRequests();
-
+        //pendingFragmentPresenter.getAllPendingRequests();
+        // check for method in NotificationsFragmentPresenter
         init();
     }
 
-    private void init() {
+    public void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
         txtNoData.setText(getString(R.string.msg_no_pending_req));
 
-        rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);
-        rvPendingRequests.setGroupIndicator(null);
+        rvPendingRequests = tmFragmentView.findViewById(R.id.rv_pendingapprovalpageview);
+        //rvPendingRequests.setGroupIndicator(null);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
+        rvPendingRequests.setLayoutManager(layoutManager);
         final TextView viewAllApprovals = tmFragmentView.findViewById(R.id.txt_view_all_approvals);
         viewAllApprovals.setOnClickListener(this);
 
@@ -123,8 +131,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     }
 
-    @Override
-    public void showPendingRequests(List<PendingRequest> pendingRequestList) {
+
+    public void showPendingApprovalRequests(List<PendingApprovalsRequest> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
             DashboardFragment.setApprovalCount(pendingRequestList.size());
 
@@ -134,11 +142,12 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
             this.pendingRequestList.clear();
             this.pendingRequestList.addAll(pendingRequestList);
 
-            map.clear();
-            map.put(USER_APPROVALS, pendingRequestList);
 
-            mAdapter = new PendingApprovalsListAdapter(getContext(), map,
-                    pendingFragmentPresenter, this);
+
+            /*mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
+                    pendingFragmentPresenter, this);*/
+            mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
+                    this);
             rvPendingRequests.setAdapter(mAdapter);
         } else {
             DashboardFragment.setApprovalCount(0);
@@ -153,12 +162,15 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    public void showPendingRequests(List<PendingRequest> pendingRequestList) {
+
+    }
+
+    @Override
     public void updateRequestStatus(String response, PendingRequest pendingRequest) {
         Util.showToast(getString(R.string.status_update_success), getActivity());
         this.pendingRequestList.remove(pendingRequest);
 
-        map.clear();
-        map.put(USER_APPROVALS, pendingRequestList);
         mAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
@@ -178,20 +190,52 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onItemClicked(int pos) {
-        PendingRequest pendingRequest = pendingRequestList.get(pos);
+        PendingApprovalsRequest pendingRequest = pendingRequestList.get(pos);
         showActionPopUp(pendingRequest);
     }
 
-    private void showActionPopUp(final PendingRequest pendingRequest) {
+    private void showActionPopUp(final PendingApprovalsRequest pendingRequest) {
         if (getFragmentManager() == null) {
             return;
         }
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Toast.makeText(getActivity(), "" + pendingRequest.getType() + " " + pendingRequest.get_id(), Toast.LENGTH_SHORT).show();
+        /*FragmentTransaction ft = getFragmentManager().beginTransaction();
         ApprovalDialogFragment approvalDialogFragment =
                 ApprovalDialogFragment.newInstance(pendingRequest, mAdapter);
-        approvalDialogFragment.show(ft, "dialog");
+        approvalDialogFragment.show(ft, "dialog");*/
+        try {
+            filterRequestObject.put("user_id", pendingRequest.get_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+
+        Intent intent = new Intent(getActivity(), TMUserProfileListActivity.class);
+        intent.putExtra("filter_type", pendingFragmentPresenter.getSelectedFiltertype());
+        intent.putExtra("filter_type_request", filterRequestObject.toString());
+        PreferenceHelper preferenceHelper = new PreferenceHelper(getActivity());
+        preferenceHelper.insertString(PreferenceHelper.IS_PENDING,PreferenceHelper.IS_PENDING);
+        startActivity(intent);
+
+    }
+
+    /*@Override
+    public void onFilterButtonClicked(JSONObject requestJson) {
+        Toast.makeText(getActivity(), "Filter applied in activtiy", Toast.LENGTH_SHORT).show();
+    }*/
+    public void onFilterButtonApplied(JSONObject requestJson) {
+        Toast.makeText(getActivity(), "Filter applied in activtiy", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFilterButtonClicked(JSONObject requestobject) {
+        this.pendingRequestList.clear();
+        if (mAdapter!=null) {
+            mAdapter.notifyDataSetChanged();
+        }
+        Toast.makeText(getActivity(), "Filter applied in activtiy using interface", Toast.LENGTH_SHORT).show();
+        filterRequestObject = requestobject;
+        pendingFragmentPresenter.getAllPendingRequests(requestobject);
     }
 
     public static class ApprovalDialogFragment extends DialogFragment {

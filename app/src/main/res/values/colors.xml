@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#093245</color>
-    <color name="colorPrimary">#093245</color>
-    <color name="colorAccent">#009688</color>
+    <color name="colorPrimaryDark">#6246e7</color>
+    <color name="colorPrimary">#6246e7</color>
+    <color name="colorAccent">#9a80ff</color>
 
     <color name="black_green">#093245</color>
     <color name="semi_black">#1A1A1A</color>
@@ -81,5 +81,8 @@
     <color name="attendance_list_bg">#FAFAFA</color>
     <color name="attendance_text_color">#7E7E7E</color>
     <color name="attendance_list_item">#656565</color>
+
+    <color name="base_background_color">#fbfbfb</color>
+    <color name="button_background_color">#9a80ff</color>
 
 </resources>

@@ -33,6 +33,15 @@ public class Urls {
         public static final String GET_APPROVED_REQUESTS = "api/user/approvals?status=approved";
         public static final String GET_REJECTED_REQUESTS = "api/user/approvals?status=rejected";
         public static final String APPROVE_REJECT_REQUEST = "api/users/approval/%1$s";
+        //landing page summary
+        public static final String GET_APPROVALS_SUMMARY_REQUESTS = "api/teammanagmentsummary";
+        public static final String GET_PENDING_APPROVAL_REQUESTS ="api/getlistbyfilter";
+        public static final String GET_TM_FILTERS_REQUESTS ="api/teammanagmentfilter";
+        public static final String GET_TM_USER_DETAILS_REQUESTS ="api/getuserbyfilter";
+        public static final String GET_TM_USER_APPROVE_REJECT_REQUEST ="api/applicationapproval";
+
+
+
     }
 
     public class Report {

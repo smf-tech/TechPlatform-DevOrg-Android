@@ -40,7 +40,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
 
     private AddMembersListAdapter addMembersListAdapter;
 
-    private final ArrayList<Participant> membersList = new ArrayList<>();
+    private ArrayList<Participant> membersList = new ArrayList<>();
     private Event event;
     private Recurrence recurrence;
 
@@ -52,11 +52,13 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     private EditText etStartTime;
     private EditText etEndTime;
     private EditText etRepeat;
+    private TextView tvRepeatDetail;
     private EditText etDescription;
     private EditText etAddress;
     private EditText etAddMembers;
     private Button btRepeat;
     private Button btEventSubmit;
+    private ArrayList categoryTypes = new ArrayList();
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
@@ -89,6 +91,7 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
         etStartTime = findViewById(R.id.et_start_time);
         etEndTime = findViewById(R.id.et_end_time);
         etRepeat = findViewById(R.id.et_repeat);
+        tvRepeatDetail = findViewById(R.id.tv_repeat_detail);
         etDescription = findViewById(R.id.et_description);
         etAddress = findViewById(R.id.et_address);
         etAddMembers = findViewById(R.id.et_add_members);
@@ -109,10 +112,12 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
             tlyAddress.setVisibility(View.GONE);
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.category_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(adapter);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.category_types, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spCategory.setAdapter(adapter);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spCategory.setAdapter(adapter);
 
         addMembersListAdapter = new AddMembersListAdapter(CreateEventActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -224,23 +229,22 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void submitDetails() {
-
         Event event = new Event();
         EventLocation eLocation = new EventLocation();
         eLocation.setAddress(etAddress.getText().toString());
         event.setEventType(spCategory.getSelectedItem().toString());
         event.setEventName(etTitle.getText().toString());
-        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
-        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
+//        event.setEventStartDateTime(dateToTimeStamp(etStartDate.getText().toString(), etStartTime.getText().toString()));
+//        event.setEventEndDateTime(dateToTimeStamp(etEndDate.getText().toString(), etEndTime.getText().toString()));
 //        event.setStarTime(etStartTime.getText().toString());
 //        event.setEndTime(etEndTime.getText().toString());
         event.setOrganizer(Util.getUserObjectFromPref().getId());
         event.setRecurrence(recurrence);
+        event.setDuration("");
         event.setEventDescription(etDescription.getText().toString());
         event.setEventLocation(eLocation);
         event.setStatus(Constants.Planner.PLANNED_STATUS);
         event.setParticipants(membersList);
-
         //put in response of above api
         createEventPresenter.submitEvent(event);
     }
@@ -265,6 +269,16 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
                 recurrence = (Recurrence) data.getSerializableExtra(Constants.Planner.REPEAT_EVENT_DATA);
                 if (recurrence.getType() != null) {
                     btRepeat.setText(recurrence.getType());
+                    tvRepeatDetail.setVisibility(View.VISIBLE);
+                    tvRepeatDetail.setText("Repeats every "+recurrence.getInterval()+", ends on "+recurrence.getLastDate());
+//                    String[] str = getResources().getStringArray(R.array.repeat_array);
+//                    if (recurrence.getType().equalsIgnoreCase(str[1])) {
+//                        ly_day_interval
+//                    } else if (recurrence.getType().equalsIgnoreCase(str[2])) {
+//                        ly_week_interval
+//                    } else if (recurrence.getType().equalsIgnoreCase(str[3])) {
+//                        ly_month_interval
+//                    }
                 }
         } else if (requestCode == Constants.Planner.MEMBER_LIST && data!= null) {
             membersList = (ArrayList<Participant>) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
@@ -304,5 +318,16 @@ public class CreateEventActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void showErrorMessage(String result) {
         runOnUiThread(() -> Util.showToast(result, this));
+    }
+
+    public void showCategoryTypes(ArrayList Categoty){
+        this.categoryTypes = Categoty;
+        ArrayAdapter<Integer> categoryAdapter = new ArrayAdapter<Integer>(
+                this,
+                android.R.layout.simple_spinner_item,
+                categoryTypes
+        );
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(categoryAdapter);
     }
 }
