@@ -65,18 +65,18 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     private RecyclerView leavesList;
     private final ArrayList<LeaveData> leavesListData = new ArrayList<>();
-    private final ArrayList<LeaveData> filteredLeavesListData = new ArrayList<>();
+    //private final ArrayList<LeaveData> filteredLeavesListData = new ArrayList<>();
     private final ArrayList<HolidayData> holidaysListData = new ArrayList<>();
     private AppliedLeavesAdapter leavesAdapter;
     private MaterialCalendarView calendarView;
-    private TabLayout tabLayout;
-    private final int[] tabIcons = {
-            R.drawable.selector_pending_tab,
-            R.drawable.selector_approved_tab,
-            R.drawable.selector_rejected_tab
-    };
+    //private TabLayout tabLayout;
+//    private final int[] tabIcons = {
+//            R.drawable.selector_pending_tab,
+//            R.drawable.selector_approved_tab,
+//            R.drawable.selector_rejected_tab
+//    };
 
-    private String[] tabNames;
+//    private String[] tabNames;
     private boolean isMonth = true;
     private String serverResponse;
     private String userLeaveDetailsResponse;
@@ -91,10 +91,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tabNames = new String[]{
-                getString(R.string.cat_pending),
-                getString(R.string.cat_approved),
-                getString(R.string.cat_rejected)};
+//        tabNames = new String[]{
+//                getString(R.string.cat_pending),
+//                getString(R.string.cat_approved),
+//                getString(R.string.cat_rejected)};
     }
 
     @Override
@@ -112,7 +112,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     //    toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
         toolBarMenu.setImageResource(R.drawable.ic_holiday_menu);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
-        tabLayout = view.findViewById(R.id.leave_cat_tabs);
+        //tabLayout = view.findViewById(R.id.leave_cat_tabs);
         ImageView tvCalendarMode = view.findViewById(R.id.tv_calendar_mode);
         tvCalendarMode.setOnClickListener(this);
         calendarView = view.findViewById(R.id.calendarView);
@@ -140,8 +140,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
                 if (dy < -5 && imgAddLeaves.getVisibility() != View.VISIBLE) {
                     imgAddLeaves.setVisibility(View.VISIBLE);
+                    btnRequestCompoff.setVisibility(View.VISIBLE);
                 } else if (dy > 5 && imgAddLeaves.getVisibility() == View.VISIBLE) {
                     imgAddLeaves.setVisibility(View.INVISIBLE);
+                    btnRequestCompoff.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -149,13 +151,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 //        presenter = new LeavesPresenter(this);
 //        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
         setListData();
-        setTabData();
+        //setTabData();
         setUIData();
-        filterListData(Constants.Leave.PENDING_STATUS);
+        //filterListData(Constants.Leave.PENDING_STATUS);
     }
 
-    private void setTabData() {
-        setupTabIcons();
+    /*private void setTabData() {
+        //setupTabIcons();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -181,33 +183,33 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
             }
         });
-    }
+    }*/
 
     private void setListData() {
-        leavesAdapter = new AppliedLeavesAdapter(filteredLeavesListData, this);
+        leavesAdapter = new AppliedLeavesAdapter(leavesListData, this);
         leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         leavesList.setAdapter(leavesAdapter);
         //setTabData(1);
     }
 
-    private void filterListData(String filterStatus){
-        filteredLeavesListData.clear();
-        for (LeaveData leaveData: leavesListData) {
-            if(leaveData.getStatus().equalsIgnoreCase(filterStatus)){
-                filteredLeavesListData.add(leaveData);
-            }
-        }leavesAdapter.notifyDataSetChanged();
-    }
+//    private void filterListData(String filterStatus){
+//        filteredLeavesListData.clear();
+//        for (LeaveData leaveData: leavesListData) {
+//            if(leaveData.getStatus().equalsIgnoreCase(filterStatus)){
+//                filteredLeavesListData.add(leaveData);
+//            }
+//        }leavesAdapter.notifyDataSetChanged();
+//    }
 
-    private void setupTabIcons() {
-        for (int i = 0; i < tabNames.length; i++) {
-            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
-                    .inflate(R.layout.layout_leaves_attendance_tab, tabLayout, false);
-            tabOne.setText(tabNames[i]);
-            tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
-            tabLayout.addTab(tabLayout.newTab().setCustomView(tabOne));
-        }
-    }
+//    private void setupTabIcons() {
+//        for (int i = 0; i < tabNames.length; i++) {
+//            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
+//                    .inflate(R.layout.layout_leaves_attendance_tab, tabLayout, false);
+//            tabOne.setText(tabNames[i]);
+//            tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+//            tabLayout.addTab(tabLayout.newTab().setCustomView(tabOne));
+//        }
+//    }
 
 
     private void setUIData() {
@@ -357,6 +359,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
         intent.putExtra("title", getString(R.string.edit_leave));
         intent.putExtra("isEdit", true);
+        intent.putExtra("apply_type", "Leave");
         intent.putExtra("userLeaveDetails", (Serializable) leaveData);
         intent.putExtra("leaveBalance", (Serializable) leaveBalance);
         intent.putExtra("switch_fragments", "LeaveApplyFragment");
@@ -432,13 +435,14 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             MonthlyLeaveDataAPIResponse monthlyLeaveDataAPIResponse = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, MonthlyLeaveDataAPIResponse.class);
             if (monthlyLeaveDataAPIResponse != null) {
                 leavesListData.clear();
-                filteredLeavesListData.clear();
+                //filteredLeavesListData.clear();
                 MonthlyLeaveHolidayData monthlyLeaveHolidayData = monthlyLeaveDataAPIResponse.getData();
                 List<LeaveData> monthlyLeaveData = monthlyLeaveHolidayData.getLeaveData();
                 List<HolidayData> monthlyHolidayData = monthlyLeaveHolidayData.getHolidayData();
                 leavesListData.addAll(monthlyLeaveData);
+                leavesAdapter.notifyDataSetChanged();
                 // To show filter leaves data
-                filterListData(Constants.Leave.PENDING_STATUS);
+                //filterListData(Constants.Leave.PENDING_STATUS);
                 // To show highlighted calendar dates
                 holidaysListData.addAll(monthlyHolidayData);
                 displayLeavesOfMonth(leavesListData);
@@ -457,8 +461,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             }
             if(deletePosition>0){
                 leavesListData.remove(deletePosition);
-                filteredLeavesListData.clear();
-                filteredLeavesListData.addAll(leavesListData);
+//                filteredLeavesListData.clear();
+//                filteredLeavesListData.addAll(leavesListData);
             }
             leavesAdapter.notifyDataSetChanged();
         }

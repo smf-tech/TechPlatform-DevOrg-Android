@@ -54,11 +54,15 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
         }
         holder.tvLeaveType.setText(leave.get(position).getType());
         if(adapterType.equalsIgnoreCase("Category")){
-            holder.itemView.findViewById(R.id.divider).setVisibility(View.GONE);
+//            holder.itemView.findViewById(R.id.divider).setVisibility(View.GONE);
+            holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.leave_form_text_color));
             holder.tvLeaveCount.setVisibility(View.GONE);
 
             if(leaveBackground!=null && leaveBackground.size()==leave.size()) {
                 holder.leaveBalanceLayout.setBackgroundResource(leaveBackground.get(position));
+                if(leaveBackground.get(position)==(R.drawable.bg_button)){
+                    holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.white));
+                }
             }
         }
     }
@@ -81,7 +85,7 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
                 for (int i = 0; i < leaveBackground.size(); i++) {
                     if (i == getAdapterPosition()) {
                         leaveBackground.remove(i);
-                        leaveBackground.add(i, R.drawable.leave_form_view_focused);
+                        leaveBackground.add(i, R.drawable.bg_button);
                         context.selectedLeaveCatgory = leave.get(i).getType();
                     } else {
                         leaveBackground.remove(i);

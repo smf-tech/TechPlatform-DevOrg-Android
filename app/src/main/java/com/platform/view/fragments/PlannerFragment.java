@@ -291,7 +291,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             }
         });
 
-
     }
 
     public void setTaskView() {
@@ -339,6 +338,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                 intent.putExtra("title", getActivity().getString(R.string.apply_leave));
                 intent.putExtra("isEdit", false);
+                intent.putExtra("apply_type", "Leave");
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
                 intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                 getActivity().startActivity(intent);

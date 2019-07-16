@@ -35,15 +35,15 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
         LinearLayout leaveTitleLayout;
         TextView leaveHeader, leaveSubHeader,tvStatus;
         ImageView deleteClick;
-        ImageView editClick;
+        //ImageView editClick;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             leaveTitleLayout = itemView.findViewById(R.id.leave_title_layout);
             leaveHeader = itemView.findViewById(R.id.tv_leave_header);
-            tvStatus = itemView.findViewById(R.id.tv_status);
+            //tvStatus = itemView.findViewById(R.id.tv_status);
             leaveSubHeader = itemView.findViewById(R.id.tv_leave_sub_header);
             deleteClick = itemView.findViewById(R.id.img_delete);
-            editClick = itemView.findViewById(R.id.img_edit);
+            //editClick = itemView.findViewById(R.id.img_edit);
         }
     }
 
@@ -59,13 +59,13 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int position) {
         viewHolder.leaveSubHeader.setText("from "+ getDateFromTimestamp
                 (leavesList.get(position).getStartdate(), DAY_MONTH_YEAR)+ " to " + getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
-        viewHolder.tvStatus.setText(leavesList.get(position).getStatus());
+        viewHolder.leaveHeader.setText(leavesList.get(position).getStatus());
         viewHolder.leaveTitleLayout.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
         if(leavesList.get(position).getStatus().equalsIgnoreCase(Constants.Leave.PENDING_STATUS)){
             viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves(leavesList.get(position).getId()));
-            viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
+            //viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
         }else{
-            viewHolder.editClick.setVisibility(View.GONE);
+            //viewHolder.editClick.setVisibility(View.GONE);
             viewHolder.deleteClick.setVisibility(View.GONE);
         }
 

@@ -4,15 +4,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_70dp"
+    android:layout_height="@dimen/dimen_100dp"
     android:layout_marginStart="@dimen/dimen_15dp"
-    android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_15dp"
     android:layout_marginBottom="@dimen/dimen_05dp"
     android:background="@color/white"
     android:elevation="@dimen/dimen_02dp"
-    android:paddingStart="@dimen/dimen_25dp"
-    android:paddingTop="@dimen/dimen_15dp"
+    android:paddingStart="@dimen/dimen_10dp"
+    android:gravity="center"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -26,10 +25,9 @@
             android:id="@+id/tv_leave_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:text="You have applied leaves"
-            android:textColor="@color/attendance_list_item"
+            style="@style/StyleStatus"
+            android:text="Approved"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_16"
             tools:ignore="RelativeOverlap" />
 
@@ -37,8 +35,8 @@
             android:id="@+id/tv_leave_sub_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
             android:text="from 4 June to 5 June."
             android:textColor="@color/attendance_list_item"
             android:textSize="@dimen/text_size_16"
@@ -57,6 +55,7 @@
         android:text="Rejected"
         android:textColor="@color/attendance_list_item"
         android:textSize="@dimen/text_size_16"
+        android:visibility="gone"
         tools:ignore="RelativeOverlap" />
 
     <ImageView
@@ -77,7 +76,7 @@
         android:layout_width="15dp"
         android:layout_height="20dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
         android:background="@drawable/ic_delete"
         android:contentDescription="@string/content_description" />

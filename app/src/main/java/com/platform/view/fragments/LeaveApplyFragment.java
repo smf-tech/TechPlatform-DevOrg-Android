@@ -66,6 +66,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     private Button btnHalfDay;
     private Button btnFullDay;
+    private Button btnApplyLeaves;
 
     private EditText edtReason;
     private EditText btnStartDate;
@@ -105,16 +106,14 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         edtReason = view.findViewById(R.id.edt_reason);
 
         btnHalfDay = view.findViewById(R.id.btn_half_day);
-        btnHalfDay.setOnClickListener(this);
+
         btnFullDay = view.findViewById(R.id.btn_full_day);
-        btnFullDay.setOnClickListener(this);
 
         btnStartDate = view.findViewById(R.id.btn_start_date);
-        btnStartDate.setOnClickListener(this);
-        btnEndDate = view.findViewById(R.id.btn_end_date);
-        btnEndDate.setOnClickListener(this);
 
-        Button btnApplyLeaves = view.findViewById(R.id.btn_apply_leave);
+        btnEndDate = view.findViewById(R.id.btn_end_date);
+
+        btnApplyLeaves = view.findViewById(R.id.btn_apply_leave);
         btnApplyLeaves.setOnClickListener(this);
         progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
         progressBar = view.findViewById(R.id.pb_profile_act);
@@ -189,6 +188,13 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                         setUserDataForEdit(userLeaveDetail);
                     }
                 }
+                btnApplyLeaves.setVisibility(View.GONE);
+                edtReason.setClickable(false);
+            }else{
+                btnHalfDay.setOnClickListener(this);
+                btnFullDay.setOnClickListener(this);
+                btnStartDate.setOnClickListener(this);
+                btnEndDate.setOnClickListener(this);
             }
             if(applyType.equalsIgnoreCase("Comp-Off")){
                 rvLeaveCategory.setVisibility(View.GONE);
@@ -222,19 +228,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         }
         LeaveAdapterCategory.notifyDataSetChanged();
 
-//        LeaveType leaveType = (leaveDetailModel.getLeaveTypes() != null &&
-//                leaveDetailModel.getLeaveTypes().size() > 0) ? leaveDetailModel.getLeaveTypes().get(0) : null;
-//
-//        if (leaveType != null) {
-//            String type = leaveType.getLeaveType();
-//            if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_CL)) {
-//                onClick(btnCategoryCL);
-//            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_PAID)) {
-//                onClick(btnCategoryPaid);
-//            } else if (type.equalsIgnoreCase(Constants.Planner.LEAVE_TYPE_COMP_OFF)) {
-//                onClick(btnCategoryCompOff);
-//            }
-//        }
     }
 
     @Override
@@ -257,8 +250,10 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
             case R.id.btn_half_day:
                 dayLeaveType = 0;
-                btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_focused);
+                btnHalfDay.setBackgroundResource(R.drawable.bg_button);
                 btnFullDay.setBackgroundResource(R.drawable.leave_form_view_unfocused);
+                btnHalfDay.setTextColor(getResources().getColor(R.color.white));
+                btnFullDay.setTextColor(getResources().getColor(R.color.leave_form_text_color));
 
                 btnEndDate.setEnabled(false);
                 if(!btnStartDate.getText().toString().equalsIgnoreCase("Start Date")){
@@ -269,7 +264,9 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             case R.id.btn_full_day:
                 dayLeaveType = 1;
                 btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                btnFullDay.setBackgroundResource(R.drawable.leave_form_view_focused);
+                btnFullDay.setBackgroundResource(R.drawable.bg_button);
+                btnFullDay.setTextColor(getResources().getColor(R.color.white));
+                btnHalfDay.setTextColor(getResources().getColor(R.color.leave_form_text_color));
 
                 btnEndDate.setEnabled(true);
                 //btnEndDate.setText("");

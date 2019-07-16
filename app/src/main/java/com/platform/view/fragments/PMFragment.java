@@ -358,7 +358,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
     }
 
-
             private void populateData(FormStatusCount formCount) {
                 if (formCount != null) {
                     formStatusCountDataList.clear();

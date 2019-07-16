@@ -57,7 +57,8 @@
             android:paddingTop="@dimen/dimen_20dp"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
-            app:tabMode="fixed" />
+            app:tabMode="fixed"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_applied_leaves_list"
@@ -75,7 +76,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/dimen_15dp"
         android:layout_marginBottom="@dimen/dimen_25dp"
-        android:background="@drawable/bg_button_circle"
+        android:background="@drawable/bg_primary_circular_button"
         android:contentDescription="@string/content_description"
         android:elevation="@dimen/dimen_03dp"
         android:scaleType="centerInside"
@@ -87,7 +88,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_30dp"
         android:layout_marginBottom="@dimen/dimen_25dp"
+        android:background="@drawable/bg_button"
+        android:textColor="@color/white"
         android:text="Request for Comp Off" />
 
 </FrameLayout>

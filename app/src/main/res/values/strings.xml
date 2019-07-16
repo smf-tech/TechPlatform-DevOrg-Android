@@ -368,7 +368,7 @@
     <string name="this_event_only">This eventTask only</string>
     <string name="all_events_in_series">All events in series</string>
 
-    <string name="sure_to_delete">Are you sure you want to delete it ?</string>
+    <string name="sure_to_delete">Are you sure you want to delete it?</string>
     <string name="delete">Delete</string>
     <string name="leave_apply_msg1">You will able to see leave balance once you get approval from your manager</string>
     <string name="compoff_requested_msg1">You will able to see comp-off balance once you get approval from your manager</string>
