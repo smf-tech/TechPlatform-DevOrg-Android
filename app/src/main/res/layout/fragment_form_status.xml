@@ -93,7 +93,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="#3d5c6b"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_rejcted_icon_db"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -103,7 +103,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="#3d5c6b"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_approved_icon_db"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -113,7 +113,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="#3d5c6b"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_pending_icon_db" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -123,7 +123,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="#3d5c6b"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_view_all_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -133,7 +133,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="#3d5c6b"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_filter_icon_list"/>
 
 </RelativeLayout>

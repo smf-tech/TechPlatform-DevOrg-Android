@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dimen_80dp"
     android:orientation="horizontal"
-    android:background="@drawable/bg_dashboard_item"
-    android:layout_marginBottom="@dimen/dimen_25dp">
+    android:layout_margin="@dimen/dimen_05dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_circular_rect_white"
+        android:padding="@dimen/dimen_08dp">
 
     <ImageView
         android:id="@+id/img_status_icon"
@@ -24,8 +31,8 @@
         android:text="Number of Rejected Forms: "
         android:singleLine="false"
         android:layout_margin="@dimen/dimen_05dp"
-        android:layout_centerVertical="true"
-        android:textColor="@color/white"/>
+        android:textStyle="bold"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/text_status_count"
@@ -36,7 +43,7 @@
         android:layout_marginLeft="@dimen/dimen_05dp"
         android:layout_marginRight="@dimen/dimen_15dp"
         android:layout_centerVertical="true"
-        android:textStyle="bold"
-        android:textColor="@color/white"/>
+        android:textStyle="bold"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
