@@ -18,6 +18,16 @@ public class AttendaceCheckOut {
         public Long attendaceDate;
         public String attendanceType;
 
+    public String getTotalHrs() {
+        return totalHrs;
+    }
+
+    public void setTotalHrs(String totalHrs) {
+        this.totalHrs = totalHrs;
+    }
+
+    public String totalHrs;
+
         public String getAttendanceFormattedDate() {
             return attendanceFormattedDate;
         }

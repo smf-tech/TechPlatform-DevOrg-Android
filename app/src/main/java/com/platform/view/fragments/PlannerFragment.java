@@ -372,7 +372,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                 if(availableOnServer!=null&&availableOnServer.length()>0){
                     Toast.makeText(getActivity(),"User already check in",Toast.LENGTH_LONG).show();
-                    Util.showDelayInCheckInDialog(getActivity(),getResources().getString(R.string.delayedin_checkin),getResources().getString(R.string.delayin_checkin_title),true);
+                    //Util.showDelayInCheckInDialog(getActivity(),getResources().getString(R.string.delayedin_checkin),getResources().getString(R.string.delayin_checkin_title),true);
 
                 }else {
                     markCheckIn();
@@ -455,18 +455,23 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     attendaceData.setAttendanceType(CHECK_OUT);
                     attendaceData.setTime(String.valueOf(checkOutTime));
                     attendaceData.setSync(false);
-                    attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
 
-
-                    try {
-                        getTotalHours();
+                    try{
+                        attendaceData.setTotalHrs(getTotalHours());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+
+                    attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+
+
+
                     tvCheckOutTime.setText(checkOutTime);
                     userCheckOutDao.insert(attendaceData);
                     btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
                     btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
+
+                    // update total houes
 
                     Log.i("OfflineMarkOutData", "111" + attendaceData);
                 }
@@ -775,6 +780,13 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             attendaceData.setAttendanceType(CHECK_OUT);
             attendaceData.setTime(String.valueOf(checkOutTime));
             attendaceData.setSync(true);
+
+            try{
+                attendaceData.setTotalHrs(getTotalHours());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
 
             try {
@@ -788,11 +800,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_LONG).show();
             }
 
-            try {
-                getTotalHours();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
         }
 

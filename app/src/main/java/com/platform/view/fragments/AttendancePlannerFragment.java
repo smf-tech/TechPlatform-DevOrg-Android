@@ -404,15 +404,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 // representation of a date with the defined format.
         todayAsString = df.format(today);
 // Print it!
-
-
         Long epoch=Util.getDateInLong(todayAsString);
         Log.i("Epoch","111"+epoch);
         time = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
+        Log.i("Check time","111"+time);
 
         switch (v.getId()) {
             case R.id.bt_check_in:
-
 
                 tvCheckInTime.setVisibility(View.VISIBLE);
                 gpsTracker = new GPSTracker(getActivity());
@@ -538,7 +536,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void markCheckOut() {
+    private void markCheckOut()  {
 
         boolean isAlreadyCheckOut=false;
         tvCheckOutTime.setVisibility(View.VISIBLE);
@@ -575,6 +573,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendaceData.setTime(String.valueOf(time));
                     attendaceData.setSync(false);
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+
+                    try {
+                        attendaceData.setTotalHrs(getTotalHours());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     userCheckOutDao.insert(attendaceData);
 
                     btCheckout.setBackground(Objects.requireNonNull(getActivity())
@@ -830,6 +834,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             attendaceData.setSync(true);
             attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
             tvCheckOutTime.setText(time);
+            try {
+                attendaceData.setTotalHrs(getTotalHours());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             userCheckOutDao.insert(attendaceData);
 
             btCheckout.setBackground(Objects.requireNonNull(getActivity())
@@ -872,6 +881,31 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         }
     };
+
+    public String getTotalHours() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        Date startDate = null;
+        try {
+            startDate = simpleDateFormat.parse((String)time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date endDate = simpleDateFormat.parse((String)time);
+
+        long difference = endDate.getTime() - startDate.getTime();
+        if(difference<0)
+        {
+            Date dateMax = simpleDateFormat.parse("24:00");
+            Date dateMin = simpleDateFormat.parse("00:00");
+            difference=(dateMax.getTime() -startDate.getTime() )+(endDate.getTime()-dateMin.getTime());
+        }
+        int days = (int) (difference / (1000*60*60*24));
+        int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+        int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+        Log.i("log_tag","Hours: "+hours+", Mins: "+min);
+        String totalHrs= String.valueOf((hours)+(min));
+        return totalHrs;
+    }
 
     }
 
