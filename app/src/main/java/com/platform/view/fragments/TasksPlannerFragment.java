@@ -23,15 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.events.Participant;
 import com.platform.models.events.TaskForm;
-import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
-import com.platform.view.activities.CreateEventActivity;
+import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.PlannerDetailActivity;
-import com.platform.view.adapters.EventListAdapter;
+import com.platform.view.adapters.EventTaskListAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -62,9 +61,9 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     private boolean isMonth;
     private boolean isDashboard;
 
-    private EventListAdapter taskListAdapter;
-    private ArrayList<Event> taskList;
-    private ArrayList<Event> sortedTaskList;
+    private EventTaskListAdapter taskListAdapter;
+    private ArrayList<EventTask> taskList;
+    private ArrayList<EventTask> sortedTaskList;
 
     public TasksPlannerFragment() {
         // Required empty public constructor
@@ -109,11 +108,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         taskFormsList.add(new TaskForm("2", "Testing Form 2", Constants.Planner.COMPLETED_STATUS));
         taskFormsList.add(new TaskForm("3", "Testing Form 3", Constants.Planner.COMPLETED_STATUS));
 
-//        taskList.add(new Event("1", "meeting", "Title1", 1557206071l,
+//        taskList.add(new EventTask("1", "meeting", "Title1", 1557206071l,
 //                1557206071l, null, "test", "Wagholi,Pune.", "Sachin",
 //                "1234", Constants.Planner.COMPLETED_STATUS, membersList, taskFormsList));
 //
-//        taskList.add(new Event("2", "visit", "Title2", 1557206071l,
+//        taskList.add(new EventTask("2", "visit", "Title2", 1557206071l,
 //                1557206071l, null, "test", "Hadpsar,Pune.", "Sagar",
 //                "1235", Constants.Planner.PLANNED_STATUS, membersList, null));
 
@@ -134,15 +133,15 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
         RecyclerView rvTasks = tasksPlannerView.findViewById(R.id.rv_events);
         calendarView = tasksPlannerView.findViewById(R.id.calendarView);
         radioGroup = tasksPlannerView.findViewById(R.id.radio_group_filter);
-        RadioButton allTasksButton = tasksPlannerView.findViewById(R.id.rb_all_events);
-        RadioButton myTasksButton = tasksPlannerView.findViewById(R.id.rb_my_events);
+        RadioButton allTasksButton = tasksPlannerView.findViewById(R.id.rb_all_events_task);
+        RadioButton myTasksButton = tasksPlannerView.findViewById(R.id.rb_my_events_task);
 
         allTasksButton.setText(R.string.all_tasks);
         myTasksButton.setText(R.string.my_tasks);
 
         tvAllEventsDetail.setText(R.string.all_tasks);
 
-        taskListAdapter = new EventListAdapter(getActivity(), sortedTaskList, Constants.Planner.TASKS_LABEL);
+        taskListAdapter = new EventTaskListAdapter(getActivity(), sortedTaskList, Constants.Planner.TASKS_LABEL);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rvTasks.setLayoutManager(mLayoutManager);
         rvTasks.setAdapter(taskListAdapter);
@@ -168,8 +167,8 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     }
 
     private void setActionbar(String title) {
-        TextView toolbar_title = tasksPlannerView.findViewById(R.id.events_toolbar_title);
-        toolbar_title.setText(title);
+//        TextView toolbar_title = tasksPlannerView.findViewById(R.id.events_toolbar_title);
+//        toolbar_title.setText(title);
     }
 
     private void setListeners() {
@@ -200,7 +199,7 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
                 break;
 
             case R.id.bt_add_events:
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
                 this.startActivity(intentCreateEvent);
                 break;
@@ -216,11 +215,11 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rb_all_events:
+            case R.id.rb_all_events_task:
                 sortEventsList(true);
                 break;
 
-            case R.id.rb_my_events:
+            case R.id.rb_my_events_task:
                 sortEventsList(false);
                 break;
         }
@@ -232,7 +231,7 @@ public class TasksPlannerFragment extends Fragment implements View.OnClickListen
             sortedTaskList.addAll(taskList);
         } else {
             String ownerID = "1234";
-//            for (Event event : taskList) {
+//            for (EventTask event : taskList) {
 //                if (ownerID.equals(event.getOwnerID())) {
 //                    sortedTaskList.add(event);
 //                }

@@ -52,34 +52,14 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         membersList = (ArrayList<Participant>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
         boolean isNewMembersList = getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
 
-        LinearLayout lyAttendedTab = findViewById(R.id.ly_attended_tab);
         TextView tvInfoLabel = findViewById(R.id.tv_info_label);
         btAddMembers=findViewById(R.id.bt_add_members);
         if (isNewMembersList) {
-            toolbarAction.setVisibility(View.GONE);
-            lyAttendedTab.setVisibility(View.GONE);
-            tvInfoLabel.setVisibility(View.VISIBLE);
+            cbSelectAllMembers.setVisibility(View.VISIBLE);
         } else {
-            toolbarAction.setVisibility(View.VISIBLE);
-            toolbarAction.setImageResource(R.drawable.ic_check_white);
-            setActionbar(getResources().getString(R.string.mark_attendance));
-            btAddMembers.setVisibility(View.GONE);
             tvInfoLabel.setVisibility(View.GONE);
-            lyAttendedTab.setVisibility(View.VISIBLE);
-            TextView tvAttended = findViewById(R.id.tv_attended);
-            TextView tvNotAttended = findViewById(R.id.tv_not_attended);
-
-//            int attendedCount = 0;
-//            for (Participant m : membersList) {
-//                if (m.getAttended()) {
-//                    attendedCount++;
-//                }
-//            }
-//
-//            tvAttended.setText(String.format(Locale.getDefault(), "%d%s", attendedCount,
-//                    getString(R.string.attended_label)));
-//            tvNotAttended.setText(String.format(Locale.getDefault(), "%d%s",
-//                    membersList.size() - attendedCount, getString(R.string.not_attended_label)));
+            cbSelectAllMembers.setVisibility(View.GONE);
+            btAddMembers.setVisibility(View.GONE);
         }
 
         filterMembersList.addAll(membersList);

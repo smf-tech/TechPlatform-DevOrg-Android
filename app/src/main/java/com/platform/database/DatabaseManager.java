@@ -194,4 +194,5 @@ public class DatabaseManager {
         modulesDao.insertAll(home);
         Log.d(TAG, "insertModule");
     }
+
 }

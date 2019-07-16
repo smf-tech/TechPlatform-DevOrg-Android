@@ -54,7 +54,12 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
 
     @Override
     public void onErrorListener(VolleyError error) {
-
+        if (plannerFragment != null) {
+            plannerFragment.hideProgressBar();
+            if (error != null) {
+                plannerFragment.showErrorMessage(error.getLocalizedMessage());
+            }
+        }
     }
 
 

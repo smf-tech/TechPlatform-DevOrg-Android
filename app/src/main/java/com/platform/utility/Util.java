@@ -76,6 +76,7 @@ import java.util.TimeZone;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Constants.DATE_TIME_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -482,7 +483,7 @@ public class Util {
 
     public static Long dateTimeToTimeStamp(String strDate, String strTime) {
         Date date;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault());
         try {
             date = formatter.parse(strDate + " " + strTime);
             return date.getTime();
