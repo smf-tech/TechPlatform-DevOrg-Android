@@ -4,32 +4,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_70dp"
+    android:layout_height="@dimen/dimen_100dp"
     android:layout_marginStart="@dimen/dimen_15dp"
-    android:layout_marginTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_15dp"
     android:layout_marginBottom="@dimen/dimen_05dp"
     android:background="@color/white"
     android:elevation="@dimen/dimen_02dp"
-    android:paddingStart="@dimen/dimen_25dp"
-    android:paddingTop="@dimen/dimen_15dp"
+    android:paddingStart="@dimen/dimen_10dp"
+    android:gravity="center"
     tools:ignore="RtlSymmetry">
 
-    <ImageView
-        android:id="@+id/img_user_leaves"
-        android:layout_width="@dimen/dimen_36dp"
-        android:layout_height="@dimen/dimen_32dp"
-        android:contentDescription="@string/content_description" />
+    <LinearLayout
+        android:id="@+id/leave_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toStartOf="@id/img_edit">
+
+        <TextView
+            android:id="@+id/tv_leave_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/StyleStatus"
+            android:text="Approved"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/tv_leave_sub_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="from 4 June to 5 June."
+            android:textColor="@color/attendance_list_item"
+            android:textSize="@dimen/text_size_16"
+            tools:ignore="RelativeOverlap" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_leave_desc"
+        android:id="@+id/tv_status"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_32dp"
-        android:layout_marginStart="@dimen/dimen_15dp"
-        android:layout_marginEnd="@dimen/dimen_65dp"
-        android:layout_toEndOf="@+id/img_user_leaves"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_toStartOf="@+id/img_edit"
+        android:text="Rejected"
         android:textColor="@color/attendance_list_item"
-        android:textSize="@dimen/text_size_12"
+        android:textSize="@dimen/text_size_16"
+        android:visibility="gone"
         tools:ignore="RelativeOverlap" />
 
     <ImageView
@@ -42,14 +68,15 @@
         android:layout_toStartOf="@+id/img_delete"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_edit"
+        android:visibility="gone"
         android:tint="@color/tab_selector" />
 
     <ImageView
         android:id="@+id/img_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="15dp"
+        android:layout_height="20dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
         android:background="@drawable/ic_delete"
         android:contentDescription="@string/content_description" />

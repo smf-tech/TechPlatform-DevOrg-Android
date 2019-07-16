@@ -1,5 +1,7 @@
 package com.platform.utility;
 
+import java.util.Locale;
+
 public class Urls {
 
     public class Login {
@@ -65,5 +67,12 @@ public class Urls {
         public static final String GET_EVENT_TASK_MEMBERS_LIST = "api/getEventMembers";
         public static final String GET_TASK_MEMBERS_LIST = "api/addmembertask";
         public static final String SET_TASK_MARK_COMPLETE = "api/taskMarkComplete";
+    }
+
+    public class Leaves {
+        public static final String APPLY_LEAVE= "api/createLeave";
+        public static final String GET_MONTHLY_LEAVES = "api/getLeavesSummary/%1$s/%2$s";
+        public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
+        public static final String HOLIDAY_LIST= "api/getYearHolidayList";
     }
 }

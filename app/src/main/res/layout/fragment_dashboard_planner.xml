@@ -252,12 +252,18 @@
                 <RelativeLayout
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_150dp"
-                    android:layout_below="@+id/ly_task">
+                    android:layout_height="@dimen/dimen_200dp"
+                    android:layout_below="@+id/ly_task"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp">
 
                     <TextView
                         android:id="@+id/tv_leaves_label"
-                        style="@style/CardHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/leave_details" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -265,6 +271,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/card_fotte_leave"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:orientation="horizontal"
                         android:layout_below="@+id/tv_leaves_label" />
 
                     <RelativeLayout
@@ -280,7 +288,7 @@
                             android:layout_centerVertical="true"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:text="@string/link_leave_apply"
-                            android:textColor="@color/tab_selector"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16" />
 
                         <TextView
@@ -291,11 +299,8 @@
                             android:layout_marginRight="@dimen/dimen_10dp"
                             android:layout_marginBottom="@dimen/dimen_10dp"
                             android:src="@android:drawable/ic_input_add"
-                            android:tint="@color/white"
-                            app:backgroundTint="@color/tab_selector"
-                            android:text="Add event"
-                            app:fabSize="mini"
-                            tools:ignore="RelativeOverlap" />
+                            style="@style/StyleLabel"
+                            android:text="@string/apply_leave" />
                     </RelativeLayout>
                 </RelativeLayout>
         </RelativeLayout>

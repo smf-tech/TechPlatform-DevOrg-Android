@@ -49,7 +49,7 @@ public class FormsDashboardAdapter extends RecyclerView.Adapter<FormsDashboardAd
             holder.imgIcon.setImageResource(R.drawable.ic_saved_icon_db);
         }
 
-        holder.txtStatus.setText("Number of "+formStatusCountData.getType()+" Forms: ");
+        holder.txtStatus.setText("Number of \n"+formStatusCountData.getType()+" Forms: ");
         holder.txtCount.setText(String.valueOf(formStatusCountData.getCount()));
     }
 
