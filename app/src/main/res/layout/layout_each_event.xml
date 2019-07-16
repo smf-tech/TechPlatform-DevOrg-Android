@@ -105,6 +105,7 @@
                     android:text="SB road, pune, maharashtra."
                     android:textSize="@dimen/text_size_11" />
 
+
                 <TextView
                     android:id="@+id/tv_owner"
                     android:layout_width="wrap_content"
@@ -114,7 +115,19 @@
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:maxLength="22"
                     android:text="Sachin Kakade"
-                    android:textSize="@dimen/text_size_11" />
+                    android:textSize="@dimen/text_size_11"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_owner"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:maxLength="22"
+                    android:textSize="@dimen/text_size_11"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 

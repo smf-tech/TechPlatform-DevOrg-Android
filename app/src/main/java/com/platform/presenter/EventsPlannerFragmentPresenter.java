@@ -89,11 +89,6 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
     }
 
     @Override
-    public void onDeleted(String response) {
-
-    }
-
-    @Override
     public void onFailureListener(String message) {
         if (fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();

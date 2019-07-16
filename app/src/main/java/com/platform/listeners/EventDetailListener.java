@@ -11,6 +11,8 @@ public interface EventDetailListener {
 
     void onTaskMarkComplete(String response);
 
+    void onDeleted(String response);
+
     void onFailureListener(String message);
 
     void onErrorListener(VolleyError error);
