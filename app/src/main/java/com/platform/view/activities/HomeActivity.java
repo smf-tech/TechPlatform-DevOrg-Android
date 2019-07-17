@@ -59,7 +59,7 @@ import java.util.List;
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ContentManagementFragment.OnFragmentInteractionListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -602,10 +602,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         clickListener = listener;
     }
 
-    @Override
+   /* @Override
     public void onFragmentInteraction(String uri) {
 
-    }
+    }*/
 
     public interface OnSyncClicked {
         void onSyncButtonClicked();

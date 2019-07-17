@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.R;
 
+/*
 import com.platform.adapter.ExpandableListAdapter;
 import com.platform.listeners.ContentDataListener;
 import com.platform.models.content.ContentDatum;
@@ -38,6 +39,7 @@ import com.platform.models.content.Datum;
 import com.platform.models.content.Datum_;
 import com.platform.models.content.DownloadContent;
 import com.platform.request.ContentDataRequestCall;
+*/
 import com.platform.services.DownloadService;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -52,16 +54,9 @@ import java.util.List;
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ContentManagementFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ContentManagementFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ContentManagementFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+  /*  // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -101,14 +96,14 @@ public class ContentManagementFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
+    *//**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment ContentManagementFragment.
-     */
+     *//*
     // TODO: Rename and change types and number of parameters
     public static ContentManagementFragment newInstance(String param1, String param2) {
         ContentManagementFragment fragment = new ContentManagementFragment();
@@ -206,14 +201,14 @@ public class ContentManagementFragment extends Fragment {
                 imgDwn=v.findViewById(R.id.imgDownload);
                 imgShare=v.findViewById(R.id.imgshare);
 
-              /*  if(isFileAvailable(dwncontent)){
+              *//*  if(isFileAvailable(dwncontent)){
                     imgDwn.setVisibility(View.GONE);
                     imgShare.setVisibility(View.VISIBLE);
                 }else{
                     imgDwn.setVisibility(View.VISIBLE);
                     imgShare.setVisibility(View.GONE);
                 }
-*/
+*//*
                 imgDwn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -224,7 +219,7 @@ public class ContentManagementFragment extends Fragment {
                     }
                 });
 
-                /*Toast.makeText(
+                *//*Toast.makeText(
                         getContext(),
                         listDataHeader.get(groupPosition)
                                 + " : "
@@ -233,7 +228,7 @@ public class ContentManagementFragment extends Fragment {
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();
 
-*/
+*//*
                 return false;
             }
         });
@@ -333,9 +328,9 @@ public class ContentManagementFragment extends Fragment {
                     startActivity(callDownloadActivity);
                 }
 
-                /*String url="http://18.216.227.14/images/SMF%20BOOK%20-CHANGES.pdf";
-                beginDownload(url);*/
-                /*if(Permissions.isCameraPermissionGranted(getActivity(),getActivity())){
+                *//*String url="http://18.216.227.14/images/SMF%20BOOK%20-CHANGES.pdf";
+                beginDownload(url);*//*
+                *//*if(Permissions.isCameraPermissionGranted(getActivity(),getActivity())){
 
                     //String url="https://drive.google.com/open?id=1D7biC_cf_dupT1l4Ij1hXCGc4lY-v2y2";
 
@@ -350,7 +345,7 @@ public class ContentManagementFragment extends Fragment {
 
                 }else {
                     Toast.makeText(getActivity(), "check permission", Toast.LENGTH_SHORT).show();
-                }*/
+                }*//*
 
 
 
@@ -359,14 +354,14 @@ public class ContentManagementFragment extends Fragment {
 
 
 
-                /*url = intent.getStringExtra("URL");
+                *//*url = intent.getStringExtra("URL");
                 fileName = intent.getStringExtra("FILENAME");
                 filetype = intent.getStringExtra("FILETYPE");
-                fragment_flag = intent.getStringExtra("fragment_flag");*/
+                fragment_flag = intent.getStringExtra("fragment_flag");*//*
 
 
-                /*Intent intent=new Intent(getActivity(),ContentDownloadedActivity.class);
-                startActivity(intent);*/
+                *//*Intent intent=new Intent(getActivity(),ContentDownloadedActivity.class);
+                startActivity(intent);*//*
             }
         });
 
@@ -438,7 +433,7 @@ public class ContentManagementFragment extends Fragment {
         mListener = null;
     }
 
-    /**
+    *//**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -447,7 +442,7 @@ public class ContentManagementFragment extends Fragment {
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
-     */
+     *//*
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(String uri);
@@ -480,13 +475,13 @@ public class ContentManagementFragment extends Fragment {
                         }
                     }
                 }
-                /*Intent shareIntent = new Intent();
+                *//*Intent shareIntent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setType("application/*");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(Intent.EXTRA_STREAM,uriString);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                getActivity().startActivity(Intent.createChooser(shareIntent, "Share Content"));*/
+                getActivity().startActivity(Intent.createChooser(shareIntent, "Share Content"));*//*
 
                 //shareDownloadFile(intent);
                 expandableListAdapter.notifyDataSetChanged();
@@ -498,11 +493,11 @@ public class ContentManagementFragment extends Fragment {
         }
     };
 
-   /* public String shareDownloadFile(Intent intent) {
+   *//* public String shareDownloadFile(Intent intent) {
 
         return uriString;
 
-    }*/
+    }*//*
 
     @Override
     public void onDestroy() {
@@ -529,7 +524,7 @@ public class ContentManagementFragment extends Fragment {
             }
         });
     }
-
+*/
 
 
 }
