@@ -24,6 +24,9 @@ public class Participant implements Serializable {
     @SerializedName("MemberSelected")
     @Expose
     private boolean memberSelected;
+    @SerializedName("attended_completed")
+    @Expose
+    private boolean attendedCompleted;
 
     public Participant(String id, String name, String roleName, boolean memberSelected) {
         this.id = id;
@@ -70,5 +73,13 @@ public class Participant implements Serializable {
 
     public void setAttended(String attended) {
         this.attended = attended;
+    }
+
+    public boolean isAttendedCompleted() {
+        return attendedCompleted;
+    }
+
+    public void setAttendedCompleted(boolean attendedCompleted) {
+        this.attendedCompleted = attendedCompleted;
     }
 }

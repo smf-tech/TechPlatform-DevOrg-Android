@@ -2,7 +2,7 @@ package com.platform.models.planner;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.models.events.Event;
+import com.platform.models.events.EventTask;
 import com.platform.models.leaves.LeaveDetail;
 
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ public class SubmoduleData {
     private List<attendanceData> attendanceData = null;
     @SerializedName("eventData")
     @Expose
-    private ArrayList<Event> eventData = null;
+    private ArrayList<EventTask> eventTaskData = null;
     @SerializedName("taskData")
     @Expose
-    private ArrayList<Event> taskData = null;
+    private ArrayList<EventTask> taskData = null;
     @SerializedName("leave")
     @Expose
     private List<LeaveDetail> leave = null;
@@ -45,19 +45,19 @@ public class SubmoduleData {
         this.attendanceData = attendanceData;
     }
 
-    public ArrayList<Event> getEventData() {
-        return eventData;
+    public ArrayList<EventTask> getEventTaskData() {
+        return eventTaskData;
     }
 
-    public void setEventData(ArrayList<Event> eventData) {
-        this.eventData = eventData;
+    public void setEventTaskData(ArrayList<EventTask> eventTaskData) {
+        this.eventTaskData = eventTaskData;
     }
 
-    public ArrayList<Event> getTaskData() {
+    public ArrayList<EventTask> getTaskData() {
         return taskData;
     }
 
-    public void setTaskData(ArrayList<Event> taskData) {
+    public void setTaskData(ArrayList<EventTask> taskData) {
         this.taskData = taskData;
     }
 

@@ -30,7 +30,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     public void getOrganizations() {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
-
         addMemberFilterActivity.get().showProgressBar();
         requestCall.getOrganizations();
     }
@@ -38,7 +37,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     public void getOrganizationRoles(String orgId) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
-
         addMemberFilterActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);
     }
@@ -46,7 +44,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
-
         addMemberFilterActivity.get().showProgressBar();
         requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
     }
@@ -54,7 +51,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     public void getFilterMemberList(ParametersFilterMember parametersFilter) {
         EventRequestCall requestCall = new EventRequestCall();
         requestCall.setAddMemberRequestCallListener(this);
-
         addMemberFilterActivity.get().showProgressBar();
         requestCall.getMemberList(parametersFilter);
     }
@@ -85,11 +81,9 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     @Override
     public void onOrganizationRolesFetched(String orgId, String response) {
         addMemberFilterActivity.get().hideProgressBar();
-
         if (!TextUtils.isEmpty(response)) {
             OrganizationRolesResponse orgRolesResponse
                     = new Gson().fromJson(response, OrganizationRolesResponse.class);
-
             if (orgRolesResponse != null && orgRolesResponse.getData() != null &&
                     !orgRolesResponse.getData().isEmpty() && orgRolesResponse.getData().size() > 0) {
                 addMemberFilterActivity.get().showOrganizationRoles(orgRolesResponse.getData());
@@ -100,7 +94,6 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
     @Override
     public void onJurisdictionFetched(String response, String level) {
         addMemberFilterActivity.get().hideProgressBar();
-
         if (!TextUtils.isEmpty(response)) {
             JurisdictionLevelResponse jurisdictionLevelResponse
                     = new Gson().fromJson(response, JurisdictionLevelResponse.class);

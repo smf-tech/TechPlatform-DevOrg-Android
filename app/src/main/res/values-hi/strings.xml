@@ -5,7 +5,6 @@
     <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
     <string name="select_lang">भाषा चुनें</string>
 
-
     <string name="ok">ओके</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
@@ -339,6 +338,9 @@
     <string name="msg_enter_address">Please enter the address.</string>
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+    <string name="generate_code">Generate attendance code</string>
+    <string name="details">Details</string>
+    <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
     <string name="delayedin_checkin">Delayed in chek in and found</string>
     <string name="delayin_checkin_title">please provide a reason</string>
 

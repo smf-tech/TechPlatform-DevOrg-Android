@@ -18,6 +18,16 @@ public class AttendaceCheckOut {
         public Long attendaceDate;
         public String attendanceType;
 
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String mobileNumber;
+
     public String getTotalHrs() {
         return totalHrs;
     }

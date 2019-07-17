@@ -79,6 +79,7 @@ import java.util.TimeZone;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Constants.DATE_TIME_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -179,7 +180,6 @@ public class Util {
                     loginObj.getLoginData().getAccessToken() != null) {
                 headers.put(Constants.Login.AUTHORIZATION,
                         "Bearer " + loginObj.getLoginData().getAccessToken());
-                Log.i("Token","111"+loginObj.getLoginData().getAccessToken());
             }
         }
 
@@ -264,7 +264,7 @@ public class Util {
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.USER_ORG, "{}");
 
-        return new Gson().fromJson(obj,OrganizationResponse.class);
+        return new Gson().fromJson(obj, OrganizationResponse.class);
     }
 
     public static void saveUserOrgInPref(String userData) {
@@ -321,6 +321,7 @@ public class Util {
     public static void saveUserLocationInPref(UserLocation location) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(location);
@@ -405,7 +406,7 @@ public class Util {
         }
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE,Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
             Date date = sdf.parse(dateString);
             return date.getTime();
 
@@ -469,7 +470,7 @@ public class Util {
         return timestamp.getTime();
     }
 
-    public static String getDateFromTimestamp(long date) {
+    public static String getDateTimeFromTimestamp(long date) {
         if (date > 0) {
             try {
                 int length = (int) (Math.log10(date) + 1);
@@ -485,17 +486,33 @@ public class Util {
         return "";
     }
 
-    public static String getTimeFromTimeStamp(Long timeStamp) {
+    public static Long dateTimeToTimeStamp(String strDate, String strTime) {
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault());
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
+            date = formatter.parse(strDate + " " + strTime);
+            return date.getTime();
+        } catch (ParseException e) {
             Log.e("TAG", e.getMessage());
+        }
+
+        return 0L;
+    }
+
+
+    public static String getDateFromTimestamp(Long timeStamp, String dateTimeFormat) {
+        if (timeStamp > 0) {
+            try {
+                int length = (int) (Math.log10(timeStamp) + 1);
+                if (length == 10) {
+                    timeStamp = timeStamp * 1000;
+                }
+                Date d = new Timestamp(timeStamp);
+
+                return getFormattedDate(d.toString(), dateTimeFormat);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
         return "";
     }
@@ -504,7 +521,7 @@ public class Util {
                                       final boolean addToBackStack) {
         try {
             Bundle b = new Bundle();
-            b.putSerializable("TITLE",titleName);
+            b.putSerializable("TITLE", titleName);
             b.putBoolean("SHOW_ALL", false);
             if (fragment instanceof HomeFragment) {
                 b.putBoolean("SHOW_BACK", false);

@@ -3,27 +3,29 @@ package com.platform.models.events;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RegistrationSchedule {
+import java.io.Serializable;
+
+public class Schedule implements Serializable {
     @SerializedName("startdatetime")
     @Expose
-    private String startdatetime;
+    private long startdatetime;
     @SerializedName("enddatetime")
     @Expose
-    private String enddatetime;
+    private long enddatetime;
 
-    public String getStartdatetime() {
+    public long getStartdatetime() {
         return startdatetime;
     }
 
-    public void setStartdatetime(String startdatetime) {
+    public void setStartdatetime(long startdatetime) {
         this.startdatetime = startdatetime;
     }
 
-    public String getEnddatetime() {
+    public long getEnddatetime() {
         return enddatetime;
     }
 
-    public void setEnddatetime(String enddatetime) {
+    public void setEnddatetime(long enddatetime) {
         this.enddatetime = enddatetime;
     }
 }

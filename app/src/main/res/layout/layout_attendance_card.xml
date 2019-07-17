@@ -16,6 +16,8 @@
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_toStartOf="@id/tv_total_hours"
         android:text="@string/total_hours"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="@dimen/text_size_14"
         tools:ignore="RelativeOverlap" />
 
@@ -28,6 +30,9 @@
         android:layout_marginTop="@dimen/dimen_40dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
         android:text=""
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
         android:textSize="@dimen/text_size_14"
         tools:ignore="HardcodedText" />
 
@@ -52,7 +57,7 @@
                 android:id="@+id/bt_check_in"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_40dp"
-                android:background="@drawable/bg_button_switch"
+                android:background="@drawable/bg_button"
                 android:text="@string/check_in"
                 android:textAllCaps="false"
                 android:textColor="@drawable/text_color_on_selection"
@@ -78,6 +83,7 @@
                 android:gravity="left"
                 android:text="@string/attendance_details"
                 android:textColor="@color/tab_selector"
+                android:visibility="gone"
                 android:textSize="12sp" />
         </RelativeLayout>
 
@@ -91,7 +97,7 @@
                 android:id="@+id/bt_checkout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_40dp"
-                android:background="@drawable/bg_button_switch"
+                android:background="@drawable/bg_button"
                 android:text="@string/check_out"
                 android:textAllCaps="false"
                 android:textColor="@drawable/text_color_on_selection"

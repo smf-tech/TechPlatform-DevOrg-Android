@@ -54,11 +54,11 @@ import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
-import com.platform.view.activities.CreateEventActivity;
+import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.PlannerDetailActivity;
-import com.platform.view.adapters.EventListAdapter;
+import com.platform.view.adapters.EventTaskListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
 import org.json.JSONException;
@@ -82,7 +82,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     TextView tvAttendanceDetails;
     Button btCheckIn;
     Button btCheckout;
-
 
     private PlannerFragmentPresenter plannerFragmentPresenter;
     private RelativeLayout progressBarLayout;
@@ -110,6 +109,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private boolean checkOutStatus=false;
     private PreferenceHelper preferenceHelper;
     private AlarmManager alarmManager;
+    private TextView txt_total_hours;
 
 
 
@@ -162,6 +162,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
         tvAttendanceDetails = plannerView.findViewById(R.id.tv_attendance_details);
+        txt_total_hours=plannerView.findViewById(R.id.iv_total_hours);
 
 
         initCardView();
@@ -183,13 +184,15 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         /*List<AttendaceData> userList=userAttendanceDao.getAttendanceList();
         Log.i("User","111"+userList);*/
 
-        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate());
+        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
 
             btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
+
             String checkInTime = getUserType.get(0).getTime();
             tvCheckInTime.setText(checkInTime);
+
             tvCheckInTime.setVisibility(View.VISIBLE);
         }else {
 
@@ -199,7 +202,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         }
 
-        getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate());
+        getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty())
         {
             btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
@@ -207,6 +210,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             String checkInTime = getCheckOut.get(0).getTime();
             tvCheckOutTime.setText(checkInTime);
             tvCheckOutTime.setVisibility(View.VISIBLE);
+            txt_total_hours.setText(getCheckOut.get(0).getTotalHrs());
         }
 
 
@@ -214,10 +218,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         plannerFragmentPresenter = new PlannerFragmentPresenter(this);
         plannerFragmentPresenter.getPlannerData();
 
-        CardView rl_events = plannerView.findViewById(R.id.events_card_view);
-        CardView rl_tasks = plannerView.findViewById(R.id.task_card_view);
-        CardView rl_attendance = plannerView.findViewById(R.id.attendance_card_view);
-        CardView rl_leaves = plannerView.findViewById(R.id.leave_card_view);
+        RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
+        RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
+        RelativeLayout rl_attendance = plannerView.findViewById(R.id.ly_attendance);
+        RelativeLayout rl_leaves = plannerView.findViewById(R.id.ly_leave);
 
 //        Date d = new Date();
 //        CharSequence date = DateFormat.format(Constants.MONTH_DAY_FORMAT, d.getTime());
@@ -302,7 +306,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         for (SubmoduleData obj : submoduleList) {
             switch (obj.getSubModule()) {
-
                 case Constants.Planner.ATTENDANCE_KEY:
 
                     List<attendanceData>attendanceData=obj.getAttendanceData();
@@ -316,23 +319,23 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 //((ViewHolderAttendace)holder).
                     break;
                 case Constants.Planner.EVENTS_KEY:
-                    if (obj.getEventData() != null && obj.getEventData().size() > 0) {
+                    if(obj.getEventTaskData()!=null && obj.getEventTaskData().size()>0){
 
                         RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
-                        EventListAdapter eventListAdapter = new EventListAdapter(getActivity(),
-                                obj.getEventData(), Constants.Planner.EVENTS_LABEL);
+                        EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(getActivity(),
+                                obj.getEventTaskData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_events);
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
-                        rvEvents.setAdapter(eventListAdapter);
+                        rvEvents.setAdapter(eventTaskListAdapter);
                     }
 
 
                     break;
                 case Constants.Planner.TASKS_KEY:
-                    if (obj.getTaskData() != null && obj.getTaskData().size() > 0) {
+                    if(obj.getTaskData()!=null && obj.getTaskData().size()>0) {
 
                         RecyclerView.LayoutManager mLayoutManagerTask = new LinearLayoutManager(getActivity().getApplicationContext());
-                        EventListAdapter taskListAdapter = new EventListAdapter(getActivity(),
+                        EventTaskListAdapter taskListAdapter = new EventTaskListAdapter(getActivity(),
                                 obj.getTaskData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvTask = plannerView.findViewById(R.id.rv_events);
                         rvTask.setLayoutManager(mLayoutManagerTask);
@@ -435,7 +438,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 // offline storage
                 //userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
                 // offline save
-                getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate());
+                getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
                 if (getCheckOut.size() > 0 && !getCheckOut.isEmpty() && getCheckOut != null) {
                     Toast.makeText(getActivity(), "Already check out", Toast.LENGTH_LONG).show();
@@ -463,10 +466,15 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     }
 
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
-
-
+                    attendaceData.setMobileNumber(Util.getUserMobileFromPref());
 
                     tvCheckOutTime.setText(checkOutTime);
+                    try {
+                        txt_total_hours.setText(getTotalHours());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     userCheckOutDao.insert(attendaceData);
                     btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
                     btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
@@ -480,7 +488,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             } else {
 
                 Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
-                attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate());
+                attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(),Util.getUserMobileFromPref());
                 SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
                 submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT,millis,strLat,strLong);
 
@@ -497,7 +505,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void setEventView() {
 
         TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_events_list);
-        FloatingActionButton btAddEvents = plannerView.findViewById(R.id.bt_add_events);
+        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_events);
 
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -510,7 +518,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         btAddEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                 getActivity().startActivity(intentCreateEvent);
             }
@@ -523,7 +531,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_task);
         TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_task_list);
-        FloatingActionButton btAddEvents = plannerView.findViewById(R.id.bt_add_task);
+        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_task);
 
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -536,7 +544,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         btAddEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
                 getActivity().startActivity(intentCreateEvent);
             }
@@ -546,7 +554,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
     public void setLeaveView() {
         TextView tvCheckLeaveDetailsLink = plannerView.findViewById(R.id.tv_link_check_leaves);
-        FloatingActionButton imgClickAddLeaves = plannerView.findViewById(R.id.fab_add_leaves);
+        TextView imgClickAddLeaves = plannerView.findViewById(R.id.fab_add_leaves);
 
         tvCheckLeaveDetailsLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -584,7 +592,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             millis = getLongFromDate();
             if (!Util.isConnected(getActivity())) {
 
-                getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate());
+                getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
                 if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
                     Toast.makeText(getActivity(), "Already check in", Toast.LENGTH_LONG).show();
                 } else {
@@ -603,6 +611,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     attendaceData.setTime(String.valueOf(time));
                     attendaceData.setSync(false);
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                    attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                     userAttendanceDao.insert(attendaceData);
 
                     btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
@@ -703,7 +712,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         String attendanceId;
         int status;
         Util.removeSimpleProgressDialog();
-        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate());
+        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty())
         {
             Toast.makeText(getActivity(),"User Already Check In",Toast.LENGTH_LONG).show();
@@ -736,6 +745,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     attendaceData.setTime(String.valueOf(time));
                     attendaceData.setSync(true);
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                    attendaceData.setMobileNumber(Util.getUserMobileFromPref());
+
                     tvCheckInTime.setText(time);
                     userAttendanceDao.insert(attendaceData);
 
@@ -763,7 +774,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void checkOutResponse(String response) {
         Log.i("checkOut", "111" + response);
         Util.removeSimpleProgressDialog();
-        getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate());
+        getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if(getCheckOut!=null&&getCheckOut.size()>0&&!getCheckOut.isEmpty()){
 
             Toast.makeText(getActivity(),"User Already Check Out",Toast.LENGTH_LONG).show();
@@ -787,7 +798,14 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 e.printStackTrace();
             }
 
+            try {
+                txt_total_hours.setText(getTotalHours());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+            attendaceData.setMobileNumber(Util.getUserMobileFromPref());
 
             try {
                 userCheckOutDao.insert(attendaceData);
@@ -817,7 +835,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
     public void enableCheckOut()
     {
-        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_button_switch));
+        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_button));
         btCheckout.setTextColor(getResources().getColor(R.color.white));
         btCheckout.setEnabled(true);
     }
@@ -835,7 +853,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         Date startDate = null;
         try {
-            startDate = simpleDateFormat.parse((String)time);
+            startDate = simpleDateFormat.parse(tvCheckInTime.getText().toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -852,8 +870,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
         int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
         Log.i("log_tag","Hours: "+hours+", Mins: "+min);
-        String totalHrs= String.valueOf((hours)+(min));
-        return totalHrs;
+        String totalHrs= String.valueOf(hours);
+        String totalMin=String.valueOf(min);
+        return totalHrs + " :" +totalMin;
     }
 
 }

@@ -59,44 +59,51 @@
             android:layout_below="@+id/ly_attended_tab"
             android:gravity="center"
             android:text="@string/add_members_screen_msg"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
-            style="@style/RegistrationEditTextLayout"
             android:layout_below="@+id/tv_info_label"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@drawable/bg_blue_box"
             android:iconifiedByDefault="false"
-            app:queryHint="Search Here" />
-
-        <RelativeLayout
-            android:id="@+id/ly_select_all"
-            android:layout_width="match_parent"
+            app:queryHint="Search here"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/search_view">
+            android:layout_width="wrap_content"
+            android:maxWidth="@dimen/dimen_250dp"/>
+        <CheckBox
+            android:id="@+id/cb_select_all_members"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_all"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_below="@+id/tv_info_label"/>
 
-            <CheckBox
-                android:id="@+id/cb_select_all_members"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true" />
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/ly_select_all"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/search_view">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_toStartOf="@+id/cb_select_all_members"
-                android:text="@string/select_all"
-                android:textColor="@color/medium_blue" />
+           <!---->
 
-        </RelativeLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/dimen_05dp"-->
+                <!--android:layout_toStartOf="@+id/cb_select_all_members"-->
+               <!---->
+                <!--android:textColor="@color/medium_blue" />-->
+
+        <!--</RelativeLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_members"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ly_select_all"
+            android:layout_below="@+id/search_view"
             android:layout_marginTop="@dimen/dimen_10dp" />
 
         <Button

@@ -85,7 +85,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private TextView tvAttendanceDetails;
     private TextView tvCheckInTime;
     private TextView tvCheckOutTime;
-    private TextView tv_lab_total_hours;
+    private TextView tv_lab_total_hours,txt_total_hours;
     private Button btCheckIn, btCheckout;
 
     private RecyclerView rvAttendanceList;
@@ -136,6 +136,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     SubmitAttendanceFromInnerPlanner submitAttendanceFragmentPresenter;
     private String attendaceId;
     private AlarmManager alarmManager;
+    private CharSequence chkOutTime;
 
     public AttendancePlannerFragment() {
         // Required empty public constructor
@@ -179,8 +180,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
 
 
-        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate());
-        getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate());
+        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
+        getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
         if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
 
@@ -205,6 +206,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             String checkOutTime=getUserCheckOutType.get(0).getTime();
             tvCheckOutTime.setText(checkOutTime);
             tvCheckOutTime.setVisibility(View.VISIBLE);
+            txt_total_hours.setText(getUserCheckOutType.get(0).getTotalHrs());
+
         }
 
     }
@@ -217,7 +220,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
 
         tv_lab_total_hours=plannerView.findViewById(R.id.tv_lab_total_hours);
-        tv_lab_total_hours.setVisibility(View.INVISIBLE);
+        //tv_lab_total_hours.setVisibility(View.INVISIBLE);
+
+        txt_total_hours=plannerView.findViewById(R.id.tv_total_hours);
+        //txt_total_hours.setVisibility(View.INVISIBLE);
+
+
 
         lyCalender = plannerView.findViewById(R.id.ly_calender);
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
@@ -251,14 +259,15 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     private void setUIData() {
         if (isDashboard) {
+
             lvAttendanceStatus.setVisibility(View.GONE);
             rvAttendanceList.setVisibility(View.GONE);
             lyCalender.setVisibility(View.GONE);
             // lyWorkingHours.setVisibility(View.VISIBLE);
             lyCheckInOutDashboard.setVisibility(View.VISIBLE);
         } else {
-            rvAttendanceList.setVisibility(View.VISIBLE);
-            lvAttendanceStatus.setVisibility(View.VISIBLE);
+            //rvAttendanceList.setVisibility(View.VISIBLE);
+            //lvAttendanceStatus.setVisibility(View.VISIBLE);
 
             lyCalender.setVisibility(View.VISIBLE);
             //lyWorkingHours.setVisibility(View.VISIBLE);
@@ -366,10 +375,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
      }
 
-
     }
 
     public void attendanceListData(String type) {
+
 
         if(type.equalsIgnoreCase(PENDING))
         {
@@ -433,7 +442,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                             // offline storage
                             //userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
                             // offline save
-                            getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate());
+                            getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(),Util.getUserMobileFromPref());
                             if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty())
                             {
                                 Toast.makeText(getActivity(),"Already check in",Toast.LENGTH_LONG).show();
@@ -451,6 +460,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                                 attendaceData.setTime(String.valueOf(time));
                                 attendaceData.setSync(false);
                                 attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                                attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                                 userAttendanceDao.insert(attendaceData);
 
 
@@ -484,6 +494,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
             case R.id.bt_checkout:
 
+                chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
                 markCheckOut();
 
                 break;
@@ -555,7 +566,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             millis=getLongFromDate();
             if(!Util.isConnected(getActivity())){
 
-                getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate());
+                getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
                 if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
                     Toast.makeText(getActivity(),"User already check out",Toast.LENGTH_LONG).show();
@@ -579,18 +590,28 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                     userCheckOutDao.insert(attendaceData);
 
                     btCheckout.setBackground(Objects.requireNonNull(getActivity())
                             .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
                     btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
+                    txt_total_hours.setVisibility(View.VISIBLE);
+                    tv_lab_total_hours.setVisibility(View.VISIBLE);
+                    try {
+                        txt_total_hours.setText(getTotalHours());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     tvCheckOutTime.setText(time);
+
 
                 }
 
             }else {
-                attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate());
+                attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(),Util.getUserMobileFromPref());
                 Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
                 submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
                 submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT.toLowerCase(),millis,strLat,strLong);
@@ -766,7 +787,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public void checkInResponse(String response){
 
         Util.removeSimpleProgressDialog();
-        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate());
+        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(),Util.getUserMobileFromPref());
         if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
             Toast.makeText(getActivity(),"User Already check in",Toast.LENGTH_LONG).show();
         }
@@ -795,6 +816,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendaceData.setTime(String.valueOf(time));
                     attendaceData.setSync(true);
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                    attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                     tvCheckInTime.setText(time);
                     userAttendanceDao.insert(attendaceData);
                     Log.i("Online","111"+attendaceData);
@@ -816,7 +838,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         Log.i("checkOut","111"+response);
         Util.removeSimpleProgressDialog();
 
-        getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate());
+        getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
         if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
             Toast.makeText(getActivity(),"User Already Check Out",Toast.LENGTH_LONG).show();
@@ -839,11 +861,20 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            attendaceData.setMobileNumber(Util.getUserMobileFromPref());
             userCheckOutDao.insert(attendaceData);
 
             btCheckout.setBackground(Objects.requireNonNull(getActivity())
                     .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
             btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
+
+            txt_total_hours.setVisibility(View.VISIBLE);
+            tv_lab_total_hours.setVisibility(View.VISIBLE);
+            try {
+                txt_total_hours.setText(getTotalHours());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             Log.i("Online","111"+attendaceData);
         }
@@ -890,7 +921,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Date endDate = simpleDateFormat.parse((String)time);
+        Date endDate = simpleDateFormat.parse((String)chkOutTime);
 
         long difference = endDate.getTime() - startDate.getTime();
         if(difference<0)
@@ -903,8 +934,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
         int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
         Log.i("log_tag","Hours: "+hours+", Mins: "+min);
-        String totalHrs= String.valueOf((hours)+(min));
-        return totalHrs;
+
+        String totalHrs= String.valueOf(hours);
+        String totalMin=String.valueOf(min);
+        return totalHrs + " :" +totalMin;
     }
 
     }
