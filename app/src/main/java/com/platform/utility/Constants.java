@@ -29,7 +29,7 @@ public class Constants {
     public static final String OFFLINE_UPDATE_FORM_TYPE = "OfflineUpdate";
 
     public static final String FORM_DATE = "yyyy-MM-dd";
-    public static final String DAY_MONTH_YEAR = "dd/MM/yyyy";
+    public static final String DAY_MONTH_YEAR = "dd MMM yyyy";
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
     public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
@@ -37,6 +37,7 @@ public class Constants {
     public static final String DAY_MONTH_FORMAT = "dd MMM";
     public static final String TIME_FORMAT_ = "HH:mm";
     public static final String TIME_FORMAT = "hh:mm aa";
+    public static final String WEEK_FORMAT = "EEEE";
 
     public static final String DECIMAL_FORMAT = "#0.00";
 
@@ -289,8 +290,12 @@ public class Constants {
         public static final String TASKS_KEY = "task";
         public static final String ATTENDANCE_KEY = "attendance";
         public static final String LEAVES_KEY = "leave";
+    }
 
-
+    public static class Leave {
+        public static final String PENDING_STATUS = "Pending";
+        public static final String APPROVED_STATUS = "Approved";
+        public static final String REJECTED_STATUS = "Rejected";
     }
 
     public static class ContentManagement{

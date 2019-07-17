@@ -12,12 +12,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
+import com.platform.listeners.LeaveDataListener;
+import com.platform.models.leaves.YearlyHolidayData;
+import com.platform.models.leaves.YearlyHolidaysAPIResponse;
+import com.platform.presenter.LeavesPresenter;
+import com.platform.utility.PlatformGson;
+import com.platform.utility.Util;
 import com.platform.view.adapters.HolidayListAdapter;
+import com.platform.view.adapters.YearlyHolidaysAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class HolidayListFragment extends Fragment {
+public class HolidayListFragment extends Fragment implements LeaveDataListener {
+
+    private LeavesPresenter presenter;
+    private final List<YearlyHolidayData> yearlyHolidayList = new ArrayList<>();
+    YearlyHolidaysAdapter yearlyHolidaysAdapter;
 
     public HolidayListFragment() {
         // Required empty public constructor
@@ -38,19 +55,62 @@ public class HolidayListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView leavesList = view.findViewById(R.id.rv_holiday_list);
+        RecyclerView rvYearlyHoliday = view.findViewById(R.id.rv_holiday_list);
 
-        ArrayList<String> leaves = new ArrayList<>();
-        leaves.add("1");
-        leaves.add("2");
-        HolidayListAdapter adapter = new HolidayListAdapter(getActivity(), leaves);
-        leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        leavesList.setAdapter(adapter);
+        presenter = new LeavesPresenter(this);
+        presenter.getHolidayList();
+        yearlyHolidaysAdapter = new YearlyHolidaysAdapter(yearlyHolidayList);
+        rvYearlyHoliday.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvYearlyHoliday.setAdapter(yearlyHolidaysAdapter);
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        if (getActivity() != null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), message,
+                    Snackbar.LENGTH_LONG);
+        }
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        if (getActivity() != null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), error.getMessage(),
+                    Snackbar.LENGTH_LONG);
+        }
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        YearlyHolidaysAPIResponse yearlyHolidaysAPIResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, YearlyHolidaysAPIResponse.class);
+        yearlyHolidayList.clear();
+        if(yearlyHolidaysAPIResponse != null){
+            yearlyHolidayList.addAll(yearlyHolidaysAPIResponse.getData());
+            yearlyHolidaysAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showProgressBar() {
+        Util.showSimpleProgressDialog(getActivity(), null, getString(R.string.please_wait), false);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        Util.removeSimpleProgressDialog();
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
     }
 }

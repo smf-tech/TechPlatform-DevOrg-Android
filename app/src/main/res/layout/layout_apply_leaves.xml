@@ -1,28 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lighter_grey">
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-
-    <include layout="@layout/leaves_count_layout" />
-
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tv_leave_balance"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:paddingTop="@dimen/dimen_15dp"
+        android:text="@string/leave_details"
+        android:textAllCaps="false"
+        android:textColor="@color/leave_form_text_color"
+        android:textSize="@dimen/text_size_13"
+        tools:ignore="RtlSymmetry" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_leave_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:orientation="horizontal"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_margin="@dimen/dimen_10dp">
+        <LinearLayout
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <TextView
             android:id="@+id/tv_category"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
-            android:background="@drawable/leave_form_view_unfocused"
-            android:paddingStart="@dimen/dimen_15dp"
             android:paddingTop="@dimen/dimen_15dp"
             android:text="@string/category"
             android:textAllCaps="false"
@@ -30,59 +57,20 @@
             android:textSize="@dimen/text_size_13"
             tools:ignore="RtlSymmetry" />
 
-        <LinearLayout
-            android:id="@+id/lv_category_selection"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_below="@+id/tv_category"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:layout_marginEnd="@dimen/dimen_20dp"
-            android:weightSum="3">
-
-            <Button
-                android:id="@+id/btn_cl"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:text="@string/cl_leaves"
-                android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13"
-                tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/btn_paid"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:text="@string/paid_leaves"
-                android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13"
-                tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/btn_comp_off"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:text="@string/comp_off_leaves"
-                android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13"
-                tools:ignore="ButtonStyle" />
-        </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_leave_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:orientation="horizontal"/>
 
         <LinearLayout
             android:id="@+id/lv_category_type"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
             android:layout_below="@+id/lv_category_selection"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:layout_marginTop="@dimen/dimen_25dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
             android:layout_marginBottom="@dimen/dimen_25dp"
             android:weightSum="2">
@@ -116,13 +104,12 @@
             android:id="@+id/lv_category_date"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_below="@+id/lv_category_type"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_marginBottom="@dimen/dimen_25dp"
             android:weightSum="2">
 
-            <TextView
+            <EditText
                 android:id="@+id/btn_start_date"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
@@ -135,10 +122,12 @@
                 android:paddingEnd="@dimen/dimen_15dp"
                 android:text="@string/start_date"
                 android:textAllCaps="false"
+                android:clickable="false"
+                android:focusable="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13" />
 
-            <TextView
+            <EditText
                 android:id="@+id/btn_end_date"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
@@ -151,6 +140,8 @@
                 android:paddingEnd="@dimen/dimen_15dp"
                 android:text="@string/end_date"
                 android:textAllCaps="false"
+                android:clickable="false"
+                android:focusable="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
@@ -159,9 +150,9 @@
             android:id="@+id/edt_reason"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_75dp"
-            android:layout_below="@+id/lv_category_date"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_20dp"
             android:background="@drawable/leave_form_view_unfocused"
             android:gravity="top"
             android:hint="@string/reason"
@@ -174,11 +165,13 @@
             android:textSize="@dimen/text_size_13"
             tools:ignore="RtlSymmetry,TextFields,UnusedAttribute" />
 
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
         <Button
             android:id="@+id/btn_apply_leave"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/dimen_25dp"
             android:layout_marginStart="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
             android:layout_marginBottom="@dimen/dimen_05dp"
@@ -188,5 +181,30 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_16" />
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
+
 </LinearLayout>
+
+</ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

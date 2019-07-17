@@ -10,6 +10,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.Parcelable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -69,6 +70,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -129,7 +131,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             ((HomeActivity) getActivity()).setActionBarTitle(title);
             ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
-            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
+            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }
@@ -173,7 +175,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
 
         initCardView();
-
     }
 
     private void initCardView() {
@@ -242,7 +243,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         bundle.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, true);
 
         //to display tha submodules
-        for (Modules m : approveModules)
+        for (Modules m : approveModules) {
             switch (m.getName().getDefaultValue()) {
                 case Constants.Planner.ATTENDANCE_KEY_:
                     rl_attendance.setVisibility(View.VISIBLE);
@@ -263,6 +264,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 default:
                     break;
             }
+        }
     }
 
     @Override
@@ -331,6 +333,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setAdapter(eventTaskListAdapter);
                     }
 
+
                     break;
                 case Constants.Planner.TASKS_KEY:
                     if (obj.getTaskData() != null && obj.getTaskData().size() > 0) {
@@ -346,21 +349,18 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 case Constants.Planner.LEAVES_KEY:
                     if (obj.getLeave() != null && obj.getLeave().size() > 0) {
                         leaveBalance.addAll(obj.getLeave());
-
-                        if (obj.getLeave() != null && obj.getLeave().size() > 0) {
-
-                            RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
-                                    LinearLayoutManager.HORIZONTAL, true);
-                            LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(obj.getLeave(), "LeaveBalance");
-                            RecyclerView rvLeaveBalance = plannerView.findViewById(R.id.rv_leave_balance);
-                            rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
-                            rvLeaveBalance.setAdapter(LeaveAdapter);
-                        }
-                        break;
+                        RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
+                                LinearLayoutManager.HORIZONTAL, true);
+                        LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(
+                                obj.getLeave(), "LeaveBalance");
+                        RecyclerView rvLeaveBalance = plannerView.findViewById(R.id.rv_leave_balance);
+                        rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
+                        rvLeaveBalance.setAdapter(LeaveAdapter);
                     }
+                    break;
             }
-
         }
+
     }
         public void setAttendaceView () {
 
@@ -504,82 +504,83 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         public void setEventView () {
 
-            TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_events_list);
-            TextView btAddEvents = plannerView.findViewById(R.id.bt_add_events);
+        TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_events_list);
+        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_events);
 
-            tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                    intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                    getActivity().startActivity(intentEventList);
-                }
-            });
-            btAddEvents.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                    getActivity().startActivity(intentCreateEvent);
-                }
-            });
-
-        }
-
-        public void setTaskView () {
-
-            RecyclerView rvEvents = plannerView.findViewById(R.id.rv_task);
-            TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_task_list);
-            TextView btAddEvents = plannerView.findViewById(R.id.bt_add_task);
-
-            tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                    intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                    getActivity().startActivity(intentEventList);
-                }
-            });
-            btAddEvents.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                    getActivity().startActivity(intentCreateEvent);
-                }
-            });
-
-        }
-
-        public void setLeaveView () {
-            TextView tvCheckLeaveDetailsLink = plannerView.findViewById(R.id.tv_link_check_leaves);
-            TextView imgClickAddLeaves = plannerView.findViewById(R.id.fab_add_leaves);
-
-            tvCheckLeaveDetailsLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                    intent.putExtra("title", getActivity().getString(R.string.leave));
-                    intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-                    getActivity().startActivity(intent);
-                }
-            });
-            imgClickAddLeaves.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                    intent.putExtra("title", getActivity().getString(R.string.apply_leave));
-                    intent.putExtra("isEdit", false);
-                    intent.putExtra("apply_type", "Leave");
-                    intent.putExtra("switch_fragments", "LeaveApplyFragment");
-                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-                    getActivity().startActivity(intent);
-                }
-            });
+        tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                getActivity().startActivity(intentEventList);
+            }
+        });
+        btAddEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                getActivity().startActivity(intentCreateEvent);
+            }
+        });
 
 
-        }
+    }
+
+    public void setTaskView() {
+
+        RecyclerView rvEvents = plannerView.findViewById(R.id.rv_task);
+        TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_task_list);
+        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_task);
+
+        tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                getActivity().startActivity(intentEventList);
+            }
+        });
+        btAddEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                getActivity().startActivity(intentCreateEvent);
+            }
+        });
+
+    }
+
+    public void setLeaveView() {
+        TextView tvCheckLeaveDetailsLink = plannerView.findViewById(R.id.tv_link_check_leaves);
+        TextView imgClickAddLeaves = plannerView.findViewById(R.id.fab_add_leaves);
+
+        tvCheckLeaveDetailsLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                intent.putExtra("title", getActivity().getString(R.string.leave));
+                intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+                getActivity().startActivity(intent);
+            }
+        });
+        imgClickAddLeaves.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                intent.putExtra("title", getActivity().getString(R.string.apply_leave));
+                intent.putExtra("isEdit", false);
+                intent.putExtra("apply_type", "Leave");
+                intent.putExtra("switch_fragments", "LeaveApplyFragment");
+                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+                getActivity().startActivity(intent);
+            }
+        });
+
+
+    }
 
         public void markCheckIn () {
 

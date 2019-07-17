@@ -82,7 +82,6 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
 
                     case "LeaveDetailsFragment":
                         fragment = new LeaveDetailsFragment();
-
                         toolBarMenu.setVisibility(View.VISIBLE);
                         fragment.setArguments(data);
                         openFragment();

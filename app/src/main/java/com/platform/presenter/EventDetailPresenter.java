@@ -9,6 +9,7 @@ import com.platform.models.events.EventMemberLestResponse;
 import com.platform.models.events.GetAttendanceCodeResponse;
 import com.platform.models.events.SetAttendanceCodeRequest;
 import com.platform.request.EventDetailRequestCall;
+import com.platform.request.EventRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.view.activities.EventDetailActivity;
 
@@ -52,6 +53,15 @@ public class EventDetailPresenter implements EventDetailListener {
         requestCall.setTaskMarkComplete(id);
     }
 
+    public void delete(String id) {
+        EventDetailRequestCall requestCall = new EventDetailRequestCall();
+        requestCall.setEventDetailListener(this);
+
+        activity.showProgressBar();
+        requestCall.delete(id);
+    }
+
+
     @Override
     public void onAttendanceCodeFetched(String response) {
         if (activity != null) {
@@ -91,6 +101,19 @@ public class EventDetailPresenter implements EventDetailListener {
                 CommonResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, CommonResponse.class);
                 if (activity != null) {
                     onFailureListener(data.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDeleted(String response) {
+        if (activity != null) {
+            activity.hideProgressBar();
+            if (!TextUtils.isEmpty(response)) {
+                CommonResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, CommonResponse.class);
+                if (activity != null) {
+                    activity.showNextScreen(data.getMessage());
                 }
             }
         }

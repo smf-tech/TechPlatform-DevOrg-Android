@@ -82,20 +82,19 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
             tvLeaveType = itemView.findViewById(R.id.tv_leaves_type);
             if(adapterType.equalsIgnoreCase("Category")){
                 leaveBalanceLayout.setOnClickListener(v -> {
-                    for (int i = 0; i < leaveBackground.size(); i++) {
-                        if (i == getAdapterPosition()) {
-                            leaveBackground.remove(i);
-                            leaveBackground.add(i, R.drawable.bg_button);
-                            context.selectedLeaveCatgory = leave.get(i).getType();
-                        } else {
-                            leaveBackground.remove(i);
-                            leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
-                        }
+                for (int i = 0; i < leaveBackground.size(); i++) {
+                    if (i == getAdapterPosition()) {
+                        leaveBackground.remove(i);
+                        leaveBackground.add(i, R.drawable.bg_button);
+                        context.selectedLeaveCatgory = leave.get(i).getType();
+                    } else {
+                        leaveBackground.remove(i);
+                        leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
                     }
-                    notifyDataSetChanged();
-                });
-            }
+                }
+                notifyDataSetChanged();
+            });
+        }
         }
     }
 }
-

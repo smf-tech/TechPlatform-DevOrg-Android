@@ -40,7 +40,7 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
             if (data != null && data.getData() != null
                     && !data.getData().isEmpty()
                     && data.getData().size() > 0) {
-                plannerFragment.showPlannerSummer((ArrayList<SubmoduleData>) data.getData());
+                plannerFragment.showPlannerSummary((ArrayList<SubmoduleData>) data.getData());
             }
         }
         Log.i("Planner","111"+response);

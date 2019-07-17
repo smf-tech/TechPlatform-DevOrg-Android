@@ -174,4 +174,37 @@ public class EventDetailRequestCall {
         gsonRequest.setHeaderParams(Util.requestHeader(true));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
+
+    public void delete(String id) {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "DELETE_EVENT_TASK - Resp: " + res);
+                    listener.onDeleted(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
+
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.DELETE_EVENT_TASK +"/"+id;
+        Log.d(TAG, "DELETE_EVENT_TASK: " + getOrgUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
 }

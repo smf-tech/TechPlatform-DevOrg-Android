@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/lighter_grey"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:ignore="Overdraw">
@@ -52,7 +52,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="#3d5c6b"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_view_all_icon"/>
 
     <RelativeLayout

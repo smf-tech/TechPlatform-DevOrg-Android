@@ -68,6 +68,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
 
     private String toOpen;
     private boolean isMonth;
+    private boolean isAllEvents;
     private EventParams eventParams;
     private int selectedMonth;
 
@@ -101,6 +102,8 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         }
         progressBarLayout = eventsPlannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = eventsPlannerView.findViewById(R.id.pb_profile_act);
+
+        isAllEvents=true;
 
         Date d = new Date();
         eventParams = new EventParams();
@@ -237,11 +240,13 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rb_all_events_task:
-                sortEventsList(true);
+                isAllEvents=true;
+                sortEventsList(isAllEvents);
                 break;
 
             case R.id.rb_my_events_task:
-                sortEventsList(false);
+                isAllEvents=false;
+                sortEventsList(isAllEvents);
                 break;
         }
     }
@@ -321,14 +326,12 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     }
 
     public void displayEventsListOfDay(List<EventTask> data) {
-        sortedEventsList.clear();
-        eventsList.clear();
         if (data != null) {
+            eventsList.clear();
             eventsList.addAll(data);
-            sortedEventsList.addAll(data);
-            eventTaskListAdapter.notifyDataSetChanged();
+            sortEventsList(isAllEvents);
         } else {
-            sortEventsList(true);
+            sortEventsList(isAllEvents);
         }
     }
 

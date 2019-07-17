@@ -1,0 +1,35 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    app:cardBackgroundColor="@color/colorAccent"
+    app:cardElevation="6dp"
+    android:layout_margin="2dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="match_parent">
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tv_filters"
+        android:layout_width="match_parent"
+        android:text="text"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:padding="5dp"
+        android:textColor="@color/white"
+        android:paddingStart="@dimen/dimen_10dp"
+        android:layout_height="wrap_content"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:checked="true"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/cb_select_filter"
+        android:backgroundTint="@color/white"
+        android:buttonTint="@color/white"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

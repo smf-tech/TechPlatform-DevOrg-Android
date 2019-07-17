@@ -72,7 +72,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     private CheckBox cbIsAttendanceRequired;
     private CheckBox cbIsRegistrationRequired;
     private ImageView eventPic;
-    private ImageView toolbarAction;
     private RelativeLayout lyEventPic;
 
     private Uri outputUri;
@@ -127,8 +126,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         btEventSubmit = findViewById(R.id.bt_event_submit);
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
         lyEventPic = findViewById(R.id.ly_event_pic);
-        toolbarAction = findViewById(R.id.toolbar_edit_action);
-        toolbarAction.setImageResource(R.drawable.ic_delete);
 
         addMembersListAdapter = new AddMembersListAdapter(CreateEventTaskActivity.this, membersList, false, false);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -138,8 +135,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         btEventSubmit.setText(getString(R.string.btn_submit));
         if (eventTask != null) {
             setAllData();
-
-            toolbarAction.setVisibility(View.VISIBLE);
 
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
@@ -210,7 +205,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         etRegistrationStartDate.setOnClickListener(this);
         etRegistrationEndDate.setOnClickListener(this);
         eventPic.setOnClickListener(this);
-        toolbarAction.setOnClickListener(this);
     }
 
 //    private void setAdapter(ArrayList<Participant> participants) {
@@ -228,9 +222,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         switch (v.getId()) {
             case R.id.toolbar_back_action:
                 finish();
-                break;
-            case R.id.toolbar_edit_action:
-                presenter.delete(eventTask.getId());
                 break;
 
             case R.id.et_start_date:
@@ -357,7 +348,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             }
 
             //put in response of above api
-//            presenter.submitEvent(eventTask);
+            presenter.submitEvent(eventTask);
         }
     }
 
@@ -403,13 +394,13 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 msg = getResources().getString(R.string.msg_enter_registration_end_date);
             } else if (rStartDate.getTime() > endDate.getTime()) {
 //                msg = getResources().getString(R.string.msg_enter_proper_date);
-                msg = "Registration start date should not be greter than end date";
+                msg = "Registration start date should not be greater than end date";
             } else if (rEndDate.getTime() > endDate.getTime()) {
 //                msg = getResources().getString(R.string.msg_enter_proper_date);
-                msg = "Registration end date should not be greter than end date";
+                msg = "Registration end date should not be greater than end date";
             } else if (rStartDate.getTime() > rEndDate.getTime()) {
 //                msg = getResources().getString(R.string.msg_enter_proper_date);
-                msg = "Registration start date should not be greter than registration end date";
+                msg = "Registration start date should not be greater than registration end date";
             }
         }
 
@@ -637,9 +628,8 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     public void showMemberList(ArrayList<Participant> data) {
         Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-        intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, true);
         intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, data);
-        this.startActivity(intentAddMembersListActivity);
+        this.startActivityForResult(intentAddMembersListActivity,Constants.Planner.MEMBER_LIST);
     }
 }

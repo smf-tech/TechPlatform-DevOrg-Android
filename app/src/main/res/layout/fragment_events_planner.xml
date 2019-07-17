@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     tools:context="com.platform.view.fragments.EventsTaskLandingFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -166,7 +165,7 @@
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:src="@android:drawable/ic_input_add"
             android:tint="@color/white"
-            app:backgroundTint="@color/tab_selector"
+            app:backgroundTint="@color/colorPrimary"
             app:fabSize="mini"
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>

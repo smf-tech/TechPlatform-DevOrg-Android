@@ -40,9 +40,9 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            leaveDesc = itemView.findViewById(R.id.tv_leave_desc);
+            //leaveDesc = itemView.findViewById(R.id.tv_leave_desc);
             //leaveStatus = itemView.findViewById(R.id.tv_leave_status);
-            userImage = itemView.findViewById(R.id.img_user_leaves);
+            //userImage = itemView.findViewById(R.id.img_user_leaves);
             itemView.findViewById(R.id.img_delete).setVisibility(View.GONE);
             itemView.findViewById(R.id.img_edit).setVisibility(View.GONE);
 

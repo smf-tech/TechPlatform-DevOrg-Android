@@ -1,5 +1,6 @@
 package com.platform.utility;
 
+import java.util.Locale;
 
 public class Urls {
 
@@ -35,6 +36,15 @@ public class Urls {
         public static final String GET_APPROVED_REQUESTS = "api/user/approvals?status=approved";
         public static final String GET_REJECTED_REQUESTS = "api/user/approvals?status=rejected";
         public static final String APPROVE_REJECT_REQUEST = "api/users/approval/%1$s";
+        //landing page summary
+        public static final String GET_APPROVALS_SUMMARY_REQUESTS = "api/teammanagmentsummary";
+        public static final String GET_PENDING_APPROVAL_REQUESTS ="api/getlistbyfilter";
+        public static final String GET_TM_FILTERS_REQUESTS ="api/teammanagmentfilter";
+        public static final String GET_TM_USER_DETAILS_REQUESTS ="api/getuserbyfilter";
+        public static final String GET_TM_USER_APPROVE_REJECT_REQUEST ="api/applicationapproval";
+
+
+
     }
 
     public class Report {
@@ -57,6 +67,13 @@ public class Urls {
         public static final String GET_EVENT_TASK_MEMBERS_LIST = "api/getEventMembers";
         public static final String GET_TASK_MEMBERS_LIST = "api/addmembertask";
         public static final String SET_TASK_MARK_COMPLETE = "api/taskMarkComplete";
+    }
+
+    public class Leaves {
+        public static final String APPLY_LEAVE= "api/createLeave";
+        public static final String GET_MONTHLY_LEAVES = "api/getLeavesSummary/%1$s/%2$s";
+        public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
+        public static final String HOLIDAY_LIST= "api/getYearHolidayList";
     }
 
     public class Attendance

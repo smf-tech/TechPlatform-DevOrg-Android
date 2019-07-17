@@ -90,7 +90,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     // check file is present in directory or not
-                    contentManagementFragment.beginDownload(downloadContent.getDef());
+                    //contentManagementFragment.beginDownload(downloadContent.getDef());
 
                 }
             });

@@ -14,7 +14,6 @@
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
         android:maxLines="1"
-        android:textColor="@color/tab_select"
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold"
         tools:ignore="RelativeOverlap" />
