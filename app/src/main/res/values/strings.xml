@@ -334,6 +334,7 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
+    <string name="web_module_tab_click" translatable="false">Webmodule tab clicked</string>
     <string name="repeat">Repeat</string>
     <string name="interval">Interval</string>
     <string name="which_days">On which days</string>

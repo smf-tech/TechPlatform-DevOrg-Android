@@ -10,11 +10,13 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_55dp"
         app:tabGravity="center"
+        android:background="@color/colorPrimary"
         app:tabIndicatorColor="@color/white"
         app:tabMode="fixed" />
+
 
     <ImageView
         android:layout_width="match_parent"

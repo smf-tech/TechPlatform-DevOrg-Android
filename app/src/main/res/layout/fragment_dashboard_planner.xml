@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lighter_grey">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -243,9 +244,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true">
 
-
                     </RelativeLayout>
-
 
                 </RelativeLayout>
 
@@ -258,28 +257,39 @@
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_05dp">
 
-                    <TextView
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_200dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
                         android:id="@+id/tv_leaves_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:text="@string/leave_details" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_leave_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/card_fotte_leave"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:orientation="horizontal"
-                        android:layout_below="@+id/tv_leaves_label" />
+                        android:layout_below="@+id/tv_leaves_label"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:orientation="horizontal"/>
 
                     <RelativeLayout
                         android:id="@+id/card_fotte_leave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true">
+                        android:layout_below="@+id/rv_leave_balance"
+                        android:layout_marginTop="@dimen/dimen_10dp">
 
                         <TextView
                             android:id="@+id/tv_link_check_leaves"
@@ -295,13 +305,13 @@
                             android:id="@+id/fab_add_leaves"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/dimen_10dp"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
-                            android:src="@android:drawable/ic_input_add"
                             style="@style/StyleLabel"
+                            android:layout_alignParentRight="true"
+                            android:src="@android:drawable/ic_input_add"
                             android:text="@string/apply_leave" />
                     </RelativeLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </RelativeLayout>
         </RelativeLayout>
 

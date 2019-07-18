@@ -36,15 +36,23 @@ public class DashboardFragment extends Fragment {
     private TabLayout tabLayout;
     private boolean isSyncRequired;
     private boolean isUserApproved;
+//    private final int[] tabIcons = {
+//            R.drawable.bg_circle_pink,
+//            R.drawable.bg_circle_orange,
+//            R.drawable.bg_circle_yellow,
+//            R.drawable.bg_circle_green,
+//            R.drawable.bg_circle_webmodule
+//    };
     private final int[] tabIcons = {
-            R.drawable.bg_circle_pink,
-            R.drawable.bg_circle_orange,
-            R.drawable.bg_circle_yellow,
-            R.drawable.bg_circle_green,
-            R.drawable.bg_circle_webmodule
+            R.drawable.ic_forms,
+            R.drawable.ic_calendar,
+            R.drawable.ic_approvals,
+            R.drawable.ic_reports,
+            R.drawable.webview_icon_db
     };
     private final int[] disableTabIcons = {
-            R.drawable.bg_circle_lock
+            //R.drawable.bg_circle_lock
+            R.drawable.ic_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
     private static int mApprovalCount = 0;
@@ -262,7 +270,7 @@ public class DashboardFragment extends Fragment {
                         break;
                     case 4:
                         ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.WEBMODULE);
-                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
+                        AppEvents.trackAppEvent(getString(R.string.web_module_tab_click));
                         break;
                 }
             });
@@ -273,7 +281,7 @@ public class DashboardFragment extends Fragment {
         if (getContext() == null) return;
         if (!tabNames.get(i).isActive()) {
             ((TextView) tabOne.findViewById(R.id.tab))
-                    .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+                    .setCompoundDrawablesWithIntrinsicBounds(disableTabIcons[0], 0, 0, 0);
             pendingActionsCountView.setVisibility(View.GONE);
         } else {
             pendingActionsCountView.setVisibility(View.VISIBLE);
@@ -308,7 +316,7 @@ public class DashboardFragment extends Fragment {
                     break;
             }
 
-            tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
                 pendingActionsCountView.setTextColor(getResources().getColor(R.color.black));

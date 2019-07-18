@@ -5,13 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_100dp"
-    android:layout_marginStart="@dimen/dimen_15dp"
-    android:layout_marginEnd="@dimen/dimen_15dp"
-    android:layout_marginBottom="@dimen/dimen_05dp"
     android:background="@color/white"
-    android:elevation="@dimen/dimen_02dp"
-    android:paddingStart="@dimen/dimen_10dp"
     android:gravity="center"
+    android:layout_margin="@dimen/dimen_10dp"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -19,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_toStartOf="@id/img_edit">
+        android:layout_toStartOf="@id/img_edit"
+        android:layout_marginStart="@dimen/dimen_20dp">
 
         <TextView
             android:id="@+id/tv_leave_header"
@@ -35,11 +32,10 @@
             android:id="@+id/tv_leave_sub_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:text="from 4 June to 5 June."
             android:textColor="@color/attendance_list_item"
-            android:textSize="@dimen/text_size_16"
+            android:textSize="@dimen/text_size_12"
             tools:ignore="RelativeOverlap" />
 
     </LinearLayout>
