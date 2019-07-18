@@ -4,9 +4,13 @@ import com.android.volley.VolleyError;
 
 public interface CreateEventListener {
 
-    void onCategoryFetched(String response);
+    void onEventsFetchedOfDay(String response);
 
-    void onEventsFetched(String response);
+    void onEventsFetchedOfMonth(String response);
+
+    void onFormsFetched(String response);
+
+    void onTaskMembersFetched(String response);
 
     void onEventSubmitted(String response);
 

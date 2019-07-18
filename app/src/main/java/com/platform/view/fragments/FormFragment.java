@@ -202,7 +202,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         protected String doInBackground(String... params) {
             showChoicesByUrlMD(params[0],
                     PlatformGson.getPlatformGsonInstance().fromJson(params[1], Column.class),
-                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2], HashMap.class), Long.parseLong(params[3]));
+                    PlatformGson.getPlatformGsonInstance().<HashMap<String, String>>fromJson(params[2],
+                            HashMap.class), Long.parseLong(params[3]));
             return null;
         }
 
@@ -295,9 +296,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         layer.setVisibility(View.GONE);
         layer.setOnClickListener(null);
 
+        LinearLayout btnLayout = formFragmentView.findViewById(R.id.button_lay);
+        btnLayout.setVisibility(View.VISIBLE);
+
         Button submit = formFragmentView.findViewById(R.id.btn_submit);
-        submit.setVisibility(View.VISIBLE);
         submit.setOnClickListener(this);
+
+        Button save = formFragmentView.findViewById(R.id.btn_save);
+        save.setOnClickListener(this);
     }
 
     private void setActionbar(String Title) {
@@ -332,7 +338,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         if (elements != null && elements.getChoicesByUrl() == null && elements.getChoices() != null) {
                             Collections.sort(elements.getChoices(),
                                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
-                            formComponentCreator.updateDropDownValues(elements, elements.getChoices());
+                            formComponentCreator.updateDropDownValues(elements, elements.getChoices(), false);
                         } else if (elements.getChoicesByUrl() != null) {
                             //Online
                             if (Util.isConnected(getContext())) {
@@ -390,8 +396,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         break;
 
                     case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(), elements,
-                                mIsInEditMode, mIsPartiallySaved, formPresenter));
+                        addViewToMainContainer(formComponentCreator.matrixDynamicTemplate(formModel.getData(),
+                                elements, mIsInEditMode, mIsPartiallySaved, formPresenter));
                         break;
                 }
             }
@@ -491,7 +497,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         new GetDataFromDBTask().execute(result, PlatformGson.getPlatformGsonInstance().toJson(elements));
     }
 
-    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, long rowIndex) {
+    public void showChoicesByUrlAsyncMD(String result, Column column, HashMap<String,
+            String> matrixDynamicInnerMap, long rowIndex) {
+
         new GetDataFromDBTaskMD().execute(result, PlatformGson.getPlatformGsonInstance().toJson(column),
                 PlatformGson.getPlatformGsonInstance().toJson(matrixDynamicInnerMap),
                 String.valueOf(rowIndex));
@@ -545,17 +553,31 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 }
             }
 
+            // This code will add submitted value in list and update the adapter, in API response
+            // submitted value is not coming hence this is workaround.
+            Choice ch = new Choice();
+            LocaleData ld = new LocaleData(elements.getAnswer());
+            ch.setText(ld);
+            ch.setValue(ld.getLocaleValue());
+
+            if (!TextUtils.isEmpty(elements.getAnswer()) && !choiceValues.contains(ch)) {
+                choiceValues.add(ch);
+            }
+
             Collections.sort(choiceValues,
                     (o1, o2) -> o1.getText().getLocaleValue().compareTo(o2.getText().getLocaleValue()));
         } catch (Exception e) {
             Log.e(TAG, "Exception in showChoicesByUrl()" + result);
         }
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> formComponentCreator.updateDropDownValues(elements, choiceValues));
+            getActivity().runOnUiThread(() -> formComponentCreator
+                    .updateDropDownValues(elements, choiceValues, true));
         }
     }
 
-    private void showChoicesByUrlMD(String result, Column column, HashMap<String, String> matrixDynamicInnerMap, final long rowIndex) {
+    private void showChoicesByUrlMD(String result, Column column, HashMap<String,
+            String> matrixDynamicInnerMap, final long rowIndex) {
+
         List<Choice> choiceValues = new ArrayList<>();
         try {
             LocaleData text;
@@ -634,7 +656,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         switch (view.getId()) {
             case R.id.toolbar_back_action:
                 if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
-                    showConfirmPopUp();
+                    showDiscardPopUp();
                 } else {
                     getActivity().finish();
                 }
@@ -712,6 +734,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         }
                     }
                 }
+                break;
+
+            case R.id.btn_save:
+                if (formModel != null && formModel.getData() != null) {
+                    AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
+                    if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+                        storePartiallySavedForm();
+                    }
+                }
+                getActivity().finish();
+                    //showConfirmPopUp();
                 break;
         }
     }
@@ -793,26 +826,27 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         }
     }
 
-    private void showConfirmPopUp() {
+    private void showDiscardPopUp() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name_ss));
         // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.msg_confirm));
+        alertDialog.setMessage(getString(R.string.msg_discard));
         // Setting Icon to Dialog
         alertDialog.setIcon(R.mipmap.app_logo);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
-                (dialogInterface, i) -> getActivity().finish());
+                (dialogInterface, i) -> alertDialog.dismiss());
+                        //getActivity().finish());
 
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), (dialogInterface, i) -> {
-            if (formModel != null && formModel.getData() != null) {
-                AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
-                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
-                    storePartiallySavedForm();
-                }
-            }
+//            if (formModel != null && formModel.getData() != null) {
+//                AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
+//                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+//                    storePartiallySavedForm();
+//                }
+//            }
             getActivity().finish();
         });
 
@@ -1084,9 +1118,15 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             try {
                 mFileImageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File compressedImageFile = Util.compressFile(imageFile);
 
                 if (Util.isConnected(getContext())) {
-                    formPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        formPresenter.uploadProfileImage(compressedImageFile,
+                                Constants.Image.IMAGE_TYPE_FILE, mFormName);
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
@@ -1098,7 +1138,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case Constants.CAMERA_REQUEST:
                 Log.e(TAG, "Camera Permission Granted");
@@ -1133,7 +1174,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE) {
             getActivity().finish();
         } else {
-            showConfirmPopUp();
+            showDiscardPopUp();
         }
     }
 

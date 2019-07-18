@@ -2,6 +2,7 @@ package com.platform.database;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
@@ -15,8 +16,10 @@ import com.platform.models.home.Modules;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.reports.ReportData;
 
-@Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class, ProcessData.class}, version = 1)
+@Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
+        ProcessData.class}, version = 1)
 
+@TypeConverters({DataConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ProcessDataDao processDataDao();
@@ -28,4 +31,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ReportsDataDao reportDao();
 
     public abstract FormResultDao formResultDao();
+
 }

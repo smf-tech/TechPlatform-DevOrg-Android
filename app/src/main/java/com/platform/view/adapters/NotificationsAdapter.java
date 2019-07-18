@@ -59,7 +59,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         PendingRequest pendingRequest = pendingRequestList.get(position);
         holder.txtRequestTitle.setText(String.format("%s", pendingRequest.getEntity().getUser().getUserName()));
         holder.txtRequestCreatedAt.setText(String.format("%s",
-                Util.getDateFromTimestamp(pendingRequest.getCreatedDateTime())));
+                Util.getDateTimeFromTimestamp(pendingRequest.getCreatedDateTime())));
         holder.cardView.setOnClickListener(view1 -> clickListener.onItemClicked());
 
         holder.ivApprove.setVisibility(View.GONE);

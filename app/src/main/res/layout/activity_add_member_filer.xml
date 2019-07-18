@@ -29,7 +29,7 @@
             <!--Organization-->
             <TextView
                 style="@style/FormLabel"
-                android:text="@string/mandatory_organization" />
+                android:text="@string/organization" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_organization"
@@ -52,7 +52,7 @@
             <!--Role-->
             <TextView
                 style="@style/FormLabel"
-                android:text="@string/mandatory_role" />
+                android:text="@string/role" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_role"
@@ -64,7 +64,7 @@
             <TextView
                 android:id="@+id/txt_state"
                 style="@style/FormLabel"
-                android:text="@string/mandatory_state" />
+                android:text="@string/state" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_state"
@@ -76,7 +76,7 @@
             <TextView
                 android:id="@+id/txt_district"
                 style="@style/FormLabel"
-                android:text="@string/mandatory_district" />
+                android:text="@string/district" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_district"
@@ -88,7 +88,7 @@
             <TextView
                 android:id="@+id/txt_taluka"
                 style="@style/FormLabel"
-                android:text="@string/mandatory_taluka" />
+                android:text="@string/taluka" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_taluka"
@@ -100,19 +100,21 @@
             <TextView
                 android:id="@+id/txt_cluster"
                 style="@style/FormLabel"
-                android:text="@string/mandatory_cluster" />
+                android:text="@string/cluster"
+                android:visibility="gone"/>
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_cluster"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="@dimen/dimen_50dp"
+                android:visibility="gone"/>
 
             <!--Village-->
             <TextView
                 android:id="@+id/txt_village"
                 style="@style/FormLabel"
-                android:text="@string/mandatory_village" />
+                android:text="@string/village" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_village"

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    tools:context="com.platform.view.fragments.EventsPlannerFragment">
+    tools:context="com.platform.view.fragments.EventsTaskLandingFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -24,11 +23,10 @@
                 android:background="?attr/colorPrimary">
 
                 <TextView
-                    android:id="@+id/events_toolbar_title"
+                    android:id="@+id/tv_toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/events"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_18"
                     android:textStyle="bold" />
@@ -100,7 +98,7 @@
         android:paddingBottom="@dimen/dimen_10dp">
 
         <RadioButton
-            android:id="@+id/rb_all_events"
+            android:id="@+id/rb_all_events_task"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -108,18 +106,16 @@
             android:checked="true"
             android:drawableTop="@drawable/rbn_icon_selector_all_events"
             android:gravity="center"
-            android:text="@string/all_events"
             android:textColor="@drawable/radio_btn_txt_colour" />
 
         <RadioButton
-            android:id="@+id/rb_my_events"
+            android:id="@+id/rb_my_events_task"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@android:color/transparent"
             android:drawableTop="@drawable/rbn_icon_selector_my_events"
             android:gravity="center"
-            android:text="@string/my_events"
             android:textColor="@drawable/radio_btn_txt_colour" />
     </RadioGroup>
 
@@ -157,7 +153,8 @@
             android:layout_marginBottom="@dimen/dimen_20dp"
             android:text="@string/all_events"
             android:textColor="@color/tab_selector"
-            android:textSize="@dimen/text_size_16" />
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bt_add_events"
@@ -168,7 +165,7 @@
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:src="@android:drawable/ic_input_add"
             android:tint="@color/white"
-            app:backgroundTint="@color/tab_selector"
+            app:backgroundTint="@color/colorPrimary"
             app:fabSize="mini"
             tools:ignore="RelativeOverlap" />
     </RelativeLayout>

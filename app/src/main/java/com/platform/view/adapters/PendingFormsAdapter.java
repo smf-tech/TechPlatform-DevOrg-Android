@@ -49,7 +49,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         FormResult savedForm = savedFormList.get(position);
         holder.txtFormName.setText(savedForm.getFormName());
         holder.txtCreatedAt.setText(String.format("%s",
-                Util.getDateFromTimestamp(savedForm.getCreatedAt())));
+                Util.getDateTimeFromTimestamp(savedForm.getCreatedAt())));
 
         holder.delete.setOnClickListener(v -> showFormDeletePopUp(savedForm));
 
@@ -69,7 +69,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         notifyDataSetChanged();
         Util.showToast(context.getString(R.string.form_deleted), context);
 
-        mFragment.onFormDeletedListener();
+        //mFragment.onFormDeletedListener();
     }
 
     private void showFormDeletePopUp(FormResult savedForm) {

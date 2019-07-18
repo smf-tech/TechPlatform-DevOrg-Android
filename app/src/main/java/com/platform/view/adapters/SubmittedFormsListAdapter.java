@@ -16,6 +16,7 @@ import com.platform.utility.Util;
 import com.platform.view.activities.FormActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +25,13 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private Map<String, List<ProcessData>> mMap;
+    //private ArrayList<String> processStatus;
+    private HashMap<String, String> processSyncStatusHashmap;
 
-    public SubmittedFormsListAdapter(final Context context, final Map<String, List<ProcessData>> map) {
+    public SubmittedFormsListAdapter(final Context context, final Map<String, List<ProcessData>> map, HashMap<String, String> processSyncStatusHashmap) {
         this.mContext = context;
         this.mMap = map;
+        this.processSyncStatusHashmap = processSyncStatusHashmap;
     }
 
     @Override
@@ -99,6 +103,9 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
         } else {
             Util.rotateImage(0f, v);
         }
+        if(processSyncStatusHashmap.get(cat).equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
+            view.findViewById(R.id.form_status_icon).setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -123,7 +130,7 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
                 ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
-                        .setText(Util.getDateFromTimestamp(data.getMicroservice().getUpdatedAt()));
+                        .setText(Util.getDateTimeFromTimestamp(data.getMicroservice().getUpdatedAt()));
             }
         }
 
@@ -152,13 +159,16 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        int bgColor = mContext.getResources().getColor(R.color.submitted_form_color);
-        if (cat.equals(mContext.getString(R.string.syncing_pending))) {
-            bgColor = mContext.getResources().getColor(R.color.red);
-        }
+//        int bgColor = mContext.getResources().getColor(R.color.submitted_form_color);
+//        if (cat.equals(mContext.getString(R.string.syncing_pending))) {
+//            bgColor = mContext.getResources().getColor(R.color.red);
+//        }
 
         view.findViewById(R.id.iv_dashboard_delete_form).setVisibility(View.GONE);
-        view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
+        //view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
+        if(data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
+            view.findViewById(R.id.iv_status_icon).setVisibility(View.VISIBLE);
+        }
         return view;
     }
 

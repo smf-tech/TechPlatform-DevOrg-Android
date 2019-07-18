@@ -10,6 +10,8 @@ import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.login.Login;
 import com.platform.models.login.LoginInfo;
 import com.platform.request.LoginRequestCall;
+import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.LoginActivity;
 
 import java.lang.ref.WeakReference;
@@ -76,9 +78,26 @@ public class LoginActivityPresenter implements UserRequestCallListener {
 
         loginActivity.get().hideProgressBar();
 
-        if (error != null) {
-            Log.e(TAG, "Login::onErrorResponse " + error);
-            loginActivity.get().showErrorMessage(error.getLocalizedMessage());
+        if (error != null && error.networkResponse != null) {
+            if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
+                if (error.networkResponse.data != null) {
+                    String json = new String(error.networkResponse.data);
+                    json = Util.trimMessage(json);
+                    if (json != null) {
+                        Util.showToast(json, loginActivity);
+                    } else {
+                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                                loginActivity);
+                    }
+                } else {
+                    Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
+                            loginActivity);
+                }
+            } else {
+                loginActivity.get().showErrorMessage(error.getLocalizedMessage());
+                Log.e("onErrorListener",
+                        "Unexpected response code " + error.networkResponse.statusCode);
+            }
         }
     }
 

@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -60,8 +62,13 @@ import com.platform.view.fragments.TMUserFormsApprovalFragment;
 import com.platform.view.fragments.TMUserLeavesApprovalFragment;
 import com.platform.view.fragments.TMUserProfileApprovalFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -84,6 +91,7 @@ import java.util.TimeZone;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Constants.DATE_TIME_FORMAT;
 import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -320,7 +328,6 @@ public class Util {
 //        return new Gson().fromJson(obj, UserLocation.class);
 //    }
 
-
     public static void saveUserLocationInPref(UserLocation location) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
@@ -328,7 +335,6 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(location);
-
         editor.putString(Constants.App.USER_LOC_OBJ, json);
         editor.apply();
     }
@@ -500,7 +506,7 @@ public class Util {
         return currentDateString;
     }
 
-    public static String getDateFromTimestamp(long date) {
+    public static String getDateTimeFromTimestamp(long date) {
         if (date > 0) {
             try {
                 int length = (int) (Math.log10(date) + 1);
@@ -516,17 +522,33 @@ public class Util {
         return "";
     }
 
-    public static String getTimeFromTimeStamp(Long timeStamp) {
+    public static Long dateTimeToTimeStamp(String strDate, String strTime) {
+        Date date;
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault());
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timeStamp * 1000);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date currentTimeZone = calendar.getTime();
-            return sdf.format(currentTimeZone);
-        } catch (Exception e) {
+            date = formatter.parse(strDate + " " + strTime);
+            return date.getTime();
+        } catch (ParseException e) {
             Log.e("TAG", e.getMessage());
+        }
+
+        return 0L;
+    }
+
+
+    public static String getDateFromTimestamp(Long timeStamp, String dateTimeFormat) {
+        if (timeStamp > 0) {
+            try {
+                int length = (int) (Math.log10(timeStamp) + 1);
+                if (length == 10) {
+                    timeStamp = timeStamp * 1000;
+                }
+                Date d = new Timestamp(timeStamp);
+
+                return getFormattedDate(d.toString(), dateTimeFormat);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
         return "";
     }
@@ -556,32 +578,6 @@ public class Util {
             Log.e(TAG, e.getMessage());
         }
     }
-
-    /*public static void launchFragmentTMFilter(Fragment fragment, Context context, String titleName,
-                                      final boolean addToBackStack) {
-        try {
-            Bundle b = new Bundle();
-            b.putSerializable("TITLE", titleName);
-            b.putBoolean("SHOW_ALL", false);
-            if (fragment instanceof HomeFragment) {
-                b.putBoolean("SHOW_BACK", false);
-            } else {
-                b.putBoolean("SHOW_BACK", true);
-            }
-            fragment.setArguments(b);
-
-            FragmentTransaction fragmentTransaction = ((TMFiltersListActivity) Objects
-                    .requireNonNull(context))
-                    .getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.tmfilter_page_container, fragment, titleName);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            if (addToBackStack)
-                fragmentTransaction.addToBackStack(fragment.getTag());
-            fragmentTransaction.commit();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }*/
 
     public static void removeDatabaseRecords(final boolean refreshData) {
         clearAllUserRoleData();
@@ -772,6 +768,28 @@ public class Util {
         }
     }
 
+    public static void showDateDialogMin(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        dateDialog.show();
+    }
+
+
     public static void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
@@ -820,11 +838,11 @@ public class Util {
                 mProgressDialog.show();
             }
         } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException");
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            Log.e(TAG, "RuntimeException");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
     }
 
@@ -837,11 +855,11 @@ public class Util {
                 }
             }
         } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+            Log.e(TAG, "IllegalArgumentException");
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            Log.e(TAG, "RuntimeException");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
     }
 
@@ -856,8 +874,197 @@ public class Util {
 //        return true;
         return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
                 !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
-
     }
+
+    public static String trimMessage(String json) {
+        String trimmedString;
+
+        try {
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString("message");
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+            return null;
+        }
+
+        return trimmedString;
+    }
+
+    public static boolean isValidImageSize(File f) {
+        if (f != null) {
+            try {
+                // Get length of file in bytes
+                long fileSizeInBytes = f.length();
+                // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                long fileSizeInKB = fileSizeInBytes / 1024;
+                //  Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                long fileSizeInMB = fileSizeInKB / 1024;
+
+                return fileSizeInMB <= 8;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        return false;
+    }
+
+    public static File compressFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        FileInputStream fis;
+
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            Objects.requireNonNull(b).compress(Bitmap.CompressFormat.PNG, 40, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return f;
+    }
+
+    /*private static final float maxHeight = 1280.0f;
+    private static final float maxWidth = 1280.0f;
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        final float totalPixels = width * height;
+        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+            inSampleSize++;
+        }
+        return inSampleSize;
+    }
+
+    public static File compressImage(File file) {
+        Bitmap scaledBitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap bmp = BitmapFactory.decodeFile(file.getPath(), options);
+
+        int actualHeight = options.outHeight;
+        int actualWidth = options.outWidth;
+
+        float imgRatio = (float) actualWidth / (float) actualHeight;
+        float maxRatio = maxWidth / maxHeight;
+
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                imgRatio = maxHeight / actualHeight;
+                actualWidth = (int) (imgRatio * actualWidth);
+                actualHeight = (int) maxHeight;
+            } else if (imgRatio > maxRatio) {
+                imgRatio = maxWidth / actualWidth;
+                actualHeight = (int) (imgRatio * actualHeight);
+                actualWidth = (int) maxWidth;
+            } else {
+                actualHeight = (int) maxHeight;
+                actualWidth = (int) maxWidth;
+            }
+        }
+        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+        options.inJustDecodeBounds = false;
+        options.inDither = false;
+        options.inTempStorage = new byte[16 * 1024];
+        try {
+            bmp = BitmapFactory.decodeFile(file.getPath(), options);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+        }
+        try {
+            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.RGB_565);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+        }
+
+        float ratioX = actualWidth / (float) options.outWidth;
+        float ratioY = actualHeight / (float) options.outHeight;
+        float middleX = actualWidth / 2.0f;
+        float middleY = actualHeight / 2.0f;
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+        Canvas canvas = new Canvas(Objects.requireNonNull(scaledBitmap));
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bmp, middleX - (float) bmp.getWidth() / 2, middleY - (float) bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        bmp.recycle();
+        ExifInterface exif;
+        try {
+            exif = new ExifInterface(file.getPath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+            Matrix matrix = new Matrix();
+            if (orientation == 6) {
+                matrix.postRotate(90);
+            } else if (orientation == 3) {
+                matrix.postRotate(180);
+            } else if (orientation == 8) {
+                matrix.postRotate(270);
+            }
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileOutputStream out;
+        try {
+            //new File(imageFilePath).delete();
+            out = new FileOutputStream(file);
+
+            //write the compressed bitmap at the destination specified by filename.
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
+    }*/
+
 
     //pojo to json string
     public static String modelToJson(TMApprovalRequestModel tmApprovalRequestModel){

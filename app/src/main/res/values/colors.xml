@@ -2,14 +2,14 @@
 <resources>
     <color name="colorPrimaryDark">#6246e7</color>
     <color name="colorPrimary">#6246e7</color>
-    <color name="colorAccent">#9a80ff</color>
+    <color name="colorAccent">#4daaf6</color>
 
     <color name="black_green">#093245</color>
     <color name="semi_black">#1A1A1A</color>
     <!--<color name="darker_gray">#434343</color>-->
     <color name="dark_grey">#3E3E3E</color>
     <color name="light_grey">#909090</color>
-    <color name="lighter_grey">#EBEBEB</color>
+    <color name="lighter_grey">#FBFBFB</color>
     <color name="lighter_grey_tab">#F0EFEF</color>
     <color name="lighter_grey_transparent">#60EBEBEB</color>
     <!--<color name="lightest_grey">#EDEDED</color>-->
@@ -21,11 +21,12 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
+    <color name="pink">#f05fa4</color>
     <color name="green">#8BC34A</color>
     <color name="purple">#800080</color>
     <!--<color name="orange">#F75C4B</color>-->
     <!--<color name="pink">#F00A6B</color>-->
-    <!--<color name="yellow">#FFCD00</color>-->
+    <color name="yellow">#ffab19</color>
 
     <color name="light_blue">#C3D0E6</color>
     <color name="medium_blue">#75A2CE</color>
@@ -35,7 +36,7 @@
     <color name="lightest_blue">#EFF3FC</color>
 
     <color name="tab_normal">#91B4C4</color>
-    <color name="tab_select">#214A5D</color>
+    <color name="tab_select">#fc7660</color>
     <color name="tab_bg">#2C627B</color>
     <color name="light_green">#5DA238</color>
     <color name="brown">#A23838</color>
@@ -74,6 +75,7 @@
     <color name="dialog_btn_border">#333333</color>
 
     <color name="leave_form_text_color">#3785D1</color>
+    <color name="brick_red">#fc7660</color>
 
     <color name="form_category_selected">#D2E1F8</color>
     <color name="card_view_border">#C1C4C6</color>
