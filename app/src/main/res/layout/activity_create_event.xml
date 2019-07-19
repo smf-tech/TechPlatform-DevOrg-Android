@@ -59,12 +59,12 @@
                         android:id="@+id/et_start_date"
                         style="@style/RegistrationEditTextLayout"
                         android:clickable="false"
-                        android:drawableEnd="@drawable/ic_calendar_ev"
+                        android:drawableEnd="@drawable/ic_cal_event"
                         android:focusable="false"
                         android:hint="@string/task_start_date"
                         android:inputType="date"
                         tools:ignore="Autofill" />
-                    <!--android:drawableEnd="@drawable/ic_cal"-->
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--End Date-->
@@ -79,7 +79,7 @@
                         android:id="@+id/et_end_date"
                         style="@style/RegistrationEditTextLayout"
                         android:clickable="false"
-                        android:drawableEnd="@drawable/ic_calendar_ev"
+                        android:drawableEnd="@drawable/ic_cal_event"
                         android:focusable="false"
                         android:hint="@string/task_end_date"
                         android:inputType="date"
@@ -109,6 +109,7 @@
                         android:focusable="false"
                         android:hint="@string/task_start_time"
                         android:inputType="time"
+                        android:drawableEnd="@drawable/ic_clock"
                         tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,6 +127,7 @@
                         android:focusable="false"
                         android:hint="@string/task_end_time"
                         android:inputType="time"
+                        android:drawableEnd="@drawable/ic_clock"
                         tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -199,7 +201,7 @@
                     android:id="@+id/et_registration_start_date"
                     style="@style/RegistrationEditTextLayout"
                     android:clickable="false"
-                    android:drawableEnd="@drawable/ic_calendar_ev"
+                    android:drawableEnd="@drawable/ic_cal_event"
                     android:focusable="false"
                     android:hint="@string/registration_start_date"
                     android:inputType="date"
@@ -218,7 +220,7 @@
                     android:id="@+id/et_registration_end_date"
                     style="@style/RegistrationEditTextLayout"
                     android:clickable="false"
-                    android:drawableEnd="@drawable/ic_calendar_ev"
+                    android:drawableEnd="@drawable/ic_cal_event"
                     android:focusable="false"
                     android:hint="@string/registration_end_date"
                     android:inputType="date"
@@ -254,7 +256,7 @@
                     android:id="@+id/et_add_members"
                     style="@style/RegistrationEditTextLayout"
                     android:clickable="false"
-                    android:drawableStart="@drawable/ic_add"
+                    android:drawableEnd="@drawable/ic_add_membr"
                     android:focusable="false"
                     android:hint="@string/task_add_members"
                     android:inputType="text|textCapWords"

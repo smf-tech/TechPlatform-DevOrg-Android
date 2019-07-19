@@ -134,11 +134,13 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             toolbarAction.setVisibility(View.GONE);
         }
 
+
+
         if (eventTask.getRequiredForms().size() > 0) {
             findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
 
             tvFormListLabel.setVisibility(View.VISIBLE);
-            tvFormListLabel.setText(String.format(Locale.getDefault(), "%d%s",
+            tvFormListLabel.setText(String.format(Locale.getDefault(), "%d %s",
                     eventTask.getRequiredForms().size(), getString(R.string.task_form_list_screen_msg)));
             rvFormsList = findViewById(R.id.rv_forms_list);
             setFormListAdapter(eventTask.getRequiredForms());
@@ -151,12 +153,26 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         } else {
             setActionbar(getString(R.string.event_detail));
             //handling attendance button
+            if(eventTask.getParticipantsCount()>0){
+                btParticipants.setVisibility(View.VISIBLE);
+            }
             if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
                 lyMembarlistCode.setVisibility(View.VISIBLE);
+                if (eventTask.isMarkAttendanceRequired()) {
+                    btGetCode.setVisibility(View.VISIBLE);
+                } else {
+                    btGetCode.setVisibility(View.GONE);
+                }
             } else {
-                btSetCode.setVisibility(View.VISIBLE);
+                if (eventTask.isMarkAttendanceRequired()) {
+                    btSetCode.setVisibility(View.VISIBLE);
+                } else {
+                    btSetCode.setVisibility(View.GONE);
+                }
             }
         }
+
+
 
         setListeners();
     }
@@ -206,7 +222,11 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 break;
             case R.id.bt_participants:
                 //see showMemberList()
-                presenter.memberList(eventTask.getId());
+                if(eventTask.getParticipantsCount()==0) {
+                    showErrorMessage("No members");
+                } else {
+                    presenter.memberList(eventTask.getId());
+                }
                 break;
 
             case R.id.bt_get_code:
@@ -229,68 +249,120 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     }
 
     public void getAttendanceCode(GetAttendanceCodeResponse response) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 // ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_getattendancecode, null);
-        dialogBuilder.setView(dialogView);
+//        dialogBuilder.setView(dialogView);
 
         TextView editText = (TextView) dialogView.findViewById(R.id.tv_code);
         editText.setText(String.valueOf(response.getAttencdenceCode()));
 //        editText.setText("123456");
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.setTitle("Attendance Code");
-        alertDialog.setMessage("Attendance code to mark attendance is:");
-        alertDialog.setCancelable(false);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+//        AlertDialog alertDialog = dialogBuilder.create();
+//        alertDialog.setTitle("Attendance Code");
+//        alertDialog.setMessage("Attendance code to mark attendance is:");
+//        alertDialog.setCancelable(false);
+//        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//                alertDialog.dismiss();
+//            }
+//        });
+//        alertDialog.show();
+
+        AlertDialog alertDialog=null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Attendance Code")
+                .setView(dialogView)
+                .setMessage("Attendance code to mark attendance is:")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        // FIRE ZE MISSILES!
+//                        presenter.delete(eventTask.getId());
+//                    }
+//                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.cancel();
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertDialog=builder.create();
         alertDialog.show();
+
     }
 
     public void setAttendanceCode() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 // ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_setattendance_code, null);
-        dialogBuilder.setView(dialogView);
+//        dialogBuilder.setView(dialogView);
 
         EditText editText = (EditText) dialogView.findViewById(R.id.et_code);
 //        editText.setText("123456");
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.setTitle("Attendance Code");
-        alertDialog.setMessage("Please enter attendance code:");
-        alertDialog.setCancelable(false);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (editText.getText().toString().equals("")) {
+//        AlertDialog alertDialog = dialogBuilder.create();
+//        alertDialog.setTitle("Attendance Code");
+//        alertDialog.setMessage("Please enter attendance code:");
+//        alertDialog.setCancelable(false);
+//        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (editText.getText().toString().equals("")) {
+//                    editText.setError("Please Enter code");
+//                } else {
+//                    SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
+//                    request.setAttendanceCode(editText.getText().toString());
+//                    request.setEventId(eventTask.getId());
+//                    request.setUserId(Util.getUserObjectFromPref().getId());
+//                    alertDialog.dismiss();
+//                    presenter.setAttendanceCode(request);
+//                }
+//
+//            }
+//        });
+//        alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//                alertDialog.dismiss();
+//            }
+//        });
+//        alertDialog.show();
+
+        AlertDialog alertDialog=null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Attendance Code")
+                .setView(dialogView)
+                .setMessage("Please enter attendance code:")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (editText.getText().toString().equals("")) {
                     editText.setError("Please Enter code");
                 } else {
                     SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
                     request.setAttendanceCode(editText.getText().toString());
                     request.setEventId(eventTask.getId());
                     request.setUserId(Util.getUserObjectFromPref().getId());
-                    alertDialog.dismiss();
+                    dialog.cancel();
                     presenter.setAttendanceCode(request);
                 }
-
-            }
-        });
-        alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.cancel();
+                    }
+                });
+        // Create the AlertDialog object and return it
+        alertDialog=builder.create();
         alertDialog.show();
+
     }
 
     public void showDeleteAlert(){
         AlertDialog alertDialog=null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete alert")
-                .setMessage("Are you shore, do you want to delete")
+                .setMessage("Are you sure, do you want to delete")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
@@ -309,11 +381,15 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     }
 
     public void showMemberList(ArrayList<Participant> memberList) {
-        Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-        intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
-        intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
-        this.startActivity(intentAddMembersListActivity);
+        if(memberList!=null && memberList.size()>0) {
+            Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+            intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+            intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
+            this.startActivity(intentAddMembersListActivity);
+        } else {
+            showErrorMessage("No members");
+        }
     }
 
     @Override

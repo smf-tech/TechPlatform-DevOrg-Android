@@ -11,6 +11,7 @@
     <color name="semi_black">#1A1A1A</color>
     <!--<color name="darker_gray">#434343</color>-->
     <color name="dark_grey">#3E3E3E</color>
+    <color name="grey">#a0a0a0</color>
     <color name="light_grey">#909090</color>
     <color name="lighter_grey">#f1f5f8</color>
     <color name="lighter_grey_tab">#F0EFEF</color>
@@ -86,5 +87,11 @@
     <color name="attendance_list_bg">#FAFAFA</color>
     <color name="attendance_text_color">#7E7E7E</color>
     <color name="attendance_list_item">#656565</color>
+
+    <color name="base_background_color">#fbfbfb</color>
+    <color name="button_background_color">#9a80ff</color>
+
+    <color name="inactive_tab">#939393</color>
+    <color name="active_tab">#3e3e3e</color>
 
 </resources>

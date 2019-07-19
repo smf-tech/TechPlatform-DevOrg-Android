@@ -400,8 +400,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="generate_code">Get attendance code</string>
+    <string name="generate_code">Generate Code</string>
     <string name="details">Details</string>
     <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
+    <string name="venue">Venue</string>
 
 </resources>

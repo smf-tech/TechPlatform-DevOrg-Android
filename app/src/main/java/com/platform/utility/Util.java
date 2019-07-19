@@ -2,14 +2,19 @@ package com.platform.utility;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -22,8 +27,10 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -44,9 +51,16 @@ import com.platform.models.profile.OrganizationProjectsResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
+import com.platform.models.tm.TMApprovalRequestModel;
+import com.platform.models.tm.TMUserProfileApprovalRequest;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.fragments.HomeFragment;
+import com.platform.view.fragments.TMUserAttendanceApprovalFragment;
+import com.platform.view.fragments.TMUserFormsApprovalFragment;
+import com.platform.view.fragments.TMUserLeavesApprovalFragment;
+import com.platform.view.fragments.TMUserProfileApprovalFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +72,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -355,7 +370,9 @@ public class Util {
             Log.e(TAG, e.getMessage());
         }
     }
-
+    public static void logger(String tag,String msg){
+        Log.e(tag,"@@@@@2"+msg);
+    }
     public static String getAppVersion() {
         String result = "";
         try {
@@ -411,6 +428,24 @@ public class Util {
 
         return 0L;
     }
+    public static int getDateInepoch(String dateString) {
+        if (TextUtils.isEmpty(dateString)) {
+            return getDateInepoch(new Date().toString());
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(DAY_MONTH_YEAR, Locale.getDefault());
+            Date date = sdf.parse(dateString);
+            long epoch = date.getTime();
+            int test = (int) (epoch/1000);
+            return (int)(epoch/1000);
+
+        } catch (ParseException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return 0;
+    }
 
     public static String getLongDateInString(long date, String dateFormat) {
         if (date > 0) {
@@ -463,6 +498,12 @@ public class Util {
     public static long getCurrentTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.getTime();
+    }
+    public static String getCurrentDate() {
+
+        String currentDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(new Date());
+
+        return currentDateString;
     }
 
     public static String getDateTimeFromTimestamp(long date) {
@@ -1024,4 +1065,60 @@ public class Util {
         return file;
     }*/
 
+
+    //pojo to json string
+    public static String modelToJson(TMApprovalRequestModel tmApprovalRequestModel){
+        Gson gson =new Gson();
+        String jsonInString = gson.toJson(tmApprovalRequestModel);
+        return jsonInString;
+    }
+
+
+   public static String showReasonDialog(final Activity context, int pos, Fragment fragment){
+
+
+
+           Dialog dialog;
+           Button btnLogin;
+           EditText edt_reason;
+           Activity activity =context;
+
+           dialog = new Dialog(context);
+           dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+           dialog.setContentView(R.layout.dialog_reason_layout);
+       dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+            edt_reason = dialog.findViewById(R.id.edt_reason);
+           btnLogin = dialog.findViewById(R.id.btn_submit);
+           btnLogin.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   /*Intent loginIntent = new Intent(context, LoginActivity.class);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                   context.startActivity(loginIntent);*/
+                   String strReason  = edt_reason.getText().toString();
+
+                   if (fragment instanceof TMUserLeavesApprovalFragment) {
+                       ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason,pos);
+                   }
+                   if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                       ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason,pos);
+                   }
+                   if (fragment instanceof TMUserProfileApprovalFragment) {
+                       ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason,pos);
+                   }
+                   if (fragment instanceof TMUserFormsApprovalFragment) {
+                       ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason,pos);
+                   }
+
+                   dialog.dismiss();
+               }
+           });
+           dialog.show();
+
+
+return "";
+   }
 }

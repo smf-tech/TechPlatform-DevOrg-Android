@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lighter_grey">
@@ -117,7 +115,7 @@
                     android:id="@+id/ly_events"
                     android:layout_width="match_parent"
                     android:layout_below="@+id/ly_attendance"
-                    android:layout_height="@dimen/dimen_305dp"
+                    android:layout_height="@dimen/dimen_277dp"
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
@@ -127,7 +125,6 @@
                         android:id="@+id/tv_no_events_msg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:text="@string/no_events"
@@ -139,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:weightSum="10">
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_event_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -149,7 +146,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"/>
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_all_events_list"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -158,12 +155,12 @@
                             android:text="@string/all_events"
                             android:layout_weight="1"
                             />
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/bt_add_events"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+Add event"
+                            android:text="+Add Event"
                             android:layout_weight="1"
                             />
                     </LinearLayout>
@@ -177,10 +174,11 @@
 
                 </RelativeLayout>
 
+                <!-- Task tab -->
                 <RelativeLayout
                     android:id="@+id/ly_task"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_305dp"
+                    android:layout_height="@dimen/dimen_277dp"
                     android:layout_below="@+id/ly_events"
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
@@ -190,10 +188,11 @@
 
                     <TextView
                         android:id="@+id/tv_no_task_msg"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:text="@string/no_events"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/no_tasks"
                         android:visibility="gone" />
 
                     <LinearLayout
@@ -202,17 +201,17 @@
                         android:layout_height="wrap_content"
                         android:weightSum="10">
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_task_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/today_events"
+                            android:text="@string/today_tasks"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"/>
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_all_task_list"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -221,14 +220,14 @@
                             android:text="@string/all_tasks"
                             android:layout_weight="1"
                             />
-                        <TextView
+
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/bt_add_task"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+Add task"
                             android:layout_weight="1"
-                            />
+                            android:text="+Add Task" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView

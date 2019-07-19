@@ -39,9 +39,9 @@
     <dimen name="dimen_225dp">210dp</dimen>
     <dimen name="dimen_235dp">235dp</dimen>
     <dimen name="dimen_250dp">250dp</dimen>
-    <dimen name="dimen_305dp">305dp</dimen>
+    <dimen name="dimen_277dp">277dp</dimen>
 
-    <dimen name="circle_size">64dp</dimen>
+    <dimen name="circle_size">30dp</dimen>
     <dimen name="dimen_65dp">65dp</dimen>
     <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
@@ -63,5 +63,9 @@
     <dimen name="standard_120">120dp</dimen>
     <dimen name="standard_180">180dp</dimen>
     <dimen name="standard_240">240dp</dimen>
+
+    <dimen name="text_size_small_10">10sp</dimen>
+    <dimen name="text_size_description_12">12sp</dimen>
+    <dimen name="text_size_title_14">14sp</dimen>
 
 </resources>

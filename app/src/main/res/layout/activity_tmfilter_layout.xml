@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <!--<include
+        android:id="@+id/tm_toolbar"
+        layout="@layout/app_toolbar" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/team_user_approval"
+            android:id="@+id/tv_filtertype"
+            android:visibility="gone"
+            android:padding="@dimen/dimen_10dp"
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_filter_image"
+            android:layout_toRightOf="@+id/tv_filtertype"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
+            android:background="@drawable/custom_spn_background">
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_05dp"
+                android:textAlignment="center"
+                android:spinnerMode="dropdown"
+                android:layout_alignBottom="@+id/img_filter_image"
+                android:layout_toRightOf="@+id/tv_filtertype" />
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:src="@drawable/ic_approvalfilter_icon"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/dimen_20dp"
+            android:id="@+id/img_filter_image"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/approval_cat_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorHeight="@dimen/dimen_05dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/light_black" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/approval_cat_view_pager"
+            android:layout_width="match_parent"
+            android:background="@color/base_background_color"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </RelativeLayout>
+
+</LinearLayout>
