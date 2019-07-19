@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.platform.view.customs.TextViewSemiBold xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/approvals_tab_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -7,6 +7,8 @@
     android:drawablePadding="@dimen/dimen_10dp"
     android:gravity="center_horizontal"
     android:paddingTop="@dimen/dimen_10dp"
-    android:textAllCaps="true"
+    android:textAllCaps="false"
+    android:textStyle="normal"
+    android:text=""
     android:textColor="@color/selector_approval_tab_text"
-    android:textSize="@dimen/text_size_12" />
+    android:textSize="@dimen/text_size_title_14" />

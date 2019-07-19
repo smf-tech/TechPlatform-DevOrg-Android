@@ -85,6 +85,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_filterchoice"
                 android:layout_width="match_parent"
+                android:background="@color/white"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dimen_10dp" />
         </LinearLayout>
@@ -112,14 +113,13 @@
 
             <Button
                 android:id="@+id/btn_yes"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/StyleButton"
                 android:textSize="@dimen/text_size_16"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:clickable="true"
                 android:text="Apply"
-                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <Button
@@ -130,6 +130,7 @@
                 android:background="@android:color/white"
                 android:clickable="true"
                 android:text="No"
+                style="@style/StyleButton"
                 android:textColor="#5DBCD2"
                 android:textStyle="bold"
                 android:visibility="gone" />

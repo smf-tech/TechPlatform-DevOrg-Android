@@ -46,16 +46,16 @@
                     android:layout_width="wrap_content"
                     android:text="Reject"
                     android:id="@+id/btn_reject"
-                    style="@style/Widget.AppCompat.Button.Colored"
+                    style="@style/StyleButton"
                     android:textSize="@dimen/text_size_16"
-
+                    android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_toLeftOf="@+id/btn_approve"
                     android:textColor="@color/white"
                     android:layout_height="wrap_content" />
                 <Button
                     android:layout_width="wrap_content"
                     android:text="Approve"
-                    style="@style/Widget.AppCompat.Button.Colored"
+                    style="@style/StyleButton"
                     android:textSize="@dimen/text_size_16"
                     android:id="@+id/btn_approve"
                     android:layout_alignParentEnd="true"
