@@ -110,7 +110,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
         ImageView toolBarMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_edit_action);
     //    toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
-        toolBarMenu.setImageResource(R.drawable.ic_holiday_menu);
+        toolBarMenu.setImageResource(R.drawable.ic_holiday_list);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
         //tabLayout = view.findViewById(R.id.leave_cat_tabs);
         ImageView tvCalendarMode = view.findViewById(R.id.tv_calendar_mode);

@@ -14,10 +14,8 @@
         android:layout_height="@dimen/dimen_55dp"
         app:tabGravity="center"
         android:background="@color/colorPrimary"
-        app:tabIndicatorColor="@color/tab_selector"
-        app:tabIndicatorHeight="@dimen/dimen_05dp"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed" />
-
 
     <!--<ImageView-->
         <!--android:layout_width="match_parent"-->
