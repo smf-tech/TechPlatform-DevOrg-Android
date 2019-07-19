@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ly_event_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
+        app:cardCornerRadius="@dimen/dimen_10dp"
         >
 
         <LinearLayout
@@ -24,52 +26,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.5"
+                android:background="@drawable/bg_circular_rect_pink"
                 android:padding="@dimen/dimen_05dp">
-
-                <TextView
-                    android:id="@+id/tv_date_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Date"
-                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_date_label"
-                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="@dimen/dimen_08dp"
                     android:maxLength="11"
-                    android:text="03 may"
+                    android:text="03 may,\n2019"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/iv_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_03dp"
-                    android:layout_below="@+id/tv_date"
-                    android:layout_margin="@dimen/dimen_05dp"
-                    android:contentDescription="@string/content_description"
-                    android:layerType="software"
-                    android:src="@drawable/line" />
-
-                <TextView
-                    android:id="@+id/tv_time_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_line"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Time"
-                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_time_label"
-                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_below="@+id/tv_date"
+                    android:layout_marginStart="@dimen/dimen_08dp"
+                    android:layout_marginTop="@dimen/dimen_25dp"
                     android:maxLength="11"
                     android:text="10:30 AM"
                     android:textColor="@color/white"
@@ -81,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="8">
+                android:layout_weight="7.5">
 
                 <TextView
                     android:id="@+id/tv_title"
@@ -103,6 +80,8 @@
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:maxLength="30"
                     android:text="SB road, pune, maharashtra."
+                    android:drawableLeft="@drawable/ic_venue"
+                    android:drawablePadding="@dimen/dimen_05dp"
                     android:textSize="@dimen/text_size_11" />
 
 
@@ -116,7 +95,10 @@
                     android:maxLength="22"
                     android:text="Sachin Kakade"
                     android:textSize="@dimen/text_size_11"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:drawableLeft="@drawable/ic_person"
+                    android:drawablePadding="@dimen/dimen_05dp"
+                    />
 
                 <TextView
                     android:id="@+id/tv_status"
@@ -125,6 +107,9 @@
                     android:layout_below="@+id/tv_owner"
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:textColor="@color/white"
                     android:maxLength="22"
                     android:textSize="@dimen/text_size_11"
                     android:visibility="gone"/>

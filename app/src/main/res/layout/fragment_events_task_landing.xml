@@ -55,7 +55,6 @@
                 android:src="@drawable/ic_back_white" />
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
     <RelativeLayout
         android:id="@+id/ly_calender"
         android:layout_width="match_parent"
@@ -81,10 +80,11 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/content_description"
             android:gravity="center"
-            android:paddingLeft="@dimen/dimen_05dp"
+            android:paddingStart="@dimen/dimen_10dp"
             android:paddingTop="@dimen/dimen_05dp"
-            android:paddingRight="@dimen/dimen_05dp"
-            android:src="@drawable/ic_down_arrow_light_blue" />
+            android:paddingBottom="@dimen/dimen_05dp"
+            android:paddingEnd="@dimen/dimen_10dp"
+            android:src="@drawable/ic_shape_down_arrow" />
     </RelativeLayout>
 
     <RadioGroup

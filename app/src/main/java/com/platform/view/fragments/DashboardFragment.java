@@ -272,8 +272,7 @@ public class DashboardFragment extends Fragment {
     private void drawTabCount(int i, View tabOne, TextView tabView, TextView pendingActionsCountView) {
         if (getContext() == null) return;
         if (!tabNames.get(i).isActive()) {
-            ((TextView) tabOne.findViewById(R.id.tab))
-                    .setCompoundDrawablesWithIntrinsicBounds(0, disableTabIcons[0], 0, 0);
+//            ((TextView) tabOne.findViewById(R.id.tab)).setCompoundDrawablesWithIntrinsicBounds(disableTabIcons[0],0, 0, 0);
             pendingActionsCountView.setVisibility(View.GONE);
         } else {
             pendingActionsCountView.setVisibility(View.VISIBLE);
@@ -308,7 +307,7 @@ public class DashboardFragment extends Fragment {
                     break;
             }
 
-            tabView.setCompoundDrawablesWithIntrinsicBounds(0, resId, 0, 0);
+//            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
                 pendingActionsCountView.setTextColor(getResources().getColor(R.color.black));

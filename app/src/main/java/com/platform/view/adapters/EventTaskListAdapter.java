@@ -45,11 +45,16 @@ public class EventTaskListAdapter extends RecyclerView.Adapter<EventTaskListAdap
         EventTask eventTask = eventsList.get(position);
         holder.tvTitle.setText(eventTask.getTitle());
         holder.tvTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.TIME_FORMAT));
-        holder.tvDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.DAY_MONTH_FORMAT));
+        holder.tvDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.EVENT_DATE_FORMAT));
         holder.tvOwner.setText(eventTask.getOwnername());
         holder.tvAddress.setText(eventTask.getAddress());
         holder.tvOwner.setText(eventTask.getOwnername());
         holder.tvStatus.setText(eventTask.getEventStatus());
+        if(eventTask.getEventStatus().equalsIgnoreCase("Active")){
+            holder.tvStatus.setBackground(mContext.getDrawable(R.drawable.bg_task_status_active));
+        } else {
+            holder.tvStatus.setBackground(mContext.getDrawable(R.drawable.bg_task_status_active));
+        }
     }
 
     @Override

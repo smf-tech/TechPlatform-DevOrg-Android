@@ -49,6 +49,7 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dimen_15dp"
                         android:paddingBottom="@dimen/dimen_15dp"
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_16"
                         android:textStyle="bold" />
@@ -62,14 +63,16 @@
 
                     <TextView
                         android:id="@+id/tv_label_description"
-                        style="@style/StyleLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:textSize="@dimen/text_size_16"
                         android:text="@string/task_description"
-
+                        android:padding="@dimen/dimen_02dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/dimen_20dp"
                         />
 
                     <TextView
@@ -80,18 +83,22 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dimen_01dp"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_13" />
+                        android:textSize="@dimen/text_size_13"
+                        android:layout_marginTop="@dimen/dimen_20dp"/>
 
                     <TextView
                         android:id="@+id/tv_detail_label"
-                        style="@style/StyleLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_description"
                         android:layout_centerHorizontal="true"
                         android:textSize="@dimen/text_size_16"
                         android:gravity="center"
-                        android:text="@string/details" />
+                        android:text="@string/details"
+                        android:padding="@dimen/dimen_02dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/dimen_20dp"/>
 
                     <LinearLayout
                         android:id="@+id/ly_owner"
@@ -101,6 +108,7 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
                         <TextView
@@ -130,6 +138,7 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
                         <TextView
@@ -159,6 +168,7 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
                         <TextView
@@ -200,15 +210,17 @@
 
                     <TextView
                         android:id="@+id/tv_address_label"
-                        style="@style/StyleLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_end_time"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:textSize="@dimen/text_size_16"
                         android:gravity="center"
-                        android:text="@string/where" />
+                        android:text="@string/venue"
+                        android:padding="@dimen/dimen_02dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
 
                     <TextView
                         android:id="@+id/tv_address"
@@ -216,7 +228,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_address_label"
                         android:gravity="center"
-                        android:padding="@dimen/dimen_05dp" />
+                        android:padding="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -260,7 +273,7 @@
                 android:layout_below="@+id/ly_details"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:paddingBottom="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:textColor="@color/colorAccent"
                 android:gravity="center_horizontal"
@@ -273,7 +286,8 @@
                 android:layout_below="@+id/tv_member_count"
                 android:orientation="horizontal"
                 android:weightSum="10"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/dimen_20dp">
 
                 <Button
                     android:id="@+id/bt_get_code"
@@ -283,7 +297,8 @@
                     android:layout_weight="5"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:text="@string/generate_code"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:visibility="gone"/>
 
 
                 <Button
@@ -295,6 +310,7 @@
                     android:layout_margin="@dimen/dimen_05dp"
                     android:text="Members list"
                     android:textAllCaps="false"
+                    android:visibility="gone"
                     />
 
             </LinearLayout>
@@ -306,7 +322,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_membarlist_code"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
                 android:background="@drawable/bg_button"
                 android:text="Enter attendance code"
                 android:textAllCaps="false"
@@ -319,7 +335,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_membarlist_code"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
                 android:background="@drawable/bg_button"
                 android:text="Mark Complete"
                 android:textAllCaps="false"
