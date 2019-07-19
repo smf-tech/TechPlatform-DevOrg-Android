@@ -64,6 +64,9 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
     private ImageView img_filter_image;
     ApprovalsViewPagerAdapter approvalsViewPagerAdapter;
     ViewPager viewPager;
+    private TMUserAprovedFragment tmUserAprovedFragment;
+    private TMUserRejectedFragment tmUserRejectedFragment;
+    private TMUserPendingFragment  tmUserPendingFragment;
     private OnFilterSelected clickListener;
     private JSONObject jsonObjectFilterRequest;
     TMFilterListActivityPresenter tmFilterListActivityPresenter;
@@ -121,17 +124,18 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
     private void setupViewPager(ViewPager viewPager) {
         approvalsViewPagerAdapter = new ApprovalsViewPagerAdapter(getSupportFragmentManager());
 
-        TMUserPendingFragment fragment = new TMUserPendingFragment();
+        tmUserPendingFragment = new TMUserPendingFragment();
         Bundle b = new Bundle();
         b.putBoolean("SHOW_ALL", false);
-        fragment.setArguments(b);
-        approvalsViewPagerAdapter.addFragment(fragment);
+        tmUserPendingFragment.setArguments(b);
+        approvalsViewPagerAdapter.addFragment(tmUserPendingFragment);
 
         //adapter.addFragment(new TMUserApprovedFragment());
-        approvalsViewPagerAdapter.addFragment(new TMUserAprovedFragment());
+       tmUserAprovedFragment = new TMUserAprovedFragment();
+        approvalsViewPagerAdapter.addFragment(tmUserAprovedFragment);
         viewPager.setAdapter(approvalsViewPagerAdapter);
-
-        approvalsViewPagerAdapter.addFragment(new TMUserRejectedFragment());
+        tmUserRejectedFragment = new TMUserRejectedFragment();
+        approvalsViewPagerAdapter.addFragment(tmUserRejectedFragment);
         viewPager.setAdapter(approvalsViewPagerAdapter);
 
     }
@@ -320,11 +324,13 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                     jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"pending");
                     //clickListener.onFilterButtonClicked();
 
-                    Fragment fragment = (Fragment) approvalsViewPagerAdapter.instantiateItem(viewPager, viewPager.getCurrentItem());
+                    //OLD implementation
+                    /*Fragment fragment = (Fragment) approvalsViewPagerAdapter.instantiateItem(viewPager, viewPager.getCurrentItem());
                     if(fragment instanceof TMUserPendingFragment){
                         jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"pending");
                         ((TMUserPendingFragment) fragment).onFilterButtonClicked(jsonObjectFilterRequest);
                     }
+
                     if(fragment instanceof TMUserRejectedFragment){
                         jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"rejected");
                         ((TMUserRejectedFragment) fragment).onFilterButtonClicked(jsonObjectFilterRequest);
@@ -333,7 +339,16 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                     if(fragment instanceof TMUserAprovedFragment){
                         jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"approved");
                         ((TMUserAprovedFragment) fragment).onFilterButtonClicked(jsonObjectFilterRequest);
-                    }
+                    }*/
+                    // new implementation as per discussion with kishor
+                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"pending");
+                    tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"approved");
+                    tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"rejected");
+                    tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
 
                     dismiss();
                     break;
@@ -507,7 +522,7 @@ private void showFilterDialog(){
         jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"pending");
         //clickListener.onFilterButtonClicked();
 
-        Fragment fragment = (Fragment) approvalsViewPagerAdapter.instantiateItem(viewPager, viewPager.getCurrentItem());
+        /*Fragment fragment = (Fragment) approvalsViewPagerAdapter.instantiateItem(viewPager, viewPager.getCurrentItem());
         if(fragment instanceof TMUserPendingFragment){
             jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"pending");
             ((TMUserPendingFragment) fragment).onFilterButtonClicked(jsonObjectFilterRequest);
@@ -515,6 +530,17 @@ private void showFilterDialog(){
         if(fragment instanceof TMUserRejectedFragment){
             jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"approved");
             ((TMUserRejectedFragment) fragment).onFilterButtonClicked(jsonObjectFilterRequest);
-        }
+        }*/
+
+
+        //new implemented
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"pending");
+        tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"approved");
+        tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"rejected");
+        tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
     }
 }
