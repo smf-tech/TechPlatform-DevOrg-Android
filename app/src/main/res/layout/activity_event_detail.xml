@@ -41,7 +41,7 @@
                         android:layout_height="match_parent"
                         android:visibility="gone" />
 
-                    <TextView
+                    <com.platform.view.customs.TextViewBold
                         android:id="@+id/tv_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ly_status_title">
 
-                    <TextView
+                    <com.platform.view.customs.TextViewBold
                         android:id="@+id/tv_label_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                         android:layout_marginTop="@dimen/dimen_20dp"
                         />
 
-                    <TextView
+                    <com.platform.view.customs.TextViewRegular
                         android:id="@+id/tv_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                         android:textSize="@dimen/text_size_13"
                         android:layout_marginTop="@dimen/dimen_20dp"/>
 
-                    <TextView
+                    <com.platform.view.customs.TextViewBold
                         android:id="@+id/tv_detail_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_owner_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <com.platform.view.customs.TextViewRegular
                             android:id="@+id/tv_owner_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_start_date_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <com.platform.view.customs.TextViewRegular
                             android:id="@+id/tv_start_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_end_date_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <com.platform.view.customs.TextViewRegular
                             android:id="@+id/tv_end_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                         android:padding="@dimen/dimen_05dp"
                         android:visibility="gone" />
 
-                    <TextView
+                    <com.platform.view.customs.TextViewBold
                         android:id="@+id/tv_address_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -266,7 +266,7 @@
 
             </RelativeLayout>
 
-            <TextView
+            <com.platform.view.customs.TextViewRegular
                 android:id="@+id/tv_member_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

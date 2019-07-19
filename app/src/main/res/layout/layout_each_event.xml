@@ -29,7 +29,7 @@
                 android:background="@drawable/bg_circular_rect_pink"
                 android:padding="@dimen/dimen_05dp">
 
-                <TextView
+                <com.platform.view.customs.TextViewBold
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.platform.view.customs.TextViewBold
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="7.5">
 
-                <TextView
+                <com.platform.view.customs.TextViewBold
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     android:textSize="@dimen/text_size_11" />
 
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/tv_owner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                     android:drawablePadding="@dimen/dimen_05dp"
                     />
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

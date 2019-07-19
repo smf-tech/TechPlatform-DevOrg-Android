@@ -22,7 +22,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary">
 
-                <TextView
+                <com.platform.view.customs.TextViewBold
                     android:id="@+id/tv_toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -106,7 +106,8 @@
             android:checked="true"
             android:drawableTop="@drawable/rbn_icon_selector_all_events"
             android:gravity="center"
-            android:textColor="@drawable/radio_btn_txt_colour" />
+            android:textColor="@drawable/radio_btn_txt_colour"
+            />
 
         <RadioButton
             android:id="@+id/rb_my_events_task"

@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:weightSum="10">
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_event_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"/>
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_all_events_list"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                             android:text="@string/all_events"
                             android:layout_weight="1"
                             />
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/bt_add_events"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:weightSum="10">
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_task_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"/>
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_all_task_list"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -221,7 +221,7 @@
                             android:layout_weight="1"
                             />
 
-                        <TextView
+                        <com.platform.view.customs.TextViewBold
                             android:id="@+id/bt_add_task"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
