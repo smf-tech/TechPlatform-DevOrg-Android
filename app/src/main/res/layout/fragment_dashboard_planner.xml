@@ -251,7 +251,7 @@
                 <RelativeLayout
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_200dp"
+                    android:layout_height="@dimen/dimen_235dp"
                     android:layout_below="@+id/ly_task"
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
@@ -259,7 +259,9 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_200dp">
+                        android:layout_height="@dimen/dimen_235dp"
+                        android:background="@color/white"
+                        android:layout_margin="@dimen/dimen_10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -307,6 +309,7 @@
                             android:layout_height="wrap_content"
                             style="@style/StyleLabel"
                             android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/dimen_10dp"
                             android:src="@android:drawable/ic_input_add"
                             android:text="@string/apply_leave" />
                     </RelativeLayout>

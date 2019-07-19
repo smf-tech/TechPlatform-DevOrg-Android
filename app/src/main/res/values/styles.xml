@@ -160,7 +160,6 @@
 
     <style name="StyleStatus">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/bg_status_label</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">@dimen/dimen_05dp</item>

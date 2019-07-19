@@ -175,7 +175,7 @@ public class LeavesRequestCall {
 
         Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
 
-        final String requestUserCompoffUrl = BuildConfig.BASE_URL + String.format(Urls.Leaves.APPLY_LEAVE);
+        final String requestUserCompoffUrl = BuildConfig.BASE_URL + String.format(Urls.Leaves.REQUEST_COMPOFF_);
         Gson gson = new GsonBuilder().create();
         String parmjson = gson.toJson(leaveData);
         Log.d(TAG, "requestUserCompoff: url" + requestUserCompoffUrl);

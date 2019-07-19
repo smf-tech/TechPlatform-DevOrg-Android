@@ -5,10 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_100dp"
-    android:background="@color/white"
+    android:background="@color/lighter_grey"
     android:gravity="center"
-    android:layout_margin="@dimen/dimen_10dp"
     tools:ignore="RtlSymmetry">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
     <LinearLayout
         android:id="@+id/leave_title_layout"
@@ -25,7 +37,7 @@
             style="@style/StyleStatus"
             android:text="Approved"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16"
+            android:textSize="@dimen/text_size_14"
             tools:ignore="RelativeOverlap" />
 
         <TextView
@@ -77,4 +89,6 @@
         android:background="@drawable/ic_delete"
         android:contentDescription="@string/content_description" />
 
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

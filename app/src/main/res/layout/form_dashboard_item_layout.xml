@@ -2,25 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="@dimen/dimen_05dp"
+    android:layout_marginRight="@dimen/dimen_05dp">
+
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    app:cardBackgroundColor="@color/white"
-    android:layout_margin="@dimen/dimen_10dp">
+    android:layout_margin="@dimen/dimen_05dp"
+    card_view:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="@dimen/dimen_08dp">
+        android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/img_status_icon"
-        android:layout_width="@dimen/dimen_35dp"
-        android:layout_height="@dimen/dimen_35dp"
-        android:src="@drawable/bg_light_blue_box"
+        android:layout_width="@dimen/dimen_80dp"
+        android:layout_height="@dimen/dimen_80dp"
         android:layout_centerVertical="true"
         android:padding="@dimen/dimen_05dp"
         android:layout_margin="@dimen/dimen_10dp" />
@@ -35,6 +35,7 @@
         android:singleLine="false"
         android:layout_margin="@dimen/dimen_05dp"
         android:textStyle="bold"
+        android:textSize="@dimen/dimen_16dp"
         android:layout_centerVertical="true"/>
 
     <TextView
@@ -44,7 +45,7 @@
         android:layout_alignParentEnd="true"
         android:text="105"
         android:layout_marginLeft="@dimen/dimen_05dp"
-        android:layout_marginRight="@dimen/dimen_15dp"
+        android:layout_marginRight="@dimen/dimen_25dp"
         android:layout_centerVertical="true"
         android:textStyle="bold"/>
 

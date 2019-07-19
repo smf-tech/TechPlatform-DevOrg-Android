@@ -275,7 +275,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             case R.id.btn_apply_leave:
                 if(applyType.equalsIgnoreCase("Leave")){
                     applyForLeave();
-                }else if(applyType.equalsIgnoreCase("")){
+                }else if(applyType.equalsIgnoreCase("Comp-Off")){
                     applyForCompOff();
                 }
 
@@ -514,7 +514,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             });
         }
 
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.show();      // if decline button is clicked, close the custom dialog
     }
 

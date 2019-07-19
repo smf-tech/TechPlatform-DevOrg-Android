@@ -42,14 +42,15 @@ public class FormsDashboardAdapter extends RecyclerView.Adapter<FormsDashboardAd
         }else if(formStatusCountData.getType().equalsIgnoreCase(Constants.PM.APPROVED_STATUS)){
             holder.imgIcon.setImageResource(R.drawable.ic_approved_icon_db);
         }else if(formStatusCountData.getType().equalsIgnoreCase(Constants.PM.REJECTED_STATUS)){
-            holder.imgIcon.setImageResource(R.drawable.ic_rejcted_icon_db);
+            holder.imgIcon.setImageResource(R.drawable.ic_rejected_icon_db);
         }else if(formStatusCountData.getType().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
             holder.imgIcon.setImageResource(R.drawable.ic_unsync_icon_db);
         }else if(formStatusCountData.getType().equalsIgnoreCase(Constants.PM.SAVED_STATUS)){
             holder.imgIcon.setImageResource(R.drawable.ic_saved_icon_db);
         }
 
-        holder.txtStatus.setText("Number of \n"+formStatusCountData.getType()+" Forms: ");
+//        holder.txtStatus.setText("Number of \n"+formStatusCountData.getType()+" Forms: ");
+        holder.txtStatus.setText(formStatusCountData.getType()+" Forms: ");
         holder.txtCount.setText(String.valueOf(formStatusCountData.getCount()));
     }
 

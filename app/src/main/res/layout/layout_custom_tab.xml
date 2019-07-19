@@ -17,12 +17,9 @@
         android:paddingEnd="@dimen/dimen_20dp"
         android:paddingBottom="@dimen/dimen_10dp"
         android:paddingTop="@dimen/dimen_10dp"
-        android:text="Formfs"
         android:gravity="center_horizontal"
         android:textColor="@color/selector_tab_text"
-        android:drawableLeft="@drawable/ic_forms"
         android:background="@drawable/bg_tab_madules"
-        android:textStyle="bold"
         tools:ignore="RelativeOverlap" />
 
     <TextView

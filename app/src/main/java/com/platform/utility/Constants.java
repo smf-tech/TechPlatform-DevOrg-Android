@@ -31,7 +31,7 @@ public class Constants {
     public static final String FORM_DATE_FORMAT = "dd MMM yyyy @ hh:mm ";
     public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm";
     public static final String DAY_MONTH_FORMAT = "dd MMM";
     public static final String TIME_FORMAT_ = "HH:mm";
     public static final String TIME_FORMAT = "hh:mm aa";
