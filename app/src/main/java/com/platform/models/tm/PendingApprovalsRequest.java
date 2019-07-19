@@ -53,7 +53,7 @@ public class PendingApprovalsRequest{
     private String org_id;
     @SerializedName("profile_pic")
     @Expose
-    private Object profile_pic;
+    private String profile_pic;
     @SerializedName("project_id")
     @Expose
     private List<String> project_id = null;
@@ -182,11 +182,11 @@ public class PendingApprovalsRequest{
         this.org_id = org_id;
     }
 
-    public Object getProfile_pic() {
+    public String getProfile_pic() {
         return profile_pic;
     }
 
-    public void setProfile_pic(Object profile_pic) {
+    public void setProfile_pic(String profile_pic) {
         this.profile_pic = profile_pic;
     }
 

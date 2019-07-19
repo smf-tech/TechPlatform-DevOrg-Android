@@ -3,15 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    app:cardBackgroundColor="@color/colorAccent"
-    app:cardElevation="6dp"
-    android:layout_margin="2dp">
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="0dp"
+    android:layout_margin="0dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
+        android:id="@+id/linear_row"
         android:layout_gravity="center_vertical"
-        android:layout_height="match_parent">
-    <TextView
+        android:layout_height="wrap_content">
+    <com.platform.view.customs.TextViewSemiBold
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tv_filters"
         android:layout_width="match_parent"
@@ -19,17 +23,26 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:padding="5dp"
-        android:textColor="@color/white"
+        android:textColor="@color/dark_grey"
         android:paddingStart="@dimen/dimen_10dp"
+        android:textSize="@dimen/text_size_title_14"
         android:layout_height="wrap_content"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:checked="true"
         android:layout_gravity="center_vertical"
         android:id="@+id/cb_select_filter"
-        android:backgroundTint="@color/white"
-        android:buttonTint="@color/white"
+        android:backgroundTint="@color/colorPrimary"
+        android:buttonTint="@color/colorPrimary"
         android:layout_margin="@dimen/dimen_10dp"
         android:layout_height="wrap_content" />
     </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_below="@+id/linear_row"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:background="@drawable/dotted_line"
+            android:layout_height="3dp"/>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>
