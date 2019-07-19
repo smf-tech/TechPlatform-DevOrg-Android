@@ -15,7 +15,7 @@
         android:id="@+id/linear_row"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content">
-    <TextView
+    <com.platform.view.customs.TextViewSemiBold
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tv_filters"
         android:layout_width="match_parent"
@@ -23,8 +23,9 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:padding="5dp"
-        android:textColor="@color/black"
+        android:textColor="@color/dark_grey"
         android:paddingStart="@dimen/dimen_10dp"
+        android:textSize="@dimen/text_size_title_14"
         android:layout_height="wrap_content"/>
     <CheckBox
         android:layout_width="wrap_content"
@@ -42,6 +43,6 @@
             android:layout_marginRight="@dimen/dimen_10dp"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:background="@drawable/dotted_line"
-            android:layout_height="2dp"/>
+            android:layout_height="3dp"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
