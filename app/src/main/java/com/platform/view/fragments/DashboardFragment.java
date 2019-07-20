@@ -44,11 +44,12 @@ public class DashboardFragment extends Fragment {
 //            R.drawable.bg_circle_webmodule
 //    };
     private final int[] tabIcons = {
-            R.drawable.ic_forms,
-            R.drawable.ic_calendar,
+            R.drawable.ic_form_icon_db,
+            R.drawable.ic_planner_icon_db,
             R.drawable.ic_approvals,
-            R.drawable.ic_reports,
-            R.drawable.webview_icon_db
+            R.drawable.ic_reports_icon_db,
+            R.drawable.ic_webview_icon_db,
+            R.drawable.ic_matrimony_icon_db
     };
     private final int[] disableTabIcons = {
             //R.drawable.bg_circle_lock

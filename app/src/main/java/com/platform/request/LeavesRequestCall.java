@@ -83,8 +83,8 @@ public class LeavesRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "getUsersAllLeavesDetails - Resp: " + res);
                     leavePresenterListener.onSuccessListener(requestID,res);
-
                 }
             } catch (Exception e) {
                 leavePresenterListener.onFailureListener(requestID,e.getMessage());
@@ -95,6 +95,8 @@ public class LeavesRequestCall {
 
         final String getMontlyLeavesUrl = BuildConfig.BASE_URL
         + String.format(Urls.Leaves.GET_MONTHLY_LEAVES, year, month);
+
+        Log.d(TAG, "getMontlyLeaves: url" + getMontlyLeavesUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -206,6 +208,7 @@ public class LeavesRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "deleteUserLeave - Resp: " + res);
                     leavePresenterListener.onSuccessListener(requestID,res);
 
                 }
@@ -218,6 +221,7 @@ public class LeavesRequestCall {
 
         final String deleteUserLeaveUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Leaves.DELETE_USER_LEAVE, leaveId);
+        Log.d(TAG, "deleteUserLeaveUrl: url" + deleteUserLeaveUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -248,6 +252,7 @@ public class LeavesRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+                    Log.d(TAG, "deleteUserLeave - Resp: " + res);
                     leavePresenterListener.onSuccessListener(requestID,res);
 
                 }
@@ -260,6 +265,7 @@ public class LeavesRequestCall {
 
         final String getMontlyLeavesUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Leaves.HOLIDAY_LIST);
+        Log.d(TAG, "getMontlyLeavesUrl: url" + getMontlyLeavesUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

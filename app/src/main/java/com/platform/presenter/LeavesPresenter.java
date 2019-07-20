@@ -30,8 +30,6 @@ public class LeavesPresenter implements LeavePresenterListener {
         fragmentWeakReference = null;
     }
 
-
-
     public void getLeavesData() {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);

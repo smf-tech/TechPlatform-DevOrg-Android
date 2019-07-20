@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/form_category_selected" />
+    <solid android:color="@color/color_db_tab_select" />
     <stroke
         android:width="1px"
-        android:color="@color/medium_blue" />
+        android:color="@color/color_db_tab_select" />
 
     <!--corners android:radius="3dp" /-->
 

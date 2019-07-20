@@ -44,13 +44,13 @@ public class PlannerDetailActivity extends BaseActivity {
                         .replace(R.id.fly_events_list, tasksPlannerFragment, tasksPlannerFragment.getClass()
                                 .getSimpleName()).commit();
                 break;
-            case "LEAVES":
-                Fragment leavePlannerFragment = new LeavePlannerFragment();
-                leavePlannerFragment.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fly_events_list, leavePlannerFragment, leavePlannerFragment.getClass()
-                                .getSimpleName()).addToBackStack(null).commit();
-                break;
+//            case "LEAVES":
+//                Fragment leavePlannerFragment = new LeavePlannerFragment();
+//                leavePlannerFragment.setArguments(bundle);
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.fly_events_list, leavePlannerFragment, leavePlannerFragment.getClass()
+//                                .getSimpleName()).addToBackStack(null).commit();
+//                break;
         }
     }
 }

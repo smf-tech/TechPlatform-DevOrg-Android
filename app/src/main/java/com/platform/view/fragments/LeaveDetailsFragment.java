@@ -44,6 +44,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -61,7 +62,8 @@ import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Constants.FORM_DATE;
 import static com.platform.utility.Util.getDateFromTimestamp;
 
-public class LeaveDetailsFragment extends Fragment implements View.OnClickListener, AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, LeaveDataListener {
+public class LeaveDetailsFragment extends Fragment implements View.OnClickListener,
+        AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, OnMonthChangedListener, LeaveDataListener {
 
     private RecyclerView leavesList;
     private final ArrayList<LeaveData> leavesListData = new ArrayList<>();
@@ -69,6 +71,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private final ArrayList<HolidayData> holidaysListData = new ArrayList<>();
     private AppliedLeavesAdapter leavesAdapter;
     private MaterialCalendarView calendarView;
+    ImageView ivCalendarMode;
     //private TabLayout tabLayout;
 //    private final int[] tabIcons = {
 //            R.drawable.selector_pending_tab,
@@ -113,11 +116,11 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         toolBarMenu.setImageResource(R.drawable.ic_holiday_list);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
         //tabLayout = view.findViewById(R.id.leave_cat_tabs);
-        ImageView tvCalendarMode = view.findViewById(R.id.tv_calendar_mode);
-        tvCalendarMode.setOnClickListener(this);
+        ivCalendarMode = view.findViewById(R.id.tv_calendar_mode);
+        ivCalendarMode.setOnClickListener(this);
         calendarView = view.findViewById(R.id.calendarView);
-        ImageView imgAddLeaves = view.findViewById(R.id.iv_add_leaves);
-        imgAddLeaves.setOnClickListener(this);
+        Button btnAddLeaves = view.findViewById(R.id.btn_add_leaves);
+        btnAddLeaves.setOnClickListener(this);
         Button btnRequestCompoff = view.findViewById(R.id.btn_compoff_request);
         btnRequestCompoff.setOnClickListener(this);
         toolBarMenu.setOnClickListener(v -> {
@@ -133,20 +136,20 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
             }
         }
-        leavesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (dy < -5 && imgAddLeaves.getVisibility() != View.VISIBLE) {
-                    imgAddLeaves.setVisibility(View.VISIBLE);
-                    btnRequestCompoff.setVisibility(View.VISIBLE);
-                } else if (dy > 5 && imgAddLeaves.getVisibility() == View.VISIBLE) {
-                    imgAddLeaves.setVisibility(View.INVISIBLE);
-                    btnRequestCompoff.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
+//        leavesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                if (dy < -5 && btnAddLeaves.getVisibility() != View.VISIBLE) {
+//                    btnAddLeaves.setVisibility(View.VISIBLE);
+//                    btnRequestCompoff.setVisibility(View.VISIBLE);
+//                } else if (dy > 5 && btnAddLeaves.getVisibility() == View.VISIBLE) {
+//                    btnAddLeaves.setVisibility(View.INVISIBLE);
+//                    btnRequestCompoff.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
         //Date d = new Date();
 //        presenter = new LeavesPresenter(this);
 //        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
@@ -215,8 +218,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private void setUIData() {
         //initCalender(view);
 
-        calendarView.setOnMonthChangedListener((widget, date) ->
-                Toast.makeText(getActivity(), "Month Changed:" + date, Toast.LENGTH_SHORT).show());
+        calendarView.setOnMonthChangedListener(this);
 
         isMonth = !isMonth;
         setCalendar();
@@ -258,7 +260,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_add_leaves:
+            case R.id.btn_add_leaves:
                 Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                 intent.putExtra("title", getString(R.string.apply_leave));
                 intent.putExtra("isEdit", false);
@@ -298,11 +300,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
                     .commit();
+            ivCalendarMode.setRotation(180);
         } else {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.WEEKS)
                     .commit();
+            ivCalendarMode.setRotation(0);
         }
         calendarView.setSelectedDate(instance.getTime());
         calendarView.setCurrentDate(instance.getTime());
@@ -340,6 +344,15 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         calendarView.addDecorator(new EventDecorator(getActivity(),
                 dateList, getResources().getDrawable(R.drawable.bg_circle_red)));
     }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay calendarDay) {
+        Date d = new Date();
+        presenter = new LeavesPresenter(this);
+        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),DateFormat.format("MM", calendarDay.getDate()).toString());
+
+    }
+
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView,
                                @NonNull CalendarDay calendarDay, boolean b) {
@@ -357,7 +370,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void editLeaves(LeaveData leaveData) {
         //userLeaveDetailsResponse = "{\"userId\": \"12345\",\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2 }],\"fromDate\": \"2019-03-11T18:30:00.000Z\",\"toDate\": \"2019-03-16T18:30:00.000Z\",\"isHalfDay\": false,\"reason\": \"NA\",\"numberOfDays\": 3,\"status\": \"pending\" }";
         Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-        intent.putExtra("title", getString(R.string.edit_leave));
+        intent.putExtra("title", getString(R.string.leave_details));
         intent.putExtra("isEdit", true);
         intent.putExtra("apply_type", "Leave");
         intent.putExtra("userLeaveDetails", (Serializable) leaveData);
@@ -414,7 +427,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void onFailureListener(String requestID, String message) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), message,
+                            .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
         }
     }
@@ -423,7 +436,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void onErrorListener(String requestID, VolleyError error) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), error.getMessage(),
+                            .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
         }
     }
@@ -439,6 +452,11 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 MonthlyLeaveHolidayData monthlyLeaveHolidayData = monthlyLeaveDataAPIResponse.getData();
                 List<LeaveData> monthlyLeaveData = monthlyLeaveHolidayData.getLeaveData();
                 List<HolidayData> monthlyHolidayData = monthlyLeaveHolidayData.getHolidayData();
+                if(monthlyLeaveData.size()==0){
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.no_leave_applied_msg),
+                            Snackbar.LENGTH_LONG);
+                }
                 leavesListData.addAll(monthlyLeaveData);
                 leavesAdapter.notifyDataSetChanged();
                 // To show filter leaves data
@@ -450,7 +468,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             }
         }else if(requestID.equals(DELETE_LEAVE)){
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Leave has been deleted successfully.",
+                            .findViewById(android.R.id.content), getString(R.string.leave_deleted_msg),
                     Snackbar.LENGTH_LONG);
             int deletePosition = -1;
             for (int i = 0; i<leavesListData.size(); i++) {

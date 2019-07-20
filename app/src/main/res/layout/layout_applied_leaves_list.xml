@@ -67,32 +67,62 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_weight="1" />
 
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_add_leaves"-->
+        <!--android:layout_width="@dimen/dimen_45dp"-->
+        <!--android:layout_height="@dimen/dimen_45dp"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_marginEnd="@dimen/dimen_15dp"-->
+        <!--android:layout_marginBottom="@dimen/dimen_25dp"-->
+        <!--android:background="@drawable/bg_primary_circular_button"-->
+        <!--android:contentDescription="@string/content_description"-->
+        <!--android:elevation="@dimen/dimen_03dp"-->
+        <!--android:scaleType="centerInside"-->
+        <!--app:layout_anchor="@id/rv_applied_leaves_list"-->
+        <!--android:src="@drawable/ic_plus" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_compoff_request"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|start"-->
+        <!--android:padding="@dimen/dimen_10dp"-->
+        <!--android:layout_marginStart="@dimen/dimen_30dp"-->
+        <!--android:layout_marginBottom="@dimen/dimen_25dp"-->
+        <!--android:background="@drawable/bg_button"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:text="Request for Comp Off" />-->
+
+    <LinearLayout
+        android:id="@+id/button_lay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_80dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <Button
+            android:id="@+id/btn_add_leaves"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="5"
+            android:padding="@dimen/dimen_10dp"
+            android:background="@drawable/bg_button"
+            android:textColor="@color/white"
+            android:text="Apply Leave" />
+
+        <Button
+            android:id="@+id/btn_compoff_request"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="5"
+            android:padding="@dimen/dimen_10dp"
+            android:background="@drawable/bg_button"
+            android:textColor="@color/white"
+            android:text="Request Comp-Off" />
+
+     </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/iv_add_leaves"
-        android:layout_width="@dimen/dimen_45dp"
-        android:layout_height="@dimen/dimen_45dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/dimen_15dp"
-        android:layout_marginBottom="@dimen/dimen_25dp"
-        android:background="@drawable/bg_primary_circular_button"
-        android:contentDescription="@string/content_description"
-        android:elevation="@dimen/dimen_03dp"
-        android:scaleType="centerInside"
-        app:layout_anchor="@id/rv_applied_leaves_list"
-        android:src="@drawable/ic_plus" />
-
-    <Button
-        android:id="@+id/btn_compoff_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:padding="@dimen/dimen_10dp"
-        android:layout_marginStart="@dimen/dimen_30dp"
-        android:layout_marginBottom="@dimen/dimen_25dp"
-        android:background="@drawable/bg_button"
-        android:textColor="@color/white"
-        android:text="Request for Comp Off" />
-
 </FrameLayout>

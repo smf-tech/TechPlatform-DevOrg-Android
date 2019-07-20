@@ -60,7 +60,7 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
 
             if(leaveBackground!=null && leaveBackground.size()==leave.size()) {
                 holder.leaveBalanceLayout.setBackgroundResource(leaveBackground.get(position));
-                if(leaveBackground.get(position)==(R.drawable.bg_button)){
+                if(leaveBackground.get(position)==(R.drawable.leave_form_view_focused)){
                     holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.white));
                 }
             }
@@ -80,20 +80,22 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
             leaveBalanceLayout = itemView.findViewById(R.id.leave_balance_layout);
             tvLeaveCount = itemView.findViewById(R.id.tv_leaves_count);
             tvLeaveType = itemView.findViewById(R.id.tv_leaves_type);
-            if(adapterType.equalsIgnoreCase("Category")){
-                leaveBalanceLayout.setOnClickListener(v -> {
-                for (int i = 0; i < leaveBackground.size(); i++) {
-                    if (i == getAdapterPosition()) {
-                        leaveBackground.remove(i);
-                        leaveBackground.add(i, R.drawable.bg_button);
-                        context.selectedLeaveCatgory = leave.get(i).getType();
-                    } else {
-                        leaveBackground.remove(i);
-                        leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
-                    }
+            if(adapterType.equalsIgnoreCase("Category")) {
+                if (!context.isEdit){
+                    leaveBalanceLayout.setOnClickListener(v -> {
+                        for (int i = 0; i < leaveBackground.size(); i++) {
+                            if (i == getAdapterPosition()) {
+                                leaveBackground.remove(i);
+                                leaveBackground.add(i, R.drawable.leave_form_view_focused);
+                                context.selectedLeaveCatgory = leave.get(i).getType();
+                            } else {
+                                leaveBackground.remove(i);
+                                leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
+                            }
+                        }
+                        notifyDataSetChanged();
+                    });
                 }
-                notifyDataSetChanged();
-            });
         }
         }
     }

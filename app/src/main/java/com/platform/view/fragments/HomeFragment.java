@@ -51,9 +51,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
     private Object mSyncObserverHandle;
     private boolean isSyncRequired;
     private final int[] tabIcons = {
-            R.drawable.ic_forms,
+            R.drawable.ic_home_icon_tab,
             R.drawable.ic_stories_icon_tab,
-            R.drawable.ic_approvals
+            R.drawable.ic_connect_icon_tab
     };
 
     @Override
