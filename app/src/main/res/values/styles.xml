@@ -48,7 +48,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="android:height">@dimen/dimen_40dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/dimen_40dp</item>
         <item name="android:background">@drawable/bg_button</item>
     </style>
     <style name="StyleLabel">

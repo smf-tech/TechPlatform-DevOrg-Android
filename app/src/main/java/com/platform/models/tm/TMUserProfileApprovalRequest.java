@@ -16,6 +16,10 @@ public class TMUserProfileApprovalRequest {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("profile_pic")
+    @Expose
+    private String profile_pic;
+
     @SerializedName("phone")
     @Expose
     private String phone;
@@ -37,6 +41,9 @@ public class TMUserProfileApprovalRequest {
     @SerializedName("org_id")
     @Expose
     private Org_id org_id;
+
+
+
     @SerializedName("role_id")
     @Expose
     private Role_id role_id;
@@ -151,7 +158,43 @@ public class TMUserProfileApprovalRequest {
         this.location = location;
     }
 
+
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
     public class Org_id {
+
+        @SerializedName("_id")
+        @Expose
+        private String _id;
+        @SerializedName("name")
+        @Expose
+        private String name;
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+    }
+    public class Project_id {
 
         @SerializedName("_id")
         @Expose

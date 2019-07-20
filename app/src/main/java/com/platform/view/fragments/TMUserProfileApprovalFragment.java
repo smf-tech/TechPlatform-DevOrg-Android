@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
@@ -25,6 +28,8 @@ import com.platform.presenter.TMUserProfileApprovalFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.customs.TextViewBold;
+import com.platform.view.customs.TextViewRegular;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,11 +37,12 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class TMUserProfileApprovalFragment extends Fragment {
-
+    private RequestOptions requestOptions;
     private View approvalsFragmentView;
     private Toolbar toolbar;
     private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title;
     private Button btn_approve, btn_reject;
+    private ImageView img_user_profle;
     private LinearLayout linear_dynamic_textview;
     TMUserProfileApprovalFragmentPresenter tmUserProfileApprovalFragmentPresenter;
     //strings
@@ -75,7 +81,8 @@ public class TMUserProfileApprovalFragment extends Fragment {
             Util.logger(getActivity().getLocalClassName().toString(), "000000--" + requetsObject.toString());
             Util.logger(getActivity().getLocalClassName().toString(), "!!!!!!!--" + filterTypeRequest);
         }
-
+        requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
         AppEvents.trackAppEvent(getString(R.string.event_approvals_screen_visit));
     }
 
@@ -85,7 +92,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
 
         approvalsFragmentView = inflater.inflate(R.layout.fragment_user_profile_approval, container, false);
         toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
-
+        img_user_profle = approvalsFragmentView.findViewById(R.id.img_user_profle);
         tv_name_title = approvalsFragmentView.findViewById(R.id.tv_name_value);
         tv_role_title = approvalsFragmentView.findViewById(R.id.tv_role_value);
         tv_mobile_title = approvalsFragmentView.findViewById(R.id.tv_mobile_value);
@@ -108,6 +115,14 @@ public class TMUserProfileApprovalFragment extends Fragment {
             TextView title = toolbar.findViewById(R.id.toolbar_title);
             title.setText(strTitle);
         }
+        ImageView img_back = toolbar.findViewById(R.id.toolbar_back_action);
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();}
+            }
+        });
 
         btn_approve.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,34 +201,43 @@ public class TMUserProfileApprovalFragment extends Fragment {
 
         Util.logger("mobile", "Size -"+data.get(0).getLocation().size());
         //add project to layout if available
-        ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        TextView tvProject = new TextView(getActivity());
-        tvProject.setLayoutParams(lparams);
-        tvProject.setText("Org"+": "+data.get(0).getOrg_id().getName());
-        tvProject.setTextSize(16);
-        tvProject.setTypeface(null, Typeface.BOLD);
-        linear_dynamic_textview.addView(tvProject);
 
-        for (int i = 0; i <data.get(0).getLocation().size() ; i++) {
-            /*ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/
-            TextView tv = new TextView(getActivity());
-            tv.setLayoutParams(lparams);
-            tv.setText(data.get(0).getLocation().get(i).getDisplay_name()+": ");
-            tv.setTextSize(16);
-            tv.setTypeface(null, Typeface.BOLD);
-            TextView tv2=new TextView(getActivity());
-            tv2.setLayoutParams(lparams);
-            tv2.setText(data.get(0).getLocation().get(i).getValue().get(0));
-            tv2.setTextSize(16);
-            Util.logger("mobile", "Size -"+i+"-"+data.get(0).getLocation().get(i).getValue().get(0));
-            Util.logger("mobile", "Size -"+i+"-"+data.get(0).getLocation().size());
-            linear_dynamic_textview.addView(tv);
-            linear_dynamic_textview.addView(tv2);
+        //tvProject.setText("Org"+": "+data.get(0).getOrg_id().getName());
+        if (data.get(0).getOrg_id()!=null) {
+            if (data.get(0).getOrg_id().getName() != null) {
+                addDynamicTextsTitels("Org");
+
+                addDynamicTextsValues(data.get(0).getOrg_id().getName());
+            }
+        }
+     /*   if (data.get(0).getProject_id()!=null) {
+            if (data.get(0).getProject_id().getName() != null) {
+                addDynamicTextsTitels("Project");
+
+                addDynamicTextsValues(data.get(0).getOrg_id().getName());
+            }
+        }*/
+        /*if (data.get(0).getOrg_id().getName()!=null) {
+            addDynamicTextsTitels(data.get(0).getOrg_id().getName());
+
+            addDynamicTextsValues(data.get(0).getOrg_id().getName());
+        }*/
+
+
+
+        for (int i = 0; i <data.get(0).getLocation().size() ; i++)
+        {
+            addDynamicTextsTitels(data.get(0).getLocation().get(i).getDisplay_name());
+
+            addDynamicTextsValues(data.get(0).getLocation().get(i).getValue().get(0));
         }
 
-
+        if (!TextUtils.isEmpty(data.get(0).getProfile_pic())) {
+            Glide.with(getActivity())
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(data.get(0).getProfile_pic())
+                    .into(img_user_profle);
+        }
     }
 
     public void updateRequestStatus(String response, int position) {
@@ -247,5 +271,39 @@ public class TMUserProfileApprovalFragment extends Fragment {
         }
     }
     // adding dynamic textviews below
+    public void addDynamicTextsValues(String value){
+        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lparams.setMargins(5,5,5,5);
+        TextView tv = new TextViewRegular(getActivity());
+        tv.setLayoutParams(lparams);
+        tv.setText(value+"");
+        tv.setTextSize(14);
+
+        linear_dynamic_textview.addView(tv);
+    }
+    public void addDynamicTextsTitels(String strTitle){
+        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lparams.setMargins(5,50,5,5);
+        TextView tvtitle = new TextViewBold(getActivity());
+        tvtitle.setLayoutParams(lparams);
+        tvtitle.setText(strTitle+" : ");
+        tvtitle.setTextSize(14);
+        //tvtitle.setTypeface(null, Typeface.BOLD);
+        linear_dynamic_textview.addView(tvtitle);
+    }
+
+
+//trial method-
+
+    /*View wizardView = getLayoutInflater()
+            .inflate(R.layout.row_tm_formspage_item, linear_dynamic_textview, false);
+    TextView textView = wizardView.findViewById(R.id.tv_title);
+        textView.setText("test Text");
+    TextView textView2 = wizardView.findViewById(R.id.tv_value);
+        textView2.setText("test Text2");
+        linear_dynamic_textview.addView(wizardView);
+        linear_dynamic_textview.addView(wizardView); */
 
 }

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -71,6 +72,14 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
             TextView title = toolbar.findViewById(R.id.toolbar_title);
             title.setText(strTitle);
         }
+        ImageView img_back = toolbar.findViewById(R.id.toolbar_back_action);
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();}
+            }
+        });
 
         rvPendingRequests = approvalsFragmentView.findViewById(R.id.rv_pendingapprovalpageview);
         //rvPendingRequests.setGroupIndicator(null);
