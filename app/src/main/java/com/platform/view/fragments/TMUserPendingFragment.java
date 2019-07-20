@@ -171,7 +171,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         Util.showToast(getString(R.string.status_update_success), getActivity());
         this.pendingRequestList.remove(pendingRequest);
 
-        mAdapter.notifyDataSetChanged();
+       this.mAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
             DashboardFragment.setApprovalCount(this.pendingRequestList.size());
