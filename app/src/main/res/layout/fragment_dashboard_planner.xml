@@ -121,18 +121,22 @@
                         android:id="@+id/lin_attendance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        android:weightSum="10">
+                        android:layout_margin="@dimen/dimen_05dp">
 
                         <TextView
-                            android:id="@+id/tv_attendance_title"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mark"
+                            />
+                        <TextView
+                            android:id="@+id/tv_attendance_title"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignStart="@+id/lin_attendance"
                             android:layout_alignTop="@+id/lin_attendance"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="8"
                             android:text="Attendance"
+                            android:paddingLeft="3dp"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
@@ -144,125 +148,198 @@
                         android:layout_below="@+id/lin_attendance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        >
-
+                        android:elevation="2dp"
+                        android:background="@drawable/bg_circular_rect_white"
+                        android:layout_margin="@dimen/dimen_05dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/bg_circular_rect_white"
-                            android:padding="@dimen/dimen_08dp"
-                            android:weightSum="10">
-
-                            <RelativeLayout
-                                android:id="@+id/ly_schedule"
-                                android:layout_width="0dp"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:id="@+id/lin_innercard"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2.5"
-                                android:background="@drawable/circular_rect_atten"
-                                android:padding="@dimen/dimen_05dp">
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_08dp"
+                                android:weightSum="10">
 
-                                <ImageView
-                                    android:id="@+id/tv_date_label"
-                                    android:layout_width="wrap_content"
+                                <RelativeLayout
+                                    android:id="@+id/ly_schedule"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/clock_shape"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    />
+                                    android:layout_weight="2.5"
+                                    android:background="@drawable/circular_rect_atten"
+                                    android:padding="@dimen/dimen_05dp">
 
+                                    <ImageView
+                                        android:id="@+id/tv_date_label"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen_10dp"
+                                        android:layout_marginTop="5dp"
+                                        android:src="@drawable/clock_shape" />
+
+                                    <TextView
+                                        android:id="@+id/txt_timer"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/tv_date_label"
+                                        android:layout_marginStart="10dp"
+                                        android:text="10:30"
+                                        android:textColor="@color/white"
+                                        android:textStyle="bold"
+                                        android:visibility="invisible">
+
+                                    </TextView>
+
+                                    <TextView
+                                        android:id="@+id/tv_date"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/txt_timer"
+                                        android:layout_marginStart="@dimen/dimen_10dp"
+                                        android:text="Total Hrs"
+                                        android:textColor="@color/white"
+                                        android:textStyle="normal" />
+
+                                    <TextView
+                                        android:id="@+id/iv_total_hours"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/tv_date"
+                                        android:layout_marginStart="@dimen/dimen_12dp"
+                                        android:contentDescription="@string/content_description"
+                                        android:text="00:00"
+                                        android:textColor="@color/white"
+                                        android:textStyle="bold" />
+
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="8">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:weightSum="2">
+
+                                        <Button
+                                            android:id="@+id/bt_check_in"
+                                            android:layout_width="0dp"
+                                            android:layout_height="@dimen/dimen_40dp"
+                                            android:layout_marginLeft="5dp"
+                                            android:layout_weight="0.90"
+                                            android:background="@drawable/bg_button"
+                                            android:baselineAligned="false"
+                                            android:singleLine="true"
+                                            android:text="@string/check_in"
+                                            android:textAllCaps="false"
+                                            android:textColor="@drawable/text_color_on_selection"
+                                            android:textSize="@dimen/text_size_10"
+                                            android:textStyle="bold" />
+
+                                        <Button
+                                            android:id="@+id/bt_checkout"
+                                            android:layout_width="0dp"
+                                            android:layout_height="@dimen/dimen_40dp"
+                                            android:layout_marginLeft="5dp"
+                                            android:layout_weight="0.90"
+                                            android:background="@drawable/bg_button"
+                                            android:singleLine="true"
+                                            android:text="@string/check_out"
+                                            android:textAllCaps="false"
+                                            android:textColor="@drawable/text_color_on_selection"
+                                            android:textSize="@dimen/text_size_10"
+                                            android:textStyle="bold" />
+
+                                    </LinearLayout>
+
+                                    <!--
+                                    <Button
+                                        android:id="@+id/bt_check_in"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen_40dp"
+                                        android:background="@drawable/bg_button"
+                                        android:text="@string/check_in"
+                                        android:layout_marginLeft="0dp"
+                                        android:textAllCaps="false"
+                                        android:textColor="@drawable/text_color_on_selection"
+                                        android:textSize="@dimen/text_size_14"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/tv_check_in_time"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/bt_check_in"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginTop="@dimen/dimen_10dp"
+                                        android:gravity="center_horizontal"
+                                        android:textSize="@dimen/text_size_12"
+                                        android:textStyle="bold"
+                                        android:text=""
+                                        android:visibility="gone" />
+
+                                    <Button
+                                        android:id="@+id/bt_checkout"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen_40dp"
+
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_toRightOf="@+id/bt_check_in"
+                                        android:background="@drawable/bg_button"
+                                        android:text="@string/check_out"
+                                        android:textAllCaps="false"
+                                        android:textColor="@drawable/text_color_on_selection"
+                                        android:textSize="@dimen/text_size_14"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/tv_check_out_time"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/bt_checkout"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:text=""
+                                        android:textSize="@dimen/text_size_12"
+                                        android:textStyle="bold"
+                                        android:visibility="gone" />-->
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+                            <RelativeLayout
+                                android:layout_below="@+id/card_attendance"
+                                android:id="@+id/lin_attendance_details"
+                                android:layout_width="match_parent"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:layout_height="wrap_content">
                                 <TextView
-                                    android:id="@+id/tv_date"
-                                    android:layout_width="match_parent"
+                                    android:id="@+id/tv_attendance_details"
+                                    android:layout_width="200dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tv_date_label"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:text="Total Hours"
-                                    android:textColor="@color/white"
-                                    android:textStyle="bold" />
+                                    android:layout_alignParentStart="true"
 
-                                <TextView
-                                    android:id="@+id/iv_total_hours"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tv_date"
-                                    android:layout_marginStart="@dimen/dimen_12dp"
-                                    android:contentDescription="@string/content_description"
-                                    android:textColor="@color/white"
+                                    android:layout_marginBottom="@dimen/dimen_15dp"
+                                    android:text="@string/attendance_details"
+                                    android:textColor="@color/black"
                                     android:textStyle="bold"
-                                    android:text=""/>
-
+                                    android:textSize="@dimen/text_size_14" />
 
                             </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="20dp"
-                                android:layout_weight="8">
-
-                                <Button
-                                    android:id="@+id/bt_check_in"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/dimen_40dp"
-                                    android:background="@drawable/bg_button"
-                                    android:text="@string/check_in"
-                                    android:layout_marginLeft="20dp"
-                                    android:textAllCaps="false"
-                                    android:textColor="@drawable/text_color_on_selection"
-                                    android:textSize="@dimen/text_size_14"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_check_in_time"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/bt_check_in"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="@dimen/dimen_10dp"
-                                    android:gravity="center_horizontal"
-                                    android:textSize="@dimen/text_size_12"
-                                    android:textStyle="bold"
-                                    android:text=""
-                                    android:visibility="gone" />
-
-                                <Button
-                                    android:id="@+id/bt_checkout"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/dimen_40dp"
-                                    android:layout_marginLeft="30dp"
-                                    android:layout_toRightOf="@+id/bt_check_in"
-                                    android:background="@drawable/bg_button"
-                                    android:text="@string/check_out"
-                                    android:textAllCaps="false"
-                                    android:textColor="@drawable/text_color_on_selection"
-                                    android:textSize="@dimen/text_size_14"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_check_out_time"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/bt_checkout"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:text=""
-                                    android:textSize="@dimen/text_size_12"
-                                    android:textStyle="bold"
-                                    android:visibility="gone" />
-
-
-
-
-
-
-
-                            </RelativeLayout>
-
                         </LinearLayout>
+
+
+
                     </androidx.cardview.widget.CardView>
-                    <RelativeLayout
+                   <!-- <RelativeLayout
                         android:layout_below="@+id/card_attendance"
                         android:id="@+id/lin_attendance_details"
                         android:layout_width="match_parent"
@@ -281,6 +358,7 @@
                             android:textSize="@dimen/text_size_14" />
 
                     </RelativeLayout>
+-->
 
                 </RelativeLayout>
 
@@ -344,6 +422,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/event_header"
+                        android:layout_marginTop="268dp"
                         android:layout_marginBottom="@dimen/dimen_10dp" />
 
                 </RelativeLayout>

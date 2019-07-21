@@ -214,8 +214,8 @@ public class DashboardFragment extends Fragment {
                     adapter.addFragment(webmoduleFragment);
                     break;
                 case Constants.Home.CONTENT:
-                    /*ContentManagementFragment cmf=ContentManagementFragment.newInstance("con","con");
-                    adapter.addFragment(cmf);*/
+                    ContentManagementFragment cmf=ContentManagementFragment.newInstance("con","con");
+                    adapter.addFragment(cmf);
                     break;
 
                 default:

@@ -81,11 +81,12 @@
     <color name="card_view_border">#C1C4C6</color>
     <color name="leaves_count_view">#CBCBCB</color>
     <color name="attendance_list_bg">#FAFAFA</color>
-    <color name="attendance_text_color">#7E7E7E</color>
+    <color name="attendance_text_color">#3e3e3e</color>
     <color name="attendance_list_item">#656565</color>
 
     <color name="base_background_color">#fbfbfb</color>
     <color name="button_background_color">#9a80ff</color>
+    <color name="button_gray_color">#ebebeb</color>
 
     <color name="attendance_rect_back">#6085fc</color>
 

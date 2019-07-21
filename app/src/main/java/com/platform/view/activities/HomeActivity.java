@@ -59,7 +59,7 @@ import java.util.List;
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,ContentManagementFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -484,6 +484,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void logOutUser() {
+        // remove user related shared pref data
+
         Util.saveLoginObjectInPref("");
         Util.setSubmittedFormsLoaded(false);
 
@@ -600,6 +602,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     public void setSyncClickListener(OnSyncClicked listener) {
         clickListener = listener;
+    }
+
+    @Override
+    public void onFragmentInteraction(String uri) {
+
     }
 
    /* @Override

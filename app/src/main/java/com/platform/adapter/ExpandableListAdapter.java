@@ -90,7 +90,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     // check file is present in directory or not
-                    //contentManagementFragment.beginDownload(downloadContent.getDef());
+                    contentManagementFragment.beginDownload(downloadContent.getDef());
 
                 }
             });
@@ -185,7 +185,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         //File file=new File(uri.getPath());
         //String filename=file.getName();
 
-        String storagePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/MV/";
+        String storagePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/MV";
         Uri uri = Uri.parse(downloadContent.getDef());
         File file=new File(uri.getPath());
         String fileName=file.getName();

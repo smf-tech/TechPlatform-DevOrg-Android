@@ -29,7 +29,7 @@
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
-        android:text=""
+        android:text="00:00"
         android:textColor="@color/black"
         android:textStyle="bold"
 
@@ -57,11 +57,13 @@
                 android:id="@+id/bt_check_in"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
                 android:background="@drawable/bg_button"
                 android:text="@string/check_in"
                 android:textAllCaps="false"
                 android:textColor="@drawable/text_color_on_selection"
-                android:textSize="@dimen/text_size_14"
+                android:textSize="@dimen/text_size_10"
                 android:textStyle="bold" />
 
             <TextView
@@ -101,7 +103,7 @@
                 android:text="@string/check_out"
                 android:textAllCaps="false"
                 android:textColor="@drawable/text_color_on_selection"
-                android:textSize="@dimen/text_size_14"
+                android:textSize="@dimen/text_size_10"
                 android:textStyle="bold" />
 
             <TextView

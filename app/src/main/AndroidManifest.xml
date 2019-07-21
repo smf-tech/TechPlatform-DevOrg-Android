@@ -175,6 +175,10 @@
         </service>
         <service android:name=".services.DownloadService"
             android:exported="true"></service>
+        <service android:name=".services.ShowTimerService"
+            android:exported="true">
+
+        </service>
 
         <meta-data
             android:name="io.fabric.ApiKey"
