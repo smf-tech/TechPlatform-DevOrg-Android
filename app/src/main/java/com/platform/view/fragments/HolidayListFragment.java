@@ -73,7 +73,7 @@ public class HolidayListFragment extends Fragment implements LeaveDataListener {
     public void onFailureListener(String requestID, String message) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), message,
+                            .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
         }
     }
@@ -82,7 +82,7 @@ public class HolidayListFragment extends Fragment implements LeaveDataListener {
     public void onErrorListener(String requestID, VolleyError error) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), error.getMessage(),
+                            .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
         }
     }

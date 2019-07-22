@@ -42,7 +42,8 @@
                 android:lines="2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/opensans"/>
 
             <ImageView
                 android:id="@+id/toolbar_action"

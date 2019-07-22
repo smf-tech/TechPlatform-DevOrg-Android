@@ -155,7 +155,7 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
 
             /*mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
                     pendingFragmentPresenter, this);*/
-            mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
+            mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), this.pendingRequestList,
                     this);
             rvPendingRequests.setAdapter(mAdapter);
         } else {

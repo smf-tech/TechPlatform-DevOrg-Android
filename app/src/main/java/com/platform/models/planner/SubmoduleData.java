@@ -17,7 +17,7 @@ public class SubmoduleData {
     private List<attendanceData> attendanceData = null;
     @SerializedName("eventData")
     @Expose
-    private ArrayList<EventTask> eventTaskData = null;
+    private ArrayList<EventTask> eventData = null;
     @SerializedName("taskData")
     @Expose
     private ArrayList<EventTask> taskData = null;
@@ -45,12 +45,12 @@ public class SubmoduleData {
         this.attendanceData = attendanceData;
     }
 
-    public ArrayList<EventTask> getEventTaskData() {
-        return eventTaskData;
+    public ArrayList<EventTask> getEventData() {
+        return eventData;
     }
 
-    public void setEventTaskData(ArrayList<EventTask> eventTaskData) {
-        this.eventTaskData = eventTaskData;
+    public void setEventData(ArrayList<EventTask> eventData) {
+        this.eventData = eventData;
     }
 
     public ArrayList<EventTask> getTaskData() {

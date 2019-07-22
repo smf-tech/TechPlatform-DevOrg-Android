@@ -20,21 +20,34 @@
             android:visibility="gone"
             android:padding="@dimen/dimen_10dp"
             android:layout_height="wrap_content" />
-        <Spinner
-            android:id="@+id/spinner1"
+
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/dimen_10dp"
+            android:layout_alignBottom="@+id/img_filter_image"
+            android:layout_toRightOf="@+id/tv_filtertype"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
+            android:background="@drawable/custom_spn_background">
 
-            android:layout_alignBottom="@+id/tv_filtertype"
-            android:layout_toRightOf="@+id/tv_filtertype" />
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_05dp"
+                android:textAlignment="center"
+                android:spinnerMode="dropdown"
+                android:layout_alignBottom="@+id/img_filter_image"
+                android:layout_toRightOf="@+id/tv_filtertype" />
+        </FrameLayout>
+
         <ImageView
             android:layout_width="60dp"
-            android:src="@drawable/ic_filter_icon"
+            android:src="@drawable/ic_approvalfilter_icon"
             android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/dimen_20dp"
+            android:padding="@dimen/dimen_10dp"
             android:id="@+id/img_filter_image"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content" />
@@ -45,7 +58,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorHeight="@dimen/dimen_05dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/black"

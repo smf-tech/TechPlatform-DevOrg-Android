@@ -146,7 +146,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private String checkOutText="Check out at";
     private String prefCheckInTime;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -347,16 +346,17 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 //((ViewHolderAttendace)holder).
                     break;
                 case Constants.Planner.EVENTS_KEY:
-                    if (obj.getEventTaskData() != null && obj.getEventTaskData().size() > 0) {
+                    if(obj.getEventData()!=null && obj.getEventData().size()>0){
 
                         RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
                         EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(getActivity(),
-                                obj.getEventTaskData(), Constants.Planner.EVENTS_LABEL);
+                                obj.getEventData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_events);
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
+                    } else {
+                        plannerView.findViewById(R.id.tv_no_events_msg).setVisibility(View.VISIBLE);
                     }
-
 
                     break;
                 case Constants.Planner.TASKS_KEY:
@@ -364,14 +364,16 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                         RecyclerView.LayoutManager mLayoutManagerTask = new LinearLayoutManager(getActivity().getApplicationContext());
                         EventTaskListAdapter taskListAdapter = new EventTaskListAdapter(getActivity(),
-                                obj.getTaskData(), Constants.Planner.EVENTS_LABEL);
-                        RecyclerView rvTask = plannerView.findViewById(R.id.rv_events);
+                                obj.getTaskData(), Constants.Planner.TASKS_LABEL);
+                        RecyclerView rvTask = plannerView.findViewById(R.id.rv_task);
                         rvTask.setLayoutManager(mLayoutManagerTask);
                         rvTask.setAdapter(taskListAdapter);
+                    } else {
+                        plannerView.findViewById(R.id.tv_no_task_msg).setVisibility(View.VISIBLE);
                     }
                     break;
                 case Constants.Planner.LEAVES_KEY:
-                    if (obj.getLeave() != null && obj.getLeave().size() > 0) {
+                    if(obj.getLeave()!=null && obj.getLeave().size()>0){
                         leaveBalance.addAll(obj.getLeave());
                         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
                                 LinearLayoutManager.HORIZONTAL, true);

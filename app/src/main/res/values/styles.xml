@@ -29,6 +29,7 @@
         <item name="android:theme">@style/TextInputLayoutForLabel</item>
         <item name="android:padding">@dimen/dimen_10dp</item>
         <item name="android:visibility">visible</item>
+        <item name="android:fontFamily">@font/opensans</item>
     </style>
 
     <style name="RegistrationEditTextLayout">
@@ -37,6 +38,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/opensans</item>
         <!--<item name="android:background">@null</item>-->
     </style>
     <style name="StyleButton">
@@ -44,11 +46,20 @@
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:background">@drawable/bg_button</item>
     </style>
+    <style name="AppStyleButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:fontFamily">@font/opensans_semibold</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/dimen_40dp</item>
+        <item name="android:background">@drawable/bg_button</item>
+    </style>
     <style name="StyleLabel">
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/bg_circular_border</item>
         <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/opensans</item>
         <item name="android:paddingTop">@dimen/dimen_05dp</item>
         <item name="android:paddingBottom">@dimen/dimen_05dp</item>
         <item name="android:paddingLeft">@dimen/dimen_15dp</item>
@@ -174,7 +185,6 @@
 
     <style name="StyleStatus">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/bg_status_label</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">@dimen/dimen_05dp</item>
@@ -192,4 +202,28 @@
         <item name="tabMode">fixed</item>
         <item name="textAllCaps">true</item>
     </style>
+
+
+
+    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabPaddingStart">6dp</item>
+        <item name="tabPaddingEnd">6dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/brick_red</item>
+    </style>
+
+    <!-- for text -->
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+
 </resources>

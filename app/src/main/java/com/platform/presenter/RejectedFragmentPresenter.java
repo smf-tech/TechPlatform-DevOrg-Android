@@ -53,6 +53,7 @@ public class RejectedFragmentPresenter implements TMPendingRequestCallListener {
 
     @Override
     public void onPendingRequestsFetched(String response) {
+        Log.d(TAG, "getAllRejectedRequests - Resp: " + response);
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             PendingApprovalsRequestsResponse pendingRequestsResponse

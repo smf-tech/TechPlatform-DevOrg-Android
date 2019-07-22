@@ -1099,7 +1099,7 @@ public class Util {
 
 
            Dialog dialog;
-           Button btnLogin;
+           Button btnLogin,btn_cancel;
            EditText edt_reason;
            Activity activity =context;
 
@@ -1110,7 +1110,16 @@ public class Util {
 
 
             edt_reason = dialog.findViewById(R.id.edt_reason);
+       btn_cancel = dialog.findViewById(R.id.btn_cancel);
            btnLogin = dialog.findViewById(R.id.btn_submit);
+
+       btn_cancel.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               dialog.dismiss();
+           }
+       });
+
            btnLogin.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {

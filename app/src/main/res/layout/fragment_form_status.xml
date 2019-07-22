@@ -94,7 +94,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_rejcted_icon_db"/>
+        android:src="@drawable/ic_rejected_icon_filter"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_filter2"
@@ -104,7 +104,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_approved_icon_db"/>
+        android:src="@drawable/ic_approved_icon_filter"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_filter1"
@@ -114,7 +114,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_pending_icon_db" />
+        android:src="@drawable/ic_pending_icon_filter" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_no_filter"

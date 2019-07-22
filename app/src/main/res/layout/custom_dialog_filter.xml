@@ -27,13 +27,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/view_startdate"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Select Start Date"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_title_14" />
 
                 <View
                     android:id="@+id/view_startdate"
@@ -41,14 +42,16 @@
                     android:layout_height="10dp"
                     android:layout_centerHorizontal="true" />
 
-                <TextView
+                <com.platform.view.customs.TextViewSemiBold
                     android:id="@+id/tv_startdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/dimen_10dp"
                     android:layout_toRightOf="@+id/view_startdate"
+
+                    android:padding="@dimen/dimen_10dp"
                     android:text="Start Date"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_title_14" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -56,29 +59,31 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_toLeftOf="@+id/view_enddate"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Select End Date"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_title_14" />
 
-                <View
+                <com.platform.view.customs.TextViewSemiBold
                     android:id="@+id/view_enddate"
                     android:layout_width="1dp"
                     android:layout_height="10dp"
                     android:layout_centerHorizontal="true" />
 
-                <TextView
+                <com.platform.view.customs.TextViewSemiBold
                     android:id="@+id/tv_enddate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/view_enddate"
+
                     android:padding="@dimen/dimen_10dp"
                     android:text="End Date"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_title_14" />
             </RelativeLayout>
 
 
@@ -86,10 +91,11 @@
                 android:id="@+id/rv_filterchoice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:padding="@dimen/dimen_10dp" />
         </LinearLayout>
 
-        <TextView
+        <com.platform.view.customs.TextViewRegular
             android:id="@+id/txt_dia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -112,20 +118,20 @@
 
             <Button
                 android:id="@+id/btn_yes"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:textSize="@dimen/text_size_16"
+                style="@style/AppStyleButton"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:clickable="true"
                 android:text="Apply"
-                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_no"
+                style="@style/StyleButton"
                 android:layout_width="100dp"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
                 android:background="@android:color/white"
                 android:clickable="true"

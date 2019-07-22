@@ -80,7 +80,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        eventsPlannerView = inflater.inflate(R.layout.fragment_events_planner, container, false);
+        eventsPlannerView = inflater.inflate(R.layout.fragment_events_task_landing, container, false);
         return eventsPlannerView;
     }
 

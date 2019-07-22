@@ -51,6 +51,7 @@ public class TMUserAprovedFragmentPresenter implements TMPendingRequestCallListe
 
     @Override
     public void onPendingRequestsFetched(String response) {
+        Log.d(TAG, "getAllApprovedRequests - Resp: " + response);
         fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             PendingApprovalsRequestsResponse pendingRequestsResponse
