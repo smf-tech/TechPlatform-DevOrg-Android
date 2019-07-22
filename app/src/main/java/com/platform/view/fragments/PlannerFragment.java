@@ -244,7 +244,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             return;
         }
 
-
         userAttendanceDao = DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
         userCheckOutDao=DatabaseManager.getDBInstance(getActivity()).getCheckOutAttendaceSchema();
 
