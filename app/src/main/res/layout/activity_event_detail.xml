@@ -41,7 +41,7 @@
                         android:layout_height="match_parent"
                         android:visibility="gone" />
 
-                    <com.platform.view.customs.TextViewBold
+                    <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -52,7 +52,8 @@
                         android:layout_margin="@dimen/dimen_10dp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_16"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:fontFamily="@font/opensans"/>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -61,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ly_status_title">
 
-                    <com.platform.view.customs.TextViewBold
+                    <TextView
                         android:id="@+id/tv_label_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,9 +74,9 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:layout_marginTop="@dimen/dimen_20dp"
-                        />
+                        android:fontFamily="@font/opensans"/>
 
-                    <com.platform.view.customs.TextViewRegular
+                    <TextView
                         android:id="@+id/tv_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -84,9 +85,10 @@
                         android:paddingTop="@dimen/dimen_01dp"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:textSize="@dimen/text_size_13"
-                        android:layout_marginTop="@dimen/dimen_20dp"/>
+                        android:layout_marginTop="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans"/>
 
-                    <com.platform.view.customs.TextViewBold
+                    <TextView
                         android:id="@+id/tv_detail_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -98,7 +100,8 @@
                         android:padding="@dimen/dimen_02dp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/dimen_20dp"/>
+                        android:layout_marginTop="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans"/>
 
                     <LinearLayout
                         android:id="@+id/ly_owner"
@@ -111,7 +114,7 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_owner_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -119,15 +122,16 @@
                             android:paddingTop="@dimen/dimen_05dp"
                             android:text="Owner: "
                             android:textColor="@color/black"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:fontFamily="@font/opensans"/>
 
-                        <com.platform.view.customs.TextViewRegular
+                        <TextView
                             android:id="@+id/tv_owner_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            />
+                            android:fontFamily="@font/opensans"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -141,7 +145,7 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_start_date_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -149,15 +153,16 @@
                             android:paddingTop="@dimen/dimen_05dp"
                             android:text="Start Date: "
                             android:textColor="@color/black"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:fontFamily="@font/opensans"/>
 
-                        <com.platform.view.customs.TextViewRegular
+                        <TextView
                             android:id="@+id/tv_start_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            />
+                            android:fontFamily="@font/opensans"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -171,7 +176,7 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         >
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_end_date_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -179,15 +184,16 @@
                             android:paddingTop="@dimen/dimen_05dp"
                             android:text="End Date: "
                             android:textColor="@color/black"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:fontFamily="@font/opensans"/>
 
-                        <com.platform.view.customs.TextViewRegular
+                        <TextView
                             android:id="@+id/tv_end_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            />
+                            android:fontFamily="@font/opensans"/>
                     </LinearLayout>
 
                     <TextView
@@ -208,7 +214,7 @@
                         android:padding="@dimen/dimen_05dp"
                         android:visibility="gone" />
 
-                    <com.platform.view.customs.TextViewBold
+                    <TextView
                         android:id="@+id/tv_address_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -220,7 +226,8 @@
                         android:text="@string/venue"
                         android:padding="@dimen/dimen_02dp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/opensans"/>
 
                     <TextView
                         android:id="@+id/tv_address"
@@ -229,7 +236,8 @@
                         android:layout_below="@+id/tv_address_label"
                         android:gravity="center"
                         android:padding="@dimen/dimen_05dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"/>
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -245,7 +253,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dimen_05dp"
-                        android:text="@string/task_form_list_screen_msg" />
+                        android:text="@string/task_form_list_screen_msg"
+                        android:fontFamily="@font/opensans"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_forms_list"
@@ -266,7 +275,7 @@
 
             </RelativeLayout>
 
-            <com.platform.view.customs.TextViewRegular
+            <TextView
                 android:id="@+id/tv_member_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -277,7 +286,8 @@
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:textColor="@color/colorAccent"
                 android:gravity="center_horizontal"
-                android:background="@color/dark_grey"/>
+                android:background="@color/dark_grey"
+                android:fontFamily="@font/opensans"/>
 
             <LinearLayout
                 android:id="@+id/ly_membarlist_code"
@@ -298,7 +308,8 @@
                     android:layout_margin="@dimen/dimen_05dp"
                     android:text="@string/generate_code"
                     android:textAllCaps="false"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:fontFamily="@font/opensans"/>
 
 
                 <Button
@@ -311,7 +322,7 @@
                     android:text="Members list"
                     android:textAllCaps="false"
                     android:visibility="gone"
-                    />
+                    android:fontFamily="@font/opensans" />
 
             </LinearLayout>
 
@@ -327,7 +338,7 @@
                 android:text="Enter attendance code"
                 android:textAllCaps="false"
                 android:visibility="gone"
-                />
+                android:fontFamily="@font/opensans"/>
 
             <Button
                 android:id="@+id/bt_complete_task"
@@ -340,7 +351,7 @@
                 android:text="Mark Complete"
                 android:textAllCaps="false"
                 android:visibility="gone"
-                />
+                android:fontFamily="@font/opensans"/>
 
         </RelativeLayout>
     </ScrollView>

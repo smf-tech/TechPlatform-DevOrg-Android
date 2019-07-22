@@ -420,9 +420,7 @@
                         android:id="@+id/rv_events"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/event_header"
-                        android:layout_marginTop="268dp"
-                        android:layout_marginBottom="@dimen/dimen_10dp" />
+                        android:layout_below="@+id/event_header"/>
 
                 </RelativeLayout>
 

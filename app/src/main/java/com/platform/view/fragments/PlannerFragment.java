@@ -343,7 +343,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     preferenceHelper.insertString(Constants.KEY_ATTENDANCDE, availableOnServer);
                     Log.i("AttendanceId", "111" + availableOnServer);
 
-//((ViewHolderAttendace)holder).
+//((
                     break;
                 case Constants.Planner.EVENTS_KEY:
                     if(obj.getEventData()!=null && obj.getEventData().size()>0){
