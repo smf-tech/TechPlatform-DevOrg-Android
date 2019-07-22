@@ -129,7 +129,8 @@
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:text="@string/no_events"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:fontFamily="@font/opensans"/>
 
                     <LinearLayout
                         android:id="@+id/event_header"
@@ -137,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:weightSum="10">
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_event_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -145,9 +146,10 @@
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="8"/>
+                            android:layout_weight="8"
+                            android:fontFamily="@font/opensans"/>
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_all_events_list"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -156,7 +158,7 @@
                             android:text="@string/all_events"
                             android:layout_weight="1"
                             />
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/bt_add_events"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -194,7 +196,8 @@
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:text="@string/no_tasks"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:fontFamily="@font/opensans"/>
 
                     <LinearLayout
                         android:id="@+id/task_header"
@@ -202,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:weightSum="10">
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_task_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -210,9 +213,10 @@
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="8"/>
+                            android:layout_weight="8"
+                            android:fontFamily="@font/opensans"/>
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/tv_all_task_list"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
@@ -222,7 +226,7 @@
                             android:layout_weight="1"
                             />
 
-                        <com.platform.view.customs.TextViewBold
+                        <TextView
                             android:id="@+id/bt_add_task"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
