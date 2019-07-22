@@ -206,9 +206,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy < -5 && txtViewAllForms.getVisibility() != View.VISIBLE) {
+                if (dy < -2 && txtViewAllForms.getVisibility() != View.VISIBLE) {
                     txtViewAllForms.setVisibility(View.VISIBLE);
-                } else if (dy > 5 && txtViewAllForms.getVisibility() == View.VISIBLE) {
+                } else if (dy > 2 && txtViewAllForms.getVisibility() == View.VISIBLE) {
                     txtViewAllForms.setVisibility(View.INVISIBLE);
                 }
             }

@@ -62,6 +62,7 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
         viewHolder.leaveHeader.setText(leavesList.get(position).getStatus());
         viewHolder.leaveTitleLayout.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
         if(leavesList.get(position).getStatus().equalsIgnoreCase(Constants.Leave.PENDING_STATUS)){
+            viewHolder.deleteClick.setVisibility(View.VISIBLE);
             viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves(leavesList.get(position).getId()));
             //viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
         }else{

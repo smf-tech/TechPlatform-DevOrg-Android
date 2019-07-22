@@ -1,7 +1,9 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -67,6 +69,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     private RecyclerView leavesList;
     private final ArrayList<LeaveData> leavesListData = new ArrayList<>();
+    private final ArrayList<LeaveData> tempLeavesListData = new ArrayList<>();
     //private final ArrayList<LeaveData> filteredLeavesListData = new ArrayList<>();
     private final ArrayList<HolidayData> holidaysListData = new ArrayList<>();
     private AppliedLeavesAdapter leavesAdapter;
@@ -363,7 +366,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void deleteLeaves(String leaveId) {
         deleteLeaveId = leaveId;
-        showAlertDialog(getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+        //showAlertDialog(getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+        showDeleteAlert();
     }
 
     @Override
@@ -380,47 +384,69 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         startActivity(intent);
     }
 
-    private void showAlertDialog(String message, String btn1String, String btn2String) {
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogs_leave_layout);
+//    private void showAlertDialog(String message, String btn1String, String btn2String) {
+//        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.dialogs_leave_layout);
+//
+//        if (!TextUtils.isEmpty("")) {
+//            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+//            title.setText("");
+//            title.setVisibility(View.VISIBLE);
+//        }
+//
+//        if (!TextUtils.isEmpty(message)) {
+//            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+//            text.setText(message);
+//            text.setVisibility(View.VISIBLE);
+//        }
+//
+//        if (!TextUtils.isEmpty(btn1String)) {
+//            Button button = dialog.findViewById(R.id.btn_dialog);
+//            button.setText(btn1String);
+//            button.setVisibility(View.VISIBLE);
+//
+//            button.setOnClickListener(v -> {
+//                // Close dialog
+//                dialog.dismiss();
+//            });
+//        }
+//
+//        if (!TextUtils.isEmpty(btn2String)) {
+//            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+//            button1.setText(btn2String);
+//            button1.setVisibility(View.VISIBLE);
+//
+//            button1.setOnClickListener(v -> {
+//                presenter.deleteUserLeave(deleteLeaveId);
+//                dialog.dismiss();
+//            });
+//        }
+//
+//        dialog.setCancelable(true);
+//        dialog.show();      // if decline button is clicked, close the custom dialog
+//    }
 
-        if (!TextUtils.isEmpty("")) {
-            TextView title = dialog.findViewById(R.id.tv_dialog_title);
-            title.setText("");
-            title.setVisibility(View.VISIBLE);
-        }
-
-        if (!TextUtils.isEmpty(message)) {
-            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-            text.setText(message);
-            text.setVisibility(View.VISIBLE);
-        }
-
-        if (!TextUtils.isEmpty(btn1String)) {
-            Button button = dialog.findViewById(R.id.btn_dialog);
-            button.setText(btn1String);
-            button.setVisibility(View.VISIBLE);
-
-            button.setOnClickListener(v -> {
-                // Close dialog
-                dialog.dismiss();
-            });
-        }
-
-        if (!TextUtils.isEmpty(btn2String)) {
-            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-            button1.setText(btn2String);
-            button1.setVisibility(View.VISIBLE);
-
-            button1.setOnClickListener(v -> {
-                presenter.deleteUserLeave(deleteLeaveId);
-                dialog.dismiss();
-            });
-        }
-
-        dialog.setCancelable(true);
-        dialog.show();      // if decline button is clicked, close the custom dialog
+    public void showDeleteAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete alert")
+                .setMessage(getString(R.string.sure_to_delete))
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                        presenter.deleteUserLeave(deleteLeaveId);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -477,7 +503,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                     break;
                 }
             }
-            if(deletePosition>0){
+            if(deletePosition>-1){
                 leavesListData.remove(deletePosition);
 //                filteredLeavesListData.clear();
 //                filteredLeavesListData.addAll(leavesListData);
