@@ -47,7 +47,7 @@
             android:src="@drawable/ic_approvalfilter_icon"
             android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/dimen_20dp"
+            android:padding="@dimen/dimen_10dp"
             android:id="@+id/img_filter_image"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content" />

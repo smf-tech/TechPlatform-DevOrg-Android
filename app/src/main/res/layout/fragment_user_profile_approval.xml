@@ -40,7 +40,7 @@
                     android:layout_alignTop="@+id/img_user_profle"
                     android:layout_toRightOf="@+id/img_user_profle"
                     android:hint="@string/approvals"
-                    android:text="First Name:"
+                    android:text="Name:"
                     android:textStyle="bold" />
 
                 <com.platform.view.customs.TextViewRegular

@@ -34,7 +34,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:padding="@dimen/dimen_05dp"
-                        android:src="@drawable/ic_forms" />
+                        android:src="@drawable/ic_greyform" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

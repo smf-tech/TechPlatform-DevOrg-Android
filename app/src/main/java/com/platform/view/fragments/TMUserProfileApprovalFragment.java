@@ -205,7 +205,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
         //tvProject.setText("Org"+": "+data.get(0).getOrg_id().getName());
         if (data.get(0).getOrg_id()!=null) {
             if (data.get(0).getOrg_id().getName() != null) {
-                addDynamicTextsTitels("Org");
+                addDynamicTextsTitels("Organisation");
 
                 addDynamicTextsValues(data.get(0).getOrg_id().getName());
             }
