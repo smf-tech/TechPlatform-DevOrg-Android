@@ -197,7 +197,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(new TMUserPendingFragment());
+                    adapter.addFragment(new TMUserLandingFragment());
                     break;
 
                 case Constants.Home.REPORTS:
