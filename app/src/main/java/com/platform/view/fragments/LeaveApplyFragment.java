@@ -71,9 +71,11 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private EditText edtReason;
     private EditText btnStartDate;
     private EditText btnEndDate;
+    private TextView tvCategoryLabel;
     private final Calendar c = Calendar.getInstance();
     private String applyType;
     private int dayLeaveType = -1;
+    public boolean isEdit = false;
     private LeavesPresenter presenter;
     private ArrayList<LeaveDetail> leaveBalance = new ArrayList<>();
     public static ArrayList<Integer> leaveBackground = new ArrayList<>();
@@ -104,6 +106,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         rvLeaveCategory = view.findViewById(R.id.rv_leave_category);
 
         edtReason = view.findViewById(R.id.edt_reason);
+        tvCategoryLabel = view.findViewById(R.id.tv_category);
 
         btnHalfDay = view.findViewById(R.id.btn_half_day);
 
@@ -127,7 +130,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             String leaveDetail = bundle.getString("leaveDetail");
-            boolean isEdit = bundle.getBoolean("isEdit");
+            isEdit = bundle.getBoolean("isEdit");
             applyType = bundle.getString("apply_type");
             leaveBalance.clear();
             leaveBackground.clear();
@@ -189,7 +192,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                     }
                 }
                 btnApplyLeaves.setVisibility(View.GONE);
-                edtReason.setClickable(false);
+                edtReason.setEnabled(false);
             }else{
                 btnHalfDay.setOnClickListener(this);
                 btnFullDay.setOnClickListener(this);
@@ -198,6 +201,8 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             }
             if(applyType.equalsIgnoreCase("Comp-Off")){
                 rvLeaveCategory.setVisibility(View.GONE);
+                tvCategoryLabel.setVisibility(View.GONE);
+
             }
         }
     }
@@ -275,7 +280,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             case R.id.btn_apply_leave:
                 if(applyType.equalsIgnoreCase("Leave")){
                     applyForLeave();
-                }else if(applyType.equalsIgnoreCase("")){
+                }else if(applyType.equalsIgnoreCase("Comp-Off")){
                     applyForCompOff();
                 }
 
@@ -335,7 +340,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     private void applyForCompOff() {
         if (dayLeaveType == -1 || TextUtils.isEmpty(btnStartDate.getText().toString())
-                || TextUtils.isEmpty(btnEndDate.getText().toString()) ) {
+                || TextUtils.isEmpty(btnEndDate.getText().toString()) || TextUtils.isEmpty(edtReason.getText().toString())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please enter correct details.",
                     Snackbar.LENGTH_LONG);
@@ -359,34 +364,16 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @SuppressLint("SimpleDateFormat")
     private void applyForLeave() {
         if (selectedLeaveCatgory == null || dayLeaveType == -1 || TextUtils.isEmpty(btnStartDate.getText().toString())
-                || TextUtils.isEmpty(btnEndDate.getText().toString()) ) {
+                || TextUtils.isEmpty(btnEndDate.getText().toString()) || TextUtils.isEmpty(edtReason.getText().toString())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please enter correct details.",
                     Snackbar.LENGTH_LONG);
         }
         else {
-        /*SimpleDateFormat sdf = new SimpleDateFormat(Constants.DAY_MONTH_YEAR, Locale.getDefault());
-        Date startDate = null;
-        Date endDate = null;
-
-        JsonObject jsonData = new JsonObject();
-        jsonData.addProperty("userId", "12345");
-        try {
-            startDate = sdf.parse(btnStartDate.getText().toString());
-        } catch (ParseException e) {
-            Log.e("TAG", "ParseException");
-        }
-        try {
-            endDate = sdf.parse(btnEndDate.getText().toString());
-        } catch (ParseException e) {
-            Log.e("TAG", "ParseException");
-        }*/
-
             LeaveData leaveData = new LeaveData();
             leaveData.setUserId(Util.getUserObjectFromPref().getId());
             leaveData.setLeaveType(selectedLeaveCatgory);
             leaveData.setStartdate(Util.dateTimeToTimeStamp(btnStartDate.getText().toString(), "00:00"));
-
             leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
             if (dayLeaveType == 0) {
                 leaveData.setFullHalfDay("half day");
@@ -432,7 +419,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         }, mYear, mMonth, mDay);
 
         dateDialog.setTitle(context.getString(R.string.select_date_title));
-        dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        //dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         dateDialog.show();
     }
 
@@ -514,7 +501,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             });
         }
 
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.show();      // if decline button is clicked, close the custom dialog
     }
 
@@ -540,7 +527,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void onFailureListener(String requestID,String message) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), message,
+                            .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
         }
     }
@@ -549,7 +536,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void onErrorListener(String requestID,VolleyError error) {
         if (getActivity() != null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), error.getMessage(),
+                            .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
         }
     }

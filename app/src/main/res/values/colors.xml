@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#6246e7</color>
-    <color name="colorPrimary">#6246e7</color>
+    <color name="colorPrimaryDark">#1565c0</color>
+    <color name="colorPrimary">#1565c0</color>
     <color name="colorAccent">#4daaf6</color>
 
+
+    <color name="colorselect">#6f00ff</color>
+    <color name="colordeselect">#1053a0</color>
+    <color name="color_db_tab_select">#4086f5</color>
     <color name="black_green">#093245</color>
     <color name="semi_black">#1A1A1A</color>
     <!--<color name="darker_gray">#434343</color>-->
     <color name="dark_grey">#3E3E3E</color>
+    <color name="grey">#a0a0a0</color>
     <color name="light_grey">#909090</color>
-    <color name="lighter_grey">#FBFBFB</color>
+    <color name="lighter_grey">#f1f5f8</color>
     <color name="lighter_grey_tab">#F0EFEF</color>
     <color name="lighter_grey_transparent">#60EBEBEB</color>
     <!--<color name="lightest_grey">#EDEDED</color>-->
@@ -75,7 +80,7 @@
     <color name="dialog_btn_border">#333333</color>
 
     <color name="leave_form_text_color">#3785D1</color>
-    <color name="brick_red">#fc7660</color>
+    <color name="brick_red">#ff5c6b</color>
 
     <color name="form_category_selected">#D2E1F8</color>
     <color name="card_view_border">#C1C4C6</color>

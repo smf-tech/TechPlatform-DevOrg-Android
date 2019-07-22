@@ -77,7 +77,15 @@ public class EventDetailPresenter implements EventDetailListener {
 
     @Override
     public void onAttendanceCodeSubmitted(String response) {
-
+        if (activity != null) {
+            activity.hideProgressBar();
+            if (!TextUtils.isEmpty(response)) {
+                GetAttendanceCodeResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, GetAttendanceCodeResponse.class);
+                if(data!= null){
+                    onFailureListener(data.getMessage());
+                }
+            }
+        }
     }
 
     @Override

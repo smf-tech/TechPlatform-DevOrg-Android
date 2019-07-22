@@ -50,6 +50,11 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
     private AlertDialog dialogNotApproved;
     private Object mSyncObserverHandle;
     private boolean isSyncRequired;
+    private final int[] tabIcons = {
+            R.drawable.ic_home_icon_tab,
+            R.drawable.ic_stories_icon_tab,
+            R.drawable.ic_connect_icon_tab
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,6 +153,10 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
             tabLayout.setupWithViewPager(viewPager);
 
+            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+
             return;
         }
 
@@ -213,6 +222,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
 
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
             tabLayout.setupWithViewPager(viewPager);
+            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         }
     }
 

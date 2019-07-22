@@ -5,21 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_100dp"
-    android:layout_marginStart="@dimen/dimen_15dp"
-    android:layout_marginEnd="@dimen/dimen_15dp"
-    android:layout_marginBottom="@dimen/dimen_05dp"
-    android:background="@color/white"
-    android:elevation="@dimen/dimen_02dp"
-    android:paddingStart="@dimen/dimen_10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/lighter_grey"
     android:gravity="center"
     tools:ignore="RtlSymmetry">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        app:cardCornerRadius="@dimen/dimen_10dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
     <LinearLayout
         android:id="@+id/leave_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_toStartOf="@id/img_edit">
+        android:layout_toStartOf="@id/img_edit"
+        android:layout_marginStart="@dimen/dimen_20dp">
 
         <TextView
             android:id="@+id/tv_leave_header"
@@ -28,18 +39,17 @@
             style="@style/StyleStatus"
             android:text="Approved"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16"
+            android:textSize="@dimen/text_size_14"
             tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/tv_leave_sub_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:text="from 4 June to 5 June."
             android:textColor="@color/attendance_list_item"
-            android:textSize="@dimen/text_size_16"
+            android:textSize="@dimen/text_size_12"
             tools:ignore="RelativeOverlap" />
 
     </LinearLayout>
@@ -73,12 +83,15 @@
 
     <ImageView
         android:id="@+id/img_delete"
-        android:layout_width="15dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/dimen_15dp"
         android:layout_marginEnd="@dimen/dimen_15dp"
-        android:background="@drawable/ic_delete"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ic_delete_icon_gray_bg"
         android:contentDescription="@string/content_description" />
 
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

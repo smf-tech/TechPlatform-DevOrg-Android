@@ -296,7 +296,7 @@
     <string name="btn_leave_apply_str">छुट्टी के लिए आवेदन करें</string>
     <string name="leaves_applied">Leave Applied</string>
     <string name="same_day">प्रत्येक माह के लिए एक ही तारीख</string>
-    <string name="link_leave_apply">चेक छुट्टी विवरण</string>
+    <string name="link_leave_apply">छुट्टी विवरण</string>
     <string name="leave_details">छुट्टी विवरण</string>
     <string name="tv_no_leaves_balance">कोई छुट्टी शेष नहीं!</string>
     <string name="tab_pending_leaves">अपूर्ण</string>
@@ -327,6 +327,8 @@
     <string name="holiday_list">छुट्टी की सूची</string>
     <string name="edit_leave">अवकाश संपादित करें</string>
     <string name="apply_leave">छुट्टी के लिए आवेदन करें</string>
+    <string name="leave_deleted_msg">छुट्टी सफलतापूर्वक हटा दी गई है।</string>
+    <string name="no_leave_applied_msg">आपने इस महीने में कोई छुट्टी आवेदन नहीं दी है।</string>
     <string name="compoff_request">Comp-Off के लिए अनुरोध</string>
     <string name="is_attendance_required">क्या उपस्थिति आवश्यक है</string>
     <string name="is_registration_required">क्या पंजीकरण आवश्यक है</string>
@@ -345,5 +347,6 @@
     <string name="generate_code">Generate attendance code</string>
     <string name="details">Details</string>
     <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
+    <string name="venue">Venue</string>
 
 </resources>

@@ -82,7 +82,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dimen_10dp"
-        android:background="@drawable/bg_button_circle"
+        android:background="@drawable/bg_primary_circular_button"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_plus" />
 </RelativeLayout>
