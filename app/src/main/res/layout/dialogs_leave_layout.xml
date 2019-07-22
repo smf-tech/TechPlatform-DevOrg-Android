@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:elevation="@dimen/dimen_03dp"
-    android:background="@drawable/bg_grey_dialog_box"
-    android:paddingStart="@dimen/dimen_30dp"
-    android:paddingEnd="@dimen/dimen_30dp"
-    android:paddingTop="@dimen/dimen_40dp"
-    android:paddingBottom="@dimen/dimen_75dp">
+    android:orientation="vertical">
 
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp"
+        android:layout_margin="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:elevation="@dimen/dimen_03dp"
+            android:paddingStart="@dimen/dimen_30dp"
+            android:paddingEnd="@dimen/dimen_30dp"
+            android:paddingTop="@dimen/dimen_40dp"
+            android:paddingBottom="@dimen/dimen_75dp">
+
+    <com.platform.view.customs.TextViewBold
         android:id="@+id/tv_dialog_title"
         android:layout_marginBottom="@dimen/dimen_30dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/dark_grey"
         android:textSize="@dimen/text_size_14"
-        android:textStyle="bold" />
+        android:text="akjsdckjdbcwjbcehwebchehbce" />
 
-    <TextView
+    <com.platform.view.customs.TextViewRegular
         android:id="@+id/tv_dialog_subtext"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/dark_grey"
+        android:text="sjbdckdbciweycvjiasbxiuasjnxiu"
         android:textSize="@dimen/text_size_14" />
 
     <LinearLayout
@@ -43,8 +55,7 @@
             android:layout_height="@dimen/dimen_40dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_button"
-            android:textColor="@color/white"
-            tools:ignore="ButtonStyle" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_dialog_1"
@@ -55,7 +66,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="@dimen/dimen_15dp"
             android:background="@drawable/bg_button"
-            android:textColor="@color/white"
-            tools:ignore="ButtonStyle" />
+            android:textColor="@color/white" />
     </LinearLayout>
+</LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
