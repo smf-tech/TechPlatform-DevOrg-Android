@@ -114,7 +114,7 @@
                 android:layout_gravity="bottom"
                 android:background="@color/white"
                 android:gravity="bottom"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="horizontal">
 
                 <Button
