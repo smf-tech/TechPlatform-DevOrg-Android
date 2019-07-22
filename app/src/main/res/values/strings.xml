@@ -242,6 +242,7 @@
     <!--Events & Tasks-->
     <string name="events">Events</string>
     <string name="all_events">All Events</string>
+
     <string name="today_events">Today\'s Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
@@ -405,5 +406,6 @@
     <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
     <string name="delayedin_checkin">Delayed in chek in and found another location</string>
     <string name="delayin_checkin_title">please provide a reason</string>
+    <string name="see_details">See Details</string>
 
 </resources>

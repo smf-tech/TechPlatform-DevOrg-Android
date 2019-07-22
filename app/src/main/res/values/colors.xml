@@ -88,6 +88,6 @@
     <color name="button_background_color">#9a80ff</color>
     <color name="button_gray_color">#ebebeb</color>
 
-    <color name="attendance_rect_back">#6085fc</color>
+    <color name="attendance_rect_back">#b764dd</color>
 
 </resources>

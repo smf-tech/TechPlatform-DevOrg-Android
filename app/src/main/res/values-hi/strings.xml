@@ -347,5 +347,6 @@
     <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
     <string name="delayedin_checkin">Delayed in chek in and found</string>
     <string name="delayin_checkin_title">please provide a reason</string>
+    <string name="see_details">See Details</string>
 
 </resources>

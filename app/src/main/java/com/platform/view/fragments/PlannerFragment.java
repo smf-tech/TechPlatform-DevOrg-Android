@@ -256,8 +256,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
 
         // comment by deepak on 1-07-2019
-        //plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-        //plannerFragmentPresenter.getPlannerData();
+        plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+        plannerFragmentPresenter.getPlannerData();
 
         RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);

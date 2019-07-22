@@ -938,11 +938,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             Bundle bundle= msg.getData();
             String success=bundle.getString("success");
             Log.i("Planner","111"+success);
-
             // clear all table values
-
-
-
         }
     };
 

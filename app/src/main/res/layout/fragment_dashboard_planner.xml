@@ -117,28 +117,42 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:id="@+id/ly_attendance">
+
+
                     <LinearLayout
                         android:id="@+id/lin_attendance"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dimen_05dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mark"
-                            />
-                        <TextView
                             android:id="@+id/tv_attendance_title"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignStart="@+id/lin_attendance"
                             android:layout_alignTop="@+id/lin_attendance"
                             android:layout_gravity="center_vertical"
-                            android:text="Attendance"
+                            android:text="Mark Attendance"
                             android:paddingLeft="3dp"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tv_attendance_details"
+                            style="@style/StyleLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/see_details"
+
+                            />
+
 
 
                     </LinearLayout>
@@ -149,8 +163,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:elevation="2dp"
-                        android:background="@drawable/bg_circular_rect_white"
-                        android:layout_margin="@dimen/dimen_05dp">
+                        android:layout_margin="@dimen/dimen_05dp"
+                        app:cardCornerRadius="@dimen/dimen_10dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -169,6 +183,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="2.5"
                                     android:background="@drawable/circular_rect_atten"
+
                                     android:padding="@dimen/dimen_05dp">
 
                                     <ImageView
@@ -198,6 +213,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/txt_timer"
                                         android:layout_marginStart="@dimen/dimen_10dp"
+                                        android:layout_marginTop="@dimen/dimen_20dp"
                                         android:text="Total Hrs"
                                         android:textColor="@color/white"
                                         android:textStyle="normal" />
@@ -315,25 +331,7 @@
 
 
                             </LinearLayout>
-                            <RelativeLayout
-                                android:layout_below="@+id/card_attendance"
-                                android:id="@+id/lin_attendance_details"
-                                android:layout_width="match_parent"
-                                android:layout_margin="@dimen/dimen_05dp"
-                                android:layout_height="wrap_content">
-                                <TextView
-                                    android:id="@+id/tv_attendance_details"
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentStart="true"
 
-                                    android:layout_marginBottom="@dimen/dimen_15dp"
-                                    android:text="@string/attendance_details"
-                                    android:textColor="@color/black"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/text_size_14" />
-
-                            </RelativeLayout>
                         </LinearLayout>
 
 
