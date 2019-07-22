@@ -233,9 +233,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         deleteSharedPreferece();
 
         Toast.makeText(context, "I am in OnCreate", Toast.LENGTH_SHORT).show();
-
-
-
     }
 
     private void initCardView() {
