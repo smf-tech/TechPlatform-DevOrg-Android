@@ -29,7 +29,7 @@
                 android:contentDescription="@string/content_description"
                 android:background="@drawable/ic_back_white" />
 
-            <com.platform.view.customs.TextViewBold
+            <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
                 android:lines="2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/opensans"/>
 
             <ImageView
                 android:id="@+id/toolbar_action"

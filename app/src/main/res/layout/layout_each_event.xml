@@ -29,7 +29,7 @@
                 android:background="@drawable/bg_circular_rect_pink"
                 android:padding="@dimen/dimen_05dp">
 
-                <com.platform.view.customs.TextViewBold
+                <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,9 +38,10 @@
                     android:maxLength="11"
                     android:text="03 may,\n2019"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/opensans"/>
 
-                <com.platform.view.customs.TextViewBold
+                <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -50,7 +51,8 @@
                     android:maxLength="11"
                     android:text="10:30 AM"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/opensans"/>
 
             </RelativeLayout>
 
@@ -60,7 +62,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="7.5">
 
-                <com.platform.view.customs.TextViewBold
+                <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,9 +71,10 @@
                     android:singleLine="true"
                     android:text="Title "
                     android:textSize="@dimen/text_size_14"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/opensans"/>
 
-                <com.platform.view.customs.TextViewRegular
+                <TextView
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,10 +85,11 @@
                     android:text="SB road, pune, maharashtra."
                     android:drawableLeft="@drawable/ic_venue"
                     android:drawablePadding="@dimen/dimen_05dp"
-                    android:textSize="@dimen/text_size_11" />
+                    android:textSize="@dimen/text_size_11"
+                    android:fontFamily="@font/opensans"/>
 
 
-                <com.platform.view.customs.TextViewRegular
+                <TextView
                     android:id="@+id/tv_owner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,9 +102,9 @@
                     android:visibility="gone"
                     android:drawableLeft="@drawable/ic_person"
                     android:drawablePadding="@dimen/dimen_05dp"
-                    />
+                    android:fontFamily="@font/opensans"/>
 
-                <com.platform.view.customs.TextViewRegular
+                <TextView
                     android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,7 +116,8 @@
                     android:textColor="@color/white"
                     android:maxLength="22"
                     android:textSize="@dimen/text_size_11"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:fontFamily="@font/opensans"/>
 
             </RelativeLayout>
 
