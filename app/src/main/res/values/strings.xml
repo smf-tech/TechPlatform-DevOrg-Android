@@ -334,6 +334,7 @@
     <string name="event_meetings_tab_click" translatable="false">Meetings tab clicked</string>
     <string name="event_approvals_tab_click" translatable="false">Approvals tab clicked</string>
     <string name="event_reports_tab_click" translatable="false">Reports tab clicked</string>
+    <string name="web_module_tab_click" translatable="false">Webmodule tab clicked</string>
     <string name="repeat">Repeat</string>
     <string name="interval">Interval</string>
     <string name="which_days">On which days</string>
@@ -346,7 +347,7 @@
     <string name="total">Total </string>
     <string name="btn_leave_apply_str">Apply for a leave</string>
     <string name="leaves_applied">Leave Applied</string>
-    <string name="link_leave_apply"> Check Leave Details</string>
+    <string name="link_leave_apply">Leave Details</string>
 
     <string name="leave_details">Leave Details</string>
     <string name="tv_no_leaves_balance">No Leave balance!</string>
@@ -381,6 +382,8 @@
     <string name="holiday_list">Holiday List</string>
     <string name="edit_leave">Edit Leave</string>
     <string name="apply_leave">Apply For Leave</string>
+    <string name="leave_deleted_msg">Leave has been deleted successfully.</string>
+    <string name="no_leave_applied_msg">You have not applied any leave in this month.</string>
     <string name="compoff_request">Request For Comp-Off</string>
     <string name="is_attendance_required">Is attendance required</string>
     <string name="is_registration_required">Is registration required</string>

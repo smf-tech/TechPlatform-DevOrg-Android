@@ -590,7 +590,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_approved_icon_db));
                 break;
             case 4:
-                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_rejcted_icon_db));
+                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_rejected_icon_db));
                 break;
         }
     }

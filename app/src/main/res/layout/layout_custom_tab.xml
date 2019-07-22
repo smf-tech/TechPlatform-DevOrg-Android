@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tab_container"
-    android:layout_width="@dimen/dimen_50dp"
-    android:layout_height="@dimen/dimen_50dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tab"
@@ -11,11 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/dimen_10dp"
-        android:drawablePadding="@dimen/dimen_05dp"
+        android:drawablePadding="@dimen/dimen_10dp"
+        android:paddingStart="@dimen/dimen_20dp"
+        android:paddingEnd="@dimen/dimen_20dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:paddingTop="@dimen/dimen_10dp"
         android:gravity="center_horizontal"
         android:textColor="@color/selector_tab_text"
-        android:textSize="@dimen/text_size_14"
-        android:textStyle="bold"
+        android:background="@drawable/bg_tab_madules"
         tools:ignore="RelativeOverlap" />
 
     <TextView

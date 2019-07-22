@@ -53,7 +53,6 @@ public class LeavePlannerFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
-
     }
 
     private void initView(View view) {

@@ -10,17 +10,18 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_55dp"
         app:tabGravity="center"
-        app:tabIndicatorColor="@color/white"
+        android:background="@color/colorPrimary"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_bottom_shadow"
-        android:contentDescription="@string/content_description" />
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/ic_bottom_shadow"-->
+        <!--android:contentDescription="@string/content_description" />-->
 
     <com.platform.view.customs.CustomViewPager
         android:id="@+id/view_pager"

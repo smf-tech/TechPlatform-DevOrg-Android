@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/lighter_grey">
 
     <ScrollView
@@ -247,65 +248,76 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true">
 
-
                     </RelativeLayout>
-
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_200dp"
+                    android:layout_height="@dimen/dimen_235dp"
                     android:layout_below="@+id/ly_task"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_05dp">
 
-                    <TextView
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_235dp"
+                        android:background="@color/white"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        app:cardCornerRadius="@dimen/dimen_10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
                         android:id="@+id/tv_leaves_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginStart="@dimen/dimen_10dp"
                         android:text="@string/leave_details" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_leave_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/card_fotte_leave"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:orientation="horizontal"
-                        android:layout_below="@+id/tv_leaves_label" />
+                        android:layout_below="@+id/tv_leaves_label"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:orientation="horizontal"/>
 
                     <RelativeLayout
                         android:id="@+id/card_fotte_leave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true">
+                        android:layout_below="@+id/rv_leave_balance"
+                        android:layout_marginTop="@dimen/dimen_10dp">
 
                         <TextView
                             android:id="@+id/tv_link_check_leaves"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="@style/StyleLabel"
+                            android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:layout_margin="@dimen/dimen_10dp"
-                            android:text="@string/link_leave_apply"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_16" />
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:text="@string/link_leave_apply" />
 
                         <TextView
                             android:id="@+id/fab_add_leaves"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/dimen_10dp"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
-                            android:src="@android:drawable/ic_input_add"
                             style="@style/StyleLabel"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
                             android:text="@string/apply_leave" />
                     </RelativeLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </RelativeLayout>
         </RelativeLayout>
 

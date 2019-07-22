@@ -55,7 +55,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private List<LeaveDetail> leaveBalance = new ArrayList<>();
     public static ArrayList<Integer> leaveBackground = new ArrayList<>();
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

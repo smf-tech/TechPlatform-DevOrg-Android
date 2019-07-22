@@ -201,6 +201,19 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         rvFormsStatusCount.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvFormsStatusCount.setAdapter(formsDashboardAdapter);
 
+        rvFormsStatusCount.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy < -5 && txtViewAllForms.getVisibility() != View.VISIBLE) {
+                    txtViewAllForms.setVisibility(View.VISIBLE);
+                } else if (dy > 5 && txtViewAllForms.getVisibility() == View.VISIBLE) {
+                    txtViewAllForms.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
     }
 
 //    private void getPartiallySavedForms() {
