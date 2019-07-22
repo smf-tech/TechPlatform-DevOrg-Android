@@ -94,7 +94,6 @@ import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
     private View plannerView;
-
     TextView tvCheckInTime;
     TextView tvCheckOutTime;
     TextView tvAttendanceDetails;
