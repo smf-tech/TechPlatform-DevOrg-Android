@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_circular_rect_white"
+            android:padding="@dimen/dimen_08dp"
+            android:weightSum="10">
+
+            <RelativeLayout
+                android:id="@+id/ly_schedule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:background="@drawable/circular_rect_atten"
+                android:padding="@dimen/dimen_05dp">
+
+                <ImageView
+                    android:id="@+id/tv_date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clock_shape"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_date_label"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+
+                    android:text="Total Hours"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/iv_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_date"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:contentDescription="@string/content_description"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="8:30"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="8">
+
+                <Button
+                    android:id="@+id/bt_check_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:background="@drawable/bg_button_switch"
+                    android:text="@string/check_in"
+                    android:layout_marginLeft="20dp"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_on_selection"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_check_in_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bt_check_in"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:text="test1"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/bt_checkout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toRightOf="@+id/bt_check_in"
+                    android:background="@drawable/bg_button_switch"
+                    android:text="@string/check_out"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_on_selection"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_check_out_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bt_checkout"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="test2"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+
+
+
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

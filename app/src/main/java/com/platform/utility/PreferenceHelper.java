@@ -2,11 +2,12 @@ package com.platform.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.BoringLayout;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class PreferenceHelper {
 
-    private static final String PREFER_NAME = "Platform";
+    public static final String PREFER_NAME = "Platform";
     public static final String TOKEN = "Token";
     public static final String IS_PENDING = "IS_PENDING";
     public static final String NON_PENDING = "NON_PENDING";
@@ -23,7 +24,51 @@ public class PreferenceHelper {
         editor.apply();
     }
 
+    public void totalHours(String key,Boolean value){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(key,value);
+        editor.apply();
+
+    }
+    public boolean showTotalHours(String key){
+        return pref.getBoolean(key,false);
+    }
+
+
     public String getString(String key) {
         return pref.getString(key, "");
+    }
+
+
+    public void saveCheckInTime(String key,CharSequence value){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key,(String) value);
+        editor.apply();
+    }
+    public String getCheckInTime(String key){
+
+       return pref.getString(key," ");
+    }
+
+
+    public void saveCheckInButtonText(String keyCheckintext, String checkInText) {
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putString(keyCheckintext,checkInText);
+        editor.apply();
+    }
+
+    public String getCheckInButtonText(String textKey){
+        return pref.getString(textKey,"CheckIn");
+
+    }
+
+    public void saveCheckOutText(String keyCheckouttext, String checkOutText) {
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putString(keyCheckouttext,checkOutText);
+        editor.apply();
+    }
+
+    public String getCheckOutText(String key){
+        return pref.getString(key,"CheckOut");
     }
 }

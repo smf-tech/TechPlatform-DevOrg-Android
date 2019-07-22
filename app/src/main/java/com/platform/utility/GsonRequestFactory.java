@@ -89,6 +89,7 @@ public class GsonRequestFactory<T> extends JsonRequest<T> {
                     && error.networkResponse.statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 Log.e(TAG, "Unauthorized");
             } else {
+
                 errorListener.onErrorResponse(error);
             }
         } catch (Exception e) {

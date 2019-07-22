@@ -365,6 +365,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
             userInfo.setUserLastName(String.valueOf(etUserLastName.getText()).trim());
             userInfo.setUserBirthDate(Util.getDateInLong(String.valueOf(etUserBirthDate.getText()).trim()));
+            //userInfo.setUserMobileNumber("7741980871");
             userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);
