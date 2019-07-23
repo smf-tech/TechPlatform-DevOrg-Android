@@ -94,9 +94,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         progressBarLayout = plannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = plannerView.findViewById(R.id.pb_profile_act);
-        plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-        plannerFragmentPresenter.getPlannerData();
-
+        if(Util.isConnected(getContext())) {
+            plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+            plannerFragmentPresenter.getPlannerData();
+        }else{
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
         RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
         RelativeLayout rl_attendance = plannerView.findViewById(R.id.ly_attendance);
@@ -227,7 +230,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
             }
         }
-
     }
 
     public void setAttendaceView() {
@@ -279,17 +281,25 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                getActivity().startActivity(intentEventList);
+                if(Util.isConnected(getContext())) {
+                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                    intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                    getActivity().startActivity(intentEventList);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
         btAddEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                getActivity().startActivity(intentCreateEvent);
+                if(Util.isConnected(getContext())) {
+                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                    getActivity().startActivity(intentCreateEvent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
 
@@ -298,23 +308,31 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void setTaskView() {
 
         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_task);
-        TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_task_list);
-        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_task);
+        TextView tvAllTaskDetail = plannerView.findViewById(R.id.tv_all_task_list);
+        TextView btAddTasks = plannerView.findViewById(R.id.bt_add_task);
 
-        tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
+        tvAllTaskDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                getActivity().startActivity(intentEventList);
+                if(Util.isConnected(getContext())) {
+                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                    intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                    getActivity().startActivity(intentEventList);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
-        btAddEvents.setOnClickListener(new View.OnClickListener() {
+        btAddTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                getActivity().startActivity(intentCreateEvent);
+                if(Util.isConnected(getContext())) {
+                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                    getActivity().startActivity(intentCreateEvent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
 
@@ -327,27 +345,32 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         tvCheckLeaveDetailsLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                intent.putExtra("title", getActivity().getString(R.string.leave));
-                intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-                getActivity().startActivity(intent);
+                if(Util.isConnected(getContext())) {
+                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                    intent.putExtra("title", getActivity().getString(R.string.leave));
+                    intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+                    getActivity().startActivity(intent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
         imgClickAddLeaves.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                intent.putExtra("title", getActivity().getString(R.string.apply_leave));
-                intent.putExtra("isEdit", false);
-                intent.putExtra("apply_type", "Leave");
-                intent.putExtra("switch_fragments", "LeaveApplyFragment");
-                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-                getActivity().startActivity(intent);
+                if(Util.isConnected(getContext())) {
+                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                    intent.putExtra("title", getActivity().getString(R.string.apply_leave));
+                    intent.putExtra("isEdit", false);
+                    intent.putExtra("apply_type", "Leave");
+                    intent.putExtra("switch_fragments", "LeaveApplyFragment");
+                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+                    getActivity().startActivity(intent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
-
-
     }
-
 }

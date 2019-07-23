@@ -133,12 +133,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             startActivity(intent);
         });
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            if(bundle.getSerializable("leaveBalance")!=null) {
-                leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
+        if(Util.isConnected(getContext())){
+            Bundle bundle = this.getArguments();
+            if (bundle != null) {
+                if(bundle.getSerializable("leaveBalance")!=null) {
+                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
+                }
             }
-        }
 //        leavesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -153,13 +154,17 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 //                }
 //            }
 //        });
-        //Date d = new Date();
+            //Date d = new Date();
 //        presenter = new LeavesPresenter(this);
 //        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
-        setListData();
-        //setTabData();
-        setUIData();
-        //filterListData(Constants.Leave.PENDING_STATUS);
+            setListData();
+            //setTabData();
+            setUIData();
+            //filterListData(Constants.Leave.PENDING_STATUS);
+        }else {
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
+
     }
 
     /*private void setTabData() {
