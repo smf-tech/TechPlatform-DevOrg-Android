@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/lighter_grey">
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,7 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_margin="@dimen/dimen_10dp">
+        android:layout_margin="@dimen/dimen_10dp"
+        app:cardCornerRadius="@dimen/dimen_10dp">
 
         <LinearLayout
             xmlns:tools="http://schemas.android.com/tools"
@@ -167,6 +169,26 @@
             android:textColorHint="@color/leave_form_text_color"
             android:textSize="@dimen/text_size_13"
             tools:ignore="RtlSymmetry,TextFields,UnusedAttribute" />
+
+            <EditText
+                android:id="@+id/edt_rejected_reason"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_75dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:background="@drawable/leave_form_view_unfocused"
+                android:gravity="top"
+                android:hint="@string/rejected_reason"
+                android:importantForAutofill="no"
+                android:paddingStart="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:textAllCaps="false"
+                android:textColor="@color/leave_form_text_color"
+                android:textColorHint="@color/leave_form_text_color"
+                android:textSize="@dimen/text_size_13"
+                tools:ignore="RtlSymmetry,TextFields,UnusedAttribute"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

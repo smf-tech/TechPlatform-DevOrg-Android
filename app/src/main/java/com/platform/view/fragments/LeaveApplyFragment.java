@@ -68,7 +68,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private Button btnFullDay;
     private Button btnApplyLeaves;
 
-    private EditText edtReason;
+    private EditText edtReason,edtRejectedReason;
     private EditText btnStartDate;
     private EditText btnEndDate;
     private TextView tvCategoryLabel;
@@ -106,6 +106,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         rvLeaveCategory = view.findViewById(R.id.rv_leave_category);
 
         edtReason = view.findViewById(R.id.edt_reason);
+        edtRejectedReason = view.findViewById(R.id.edt_rejected_reason);
         tvCategoryLabel = view.findViewById(R.id.tv_category);
 
         btnHalfDay = view.findViewById(R.id.btn_half_day);
@@ -193,6 +194,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 }
                 btnApplyLeaves.setVisibility(View.GONE);
                 edtReason.setEnabled(false);
+                edtRejectedReason.setEnabled(false);
             }else{
                 btnHalfDay.setOnClickListener(this);
                 btnFullDay.setOnClickListener(this);
@@ -209,7 +211,11 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     private void setUserDataForEdit(LeaveData leaveDetailModel) {
 
-        edtReason.setText(leaveDetailModel.getReason());
+        edtReason.setText("Leave Reason: "+leaveDetailModel.getReason());
+        if(leaveDetailModel.getRejectionReason()!=null && leaveDetailModel.getRejectionReason().length()>0 ){
+            edtRejectedReason.setVisibility(View.VISIBLE);
+            edtRejectedReason.setText("Rejected Reason: "+leaveDetailModel.getRejectionReason());
+        }
         btnStartDate.setText(getDateFromTimestamp(leaveDetailModel.getStartdate(), DAY_MONTH_YEAR));
         btnEndDate.setText(getDateFromTimestamp(leaveDetailModel.getEnddate(), DAY_MONTH_YEAR));
 
@@ -340,7 +346,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     private void applyForCompOff() {
         if (dayLeaveType == -1 || TextUtils.isEmpty(btnStartDate.getText().toString())
-                || TextUtils.isEmpty(btnEndDate.getText().toString()) || TextUtils.isEmpty(edtReason.getText().toString())) {
+                || TextUtils.isEmpty(btnEndDate.getText().toString()) || TextUtils.isEmpty(edtReason.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please enter correct details.",
                     Snackbar.LENGTH_LONG);
@@ -364,7 +370,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @SuppressLint("SimpleDateFormat")
     private void applyForLeave() {
         if (selectedLeaveCatgory == null || dayLeaveType == -1 || TextUtils.isEmpty(btnStartDate.getText().toString())
-                || TextUtils.isEmpty(btnEndDate.getText().toString()) || TextUtils.isEmpty(edtReason.getText().toString())) {
+                || TextUtils.isEmpty(btnEndDate.getText().toString()) || TextUtils.isEmpty(edtReason.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please enter correct details.",
                     Snackbar.LENGTH_LONG);

@@ -293,6 +293,7 @@
     <string name="start_date">प्रारंभ तारीख</string>
     <string name="end_date">शेवटची तारीख</string>
     <string name="reason">कारण</string>
+    <string name="rejected_reason">नाकारलेले कारण</string>
     <string name="check_in">चेक इन</string>
     <string name="check_out">चेक आउट</string>
     <string name="holiday_list_title">सुट्टीची यादी 2019</string>

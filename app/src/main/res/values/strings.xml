@@ -361,6 +361,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="reason">Reason</string>
+    <string name="rejected_reason">Rejected Reason</string>
     <string name="holiday_list_title">Holiday List for 2019</string>
 
     <!-- TODO: Remove or change this placeholder text -->

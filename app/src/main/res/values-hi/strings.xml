@@ -308,6 +308,7 @@
     <string name="start_date">आरंभ तिथि</string>
     <string name="end_date">अंतिम तिथि</string>
     <string name="reason">कारण</string>
+    <string name="rejected_reason">अस्वीकृत कारण</string>
     <string name="check_in">चेक इन</string>
     <string name="check_out">चेक आउट</string>
     <string name="holiday_list_title">2019 के लिए अवकाश सूची</string>
