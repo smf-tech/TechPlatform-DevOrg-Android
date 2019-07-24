@@ -76,4 +76,14 @@ public class Urls {
         public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
         public static final String HOLIDAY_LIST= "api/getYearHolidayList";
     }
+
+    public class Attendance
+    {
+        public static final String GET_ALL_MONTH="api/getuserattendance/";
+        public static final String SUBMIT_ATTENDANCE="/api/insertAttendance";
+
+    }
+    public class ContentManagement{
+        public static final String GET_CONTENT_DATA="api/contentDashboard";
+    }
 }

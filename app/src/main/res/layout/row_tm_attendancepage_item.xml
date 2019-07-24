@@ -18,65 +18,151 @@
             android:gravity="center_vertical"
             android:layout_margin="@dimen/dimen_10dp"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
+            <com.platform.view.customs.TextViewBold
+                android:layout_width="@dimen/dimen_80dp"
                 android:id="@+id/tv_title_checkin"
+                android:text="Check in :"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+            <com.platform.view.customs.TextViewRegular
+                android:layout_width="match_parent"
+                android:id="@+id/tv_title_checkin_value"
                 android:text="Check in"
+                android:layout_toRightOf="@+id/tv_title_checkin"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_title_14"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="wrap_content"
+
+            <com.platform.view.customs.TextViewBold
                 android:id="@+id/tv_address_checkin"
-                android:text="Address"
-                android:textStyle="bold"
+                android:layout_width="@dimen/dimen_80dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_title_checkin"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_16"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/tv_title_checkout"
-                android:text="Check out"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:text="Address:"
+                android:textSize="@dimen/text_size_title_14"
+                android:textStyle="bold" />
+            <com.platform.view.customs.TextViewRegular
+                android:layout_width="match_parent"
+                android:id="@+id/tv_address_checkin_value"
+                android:text=" "
                 android:textStyle="bold"
-                android:layout_below="@+id/tv_address_checkin"
+                android:maxLines="4"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="@dimen/text_size_small_10"
+                app:autoSizeMaxTextSize="@dimen/text_size_title_14"
+                app:autoSizeStepGranularity="1sp"
+                android:layout_toRightOf="@+id/tv_address_checkin"
+                android:layout_alignBaseline="@+id/tv_address_checkin"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_16"
+
                 android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="wrap_content"
+
+            <com.platform.view.customs.TextViewBold
+                android:layout_width="@dimen/dimen_80dp"
+                android:id="@+id/tv_title_checkout"
+                android:text="Check out:"
+                android:textStyle="bold"
+                android:layout_below="@+id/tv_address_checkin_value"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
+                android:layout_height="wrap_content" />
+
+            <com.platform.view.customs.TextViewRegular
+                android:layout_width="match_parent"
+                android:id="@+id/tv_title_checkout_value"
+                android:text=" "
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/tv_title_checkout"
+                android:layout_alignBaseline="@+id/tv_title_checkout"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
+                android:layout_height="wrap_content" />
+
+
+
+
+            <com.platform.view.customs.TextViewBold
+                android:layout_width="@dimen/dimen_80dp"
                 android:id="@+id/tv_address_checkout"
-                android:text="Address"
+                android:text="Address:"
                 android:textStyle="bold"
                 android:layout_below="@+id/tv_title_checkout"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_title_14"
+                android:layout_height="wrap_content" />
+
+
+            <com.platform.view.customs.TextViewRegular
+                android:layout_width="match_parent"
+                android:id="@+id/tv_address_checkout_value"
+                android:text="Address"
+                android:textStyle="bold"
+                android:maxLines="4"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="@dimen/text_size_small_10"
+                app:autoSizeMaxTextSize="@dimen/text_size_title_14"
+                app:autoSizeStepGranularity="1sp"
+                android:layout_toRightOf="@+id/tv_address_checkout"
+                android:layout_alignBaseline="@+id/tv_address_checkout"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
                 <Button
-                    android:layout_width="wrap_content"
-                    android:text="Reject"
-                    style="@style/StyleButton"
-                    android:textSize="@dimen/text_size_16"
                     android:id="@+id/btn_reject"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_toLeftOf="@+id/btn_approve"
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content" />
+                    style="@style/AppStyleButton"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_weight="1"
+                    android:text="Reject"
+                    android:textColor="@color/white" />
+
                 <Button
-                    android:layout_width="wrap_content"
-                    android:text="Approve"
-                    style="@style/StyleButton"
-                    android:textSize="@dimen/text_size_16"
                     android:id="@+id/btn_approve"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
+                    style="@style/AppStyleButton"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_weight="1"
+                    android:text="Approve"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:text="Reject"-->
+                    <!--style="@style/StyleButton"-->
+                    <!--android:textSize="@dimen/text_size_16"-->
+                    <!--android:id="@+id/btn_reject"-->
+                    <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
+                    <!--android:layout_toLeftOf="@+id/btn_approve"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:layout_height="wrap_content" />-->
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:text="Approve"-->
+                    <!--style="@style/StyleButton"-->
+                    <!--android:textSize="@dimen/text_size_16"-->
+                    <!--android:id="@+id/btn_approve"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</RelativeLayout>-->
         
         </LinearLayout>
     </androidx.cardview.widget.CardView>

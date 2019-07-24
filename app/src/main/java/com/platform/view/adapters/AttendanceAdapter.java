@@ -12,17 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @SuppressWarnings("CanBeFinal")
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
 
     private Context mContext;
     private List<String> leavesList;
+    private String type;
 
-    public AttendanceAdapter(final Context context, final List<String> leavesList) {
+    public AttendanceAdapter(final Context context, final List<String> leavesList,String type) {
         this.mContext = context;
         this.leavesList = leavesList;
+        this.type=type;
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,20 +52,50 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @NonNull
     @Override
     public AttendanceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_leaves_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_attendance_row, viewGroup, false);
         return new AttendanceAdapter.ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AttendanceAdapter.ViewHolder viewHolder, int i) {
 
+
+        String date=leavesList.get(i);
+        if(date!=null){
+            Long TimeStamp=Long.parseLong(date);
+
+
+            Date d1 = new Date(TimeStamp);
+            DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String FinalDate=df.format(d1);
+
+            viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
+            viewHolder.leaveDesc.setText("Sample Text"+FinalDate);
+        }
+
+
+
+       /* Date StringTodate=null;
+        try {
+            StringTodate=new SimpleDateFormat("dd/MM/YYYY").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
-        viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
+        viewHolder.leaveDesc.setText("Sample Text"+StringTodate);*/
+
+        //viewHolder.userImage.setBackgroundResource(R.drawable.ic_add_img);
+        //viewHolder.leaveDesc.setText("You have applied leaves from 8 march to 11 march");
         //viewHolder.leaveStatus.setText("Request status :"+"Not yet approved");
     }
 
     @Override
     public int getItemCount() {
-        return 2;//leavesList.size();
+        if(leavesList!=null){
+            return leavesList.size();
+        }
+        //leavesList.size();
+        return 0;
     }
 }

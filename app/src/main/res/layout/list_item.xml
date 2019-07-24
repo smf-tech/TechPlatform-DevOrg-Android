@@ -1,0 +1,65 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="5dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/layoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/txtCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text=""
+            android:textColor="@color/dark_grey"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/imgDownload"
+            android:layout_toRightOf="@+id/txtCount"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/dark_grey"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imgDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="@dimen/dimen_20dp"
+            android:src="@drawable/download_file"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/imgshare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="@dimen/dimen_20dp"
+            android:src="@drawable/download"
+            android:visibility="gone"
+            />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

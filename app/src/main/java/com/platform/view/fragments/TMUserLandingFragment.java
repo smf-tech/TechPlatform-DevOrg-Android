@@ -138,7 +138,7 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
 
     public void showLandingPageRequests(List<LandingPageRequest> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
-            DashboardFragment.setApprovalCount(pendingRequestList.size());
+            DashboardFragment.setApprovalCount(countPendingApprovals(pendingRequestList));
 
             txtNoData.setVisibility(View.GONE);
             rvPendingRequests.setVisibility(View.GONE);
@@ -178,7 +178,7 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
         mAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
-            DashboardFragment.setApprovalCount(this.pendingRequestList.size());
+            DashboardFragment.setApprovalCount(countPendingApprovals(this.pendingRequestList));
             txtNoData.setVisibility(View.GONE);
         } else {
             DashboardFragment.setApprovalCount(0);
@@ -248,4 +248,13 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
             return view;
         }
     }
+
+    public int countPendingApprovals(List<LandingPageRequest> pendingRequestList){
+        int count =0;
+        for (int i = 0; i <pendingRequestList.size() ; i++) {
+            count =count+pendingRequestList.get(i).getPendingCount();
+        }
+        return count;
+    }
+
 }

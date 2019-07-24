@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,7 +75,8 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.MEETINGS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.APPROVALS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.REPORTS) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE)){
+                            tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE)||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT)){
                         //do nothing
                     }else{
                         tabNames.remove(i);
@@ -129,6 +131,14 @@ public class DashboardFragment extends Fragment {
                 case Constants.Home.WEBMODULE:
                     tabNames.get(i).setResId(R.id.action_menu_reports);
                     break;
+                case Constants.Home.CONTENT:
+                    tabNames.get(i).setResId(R.id.action_menu_reports);
+                    break;
+                    default:
+
+
+
+
             }
         }
     }
@@ -166,7 +176,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.APPROVALS:
-                    adapter.addFragment(new TMUserPendingFragment());
+                    adapter.addFragment(new TMUserLandingFragment());
                     break;
 
                 case Constants.Home.REPORTS:
@@ -180,6 +190,10 @@ public class DashboardFragment extends Fragment {
                     WebmoduleFragment webmoduleFragment = new WebmoduleFragment();
                     webmoduleFragment.setArguments(webBundle);
                     adapter.addFragment(webmoduleFragment);
+                    break;
+                case Constants.Home.CONTENT:
+                    ContentManagementFragment cmf=ContentManagementFragment.newInstance("con","con");
+                    adapter.addFragment(cmf);
                     break;
 
                 default:
@@ -238,6 +252,10 @@ public class DashboardFragment extends Fragment {
                         ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.WEBMODULE);
                         AppEvents.trackAppEvent(getString(R.string.web_module_tab_click));
                         break;
+                    case 5:
+                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONTENT);
+                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
+                        break;
                 }
             });
         }
@@ -277,6 +295,9 @@ public class DashboardFragment extends Fragment {
                     resId = tabIcons[4];
                     break;
 
+                case Constants.Home.CONTENT:
+                    resId = tabIcons[4];
+                    break;
                 default:
                     resId = R.drawable.bg_circle_default;
                     break;

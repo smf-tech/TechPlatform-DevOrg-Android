@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.platform.view.activities.ContentDownloadedActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme.Toolbar"
+        android:contentInsetLeft="0dp"
+        android:contentInsetStart="0dp"
+        android:contentInsetRight="0dp"
+        android:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp"
+        />
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/list_download"
+    android:layout_below="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+</androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

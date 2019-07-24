@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_attendance_dialog">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:id="@+id/rel_lay_delayIncheck">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_delaycheck_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "@string/delayedin_checkin"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dimen_20dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_delaycheck_title"
+            android:layout_below="@+id/txt_delaycheck_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:gravity="center"
+            android:text="@string/delayin_checkin_title"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_delaycheck"
+            android:layout_below="@+id/txt_delaycheck_title"
+            android:layout_width="match_parent"
+            android:hint="test"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_delaycheckin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit for Approval"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:layout_below="@+id/edt_delaycheck"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

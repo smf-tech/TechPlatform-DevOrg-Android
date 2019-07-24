@@ -149,7 +149,7 @@ public class TMUserAprovedFragment extends Fragment implements View.OnClickListe
 
             /*mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
                     pendingFragmentPresenter, this);*/
-            mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
+            mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), this.pendingRequestList,
                     this);
             rvPendingRequests.setAdapter(mAdapter);
         } else {
@@ -277,6 +277,8 @@ public class TMUserAprovedFragment extends Fragment implements View.OnClickListe
             return view;
         }
     }
+
+
 }
 
 

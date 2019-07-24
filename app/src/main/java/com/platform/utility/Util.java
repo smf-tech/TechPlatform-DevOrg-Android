@@ -36,6 +36,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -97,6 +99,8 @@ import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 public class Util {
     private static ProgressDialog mProgressDialog;
     private static final String TAG = Util.class.getSimpleName();
+    private String todayAsString;
+    private ProgressDialog pd;
 
     public static void setError(final EditText inputEditText, String errorMessage) {
         final int padding = 10;
@@ -163,7 +167,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.LANGUAGE_CODE, languageCode);
+        editor.putString(Constants.App.LANGUAGE_CODE,languageCode);
         editor.apply();
     }
 
@@ -909,6 +913,22 @@ public class Util {
         return false;
     }
 
+    public static String getFormattedDateFromTimestamp(long date) {
+        if (date > 0) {
+            try {
+                int length = (int) (Math.log10(date) + 1);
+                if (length == 10) {
+                    date = date * 1000;
+                }
+                Date d = new Timestamp(date);
+                return getFormattedDate(d.toString(), DAY_MONTH_YEAR);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return "";
+    }
+
     public static File compressFile(File f) {
         Bitmap b = null;
 
@@ -1079,7 +1099,7 @@ public class Util {
 
 
            Dialog dialog;
-           Button btnLogin;
+           Button btnLogin,btn_cancel;
            EditText edt_reason;
            Activity activity =context;
 
@@ -1090,7 +1110,16 @@ public class Util {
 
 
             edt_reason = dialog.findViewById(R.id.edt_reason);
+       btn_cancel = dialog.findViewById(R.id.btn_cancel);
            btnLogin = dialog.findViewById(R.id.btn_submit);
+
+       btn_cancel.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               dialog.dismiss();
+           }
+       });
+
            btnLogin.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
@@ -1121,4 +1150,61 @@ public class Util {
 
 return "";
    }
+    public static String getTodaysDate()
+    {
+        Date d = new Date();
+        String pattern = "MM/dd/yyyy";
+        SimpleDateFormat df = new SimpleDateFormat(pattern);
+// Get the today date using Calendar object.
+        Date today = Calendar.getInstance().getTime();
+// Using DateFormat format method we can create a string
+// representation of a date with the defined format.
+        return df.format(today);
+
+    }
+
+    public void startProgressDialog(Activity activity,String message)
+    {
+       pd=new ProgressDialog(activity);
+       pd.setMessage(message);
+       pd.setCanceledOnTouchOutside(false);
+       pd.show();
+    }
+
+    public void stopProgressDialog()
+    {
+        if(pd.isShowing()){
+            pd.dismiss();
+        }
+
+    }
+
+    public static void showDelayInCheckInDialog(Context context, String header, String msg, boolean b){
+        final Dialog dialog=new Dialog(context);
+        dialog.setCancelable(b);
+        dialog.setContentView(R.layout.attendance_dialog);
+
+        AppCompatTextView textHeader=dialog.findViewById(R.id.txt_delaycheck_header);
+        textHeader.setText(header);
+
+        AppCompatTextView textMsg=dialog.findViewById(R.id.txt_delaycheck_title);
+        textMsg.setText(msg);
+
+        AppCompatButton button=dialog.findViewById(R.id.btn_delaycheckin);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    public static Calendar setHours(int hours,int min){
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,hours);
+        calendar.set(Calendar.MINUTE,min);
+        return  calendar;
+    }
+
 }

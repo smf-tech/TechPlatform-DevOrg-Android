@@ -34,7 +34,8 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/task_title"
                     android:inputType="text|textCapWords"
-                    tools:ignore="Autofill" />
+                    tools:ignore="Autofill"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -148,7 +149,8 @@
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16"
-                    tools:ignore="Autofill" />
+                    tools:ignore="Autofill"
+                    android:fontFamily="@font/opensans"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Address-->
@@ -166,7 +168,8 @@
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16"
-                    tools:ignore="Autofill" />
+                    tools:ignore="Autofill"
+                    android:fontFamily="@font/opensans"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
@@ -177,7 +180,8 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:text="@string/is_attendance_required" />
+                android:text="@string/is_attendance_required"
+                android:fontFamily="@font/opensans"/>
 
             <CheckBox
                 android:id="@+id/cb_is_registration_required"
@@ -187,7 +191,8 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:text="@string/is_registration_required" />
+                android:text="@string/is_registration_required"
+                android:fontFamily="@font/opensans"/>
 
             <!--Registration Start Date-->
             <com.google.android.material.textfield.TextInputLayout
@@ -312,7 +317,8 @@
                 android:background="@drawable/bg_button"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_22" />
+                android:textSize="@dimen/text_size_22"
+                android:fontFamily="@font/opensans"/>
 
         </RelativeLayout>
 

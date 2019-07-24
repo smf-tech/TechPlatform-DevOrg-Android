@@ -45,12 +45,12 @@ public class TMUserLeavesApprovalRecyclerAdapter extends RecyclerView.Adapter<TM
 
         @Override
         public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-            holder.tv_leave_category.setText("Category: "+dataList.get(position).getLeave_type());
-            holder.tv_leave_type.setText("Type: "+String.valueOf(dataList.get(position).getFull_half_day()));
+            holder.tv_leave_category.setText(dataList.get(position).getLeave_type());
+            holder.tv_leave_type.setText(String.valueOf(dataList.get(position).getFull_half_day()));
 
-            holder.tv_startdate.setText("From: "+Util.getLongDateInString(Long.parseLong(dataList.get(position).getStartdate()), Constants.DAY_MONTH_YEAR));
-            holder.tv_enddate.setText("To: "+Util.getLongDateInString(Long.parseLong(dataList.get(position).getEnddate()), Constants.DAY_MONTH_YEAR));
-            holder.tv_leave_reason.setText("Reason: "+String.valueOf(dataList.get(position).getReason()));
+            holder.tv_startdate.setText(Util.getLongDateInString(Long.parseLong(dataList.get(position).getStartdate()), Constants.DAY_MONTH_YEAR));
+            holder.tv_enddate.setText(Util.getLongDateInString(Long.parseLong(dataList.get(position).getEnddate()), Constants.DAY_MONTH_YEAR));
+            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
 
 
             String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
