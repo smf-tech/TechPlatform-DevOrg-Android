@@ -36,7 +36,6 @@ public class WebmoduleFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_webmodule, container, false);
         webModuleFragmentView = inflater.inflate(R.layout.fragment_webmodule, container, false);
         return webModuleFragmentView;
     }

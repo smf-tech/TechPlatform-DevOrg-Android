@@ -6,7 +6,7 @@
     android:id="@+id/leave_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/dimen_05dp"
+    app:cardCornerRadius="@dimen/dimen_10dp"
     android:layout_gravity="center"
     android:layout_margin="@dimen/dimen_05dp">
 
@@ -24,7 +24,6 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_margin="@dimen/dimen_10dp"
-            android:text="@string/cl_leaves"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_14" />
 
@@ -37,16 +36,7 @@
         android:layout_margin="@dimen/dimen_10dp"
         android:text="0"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_25"
         tools:ignore="HardcodedText" />
-
-        <!--<View-->
-            <!--android:id="@+id/divider"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/dimen_01dp"-->
-            <!--android:layout_below="@+id/rl_form"-->
-            <!--android:background="@drawable/dotted_line"/>-->
-
 
     </LinearLayout>
     </androidx.cardview.widget.CardView>

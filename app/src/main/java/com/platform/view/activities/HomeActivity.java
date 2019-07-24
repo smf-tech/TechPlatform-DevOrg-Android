@@ -47,6 +47,7 @@ import com.platform.utility.Util;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.NotificationsFragment;
+import com.platform.view.fragments.PMFragment;
 import com.platform.view.fragments.PlannerFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserApprovalsFragment;
@@ -231,7 +232,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFormsPage() {
-        Util.launchFragment(new FormsFragment(), this,
+        Util.launchFragment(new PMFragment(), this,
                 getString(R.string.forms), true);
     }
 

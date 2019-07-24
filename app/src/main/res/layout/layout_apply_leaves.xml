@@ -206,7 +206,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_16" />
-    <!--</RelativeLayout>-->
 
 </LinearLayout>
 

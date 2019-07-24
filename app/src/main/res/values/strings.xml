@@ -360,6 +360,9 @@
     <string name="half_day">Half Day</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
+    <string name="enter_start_date">Please enter start date.</string>
+    <string name="enter_correct_details">Please enter correct details.</string>
+    <string name="enter_proper_date_range">Please enter proper date range.</string>
     <string name="reason">Reason</string>
     <string name="rejected_reason">Rejected Reason</string>
     <string name="holiday_list_title">Holiday List for 2019</string>

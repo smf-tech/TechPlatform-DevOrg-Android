@@ -292,6 +292,9 @@
     <string name="half_day">अर्धा दिवस</string>
     <string name="start_date">प्रारंभ तारीख</string>
     <string name="end_date">शेवटची तारीख</string>
+    <string name="enter_start_date">कृपया प्रारंभ तारीख प्रविष्ट करा.</string>
+    <string name="enter_correct_details">कृपया योग्य तपशील प्रविष्ट करा.</string>
+    <string name="enter_proper_date_range">कृपया योग्य तारीख श्रेणी प्रविष्ट करा.</string>
     <string name="reason">कारण</string>
     <string name="rejected_reason">नाकारलेले कारण</string>
     <string name="check_in">चेक इन</string>

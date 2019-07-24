@@ -30,49 +30,6 @@ public class LeavesRequestCall {
                 .create();
     }
 
-    public void getLeavesData(String requestID) {
-
-        Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (leavePresenterListener == null) {
-                return;
-            }
-
-            try {
-                if (response != null) {
-                    String res = response.toString();
-                    leavePresenterListener.onSuccessListener(requestID,res);
-
-                }
-            } catch (Exception e) {
-                leavePresenterListener.onFailureListener(requestID,e.getMessage());
-            }
-        };
-
-        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
-
-
-        final String getModulesUrl = ""; //BuildConfig.BASE_URL
-        //+ String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
-
-        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-                Request.Method.GET,
-                getModulesUrl,
-                new TypeToken<JSONObject>() {
-                }.getType(),
-                gson,
-                getModulesResponseListener,
-                getModulesErrorListener
-        );
-
-        gsonRequest.setHeaderParams(Util.requestHeader(true));
-        gsonRequest.setBodyParams(new JsonObject());
-        gsonRequest.setShouldCache(false);
-        //if(fragmentWeakReference != null) {
-        //    fragmentWeakReference.get().showProgressBar();
-        //}
-        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-    }
-
     public void getUsersAllLeavesDetails(String requestID, String year, String month) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
@@ -109,11 +66,7 @@ public class LeavesRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        //gsonRequest.setBodyParams(new JsonObject());
         gsonRequest.setShouldCache(false);
-        //if(fragmentWeakReference != null) {
-        //    fragmentWeakReference.get().showProgressBar();
-        //}
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
@@ -234,11 +187,7 @@ public class LeavesRequestCall {
         );
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
-        //gsonRequest.setBodyParams(new JsonObject());
         gsonRequest.setShouldCache(false);
-        //if(fragmentWeakReference != null) {
-        //    fragmentWeakReference.get().showProgressBar();
-        //}
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 

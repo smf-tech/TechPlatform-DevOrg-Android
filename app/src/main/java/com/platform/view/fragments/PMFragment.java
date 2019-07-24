@@ -58,17 +58,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         {
 
     private View pmFragmentView;
-    private int pendingCount, approvedCount,rejectedCount,unsynchCount,savedCount;
+    private int unsynchCount,savedCount;
     private ArrayList<FormStatusCountData> formStatusCountDataList = new ArrayList<>();
     private RecyclerView rvFormsStatusCount;
     private FormsDashboardAdapter formsDashboardAdapter;
-//    private ArrayList<String> processCategoryList = new ArrayList<>();
-//    private HashMap<String, List<ProcessData>> processMap = new HashMap<>();
-//    private LinearLayout lnrOuter;
-//    private RecyclerView rvPendingForms;
-//    private RelativeLayout rltPendingForms;
-//    private PendingFormsAdapter pendingFormsAdapter;
-//    private List<FormResult> mSavedForms;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,109 +84,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        boolean isSyncRequired = false;
-        if (getArguments() != null) {
-            isSyncRequired = getArguments().getBoolean("NEED_SYNC");
-        }
-
         init();
-
-//        List<ProcessData> processDataArrayList = DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
-//        if (processDataArrayList != null && !processDataArrayList.isEmpty() && !isSyncRequired) {
-//            Processes processes = new Processes();
-//            processes.setData(processDataArrayList);
-//
-//            populateData(processes);
-//
-//        } else {
-            /*if (Util.isConnected(getContext())) {
-                UserInfo user = Util.getUserObjectFromPref();
-                PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-                // getAllProcess method is called to load user forms
-                // For now, we are not showing recent forms, so no need to call this api.
-                //pmFragmentPresenter.getAllProcess();
-                pmFragmentPresenter.getAllFormsCount(user);
-            }else{
-                populateOfflineData();
-            }*/
-//        }
-
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(EVENT_SYNC_COMPLETED);
-//        filter.addAction(EVENT_SYNC_FAILED);
-//        filter.addAction(PARTIAL_FORM_ADDED);
-//
-//        SyncAdapterBroadCastReceiver(filter);
     }
 
-//    private void SyncAdapterBroadCastReceiver(final IntentFilter filter) {
-//        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
-//                .registerReceiver(new BroadcastReceiver() {
-//                    @Override
-//                    public void onReceive(final Context context, final Intent intent) {
-//                        if (context == null) {
-//                            return;
-//                        }
-//
-//                        try {
-//                            String action = Objects.requireNonNull(intent.getAction());
-//                            switch (action) {
-//                                case EVENT_SYNC_COMPLETED:
-//                                    Util.showToast(getString(R.string.sync_completed), context);
-//                                    updateAdapter();
-//                                    break;
-//
-//                                case PARTIAL_FORM_ADDED:
-//                                    Util.showToast(getString(R.string.partial_form_added), context);
-//                                    updateAdapter();
-//                                    break;
-//
-//                                case EVENT_SYNC_FAILED:
-//                                    Log.e("PendingForms", "Sync failed!");
-//                                    Util.showToast(getString(R.string.sync_failed), context);
-//                                    break;
-//                            }
-//                        } catch (IllegalStateException e) {
-//                            Log.e("PMFragment", "SyncAdapterBroadCastReceiver", e);
-//                        }
-//                    }
-//                }, filter);
-//    }
-
-//    private void updateAdapter() {
-//        if (pendingFormsAdapter == null) {
-//            pendingFormsAdapter = (PendingFormsAdapter) rvPendingForms.getAdapter();
-//        }
-//
-//        if (mSavedForms == null) {
-//            mSavedForms = new ArrayList<>();
-//        }
-//
-//        mSavedForms.clear();
-//        List<FormResult> savedForms = DatabaseManager
-//                .getDBInstance(getContext()).getAllPartiallySavedForms();
-//
-//        List<FormResult> partiallySavedForms = Util.sortFormResultListByCreatedDate(savedForms);
-//
-//        mSavedForms.addAll(partiallySavedForms);
-//
-//        if (mSavedForms != null && !mSavedForms.isEmpty()) {
-//            rltPendingForms.setVisibility(View.VISIBLE);
-//            if (pendingFormsAdapter != null) {
-//                pendingFormsAdapter.notifyDataSetChanged();
-//            }
-//        } else {
-//            rltPendingForms.setVisibility(View.GONE);
-//            pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.GONE);
-//        }
-//    }
-
     private void init() {
-//        rvPendingForms = pmFragmentView.findViewById(R.id.rv_dashboard_pending_forms);
-//        lnrOuter = pmFragmentView.findViewById(R.id.lnr_dashboard_forms_category);
-//        rltPendingForms = pmFragmentView.findViewById(R.id.rlt_pending_forms);
-//
         FloatingActionButton txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
         txtViewAllForms.setOnClickListener(this);
         rvFormsStatusCount = pmFragmentView.findViewById(R.id.rv_forms_dashboard);
@@ -216,124 +110,12 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
     }
 
-//    private void getPartiallySavedForms() {
-//        List<FormResult> savedForms = DatabaseManager.getDBInstance(getContext()).getAllPartiallySavedForms();
-//        if (savedForms != null && !savedForms.isEmpty()) {
-//
-//            mSavedForms = Util.sortFormResultListByCreatedDate(savedForms);
-//
-//            rltPendingForms.setVisibility(View.VISIBLE);
-//            rltPendingForms.setVisibility(View.VISIBLE);
-//            pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.VISIBLE);
-//
-//            pendingFormsAdapter = new PendingFormsAdapter(getActivity(), mSavedForms, this);
-//            rvPendingForms.setLayoutManager(new LinearLayoutManager(getActivity()));
-//            rvPendingForms.setAdapter(pendingFormsAdapter);
-//        } else {
-//            pmFragmentView.findViewById(R.id.view_forms_divider2).setVisibility(View.GONE);
-//            rltPendingForms.setVisibility(View.GONE);
-//        }
-//    }
-
-//    private void populateData(Processes process) {
-//        if (process != null) {
-//            processCategoryList.clear();
-//            processMap.clear();
-//
-//            for (ProcessData data : process.getData()) {
-//                if (data != null && data.getCategory() != null) {
-//                    String categoryName = data.getCategory().getName().getLocaleValue();
-//                    if (!TextUtils.isEmpty(categoryName)) {
-//                        if (processMap.containsKey(categoryName)) {
-//                            List<ProcessData> processData = processMap.get(categoryName);
-//                            if (processData != null) {
-//                                processData.add(data);
-//                                processMap.put(categoryName, processData);
-//
-//                                addProcessDataInDatabase(data);
-//                            }
-//                        } else {
-//                            List<ProcessData> processData = new ArrayList<>();
-//                            processData.add(data);
-//                            processMap.put(categoryName, processData);
-//                            processCategoryList.add(categoryName);
-//
-//                            addProcessDataInDatabase(data);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            for (int index = 0; index < processMap.size(); index++) {
-//                if (!TextUtils.isEmpty(processCategoryList.get(index)) &&
-//                        processMap.get(processCategoryList.get(index)) != null) {
-//
-//                    List<ProcessData> processData = processMap.get(processCategoryList.get(index));
-//                    if (processData != null) {
-//                        createCategoryLayout(processCategoryList.get(index), processData);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    private void addProcessDataInDatabase(final ProcessData data) {
-//        DatabaseManager.getDBInstance(getContext()).insertProcessData(data);
-//    }
-
-//    private void createCategoryLayout(String categoryName, List<ProcessData> childList) {
-//        if (getContext() == null) {
-//            return;
-//        }
-//
-//        View formTitleView = LayoutInflater.from(getContext().getApplicationContext())
-//                .inflate(R.layout.row_dashboard_forms_category, lnrOuter, false);
-//
-//        ((TextView) formTitleView.findViewById(R.id.txt_dashboard_form_category_name)).setText(categoryName);
-//        LinearLayout lnrInner = formTitleView.findViewById(R.id.lnr_inner);
-//
-//        for (int i = 0; i < childList.size(); i++) {
-//            final ProcessData data = childList.get(i);
-//            if (i >= 2) break;
-//
-//            if (!TextUtils.isEmpty(data.getName().getLocaleValue())) {
-//                View formTypeView = LayoutInflater.from(getContext().getApplicationContext())
-//                        .inflate(R.layout.row_dashboard_forms_category_card_view, lnrInner, false);
-//
-//                ((TextView) formTypeView.findViewById(R.id.txt_dashboard_form_title))
-//                        .setText(data.getName().getLocaleValue().trim());
-//
-//                if (!TextUtils.isEmpty(data.getId())) {
-//                    ImageButton imgCreateForm = formTypeView.findViewById(R.id.iv_create_form);
-//                    imgCreateForm.setEnabled(Util.isUserApproved());
-//
-//                    imgCreateForm.setOnClickListener(v -> {
-//                        Intent intent = new Intent(getActivity(), FormActivity.class);
-//                        intent.putExtra(Constants.PM.FORM_ID, data.getId());
-//                        startActivity(intent);
-//                    });
-//                }
-//                lnrInner.addView(formTypeView);
-//
-//                if (childList.size() == 1 || i == 1) {
-//                    formTypeView.findViewById(R.id.dashboard_category_item_divider).setVisibility(View.GONE);
-//                }
-//            }
-//        }
-//        lnrOuter.addView(lnrInner);
-//    }
-
     @Override
     public void onResume() {
         super.onResume();
-
-//        getPartiallySavedForms();
         if (Util.isConnected(getContext())) {
             UserInfo user = Util.getUserObjectFromPref();
             PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
-            // getAllProcess method is called to load user forms
-            // For now, we are not showing recent forms, so no need to call this api.
-            //pmFragmentPresenter.getAllProcess();
             pmFragmentPresenter.getAllFormsCount(user);
         }else{
             formStatusCountDataList.clear();
@@ -361,7 +143,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
     @Override
     public <T> void showNextScreen(T data) {
-//        populateData((Processes) data);
         populateData((FormStatusCount) data);
 
     }
@@ -370,11 +151,9 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     public void showErrorMessage(String result) {
 
     }
-
             private void populateData(FormStatusCount formCount) {
                 if (formCount != null) {
                     formStatusCountDataList.clear();
-
                     for (FormStatusCountData data : formCount.getData()) {
                         if (data != null && data.getType() != null) {
                             formStatusCountDataList.add(data);
@@ -397,16 +176,4 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 formStatusCountDataList.add(savedCountData);
                 formsDashboardAdapter.notifyDataSetChanged();
             }
-
-
-
-
-    // To use this method again implement PendingFormsAdapter.FormListener to this fragment
-//    @Override
-//    public void onFormDeletedListener() {
-//        updateAdapter();
-//        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
-//            ((DashboardFragment) getParentFragment()).updateBadgeCount();
-//        }
-//    }
 }

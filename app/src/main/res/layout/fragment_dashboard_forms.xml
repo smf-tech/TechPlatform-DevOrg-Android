@@ -19,19 +19,6 @@
 
         </LinearLayout>
 
-    <!--<TextView-->
-        <!--android:id="@+id/txt_view_all_forms"-->
-        <!--style="@style/roboto_medium_pink_16"-->
-        <!--android:layout_width="@dimen/dimen_50dp"-->
-        <!--android:layout_height="@dimen/dimen_50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_margin="@dimen/dimen_10dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:textAllCaps="true"-->
-        <!--android:background="@drawable/circle_background"-->
-        <!--android:textStyle="bold" />-->
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/txt_view_all_forms"
         android:layout_width="wrap_content"

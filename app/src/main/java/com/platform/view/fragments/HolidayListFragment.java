@@ -21,12 +21,7 @@ import com.platform.models.leaves.YearlyHolidaysAPIResponse;
 import com.platform.presenter.LeavesPresenter;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
-import com.platform.view.adapters.HolidayListAdapter;
 import com.platform.view.adapters.YearlyHolidaysAdapter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
