@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +34,10 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.TaskFormsListAdapter;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class EventDetailActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
@@ -75,7 +79,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         backButton = findViewById(R.id.toolbar_back_action);
         editButton = findViewById(R.id.toolbar_edit_action);
         toolbarAction = findViewById(R.id.toolbar_action);
-        toolbarAction.setVisibility(View.VISIBLE);
         toolbarAction.setImageResource(R.drawable.ic_delete);
         lyGreyedOut = findViewById(R.id.ly_greyed_out);
         lyMembarlistCode = findViewById(R.id.ly_membarlist_code);
@@ -85,8 +88,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         TextView tvOwner = findViewById(R.id.tv_owner_name);
         TextView tvStartDate = findViewById(R.id.tv_start_date);
         TextView tvEndDate = findViewById(R.id.tv_end_date);
-//        TextView tvStartTime = findViewById(R.id.tv_start_time);
-//        TextView tvEndTime = findViewById(R.id.tv_end_time);
         TextView tvAddress = findViewById(R.id.tv_address);
         ImageView ivEventPic = findViewById(R.id.event_pic);
         TextView tvMemberCount = findViewById(R.id.tv_member_count);
@@ -98,16 +99,13 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         tvTitle.setText(eventTask.getTitle());
         tvDescription.setText(eventTask.getDescription());
-//        tvStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
-//        tvEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
         tvAddress.setText(eventTask.getAddress());
         tvOwner.setText(eventTask.getOwnername());
-        tvStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE_FORMAT));
-        tvEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE_FORMAT));
-        tvMemberCount.setText(eventTask.getParticipantsCount()+" member added");
-//        eventTask.getAttendedCompleted();
+        tvStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(), Constants.FORM_DATE_FORMAT));
+        tvEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(), Constants.FORM_DATE_FORMAT));
+        tvMemberCount.setText(eventTask.getParticipantsCount() + " member added");
 
-        if(eventTask.getThumbnailImage().equals("")){
+        if (eventTask.getThumbnailImage().equals("")) {
             ivEventPic.setVisibility(View.GONE);
         } else {
             Glide.with(this)
@@ -120,20 +118,30 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         TextView tvFormListLabel = findViewById(R.id.tv_form_list_label);
         vTaskStatusIndicator.setVisibility(View.GONE);
 
-//            if (eventTask.getStatus().equalsIgnoreCase(Constants.Planner.PLANNED_STATUS)) {
-//                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.red));
-//            } else if (eventTask.getStatus().equalsIgnoreCase(Constants.Planner.COMPLETED_STATUS)) {
-//                vTaskStatusIndicator.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.green));
-//            }
-
         if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
-            editButton.setVisibility(View.VISIBLE);
-            toolbarAction.setVisibility(View.VISIBLE);
+            //owner
+            Date starDate=null;
+            Date currentDate = Calendar.getInstance().getTime();
+            long timeStamp = eventTask.getSchedule().getStartdatetime();
+            try {
+                int length = (int) (Math.log10(timeStamp) + 1);
+                if (length == 10) {
+                    timeStamp = timeStamp * 1000;
+                }
+                starDate = new Timestamp(timeStamp);
+            } catch (Exception e) {
+                Log.e("Exception", e.getMessage());
+            }
+            if(starDate.getTime() > currentDate.getTime()) {
+                editButton.setVisibility(View.VISIBLE);
+                toolbarAction.setVisibility(View.VISIBLE);
+            }
         } else {
+            //viewer
+            tvMemberCount.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
             toolbarAction.setVisibility(View.GONE);
         }
-
 
 
         if (eventTask.getRequiredForms().size() > 0) {
@@ -148,12 +156,11 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
             ivEventPic.setVisibility(View.GONE);
-            tvMemberCount.setVisibility(View.GONE);
             btCompleteTask.setVisibility(View.VISIBLE);
         } else {
             setActionbar(getString(R.string.event_detail));
             //handling attendance button
-            if(eventTask.getParticipantsCount()>0){
+            if (eventTask.getParticipantsCount() > 0) {
                 btParticipants.setVisibility(View.VISIBLE);
             }
             if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
@@ -171,7 +178,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 }
             }
         }
-
 
 
         setListeners();
@@ -222,7 +228,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 break;
             case R.id.bt_participants:
                 //see showMemberList()
-                if(eventTask.getParticipantsCount()==0) {
+                if (eventTask.getParticipantsCount() == 0) {
                     showErrorMessage("No members");
                 } else {
                     presenter.memberList(eventTask.getId());
@@ -249,85 +255,34 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     }
 
     public void getAttendanceCode(GetAttendanceCodeResponse response) {
-//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_getattendancecode, null);
-//        dialogBuilder.setView(dialogView);
 
         TextView editText = (TextView) dialogView.findViewById(R.id.tv_code);
         editText.setText(String.valueOf(response.getAttencdenceCode()));
-//        editText.setText("123456");
-//        AlertDialog alertDialog = dialogBuilder.create();
-//        alertDialog.setTitle("Attendance Code");
-//        alertDialog.setMessage("Attendance code to mark attendance is:");
-//        alertDialog.setCancelable(false);
-//        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                alertDialog.dismiss();
-//            }
-//        });
-//        alertDialog.show();
 
-        AlertDialog alertDialog=null;
+        AlertDialog alertDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Attendance Code")
                 .setView(dialogView)
                 .setMessage("Attendance code to mark attendance is:")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // FIRE ZE MISSILES!
-//                        presenter.delete(eventTask.getId());
-//                    }
-//                })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
                         dialog.cancel();
                     }
                 });
-        // Create the AlertDialog object and return it
-        alertDialog=builder.create();
+        alertDialog = builder.create();
         alertDialog.show();
 
     }
 
     public void setAttendanceCode() {
-//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_setattendance_code, null);
-//        dialogBuilder.setView(dialogView);
 
         EditText editText = (EditText) dialogView.findViewById(R.id.et_code);
-//        editText.setText("123456");
-//        AlertDialog alertDialog = dialogBuilder.create();
-//        alertDialog.setTitle("Attendance Code");
-//        alertDialog.setMessage("Please enter attendance code:");
-//        alertDialog.setCancelable(false);
-//        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (editText.getText().toString().equals("")) {
-//                    editText.setError("Please Enter code");
-//                } else {
-//                    SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
-//                    request.setAttendanceCode(editText.getText().toString());
-//                    request.setEventId(eventTask.getId());
-//                    request.setUserId(Util.getUserObjectFromPref().getId());
-//                    alertDialog.dismiss();
-//                    presenter.setAttendanceCode(request);
-//                }
-//
-//            }
-//        });
-//        alertDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                alertDialog.dismiss();
-//            }
-//        });
-//        alertDialog.show();
 
-        AlertDialog alertDialog=null;
+        AlertDialog alertDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Attendance Code")
                 .setView(dialogView)
@@ -335,53 +290,54 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (editText.getText().toString().equals("")) {
-                    editText.setError("Please Enter code");
-                } else {
-                    SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
-                    request.setAttendanceCode(editText.getText().toString());
-                    request.setEventId(eventTask.getId());
-                    request.setUserId(Util.getUserObjectFromPref().getId());
-                    dialog.cancel();
-                    presenter.setAttendanceCode(request);
-                }
+                            editText.setError("Please Enter code");
+                        } else {
+                            SetAttendanceCodeRequest request = new SetAttendanceCodeRequest();
+                            request.setAttendanceCode(editText.getText().toString());
+                            request.setEventId(eventTask.getId());
+                            request.setUserId(Util.getUserObjectFromPref().getId());
+                            presenter.setAttendanceCode(request);
+                            dialog.dismiss();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
-                        dialog.cancel();
+                        dialog.dismiss();
                     }
                 });
         // Create the AlertDialog object and return it
-        alertDialog=builder.create();
+        alertDialog = builder.create();
         alertDialog.show();
 
     }
 
-    public void showDeleteAlert(){
-        AlertDialog alertDialog=null;
+    public void showDeleteAlert() {
+        AlertDialog alertDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete alert")
-                .setMessage("Are you sure, do you want to delete")
+                .setMessage(getString(R.string.sure_to_delete))
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                         presenter.delete(eventTask.getId());
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
-                        dialog.cancel();
+                        dialog.dismiss();
                     }
                 });
         // Create the AlertDialog object and return it
-        alertDialog=builder.create();
+        alertDialog = builder.create();
         alertDialog.show();
     }
 
     public void showMemberList(ArrayList<Participant> memberList) {
-        if(memberList!=null && memberList.size()>0) {
+        if (memberList != null && memberList.size() > 0) {
             Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
             intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);

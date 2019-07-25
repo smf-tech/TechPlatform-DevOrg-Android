@@ -8,14 +8,14 @@
         android:id="@+id/home_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/tab_selector"
         app:tabIndicatorHeight="@dimen/dimen_05dp"
         app:tabMode="fixed"
-        app:tabTextColor="#808080"
-        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/grey"
+        app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/HomeTabLayoutTextStyle"/>
 
     <androidx.viewpager.widget.ViewPager

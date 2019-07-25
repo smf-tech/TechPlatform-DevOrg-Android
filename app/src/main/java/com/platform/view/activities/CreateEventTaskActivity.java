@@ -367,6 +367,8 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
         if (etTitle.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_title);
+        } else if (etTitle.getText().toString().trim().length() > 50) {
+            msg = getResources().getString(R.string.msg_title_length);
         } else if (etStartDate.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_start_date);
         } else if (etEndDate.getText().toString().trim().length() == 0) {
@@ -393,13 +395,12 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             } else if (etRegistrationEndDate.getText().toString().trim().length() == 0) {
                 msg = getResources().getString(R.string.msg_enter_registration_end_date);
             } else if (rStartDate.getTime() > endDate.getTime()) {
-//                msg = getResources().getString(R.string.msg_enter_proper_date);
-                msg = "Registration start date should not be greater than end date";
+                msg = "End Date for creating event is selected as "+etEndDate.getText().toString().trim()+
+                        ". Please select valid Registration Start Date";
             } else if (rEndDate.getTime() > endDate.getTime()) {
-//                msg = getResources().getString(R.string.msg_enter_proper_date);
-                msg = "Registration end date should not be greater than end date";
+                msg = "End Date for creating event is selected as "+etEndDate.getText().toString().trim()+
+                        ". Please select valid Registration End Date";
             } else if (rStartDate.getTime() > rEndDate.getTime()) {
-//                msg = getResources().getString(R.string.msg_enter_proper_date);
                 msg = "Registration start date should not be greater than registration end date";
             }
         }

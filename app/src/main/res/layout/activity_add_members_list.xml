@@ -71,7 +71,7 @@
             app:queryHint="Search here"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:maxWidth="@dimen/dimen_250dp"/>
+            android:maxWidth="@dimen/dimen_277dp"/>
         <CheckBox
             android:id="@+id/cb_select_all_members"
             android:layout_width="wrap_content"
