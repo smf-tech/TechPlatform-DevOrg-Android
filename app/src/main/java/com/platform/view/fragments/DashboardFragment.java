@@ -313,7 +313,7 @@ public class DashboardFragment extends Fragment {
                     pendingActionCount = getFormsPendingActionCount();
                     break;
 
-                case Constants.Home.MEETINGS:
+                case Constants.Home.PLANNER:
                     resId = tabIcons[1];
                     break;
 

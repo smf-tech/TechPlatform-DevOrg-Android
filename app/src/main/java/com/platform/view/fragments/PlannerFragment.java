@@ -230,8 +230,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         initCardView();
         deleteSharedPreferece();
-
-        Toast.makeText(context, "I am in OnCreate", Toast.LENGTH_SHORT).show();
     }
 
     private void initCardView() {
@@ -347,7 +345,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
                 case Constants.Planner.EVENTS_KEY:
                     if(obj.getEventData()!=null && obj.getEventData().size()>0){
-
                         RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
                         EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(getActivity(),
                                 obj.getEventData(), Constants.Planner.EVENTS_LABEL);
@@ -355,7 +352,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
                     } else {
-                        plannerView.findViewById(R.id.tv_no_events_msg).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                     }
 
                     break;
@@ -369,7 +366,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvTask.setLayoutManager(mLayoutManagerTask);
                         rvTask.setAdapter(taskListAdapter);
                     } else {
-                        plannerView.findViewById(R.id.tv_no_task_msg).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
+
                     }
                     break;
                 case Constants.Planner.LEAVES_KEY:

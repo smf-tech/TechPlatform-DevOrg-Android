@@ -297,7 +297,7 @@
                 android:orientation="horizontal"
                 android:weightSum="10"
                 android:visibility="gone"
-                android:layout_marginTop="@dimen/dimen_20dp">
+                android:layout_marginTop="@dimen/dimen_10dp">
 
                 <Button
                     android:id="@+id/bt_get_code"
@@ -333,7 +333,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_membarlist_code"
-                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="Enter attendance code"
                 android:textAllCaps="false"
@@ -346,7 +346,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_membarlist_code"
-                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
                 android:text="Mark Complete"
                 android:textAllCaps="false"
