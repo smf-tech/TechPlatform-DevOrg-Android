@@ -285,6 +285,7 @@
                 android:layout_marginTop="@dimen/dimen_20dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_11"
                 android:gravity="center_horizontal"
                 android:background="@color/dark_grey"
                 android:fontFamily="@font/opensans"/>

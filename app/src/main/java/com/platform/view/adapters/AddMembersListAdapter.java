@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,14 +23,14 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
 
     private Context mContext;
     private boolean isCheckVisible;
-    private boolean isAddMember;
+    private boolean isDeleteVisible;
     private ArrayList<Participant> membersList;
 
-    public AddMembersListAdapter(Context mContext, ArrayList<Participant> membersList, boolean isCheckVisible,
-                                 boolean isAddMember) {
+    public AddMembersListAdapter(Context mContext, ArrayList<Participant> membersList, boolean isDeleteVisible,
+                                 boolean isCheckVisible) {
         this.mContext = mContext;
         this.membersList = membersList;
-        this.isAddMember = isAddMember;
+        this.isDeleteVisible = isDeleteVisible;
         this.isCheckVisible = isCheckVisible;
     }
 
@@ -47,13 +49,11 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.tvMemberDesignation.setText(member.getRoleName());
         holder.cbMemberSelect.setChecked(member.isMemberSelected());
 
-//        if(isCheckVisible){
-//        }
-//        if( isAddMember){
-//            member.getAttended();
-//        } else {
-//            holder.cbMemberSelect.setVisibility(View.GONE);
-//        }
+        if( member.isAttendedCompleted()){
+            holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+        } /*else {
+           holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+         }*/
 
     }
 
@@ -67,6 +67,8 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         TextView tvMemberName;
         TextView tvMemberDesignation;
         CheckBox cbMemberSelect;
+        RelativeLayout lyMain;
+        ImageView ivDelete;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,10 +76,14 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
             tvMemberName = itemView.findViewById(R.id.tv_member_name);
             tvMemberDesignation = itemView.findViewById(R.id.tv_member_designation);
             cbMemberSelect = itemView.findViewById(R.id.cb_select_member);
-//            lyMain = itemView.findViewById(R.id.ly_main);
+            lyMain = itemView.findViewById(R.id.ly_main);
+            ivDelete = itemView.findViewById(R.id.iv_delete);
 
-            if (!isCheckVisible) {
-                cbMemberSelect.setVisibility(View.GONE);
+            if (isCheckVisible) {
+                cbMemberSelect.setVisibility(View.VISIBLE);
+            }
+            if (isDeleteVisible) {
+                ivDelete.setVisibility(View.VISIBLE);
             }
 
             cbMemberSelect.setOnClickListener(v -> {
@@ -89,6 +95,12 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
                         membersList.get(getAdapterPosition()).setMemberSelected(false);
                         ((AddMembersListActivity) mContext).checkAllDeSelected();
                     }
+                }
+            });
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((AddMembersListActivity) mContext).removeMember(membersList.get(getAdapterPosition()).getId());
                 }
             });
         }
