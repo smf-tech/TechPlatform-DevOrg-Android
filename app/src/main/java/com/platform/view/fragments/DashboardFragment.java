@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,13 +37,6 @@ public class DashboardFragment extends Fragment {
     private TabLayout tabLayout;
     private boolean isSyncRequired;
     private boolean isUserApproved;
-//    private final int[] tabIcons = {
-//            R.drawable.bg_circle_pink,
-//            R.drawable.bg_circle_orange,
-//            R.drawable.bg_circle_yellow,
-//            R.drawable.bg_circle_green,
-//            R.drawable.bg_circle_webmodule
-//    };
     private final int[] tabIcons = {
             R.drawable.ic_form_icon_db,
             R.drawable.ic_planner_icon_db,
@@ -52,12 +46,10 @@ public class DashboardFragment extends Fragment {
             R.drawable.ic_matrimony_icon_db
     };
     private final int[] disableTabIcons = {
-            //R.drawable.bg_circle_lock
             R.drawable.ic_lock
     };
     private List<Modules> tabNames = new ArrayList<>();
     private static int mApprovalCount = 0;
-    //private final int TAB_COUNT = 4;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -83,7 +75,8 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.MEETINGS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.APPROVALS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.REPORTS) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE)){
+                            tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE)||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT)){
                         //do nothing
                     }else{
                         tabNames.remove(i);
@@ -113,23 +106,8 @@ public class DashboardFragment extends Fragment {
                 }
             }
         }
-
         initViews();
     }
-
-    // This can be used to apply fix size to viewpager.
-//    private int getTabCount() {
-//        int tabCount = 0;
-//
-//        if (tabNames != null && tabNames.size() > 0) {
-//            tabCount = tabNames.size();
-//            if (tabCount > TAB_COUNT) {
-//                tabCount = TAB_COUNT;
-//            }
-//        }
-//
-//        return tabCount;
-//    }
 
     private void setMenuResourceId() {
         for (int i = 0; i < tabNames.size(); i++) {
@@ -153,20 +131,21 @@ public class DashboardFragment extends Fragment {
                 case Constants.Home.WEBMODULE:
                     tabNames.get(i).setResId(R.id.action_menu_reports);
                     break;
+                case Constants.Home.CONTENT:
+                    tabNames.get(i).setResId(R.id.action_menu_reports);
+                    break;
+                    default:
+
+
+
+
             }
         }
     }
 
     private void initViews() {
         CustomViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
-//        int pageLimit = TAB_COUNT;
-//        if (tabNames.size() < pageLimit) {
-//            pageLimit = tabNames.size();
-//        }
-//        viewPager.setOffscreenPageLimit(pageLimit);
-//        viewPager.disableScroll(isUserApproved);
         setupViewPager(viewPager);
-
         tabLayout = dashboardView.findViewById(R.id.tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_AUTO);
@@ -212,13 +191,16 @@ public class DashboardFragment extends Fragment {
                     webmoduleFragment.setArguments(webBundle);
                     adapter.addFragment(webmoduleFragment);
                     break;
+                case Constants.Home.CONTENT:
+                    ContentManagementFragment cmf=ContentManagementFragment.newInstance("con","con");
+                    adapter.addFragment(cmf);
+                    break;
 
                 default:
                     adapter.addFragment(new DefaultFragment());
                     break;
             }
         }
-
         viewPager.setAdapter(adapter);
     }
 
@@ -230,11 +212,8 @@ public class DashboardFragment extends Fragment {
                         .inflate(R.layout.layout_custom_tab, tabLayout, false);
                 TextView tabView = tabOne.findViewById(R.id.tab);
                 tabView.setText(tabNames.get(i).getName().getLocaleValue());
-
                 TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-
                 drawTabCount(i, tabOne, tabView, pendingActionsCountView);
-
                 TabLayout.Tab tab = tabLayout.getTabAt(i);
                 if (tab != null) {
                     tab.setCustomView(tabOne);
@@ -273,6 +252,10 @@ public class DashboardFragment extends Fragment {
                         ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.WEBMODULE);
                         AppEvents.trackAppEvent(getString(R.string.web_module_tab_click));
                         break;
+                    case 5:
+                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONTENT);
+                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
+                        break;
                 }
             });
         }
@@ -295,7 +278,7 @@ public class DashboardFragment extends Fragment {
                     pendingActionCount = getFormsPendingActionCount();
                     break;
 
-                case Constants.Home.MEETINGS:
+                case Constants.Home.PLANNER:
                     resId = tabIcons[1];
                     break;
 
@@ -312,6 +295,9 @@ public class DashboardFragment extends Fragment {
                     resId = tabIcons[4];
                     break;
 
+                case Constants.Home.CONTENT:
+                    resId = tabIcons[4];
+                    break;
                 default:
                     resId = R.drawable.bg_circle_default;
                     break;
@@ -353,9 +339,7 @@ public class DashboardFragment extends Fragment {
                 if (tabCustomView != null) {
                     TextView tabView = tabCustomView.findViewById(R.id.tab);
                     tabView.setText(tabNames.get(i).getName().getLocaleValue());
-
                     TextView pendingActionsCountView = tabCustomView.findViewById(R.id.pending_action_count);
-
                     drawTabCount(i, tabCustomView, tabView, pendingActionsCountView);
                 }
             }

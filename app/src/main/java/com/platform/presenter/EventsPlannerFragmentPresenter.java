@@ -45,11 +45,11 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
 
             if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
                 fragmentWeakReference.get().hideProgressBar();
-                if(data.getStatus()==200){
-                    fragmentWeakReference.get().displayEventsListOfDay(data.getData());
-                } else {
-                    onFailureListener(data.getMessage());
-                }
+//                if(data.getStatus()==200){
+                    fragmentWeakReference.get().displayEventsListOfDay(data);
+//                } else {
+//                    onFailureListener(data.getMessage());
+//                }
 
             }
         }

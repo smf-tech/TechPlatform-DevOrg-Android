@@ -35,8 +35,6 @@ public class YearlyHolidaysAdapter extends RecyclerView.Adapter<YearlyHolidaysAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvHolidayDate.setText(getDateFromTimestamp(yearlyHolidayList.get(position).getHolidayDate(),DAY_MONTH_YEAR));
         holder.tvHolidayText.setText(yearlyHolidayList.get(position).getName());
-        String s = getDateFromTimestamp(yearlyHolidayList.get(1).getHolidayDate(),DAY_MONTH_YEAR);
-        String a = yearlyHolidayList.get(1).getName();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

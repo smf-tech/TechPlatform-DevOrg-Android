@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/lighter_grey">
 
-    <ScrollView
-        android:id="@+id/sv_dashboard_form_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:fillViewport="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,20 +18,6 @@
                 android:layerType="software"/>
 
         </LinearLayout>
-    </ScrollView>
-
-    <!--<TextView-->
-        <!--android:id="@+id/txt_view_all_forms"-->
-        <!--style="@style/roboto_medium_pink_16"-->
-        <!--android:layout_width="@dimen/dimen_50dp"-->
-        <!--android:layout_height="@dimen/dimen_50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_margin="@dimen/dimen_10dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:textAllCaps="true"-->
-        <!--android:background="@drawable/circle_background"-->
-        <!--android:textStyle="bold" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/txt_view_all_forms"

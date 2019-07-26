@@ -30,12 +30,6 @@ public class LeavesPresenter implements LeavePresenterListener {
         fragmentWeakReference = null;
     }
 
-    public void getLeavesData() {
-        LeavesRequestCall requestCall = new LeavesRequestCall();
-        requestCall.setLeavePresenterListener(this);
-        requestCall.getLeavesData(GET_LEAVE_DETAILS);
-    }
-
     public void getUsersAllLeavesDetails(String year, String month) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
@@ -93,7 +87,6 @@ public class LeavesPresenter implements LeavePresenterListener {
         try {
             if (response != null) {
                 fragmentWeakReference.get().onSuccessListener(requestID, response);
-                //fragmentWeakReference.get().closeCurrentActivity();
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());

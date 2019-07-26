@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -44,9 +45,11 @@ import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
+import com.platform.view.fragments.ContentManagementFragment;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.NotificationsFragment;
+import com.platform.view.fragments.PMFragment;
 import com.platform.view.fragments.PlannerFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserApprovalsFragment;
@@ -57,7 +60,7 @@ import java.util.List;
 import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,ContentManagementFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -69,7 +72,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         initMenuView();
     }
 
@@ -231,7 +233,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFormsPage() {
-        Util.launchFragment(new FormsFragment(), this,
+        Util.launchFragment(new PMFragment(), this,
                 getString(R.string.forms), true);
     }
 
@@ -486,6 +488,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void logOutUser() {
+        // remove user related shared pref data
+
         Util.saveLoginObjectInPref("");
         Util.setSubmittedFormsLoaded(false);
 
@@ -604,6 +608,16 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         clickListener = listener;
     }
 
+    @Override
+    public void onFragmentInteraction(String uri) {
+
+    }
+
+   /* @Override
+    public void onFragmentInteraction(String uri) {
+
+    }*/
+
     public interface OnSyncClicked {
         void onSyncButtonClicked();
     }
@@ -627,4 +641,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             Log.e(TAG, e.getMessage());
         }
     }
+
+
 }

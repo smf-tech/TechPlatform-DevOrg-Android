@@ -1,6 +1,7 @@
 package com.platform.presenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.platform.listeners.PlannerFragmetListener;
@@ -34,7 +35,7 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
         plannerFragment.hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
 
-            PlannerSummerResopnse data = PlatformGson.getPlatformGsonInstance().fromJson(response, PlannerSummerResopnse.class);
+            PlannerSummerResopnse data = PlatformGson.getPlatformGsonInstance().fromJson(response,PlannerSummerResopnse.class);
 
             if (data != null && data.getData() != null
                     && !data.getData().isEmpty()
@@ -42,6 +43,7 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
                 plannerFragment.showPlannerSummary((ArrayList<SubmoduleData>) data.getData());
             }
         }
+        Log.i("Planner","111"+response);
     }
 
     @Override

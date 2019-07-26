@@ -5,12 +5,14 @@ public class Constants {
     public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
+    public static final int READ_EXTERNAL_STORAGE=4;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
     public static final String ERROR = "error";
     public static final String RESPONSE_DATA = "data";
     public static final String KEY_SEPARATOR = ".";
+    public static final String KEY_ATTENDANCDE="attendace_id";
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
@@ -37,7 +39,6 @@ public class Constants {
     public static final String TIME_FORMAT_ = "HH:mm";
     public static final String TIME_FORMAT = "hh:mm aa";
     public static final String WEEK_FORMAT = "EEEE";
-
     public static final String DECIMAL_FORMAT = "#0.00";
 
     public static class App {
@@ -108,6 +109,7 @@ public class Constants {
 
         public static final String ACTION = "action";
         public static final String ACTION_EDIT = "edit";
+        public static final String KEY_ATTENDACE_ID="attendace_id";
     }
 
     public static class Location {
@@ -132,11 +134,12 @@ public class Constants {
         public static final String HOME_DATA = "homeObj";
         public static final String FORMS = "Forms";
         public static final String MEETINGS = "Meetings";
-        //public static final String PLANNER = "Planner";
+        public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
         public static final String WEBMODULE = "Webmodule";
         public static final String WEBMODULE_NAME = "webmodule";
+        public static final String CONTENT="Content";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -269,6 +272,8 @@ public class Constants {
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
+        public static final String IS_DELETE_VISIBLE= "IsDeleteVisible";
+        public static final String EVENT_TASK_ID = "EventTaskID";
         public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
@@ -293,5 +298,9 @@ public class Constants {
         public static final String PENDING_STATUS = "Pending";
         public static final String APPROVED_STATUS = "Approved";
         public static final String REJECTED_STATUS = "Rejected";
+    }
+
+    public static class ContentManagement{
+        public static final String CONTENT_TOOLBAR_TEXT="ContentManagement";
     }
 }

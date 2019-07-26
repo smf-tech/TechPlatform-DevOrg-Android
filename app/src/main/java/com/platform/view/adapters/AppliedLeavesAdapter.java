@@ -33,17 +33,14 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     class ViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout leaveTitleLayout;
-        TextView leaveHeader, leaveSubHeader,tvStatus;
+        TextView leaveHeader, leaveSubHeader;
         ImageView deleteClick;
-        //ImageView editClick;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             leaveTitleLayout = itemView.findViewById(R.id.leave_title_layout);
             leaveHeader = itemView.findViewById(R.id.tv_leave_header);
-            //tvStatus = itemView.findViewById(R.id.tv_status);
             leaveSubHeader = itemView.findViewById(R.id.tv_leave_sub_header);
             deleteClick = itemView.findViewById(R.id.img_delete);
-            //editClick = itemView.findViewById(R.id.img_edit);
         }
     }
 
@@ -60,15 +57,14 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
         viewHolder.leaveSubHeader.setText("from "+ getDateFromTimestamp
                 (leavesList.get(position).getStartdate(), DAY_MONTH_YEAR)+ " to " + getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
         viewHolder.leaveHeader.setText(leavesList.get(position).getStatus());
-        viewHolder.leaveTitleLayout.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
+        viewHolder.leaveTitleLayout.setOnClickListener(v ->
+                leavesListener.editLeaves(leavesList.get(position)));
         if(leavesList.get(position).getStatus().equalsIgnoreCase(Constants.Leave.PENDING_STATUS)){
+            viewHolder.deleteClick.setVisibility(View.VISIBLE);
             viewHolder.deleteClick.setOnClickListener(v -> leavesListener.deleteLeaves(leavesList.get(position).getId()));
-            //viewHolder.editClick.setOnClickListener(v -> leavesListener.editLeaves(leavesList.get(position)));
         }else{
-            //viewHolder.editClick.setVisibility(View.GONE);
             viewHolder.deleteClick.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -78,7 +74,6 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
 
     public interface LeaveAdapterListener {
         void deleteLeaves(String leaveId);
-
         void editLeaves(LeaveData leaveData);
     }
 }

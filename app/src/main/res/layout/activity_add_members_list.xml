@@ -71,7 +71,7 @@
             app:queryHint="Search here"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:maxWidth="@dimen/dimen_250dp"/>
+            android:maxWidth="@dimen/dimen_277dp"/>
         <CheckBox
             android:id="@+id/cb_select_all_members"
             android:layout_width="wrap_content"
@@ -112,9 +112,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_button"
-            android:text="@string/task_add_members"
+            android:text="@string/add_members"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_22" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

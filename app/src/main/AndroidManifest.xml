@@ -9,15 +9,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- Sync Adapter related permissions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Sync Adapter related permissions -->
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
-
-    <!-- GPS location permissions -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" /> <!-- GPS location permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -33,7 +29,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-
+        <activity android:name=".view.activities.ContentDownloadedActivity"></activity>
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -135,6 +131,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service
+            android:name=".services.AttendanceService"
+            android:enabled="true"
+            android:exported="false"></service>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -173,6 +173,12 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+        <service android:name=".services.DownloadService"
+            android:exported="true"></service>
+        <service android:name=".services.ShowTimerService"
+            android:exported="true">
+
+        </service>
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -180,5 +186,7 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
+
     </application>
+
 </manifest>

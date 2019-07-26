@@ -24,6 +24,7 @@ import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.EventTask;
 import com.platform.models.events.EventParams;
+import com.platform.models.events.EventsResponse;
 import com.platform.presenter.EventsPlannerFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
@@ -103,7 +104,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         progressBarLayout = eventsPlannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = eventsPlannerView.findViewById(R.id.pb_profile_act);
 
-        isAllEvents=true;
+        isAllEvents = true;
 
         Date d = new Date();
         eventParams = new EventParams();
@@ -181,7 +182,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     @Override
     public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
 //        Toast.makeText(getActivity(), "Month Changed:" + calendarDay, Toast.LENGTH_SHORT).show();
-        if(selectedMonth!=Integer.parseInt(DateFormat.format("MM", calendarDay.getDate()).toString())){
+        if (selectedMonth != Integer.parseInt(DateFormat.format("MM", calendarDay.getDate()).toString())) {
             eventParams = new EventParams();
             eventParams.setType(toOpen);
             eventParams.setDay(DateFormat.format("dd", calendarDay.getDate()).toString());
@@ -240,12 +241,12 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rb_all_events_task:
-                isAllEvents=true;
+                isAllEvents = true;
                 sortEventsList(isAllEvents);
                 break;
 
             case R.id.rb_my_events_task:
-                isAllEvents=false;
+                isAllEvents = false;
                 sortEventsList(isAllEvents);
                 break;
         }
@@ -325,14 +326,16 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         }
     }
 
-    public void displayEventsListOfDay(List<EventTask> data) {
-        if (data != null) {
-            eventsList.clear();
-            eventsList.addAll(data);
-            sortEventsList(isAllEvents);
+    public void displayEventsListOfDay(EventsResponse data) {
+        eventsList.clear();
+        if (data.getStatus() == 200) {
+            if (data.getData() != null && data.getData().size() > 0) {
+                eventsList.addAll(data.getData());
+            }
         } else {
-            sortEventsList(isAllEvents);
+            showErrorMessage(data.getMessage());
         }
+        sortEventsList(isAllEvents);
     }
 
     public void displayEventsListOfMonth(List<String> data) {

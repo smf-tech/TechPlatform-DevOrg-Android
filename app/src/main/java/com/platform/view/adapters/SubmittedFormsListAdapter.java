@@ -166,7 +166,7 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
         view.findViewById(R.id.iv_dashboard_delete_form).setVisibility(View.GONE);
         //view.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
-        if(data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
+        if(data.getFormApprovalStatus()!=null && data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
             view.findViewById(R.id.iv_status_icon).setVisibility(View.VISIBLE);
         }
         return view;
