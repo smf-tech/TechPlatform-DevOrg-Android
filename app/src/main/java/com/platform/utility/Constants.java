@@ -272,6 +272,8 @@ public class Constants {
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
+        public static final String IS_DELETE_VISIBLE= "IsDeleteVisible";
+        public static final String EVENT_TASK_ID = "EventTaskID";
         public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";

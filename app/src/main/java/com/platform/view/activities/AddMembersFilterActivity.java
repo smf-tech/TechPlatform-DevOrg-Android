@@ -504,7 +504,6 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
     @Override
     public void showErrorMessage(String result) {
-        AppEvents.trackAppEvent(getString(R.string.event_update_profile_fail));
         runOnUiThread(() -> Util.showToast(result, this));
     }
 

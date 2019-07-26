@@ -59,6 +59,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     EventDetailPresenter presenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
+    private boolean isMemberDeletable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void initView() {
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         eventTask = (EventTask) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
+        isMemberDeletable=false;
 
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
@@ -103,7 +105,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         tvOwner.setText(eventTask.getOwnername());
         tvStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(), Constants.FORM_DATE_FORMAT));
         tvEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(), Constants.FORM_DATE_FORMAT));
-        tvMemberCount.setText(eventTask.getParticipantsCount() + " member added");
+        tvMemberCount.setText("Added members " + eventTask.getParticipantsCount() +" | " +
+                "Attended by " + eventTask.getAttendedCompleted()+ " members");
 
         if (eventTask.getThumbnailImage().equals("")) {
             ivEventPic.setVisibility(View.GONE);
@@ -135,6 +138,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             if(starDate.getTime() > currentDate.getTime()) {
                 editButton.setVisibility(View.VISIBLE);
                 toolbarAction.setVisibility(View.VISIBLE);
+                isMemberDeletable=true;
             }
         } else {
             //viewer
@@ -266,7 +270,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         builder.setTitle("Attendance Code")
                 .setView(dialogView)
                 .setMessage("Attendance code to mark attendance is:")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -341,6 +345,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
             intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+            intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, isMemberDeletable);
+            intentAddMembersListActivity.putExtra(Constants.Planner.EVENT_TASK_ID, eventTask.getId());
             intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
             this.startActivity(intentAddMembersListActivity);
         } else {

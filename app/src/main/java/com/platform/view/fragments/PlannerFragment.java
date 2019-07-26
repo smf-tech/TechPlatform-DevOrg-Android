@@ -253,7 +253,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         // comment by deepak on 1-07-2019
         plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-        plannerFragmentPresenter.getPlannerData();
 
         RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
@@ -290,6 +289,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             }
         }
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -1105,6 +1106,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         super.onResume();
         setButtonText();
 
+        plannerFragmentPresenter.getPlannerData();
+
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
 
@@ -1124,20 +1127,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         }
 
-       /* Intent intent=getActivity().getIntent();
-        String totHrsFromPrvFrag=null;
-        if(intent!=null){
-            Bundle bundle=intent.getExtras();
-            totHrsFromPrvFrag=bundle.getString("TotalHours","00:00");
-            txt_total_hours.setText(totHrsFromPrvFrag);
-        }*/
-
         if(!isCheckOut){
             getDiffBetweenTwoHours();
         }
-
-        //Toast.makeText(context, "I am in Resume", Toast.LENGTH_SHORT).show();
-
     }
 
     public void setButtonText(){

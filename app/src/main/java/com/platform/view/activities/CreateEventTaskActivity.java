@@ -127,10 +127,10 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         RecyclerView rvAttendeesList = findViewById(R.id.rv_attendees_list);
         lyEventPic = findViewById(R.id.ly_event_pic);
 
-        addMembersListAdapter = new AddMembersListAdapter(CreateEventTaskActivity.this, membersList, false, false);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rvAttendeesList.setLayoutManager(mLayoutManager);
-        rvAttendeesList.setAdapter(addMembersListAdapter);
+//        addMembersListAdapter = new AddMembersListAdapter(CreateEventTaskActivity.this, membersList, false, false);
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//        rvAttendeesList.setLayoutManager(mLayoutManager);
+//        rvAttendeesList.setAdapter(addMembersListAdapter);
 
         btEventSubmit.setText(getString(R.string.btn_submit));
         if (eventTask != null) {
@@ -356,11 +356,12 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         String msg = "";
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
         try {
-            startDate = sdf.parse(etStartDate.getText().toString().trim());
-            endDate = sdf.parse(etEndDate.getText().toString().trim());
+            startDate = formatter.parse(etStartDate.getText().toString().trim()+" "+etStartTime.getText().toString().trim());
+            endDate = formatter.parse(etEndDate.getText().toString().trim()+" "+etEndTime.getText().toString().trim());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -373,12 +374,12 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             msg = getResources().getString(R.string.msg_enter_start_date);
         } else if (etEndDate.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_end_date);
-        } else if (startDate.getTime() > endDate.getTime()) {
-            msg = getResources().getString(R.string.msg_enter_proper_date);
         } else if (etStartTime.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_start_time);
         } else if (etEndTime.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_ned_date);
+        } else if (startDate.getTime() > endDate.getTime()) {
+            msg = getResources().getString(R.string.msg_enter_proper_date);
         } else if (etAddress.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_address);
         } else if (cbIsRegistrationRequired.isChecked()) {
@@ -630,6 +631,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     public void showMemberList(ArrayList<Participant> data) {
         Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
         intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, true);
+        intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, false);
         intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, data);
         this.startActivityForResult(intentAddMembersListActivity,Constants.Planner.MEMBER_LIST);
     }

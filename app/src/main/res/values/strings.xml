@@ -259,7 +259,8 @@
     <string name="task_repeat">Repeat</string>
     <string name="task_description">Description</string>
     <string name="task_address">Address</string>
-    <string name="task_add_members">Members</string>
+    <string name="task_add_members">Members list</string>
+    <string name="add_members">Add Members</string>
     <string name="my_events">My Events</string>
     <string name="apply_filters">Apply Filters</string>
     <string name="filter">Filter</string>
@@ -404,16 +405,17 @@
     <string name="msg_enter_address">Please enter the address.</string>
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+    <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generate_code">Generate Code</string>
     <string name="details">Details</string>
-    <string name="msg_enter_proper_date">Start date should not be greater than end date</string>
+    <string name="msg_enter_proper_date">Start datetime should not be greater than end datetime</string>
     <string name="venue">Venue</string>
     <string name="delayedin_checkin">Delayed in chek in and found another location</string>
     <string name="delayin_checkin_title">please provide a reason</string>
     <string name="see_details">See Details</string>
-    <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
+
 
 </resources>
