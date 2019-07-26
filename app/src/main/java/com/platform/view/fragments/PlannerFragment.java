@@ -148,7 +148,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private String checkOutText="Check out at ";
     private String prefCheckInTime;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +163,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         }
 
         AppEvents.trackAppEvent(getString(R.string.event_meetings_screen_visit));
-
     }
 
     @Override
@@ -174,6 +172,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         plannerView = inflater.inflate(R.layout.fragment_dashboard_planner, container, false);
         // start timer
         updateTimer = new Timer();
+
         return plannerView;
     }
 
@@ -182,6 +181,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
         preferenceHelper=new PreferenceHelper(getActivity());
+
 
 
         /* if(checkServiceRunning()){
@@ -226,23 +226,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         txt_total_hours=plannerView.findViewById(R.id.iv_total_hours);
         txt_timer=plannerView.findViewById(R.id.txt_timer);
 
-
-
-        if(!isCheckOut)
-        {
+        if(!isCheckOut){
             getDiffBetweenTwoHours();
         }
 
-
-
-
-
-
-
         initCardView();
         deleteSharedPreferece();
-
-
     }
 
     private void initCardView() {
@@ -255,20 +244,22 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         progressBarLayout = plannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = plannerView.findViewById(R.id.pb_profile_act);
+        if(Util.isConnected(getContext())) {
+            plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+            plannerFragmentPresenter.getPlannerData();
+        }else{
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
 
         checkTodayMarkInOrNot();
 
-
-
         // comment by deepak on 1-07-2019
         plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-        plannerFragmentPresenter.getPlannerData();
 
         RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
         RelativeLayout rl_attendance = plannerView.findViewById(R.id.ly_attendance);
         RelativeLayout rl_leaves = plannerView.findViewById(R.id.ly_leave);
-
 
         List<Modules> approveModules = DatabaseManager.getDBInstance(getActivity().getApplicationContext())
                 .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
@@ -300,6 +291,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             }
         }
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -362,7 +355,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
                 case Constants.Planner.EVENTS_KEY:
                     if(obj.getEventData()!=null && obj.getEventData().size()>0){
-
                         RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
                         EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(getActivity(),
                                 obj.getEventData(), Constants.Planner.EVENTS_LABEL);
@@ -370,7 +362,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
                     } else {
-                        plannerView.findViewById(R.id.tv_no_events_msg).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                     }
 
                     break;
@@ -384,7 +376,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvTask.setLayoutManager(mLayoutManagerTask);
                         rvTask.setAdapter(taskListAdapter);
                     } else {
-                        plannerView.findViewById(R.id.tv_no_task_msg).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
+
                     }
                     break;
                 case Constants.Planner.LEAVES_KEY:
@@ -401,7 +394,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
             }
         }
-
     }
         public void setAttendaceView () {
 
@@ -426,6 +418,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                     } else {
                          markCheckIn();
+
+
                     }
 
 
@@ -446,7 +440,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     }
 
 
-                    //preferenceHelper.totalHours(KEY_TOTALHOURS,false)
+
+
                 }
             });
 
@@ -525,7 +520,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                         checkOutText=checkOutText+checkOutTime;
                         preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
-
                         if(!isCheckOut){
                             getDiffBetweenTwoHours();
                         }
@@ -572,8 +566,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         }
 
-
-    public void setEventView () {
+        public void setEventView () {
 
         TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_events_list);
         TextView btAddEvents = plannerView.findViewById(R.id.bt_add_events);
@@ -581,17 +574,25 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                getActivity().startActivity(intentEventList);
+                if(Util.isConnected(getContext())) {
+                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                    intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                    getActivity().startActivity(intentEventList);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
         btAddEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                getActivity().startActivity(intentCreateEvent);
+                if(Util.isConnected(getContext())) {
+                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                    getActivity().startActivity(intentCreateEvent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
 
@@ -600,23 +601,31 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void setTaskView() {
 
         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_task);
-        TextView tvAllEventsDetail = plannerView.findViewById(R.id.tv_all_task_list);
-        TextView btAddEvents = plannerView.findViewById(R.id.bt_add_task);
+        TextView tvAllTaskDetail = plannerView.findViewById(R.id.tv_all_task_list);
+        TextView btAddTasks = plannerView.findViewById(R.id.bt_add_task);
 
-        tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
+        tvAllTaskDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
-                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                getActivity().startActivity(intentEventList);
+                if(Util.isConnected(getContext())) {
+                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                    intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                    getActivity().startActivity(intentEventList);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
-        btAddEvents.setOnClickListener(new View.OnClickListener() {
+        btAddTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
-                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                getActivity().startActivity(intentCreateEvent);
+                if(Util.isConnected(getContext())) {
+                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                    intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                    getActivity().startActivity(intentCreateEvent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
 
@@ -629,11 +638,15 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         tvCheckLeaveDetailsLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                intent.putExtra("title", getActivity().getString(R.string.leave));
-                intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
-                getActivity().startActivity(intent);
+                if(Util.isConnected(getContext())) {
+                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
+                    intent.putExtra("title", getActivity().getString(R.string.leave));
+                    intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
+                    getActivity().startActivity(intent);
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), getContext());
+                }
             }
         });
         imgClickAddLeaves.setOnClickListener(new View.OnClickListener() {
@@ -648,8 +661,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 getActivity().startActivity(intent);
             }
         });
-
-
     }
 
         public void markCheckIn () {
@@ -1124,6 +1135,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         super.onResume();
         setButtonText();
 
+        plannerFragmentPresenter.getPlannerData();
+
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
 
@@ -1146,16 +1159,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         if(!isCheckOut){
             getDiffBetweenTwoHours();
         }
-
-        /*if(preferenceHelper.getCheckOutStatus(KEY_ISCHECKOUT)){
-            String totalHrs=preferenceHelper.getTotalHoursAfterCheckOut(KEY_TOTAL_HRS_CHEKOUT);
-            txt_total_hours.setText(totalHrs);
-        }*/
-
-
-
-        //Toast.makeText(context, "I am in Resume", Toast.LENGTH_SHORT).show();
-
     }
 
     public void setButtonText(){
@@ -1167,7 +1170,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         btCheckout.setText(checkOut);
 
     }
-
     public String getCheckInButtonText(String key){
        return preferenceHelper.getCheckInButtonText(key);
     }
@@ -1176,8 +1178,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         return preferenceHelper.getCheckOutText(key);
     }
 
-    public void deleteUserAttendanceData()
-    {
+    public void deleteUserAttendanceData(){
+
         SharedPreferences sharedPreferences=getActivity().getSharedPreferences(PreferenceHelper.PREFER_NAME,Context.MODE_PRIVATE);
         sharedPreferences.edit().remove(KEY_CHECKINTIME).apply();
         sharedPreferences.edit().remove(KEY_CHECKINTEXT).apply();
@@ -1222,8 +1224,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     {
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if(getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
-            // show total hours if user present
-            //txt_total_hours.setText(preferenceHelper.getTotalHoursAfterCheckOut(KEY_TOTAL_HRS_CHEKOUT));
+
         }else {
             deleteUserAttendanceData();
         }
@@ -1266,6 +1267,5 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     }
 
 
-}
-
+    }
 
