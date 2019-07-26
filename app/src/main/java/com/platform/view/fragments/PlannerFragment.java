@@ -251,8 +251,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         checkTodayMarkInOrNot();
 
-
-
         // comment by deepak on 1-07-2019
         plannerFragmentPresenter = new PlannerFragmentPresenter(this);
         plannerFragmentPresenter.getPlannerData();
@@ -261,7 +259,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
         RelativeLayout rl_attendance = plannerView.findViewById(R.id.ly_attendance);
         RelativeLayout rl_leaves = plannerView.findViewById(R.id.ly_leave);
-
 
         List<Modules> approveModules = DatabaseManager.getDBInstance(getActivity().getApplicationContext())
                 .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
@@ -378,6 +375,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
                 case Constants.Planner.LEAVES_KEY:
                     if(obj.getLeave()!=null && obj.getLeave().size()>0){
+                        leaveBalance.clear();
                         leaveBalance.addAll(obj.getLeave());
                         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
                                 LinearLayoutManager.HORIZONTAL, true);
