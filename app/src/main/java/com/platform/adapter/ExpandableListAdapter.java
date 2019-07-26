@@ -1,6 +1,7 @@
 package com.platform.adapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,16 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.platform.R;
 import com.platform.models.content.DownloadContent;
 import com.platform.models.content.Url;
+import com.platform.utility.Permissions;
 import com.platform.view.fragments.ContentManagementFragment;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -31,7 +36,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<DownloadContent>> _listDataChild;
-    private ContentManagementFragment contentManagementFragment;
+    public ContentManagementFragment contentManagementFragment;
 
     public ExpandableListAdapter(ContentManagementFragment context,List<String> listDataHeader,
                                  HashMap<String,List<DownloadContent>> listChildData,Context _context) {
@@ -86,11 +91,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
 
 
+
+
+
             imgDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // check file is present in directory or not
+                    // opene a language dialog
                     contentManagementFragment.beginDownload(downloadContent.getDef());
+
+                    // file is availble or not
+                   /* if(isFileAvailable(downloadContent))
+                    {
+                     imgDownload.setVisibility(View.GONE);
+                     imgShare.setVisibility(View.VISIBLE);
+                    }*/
+
+
+
 
                 }
             });
@@ -99,22 +118,36 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
 
-                    String storagePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/MV/";
+                    String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+                    //Uri uri = Uri.parse(downloadContent.getDef());
+                    //File filePath=new File(uri.getPath());
+
+
                     Uri uri = Uri.parse(downloadContent.getDef());
-                    File file=new File(uri.getPath());
+                    File file = new File(uri.getPath());
                     String fileName=file.getName();
-                    String filePath=storagePath+fileName;
+
+                    File filePath=new File(storagePath+"/"+fileName);
+                    openFile(contentManagementFragment,filePath);
+
+
+                   /* File fil
+
+                   e=new File(uri.getPath());
+                    String fileName=file.getName();
+                    String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+                    String filePath=storagePath+"/"+fileName;
 
                     File pptFile = new File(filePath);
                     Uri outputUri = FileProvider.getUriForFile(contentManagementFragment.getActivity(),
                             contentManagementFragment.getActivity().getPackageName() + ".file_provider", pptFile);
                     Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_SEND);
-                    intent.setType("application/*");
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(outputUri,fileExtension);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra(Intent.EXTRA_STREAM,outputUri);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    contentManagementFragment.getActivity().startActivity(Intent.createChooser(intent, "Share Content"));
+                    _context.startActivity(intent);*/
+
                 }
             });
         }
@@ -190,7 +223,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         File file=new File(uri.getPath());
         String fileName=file.getName();
 
-        File myFile=new File(storagePath+fileName);
+        File myFile=new File(storagePath+"/"+fileName);
 
 
         Log.i("FilePath","111"+myFile);
@@ -202,6 +235,83 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     }
 
+    public  void openFile(ContentManagementFragment contentManagementFragment, File url) {
+
+        try{
+
+            // Create URI
+            Uri uri = FileProvider.getUriForFile(contentManagementFragment.getActivity(),
+                    contentManagementFragment.getActivity().getPackageName() + ".file_provider", url);
 
 
-}
+      /*  Uri uri = FileProvider.getUriForFile(
+                contentManagementFragment.getActivity(),
+                context.getApplicationContext()
+                        .getPackageName() + ".provider", file);*/
+
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // Check what kind of file you are trying to open, by comparing the url with extensions.
+            // When the if condition is matched, plugin sets the correct intent (mime) type,
+            // so Android knew what application to use to open the file
+            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
+                // Word document
+                intent.setDataAndType(uri, "application/msword");
+            } else if(url.toString().contains(".pdf")) {
+                // PDF file
+                intent.setDataAndType(uri, "application/pdf");
+            } else if(url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
+                // Powerpoint file
+                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+            } else if(url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
+                // Excel file
+                intent.setDataAndType(uri, "application/vnd.ms-excel");
+            } else if(url.toString().contains(".zip") || url.toString().contains(".rar")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "application/x-wav");
+            } else if(url.toString().contains(".rtf")) {
+                // RTF file
+                intent.setDataAndType(uri, "application/rtf");
+            } else if(url.toString().contains(".wav") || url.toString().contains(".mp3")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "audio/x-wav");
+            } else if(url.toString().contains(".gif")) {
+                // GIF file
+                intent.setDataAndType(uri, "image/gif");
+            } else if(url.toString().contains(".jpg") || url.toString().contains(".jpeg") || url.toString().contains(".png")) {
+                // JPG file
+                intent.setDataAndType(uri, "image/jpeg");
+            } else if(url.toString().contains(".txt")) {
+                // Text file
+                intent.setDataAndType(uri, "text/plain");
+            } else if(url.toString().contains(".3gp") || url.toString().contains(".mpg") || url.toString().contains(".mpeg") || url.toString().contains(".mpe") || url.toString().contains(".mp4") || url.toString().contains(".avi")) {
+                // Video files
+                intent.setDataAndType(uri, "video/*");
+            } else {
+                //if you want you can also define the intent type for any other file
+
+                //additionally use else clause below, to manage other unknown extensions
+                //in this case, Android will show all applications installed on the device
+                //so you can choose which application to use
+                intent.setDataAndType(uri, "*/*");
+            }
+
+            contentManagementFragment.getActivity().startActivity(intent);
+        }catch (Exception e){
+            Log.i("FileView","222"+e.toString());
+        }
+
+    }
+
+
+
+
+
+    }
+
+    // open a language dialog box
+
+
+

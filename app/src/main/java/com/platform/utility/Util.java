@@ -365,7 +365,7 @@ public class Util {
                 msg = Platform.getInstance().getString(R.string.msg_no_network);
             }
 
-            if (context instanceof Fragment) {
+            if(context instanceof Fragment ){
                 Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();

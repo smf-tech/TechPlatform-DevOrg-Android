@@ -1,5 +1,4 @@
 package com.platform.view.fragments;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -147,8 +146,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public static  String KEY_CHECKINTEXT="checkInText";
     public static  String KEY_CHECKOUTTEXT="checkOutText";
 
-    private String checkInText="Check in at";
-    private String checkOutText="Check out at";
+    private String checkInText=" Check in at ";
+    private String checkOutText=" Check out at ";
     private String prefCheckInTime;
     private String totalHrs,totalMin;
     private String totalHours;
@@ -209,7 +208,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
        /* if(!isCheckOut){
             getDiffBetweenTwoHours();
         }*/
-
         deleteSharedPreferece();
 
 
@@ -427,17 +425,31 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             case R.id.bt_check_in:
                 //tvCheckInTime.setVisibility(View.VISIBLE);
                 gpsTracker = new GPSTracker(getActivity());
-                String attendace_id=preferenceHelper.getString(Constants.KEY_ATTENDANCDE);
+
                 checkInTime=DateFormat.format(Constants.TIME_FORMAT,new Date().getTime());
-                markIn(attendace_id);
+
+                getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
+                if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
+                    Toast.makeText(getActivity(), "User Already check in", Toast.LENGTH_LONG).show();
+                }else {
+                    markIn();
+                }
+
                 break;
             case R.id.bt_checkout:
                 chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
-                markCheckOut();
+
+                getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
+                if(getUserCheckOutType!=null&& !getUserCheckOutType.isEmpty()&&getUserCheckOutType.size()>0){
+                    Toast.makeText(getActivity(), "User Already check out", Toast.LENGTH_LONG).show();
+                }
+                else
+                    {
+                    markCheckOut();
+                }
                 /*if(!isCheckOut){
                     getDiffBetweenTwoHours();
                 }*/
-
                 break;
             case R.id.tv_attendance_details:
                 Intent intent = new Intent(getActivity(),GeneralActionsActivity.class);
@@ -487,11 +499,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void markIn(String attendace_id) {
-        if(attendace_id!=null&&attendace_id.length()>0){
-            Toast.makeText(getActivity(),"User already check in",Toast.LENGTH_LONG).show();
-        }
-        else {
+    private void markIn() {
             if (gpsTracker.isGPSEnabled(getActivity(), this)) {
                 if (!gpsTracker.canGetLocation()) {
                     Toast.makeText(getActivity(),"Unable to get lat and log",Toast.LENGTH_LONG).show();
@@ -499,12 +507,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 getLocation();
                 getCompleteAddressString(Double.parseDouble(strLat),Double.parseDouble(strLong));
                 millis=getLongFromDate();
-                if(!Util.isConnected(getActivity())){
+
+                if(!Util.isConnected(getActivity()))
+                {
 
                     // offline storage
                     //userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
                     // offline save
                     getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(),Util.getUserMobileFromPref());
+
+
                     if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty())
                     {
                         Toast.makeText(getActivity(),"Already check in",Toast.LENGTH_LONG).show();
@@ -535,11 +547,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                         preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
                         preferenceHelper.totalHours(KEY_TOTALHOURS,true);
-                        checkInText="Check in at "+ checkInTime;
+                        checkInText=checkInText+ checkInTime;
                         preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
 
                         setButtonText();
                         enableCheckOut();
+
+                        Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
 
                         Log.i("OfflineStorage","111"+attendaceData);
                      }
@@ -558,7 +572,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 gpsTracker.showSettingsAlert();
             }
 
-        }
+
     }
 
 
@@ -612,7 +626,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                             .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
                     btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
-                    checkOutText=checkOutText+ chkOutTime;
+                    checkOutText=checkOutText+chkOutTime;
                     preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
 
                     setButtonText();
@@ -621,6 +635,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     }
                     isCheckOut=true;
                     preferenceHelper.totalHours(KEY_TOTALHOURS,false);
+                    Util.showToast(getResources().getString(R.string.check_out),getActivity());
+
 
 
                 }
@@ -842,11 +858,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                     preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
                     preferenceHelper.totalHours(KEY_TOTALHOURS,true);
-                    checkInText="Check in at "+ checkInTime;
+                    checkInText=checkInText + checkInTime;
                     preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
 
                     setButtonText();
                     enableCheckOut();
+                    Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
                 }
 
 
@@ -897,16 +914,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             }
             isCheckOut=true;
             preferenceHelper.totalHours(KEY_TOTALHOURS,false);
+            Util.showToast(getResources().getString(R.string.check_out),getActivity());
 
 
-           /* txt_total_hours.setVisibility(View.VISIBLE);
-            tv_lab_total_hours.setVisibility(View.VISIBLE);
-            try {
-                txt_total_hours.setText(getTotalHours());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-*/
             Log.i("Online","111"+attendaceData);
         }
 
@@ -998,6 +1008,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
+
+
         setButtonText();
         if(!isCheckOut){
             getDiffBetweenTwoHours();
@@ -1077,6 +1089,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
         getActivity().startActivity(planerfragment);*/
     }
+
 }
 
 

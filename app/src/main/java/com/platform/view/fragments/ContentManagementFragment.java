@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.R;
@@ -83,12 +84,14 @@ public class ContentManagementFragment extends Fragment {
     private ImageView backButton;
     private TextView txtTtiel;
     private ImageView imgDownload;
+    private FloatingActionButton btn_floating_download;
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private List<DownloadContent> listDownloadContent;
     private HashMap<String, List<DownloadContent>> listDataChild = new HashMap<>();
     private TextView txt_noData;
     private File f;
+    //private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
@@ -128,6 +131,8 @@ public class ContentManagementFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
         getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
     }
@@ -144,6 +149,7 @@ public class ContentManagementFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews();
+        createDirectory();
         clearPreviousData();
 
         if (Util.isConnected(getContext())) {
@@ -151,6 +157,14 @@ public class ContentManagementFragment extends Fragment {
             getContentData();
         }
 
+    }
+
+    private void createDirectory() {
+        File direct = new File(path);
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
     }
 
     private void clearPreviousData() {
@@ -205,24 +219,6 @@ public class ContentManagementFragment extends Fragment {
 
                 DownloadContent dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
 
-                imgDwn = v.findViewById(R.id.imgDownload);
-                imgShare = v.findViewById(R.id.imgshare);
-
-              /* if(isFileAvailable(dwncontent)){
-                    imgDwn.setVisibility(View.GONE);
-                    imgShare.setVisibility(View.VISIBLE);
-                }else{
-                    imgDwn.setVisibility(View.VISIBLE);
-                    imgShare.setVisibility(View.GONE);
-                }*/
-
-                imgDwn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-
-                    }
-                });
 
                 Toast.makeText(
                         getContext(),
@@ -314,6 +310,8 @@ public class ContentManagementFragment extends Fragment {
         //initToolBar();
         txtTtiel = contentview.findViewById(R.id.txt_contentTitle);
         txt_noData = contentview.findViewById(R.id.textNoData);
+        btn_floating_download=contentview.findViewById(R.id.btn_floating_content);
+
         expListView = contentview.findViewById(R.id.lvExp);
         progressBarLayout = contentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentview.findViewById(R.id.pb_profile_act);
@@ -326,11 +324,11 @@ public class ContentManagementFragment extends Fragment {
 
                 // check external storage permission
 
-                if (Permissions.isReadExternalStotagePermission(getActivity(), this)) {
+                /*if (Permissions.isReadExternalStotagePermission(getActivity(), this)) {
 
                     Intent callDownloadActivity = new Intent(getActivity(), ContentDownloadedActivity.class);
                     startActivity(callDownloadActivity);
-                }
+                }*/
 
                 //String url="http://18.216.227.14/images/SMF%20BOOK%20-CHANGES.pdf";
                 //beginDownload(url);
@@ -370,34 +368,40 @@ public class ContentManagementFragment extends Fragment {
             }
         });
 
+        btn_floating_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Permissions.isReadExternalStotagePermission(getActivity(), this)) {
+
+                    Intent callDownloadActivity = new Intent(getActivity(), ContentDownloadedActivity.class);
+                    startActivity(callDownloadActivity);
+                }
+
+            }
+        });
+
     }
 
     public void beginDownload(String url) {
-
-        ContextWrapper cw = new ContextWrapper(getActivity());
-        String downloadPath;
-
-        File directory = cw.getDir("Deepak", Context.MODE_PRIVATE);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
 
         DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
         filename = file.getName();
 
-        downloadPath = directory.getAbsolutePath() + "/";
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("Mulyavardhan");
         request.setDescription("Downloading");
-
+        //request.setDestinationInExternalPublicDir("/MV",filename);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
         if (Permissions.isCameraPermissionGranted(getActivity(), getActivity())) {
-            request.setDestinationInExternalPublicDir(path, filename);
+            request.setDestinationInExternalPublicDir("/MV",filename);
         }
 
-        downloadFilePath = path + filename;
+
+        //downloadFilePath = path + filename;
 
         downloadID = downloadmanager.enqueue(request);
     }
@@ -518,5 +522,14 @@ public class ContentManagementFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getActivity(),"In Resume",Toast.LENGTH_LONG).show();
+        if(expandableListAdapter!=null){
+            expandableListAdapter.notifyDataSetChanged();
+        }
+        }
 
 }

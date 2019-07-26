@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
         android:layout_gravity="left"
-        android:padding="@dimen/dimen_70dp"
-        card_view:cardCornerRadius="4dp"
-        card_view:contentPadding="8dp">
+        android:outlineSpotShadowColor="@color/black"
+        card_view:cardCornerRadius="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:padding="20dp">
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/imgGroup"
-                android:gravity="left"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:text="123"
-                android:textColor="@color/black"
+                android:fontFamily="@font/opensans_bold"
                 android:textSize="14sp" />
 
             <ImageView
