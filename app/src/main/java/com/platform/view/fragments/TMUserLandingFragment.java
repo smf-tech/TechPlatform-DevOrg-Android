@@ -207,9 +207,14 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
         ApprovalDialogFragment approvalDialogFragment =
                 ApprovalDialogFragment.newInstance(pendingRequest, mAdapter);
         approvalDialogFragment.show(ft, "dialog");*/
+        if (Util.isConnected(getActivity())) {
+            Intent startMain = new Intent(getActivity(), TMFiltersListActivity.class);
+            startMain.putExtra("filter_type",pendingRequest.getType());
+            startActivity(startMain);
+        }else {
+            Util.showToast(getString(R.string.msg_no_network), getActivity());
 
-        Intent startMain = new Intent(getActivity(), TMFiltersListActivity.class);
-        startActivity(startMain);
+        }
 
     }
 

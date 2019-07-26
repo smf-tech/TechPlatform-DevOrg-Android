@@ -164,7 +164,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_person);
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
         if (!TextUtils.isEmpty(profileUrl)) {
             requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(

@@ -61,6 +61,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
 
 
     private TabLayout tabLayout;
+    private String filterTypeReceived="";
     private ImageView img_filter_image;
     ApprovalsViewPagerAdapter approvalsViewPagerAdapter;
     ViewPager viewPager;
@@ -89,6 +90,8 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                 getString(R.string.cat_pending),
                 getString(R.string.cat_approved),
                 getString(R.string.cat_rejected)};
+        //receive intent data
+        filterTypeReceived = getIntent().getStringExtra("filter_type");
         initViews();
     }
 
@@ -102,6 +105,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
          viewPager = findViewById(R.id.approval_cat_view_pager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
+
 
         tabLayout = findViewById(R.id.approval_cat_tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -243,6 +247,13 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mainFilterType);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spin.setAdapter(adapter);
+            for (int i = 0; i <mainFilterType.length ; i++) {
+                if (filterTypeReceived.equalsIgnoreCase(mainFilterType[i]))
+                {
+                    spin.setSelection(i);
+                }
+            }
+
             adapter.notifyDataSetChanged();
 
 
@@ -309,7 +320,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             no.setOnClickListener(this);
             tv_startdate.setOnClickListener(this);
             tv_enddate.setOnClickListener(this);
-            tv_startdate.setText(Util.getCurrentDate());
+            tv_startdate.setText(Util.getCurrentDatePreviousMonth());
             tv_enddate.setText(Util.getCurrentDate());
             adapter = new FilterChoicedapter(TMFiltersListActivity.this, subFiltersets);
             rv_filterchoice.setAdapter(adapter);
@@ -534,13 +545,13 @@ private void showFilterDialog(){
 
 
         //new implemented
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"pending");
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDatePreviousMonth(),Util.getCurrentDate(),subFiltersets,"pending");
         tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
 
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"approved");
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDatePreviousMonth(),Util.getCurrentDate(),subFiltersets,"approved");
         tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
 
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"rejected");
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(spin.getSelectedItem().toString(),Util.getCurrentDatePreviousMonth(),Util.getCurrentDate(),subFiltersets,"rejected");
         tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
     }
 }

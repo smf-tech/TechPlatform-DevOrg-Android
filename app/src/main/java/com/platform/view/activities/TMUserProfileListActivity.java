@@ -34,12 +34,12 @@ public class TMUserProfileListActivity extends BaseActivity {
         if (data != null && data.containsKey("filter_type")) {
             String switchToFragment = data.getString("filter_type") != null
                     ? data.getString("filter_type") : "null";
-            Util.showToast(switchToFragment, this);
+            // Util.showToast(switchToFragment, this);
             //get filter request object to get the details
             try {
                 JSONObject requestObject = new JSONObject(data.getString("filter_type_request"));
-                strRequestObject =data.getString("filter_type_request");
-                Util.logger(getLocalClassName().toString(),strRequestObject);
+                strRequestObject = data.getString("filter_type_request");
+                Util.logger(getLocalClassName().toString(), strRequestObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -56,7 +56,7 @@ public class TMUserProfileListActivity extends BaseActivity {
                 case "userapproval":
                     fragment = new TMUserProfileApprovalFragment();
                     bundle.putString("filter_type", "User Approval");
-                    bundle.putString("filter_type_request",strRequestObject);
+                    bundle.putString("filter_type_request", strRequestObject);
                     fragment.setArguments(bundle);
                     openFragment();
                     break;
@@ -64,7 +64,7 @@ public class TMUserProfileListActivity extends BaseActivity {
                 case "forms":
                     fragment = new TMUserFormsApprovalFragment();
                     bundle.putString("filter_type", "Forms Approval");
-                    bundle.putString("filter_type_request",strRequestObject);
+                    bundle.putString("filter_type_request", strRequestObject);
                     fragment.setArguments(bundle);
                     openFragment();
                     break;
@@ -72,7 +72,7 @@ public class TMUserProfileListActivity extends BaseActivity {
                 case "attendance":
                     fragment = new TMUserAttendanceApprovalFragment();
                     bundle.putString("filter_type", "Attendance Approval");
-                    bundle.putString("filter_type_request",strRequestObject);
+                    bundle.putString("filter_type_request", strRequestObject);
                     fragment.setArguments(bundle);
                     openFragment();
                     break;
@@ -80,7 +80,7 @@ public class TMUserProfileListActivity extends BaseActivity {
                 case "leave":
                     fragment = new TMUserLeavesApprovalFragment();
                     bundle.putString("filter_type", "Leaves Approval");
-                    bundle.putString("filter_type_request",strRequestObject);
+                    bundle.putString("filter_type_request", strRequestObject);
                     fragment.setArguments(bundle);
                     openFragment();
                     break;

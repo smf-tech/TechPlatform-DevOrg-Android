@@ -14,7 +14,6 @@ public class TextViewRegular extends AppCompatTextView {
 
     public TextViewRegular(Context context) {
         super(context);
-        this.setTextColor(ContextCompat.getColor(Platform.getInstance(), R.color.green));
         applyCustomFont(context);
     }
 

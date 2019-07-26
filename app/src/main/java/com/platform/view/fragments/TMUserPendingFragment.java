@@ -7,8 +7,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +39,8 @@ import java.util.List;
 @SuppressWarnings("CanBeFinal")
 public class TMUserPendingFragment extends Fragment implements View.OnClickListener,
         TMTaskListener, TMPendingApprovalPageRecyclerAdapter.OnRequestItemClicked, TMFiltersListActivity.OnFilterSelected {
-
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
     private View tmFragmentView;
     private TextView txtNoData;
     //private ExpandableListView rvPendingRequests;
@@ -85,6 +87,8 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
     }
 
     public void init() {
+        progressBarLayout = tmFragmentView.findViewById(R.id.gen_frag_progress_bar);
+        progressBar = tmFragmentView.findViewById(R.id.pb_gen_form_fragment);
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
         txtNoData.setText(getString(R.string.msg_no_pending_req));
 
@@ -113,12 +117,24 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void showProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
+        if (getActivity() == null) return;
 
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -168,10 +184,10 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void updateRequestStatus(String response, PendingRequest pendingRequest) {
-        Util.showToast(getString(R.string.status_update_success), getActivity());
+
         this.pendingRequestList.remove(pendingRequest);
 
-       this.mAdapter.notifyDataSetChanged();
+        this.mAdapter.notifyDataSetChanged();
 
         if (pendingRequestList != null && !pendingRequestList.isEmpty()) {
             DashboardFragment.setApprovalCount(this.pendingRequestList.size());
@@ -198,7 +214,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         if (getFragmentManager() == null) {
             return;
         }
-        Toast.makeText(getActivity(), "" + pendingRequest.getType() + " " + pendingRequest.get_id(), Toast.LENGTH_SHORT).show();
+
         /*FragmentTransaction ft = getFragmentManager().beginTransaction();
         ApprovalDialogFragment approvalDialogFragment =
                 ApprovalDialogFragment.newInstance(pendingRequest, mAdapter);
@@ -214,26 +230,22 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
         intent.putExtra("filter_type", pendingFragmentPresenter.getSelectedFiltertype());
         intent.putExtra("filter_type_request", filterRequestObject.toString());
         PreferenceHelper preferenceHelper = new PreferenceHelper(getActivity());
-        preferenceHelper.insertString(PreferenceHelper.IS_PENDING,PreferenceHelper.IS_PENDING);
+        preferenceHelper.insertString(PreferenceHelper.IS_PENDING, PreferenceHelper.IS_PENDING);
         startActivity(intent);
 
     }
 
-    /*@Override
-    public void onFilterButtonClicked(JSONObject requestJson) {
-        Toast.makeText(getActivity(), "Filter applied in activtiy", Toast.LENGTH_SHORT).show();
-    }*/
     public void onFilterButtonApplied(JSONObject requestJson) {
-        Toast.makeText(getActivity(), "Filter applied in activtiy", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onFilterButtonClicked(JSONObject requestobject) {
         this.pendingRequestList.clear();
-        if (mAdapter!=null) {
+        if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
-        Toast.makeText(getActivity(), "Filter applied in activtiy using interface", Toast.LENGTH_SHORT).show();
+
         filterRequestObject = requestobject;
         pendingFragmentPresenter.getAllPendingRequests(requestobject);
     }
@@ -253,6 +265,7 @@ public class TMUserPendingFragment extends Fragment implements View.OnClickListe
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
             View view = inflater.inflate(R.layout.dialog_pending_approval, container, false);
 
             if (sPendingRequest != null) {
