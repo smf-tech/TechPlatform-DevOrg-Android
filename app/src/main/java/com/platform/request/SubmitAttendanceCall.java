@@ -94,8 +94,6 @@ public class SubmitAttendanceCall  {
         }catch (Exception e){
             Log.i("NetworkException","111"+e.toString());
         }
-
-
     }
 
 
