@@ -12,9 +12,11 @@ import com.platform.models.tm.TMUserAttendanceApprovalRequestsResponse;
 import com.platform.request.TMUserAttendenceApprovalRequestCall;
 import com.platform.request.TMUserLeavesApprovalRequestCall;
 import com.platform.request.TMUserProfileApprovalRequestCall;
+import com.platform.utility.Util;
 import com.platform.view.fragments.TMUserAttendanceApprovalFragment;
 import com.platform.view.fragments.TMUserProfileApprovalFragment;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -80,6 +82,8 @@ public class TMUserAttendenceApprovalFragmentPresenter implements TMUserProfileA
     public void onRequestStatusChanged(String response, int position) {
         if (!TextUtils.isEmpty(response)) {
             fragmentWeakReference.get().updateRequestStatus(response, position);
+
+
         }
     }
 

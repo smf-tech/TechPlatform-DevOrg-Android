@@ -509,6 +509,16 @@ public class Util {
 
         return currentDateString;
     }
+    public static String getCurrentDatePreviousMonth() {
+
+        SimpleDateFormat format = new SimpleDateFormat(DAY_MONTH_YEAR);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        System.out.println(format.format(cal.getTime()));
+        String currentDateString = format.format(cal.getTime());
+
+        return currentDateString;
+    }
 
     public static String getDateTimeFromTimestamp(long date) {
         if (date > 0) {
@@ -1086,6 +1096,16 @@ public class Util {
     }*/
 
 
+    public static void showSuccessFailureToast(String response,Context mContext,View view){
+        try {
+            JSONObject json = new JSONObject(response);
+            String str_value=json.getString("message");
+            Snackbar snackbar = Snackbar.make(view, str_value, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     //pojo to json string
     public static String modelToJson(TMApprovalRequestModel tmApprovalRequestModel){
         Gson gson =new Gson();
@@ -1150,6 +1170,7 @@ public class Util {
 
 return "";
    }
+
     public static String getTodaysDate()
     {
         Date d = new Date();

@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +20,6 @@ import com.platform.R;
 import com.platform.listeners.TMTaskListener;
 import com.platform.models.tm.PendingApprovalsRequest;
 import com.platform.models.tm.PendingRequest;
-import com.platform.presenter.PendingFragmentPresenter;
 import com.platform.presenter.RejectedFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
@@ -32,16 +28,12 @@ import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.activities.TMUserProfileListActivity;
 import com.platform.view.adapters.PendingApprovalsListAdapter;
 import com.platform.view.adapters.TMPendingApprovalPageRecyclerAdapter;
-import com.platform.view.adapters.TMRejectedAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static com.platform.utility.Constants.TM.USER_APPROVALS;
 
 @SuppressWarnings("WeakerAccess")
 public class TMUserRejectedFragment extends Fragment implements View.OnClickListener,
@@ -177,7 +169,7 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
 
     @Override
     public void updateRequestStatus(String response, PendingRequest pendingRequest) {
-        Util.showToast(getString(R.string.status_update_success), getActivity());
+
         this.pendingRequestList.remove(pendingRequest);
 
         mAdapter.notifyDataSetChanged();
@@ -207,7 +199,7 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
         if (getFragmentManager() == null) {
             return;
         }
-        Toast.makeText(getActivity(), "" + pendingRequest.getType() + " " + pendingRequest.get_id(), Toast.LENGTH_SHORT).show();
+
         /*FragmentTransaction ft = getFragmentManager().beginTransaction();
         ApprovalDialogFragment approvalDialogFragment =
                 ApprovalDialogFragment.newInstance(pendingRequest, mAdapter);
@@ -223,27 +215,23 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
         intent.putExtra("filter_type_request", filterRequestObject.toString());
 
         PreferenceHelper preferenceHelper = new PreferenceHelper(getActivity());
-        preferenceHelper.insertString(PreferenceHelper.IS_PENDING,PreferenceHelper.NON_PENDING);
+        preferenceHelper.insertString(PreferenceHelper.IS_PENDING, PreferenceHelper.NON_PENDING);
 
         startActivity(intent);
 
     }
 
-    /*@Override
-    public void onFilterButtonClicked(JSONObject requestJson) {
-        Toast.makeText(getActivity(), "Filter applied in activtiy", Toast.LENGTH_SHORT).show();
-    }*/
     public void onFilterButtonApplied(JSONObject requestJson) {
-        Toast.makeText(getActivity(), "Filter applied in activtiy", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onFilterButtonClicked(JSONObject requestobject) {
         this.pendingRequestList.clear();
-        if (mAdapter!=null) {
+        if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
-        Toast.makeText(getActivity(), "Filter applied in activtiy using interface", Toast.LENGTH_SHORT).show();
+
         filterRequestObject = requestobject;
         pendingFragmentPresenter.getAllPendingRequests(requestobject);
     }
