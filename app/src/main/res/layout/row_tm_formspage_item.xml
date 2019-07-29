@@ -9,7 +9,8 @@
         android:layout_gravity="center_vertical"
         app:cardBackgroundColor="@color/white"
         android:layout_margin="@dimen/dimen_10dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/dimen_10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -119,18 +120,18 @@
 
                 <Button
                     android:id="@+id/btn_reject"
-                    style="@style/AppStyleButton"
+                    style="@style/AppStyleBorderButton"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/dark_grey" />
 
                 <Button
                     android:id="@+id/btn_approve"
                     style="@style/AppStyleButton"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
                     android:textColor="@color/white" />

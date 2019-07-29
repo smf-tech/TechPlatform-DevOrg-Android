@@ -134,7 +134,7 @@ public class Constants {
         public static final String HOME_DATA = "homeObj";
         public static final String FORMS = "Forms";
         public static final String MEETINGS = "Meetings";
-        //public static final String PLANNER = "Planner";
+        public static final String PLANNER = "Planner";
         public static final String APPROVALS = "Approvals";
         public static final String REPORTS = "Reports";
         public static final String WEBMODULE = "Webmodule";
@@ -272,6 +272,8 @@ public class Constants {
         public static final String EVENT_DETAIL = "EventDetail";
         public static final String MEMBERS_LIST = "MembersList";
         public static final String IS_NEW_MEMBERS_LIST = "IsNewMembersList";
+        public static final String IS_DELETE_VISIBLE= "IsDeleteVisible";
+        public static final String EVENT_TASK_ID = "EventTaskID";
         public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.platform.R;
-import com.platform.listeners.FormTaskListener;
 import com.platform.models.tm.TMApprovalRequestModel;
 import com.platform.models.tm.TMUserLeaveApplications;
 import com.platform.models.user.UserInfo;
@@ -34,14 +33,12 @@ import java.util.List;
 public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeavesApprovalRecyclerAdapter.OnRequestItemClicked,
         TMUserLeavesApprovalRecyclerAdapter.OnApproveRejectClicked {
 
-    private View approvalsFragmentView;
-    private Toolbar toolbar;
+    private JSONObject requetsObject;
+    TMUserLeavesApprovalRecyclerAdapter.OnApproveRejectClicked onApproveRejectClicked;
     private RecyclerView rvPendingRequests;
     private TMUserLeavesApprovalFragmentPresenter tmUserLeavesApprovalFragmentPresenter;
     private TMUserLeavesApprovalRecyclerAdapter tmUserLeavesApprovalRecyclerAdapter;
     private String strTitle, filterTypeRequest;
-    JSONObject requetsObject;
-    TMUserLeavesApprovalRecyclerAdapter.OnApproveRejectClicked onApproveRejectClicked;
     private List<TMUserLeaveApplications> tmUserLeaveApplicationsList;
 
     @Override
@@ -66,8 +63,8 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        approvalsFragmentView = inflater.inflate(R.layout.fragment_user_leaves_approval, container, false);
-        toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
+        View approvalsFragmentView = inflater.inflate(R.layout.fragment_user_leaves_approval, container, false);
+        Toolbar toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
         if (toolbar != null) {
             TextView title = toolbar.findViewById(R.id.toolbar_title);
             title.setText(strTitle);
@@ -77,7 +74,8 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    getActivity().onBackPressed();}
+                    getActivity().onBackPressed();
+                }
             }
         });
 
@@ -100,7 +98,6 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     public void showFetchedUserProfileForApproval(List<TMUserLeaveApplications> data) {
@@ -113,13 +110,11 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
 
     @Override
     public void onItemClicked(int pos) {
-        Util.showToast("Leaves Approval item clicked", getActivity());
+        //Util.showToast("Leaves Approval item clicked", getActivity());
     }
 
     @Override
     public void onApproveClicked(int pos) {
-
-        Util.showToast("Leaves Approval Button clicked", getActivity());
         TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
         try {
             tmApprovalRequestModel.setType("leave");
@@ -137,41 +132,24 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
 
     @Override
     public void onRejectClicked(int pos) {
-        Util.showToast("Leaves Reject Button clicked", getActivity());
-        String strReason = Util.showReasonDialog(getActivity(),pos,this);
-      /*  if (!TextUtils.isEmpty(strReason)){
-            TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
-            try {
-                tmApprovalRequestModel.setType("leave");
-                tmApprovalRequestModel.setApprove_type("approved");
-                tmApprovalRequestModel.setReason("test reject ");
-                tmApprovalRequestModel.setLeave_type(tmUserLeaveApplicationsList.get(pos).getLeave_type());
-                tmApprovalRequestModel.setStartdate(tmUserLeaveApplicationsList.get(pos).getStartdate());
-                tmApprovalRequestModel.setEnddate(tmUserLeaveApplicationsList.get(pos).getEnddate());
-                tmApprovalRequestModel.setId(tmUserLeaveApplicationsList.get(pos).get_id());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Gson gson = new Gson();
-            String jsonInString = gson.toJson(tmApprovalRequestModel);
-            tmUserLeavesApprovalFragmentPresenter.approveRejectRequest(jsonInString, pos);
-        }else {
-            Util.showToast("Please enter reason to reject.",getActivity());
-        }*/
+
+        String strReason = Util.showReasonDialog(getActivity(), pos, this);
     }
 
     public void updateRequestStatus(String response, int position) {
         tmUserLeaveApplicationsList.remove(position);
-        tmUserLeavesApprovalRecyclerAdapter.notifyDataSetChanged();
+        tmUserLeavesApprovalRecyclerAdapter.notifyItemRemoved(position);
+        Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
+                .findViewById(android.R.id.content));
     }
-    public void rejectApprovalRequest(String strReason,int pos)
-    {
-        if (!TextUtils.isEmpty(strReason)){
+
+    private void rejectApprovalRequest(String strReason, int pos) {
+        if (!TextUtils.isEmpty(strReason)) {
             TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
             try {
                 tmApprovalRequestModel.setType("leave");
                 tmApprovalRequestModel.setApprove_type("rejected");
-                tmApprovalRequestModel.setReason("test reject ");
+                tmApprovalRequestModel.setReason(strReason);
                 tmApprovalRequestModel.setLeave_type(tmUserLeaveApplicationsList.get(pos).getLeave_type());
                 tmApprovalRequestModel.setStartdate(tmUserLeaveApplicationsList.get(pos).getStartdate());
                 tmApprovalRequestModel.setEnddate(tmUserLeaveApplicationsList.get(pos).getEnddate());
@@ -182,13 +160,14 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
             Gson gson = new Gson();
             String jsonInString = gson.toJson(tmApprovalRequestModel);
             tmUserLeavesApprovalFragmentPresenter.approveRejectRequest(jsonInString, pos);
-        }else {
-            Util.showToast("Please enter reason to reject.",getActivity());
+        } else {
+            Util.showSuccessFailureToast("Please enter reason to reject.",getActivity(),getActivity().getWindow().getDecorView()
+                    .findViewById(android.R.id.content));
         }
     }
 
-    public void onReceiveReason(String strReason,int pos){
-        rejectApprovalRequest(strReason,pos);
+    public void onReceiveReason(String strReason, int pos) {
+        rejectApprovalRequest(strReason, pos);
     }
 
 }

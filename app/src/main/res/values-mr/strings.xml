@@ -258,7 +258,7 @@
     <string name="task_repeat">पुन्हा करा</string>
     <string name="task_description">वर्णन</string>
     <string name="task_address">पत्ता</string>
-    <string name="task_add_members">सदस्य जोडा</string>
+    <string name="task_add_members">सदस्य</string>
     <string name="my_events">माझे कार्यक्रम</string>
     <string name="apply_filters">फिल्टर लागू करा</string>
     <string name="filter">फिल्टर</string>
@@ -292,7 +292,11 @@
     <string name="half_day">अर्धा दिवस</string>
     <string name="start_date">प्रारंभ तारीख</string>
     <string name="end_date">शेवटची तारीख</string>
+    <string name="enter_start_date">कृपया प्रारंभ तारीख प्रविष्ट करा.</string>
+    <string name="enter_correct_details">कृपया योग्य तपशील प्रविष्ट करा.</string>
+    <string name="enter_proper_date_range">कृपया योग्य तारीख श्रेणी प्रविष्ट करा.</string>
     <string name="reason">कारण</string>
+    <string name="rejected_reason">नाकारलेले कारण</string>
     <string name="check_in">चेक इन</string>
     <string name="check_out">चेक आउट</string>
     <string name="holiday_list_title">सुट्टीची यादी 2019</string>
@@ -348,13 +352,15 @@
     <string name="msg_enter_address">Please enter the address.</string>
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
+    <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
     <string name="generate_code">Generate attendance code</string>
     <string name="details">Details</string>
-    <string name="msg_enter_proper_date">Start date should not be grater than end date</string>
+    <string name="msg_enter_proper_date">Start datetime should not be grater than end datetime</string>
     <string name="venue">Venue</string>
     <string name="delayedin_checkin">Delayed in chek in and found</string>
     <string name="delayin_checkin_title">please provide a reason</string>
     <string name="see_details">See Details</string>
+    <string name="add_members">Add Members</string>
     <string name="check_in_msg">Cheked In Suceesful</string>
     <string name="check_out_msg">Checked Out Successful</string>
 

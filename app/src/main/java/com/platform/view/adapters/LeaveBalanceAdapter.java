@@ -22,12 +22,10 @@ import java.util.List;
 public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapter.MyViewHolder> {
     LeaveApplyFragment context;
     List<LeaveDetail> leave;
-    String eventsLabel;
     String adapterType;
     ArrayList<Integer> leaveBackground;
 
     public LeaveBalanceAdapter(List<LeaveDetail> leave, String adapterType) {
-        this.context = context;
         this.leave = leave;
         this.adapterType = adapterType;
     }
@@ -54,7 +52,6 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
         }
         holder.tvLeaveType.setText(leave.get(position).getType());
         if(adapterType.equalsIgnoreCase("Category")){
-//            holder.itemView.findViewById(R.id.divider).setVisibility(View.GONE);
             holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.leave_form_text_color));
             holder.tvLeaveCount.setVisibility(View.GONE);
 
@@ -96,7 +93,7 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
                         notifyDataSetChanged();
                     });
                 }
-        }
+            }
         }
     }
 }

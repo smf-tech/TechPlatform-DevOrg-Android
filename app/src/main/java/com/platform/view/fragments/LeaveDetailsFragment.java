@@ -1,7 +1,9 @@
 package com.platform.view.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -67,21 +69,11 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     private RecyclerView leavesList;
     private final ArrayList<LeaveData> leavesListData = new ArrayList<>();
-    //private final ArrayList<LeaveData> filteredLeavesListData = new ArrayList<>();
     private final ArrayList<HolidayData> holidaysListData = new ArrayList<>();
     private AppliedLeavesAdapter leavesAdapter;
     private MaterialCalendarView calendarView;
     ImageView ivCalendarMode;
-    //private TabLayout tabLayout;
-//    private final int[] tabIcons = {
-//            R.drawable.selector_pending_tab,
-//            R.drawable.selector_approved_tab,
-//            R.drawable.selector_rejected_tab
-//    };
-
-//    private String[] tabNames;
     private boolean isMonth = true;
-    private String serverResponse;
     private String userLeaveDetailsResponse;
     private List<LeaveDetail> leaveBalance = new ArrayList<>();
     private LeavesPresenter presenter;
@@ -94,10 +86,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        tabNames = new String[]{
-//                getString(R.string.cat_pending),
-//                getString(R.string.cat_approved),
-//                getString(R.string.cat_rejected)};
     }
 
     @Override
@@ -112,10 +100,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
 
         ImageView toolBarMenu = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_edit_action);
-    //    toolBarMenu.setBackgroundResource(R.drawable.ic_holiday_menu);
         toolBarMenu.setImageResource(R.drawable.ic_holiday_list);
         leavesList = view.findViewById(R.id.rv_applied_leaves_list);
-        //tabLayout = view.findViewById(R.id.leave_cat_tabs);
         ivCalendarMode = view.findViewById(R.id.tv_calendar_mode);
         ivCalendarMode.setOnClickListener(this);
         calendarView = view.findViewById(R.id.calendarView);
@@ -130,110 +116,33 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             startActivity(intent);
         });
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            if(bundle.getSerializable("leaveBalance")!=null) {
-                leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
-            }
-        }
-//        leavesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                if (dy < -5 && btnAddLeaves.getVisibility() != View.VISIBLE) {
-//                    btnAddLeaves.setVisibility(View.VISIBLE);
-//                    btnRequestCompoff.setVisibility(View.VISIBLE);
-//                } else if (dy > 5 && btnAddLeaves.getVisibility() == View.VISIBLE) {
-//                    btnAddLeaves.setVisibility(View.INVISIBLE);
-//                    btnRequestCompoff.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
-        //Date d = new Date();
-//        presenter = new LeavesPresenter(this);
-//        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
-        setListData();
-        //setTabData();
-        setUIData();
-        //filterListData(Constants.Leave.PENDING_STATUS);
-    }
-
-    /*private void setTabData() {
-        //setupTabIcons();
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tabLayout.getSelectedTabPosition() == 0) {
-                    filterListData(Constants.Leave.PENDING_STATUS);
-                    //setTabData(1);
-                } else if (tabLayout.getSelectedTabPosition() == 1) {
-                    filterListData(Constants.Leave.APPROVED_STATUS);
-                    //setTabData(2);
-                } else if (tabLayout.getSelectedTabPosition() == 2) {
-                    filterListData(Constants.Leave.REJECTED_STATUS);
-                    //setTabData(3);
+        if(Util.isConnected(getContext())){
+            Bundle bundle = this.getArguments();
+            if (bundle != null) {
+                if(bundle.getSerializable("leaveBalance")!=null) {
+                    leaveBalance.clear();
+                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
                 }
             }
+            setListData();
+            setUIData();
+        }else {
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }*/
-
+    }
     private void setListData() {
         leavesAdapter = new AppliedLeavesAdapter(leavesListData, this);
         leavesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         leavesList.setAdapter(leavesAdapter);
-        //setTabData(1);
     }
-
-//    private void filterListData(String filterStatus){
-//        filteredLeavesListData.clear();
-//        for (LeaveData leaveData: leavesListData) {
-//            if(leaveData.getStatus().equalsIgnoreCase(filterStatus)){
-//                filteredLeavesListData.add(leaveData);
-//            }
-//        }leavesAdapter.notifyDataSetChanged();
-//    }
-
-//    private void setupTabIcons() {
-//        for (int i = 0; i < tabNames.length; i++) {
-//            TextView tabOne = (TextView) LayoutInflater.from(getActivity())
-//                    .inflate(R.layout.layout_leaves_attendance_tab, tabLayout, false);
-//            tabOne.setText(tabNames[i]);
-//            tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
-//            tabLayout.addTab(tabLayout.newTab().setCustomView(tabOne));
-//        }
-//    }
 
 
     private void setUIData() {
-        //initCalender(view);
-
         calendarView.setOnMonthChangedListener(this);
-
         isMonth = !isMonth;
         setCalendar();
     }
-
-//    private void setTabData(int size) {
-//        ArrayList<String> leaves = new ArrayList<>();
-//        for (int i = 0; i < size; i++) {
-//            leaves.add("1");
-//        }
-//        leavesListData.clear();
-//        //leavesListData.addAll(leaves);
-//        leavesAdapter.notifyDataSetChanged();
-//
-//    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -310,7 +219,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         }
         calendarView.setSelectedDate(instance.getTime());
         calendarView.setCurrentDate(instance.getTime());
-        //highlightDates(dateList);
     }
 
     public void displayLeavesOfMonth(List<LeaveData> data) {
@@ -363,12 +271,11 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void deleteLeaves(String leaveId) {
         deleteLeaveId = leaveId;
-        showAlertDialog(getString(R.string.sure_to_delete), getString(R.string.cancel), getString(R.string.delete));
+        showDeleteAlert();
     }
 
     @Override
     public void editLeaves(LeaveData leaveData) {
-        //userLeaveDetailsResponse = "{\"userId\": \"12345\",\"leaveTypes\": [{\"leaveType\": \"CL\",\"allocatedLeaves\": 2 }],\"fromDate\": \"2019-03-11T18:30:00.000Z\",\"toDate\": \"2019-03-16T18:30:00.000Z\",\"isHalfDay\": false,\"reason\": \"NA\",\"numberOfDays\": 3,\"status\": \"pending\" }";
         Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
         intent.putExtra("title", getString(R.string.leave_details));
         intent.putExtra("isEdit", true);
@@ -380,47 +287,25 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         startActivity(intent);
     }
 
-    private void showAlertDialog(String message, String btn1String, String btn2String) {
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogs_leave_layout);
-
-        if (!TextUtils.isEmpty("")) {
-            TextView title = dialog.findViewById(R.id.tv_dialog_title);
-            title.setText("");
-            title.setVisibility(View.VISIBLE);
-        }
-
-        if (!TextUtils.isEmpty(message)) {
-            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-            text.setText(message);
-            text.setVisibility(View.VISIBLE);
-        }
-
-        if (!TextUtils.isEmpty(btn1String)) {
-            Button button = dialog.findViewById(R.id.btn_dialog);
-            button.setText(btn1String);
-            button.setVisibility(View.VISIBLE);
-
-            button.setOnClickListener(v -> {
-                // Close dialog
-                dialog.dismiss();
-            });
-        }
-
-        if (!TextUtils.isEmpty(btn2String)) {
-            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-            button1.setText(btn2String);
-            button1.setVisibility(View.VISIBLE);
-
-            button1.setOnClickListener(v -> {
-                presenter.deleteUserLeave(deleteLeaveId);
-                dialog.dismiss();
-            });
-        }
-
-        dialog.setCancelable(true);
-        dialog.show();      // if decline button is clicked, close the custom dialog
+    public void showDeleteAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete alert")
+                .setMessage(getString(R.string.sure_to_delete))
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        presenter.deleteUserLeave(deleteLeaveId);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.dismiss();
+                    }
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -448,7 +333,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             MonthlyLeaveDataAPIResponse monthlyLeaveDataAPIResponse = PlatformGson.getPlatformGsonInstance().fromJson(userLeaveDetailsResponse, MonthlyLeaveDataAPIResponse.class);
             if (monthlyLeaveDataAPIResponse != null) {
                 leavesListData.clear();
-                //filteredLeavesListData.clear();
                 MonthlyLeaveHolidayData monthlyLeaveHolidayData = monthlyLeaveDataAPIResponse.getData();
                 List<LeaveData> monthlyLeaveData = monthlyLeaveHolidayData.getLeaveData();
                 List<HolidayData> monthlyHolidayData = monthlyLeaveHolidayData.getHolidayData();
@@ -459,8 +343,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 }
                 leavesListData.addAll(monthlyLeaveData);
                 leavesAdapter.notifyDataSetChanged();
-                // To show filter leaves data
-                //filterListData(Constants.Leave.PENDING_STATUS);
                 // To show highlighted calendar dates
                 holidaysListData.addAll(monthlyHolidayData);
                 displayLeavesOfMonth(leavesListData);
@@ -477,10 +359,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                     break;
                 }
             }
-            if(deletePosition>0){
+            if(deletePosition>-1){
                 leavesListData.remove(deletePosition);
-//                filteredLeavesListData.clear();
-//                filteredLeavesListData.addAll(leavesListData);
             }
             leavesAdapter.notifyDataSetChanged();
         }

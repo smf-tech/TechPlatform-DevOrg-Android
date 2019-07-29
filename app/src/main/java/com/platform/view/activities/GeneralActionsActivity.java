@@ -19,48 +19,23 @@ import com.platform.view.fragments.HolidayListFragment;
 import com.platform.view.fragments.LeaveApplyFragment;
 import com.platform.view.fragments.LeaveDetailsFragment;
 
-/**
- * A class for handling the fragment switching.
- * This class will mainly be used for deciding <b>WHICH</b> fragment of the 'General Actions' tab should be invoked.
- */
 public class GeneralActionsActivity extends BaseActivity implements View.OnClickListener {
-
-    /**
-     * Debug log tag.
-     */
-    private final String strTAG = getClass().getSimpleName();
-
-    /**
-     * Application fragment manager.
-     */
     private FragmentManager fManager;
-
     private Fragment fragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-         * A bundle that stores all the incoming intent data
-         */
         Bundle data = getIntent().getExtras();
         setContentView(R.layout.activity_general_actions);
-        /*
-         * Get a reference to the {@link FragmentManager}.
-         */
         fManager = getSupportFragmentManager();
 
         if (data != null && data.containsKey("switch_fragments")) {
-
-            /*
-             * Get the incoming string. If value corresponding to constant is null, use 'null'.
-             * */
             String switchToFragment = data.getString("switch_fragments") != null
                     ? data.getString("switch_fragments") : "null";
 
             String title = data.getString("title") != null
                     ? data.getString("title") : "";
-            Log.d(strTAG, "switchToFragment " + switchToFragment);
 
             TextView toolBar = findViewById(R.id.toolbar_title);
             ImageView toolBarMenu = findViewById(R.id.toolbar_edit_action);
@@ -89,7 +64,6 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
 
                     case "LeaveApplyFragment":
                         fragment = new LeaveApplyFragment();
-
                         toolBarMenu.setVisibility(View.GONE);
                         fragment.setArguments(data);
                         openFragment();
@@ -117,20 +91,13 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         if (shouldHandleBackPress()) {
-            Log.d(strTAG, "shouldHandleBackPress returned true onBackPressed GAA "
-                    + fManager.getBackStackEntryCount() + " " + fManager.getFragments());
-
             try {
                 fManager.popBackStackImmediate();
             } catch (IllegalStateException e) {
                 Log.e("TAG", e.getMessage());
             }
 
-            Log.d(strTAG, "onBackPressed GAA " + fManager.getBackStackEntryCount()
-                    + " " + fManager.getFragments());
-
             if (fManager.getBackStackEntryCount() == 0) {
-                Log.d(strTAG, "onBackPressed GAA count 0 finishing GAA with result code 550");
                 finish();
             }
         }
@@ -138,7 +105,6 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
 
     private boolean shouldHandleBackPress() {
         if (fManager != null && fManager.getFragments().size() > 0) {
-            Log.d(strTAG, "shouldHandleBackPress inside IF  " + fManager.getFragments());
 
             Fragment fragment = fManager.getFragments().get(0);
             if (fragment != null) {
@@ -148,7 +114,6 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
                 }
             }
         }
-
         return true;
     }
 

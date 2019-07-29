@@ -31,7 +31,7 @@
                     android:layout_width="@dimen/dimen_100dp"
                     android:layout_height="@dimen/dimen_100dp"
                     android:padding="@dimen/dimen_10dp"
-                    android:src="@drawable/ic_splash" />
+                    android:src="@drawable/ic_user_avatar" />
 
                 <com.platform.view.customs.TextViewBold
                     android:id="@+id/tv_name_title"
@@ -140,7 +140,9 @@
             android:layout_height="match_parent"
             app:cardCornerRadius="@dimen/dimen_10dp"
             android:layout_margin="@dimen/dimen_10dp">
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <LinearLayout
                 android:id="@+id/linear_dynamic_textview"
                 android:layout_width="match_parent"
@@ -150,7 +152,7 @@
 
 
             </LinearLayout>
-
+            </ScrollView>
         </androidx.cardview.widget.CardView>
 
 
@@ -167,19 +169,19 @@
         <Button
 
             android:id="@+id/btn_reject"
-            style="@style/AppStyleButton"
+            style="@style/AppStyleBorderButton"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dimen_16dp"
+            android:layout_margin="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="Reject"
-            android:textColor="@color/white" />
+            android:textColor="@color/dark_grey" />
 
         <Button
 
             android:id="@+id/btn_approve"
             style="@style/AppStyleButton"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dimen_16dp"
+            android:layout_margin="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="Approve"
             android:textColor="@color/white" />

@@ -49,6 +49,7 @@ import com.platform.view.fragments.ContentManagementFragment;
 import com.platform.view.fragments.FormsFragment;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.NotificationsFragment;
+import com.platform.view.fragments.PMFragment;
 import com.platform.view.fragments.PlannerFragment;
 import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserApprovalsFragment;
@@ -165,7 +166,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadProfileImage(final ImageView userPic, final String profileUrl) {
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_person);
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
         if (!TextUtils.isEmpty(profileUrl)) {
             requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -232,7 +233,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFormsPage() {
-        Util.launchFragment(new FormsFragment(), this,
+        Util.launchFragment(new PMFragment(), this,
                 getString(R.string.forms), true);
     }
 

@@ -84,10 +84,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
     // commenting this code for now.
-   /* private View dividerView;
-    private RelativeLayout mPendingFormsView;
-    private LinearLayout mPendingFormsContainer;
-    private TextView mSubmittedFormsTitleView;*/
 
     public SubmittedFormsFragment() {
         // Required empty public constructor
@@ -120,26 +116,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         progressBar = FormsFragment.getProgressBar();
 
         // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
-        // commenting this code for now.
-
-        /*dividerView = view.findViewById(R.id.submitted_forms_divider);
-        mPendingFormsView = view.findViewById(R.id.pending_forms_view);
-        mPendingFormsContainer = view.findViewById(R.id.pending_forms_container);
-
-        ((TextView) view.findViewById(R.id.pending_form_category_name))
-                .setText(getString(R.string.syncing_pending));
-
-        mSubmittedFormsTitleView = view.findViewById(R.id.submitted_form_category_name);
-        mSubmittedFormsTitleView.setText(getString(R.string.submitted_forms_label));
-
-        view.findViewById(R.id.sync_button).setOnClickListener(v -> {
-            if (Util.isConnected(getContext())) {
-                Util.showToast(getString(R.string.sync_started), getContext());
-                SyncAdapterUtils.manualRefresh();
-            } else {
-                Util.showToast(getString(R.string.msg_no_network), getContext());
-            }
-        });*/
 
         setPendingForms();
         getProcessData();
@@ -195,12 +171,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         List<com.platform.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
         if (savedForms != null && !savedForms.isEmpty()) {
 
-            // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
-            // commenting this code for now.
-            /*mPendingFormsContainer.removeAllViews();
-            mPendingFormsView.setVisibility(View.VISIBLE);
-            dividerView.setVisibility(View.VISIBLE);
-*/
             showNoDataText = false;
             for (com.platform.models.forms.FormResult formResult : savedForms) {
                 if (!unSyncProcessNameList.contains(formResult.getFormName())) {
@@ -228,30 +198,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     continue;
                 }
 
-                // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
-                    // commenting this code for now.
-                /*View formView = LayoutInflater.from(getContext())
-                        .inflate(R.layout.form_sub_item, mPendingFormsContainer, false);
-
-                ((TextView) formView.findViewById(R.id.form_title))
-                        .setText(object.getName().getLocaleValue());
-
-                ((TextView) formView.findViewById(R.id.form_date))
-                        .setText(Util.getDateTimeFromTimestamp(object.getMicroservice().getUpdatedAt()));
-
-                int bgColor = getResources().getColor(R.color.red);
-                formView.findViewById(R.id.form_status_indicator).setBackgroundColor(bgColor);
-
-                formView.setOnClickListener(v -> {
-                    Intent intent = new Intent(getActivity(), FormActivity.class);
-                    intent.putExtra(Constants.PM.FORM_ID, object.getId());
-                    intent.putExtra(Constants.PM.PROCESS_ID, object.getMicroservice().getId());
-                    intent.putExtra(Constants.PM.EDIT_MODE, true);
-                    intent.putExtra(Constants.PM.PARTIAL_FORM, true);
-                    startActivity(intent);
-                });
-                mPendingFormsContainer.addView(formView);*/
-
                 unSyncProcessData.add(object);
             }
             }
@@ -266,11 +212,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
         }
 
-        } else {
-            // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
-            // commenting this code for now.
-           /* mPendingFormsView.setVisibility(View.GONE);
-            dividerView.setVisibility(View.GONE);*/
         }
     }
 
@@ -278,7 +219,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         if (process != null) {
             processCategoryList.clear();
             processMap.clear();
-//            mProcessDataMap.clear();
             mFilteredProcessDataMap.clear();
 
             for (ProcessData data : process.getData()) {
@@ -393,23 +333,17 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void updateView() {
         mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
-        // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
-        // commenting this code for now.
-        /*if (showNoDataText) {
-            mSubmittedFormsTitleView.setVisibility(View.GONE);
-        }*/
     }
 
     private void filterData(String status){
         mFilteredProcessDataMap.clear();
-        //List<ProcessData> filterProcessData = new ArrayList<>();
         if(status.equalsIgnoreCase("NO_FILTER")){
             mFilteredProcessDataMap.putAll(mProcessDataMap);
         }else {
             for (int i = 0; i < mProcessDataMap.size(); i++) {
                 List<ProcessData> filterStatusProcessData = new ArrayList<ProcessData>();
                 List<ProcessData> filterProcessData = new ArrayList<ProcessData>();
-                filterProcessData.addAll(mProcessDataMap.get(processFormList.get(i)));       //= mProcessDataMap.get(processFormList.get(i));
+                filterProcessData.addAll(mProcessDataMap.get(processFormList.get(i)));
                 for (ProcessData pd : filterProcessData) {
                     if (pd.getFormApprovalStatus() != null && pd.getFormApprovalStatus().equalsIgnoreCase(status)) {
                         filterStatusProcessData.add(pd);

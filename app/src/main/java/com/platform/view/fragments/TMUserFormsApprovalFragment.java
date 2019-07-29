@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.models.tm.LandingPageRequest;
 import com.platform.models.tm.TMApprovalRequestModel;
@@ -113,12 +115,14 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
     public void updateRequestStatus(String response, int position) {
         //Util.showToast("form is approved or rejected",getActivity());
         tmUserFormsApplicationsList.remove(position);
-        tmUserFormsApprovalRecyclerAdapter.notifyDataSetChanged();
+        tmUserFormsApprovalRecyclerAdapter.notifyItemRemoved(position);
+        Util.showSuccessFailureToast(response,getActivity(),getActivity().getWindow().getDecorView()
+                .findViewById(android.R.id.content));
     }
 
     @Override
     public void onApproveClicked(int pos) {
-        Util.showToast("Form approve",getActivity());
+
         TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
         try {
             tmApprovalRequestModel.setType("form");
@@ -136,7 +140,9 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
 
     @Override
     public void onRejectClicked(int pos) {
-        Util.showToast("Form Reject",getActivity());
+        //Util.showToast("Form Reject",getActivity());
+        String strReason = Util.showReasonDialog(getActivity(),pos,this);
+
         TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
         try {
             tmApprovalRequestModel.setType("form");
@@ -153,5 +159,29 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
     }
 
     public void onReceiveReason(String s, int pos) {
+        rejectApprovalRequest(s,pos);
+    }
+
+    public void rejectApprovalRequest(String strReason,int pos)
+    {
+        if (!TextUtils.isEmpty(strReason)){
+
+            TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
+            try {
+                tmApprovalRequestModel.setType("form");
+                tmApprovalRequestModel.setApprove_type("rejected");
+                tmApprovalRequestModel.setReason("");
+                tmApprovalRequestModel.setLeave_type("");
+                tmApprovalRequestModel.setStartdate("");
+                tmApprovalRequestModel.setEnddate("");
+                tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).getForm_detail().get(0).get_id().get$oid());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel),pos);
+        }else {
+            Util.showSuccessFailureToast("Please enter reason to reject.",getActivity(),getActivity().getWindow().getDecorView()
+                    .findViewById(android.R.id.content));
+        }
     }
 }
