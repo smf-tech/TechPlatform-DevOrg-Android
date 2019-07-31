@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.platform.view.fragments.MatrimonyMeetFragment"
+    android:background="@color/lighter_grey">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hshbdchjschjsbc"/>
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="jhbsdhchjbscdjkc"
+        android:layout_below="@+id/text_title"/>
+
+</RelativeLayout>

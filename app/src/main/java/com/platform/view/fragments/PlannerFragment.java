@@ -180,8 +180,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         context = getActivity();
         preferenceHelper=new PreferenceHelper(getActivity());
 
-
-
         /* if(checkServiceRunning()){
             Toast.makeText(context,"Service Running",Toast.LENGTH_LONG).show();
             showTimerService.doWork();

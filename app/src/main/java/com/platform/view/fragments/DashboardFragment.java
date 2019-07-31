@@ -43,6 +43,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.ic_approvals,
             R.drawable.ic_reports_icon_db,
             R.drawable.ic_webview_icon_db,
+            R.drawable.ic_webview_icon_db,
             R.drawable.ic_matrimony_icon_db
     };
     private final int[] disableTabIcons = {
@@ -70,15 +71,16 @@ public class DashboardFragment extends Fragment {
             if (homeData != null) {
                 tabNames = homeData.getHomeData().getOnApproveModules();
                 int size = tabNames.size();
-                for(int i = 0;i<size;i++){
-                    if(tabNames.get(i).getModuleType().equals(Constants.Home.FORMS) ||
+                for (int i = 0; i < size; i++) {
+                    if (tabNames.get(i).getModuleType().equals(Constants.Home.FORMS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.MEETINGS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.APPROVALS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.REPORTS) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE)||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT)){
+                            tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY)) {
                         //do nothing
-                    }else{
+                    } else {
                         tabNames.remove(i);
                         size--;
                         i--;
@@ -131,14 +133,15 @@ public class DashboardFragment extends Fragment {
                 case Constants.Home.WEBMODULE:
                     tabNames.get(i).setResId(R.id.action_menu_reports);
                     break;
+
                 case Constants.Home.CONTENT:
                     tabNames.get(i).setResId(R.id.action_menu_reports);
                     break;
-                    default:
 
-
-
-
+                case Constants.Home.MATRIMONY:
+                    tabNames.get(i).setResId(R.id.action_menu_reports);
+                    break;
+                default:
             }
         }
     }
@@ -191,9 +194,14 @@ public class DashboardFragment extends Fragment {
                     webmoduleFragment.setArguments(webBundle);
                     adapter.addFragment(webmoduleFragment);
                     break;
+
                 case Constants.Home.CONTENT:
-                    ContentManagementFragment cmf=ContentManagementFragment.newInstance("con","con");
+                    ContentManagementFragment cmf = ContentManagementFragment.newInstance("con", "con");
                     adapter.addFragment(cmf);
+                    break;
+
+                case Constants.Home.MATRIMONY:
+                    adapter.addFragment(new MatrimonyFragment());
                     break;
 
                 default:
@@ -206,18 +214,18 @@ public class DashboardFragment extends Fragment {
 
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
-                if (getContext() == null) continue;
+            if (getContext() == null) continue;
 
-                RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
-                        .inflate(R.layout.layout_custom_tab, tabLayout, false);
-                TextView tabView = tabOne.findViewById(R.id.tab);
-                tabView.setText(tabNames.get(i).getName().getLocaleValue());
-                TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-                drawTabCount(i, tabOne, tabView, pendingActionsCountView);
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
-                if (tab != null) {
-                    tab.setCustomView(tabOne);
-                }
+            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
+                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
+            TextView tabView = tabOne.findViewById(R.id.tab);
+            tabView.setText(tabNames.get(i).getName().getLocaleValue());
+            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
+            drawTabCount(i, tabOne, tabView, pendingActionsCountView);
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(tabOne);
+            }
         }
 
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
@@ -226,37 +234,11 @@ public class DashboardFragment extends Fragment {
         for (int i = 0; i < tabCount; i++) {
             View child = tabStrip.getChildAt(i);
             child.setId(i);
+            child.setContentDescription(tabNames.get(i).getName().getLocaleValue());
             child.setEnabled(tabNames.get(i).isActive());
             child.setOnClickListener(view -> {
-                switch (view.getId()) {
-                    case 0:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.FORMS);
-                        AppEvents.trackAppEvent(getString(R.string.event_forms_tab_click));
-                        break;
-
-                    case 1:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.MEETINGS);
-                        AppEvents.trackAppEvent(getString(R.string.event_meetings_tab_click));
-                        break;
-
-                    case 2:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.APPROVALS);
-                        AppEvents.trackAppEvent(getString(R.string.event_approvals_tab_click));
-                        break;
-
-                    case 3:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.REPORTS);
-                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
-                        break;
-                    case 4:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.WEBMODULE);
-                        AppEvents.trackAppEvent(getString(R.string.web_module_tab_click));
-                        break;
-                    case 5:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONTENT);
-                        AppEvents.trackAppEvent(getString(R.string.event_reports_tab_click));
-                        break;
-                }
+                ((HomeActivity) DashboardFragment.this.getActivity()).setActionBarTitle(child.getContentDescription().toString());
+                AppEvents.trackAppEvent(DashboardFragment.this.getString(R.string.event_forms_tab_click));
             });
         }
     }
@@ -296,7 +278,11 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.CONTENT:
-                    resId = tabIcons[4];
+                    resId = tabIcons[5];
+                    break;
+
+                case Constants.Home.MATRIMONY:
+                    resId = tabIcons[6];
                     break;
                 default:
                     resId = R.drawable.bg_circle_default;

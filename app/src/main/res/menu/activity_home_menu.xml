@@ -38,6 +38,11 @@
             android:icon="@drawable/ic_menu_reports"
             android:title="@string/menu_reports"
             android:visible="false" />
+        <item
+            android:id="@+id/action_menu_webmodule"
+            android:icon="@drawable/ic_menu_reports"
+            android:title="@string/menu_reports"
+            android:visible="false" />
     </group>
 
     <group
