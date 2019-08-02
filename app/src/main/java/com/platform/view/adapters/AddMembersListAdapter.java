@@ -91,6 +91,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
                     if (((CheckBox) v).isChecked()) {
                         membersList.get(getAdapterPosition()).setMemberSelected(true);
                         ((AddMembersListActivity) mContext).checkAllSelected(membersList);
+
                     } else {
                         membersList.get(getAdapterPosition()).setMemberSelected(false);
                         ((AddMembersListActivity) mContext).checkAllDeSelected();

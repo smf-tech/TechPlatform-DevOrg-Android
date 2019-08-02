@@ -66,6 +66,7 @@ public class Urls {
         public static final String SET_ATTENDANCE_CODE = "api/submitAttendanceEvent";
         public static final String GET_EVENT_TASK_MEMBERS_LIST = "api/getEventMembers";
         public static final String GET_TASK_MEMBERS_LIST = "api/addmembertask";
+        public static final String UPDATE_MEMBER_LIST = "api/addmembertoevent";
         public static final String SET_TASK_MARK_COMPLETE = "api/taskMarkComplete";
         public static final String DELETE_EVENT_TASK_MEMBERS = "api/deletemember";
     }

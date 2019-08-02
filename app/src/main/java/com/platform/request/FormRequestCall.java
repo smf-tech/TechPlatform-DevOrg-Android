@@ -40,6 +40,10 @@ public class FormRequestCall {
             String>> uploadedImageUrlList, String postUrl, final String formId, final String oId, String callType) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, matrixDynamicValuesMap, uploadedImageUrlList);
+
+        Log.d(TAG, "createFormResponse - url: " + postUrl);
+        Log.d(TAG, "createFormResponse - req: " + requestObject);
+
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
@@ -76,6 +80,10 @@ public class FormRequestCall {
             String>> uploadedImageUrlList, String postUrl, final String formId, String oid, String callType) {
 
         JsonObject requestObject = getFormRequest(requestObjectMap, matrixDynamicValuesMap, uploadedImageUrlList);
+
+        Log.d(TAG, "updateFormResponse - url: " + postUrl);
+        Log.d(TAG, "updateFormResponse - req: " + requestObject);
+
         Response.Listener<JSONObject> createFormResponseListener = response -> {
             try {
                 if (response != null) {
@@ -111,6 +119,8 @@ public class FormRequestCall {
     public void getChoicesByUrl(final Elements elements, final int pageIndex, final int elementIndex,
                                 final int columnIndex, long rowIndex, final FormData formData, final String url,
                                 HashMap<String, String> matrixDynamicInnerMap) {
+
+        Log.d(TAG, "getChoicesByUrl - url: " + url);
 
         Response.Listener<JSONObject> choicesResponseListener = response -> {
             try {
