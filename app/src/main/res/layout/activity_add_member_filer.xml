@@ -27,15 +27,15 @@
                 android:text="@string/create_filter_screen_msg"/>
 
             <!--Organization-->
-            <TextView
-                style="@style/FormLabel"
-                android:text="@string/organization" />
+            <!--<TextView-->
+                <!--style="@style/FormLabel"-->
+                <!--android:text="@string/organization" />-->
 
-            <com.platform.widgets.MultiSelectSpinner
-                android:id="@+id/sp_user_organization"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+            <!--<com.platform.widgets.MultiSelectSpinner-->
+                <!--android:id="@+id/sp_user_organization"-->
+                <!--style="@style/FormSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dimen_50dp" />-->
 
             <!--Project-->
 

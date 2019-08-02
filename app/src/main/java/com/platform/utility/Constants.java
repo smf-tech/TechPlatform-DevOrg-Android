@@ -140,6 +140,9 @@ public class Constants {
         public static final String WEBMODULE = "Webmodule";
         public static final String WEBMODULE_NAME = "webmodule";
         public static final String CONTENT="Content";
+        public static final String HOME="Home";
+        public static final String STORIES="Stories";
+        public static final String CONNECT="Connect";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";

@@ -35,10 +35,14 @@ import com.platform.utility.Util;
 import com.platform.view.adapters.TaskFormsListAdapter;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.platform.utility.Constants.DATE_FORMAT;
 
 public class EventDetailActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
 
@@ -55,11 +59,14 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private Button btCompleteTask;
     private String toOpen;
     private Snackbar snackbar;
+    private TextView tvMemberCount;
+    private ImageView ivEventPic;
 
     EventDetailPresenter presenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    private boolean isMemberDeletable;
+    private boolean flagEditMember;
+    private boolean flagUpdateMember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +79,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void initView() {
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         eventTask = (EventTask) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
-        isMemberDeletable=false;
+        flagEditMember=false;
+        flagUpdateMember=false;
 
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
@@ -91,8 +99,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         TextView tvStartDate = findViewById(R.id.tv_start_date);
         TextView tvEndDate = findViewById(R.id.tv_end_date);
         TextView tvAddress = findViewById(R.id.tv_address);
-        ImageView ivEventPic = findViewById(R.id.event_pic);
-        TextView tvMemberCount = findViewById(R.id.tv_member_count);
+        ivEventPic = findViewById(R.id.event_pic);
+        tvMemberCount = findViewById(R.id.tv_member_count);
 
         btGetCode = findViewById(R.id.bt_get_code);
         btSetCode = findViewById(R.id.bt_set_code);
@@ -105,8 +113,12 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         tvOwner.setText(eventTask.getOwnername());
         tvStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(), Constants.FORM_DATE_FORMAT));
         tvEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(), Constants.FORM_DATE_FORMAT));
-        tvMemberCount.setText("Added members " + eventTask.getParticipantsCount() +" | " +
-                "Attended by " + eventTask.getAttendedCompleted()+ " members");
+
+        String strMemberDitels="Added members " + eventTask.getParticipantsCount();
+        if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+            strMemberDitels= strMemberDitels+ " | Attended by " + eventTask.getAttendedCompleted()+ " members";
+        }
+        tvMemberCount.setText(strMemberDitels);
 
         if (eventTask.getThumbnailImage().equals("")) {
             ivEventPic.setVisibility(View.GONE);
@@ -121,33 +133,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         TextView tvFormListLabel = findViewById(R.id.tv_form_list_label);
         vTaskStatusIndicator.setVisibility(View.GONE);
 
-        if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
-            //owner
-            Date starDate=null;
-            Date currentDate = Calendar.getInstance().getTime();
-            long timeStamp = eventTask.getSchedule().getStartdatetime();
-            try {
-                int length = (int) (Math.log10(timeStamp) + 1);
-                if (length == 10) {
-                    timeStamp = timeStamp * 1000;
-                }
-                starDate = new Timestamp(timeStamp);
-            } catch (Exception e) {
-                Log.e("Exception", e.getMessage());
-            }
-            if(starDate.getTime() > currentDate.getTime()) {
-                editButton.setVisibility(View.VISIBLE);
-                toolbarAction.setVisibility(View.VISIBLE);
-                isMemberDeletable=true;
-            }
-        } else {
-            //viewer
-            tvMemberCount.setVisibility(View.GONE);
-            editButton.setVisibility(View.GONE);
-            toolbarAction.setVisibility(View.GONE);
-        }
-
-
         if (eventTask.getRequiredForms().size() > 0) {
             findViewById(R.id.ly_task_forms).setVisibility(View.VISIBLE);
 
@@ -157,10 +142,68 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             rvFormsList = findViewById(R.id.rv_forms_list);
             setFormListAdapter(eventTask.getRequiredForms());
         }
+
+        viewConfig();
+        setListeners();
+    }
+
+    // configuring the ui as per the user ant date
+    private void viewConfig() {
+        DateFormat dateFormat = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
+        DateFormat sdateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
+        Date starDate=null;
+        Date endDate=null;
+        Date currentDate = Calendar.getInstance().getTime();
+        long startTimeStamp = eventTask.getSchedule().getStartdatetime();
+        long endTimeStamp = eventTask.getSchedule().getEnddatetime();
+        try {
+            int length = (int) (Math.log10(startTimeStamp) + 1);
+            if (length == 10) {
+                startTimeStamp = startTimeStamp * 1000;
+            }
+            starDate = new Timestamp(startTimeStamp);
+            length = (int) (Math.log10(endTimeStamp) + 1);
+            if (length == 10) {
+                endTimeStamp = endTimeStamp * 1000;
+            }
+            endDate = new Timestamp(endTimeStamp);
+
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }
+
+        if(endDate.getYear() >= currentDate.getYear()){
+            if(endDate.getMonth() >= currentDate.getMonth()){
+                if(endDate.getDate() >= currentDate.getDate()){
+                    flagEditMember=true;
+                }
+            }
+        }
+
+        if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
+            //owner
+            if(starDate.getTime() > currentDate.getTime()) {
+                editButton.setVisibility(View.VISIBLE);
+                toolbarAction.setVisibility(View.VISIBLE);
+            }
+            if(flagEditMember){
+                flagUpdateMember=true;
+            }
+        } else {
+            //viewer
+            tvMemberCount.setVisibility(View.GONE);
+            editButton.setVisibility(View.GONE);
+            toolbarAction.setVisibility(View.GONE);
+        }
+
         if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
             setActionbar(getString(R.string.task_detail));
             ivEventPic.setVisibility(View.GONE);
             btCompleteTask.setVisibility(View.VISIBLE);
+            if (eventTask.getParticipantsCount() > 0 ) {
+                btParticipants.setVisibility(View.VISIBLE);
+                lyMembarlistCode.setVisibility(View.VISIBLE);
+            }
         } else {
             setActionbar(getString(R.string.event_detail));
             //handling attendance button
@@ -170,21 +213,28 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
                 lyMembarlistCode.setVisibility(View.VISIBLE);
                 if (eventTask.isMarkAttendanceRequired()) {
-                    btGetCode.setVisibility(View.VISIBLE);
+                    if(flagEditMember) {
+                        btGetCode.setVisibility(View.VISIBLE);
+                    }else{
+                        btGetCode.setVisibility(View.GONE);
+                    }
                 } else {
                     btGetCode.setVisibility(View.GONE);
                 }
             } else {
                 if (eventTask.isMarkAttendanceRequired()) {
                     btSetCode.setVisibility(View.VISIBLE);
+                    if(flagEditMember) {
+                        btSetCode.setVisibility(View.VISIBLE);
+                    }else{
+                        btSetCode.setVisibility(View.GONE);
+                    }
                 } else {
                     btSetCode.setVisibility(View.GONE);
                 }
             }
         }
 
-
-        setListeners();
     }
 
     private void setFormListAdapter(ArrayList<AddForm> taskFormsList) {
@@ -343,9 +393,9 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     public void showMemberList(ArrayList<Participant> memberList) {
         if (memberList != null && memberList.size() > 0) {
             Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-            intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
-            intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, isMemberDeletable);
+            intentAddMembersListActivity.putExtra(Constants.Planner.TO_OPEN,toOpen);
+            intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, flagUpdateMember);
             intentAddMembersListActivity.putExtra(Constants.Planner.EVENT_TASK_ID, eventTask.getId());
             intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
             this.startActivity(intentAddMembersListActivity);
