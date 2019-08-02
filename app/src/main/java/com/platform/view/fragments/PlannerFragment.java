@@ -582,7 +582,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                         attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
                         attendaceData.setMobileNumber(Util.getUserMobileFromPref());
-
                         //tvCheckOutTime.setText(checkOutTime);
                         try {
                             txt_total_hours.setText(getTotalHours());
@@ -603,18 +602,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         //setButtonText();
                         preferenceHelper.totalHours(KEY_TOTALHOURS,false);
                         Util.showToast(getResources().getString(R.string.check_out_msg),getActivity());
-                        /*preferenceHelper.isCheckOut(KEY_ISCHECKOUT,true);
-                        // calculate total hours and save in SP
-                        try {
-                            String checkOutTotalHours=totalHoursAfterCheckOut();
-                            if(checkOutTotalHours!=null){
-                                preferenceHelper.insertTotalHoursAfterCheckOut(KEY_TOTAL_HRS_CHEKOUT,checkOutTotalHours);
-                            }
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-*/
                         Log.i("OfflineMarkOutData", "111" + attendaceData);
                     }
 
@@ -1107,62 +1094,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             return totalHrs + " :" + totalMin;
         }
 
-        public void statTimer()
-        {
-
-            Handler handler=new Handler();
-
-                updateTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
 
 
-                        DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
-                        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
-                        try {
-
-                            Date date1 = format.parse((String)time);
-                            long millisecond=date1.getTime();
-                            int hours = (int) (millisecond/(1000 * 60 * 60));
-                            int mins = (int) (millisecond/(1000*60)) % 60;
-
-                            String checkInTime=hours+":"+mins;
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    txt_timer.setText(time);
-                                }
-                            });
-
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-
-                    }
-                },1000);
-        }
-
-        public void stopTimer()
-        {
-
-        }
-
-
-    public boolean checkServiceRunning(){
-        ActivityManager manager = (ActivityManager)getActivity().getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
-        {
-            if ("com.platform.services.ShowTimerService"
-                    .equals(service.service.getClassName()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     public ServiceConnection mConnection = new ServiceConnection() {

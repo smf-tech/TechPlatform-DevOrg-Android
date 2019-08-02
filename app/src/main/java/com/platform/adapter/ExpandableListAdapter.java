@@ -115,7 +115,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     contentManagementFragment.beginDownload(downloadContent.getDef(), progressBar);
 
                     final DownloadTask downloadTask = new DownloadTask(_context, finalConvertView);
-                    downloadTask.execute(downloadContent.getDef());
+                    downloadTask.execute();
                     //downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,downloadContent.getDef());
 
 

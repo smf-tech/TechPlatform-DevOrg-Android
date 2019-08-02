@@ -111,6 +111,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     ArrayList<String>rejectList;
 
 
+
     //private List<AttendanceStatus>attendanceStatusList;
     String TAG=AttendancePlannerFragment.class.getSimpleName();
     MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter;
