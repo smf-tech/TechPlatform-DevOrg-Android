@@ -83,12 +83,12 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
             textView=itemView.findViewById(R.id.txt_file_name);
             share=itemView.findViewById(R.id.img_share);
             download=itemView.findViewById(R.id.img_download);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     filterListener.onSelected(itemsFiltered.get(getAdapterPosition()));
                 }
-            });
+            })*/;
 
         }
     }

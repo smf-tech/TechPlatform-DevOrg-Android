@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         xmlns:card_view="http://schemas.android.com/tools"
@@ -26,24 +25,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text=""
-                android:gravity="center"
                 android:fontFamily="@font/opensans_bold"
+                android:gravity="center"
+                android:text=""
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/imgDownload"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/frame_images"
                 android:layout_toRightOf="@+id/txtCount"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="left"
                 android:text=""
                 android:textSize="14sp" />
 
-            <ImageView
+
+            <FrameLayout
+                android:id="@+id/frame_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:visibility="invisible"
+                    android:progressDrawable="@drawable/circular"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/imgDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/download_file" />
+
+
+                <ImageView
+                    android:id="@+id/imgshare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/download" />
+
+            </FrameLayout>
+        <!--    <ImageView
                 android:id="@+id/imgDownload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,8 +87,7 @@
                 android:layout_marginRight="5dp"
                 android:padding="@dimen/dimen_20dp"
                 android:src="@drawable/download_file"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/imgshare"
@@ -64,12 +98,12 @@
                 android:layout_marginRight="5dp"
                 android:padding="@dimen/dimen_20dp"
                 android:src="@drawable/download"
-                android:visibility="visible"
-                />
+                android:visibility="gone" />-->
 
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
 
     <View
         android:layout_width="match_parent"

@@ -34,22 +34,17 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
 
         }
 
-
     }
 
     @Override
     public void onError(String error) {
         Log.i(TAG,"AttendanceDataError"+error);
         fragmentWeakReference.get().showError(error);
-
-
     }
 
     @Override
     public void OnErrorResponse(String errorRes) {
         Log.i(TAG,errorRes);
-
-
     }
 
     // make a request call

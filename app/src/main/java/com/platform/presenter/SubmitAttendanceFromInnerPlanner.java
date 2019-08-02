@@ -57,11 +57,11 @@ public class SubmitAttendanceFromInnerPlanner implements SubmitAttendanceListene
 
     }
 
-    public void markOutAttendance(String att_id,String type,Long date,String lat,String log)
+    public void markOutAttendance(String att_id,String type,Long date,String lat,String log,String totalHrs)
     {
         SubmitAttendanceCall markOutAttendancCall=new SubmitAttendanceCall();
         markOutAttendancCall.addListener(this);
-        markOutAttendancCall.AttendanceCheckOut(att_id,type,date,lat,log);
+        markOutAttendancCall.AttendanceCheckOut(att_id,type,date,lat,log,totalHrs);
 
     }
 

@@ -35,11 +35,12 @@ public class SubmitAttendanceCall  {
     public int MARK_IN=1;
     public int MARK_OUT=2;
     public String KEY_ATTID="attendanceId";
-
+    private String KEY_TOTALHRS="totalHours";
 
 
     private String TAG=SubmitAttendanceCall.class.getSimpleName();
     private SubmitAttendanceListener submitAttendanceListener;
+
 
     public void addListener(SubmitAttendanceListener submitAttendanceListener)
     {
@@ -122,7 +123,7 @@ public class SubmitAttendanceCall  {
 
     }
 
-    public void AttendanceCheckOut(String  att_id, String type, Long date, String lat, String log){
+    public void AttendanceCheckOut(String  att_id, String type, Long date, String lat, String log,String totalHrs){
         Response.Listener<JSONObject> monthlyAttendancSuceessListener = response -> {
             try {
                 if (response != null) {
@@ -164,7 +165,7 @@ public class SubmitAttendanceCall  {
         try{
             gsonRequest.setHeaderParams(Util.requestHeader(true));
             gsonRequest.setShouldCache(false);
-            gsonRequest.setBodyParams(getJsonForMarkOut(att_id,type,date,lat,log));
+            gsonRequest.setBodyParams(getJsonForMarkOut(att_id,type,date,lat,log,totalHrs));
             Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
         }catch (Exception e){
             Log.i("NetworkException","111"+e.toString());
@@ -173,7 +174,7 @@ public class SubmitAttendanceCall  {
 
 
     }
-    public JsonObject getJsonForMarkOut(String att_id, String type, Long date, String lat, String log){
+    public JsonObject getJsonForMarkOut(String att_id, String type, Long date, String lat, String log,String totalHrs){
 
         String validType=type.replace(" ","");
         HashMap<String,String>map=new HashMap<>();
@@ -182,6 +183,7 @@ public class SubmitAttendanceCall  {
         map.put(KEY_LAT,lat);
         map.put(KEY_LONG,log);
         map.put(KEY_DATE,String.valueOf(date));
+        map.put(KEY_TOTALHRS,totalHrs);
 
 
         JsonObject requestObject = new JsonObject();
