@@ -101,4 +101,7 @@ public class TMUserProfileListActivity extends BaseActivity {
         super.onResume();
     }
 
+    public void finishwithResult() {
+
+    }
 }

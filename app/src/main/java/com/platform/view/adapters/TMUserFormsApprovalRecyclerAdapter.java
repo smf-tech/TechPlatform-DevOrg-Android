@@ -19,12 +19,12 @@ import java.util.List;
 
 public class TMUserFormsApprovalRecyclerAdapter extends RecyclerView.Adapter<TMUserFormsApprovalRecyclerAdapter.EmployeeViewHolder> {
 
-        private List<TMUserFormsApprovalRequest> dataList;
+        private List<TMUserFormsApprovalRequest.Form_detail> dataList;
         private Context mContext;
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
 private PreferenceHelper preferenceHelper;
-        public TMUserFormsApprovalRecyclerAdapter(Context context, List<TMUserFormsApprovalRequest> dataList, final OnRequestItemClicked clickListener,final OnApproveRejectClicked approveRejectClickedListner) {
+        public TMUserFormsApprovalRecyclerAdapter(Context context, List<TMUserFormsApprovalRequest.Form_detail> dataList, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
             mContext = context;
             this.dataList = dataList;
             this.clickListener =clickListener;

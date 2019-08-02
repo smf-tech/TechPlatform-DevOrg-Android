@@ -387,7 +387,7 @@
     <string name="please_wait">Please wait…</string>
     <string name="holiday_list">Holiday List</string>
     <string name="edit_leave">Edit Leave</string>
-    <string name="apply_leave">Apply For Leave</string>
+    <string name="apply_leave">Apply Leave</string>
     <string name="leave_deleted_msg">Leave has been deleted successfully.</string>
     <string name="no_leave_applied_msg">You have not applied any leave in this month.</string>
     <string name="compoff_request">Request For Comp-Off</string>
@@ -416,6 +416,7 @@
     <string name="delayedin_checkin">Delayed in chek in and found another location</string>
     <string name="delayin_checkin_title">please provide a reason</string>
     <string name="see_details">See Details</string>
+    <string name="add_forms">Add Forms</string>
 
 
 </resources>

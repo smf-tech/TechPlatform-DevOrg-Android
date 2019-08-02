@@ -132,7 +132,7 @@
             <!--style="@style/FormSpinner"-->
             <!--android:prompt="@string/school" />-->
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_apply_filters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,8 +140,8 @@
                 android:background="@drawable/bg_button"
                 android:text="@string/apply_filters"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_22" />
+
+                 />
 
         </LinearLayout>
     </ScrollView>

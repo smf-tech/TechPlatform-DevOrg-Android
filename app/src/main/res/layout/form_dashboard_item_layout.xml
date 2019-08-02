@@ -19,13 +19,13 @@
 
     <ImageView
         android:id="@+id/img_status_icon"
-        android:layout_width="@dimen/dimen_80dp"
-        android:layout_height="@dimen/dimen_80dp"
+        android:layout_width="@dimen/dimen_60dp"
+        android:layout_height="@dimen/dimen_60dp"
         android:layout_centerVertical="true"
         android:padding="@dimen/dimen_05dp"
         android:layout_margin="@dimen/dimen_10dp" />
 
-    <TextView
+    <com.platform.view.customs.TextViewBold
         android:id="@+id/text_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,10 +35,10 @@
         android:singleLine="false"
         android:layout_margin="@dimen/dimen_05dp"
         android:textStyle="bold"
-        android:textSize="@dimen/dimen_16dp"
+        android:textSize="@dimen/text_size_title_14"
         android:layout_centerVertical="true"/>
 
-    <TextView
+    <com.platform.view.customs.TextViewBold
         android:id="@+id/text_status_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -38,6 +39,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.view.adapters.AddMembersListAdapter;
+import com.platform.widgets.MultiSelectBottomSheet;
 import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
@@ -49,13 +51,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class CreateEventTaskActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener,View.OnClickListener, PlatformTaskListener, MultiSelectSpinner.MultiSpinnerListener {
+public class CreateEventTaskActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener,View.OnClickListener, PlatformTaskListener, MultiSelectBottomSheet.MultiSpinnerListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
     private ArrayList<Participant> membersList = new ArrayList<>();
     private EventTask eventTask;
-
+    ArrayList<String> displayFormList = new ArrayList<>();
     private ImageView ivBackIcon;
     private EditText etTitle;
     private EditText etStartDate;
@@ -68,6 +70,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     private EditText etRegistrationStartDate;
     private EditText etRegistrationEndDate;
     private Button btEventSubmit;
+    private EditText et_add_forms;
     private MultiSelectSpinner spAddForms;
     private CheckBox cbIsAttendanceRequired;
     private CheckBox cbIsRegistrationRequired;
@@ -118,6 +121,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         cbIsAttendanceRequired = findViewById(R.id.cb_is_attendance_required);
         cbIsRegistrationRequired = findViewById(R.id.cb_is_registration_required);
         etAddMembers = findViewById(R.id.et_add_members);
+        et_add_forms= findViewById(R.id.et_add_forms);
         spAddForms = findViewById(R.id.sp_add_forms);
         spAddForms.setSpinnerName(Constants.Planner.SPINNER_ADD_FORMS);
         etRegistrationStartDate = findViewById(R.id.et_registration_start_date);
@@ -205,6 +209,8 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         etRegistrationStartDate.setOnClickListener(this);
         etRegistrationEndDate.setOnClickListener(this);
         eventPic.setOnClickListener(this);
+        //-------
+        et_add_forms.setOnClickListener(this);
     }
 
 //    private void setAdapter(ArrayList<Participant> participants) {
@@ -265,6 +271,14 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             case R.id.bt_event_submit:
                 submitDetails();
                 break;
+            case R.id.et_add_forms:
+                //submitDetails();
+                MultiSelectBottomSheet multiSelectBottomSheet=new MultiSelectBottomSheet(this,Constants.Planner.SPINNER_ADD_FORMS,displayFormList,this::onValuesSelected);
+                multiSelectBottomSheet.show();
+                multiSelectBottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+
         }
     }
 
@@ -293,7 +307,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     }
 
     @Override
-    public void onValuesSelected(boolean[] selected, String spinnerName) {
+    public void onValuesSelected(boolean[] selected, String spinnerName,String selectedText) {
         switch (spinnerName) {
             case Constants.Planner.SPINNER_ADD_FORMS:
                 selectedForms.clear();
@@ -302,9 +316,11 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                         selectedForms.add(formsList.get(i));
                     }
                 }
+                et_add_forms.setText(selectedText);
                 break;
 
         }
+       // spAddForms.setSelectedFilledText();
     }
 
     private void submitDetails() {
@@ -587,7 +603,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     public void onFormsListFatched(ArrayList<AddForm> formslist) {
         formsList.addAll(formslist);
-        ArrayList<String> displayFormList = new ArrayList<>();
+
         String CurrentLang = Locale.getDefault().getLanguage();
         for (AddForm obj : formsList) {
             if (CurrentLang.equalsIgnoreCase("mr"))
@@ -597,7 +613,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             else
                 displayFormList.add(obj.getName().getDefault());
         }
-        spAddForms.setItems(displayFormList, getString(R.string.select_forms), this);
+        //spAddForms.setItems(displayFormList, getString(R.string.select_forms), this);
         if (eventTask != null) {
             if (eventTask.getRequiredForms() != null && eventTask.getRequiredForms().size() > 0) {
 //            showOrganizationProjects(projectData);
@@ -612,6 +628,11 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 spAddForms.setPreFilledText();
             }
         }
+
+        /*MultiSelectBottomSheet multiSelectBottomSheet=new MultiSelectBottomSheet(this,Constants.Planner.SPINNER_ADD_FORMS,displayFormList,this::onValuesSelected);
+        multiSelectBottomSheet.show();
+        multiSelectBottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);*/
     }
 
     private boolean isContainsValue(ArrayList<AddForm> projects, String value) {
@@ -635,4 +656,5 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, data);
         this.startActivityForResult(intentAddMembersListActivity,Constants.Planner.MEMBER_LIST);
     }
+
 }
