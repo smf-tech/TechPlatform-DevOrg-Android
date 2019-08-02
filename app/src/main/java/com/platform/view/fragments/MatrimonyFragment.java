@@ -66,7 +66,7 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         // Disable clip to padding
         meetViewPager.setClipToPadding(false);
         // set padding manually, the more you set the padding the more you see of prev & next page
-        meetViewPager.setPadding(100, 50, 100, 50);
+        meetViewPager.setPadding(80, 20, 80, 20);
         // sets a margin b/w individual pages to ensure that there is a gap b/w them
         meetViewPager.setPageMargin(30);
         setupViewPager(meetViewPager);

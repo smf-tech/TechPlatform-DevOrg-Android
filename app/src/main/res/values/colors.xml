@@ -80,6 +80,7 @@
 
     <color name="leave_form_text_color">#3785D1</color>
     <color name="brick_red">#ff5c6b</color>
+    <color name="purple_light">#b764dd</color>
 
     <color name="form_category_selected">#D2E1F8</color>
     <color name="card_view_border">#C1C4C6</color>

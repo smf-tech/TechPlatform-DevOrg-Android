@@ -420,5 +420,11 @@
     <string name="delayin_checkin_title">please provide a reason</string>
     <string name="see_details">See Details</string>
 
+    <string name="matrimony_meet_label">BJS Matrimonial Meet</string>
+    <string name="matrimony_venue_label">Venue</string>
+    <string name="matrimony_datetime_label">Date-Time</string>
+    <string name="view_profiles_btn_label">View Profiles</string>
+    <string name="register_profile_btn_label">Register Profile</string>
+
 
 </resources>
