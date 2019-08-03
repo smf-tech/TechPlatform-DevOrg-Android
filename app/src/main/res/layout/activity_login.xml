@@ -46,7 +46,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/enter_mobile_label"
                     style="@style/roboto_regular_light_black_12"
                     android:layout_width="match_parent"
@@ -85,25 +85,20 @@
                         tools:ignore="UnusedAttribute" />
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardElevation="@dimen/dimen_07dp">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_login"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_button"
+                        style="@style/AppStyleButton"
+                        android:padding="@dimen/dimen_05dp"
                         android:gravity="center_horizontal|center_vertical"
                         android:singleLine="true"
                         android:text="@string/label_login"
                         android:textAllCaps="true"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_20" />
-                </androidx.cardview.widget.CardView>
+                        android:textSize="@dimen/text_size_16" />
+
 
                 <TextView
                     android:id="@+id/tv_otp_timer"
@@ -119,7 +114,7 @@
                     android:textSize="@dimen/text_size_16"
                     android:visibility="gone" />
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/tv_resend_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

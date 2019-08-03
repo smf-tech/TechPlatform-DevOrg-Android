@@ -10,9 +10,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
         android:background="@color/white"
         android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:visibility="visible">
         <include
             android:id="@+id/profile_toolbar"
@@ -20,13 +22,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <com.platform.view.customs.TextViewRegular
@@ -59,6 +64,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <com.platform.view.customs.TextViewRegular
@@ -94,6 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:visibility="visible"
                 android:padding="@dimen/dimen_10dp" />
         </LinearLayout>
 

@@ -328,12 +328,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
 
             case R.id.btn_profile_submit:
-                /*if (Util.isConnected(this)) {
+                if (Util.isConnected(this)) {
                     submitProfileDetails();
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
-                }*/
-                showMultiSelectBottomsheet();
+                }
+                //showMultiSelectBottomsheet();
 
                 break;
             case R.id.etUserOrganization:

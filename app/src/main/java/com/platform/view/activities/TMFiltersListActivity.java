@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -54,7 +55,7 @@ import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 @SuppressWarnings("CanBeFinal")
 public class TMFiltersListActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-
+    private String selectedStartDate,getSelectedEndDate;
     private TabLayout tabLayout;
     private String filterTypeReceived="";
     private ImageView img_filter_image;
@@ -185,6 +186,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         cdd.show();*/
         //showFilterDialog();
+
         defaultFilterRequest();
   //      (ArrayList<SubFilterset>) filterlistDataResponses.get(position).getFilterSet().get();
 //        subFiltersets = (ArrayList<SubFilterset>) filterlistDataResponses.get(position).getFilterSet().get(1).getFilterset();
@@ -308,7 +310,12 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            setContentView(R.layout.custom_dialog_filter);
+            //setContentView(R.layout.custom_dialog_filter);
+            View bottomSheetView = getLayoutInflater().inflate(R.layout.custom_dialog_filter, null);
+            setContentView(bottomSheetView);
+            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetView.getParent());
+            //bottomSheetBehavior.setPeekHeight(500);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
             tv_startdate = findViewById(R.id.tv_startdate);
             tv_enddate= findViewById(R.id.tv_enddate);
