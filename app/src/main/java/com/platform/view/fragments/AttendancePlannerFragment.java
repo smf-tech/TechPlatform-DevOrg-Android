@@ -376,6 +376,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     }
                     else{
                         btCheckout.setText("CheckOut at 00:00");
+
                     }
 
                     if(attendanceDateList.getTotalHrs()!=null){
@@ -393,8 +394,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             txt_total_hours.setText("00:00");
             btCheckIn.setText("CheckIn at 00:00");
             btCheckIn.setEnabled(false);
+
+            makeCheckInButtonGray();
             btCheckout.setText("CheckOut at 00:00");
             btCheckout.setEnabled(false);
+            makeCheckOutButtonGray();
         }
 
     }
