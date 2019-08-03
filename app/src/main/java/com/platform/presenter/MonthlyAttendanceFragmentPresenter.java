@@ -31,9 +31,7 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
-
     }
 
     @Override
