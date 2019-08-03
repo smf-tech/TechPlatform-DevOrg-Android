@@ -244,29 +244,29 @@
                                         android:layout_marginLeft="5dp"
                                         android:weightSum="2">
 
-                                        <Button
+                                        <com.google.android.material.button.MaterialButton
                                             android:id="@+id/bt_check_in"
                                             android:layout_width="0dp"
+                                            style="@style/AppStyleButton"
                                             android:layout_height="@dimen/dimen_40dp"
                                             android:layout_marginLeft="5dp"
                                             android:layout_weight="0.90"
                                             android:background="@drawable/bg_button"
                                             android:baselineAligned="false"
-                                            android:singleLine="true"
                                             android:text="@string/check_in"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
                                             android:textStyle="bold" />
 
-                                        <Button
+                                        <com.google.android.material.button.MaterialButton
                                             android:id="@+id/bt_checkout"
                                             android:layout_width="0dp"
+                                            style="@style/AppStyleButton"
                                             android:layout_height="@dimen/dimen_40dp"
                                             android:layout_marginLeft="5dp"
                                             android:layout_weight="0.90"
                                             android:background="@drawable/bg_button"
-                                            android:singleLine="true"
                                             android:text="@string/check_out"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"

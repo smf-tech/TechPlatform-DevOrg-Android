@@ -238,6 +238,10 @@
     <string name="total_hours">Total Hours</string>
     <string name="attendance_details">Check Attendance Details</string>
     <string name="attendacne_check_header">Delayed in chek in and also found another location </string>
+    <string name="check">Checked In Successful</string>
+
+
+
 
     <!--Events & Tasks-->
     <string name="events">Events</string>
@@ -418,6 +422,9 @@
     <string name="see_details">See Details</string>
     <string name="add_forms">Add Forms</string>
     <string name="add_members_link">+ Add Member</string>
+    <string name="check_in_msg">Checked In Suceesful</string>
+    <string name="check_out_msg">Checked Out Successful</string>
+
 
 
 </resources>

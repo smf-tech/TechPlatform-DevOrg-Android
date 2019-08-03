@@ -365,7 +365,7 @@ public class Util {
                 msg = Platform.getInstance().getString(R.string.msg_no_network);
             }
 
-            if (context instanceof Fragment) {
+            if(context instanceof Fragment ){
                 Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
@@ -432,7 +432,7 @@ public class Util {
 
         return 0L;
     }
-    public static int getDateInepoch(String dateString) {
+    public static long getDateInepoch(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInepoch(new Date().toString());
         }
@@ -442,7 +442,7 @@ public class Util {
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
             int test = (int) (epoch/1000);
-            return (int)(epoch/1000);
+            return epoch;
 
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
@@ -469,8 +469,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT,Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT,Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);

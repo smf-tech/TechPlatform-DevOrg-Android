@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/frag_act_back"
     tools:context="com.platform.view.fragments.ContentManagementFragment">
 
     <RelativeLayout
@@ -25,23 +26,30 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:padding="@dimen/dimen_10dp"
+            android:visibility="gone"
             android:layout_marginRight="@dimen/dimen_20dp"
             />
 
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/content_header"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
         android:id="@+id/rel_lay_explist">
+
         <ExpandableListView
             android:id="@+id/lvExp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:dividerHeight="5dp"
-            android:groupIndicator="@null" />
+            android:divider="@null"
+            android:dividerHeight="@null"
+            android:groupIndicator="@null"
+
+            />
 
         <TextView
             android:id="@+id/textNoData"
@@ -72,7 +80,25 @@
             android:focusable="true"
             android:indeterminateOnly="true"
             android:visibility="gone" />
+
+
     </RelativeLayout>
 
+    <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_margin="@dimen/dimen_10dp">
+
+       <com.google.android.material.floatingactionbutton.FloatingActionButton
+           android:id="@+id/btn_floating_content"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentBottom="true"
+           android:layout_marginRight="20dp"
+           android:layout_marginBottom="20dp"
+           android:src="@drawable/download_file" />
+
+   </RelativeLayout>
 
 </RelativeLayout>

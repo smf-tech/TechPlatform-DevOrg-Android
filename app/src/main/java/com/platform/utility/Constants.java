@@ -39,6 +39,7 @@ public class Constants {
     public static final String TIME_FORMAT_ = "HH:mm";
     public static final String TIME_FORMAT = "hh:mm aa";
     public static final String WEEK_FORMAT = "EEEE";
+    public static final String ATTENDANCE_DATE="yyyy/MM/dd HH:mm:ss";
     public static final String DECIMAL_FORMAT = "#0.00";
 
     public static class App {
