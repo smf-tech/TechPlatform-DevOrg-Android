@@ -81,7 +81,6 @@ import java.util.TimeZone;
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener,
         OnDateSelectedListener {
 
-
     private View plannerView;
     private boolean isDashboard;
     private boolean isMonth = true;
