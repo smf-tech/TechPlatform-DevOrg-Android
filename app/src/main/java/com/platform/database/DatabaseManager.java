@@ -11,6 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
+import com.platform.dao.NotificationsDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.UserAttendanceDao;
@@ -207,4 +208,8 @@ public class DatabaseManager {
         return  userCheckOutDao;
     }
 
+//    public NotificationsDao getNotifications(){
+//        NotificationsDao notificationsDao=appDatabase.notificationsDao();
+//        return  notificationsDao;
+//    }
 }

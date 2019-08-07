@@ -32,6 +32,7 @@ import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.activities.TMUserProfileListActivity;
 import com.platform.view.customs.TextViewBold;
 import com.platform.view.customs.TextViewRegular;
 
@@ -126,6 +127,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
             public void onClick(View v) {
                 if (getActivity() != null) {
                     getActivity().onBackPressed();}
+                ((TMUserProfileListActivity)getActivity()).finishwithResult();
             }
         });
 
@@ -269,6 +271,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
 
         Util.showSuccessFailureToast(response,getActivity(),getActivity().getWindow().getDecorView()
                 .findViewById(android.R.id.content));
+        getActivity().finish();
     }
 
     public void onReceiveReason(String s, int pos) {

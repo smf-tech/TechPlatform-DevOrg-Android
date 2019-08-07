@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/lighter_grey_transparent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    app:cardCornerRadius="@dimen/dimen_10dp"
+    android:padding="@dimen/dimen_10dp"
+    android:layout_margin="@dimen/dimen_10dp"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+    <Button
+        android:layout_width="wrap_content"
+        style="@style/AppStyleButton"
+        android:text="Test"
+        android:id="@+id/submit_values"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="wrap_content"
+        style="@style/AppStyleButton"
+        android:text="Test"
+        android:id="@+id/submit_values1"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="wrap_content"
+        style="@style/AppStyleButton"
+        android:text="Test"
+        android:id="@+id/submit_values2"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="wrap_content"
+        style="@style/AppStyleButton"
+        android:text="Test"
+        android:id="@+id/submit_values3"
+        android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values4"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values05"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values04"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values03"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values02"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values01"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values010"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values011"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values012"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values013"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            style="@style/AppStyleButton"
+            android:text="Test"
+            android:id="@+id/submit_values014"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>
+</LinearLayout>

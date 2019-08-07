@@ -61,21 +61,26 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         }
 
         Login login = new Gson().fromJson(response, Login.class);
-        if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
-            Util.saveLoginObjectInPref(response);
-        } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
-            otpFragment.get().deRegisterOtpSmsReceiver();
+        if(login.getStatus().equalsIgnoreCase("failed")){
+            onFailureListener(login.getMessage());
+        } else {
+            if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
+                Util.saveLoginObjectInPref(response);
+            } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
+                otpFragment.get().deRegisterOtpSmsReceiver();
+            }
+
+            if (isOtpVerifyCall) {
+                LoginRequestCall loginRequestCall = new LoginRequestCall();
+                loginRequestCall.setListener(this);
+                // Get User Profile
+                loginRequestCall.getUserProfile();
+            } else {
+                otpFragment.get().hideProgressBar();
+                otpFragment.get().showNextScreen(null);
+            }
         }
 
-        if (isOtpVerifyCall) {
-            LoginRequestCall loginRequestCall = new LoginRequestCall();
-            loginRequestCall.setListener(this);
-            // Get User Profile
-            loginRequestCall.getUserProfile();
-        } else {
-            otpFragment.get().hideProgressBar();
-            otpFragment.get().showNextScreen(null);
-        }
     }
 
     @Override

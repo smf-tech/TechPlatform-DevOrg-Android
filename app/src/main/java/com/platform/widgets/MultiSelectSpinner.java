@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.platform.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,9 +75,33 @@ public class MultiSelectSpinner extends androidx.appcompat.widget.AppCompatSpinn
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item, new String[]{spinnerText});
+                R.layout.layout_spinner_item, new String[]{spinnerText});
         setAdapter(adapter);
         listener.onValuesSelected(selectedValues, spinnerName);
+    }
+    public void setSelectedFilledText() {
+        StringBuilder spinnerSelectedText = new StringBuilder();
+        for (int i = 0; i < stringList.size(); i++) {
+            if (selectedValues[i]) {
+                spinnerSelectedText.append(stringList.get(i));
+                spinnerSelectedText.append(", ");
+            }
+        }
+
+        String spinnerText;
+        if (spinnerSelectedText.length() != 0) {
+            spinnerText = spinnerSelectedText.toString();
+            if (spinnerText.length() > 2) {
+                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+            }
+        } else {
+            spinnerText = defaultText;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                R.layout.layout_spinner_item, new String[]{spinnerText});
+        setAdapter(adapter);
+
     }
 
     @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")

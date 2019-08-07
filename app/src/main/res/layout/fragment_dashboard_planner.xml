@@ -528,6 +528,7 @@
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_235dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
                     android:layout_below="@+id/ly_task"
                     android:layout_marginTop="@dimen/dimen_05dp">
 
@@ -544,7 +545,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_235dp"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_leaves_label"
                         android:background="@color/white"
                         android:layout_margin="@dimen/dimen_10dp"
@@ -568,8 +569,9 @@
                         android:id="@+id/card_fotte_leave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         android:layout_below="@+id/rv_leave_balance"
-                        android:layout_marginTop="@dimen/dimen_10dp">
+                        android:layout_marginTop="@dimen/dimen_20dp">
 
                         <TextView
                             android:id="@+id/tv_link_check_leaves"

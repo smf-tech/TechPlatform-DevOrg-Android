@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,7 +23,9 @@ import com.platform.models.tm.TMApprovalRequestModel;
 import com.platform.models.tm.TMUserFormsApprovalRequest;
 import com.platform.presenter.TMUserFormsApprovalFragmentPresenter;
 import com.platform.utility.AppEvents;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.FormActivity;
 import com.platform.view.adapters.TMPendingApprovalPageRecyclerAdapter;
 import com.platform.view.adapters.TMUserFormsApprovalRecyclerAdapter;
 
@@ -40,7 +43,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
     TMUserFormsApprovalFragmentPresenter tmUserFormsApprovalFragmentPresenter;
     TMUserFormsApprovalRecyclerAdapter tmUserFormsApprovalRecyclerAdapter;
     JSONObject requetsObject;
-    private List<TMUserFormsApprovalRequest> tmUserFormsApplicationsList;
+    private List<TMUserFormsApprovalRequest.Form_detail> tmUserFormsApplicationsList;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +103,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
 
     }
 
-    public void showFetchedUserProfileForApproval(List<TMUserFormsApprovalRequest> data) {
+    public void showFetchedUserProfileForApproval(List<TMUserFormsApprovalRequest.Form_detail> data) {
         tmUserFormsApplicationsList =data;
         tmUserFormsApprovalRecyclerAdapter = new TMUserFormsApprovalRecyclerAdapter(getActivity(), data,
                 this,this);
@@ -131,7 +134,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
             tmApprovalRequestModel.setLeave_type("");
             tmApprovalRequestModel.setStartdate("");
             tmApprovalRequestModel.setEnddate("");
-            tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).getForm_detail().get(0).get_id().get$oid());
+            tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).get_id().get$oid());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,11 +154,12 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
             tmApprovalRequestModel.setLeave_type("");
             tmApprovalRequestModel.setStartdate("");
             tmApprovalRequestModel.setEnddate("");
-            tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).getForm_detail().get(0).get_id().get$oid());
+            tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).get_id().get$oid());
         } catch (Exception e) {
             e.printStackTrace();
         }
         tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel),pos);
+
     }
 
     public void onReceiveReason(String s, int pos) {
@@ -174,7 +178,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
                 tmApprovalRequestModel.setLeave_type("");
                 tmApprovalRequestModel.setStartdate("");
                 tmApprovalRequestModel.setEnddate("");
-                tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).getForm_detail().get(0).get_id().get$oid());
+                tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).get_id().get$oid());
             } catch (Exception e) {
                 e.printStackTrace();
             }

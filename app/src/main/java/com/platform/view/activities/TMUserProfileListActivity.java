@@ -46,6 +46,7 @@ public class TMUserProfileListActivity extends BaseActivity {
             selectApprovalTypeFragment(switchToFragment);
 
         }
+// inside your activity (if you did not enable transitions in your theme)
 
     }
 
@@ -100,4 +101,7 @@ public class TMUserProfileListActivity extends BaseActivity {
         super.onResume();
     }
 
+    public void finishwithResult() {
+
+    }
 }

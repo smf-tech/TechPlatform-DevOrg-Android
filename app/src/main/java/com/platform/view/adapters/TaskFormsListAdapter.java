@@ -80,9 +80,9 @@ public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdap
                     taskFormsList.get(getAdapterPosition()).getId();
                     Intent intent = new Intent(mContext, FormActivity.class);
                     intent.putExtra(Constants.PM.FORM_ID, taskFormsList.get(getAdapterPosition()).getId());
-                    intent.putExtra(Constants.PM.PROCESS_ID, taskFormsList.get(getAdapterPosition()).getId());
-                    intent.putExtra(Constants.PM.EDIT_MODE, true);
-                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
+//                    intent.putExtra(Constants.PM.PROCESS_ID, taskFormsList.get(getAdapterPosition()).getId());
+//                    intent.putExtra(Constants.PM.EDIT_MODE, true);
+//                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
 
                     mContext.startActivity(intent);
                 }
