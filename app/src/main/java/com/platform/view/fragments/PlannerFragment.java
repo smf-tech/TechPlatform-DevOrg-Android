@@ -1187,18 +1187,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             btCheckout.setText(checkOutText + userServerCheckOutTime);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         if(!isCheckOut){
             getDiffBetweenTwoHours();
         }

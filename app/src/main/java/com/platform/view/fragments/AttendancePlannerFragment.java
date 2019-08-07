@@ -361,7 +361,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckIn.setEnabled(false);
-
                     }else {
                         btCheckIn.setText("CheckIn at 00:00");
 
@@ -1019,6 +1018,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             Toast.makeText(getActivity(),"User Already check in",Toast.LENGTH_LONG).show();
         }
         else {
+
             String attendanceId;
             int status;
             try{
@@ -1206,6 +1206,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
+
+        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
+
         setButtonText();
         checkUserIsMakedIn();
         if(!isCheckOut){
