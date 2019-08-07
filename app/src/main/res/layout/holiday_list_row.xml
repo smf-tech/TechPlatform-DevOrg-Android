@@ -17,6 +17,7 @@
         android:text="14 Apr"
         android:textColor="@color/holiday_text"
         android:textSize="@dimen/text_size_14"
+        android:fontFamily="@font/opensans"
         tools:ignore="HardcodedText" />
 
     <TextView
@@ -30,6 +31,7 @@
         android:text="Ganapati"
         android:textColor="@color/holiday_text"
         android:textSize="@dimen/text_size_14"
+        android:fontFamily="@font/opensans"
         tools:ignore="HardcodedText" />
 
     <View

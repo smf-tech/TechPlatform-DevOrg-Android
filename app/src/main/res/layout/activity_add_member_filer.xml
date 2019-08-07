@@ -24,6 +24,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans"
                 android:text="@string/create_filter_screen_msg"/>
 
             <!--Organization-->

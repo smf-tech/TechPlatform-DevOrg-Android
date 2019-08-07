@@ -288,6 +288,7 @@
                 android:layout_below="@+id/tly_registration_end_date"
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:visibility="gone"
+                android:fontFamily="@font/opensans_regular"
                 android:text="@string/add_forms" />
 
             <com.platform.widgets.MultiSelectSpinner

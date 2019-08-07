@@ -24,7 +24,8 @@
 
             <TextView
                 android:id="@+id/txt_pending_request_title"
-                style="@style/roboto_regular_dark_grey_13"
+                android:textSize="@dimen/text_size_12"
+                android:fontFamily="@font/opensans_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/dimen_60dp"
@@ -33,7 +34,8 @@
 
             <TextView
                 android:id="@+id/txt_pending_request_created_at"
-                style="@style/roboto_regular_light_grey_12"
+                android:textSize="@dimen/text_size_12"
+                android:fontFamily="@font/opensans_regular"
                 android:layout_width="wrap_content"
                 android:paddingStart="@dimen/dimen_60dp"
                 android:paddingEnd="@dimen/dimen_60dp"

@@ -79,6 +79,7 @@
                     android:gravity="center"
                     android:text="@string/tab_pending_leaves"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/black_green"
                     android:textSize="@dimen/text_size_12" />
 
@@ -93,6 +94,7 @@
                     android:gravity="center"
                     android:text="@string/tab_approved_leaves"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/blur_tab"
                     android:textSize="@dimen/text_size_12" />
 
@@ -107,6 +109,7 @@
                     android:gravity="center"
                     android:text="@string/tab_rejected_leaves"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/blur_tab"
                     android:textSize="@dimen/text_size_12" />
             </LinearLayout>

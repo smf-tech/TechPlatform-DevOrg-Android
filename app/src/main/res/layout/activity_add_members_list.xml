@@ -149,6 +149,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:padding="@dimen/dimen_05dp"
+            android:fontFamily="@font/opensans"
             android:textColor="@color/medium_blue"
             android:text="@string/add_members_link"/>
 
@@ -158,6 +159,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_info_label"
             android:layout_alignParentEnd="true"
+            android:textColor="@color/dark_grey"
+            android:fontFamily="@font/opensans"
             android:text="@string/select_all" />
 
         <!--<RelativeLayout-->
@@ -185,8 +188,9 @@
             android:layout_below="@+id/cb_select_all_members"
             android:layout_marginTop="@dimen/dimen_10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_add_members"
+            style="@style/AppStyleButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -195,17 +199,17 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:visibility="gone"
-            android:textSize="@dimen/text_size_22" />
-        <Button
+            />
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_members_submit"
             android:layout_width="match_parent"
+            style="@style/AppStyleButton"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_button"
             android:text="@string/submit"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_22"
             android:visibility="gone"/>
     </RelativeLayout>
 

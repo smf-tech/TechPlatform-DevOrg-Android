@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/lighter_grey">
 
     <ScrollView
@@ -129,6 +130,7 @@
                             android:id="@+id/tv_attendance_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans"
                             android:layout_alignStart="@+id/lin_attendance"
                             android:layout_alignTop="@+id/lin_attendance"
                             android:layout_gravity="center_vertical"
@@ -248,29 +250,31 @@
                                             android:id="@+id/bt_check_in"
                                             android:layout_width="0dp"
                                             style="@style/AppStyleButton"
-                                            android:layout_height="@dimen/dimen_40dp"
+                                            android:layout_height="@dimen/dimen_50dp"
                                             android:layout_marginLeft="5dp"
                                             android:layout_weight="0.90"
-                                            android:background="@drawable/bg_button"
+                                            app:backgroundTint="@color/colorPrimary"
                                             android:baselineAligned="false"
                                             android:text="@string/check_in"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
+                                            tools:ignore="ButtonStyle"
                                             android:textStyle="bold" />
 
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/bt_checkout"
                                             android:layout_width="0dp"
                                             style="@style/AppStyleButton"
-                                            android:layout_height="@dimen/dimen_40dp"
+                                            android:layout_height="@dimen/dimen_50dp"
                                             android:layout_marginLeft="5dp"
                                             android:layout_weight="0.90"
-                                            android:background="@drawable/bg_button"
+                                            app:backgroundTint="@color/button_gray_color"
                                             android:text="@string/check_out"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
+                                            tools:ignore="ButtonStyle"
                                             android:textStyle="bold" />
 
                                     </LinearLayout>

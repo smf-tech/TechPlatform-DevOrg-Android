@@ -1,7 +1,7 @@
 package com.platform.view.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Location;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;

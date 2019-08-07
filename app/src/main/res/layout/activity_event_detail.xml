@@ -300,9 +300,9 @@
                 android:visibility="gone"
                 android:layout_marginTop="@dimen/dimen_10dp">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
+                    style="@style/AppStyleButton"
                     android:id="@+id/bt_get_code"
-                    style="@style/StyleButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
@@ -313,9 +313,9 @@
                     android:fontFamily="@font/opensans"/>
 
 
-                <Button
+                <com.google.android.material.button.MaterialButton
+                    style="@style/AppStyleButton"
                     android:id="@+id/bt_participants"
-                    style="@style/StyleButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
@@ -328,9 +328,9 @@
             </LinearLayout>
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/AppStyleButton"
                 android:id="@+id/bt_set_code"
-                style="@style/StyleButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_membarlist_code"
@@ -341,9 +341,9 @@
                 android:visibility="gone"
                 android:fontFamily="@font/opensans"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/AppStyleButton"
                 android:id="@+id/bt_complete_task"
-                style="@style/StyleButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_membarlist_code"

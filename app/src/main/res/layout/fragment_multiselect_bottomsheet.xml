@@ -17,92 +17,92 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
-    <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
         android:layout_width="wrap_content"
-        style="@style/AppStyleButton"
         android:text="Test"
         android:id="@+id/submit_values"
         android:layout_height="wrap_content" />
-    <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
         android:layout_width="wrap_content"
-        style="@style/AppStyleButton"
         android:text="Test"
         android:id="@+id/submit_values1"
         android:layout_height="wrap_content" />
-    <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
         android:layout_width="wrap_content"
-        style="@style/AppStyleButton"
         android:text="Test"
         android:id="@+id/submit_values2"
         android:layout_height="wrap_content" />
-    <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
         android:layout_width="wrap_content"
-        style="@style/AppStyleButton"
         android:text="Test"
         android:id="@+id/submit_values3"
         android:layout_height="wrap_content" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             style="@style/AppStyleButton"
             android:text="Test"
             android:id="@+id/submit_values4"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values05"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values04"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values03"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values02"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values01"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values010"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values011"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values012"
             android:layout_height="wrap_content" />
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:layout_width="wrap_content"
             android:text="Test"
             android:id="@+id/submit_values013"
             android:layout_height="wrap_content" />
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             style="@style/AppStyleButton"
             android:text="Test"

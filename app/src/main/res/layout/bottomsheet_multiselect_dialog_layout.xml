@@ -143,9 +143,9 @@
                 android:text="Apply"
                 android:textColor="@color/white" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/AppStyleButton"
                 android:id="@+id/btn_no"
-                style="@style/StyleButton"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"

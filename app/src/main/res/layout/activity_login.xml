@@ -35,6 +35,7 @@
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:text="@string/app_name_ss"
                 android:textColor="@color/dark_grey"
+                android:fontFamily="@font/opensans"
                 android:textSize="@dimen/text_size_20"
                 android:visibility="gone" />
 
@@ -72,10 +73,11 @@
                         android:layout_height="@dimen/dimen_50dp"
                         android:background="@android:color/transparent"
                         android:digits="0123456789"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:importantForAutofill="no"
                         android:inputType="phone"
                         android:maxLength="10"
+                        android:layout_gravity="center"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:singleLine="true"
@@ -110,6 +112,7 @@
                     android:drawablePadding="@dimen/dimen_10dp"
                     android:gravity="center_horizontal"
                     android:text="@string/label_time"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_size_16"
                     android:visibility="gone" />
