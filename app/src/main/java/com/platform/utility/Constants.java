@@ -34,6 +34,7 @@ public class Constants {
     public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm";
+    public static final String DATE_TIME_FORMAT_ = "dd-MMM-YY hh:mm aa";
     public static final String DAY_MONTH_FORMAT = "dd MMM";
     public static final String EVENT_DATE_FORMAT = "dd MMM yyyy";
     public static final String TIME_FORMAT_ = "HH:mm";
@@ -47,6 +48,7 @@ public class Constants {
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
         public static final String DATABASE_NAME = "TechPlatform";
+        public static final String CHANNEL_ID = "BJS";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";

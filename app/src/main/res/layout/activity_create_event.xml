@@ -287,8 +287,6 @@
                 style="@style/FormLabel"
                 android:layout_below="@+id/tly_registration_end_date"
                 android:layout_marginStart="@dimen/dimen_20dp"
-                android:visibility="gone"
-                android:fontFamily="@font/opensans_regular"
                 android:text="@string/add_forms" />
 
             <com.platform.widgets.MultiSelectSpinner
@@ -296,36 +294,38 @@
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp"
-                android:visibility="gone"
+
                 android:layout_below="@+id/tv_add_forms" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_add_forms"
-                style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tly_registration_end_date"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+                <!--android:id="@+id/input_add_forms"-->
+                <!--style="@style/textinputstyle"-->
+                <!--android:layout_marginStart="@dimen/dimen_10dp"-->
+                <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
+                <!--android:layout_marginTop="@dimen/dimen_10dp"-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/tly_registration_end_date"-->
+                <!--app:hintTextAppearance="@style/TextInputLayoutHint">-->
 
-                <EditText
-                    android:id="@+id/et_add_forms"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/add_forms"
-                    android:focusable="false"
-                    android:inputType="text|textCapWords"
-                    tools:ignore="Autofill" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <!--<EditText-->
+                    <!--android:id="@+id/et_add_forms"-->
+                    <!--style="@style/RegistrationEditTextLayout"-->
+                    <!--android:hint="@string/add_forms"-->
+                    <!--android:focusable="false"-->
+                    <!--android:inputType="text|textCapWords"-->
+                    <!--tools:ignore="Autofill" />-->
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
 
 
             <!--Add Members-->
+
             <RelativeLayout
                 android:id="@+id/rl_add_members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/input_add_forms"
+                android:layout_below="@+id/sp_add_forms"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_blue_box"
                 app:hintTextAppearance="@style/TextInputLayoutHint">

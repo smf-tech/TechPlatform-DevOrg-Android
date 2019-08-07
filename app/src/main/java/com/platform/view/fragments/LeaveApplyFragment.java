@@ -234,9 +234,9 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 btnFullDay.setTextColor(getResources().getColor(R.color.leave_form_text_color));
                 btnFullDay.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.light_blue));
                 btnEndDate.setEnabled(false);
-//                if(!btnStartDate.getText().toString().equalsIgnoreCase("Start Date")){
-//                    btnEndDate.setText(btnStartDate.getText().toString());
-//                }
+                if(!btnStartDate.getText().toString().equalsIgnoreCase("Start Date")){
+                    btnEndDate.setText(btnStartDate.getText().toString());
+                }
                 break;
 
             case R.id.btn_full_day:

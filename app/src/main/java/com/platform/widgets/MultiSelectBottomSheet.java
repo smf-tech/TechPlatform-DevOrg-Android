@@ -107,6 +107,10 @@ public class MultiSelectBottomSheet extends BottomSheetDialog implements
 
     }
 
+    public void setSelectedValues(boolean selectedValues[]){
+        this.selectedValues = selectedValues;
+    }
+
     public interface MultiSpinnerListener {
         void onValuesSelected(boolean[] selected, String spinnerName,String selectedValues);
     }

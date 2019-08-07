@@ -186,6 +186,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cb_select_all_members"
+            android:layout_above="@+id/bt_add_members"
             android:layout_marginTop="@dimen/dimen_10dp" />
 
         <com.google.android.material.button.MaterialButton

@@ -1,5 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
+    <string name="notification_channel_name" translatable="false">Platform</string>
+    <string name="notification_channel_description" translatable="false">Platform</string>
     <string name="app_name_ss">Sujalam Suphalam</string>
     <string name="content_description">Description</string>
     <string name="back_string">Please click BACK again to exit</string>
@@ -246,13 +248,13 @@
     <!--Events & Tasks-->
     <string name="events">Events</string>
     <string name="all_events">All Events</string>
-    <string name="today_events">Today\'s Events</string>
+    <string name="today_events">Upcoming Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
     <string name="create_task">Create Task</string>
     <string name="all_tasks">All Tasks</string>
     <string name="my_tasks">My Tasks</string>
-    <string name="today_tasks">Today\'s Tasks</string>
+    <string name="today_tasks">Upcoming Tasks</string>
     <string name="no_tasks">No tasks today!</string>
     <string name="task_category">Category</string>
     <string name="task_title">Title</string>
@@ -424,6 +426,7 @@
     <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Suceesful</string>
     <string name="check_out_msg">Checked Out Successful</string>
+
 
 
 

@@ -1,6 +1,7 @@
 package com.platform.view.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,7 +98,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         } else {
             tvInfoLabel.setVisibility(View.GONE);
             cbSelectAllMembers.setVisibility(View.INVISIBLE);
-            btAddMembers.setVisibility(View.GONE);
+            btAddMembers.setVisibility(View.INVISIBLE);
         }
 
         membersList.addAll(filterMemberList);
@@ -256,7 +258,29 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     public void removeMember(String userId) {
         this.userId=userId;
-        presenter.deleteMember(userId,eventTaskID);
+
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete alert")
+                    .setMessage(getString(R.string.sure_to_delete))
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                            presenter.deleteMember(userId,eventTaskID);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.dismiss();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            alertDialog = builder.create();
+            alertDialog.show();
+
+
     }
 
     @Override

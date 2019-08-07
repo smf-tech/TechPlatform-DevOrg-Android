@@ -11,11 +11,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
+import com.platform.dao.NotificationDataDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.dao.UserCheckOutDao;
-import com.platform.models.attendance.AttendaceData;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.home.Modules;
@@ -51,6 +51,7 @@ public class DatabaseManager {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             // Since we didn't alter the table, there's nothing else to do here.
+          database.execSQL("CREATE TABLE IF NOT EXISTS `${Notifications}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `text` TEXT, `toOpen` TEXT, `unread` INTEGER, `dateTime` TEXT)");
         }
     };
 
@@ -207,4 +208,8 @@ public class DatabaseManager {
         return  userCheckOutDao;
     }
 
+    public NotificationDataDao getNotificationDataDeo(){
+        NotificationDataDao notificationDataDao=appDatabase.notificationsDataDao();
+        return notificationDataDao;
+    }
 }
