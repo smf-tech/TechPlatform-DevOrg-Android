@@ -425,6 +425,7 @@
     <string name="matrimony_datetime_label">Date-Time</string>
     <string name="view_profiles_btn_label">View Profiles</string>
     <string name="register_profile_btn_label">Register Profile</string>
+    <string name="create_meet">Create Meet</string>
 
 
 </resources>

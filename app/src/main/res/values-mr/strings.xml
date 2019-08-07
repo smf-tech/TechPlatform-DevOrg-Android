@@ -361,6 +361,7 @@
     <string name="delayin_checkin_title">please provide a reason</string>
     <string name="see_details">See Details</string>
     <string name="add_members">Add Members</string>
+    <string name="create_meet">Create Meet</string>
 
 
 </resources>

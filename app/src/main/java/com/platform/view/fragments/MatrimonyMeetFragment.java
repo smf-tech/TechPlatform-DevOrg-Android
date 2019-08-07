@@ -1,17 +1,22 @@
 package com.platform.view.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.platform.R;
@@ -19,7 +24,7 @@ import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.utility.Constants;
 import com.platform.view.activities.HomeActivity;
 
-public class MatrimonyMeetFragment extends Fragment {
+public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuItemClickListener  {
     private View matrimonyMeetFragmentView;
 
     @Override
@@ -41,43 +46,34 @@ public class MatrimonyMeetFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             MatrimonyMeet meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
-//            text_title.setText(meetData.getMeetTitle());
-//            text_date.setText(meetData.getMeetDateTime());
         }
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
         }
-        //setUpToolbar();
+        ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
+        btnPopupMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu((getActivity()), v);
+                popup.setOnMenuItemClickListener(MatrimonyMeetFragment.this);
+                popup.inflate(R.menu.matrimony_meet_menu);
+                popup.show();
+            }
+        });
     }
-//    private void setUpToolbar() {
-//        Toolbar toolbar = findViewById(R.id.meet_toolbar);
-//        setSupportActionBar(toolbar);
-//    }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        inflater.inflate(R.menu.menu_sample, menu);
-//        super.onCreateOptionsMenu(menu,inflater);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_contact_us:
-//                Toast.makeText(this, "Contact us clicked", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.action_terms_conditions:
-//                Toast.makeText(this, "Terms and Conditions clicked", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.action_logout:
-//                Toast.makeText(this, "Logout clicked", Toast.LENGTH_SHORT).show();
-//                break;
-//            case android.R.id.home:
-//                //click event of back arrow button to finish activity
-//                finish();
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_archive:
+                break;
+            case R.id.action_allocate_badge:
+                break;
+            case R.id.action_finalise_badge:
+                break;
+            case R.id.action_gen_booklate:
+                break;
+        }
+        return false;
+    }
 }

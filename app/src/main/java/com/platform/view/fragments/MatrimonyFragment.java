@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,12 +13,15 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
@@ -26,6 +30,7 @@ import java.util.List;
 
 public class MatrimonyFragment extends Fragment implements PlatformTaskListener {
     private View matrimonyFragmentView;
+    private FloatingActionButton btnCreateMeet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,15 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         // sets a margin b/w individual pages to ensure that there is a gap b/w them
         meetViewPager.setPageMargin(30);
         setupViewPager(meetViewPager);
+
+        btnCreateMeet = matrimonyFragmentView.findViewById(R.id.btn_create_meet);
+        btnCreateMeet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent compoffIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
+                startActivity(compoffIntent);
+            }
+        });
     }
 
     private void setupViewPager(ViewPager meetViewPager) {
@@ -89,7 +103,7 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         matrimonyMeetList.add(m3);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        for(int i = 0; i<matrimonyMeetList.size(); i++){
+        for (int i = 0; i < matrimonyMeetList.size(); i++) {
             MatrimonyMeetFragment matrimonyMeetFragment = new MatrimonyMeetFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Home.MATRIMONY, matrimonyMeetList.get(i));

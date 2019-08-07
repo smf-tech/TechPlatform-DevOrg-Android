@@ -38,21 +38,22 @@
                  android:layout_alignParentBottom="true"
                  android:background="@drawable/gradient_sample"/>
 
-            <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_margin="@dimen/dimen_10dp"-->
-                <!--android:background="@drawable/ic_options_icon"/>-->
+            <ImageView
+                android:id="@+id/btn_popmenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:background="@drawable/ic_options_icon"/>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/meet_toolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_30dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:background="@drawable/ic_options_icon">
-                </androidx.appcompat.widget.Toolbar>
+                <!--<androidx.appcompat.widget.Toolbar-->
+                    <!--android:id="@+id/meet_toolbar"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="@dimen/dimen_30dp"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:layout_margin="@dimen/dimen_10dp"-->
+                    <!--android:background="@drawable/ic_options_icon">-->
+                <!--</androidx.appcompat.widget.Toolbar>-->
 
             </RelativeLayout>
             <TextView
@@ -608,15 +609,39 @@
 
                 </LinearLayout>
             </LinearLayout>
-            <TextView
+
+            <LinearLayout
+                android:id="@+id/button_lay"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_60dp" />
+                android:layout_height="@dimen/dimen_60dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:weightSum="10">
+
+                <Button
+                    android:id="@+id/btn_add_leaves"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_weight="5"
+                    android:padding="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_white_black_stroke"
+                    android:text="@string/view_profiles_btn_label" />
+
+                <Button
+                    android:id="@+id/btn_compoff_request"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_weight="5"
+                    android:padding="@dimen/dimen_10dp"
+                    android:background="@drawable/bg_white_black_stroke"
+                    android:text="@string/register_profile_btn_label" />
+
+            </LinearLayout>
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
     </ScrollView>
-
     <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -626,36 +651,4 @@
         <!--android:backgroundTint="@color/colorPrimary"-->
         <!--android:src="@drawable/ic_close"-->
         <!--android:rotation="45"/>-->
-
-    <LinearLayout
-        android:id="@+id/button_lay"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_60dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <Button
-            android:id="@+id/btn_add_leaves"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:layout_weight="5"
-            android:padding="@dimen/dimen_10dp"
-            android:background="@drawable/bg_button"
-            android:textColor="@color/white"
-            android:text="@string/view_profiles_btn_label" />
-
-        <Button
-            android:id="@+id/btn_compoff_request"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:layout_weight="5"
-            android:padding="@dimen/dimen_10dp"
-            android:background="@drawable/bg_button"
-            android:textColor="@color/white"
-            android:text="@string/register_profile_btn_label" />
-
-    </LinearLayout>
 </RelativeLayout>
