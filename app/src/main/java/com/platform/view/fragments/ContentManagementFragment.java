@@ -56,6 +56,7 @@ import com.platform.models.content.ContentModel;
 import com.platform.models.content.Datum;
 import com.platform.models.content.Datum_;
 import com.platform.models.content.DownloadContent;
+import com.platform.models.content.DownloadInfo;
 import com.platform.request.ContentDataRequestCall;
 import com.platform.services.DownloadService;
 import com.platform.services.ShowTimerService;
@@ -69,9 +70,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import static android.content.Context.DOWNLOAD_SERVICE;
-
-
-
 public class ContentManagementFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -109,10 +107,12 @@ public class ContentManagementFragment extends Fragment {
     private DownloadManager downloadmanager;
     private ImageView imgDwn, imgShare;
     private RelativeLayout progressBarLayout;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar,mProgressBar;
     private ShowTimerService showTimerService;
     boolean mBound = false;
     private Handler handler = new Handler();
+    private List<Long> downloadIdList=new ArrayList<>();
+    DownloadInfo downloadInfo;
 
 
     public ContentManagementFragment() {
@@ -276,6 +276,7 @@ public class ContentManagementFragment extends Fragment {
         if (status.equalsIgnoreCase("200")) {
             contentList = contentlData.getData();
             for (int i = 0; i < contentList.size(); i++) {
+
                 contentDataList = contentList.get(i).getContentData();
 
                 for (int j = 0; j < contentDataList.size(); j++) {
@@ -296,6 +297,9 @@ public class ContentManagementFragment extends Fragment {
                         downloadContent.setMr(mr);
                         downloadContent.setHi(hi);
                         downloadContent.setDef(def);
+
+                        downloadInfo=new DownloadInfo(name,1000);
+                        downloadContent.setInfo(downloadInfo);
 
                         listDownloadContent.add(downloadContent);
 
@@ -323,6 +327,7 @@ public class ContentManagementFragment extends Fragment {
         expListView = contentview.findViewById(R.id.lvExp);
         progressBarLayout = contentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentview.findViewById(R.id.pb_profile_act);
+
 
         prepareListData();
         imgDownload = contentview.findViewById(R.id.img_contentDownload);
@@ -391,7 +396,7 @@ public class ContentManagementFragment extends Fragment {
 
     }
 
-    public void beginDownload(String url,ProgressBar progressBar) {
+    public void beginDownload(String url) {
 
         DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
@@ -410,6 +415,7 @@ public class ContentManagementFragment extends Fragment {
 
         //downloadFilePath = path + filename;
         downloadID = downloadmanager.enqueue(request);
+        downloadIdList.add(downloadID);
         //updateProgressBar();
         //getActivity().getContentResolver().registerContentObserver(uri, true,new DownloadObserver(handler));
 
@@ -471,38 +477,53 @@ public class ContentManagementFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Intent data = intent;
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            if (id == downloadID) {
-                Toast.makeText(getActivity(), "Download Completed", Toast.LENGTH_LONG).show();
-                Log.i("Full File path", "111" + intent.getDataString());
+            //mProgressBar=(getActivity()).findViewById(R.id.progress_bar);
+            //mProgressBar.setVisibility(View.VISIBLE);
+            //mProgressBar.setProgress(0);
 
-                String action = intent.getAction();
-                String uriString = null;
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+          /*  boolean downloading = true;
+            while (downloading) {
 
-                    DownloadManager.Query query = new DownloadManager.Query();
-                    query.setFilterById(downloadID);
-                    DownloadManager dManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
-                    Cursor c = dManager.query(query);
-                    if (c.moveToFirst()) {
-                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                        if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-                            uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                            //TODO : Use this local uri and launch intent to open file
-                        }
-                    }
+                DownloadManager.Query q = new DownloadManager.Query();
+                q.setFilterById(id);
+                DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                Cursor cursor = downloadmanager.query(q);
+                cursor.moveToFirst();
+
+                int bytes_downloaded = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+
+                if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                    downloading = false;
+                    //mProgressBar.setVisibility(View.GONE);
+                    //expandableListAdapter.notifyDataSetChanged();
                 }
-               /* Intent shareIntent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.setType("application/*");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(Intent.EXTRA_STREAM,uriString);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                getActivity().startActivity(Intent.createChooser(shareIntent, "Share Content"));*/
 
-                //shareDownloadFile(intent);
+                final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            Thread.sleep(1000);
+                            Toast.makeText(getActivity(),"%"+dl_progress,Toast.LENGTH_LONG).show();
+                            //mProgressBar.setProgress(dl_progress);
+                            //mProgressBar.setMax(100);
+                            //expandableListAdapter.notifyDataSetChanged();
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }*/
+            String action = intent.getAction();
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                Toast.makeText(getContext(),"DownloadComplete",Toast.LENGTH_LONG).show();
+                //mProgressBar.setVisibility(View.GONE);
                 expandableListAdapter.notifyDataSetChanged();
-
-
             }
 
         }

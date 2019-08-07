@@ -73,7 +73,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<DownloadListAdapte
         };
     }
 
-    public  class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView share,download;
         public TextView textView;
         public RelativeLayout relativeLayout;

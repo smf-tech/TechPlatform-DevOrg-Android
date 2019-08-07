@@ -1,6 +1,7 @@
 package com.platform.models.attendance;
 
-public class AttendanceDateList {
+public class AttendanceDateList
+{
     public String getCheckInTime() {
         return checkInTime;
     }
@@ -56,6 +57,5 @@ public class AttendanceDateList {
     }
 
     private String createAt;
-
-
 }
+

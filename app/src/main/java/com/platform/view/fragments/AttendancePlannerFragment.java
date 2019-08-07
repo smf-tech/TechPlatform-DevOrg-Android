@@ -271,10 +271,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         calendarView = plannerView.findViewById(R.id.calendarView);
         calendarView.state().edit().setMaximumDate(Calendar.getInstance().getTime()).commit();
 
-
-
         ivCalendarMode.setOnClickListener(this);
-
         attendanceCardLayout = plannerView.findViewById(R.id.rv_card_attendance);
 
         setUIData();
@@ -304,8 +301,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 }
 
                 calendarSelectedDate=year+"-"+mm+"-"+dd;
-
-
 
                 showDialogForSelectedDate(calendarSelectedDate);
 
@@ -357,8 +352,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckIn.setText(checkInText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm"));
                         btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
-                        btCheckIn.setEnabled(false);
 
+                        btCheckIn.setEnabled(false);
                     }else {
                         btCheckIn.setText("CheckIn at 00:00");
 
@@ -490,7 +485,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                  listDateWiseAttendace.add(attendanceDateList);
 
-                 if(status.equalsIgnoreCase(PENDING))
+               /*  if(status.equalsIgnoreCase(PENDING))
                  {
 
                      String number= attendanceList.get(j).getCreatedOn();
@@ -505,7 +500,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                  {
                      rejectList.add(attendanceList.get(j).getCreatedOn());
                  }
-
+*/
              }
          }
 
@@ -585,8 +580,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
                 if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
                     Toast.makeText(getActivity(), "User Already check in ", Toast.LENGTH_LONG).show();
-                }else if(userAvailable!=null){
+                }else if(userAvailable!=null&&!userAvailable.isEmpty()){
                     Toast.makeText(getActivity(), "User Already check in ", Toast.LENGTH_LONG).show();
+                    //enableCheckOut();
                     //markIn();
                 }else {
                     markIn();
@@ -771,6 +767,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+
                     attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                     userCheckOutDao.insert(attendaceData);
 
@@ -782,9 +779,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     btCheckout.setText(checkOutText);
                     preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
 
+
                     //setButtonText();
                     if(!isCheckOut){
                         getDiffBetweenTwoHours();
+
                     }
                     isCheckOut=true;
                     preferenceHelper.totalHours(KEY_TOTALHOURS,false);
@@ -1016,6 +1015,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             Toast.makeText(getActivity(),"User Already check in",Toast.LENGTH_LONG).show();
         }
         else {
+
             String attendanceId;
             int status;
             try{
@@ -1203,6 +1203,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
+
+        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
+
         setButtonText();
         checkUserIsMakedIn();
         if(!isCheckOut){

@@ -117,7 +117,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_05dp"
-                    android:id="@+id/ly_attendance">
+                    android:id="@+id/ly_attendance"
+                    android:visibility="gone">
 
 
                     <LinearLayout
@@ -370,7 +371,7 @@
                     android:layout_below="@+id/ly_attendance"
                     android:layout_height="@dimen/dimen_277dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/event_header"
@@ -449,7 +450,7 @@
                     android:layout_height="@dimen/dimen_277dp"
                     android:layout_below="@+id/ly_events"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/task_header"
@@ -534,6 +535,7 @@
                     android:layout_height="@dimen/dimen_235dp"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:layout_below="@+id/ly_task"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dimen_05dp">
 
                     <TextView

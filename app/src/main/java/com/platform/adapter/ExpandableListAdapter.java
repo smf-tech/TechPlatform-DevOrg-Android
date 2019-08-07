@@ -6,8 +6,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -38,6 +41,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.platform.R;
 import com.platform.models.content.DownloadContent;
+import com.platform.models.content.DownloadInfo;
 import com.platform.models.content.Url;
 import com.platform.utility.Permissions;
 import com.platform.view.fragments.ContentManagementFragment;
@@ -52,6 +56,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     Handler handler = new Handler();
     View convertView;
     ProgressBar progressBar;
+    private ArrayList<String> urlListl=new ArrayList<>();
+    private String[] urlArray;
+    private int position;
+
     public ExpandableListAdapter(ContentManagementFragment context, List<String> listDataHeader,
                                  HashMap<String, List<DownloadContent>> listChildData, Context _context) {
         this.contentManagementFragment = context;
@@ -77,24 +85,94 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final DownloadContent downloadContent = (DownloadContent) getChild(groupPosition, childPosition);
+        position=childPosition;
+        Log.i("Children ","111"+parent.getChildCount());
+        urlListl=new ArrayList<>();
 
-        if (convertView == null) {
+        final DownloadContent downloadContent = (DownloadContent)getChild(groupPosition, childPosition);
+        final DownloadInfo info= downloadContent.getInfo();
+
+        ViewHolder holder;
+
+        if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) contentManagementFragment.getActivity()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
              convertView = infalInflater.inflate(R.layout.list_item, null);
+             holder=new ViewHolder();
+             holder.info=info;
+             convertView.setTag(holder);
+
+        }else{
+            holder= (ViewHolder)convertView.getTag();
+            holder.info.setProgressBar(null);
+            holder.info = info;
+            holder.info.setProgressBar(holder.progressBar);
         }
 
-        ImageView imgDownload, imgShare;
-        TextView txttitle;
-        ProgressBar progressBar;
 
-        if (convertView != null) {
+        holder.imgDownload = convertView.findViewById(R.id.imgDownload);
+        holder.imgShare = convertView.findViewById(R.id.imgshare);
+        holder.txttitle = convertView.findViewById(R.id.txtName);
+        holder.progressBar = convertView.findViewById(R.id.progress_bar);
+        holder.txttitle.setText(downloadContent.getName());
+
+        holder.progressBar.setProgress(info.getProgress());
+        holder.progressBar.setMax(100);
+        info.setProgressBar(holder.progressBar);
+
+
+        if(isFileAvailable(downloadContent)) {
+            holder.imgDownload.setVisibility(View.GONE);
+            holder.imgShare.setVisibility(View.VISIBLE);
+        }else {
+            holder.imgDownload.setVisibility(View.VISIBLE);
+            holder.imgShare.setVisibility(View.GONE);
+        }
+
+
+
+        holder.imgDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // check file is present in directory or not
+                // opene a language dialog
+                //urls=new String[]
+
+                urlListl.add(downloadContent.getDef());
+                //urlArray= urlListl.toArray(new String[urlListl.size()]);
+                //finalProgressBar.setVisibility(View.VISIBLE);
+                //final DownloadTask downloadTask = new DownloadTask(_context,finalConvertView,urlListl);
+                //urlArray=urlListl.toArray(new String[urlListl.size()]);
+
+                holder.progressBar.setVisibility(View.VISIBLE);
+                contentManagementFragment.beginDownload(downloadContent.getDef());
+
+                DownloadImageTask downloadImageTask=new DownloadImageTask(info);
+                downloadImageTask.execute(downloadContent.getDef());
+
+
+
+            }
+        });
+
+
+
+
+
+        /*ImageView imgDownload, imgShare;
+        TextView txttitle;
+        ProgressBar progressBar = null;*/
+
+
+
+        /*if (convertView != null) {
             imgDownload = convertView.findViewById(R.id.imgDownload);
             imgShare = convertView.findViewById(R.id.imgshare);
             txttitle = convertView.findViewById(R.id.txtName);
             progressBar = convertView.findViewById(R.id.progress_bar);
             txttitle.setText(downloadContent.getName());
+
+
 
 
             if (isFileAvailable(downloadContent)) {
@@ -106,29 +184,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
 
 
+
+
             View finalConvertView = convertView;
+            ProgressBar finalProgressBar = progressBar;
             imgDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // check file is present in directory or not
                     // opene a language dialog
-                    contentManagementFragment.beginDownload(downloadContent.getDef(), progressBar);
+                    //urls=new String[]
 
-                    final DownloadTask downloadTask = new DownloadTask(_context, finalConvertView);
-                    downloadTask.execute();
-                    //downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,downloadContent.getDef());
+                     urlListl.add(downloadContent.getDef());
+                    //urlArray= urlListl.toArray(new String[urlListl.size()]);
+                     //finalProgressBar.setVisibility(View.VISIBLE);
 
+                    //final DownloadTask downloadTask = new DownloadTask(_context,finalConvertView,urlListl);
+                    //urlArray=urlListl.toArray(new String[urlListl.size()]);
 
-                    // file is availble or not
-                   /* if(isFileAvailable(downloadContent))
-                    {
-                     imgDownload.setVisibility(View.GONE);
-                     imgShare.setVisibility(View.VISIBLE);
-                    }*/
+                     contentManagementFragment.beginDownload(downloadContent.getDef());
+                     //DownloadImageTask downloadImageTask=new DownloadImageTask();
+                     //downloadImageTask.execute(downloadContent.getDef());
+
 
 
                 }
             });
+
+
+
 
             imgShare.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -146,27 +230,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     File filePath = new File(storagePath + "/" + fileName);
                     openFile(contentManagementFragment, filePath);
 
-
-                   /* File fil
-
-                   e=new File(uri.getPath());
-                    String fileName=file.getName();
-                    String fileExtension = fileName.substring(fileName.lastIndexOf("."));
-                    String filePath=storagePath+"/"+fileName;
-
-                    File pptFile = new File(filePath);
-                    Uri outputUri = FileProvider.getUriForFile(contentManagementFragment.getActivity(),
-                            contentManagementFragment.getActivity().getPackageName() + ".file_provider", pptFile);
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType(outputUri,fileExtension);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    _context.startActivity(intent);*/
-
                 }
             });
-        }
+        }*/
         return convertView;
     }
 
@@ -321,34 +387,56 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     }
 
-    private class DownloadTask extends AsyncTask<String, Integer, String> {
+    private static class DownloadTask {
+        Context context;
+        View finalConvertView;
+        ArrayList<String>urlList1;
 
-        private Context context;
-        private PowerManager.WakeLock mWakeLock;
-        private View view;
+        public DownloadTask(Context context, View finalConvertView, ArrayList<String> urlListl) {
+        this.context=context;
+        this.finalConvertView=finalConvertView;
+        this.urlList1=urlListl;
+        }
+    }
 
-      /*  public DownloadTask(Context context) {
-            this.context = context;
-        }*/
+    private class DownloadImageTask extends AsyncTask<String, Integer, String> {
+        DownloadInfo info;
 
-        public DownloadTask() {
-            super();
+        public DownloadImageTask(DownloadInfo info) {
+            this.info=info;
         }
 
-        public DownloadTask(Context context, View finalConvertView) {
-            this.context=context;
-            this.view=finalConvertView;
-        }
+        //private final ArrayList<String> urlList;
+        //private Context context;
+        //private PowerManager.WakeLock mWakeLock;
+        //private View view;
+        //public DownloadTask(Context context, View finalConvertView,ArrayList<String>urlList) {
+            //this.context=context;
+            //this.view=finalConvertView;
+            //this.urlList=urlList;
+        //}
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+
+            /*PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire();
             progressBar = view.findViewById(R.id.progress_bar);
             progressBar.setVisibility(View.VISIBLE);
+
+            progressBar = findViewById(R.id.progress_bar);
+            progressBar.setVisibility(View.VISIBLE);
+*/
+            /*Toast.makeText(_context,""+position,Toast.LENGTH_LONG).show();
+            progressBar=contentManagementFragment.getActivity().findViewById(R.id.progress_bar);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setMax(0);
+            progressBar.setProgress(0);*/
+
+            info.getProgressBar().setVisibility(View.VISIBLE);
 
 
 
@@ -357,80 +445,112 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            mWakeLock.release();
-            progressBar.setVisibility(View.INVISIBLE);
+            //mWakeLock.release();
+            //progressBar.setVisibility(View.GONE);
+            //notifyDataSetChanged();
+            info.getProgressBar().setVisibility(View.GONE);
+
 
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            progressBar.setIndeterminate(false);
-            progressBar.setMax(100);
-            progressBar.setProgress(values[0]);
 
+            info.setProgress(values[0]);
+            ProgressBar bar = info.getProgressBar();
+
+            if(bar != null) {
+                bar.setProgress(info.getProgress());
+                bar.invalidate();
+            }
+
+            //info.getProgressBar().setIndeterminate(false);
+            //info.getProgressBar().setProgress(0);
+            //info.getProgressBar().setProgress(values[0]);
+            /*progressBar.setIndeterminate(false);
+            progressBar.setMax(100);
+            progressBar.setProgress(values[0]);*/
+            //Toast.makeText(_context,""+values[0],Toast.LENGTH_LONG).show();
         }
 
         @Override
-        protected String doInBackground(String... sUrl) {
+        protected String doInBackground(String... sUrl)
+        {
             InputStream input = null;
             OutputStream output = null;
             HttpURLConnection connection = null;
-            try {
-                URL url = new URL(sUrl[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
 
-                // expect HTTP 200 OK, so we don't mistakenly save error report
-                // instead of the file
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode()
-                            + " " + connection.getResponseMessage();
-                }
 
-                // this will be useful to display download percentage
-                // might be -1: server did not report the length
-                int fileLength = connection.getContentLength();
 
-                // download the file
-                input = connection.getInputStream();
-                //output = new FileOutputStream("/sdcard/file_name.extension");
+                 try
+                 {
 
-                byte data[] = new byte[4096];
-                long total = 0;
-                int count;
-                while ((count = input.read(data)) != -1) {
-                    // allow canceling with back button
-                    if (isCancelled()) {
-                        input.close();
-                        return null;
-                    }
-                    total += count;
-                    // publishing the progress....
-                    if (fileLength > 0) // only if total length is known
-                        publishProgress((int) (total * 100 / fileLength));
-                    //output.write(data, 0, count);
-                }
-            } catch (Exception e) {
-                return e.toString();
-            } finally {
-                try {
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-                } catch (IOException ignored) {
-                }
+                     URL url = new URL(sUrl[0]);
+                     connection = (HttpURLConnection) url.openConnection();
+                     connection.connect();
 
-                if (connection != null)
-                    connection.disconnect();
-            }
+                     // expect HTTP 200 OK, so we don't mistakenly save error report
+                     // instead of the file
+                     if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                         return "Server returned HTTP " + connection.getResponseCode()
+                                 + " " + connection.getResponseMessage();
+                     }
+
+                     // this will be useful to display download percentage
+                     // might be -1: server did not report the length
+                     int fileLength = connection.getContentLength();
+
+                     // download the file
+                     input = connection.getInputStream();
+                     //output = new FileOutputStream("/sdcard/file_name.extension");
+
+                     byte data[] = new byte[4096];
+                     long total = 0;
+                     int count;
+                     while ((count = input.read(data)) != -1) {
+                         // allow canceling with back button
+                         if (isCancelled()) {
+                             input.close();
+                             return null;
+                         }
+                         total += count;
+                         // publishing the progress....
+                         if (fileLength > 0) // only if total length is known
+                             publishProgress((int) (total * 100 / fileLength));
+                         //output.write(data, 0, count);
+                     }
+                 } catch (Exception e) {
+                     return e.toString();
+                 } finally {
+                     try {
+                         if (output != null)
+                             output.close();
+                         if (input != null)
+                             input.close();
+                     } catch (IOException ignored) {
+                     }
+
+                     if (connection != null)
+                         connection.disconnect();
+                 }
+
+             //}
+
+
             return null;
         }
 
     }
 
 
+    private static class ViewHolder{
+        ImageView imgDownload, imgShare;
+        TextView txttitle;
+        ProgressBar progressBar = null;
+        DownloadInfo info;
+
+    }
 
 }   // open a language dialog box
 
