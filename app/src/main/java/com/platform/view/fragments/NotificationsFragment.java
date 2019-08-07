@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,14 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.database.AppDatabase;
 import com.platform.database.DatabaseManager;
-import com.platform.models.notifications.Notifications;
+import com.platform.models.notifications.NotificationData;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.NotificatioAdapter;
-import com.platform.view.adapters.NotificationsAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,9 +83,9 @@ public class NotificationsFragment extends Fragment {
         Util.updateNotificationsCount(true);
 
 
-        List<Notifications> notificationList=new ArrayList<Notifications>();
-//        List<Notifications> notificationList= DatabaseManager.getDBInstance(Platform.getInstance())
-//                .getNotifications().getAllNotifications();
+//        List<NotificationData> notificationList=new ArrayList<NotificationData>();
+        List<NotificationData> notificationList= DatabaseManager.getDBInstance(Platform.getInstance())
+                .getNotificationDataDeo().getAllNotifications();
 
         if(!(notificationList.size()>0)){
             view.findViewById(R.id.txt_no_data).setVisibility(View.VISIBLE);
@@ -106,12 +102,12 @@ public class NotificationsFragment extends Fragment {
 
         //mark all notification as read onens open this activity
         //mark all notification as read onens open this activity
-//        List<Notifications> unRearNotificationList=DatabaseManager.getDBInstance(Platform.getInstance())
-//                .getNotifications().getUnRearNotifications("Y");
-//        for(Notifications obj:unRearNotificationList){
-//            obj.setIsNew("N");
+//        List<NotificationData> unRearNotificationList=DatabaseManager.getDBInstance(Platform.getInstance())
+//                .getNotificationDataDeo().getUnRearNotifications(true);
+//        for(NotificationData obj:unRearNotificationList){
+//            obj.setUnread(false);
 //            DatabaseManager.getDBInstance(Platform.getInstance())
-//                    .getNotifications().update(obj);
+//                    .getNotificationDataDeo().update(obj);
 //        }
 
     }

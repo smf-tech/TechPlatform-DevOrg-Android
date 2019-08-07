@@ -5,30 +5,29 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
-
-@Entity(tableName = "Notifications")
-public class Notifications {
+@Entity
+public class NotificationData {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private Integer id;
+    @Expose
+    private int id;
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "text")
     private String text;
+    @ColumnInfo(name = "dateTime")
+    private String dateTime;
     @ColumnInfo(name = "toOpen")
     private String toOpen;
-    @ColumnInfo(name = "isNew")
-    private String isNew;
-//    @ColumnInfo(name = "dateTime")
-//    private String dateTime;
+    @ColumnInfo(name = "unread")
+    private Boolean unread;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -48,6 +47,14 @@ public class Notifications {
         this.text = text;
     }
 
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public String getToOpen() {
         return toOpen;
     }
@@ -56,19 +63,11 @@ public class Notifications {
         this.toOpen = toOpen;
     }
 
-    public String getIsNew() {
-        return isNew;
+    public Boolean getUnread() {
+        return unread;
     }
 
-    public void setIsNew(String isNew) {
-        this.isNew = isNew;
+    public void setUnread(Boolean unread) {
+        this.unread = unread;
     }
-
-//    public String getDateTime() {
-//        return dateTime;
-//    }
-//
-//    public void setDateTime(String dateTime) {
-//        this.dateTime = dateTime;
-//    }
 }

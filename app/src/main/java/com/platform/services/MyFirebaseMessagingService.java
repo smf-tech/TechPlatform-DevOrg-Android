@@ -11,16 +11,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.platform.Platform;
 import com.platform.R;
-import com.platform.database.AppDatabase;
 import com.platform.database.DatabaseManager;
-import com.platform.models.notifications.Notifications;
+import com.platform.models.notifications.NotificationData;
 import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
@@ -61,13 +59,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void saveLocaly(RemoteMessage remoteMessage){
         Date crDate = Calendar.getInstance().getTime();
         String strDate = Util.getDateFromTimestamp(crDate.getTime(), Constants.DATE_TIME_FORMAT_);
-        Notifications data = new Notifications();
-//        data.setDateTime(strDate);
+        NotificationData data = new NotificationData();
+        data.setDateTime(strDate);
         data.setTitle(remoteMessage.getNotification().getTitle());
         data.setText(remoteMessage.getNotification().getBody());
         data.setToOpen(remoteMessage.getData().get("toOpen"));
-        data.setIsNew("Y");
-//        DatabaseManager.getDBInstance(Platform.getInstance()).getNotifications().insert(data);
+        data.setUnread(true);
+        DatabaseManager.getDBInstance(Platform.getInstance()).getNotificationDataDeo().insert(data);
 
         Util.updateNotificationsCount(false);
 

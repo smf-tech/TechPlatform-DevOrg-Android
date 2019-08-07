@@ -1,11 +1,9 @@
 package com.platform.view.adapters;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
-import com.platform.models.notifications.Notifications;
+import com.platform.models.notifications.NotificationData;
 import com.platform.view.fragments.NotificationsFragment;
 
 import java.util.List;
@@ -23,9 +21,9 @@ import java.util.List;
 public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.MyViewHolder> {
 
     private NotificationsFragment context;
-    private List<Notifications> notificationList;
+    private List<NotificationData> notificationList;
 
-    public NotificatioAdapter(NotificationsFragment notificationsFragment, List<Notifications> notificationList) {
+    public NotificatioAdapter(NotificationsFragment notificationsFragment, List<NotificationData> notificationList) {
         this.notificationList = notificationList;
         this.context = notificationsFragment;
     }
@@ -76,8 +74,8 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    DatabaseManager.getDBInstance(Platform.getInstance())
-//                            .getNotifications().deleteNotification(notificationList.get(getAdapterPosition()).getId());
+                    DatabaseManager.getDBInstance(Platform.getInstance())
+                            .getNotificationDataDeo().deleteNotification(notificationList.get(getAdapterPosition()).getId());
 //                    DatabaseManager.getDBInstance(Platform.getInstance())
 //                            .getNotifications().deleteAllNotifications();
                     notificationList.remove(getAdapterPosition());
