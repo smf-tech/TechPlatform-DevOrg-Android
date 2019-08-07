@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/tv_lab_total_hours"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_marginTop="@dimen/dimen_40dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_toStartOf="@id/tv_total_hours"
+        android:layout_alignParentLeft="true"
         android:text="@string/total_hours"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -28,13 +28,15 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_40dp"
-        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_marginEnd="161dp"
         android:text="00:00"
         android:textColor="@color/black"
-        android:textStyle="bold"
-
         android:textSize="@dimen/text_size_14"
+        android:textStyle="bold"
         tools:ignore="HardcodedText" />
+
+
+
 
     <LinearLayout
         android:id="@+id/ly_check_in_out_dashboard"
@@ -60,7 +62,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-                android:layout_toStartOf="@+id/bt_checkout"
+
                 android:background="@drawable/bg_button"
                 android:text="@string/check_in"
                 android:textAllCaps="false"
@@ -83,12 +85,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_check_in_time"
+
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="24dp"
                 android:gravity="left"
                 android:text="@string/attendance_details"
                 android:textColor="@color/tab_selector"
-                android:visibility="gone"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
