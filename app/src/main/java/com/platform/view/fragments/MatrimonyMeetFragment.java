@@ -46,10 +46,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         Bundle arguments = getArguments();
         if (arguments != null) {
             MatrimonyMeet meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
-        }
-        if (getActivity() != null && getArguments() != null) {
-            String title = (String) getArguments().getSerializable("TITLE");
-            ((HomeActivity) getActivity()).setActionBarTitle(title);
+            setMeetData(meetData);
         }
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +59,11 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             }
         });
     }
+
+    private void setMeetData(MatrimonyMeet meetData) {
+
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {

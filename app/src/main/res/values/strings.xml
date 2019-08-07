@@ -426,6 +426,13 @@
     <string name="view_profiles_btn_label">View Profiles</string>
     <string name="register_profile_btn_label">Register Profile</string>
     <string name="create_meet">Create Meet</string>
+    <string name="meet_paid">Paid</string>
+    <string name="meet_free">Free</string>
+    <string name="meet_registration_label">Registration</string>
+    <string name="meet_registration_amount_label">Registration Amount</string>
+    <string name="online_payment_label">Online Payment</string>
+    <string name="meet_next_label">Next</string>
+    <string name="organizer_label">Organizer</string>
 
 
 </resources>

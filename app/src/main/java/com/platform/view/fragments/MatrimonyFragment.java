@@ -80,8 +80,9 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         btnCreateMeet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent compoffIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
-                startActivity(compoffIntent);
+                Intent createMatrimonyIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
+                createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetFirstFragment");
+                startActivity(createMatrimonyIntent);
             }
         });
     }
