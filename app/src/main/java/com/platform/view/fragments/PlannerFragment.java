@@ -256,7 +256,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         checkTodayMarkInOrNot();
 
         // comment by deepak on 1-07-2019
-        plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+
 
         RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
@@ -356,8 +356,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     getUserCheckOutTimeFromServer(todayCheckOutTime);
 
 
-                    if(availableOnServer!=null&&
-                            !availableOnServer.isEmpty())
+                    if(availableOnServer!=null&&!availableOnServer.isEmpty())
                     {
                         //preferenceHelper.insertString(Constants.KEY_ATTENDANCDE,availableOnServer);
                         Log.i("AttendanceId", "111" + availableOnServer);
@@ -379,7 +378,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     } else {
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                     }
-
                     break;
                 case Constants.Planner.TASKS_KEY:
                     if (obj.getTaskData() != null && obj.getTaskData().size() > 0) {
@@ -479,15 +477,13 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
                     if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
-                        Toast.makeText(getActivity(), "Already check in", Toast.LENGTH_LONG).show();
+                        Util.showToast("User already checked in",getActivity());
                         //statTimer();
                         //startTimerService();
                         //Util.showDelayInCheckInDialog(getActivity(),getResources().getString(R.string.check_in_msg),getResources().getString(R.string.delayin_checkin_title),true);
 
                     } else if(availableOnServer!=null&&!availableOnServer.isEmpty()){
-                        Toast.makeText(getActivity(), "Already check in", Toast.LENGTH_LONG).show();
-                        enableCheckOut();
-
+                        Util.showToast("User already checked in",getActivity());
                     }else {
                         markCheckIn();
                     }
@@ -504,8 +500,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
                     if(getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty())
                     {
-                        Util.showToast("User already check out",getActivity());
-                    }else {
+                        Util.showToast("User already checked out",getActivity());
+                    } else {
                         markOut();
                     }
 
@@ -530,7 +526,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 }
             });
 
-
         }
 
         private void markOut () {
@@ -544,6 +539,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 getCompleteAddressString(Double.parseDouble(strLat), Double.parseDouble(strLong));
                 millis = getLongFromDate();
                 Log.i("LogOutTime","111"+millis);
+
                 if (!Util.isConnected(getActivity())) {
 
                     // offline storage
@@ -615,8 +611,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     }
                     Log.i("TotalHrs","111"+diffInCheckInandCheckout);
 
+
                     SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                    submitAttendanceFragmentPresenter.markOutAttendance(attendaceId, CHECK_OUT, millis, strLat, strLong,diffInCheckInandCheckout);
+                    submitAttendanceFragmentPresenter.markOutAttendance(availableOnServer,CHECK_OUT, millis, strLat, strLong,diffInCheckInandCheckout);
 
 
                 }
@@ -966,6 +963,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty()) {
                 Toast.makeText(getActivity(), "User Already Check Out", Toast.LENGTH_LONG).show();
             } else {
+
+
                 AttendaceCheckOut attendaceData = new AttendaceCheckOut();
                 attendaceData.setUid(attendaceId);
                 Double lat = Double.parseDouble(strLat);
@@ -1147,7 +1146,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         super.onResume();
         setButtonText();
 
-        plannerFragmentPresenter.getPlannerData();
+
+        //plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+        //plannerFragmentPresenter.getPlannerData();
 
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
@@ -1156,10 +1157,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckIn.setText(checkInText+ getUserType.get(0).getTime());
-
-
-
             // set total hours
+            enableCheckOut();
         }
 
 

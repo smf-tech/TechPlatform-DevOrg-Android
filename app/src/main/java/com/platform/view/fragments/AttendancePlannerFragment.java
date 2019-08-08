@@ -583,9 +583,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                 getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
                 if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
-                    Toast.makeText(getActivity(), "User Already check in ", Toast.LENGTH_LONG).show();
+                    Util.showToast("User already checked in",getActivity());
                 }else if(userAvailable!=null&&!userAvailable.isEmpty()){
-                    Toast.makeText(getActivity(), "User Already check in ", Toast.LENGTH_LONG).show();
+                    Util.showToast("User already checked in",getActivity());
                     //enableCheckOut();
                     //markIn();
                 }else {
