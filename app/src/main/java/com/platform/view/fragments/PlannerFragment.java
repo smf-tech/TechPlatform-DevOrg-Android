@@ -1162,6 +1162,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckIn.setText(checkInText+ getUserType.get(0).getTime());
+            enableCheckOut();
 
             //set background
            /* btCheckout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -1236,10 +1237,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     {
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
-
+            setButtonText();
             btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
-            setButtonText();
+
         }else {
 
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
@@ -1258,6 +1259,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             //tvCheckOutTime.setText(checkInTime);
             //tvCheckOutTime.setVisibility(View.VISIBLE);
             //txt_total_hours.setText(getCheckOut.get(0).getTotalHrs());
+        }else {
+
         }
 
     }

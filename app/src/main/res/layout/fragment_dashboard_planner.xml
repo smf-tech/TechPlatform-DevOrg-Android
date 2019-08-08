@@ -239,13 +239,15 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:layout_weight="8">
+                                    android:layout_weight="7.5">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
                                         android:layout_marginLeft="5dp"
-                                        android:weightSum="2">
+                                        >
 
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/bt_check_in"
@@ -253,10 +255,12 @@
                                             style="@style/AppStyleButton"
                                             android:layout_height="@dimen/dimen_50dp"
                                             android:layout_marginLeft="5dp"
-                                            android:layout_weight="0.90"
+                                            android:layout_weight="1"
                                             app:backgroundTint="@color/colorPrimary"
                                             android:baselineAligned="false"
                                             android:text="@string/check_in"
+                                            android:gravity="center"
+                                            android:layout_gravity="center"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
@@ -269,9 +273,11 @@
                                             style="@style/AppStyleButton"
                                             android:layout_height="@dimen/dimen_50dp"
                                             android:layout_marginLeft="5dp"
-                                            android:layout_weight="0.90"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
                                             app:backgroundTint="@color/button_gray_color"
                                             android:text="@string/check_out"
+                                            android:layout_gravity="center"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
