@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/dimen_15dp"
     android:background="@color/white"
     android:elevation="@dimen/dimen_03dp">
@@ -57,16 +58,17 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_check_in"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_50dp"
+                style="@style/AppStyleButton"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="15dp"
-
-                android:background="@drawable/bg_button"
+                app:backgroundTint="@color/colorPrimary"
                 android:text="@string/check_in"
                 android:textAllCaps="false"
                 android:textColor="@drawable/text_color_on_selection"
                 android:textSize="@dimen/text_size_10"
+                tools:ignore="ButtonStyle"
                 android:textStyle="bold" />
 
             <TextView
@@ -103,15 +105,18 @@
             android:layout_marginStart="@dimen/dimen_15dp"
             android:layout_weight="1">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/bt_checkout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_40dp"
-                android:background="@drawable/bg_button"
+                style="@style/AppStyleButton"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_marginLeft="5dp"
+                app:backgroundTint="@color/button_gray_color"
                 android:text="@string/check_out"
                 android:textAllCaps="false"
                 android:textColor="@drawable/text_color_on_selection"
                 android:textSize="@dimen/text_size_10"
+                tools:ignore="ButtonStyle"
                 android:textStyle="bold" />
 
             <TextView
@@ -122,7 +127,6 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:gravity="center_horizontal"
                 android:textSize="@dimen/text_size_12"
-                android:fontFamily="@font/opensans"
                 android:textStyle="bold"
                 android:visibility="gone" />
         </RelativeLayout>

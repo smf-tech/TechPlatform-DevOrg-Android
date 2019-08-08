@@ -16,10 +16,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -290,6 +292,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             android.view.View.OnClickListener {
         private int mYear, mMonth, mDay, mHour, mMinute;
         public Activity activity;
+        public LinearLayout linear_dynamic_filterheight;
         public TextView toolbarTitle;
         public ImageView img_close;
         public String bottomSheetTitle;
@@ -316,7 +319,15 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetView.getParent());
             //bottomSheetBehavior.setPeekHeight(500);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            linear_dynamic_filterheight = findViewById(R.id.linear_dynamic_filterheight);
+            if (subFiltersets!=null) {
+                if (subFiltersets.size()>0) {
+                    float pixels =  1 * activity.getResources().getDisplayMetrics().density;
 
+                    CoordinatorLayout.LayoutParams param = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(500 * pixels));
+                    linear_dynamic_filterheight.setLayoutParams(param);
+                }
+            }
             tv_startdate = findViewById(R.id.tv_startdate);
             tv_enddate= findViewById(R.id.tv_enddate);
             rv_filterchoice = findViewById(R.id.rv_filterchoice);
