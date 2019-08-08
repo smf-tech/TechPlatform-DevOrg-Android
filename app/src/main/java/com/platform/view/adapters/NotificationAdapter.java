@@ -18,19 +18,19 @@ import com.platform.view.fragments.NotificationsFragment;
 
 import java.util.List;
 
-public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.MyViewHolder> {
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
 
     private NotificationsFragment context;
     private List<NotificationData> notificationList;
 
-    public NotificatioAdapter(NotificationsFragment notificationsFragment, List<NotificationData> notificationList) {
+    public NotificationAdapter(NotificationsFragment notificationsFragment, List<NotificationData> notificationList) {
         this.notificationList = notificationList;
         this.context = notificationsFragment;
     }
 
     @NonNull
     @Override
-    public NotificatioAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NotificationAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_notification, parent, false);
 
@@ -38,9 +38,12 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificatioAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotificationAdapter.MyViewHolder holder, int position) {
         holder.tvTitle.setText(notificationList.get(position).getTitle());
         holder.tvDetel.setText(notificationList.get(position).getText());
+        if(notificationList.get(position).getUnread()){
+            holder.imgDelete.setBackground(context.getResources().getDrawable(R.drawable.circle_background));
+        }
     }
 
     @Override

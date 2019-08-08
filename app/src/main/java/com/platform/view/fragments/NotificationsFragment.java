@@ -22,9 +22,8 @@ import com.platform.models.notifications.NotificationData;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
-import com.platform.view.adapters.NotificatioAdapter;
+import com.platform.view.adapters.NotificationAdapter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,20 +94,20 @@ public class NotificationsFragment extends Fragment {
 
         rvNotification = view.findViewById(R.id.notifications_list);
 
-        NotificatioAdapter adapter = new NotificatioAdapter(this, notificationList);
+        NotificationAdapter adapter = new NotificationAdapter(this, notificationList);
         rvNotification.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNotification.setItemAnimator(new DefaultItemAnimator());
         rvNotification.setAdapter(adapter);
 
         //mark all notification as read onens open this activity
         //mark all notification as read onens open this activity
-//        List<NotificationData> unRearNotificationList=DatabaseManager.getDBInstance(Platform.getInstance())
-//                .getNotificationDataDeo().getUnRearNotifications(true);
-//        for(NotificationData obj:unRearNotificationList){
-//            obj.setUnread(false);
-//            DatabaseManager.getDBInstance(Platform.getInstance())
-//                    .getNotificationDataDeo().update(obj);
-//        }
+        List<NotificationData> unRearNotificationList=DatabaseManager.getDBInstance(Platform.getInstance())
+                .getNotificationDataDeo().getUnRearNotifications(true);
+        for(NotificationData obj:unRearNotificationList){
+            obj.setUnread(false);
+            DatabaseManager.getDBInstance(Platform.getInstance())
+                    .getNotificationDataDeo().update(obj);
+        }
 
     }
 

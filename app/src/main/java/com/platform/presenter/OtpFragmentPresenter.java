@@ -61,7 +61,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         }
 
         Login login = new Gson().fromJson(response, Login.class);
-        if(login.getStatus().equalsIgnoreCase("failed")){
+        if (login.getStatus().equalsIgnoreCase("failed")) {
             onFailureListener(login.getMessage());
         } else {
             if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
@@ -104,10 +104,9 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         otpFragment.get().hideProgressBar();
         otpFragment.get().deRegisterOtpSmsReceiver();
 
-        try {
-            LoginFail loginFail = new Gson().fromJson(response, LoginFail.class);
-            otpFragment.get().showErrorMessage(loginFail.getMessage());
-        } catch (Exception e) {
+        if (response != null && response.length() > 0) {
+            otpFragment.get().showErrorMessage(response);
+        } else {
             otpFragment.get().showErrorMessage(Platform.getInstance().getString(R.string.msg_failure));
         }
     }

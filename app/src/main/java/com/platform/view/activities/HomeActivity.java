@@ -76,7 +76,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         setContentView(R.layout.activity_home);
         initMenuView();
 
-        /*FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -87,7 +87,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                         String token = task.getResult().getToken();
                         Toast.makeText(HomeActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
 
     }
 

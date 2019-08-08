@@ -30,12 +30,11 @@
 
             <ImageView
                 android:id="@+id/row_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_delete"
-                android:padding="@dimen/dimen_08dp"
-                android:paddingEnd="@dimen/dimen_10dp"/>
+                android:src="@drawable/crop__ic_cancel"
+                android:layout_marginEnd="@dimen/dimen_05dp"/>
             <TextView
                 android:id="@+id/tv_Detels"
                 android:layout_width="match_parent"
