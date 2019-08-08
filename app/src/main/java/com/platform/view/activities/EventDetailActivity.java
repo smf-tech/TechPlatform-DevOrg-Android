@@ -66,7 +66,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     EventDetailPresenter presenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    private boolean flagEditMember;
+    private boolean flagEdit;
     private boolean flagUpdateMember;
 
     @Override
@@ -80,7 +80,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void initView() {
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         eventTask = (EventTask) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
-        flagEditMember=false;
+        flagEdit=false;
         flagUpdateMember=false;
 
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
@@ -176,18 +176,19 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         if(endDate.getYear() >= currentDate.getYear()){
             if(endDate.getMonth() >= currentDate.getMonth()){
                 if(endDate.getDate() >= currentDate.getDate()){
-                    flagEditMember=true;
+                    flagEdit=true;
                 }
             }
         }
 
         if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
             //owner
-            if(starDate.getTime() > currentDate.getTime()) {
+//            if(starDate.getTime() > currentDate.getTime()) {
+            if(flagEdit) {
                 editButton.setVisibility(View.VISIBLE);
                 toolbarAction.setVisibility(View.VISIBLE);
             }
-            if(flagEditMember){
+            if(flagEdit){
                 flagUpdateMember=true;
             }
         } else {
@@ -214,7 +215,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
                 lyMembarlistCode.setVisibility(View.VISIBLE);
                 if (eventTask.isMarkAttendanceRequired()) {
-                    if(flagEditMember) {
+                    if(flagEdit) {
                         btGetCode.setVisibility(View.VISIBLE);
                     }else{
                         btGetCode.setVisibility(View.GONE);
@@ -225,7 +226,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             } else {
                 if (eventTask.isMarkAttendanceRequired()) {
                     btSetCode.setVisibility(View.VISIBLE);
-                    if(flagEditMember) {
+                    if(flagEdit) {
                         btSetCode.setVisibility(View.VISIBLE);
                     }else{
                         btSetCode.setVisibility(View.GONE);
