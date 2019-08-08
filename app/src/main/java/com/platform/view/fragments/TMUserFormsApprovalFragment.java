@@ -134,6 +134,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
             tmApprovalRequestModel.setLeave_type("");
             tmApprovalRequestModel.setStartdate("");
             tmApprovalRequestModel.setEnddate("");
+            tmApprovalRequestModel.setUserId(requetsObject.getString("user_id"));
             tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).get_id().get$oid());
         } catch (Exception e) {
             e.printStackTrace();

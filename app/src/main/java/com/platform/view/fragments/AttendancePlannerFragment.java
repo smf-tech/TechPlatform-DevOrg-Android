@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -350,7 +351,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     if(!attendanceDateList.getCheckInTime().isEmpty()){
 
                         btCheckIn.setText(checkInText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm"));
-                        btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
 
                         btCheckIn.setEnabled(false);
@@ -361,7 +362,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                     if(!attendanceDateList.getCheckOutTime().isEmpty()){
                         btCheckout.setText(checkOutText+ Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()),"HH:mm"));
-                        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckout.setEnabled(false);
 
@@ -579,9 +580,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                 getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
                 if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
-                    Toast.makeText(getActivity(), "User Already check in ", Toast.LENGTH_LONG).show();
+                    Util.showToast("User already checked in",getActivity());
                 }else if(userAvailable!=null&&!userAvailable.isEmpty()){
-                    Toast.makeText(getActivity(), "User Already check in ", Toast.LENGTH_LONG).show();
+                    Util.showToast("User already checked in",getActivity());
                     //enableCheckOut();
                     //markIn();
                 }else {
@@ -687,8 +688,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         userAttendanceDao.insert(attendaceData);
 
                         //tvCheckInTime.setText(time);
-                        btCheckIn.setBackground(Objects.requireNonNull(getActivity())
-                                .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
 
@@ -771,8 +771,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                     userCheckOutDao.insert(attendaceData);
 
-                    btCheckout.setBackground(Objects.requireNonNull(getActivity())
-                            .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                    btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                     btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
                     checkOutText=checkOutText+ chkOutTime;
@@ -1045,8 +1044,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     userAttendanceDao.insert(attendaceData);
                     Log.i("Online","111"+attendaceData);
 
-                    btCheckIn.setBackground(Objects.requireNonNull(getActivity())
-                            .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                    btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                     btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
                     preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
@@ -1096,8 +1094,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             attendaceData.setMobileNumber(Util.getUserMobileFromPref());
             userCheckOutDao.insert(attendaceData);
 
-            btCheckout.setBackground(Objects.requireNonNull(getActivity())
-                    .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
             checkOutText=checkOutText+ chkOutTime;
@@ -1130,7 +1127,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     public void enableCheckOut()
     {
-        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_button));
+        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
         btCheckout.setTextColor(getResources().getColor(R.color.white));
         btCheckout.setEnabled(true);
     }
@@ -1243,15 +1240,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
 
-            btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckIn.setText(checkInText+ getUserType.get(0).getTime());
             //setButtonText();
+            enableCheckOut();
 
         }
         else {
             // gray check out button
-            btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckout.setEnabled(false);
 
@@ -1259,7 +1257,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
 
-            btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckout.setText(checkOutText+ getUserCheckOutType.get(0).getTime());
             //setButtonText();
@@ -1335,12 +1333,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         return totalHrs + " :" + totalMin;
     }
     public void makeCheckInButtonGray(){
-        btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
     }
 
     public void makeCheckOutButtonGray(){
-        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
     }
 
