@@ -19,7 +19,7 @@
             android:id="@+id/img_steps_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_meet_create_first_step"/>
+            android:src="@drawable/ic_meet_create_second_step"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -92,10 +92,10 @@
                 android:layout_margin="@dimen/dimen_10dp"></androidx.recyclerview.widget.RecyclerView>
 
             <Button
-                android:id="@+id/btn_first_part_meet"
+                android:id="@+id/btn_second_part_meet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/meet_next_label"
+                android:text="@string/meet_save"
                 android:layout_below="@+id/card_create_meet"
                 android:layout_marginTop="@dimen/dimen_30dp"
                 android:layout_marginStart="@dimen/dimen_10dp"

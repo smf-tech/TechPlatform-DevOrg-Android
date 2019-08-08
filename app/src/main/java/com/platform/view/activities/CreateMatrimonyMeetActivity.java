@@ -16,6 +16,7 @@ import com.platform.R;
 import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.view.fragments.CreateMeetFirstFragment;
 import com.platform.view.fragments.CreateMeetSecondFragment;
+import com.platform.view.fragments.CreateMeetThirdFragment;
 
 public class CreateMatrimonyMeetActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBackIcon;
@@ -31,45 +32,45 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
     }
 
     private void init(){
-        String switchToFragment = getIntent().getStringExtra("SwitchToFragment");
         ivBackIcon = findViewById(R.id.toolbar_back_action);
+        ivBackIcon.setOnClickListener(this);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(R.string.create_meet);
 
+        if(getIntent().getStringExtra("SwitchToFragment")!=null){
+            if(getIntent().getStringExtra("SwitchToFragment").equals("CreateMeetFirstFragment")){
+                matrimonyMeet = new MatrimonyMeet();
+                fManager = getSupportFragmentManager();
+                fragment = new CreateMeetFirstFragment();
+                FragmentTransaction fTransaction = fManager.beginTransaction();
+                fTransaction.replace(R.id.create_meet_frame_layout, fragment).addToBackStack(null)
+                        .commit();
+            }
+        }
+    }
+
+    public void openFragment(String switchToFragment) {
         fManager = getSupportFragmentManager();
 
         if (!TextUtils.isEmpty(switchToFragment)) {
-
             switch (switchToFragment) {
-                case "CreateMeetFirstFragment":
-                    matrimonyMeet = new MatrimonyMeet();
-                    fragment = new CreateMeetFirstFragment();
-                    openFragment();
-                    break;
+//                case "CreateMeetFirstFragment":
+//                    matrimonyMeet = new MatrimonyMeet();
+//                    fragment = new CreateMeetFirstFragment();
+//                    //openFragment();
+//                    break;
 
                 case "CreateMeetSecondFragment":
                     fragment = new CreateMeetSecondFragment();
-                    openFragment();
+                    //openFragment();
                     break;
 
                 case "CreateMeetThirdFragment":
-                    fragment = new CreateMeetSecondFragment();
-                    openFragment();
+                    fragment = new CreateMeetThirdFragment();
+                    //openFragment();
                     break;
             }
         }
-
-//        Intent matrimonyFragmentsActionsIntent = new Intent(this, MeetFragmentsActionsActivity.class);
-//        startActivity(matrimonyFragmentsActionsIntent);
-        //fManager = getSupportFragmentManager();
-        //fragment = new CreateMeetFirstFragment();
-        // Begin transaction.
-//        FragmentTransaction fTransaction = fManager.beginTransaction();
-//        fTransaction.replace(R.id.create_meet_frame_layout, fragment).addToBackStack(null)
-//                .commit();
-    }
-
-    private void openFragment() {
         // Begin transaction.
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.create_meet_frame_layout, fragment).addToBackStack(null)

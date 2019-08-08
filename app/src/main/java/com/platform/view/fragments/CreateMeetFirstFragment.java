@@ -6,8 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,16 +48,17 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     }
 
     private void setMeetData() {
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetDateTime("");
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetDateTime("10/8/2019");
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_first_part_meet:
-                Intent createMatrimonyIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
-                createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetSecondFragment");
-                startActivity(createMatrimonyIntent);
+//                Intent createMatrimonyIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
+//                createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetSecondFragment");
+//                startActivity(createMatrimonyIntent);
+                ((CreateMatrimonyMeetActivity) getActivity()).openFragment("CreateMeetSecondFragment");
                 break;
         }
     }
