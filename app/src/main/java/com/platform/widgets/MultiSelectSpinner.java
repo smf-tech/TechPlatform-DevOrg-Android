@@ -2,9 +2,12 @@ package com.platform.widgets;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -114,12 +117,27 @@ public class MultiSelectSpinner extends androidx.appcompat.widget.AppCompatSpinn
 
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle(spinnerName);
+
+            TextView tvTitle = new TextView(getContext());
+            tvTitle.setText(spinnerName);
+            tvTitle.setBackgroundResource(R.color.colorPrimaryDark);
+            tvTitle.setTextColor(getResources().getColor(R.color.white));
+            tvTitle.setGravity(Gravity.CENTER);
+            tvTitle.setHeight(150);
+            tvTitle.setTextSize(16);
+//            Typeface face = Typeface.createFromAsset(getContext().getAssets(),
+//                    "fonts/opensans_bold.ttf");
+//            tvTitle.setTypeface(face);
+            tvTitle.setTypeface(tvTitle.getTypeface(), Typeface.BOLD);
+
+            builder.setCustomTitle(tvTitle);
+//            builder.setTitle(spinnerName);
             builder.setMultiChoiceItems(
                     stringList.toArray(new CharSequence[stringList.size()]), selectedValues, this);
             builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
             builder.setOnCancelListener(this);
             builder.setCancelable(false);
+            builder.getContext().getTheme().applyStyle(R.style.textinputstyle,true);
             builder.show();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
