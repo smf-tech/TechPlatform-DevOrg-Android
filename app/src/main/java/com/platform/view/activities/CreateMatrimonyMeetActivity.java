@@ -54,26 +54,18 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
 
         if (!TextUtils.isEmpty(switchToFragment)) {
             switch (switchToFragment) {
-//                case "CreateMeetFirstFragment":
-//                    matrimonyMeet = new MatrimonyMeet();
-//                    fragment = new CreateMeetFirstFragment();
-//                    //openFragment();
-//                    break;
-
                 case "CreateMeetSecondFragment":
                     fragment = new CreateMeetSecondFragment();
-                    //openFragment();
                     break;
 
                 case "CreateMeetThirdFragment":
                     fragment = new CreateMeetThirdFragment();
-                    //openFragment();
                     break;
             }
         }
         // Begin transaction.
         FragmentTransaction fTransaction = fManager.beginTransaction();
-        fTransaction.replace(R.id.create_meet_frame_layout, fragment).addToBackStack(null)
+        fTransaction.replace(R.id.create_meet_frame_layout, fragment)
                 .commit();
     }
 

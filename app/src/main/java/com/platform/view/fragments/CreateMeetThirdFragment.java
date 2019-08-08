@@ -44,7 +44,6 @@ public class CreateMeetThirdFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        Intent createMatrimonyIntent = new Intent(getActivity(), MatrimonyMeetFragment.class);
-        startActivity(createMatrimonyIntent);
+        getActivity().finish();
     }
 }

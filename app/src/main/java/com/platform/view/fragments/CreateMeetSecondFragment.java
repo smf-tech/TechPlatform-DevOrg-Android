@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.platform.R;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 
-public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener {
+public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
     private Button btnSecondPartMeet;
     @Override
@@ -50,11 +51,28 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_second_part_meet:
-//                Intent createMatrimonyIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
-//                createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetThirdFragment");
-//                startActivity(createMatrimonyIntent);
                 ((CreateMatrimonyMeetActivity) getActivity()).openFragment("CreateMeetThirdFragment");
                 break;
         }
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public <T> void showNextScreen(T data) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String result) {
+
     }
 }

@@ -238,6 +238,7 @@
                 android:layout_marginTop="@dimen/dimen_30dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
                 android:background="@drawable/bg_button"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

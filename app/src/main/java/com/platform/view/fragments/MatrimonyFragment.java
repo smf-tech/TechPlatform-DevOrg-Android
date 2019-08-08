@@ -21,6 +21,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
@@ -31,6 +32,8 @@ import java.util.List;
 public class MatrimonyFragment extends Fragment implements PlatformTaskListener {
     private View matrimonyFragmentView;
     private FloatingActionButton btnCreateMeet;
+    List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
+    ViewPagerAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,8 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         // sets a margin b/w individual pages to ensure that there is a gap b/w them
         meetViewPager.setPageMargin(30);
         setupViewPager(meetViewPager);
-
+        //PopulateData method called temporary
+        PopulateData();
         btnCreateMeet = matrimonyFragmentView.findViewById(R.id.btn_create_meet);
         btnCreateMeet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,9 +91,30 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.isConnected(getContext())) {
+            //api call
+        } else {
+
+        }
+    }
+
     private void setupViewPager(ViewPager meetViewPager) {
 
-        List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
+        for (int i = 0; i < matrimonyMeetList.size(); i++) {
+            MatrimonyMeetFragment matrimonyMeetFragment = new MatrimonyMeetFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.Home.MATRIMONY, matrimonyMeetList.get(i));
+            matrimonyMeetFragment.setArguments(bundle);
+            adapter.addFragment(matrimonyMeetFragment, getString(R.string.matrimony));
+        }
+        meetViewPager.setAdapter(adapter);
+    }
+
+    private void PopulateData(){
         MatrimonyMeet m1 = new MatrimonyMeet();
         m1.setMeetTitle("First Meet");
         m1.setMeetDateTime("1 August 2019");
@@ -99,19 +124,11 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         MatrimonyMeet m3 = new MatrimonyMeet();
         m3.setMeetTitle("Third Meet");
         m3.setMeetDateTime("20 August 2019");
+        matrimonyMeetList.clear();
         matrimonyMeetList.add(m1);
         matrimonyMeetList.add(m2);
         matrimonyMeetList.add(m3);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        for (int i = 0; i < matrimonyMeetList.size(); i++) {
-            MatrimonyMeetFragment matrimonyMeetFragment = new MatrimonyMeetFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.Home.MATRIMONY, matrimonyMeetList.get(i));
-            matrimonyMeetFragment.setArguments(bundle);
-            adapter.addFragment(matrimonyMeetFragment, getString(R.string.matrimony));
-        }
-        meetViewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -126,7 +143,7 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
 
     @Override
     public <T> void showNextScreen(T data) {
-
+        PopulateData();
     }
 
     @Override

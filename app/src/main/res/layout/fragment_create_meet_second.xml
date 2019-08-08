@@ -19,6 +19,7 @@
             android:id="@+id/img_steps_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dp"
             android:src="@drawable/ic_meet_create_second_step"/>
 
             <androidx.cardview.widget.CardView
@@ -100,6 +101,7 @@
                 android:layout_marginTop="@dimen/dimen_30dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
                 android:background="@drawable/bg_button"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

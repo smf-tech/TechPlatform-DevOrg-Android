@@ -14,11 +14,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.platform.R;
+import com.platform.listeners.PlatformTaskListener;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 
-public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener {
+public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
     private Spinner meetTypeSpinner,stateSpinner,citySpinner;
+
     private Button btnFirstPartMeet;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_first_part_meet:
-//                Intent createMatrimonyIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
-//                createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetSecondFragment");
-//                startActivity(createMatrimonyIntent);
                 ((CreateMatrimonyMeetActivity) getActivity()).openFragment("CreateMeetSecondFragment");
                 break;
         }
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public <T> void showNextScreen(T data) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String result) {
+
     }
 }
