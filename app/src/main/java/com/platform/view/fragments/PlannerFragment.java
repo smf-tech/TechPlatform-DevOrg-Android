@@ -376,6 +376,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
                 case Constants.Planner.LEAVES_KEY:
                     if(obj.getLeave()!=null && obj.getLeave().size()>0){
+
                         leaveBalance.clear();
                         leaveBalance.addAll(obj.getLeave());
                         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
