@@ -736,10 +736,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             if (gpsTracker.isGPSEnabled(getActivity(), this)) {
 
                 getLocation();
-                getCompleteAddressString(Double.parseDouble(strLat), Double.parseDouble(strLong));
+                //getCompleteAddressString(Double.parseDouble(strLat), Double.parseDouble(strLong));
                 //millis=Util.getDateInLong()
                 millis = getLongFromDate();
-                Log.i("Epoch","333"+millis);
                 if (!Util.isConnected(getActivity())) {
 
                     getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
@@ -821,13 +820,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     }
 
     public void getLocation () {
-            Location location = gpsTracker.getLocation();
 
+            Location location = gpsTracker.getLocation();
             if (location != null) {
                 strLat = String.valueOf(location.getLatitude());
                 strLong = String.valueOf(location.getLongitude());
             } else {
-                strLat = gpsTracker.getLatitude();
                 Log.i("latLong", "222" + strLat + ":-" + strLong);
 
 
@@ -1301,7 +1299,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             totalMin = String.valueOf(min);
 
         }
-
         return totalHrs + " :" + totalMin;
     }
 
@@ -1322,8 +1319,5 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void makeCheckOutButttonDisable(){
         btCheckout.setEnabled(false);
     }
-
-
-
-    }
+}
 
