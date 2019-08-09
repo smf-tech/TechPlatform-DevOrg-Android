@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/no_records_view"
@@ -95,7 +96,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_rejected_icon_filter"/>
+        android:src="@drawable/ic_rejected_icon_filter"
+        app:tint="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_filter2"
@@ -105,7 +107,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_approved_icon_filter"/>
+        android:src="@drawable/ic_approved_icon_filter"
+        app:tint="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_filter1"
@@ -115,7 +118,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_pending_icon_filter" />
+        android:src="@drawable/ic_pending_icon_filter"
+        app:tint="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_no_filter"
@@ -125,7 +129,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_view_all_icon" />
+        android:src="@drawable/ic_view_all_icon"
+        app:tint="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_filter"
@@ -135,6 +140,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_filter_icon_list"/>
+        android:src="@drawable/ic_filter_icon_list"
+        app:tint="@color/white" />
 
 </RelativeLayout>

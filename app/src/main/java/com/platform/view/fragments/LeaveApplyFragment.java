@@ -441,26 +441,23 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @SuppressLint("StringFormatInvalid")
     @Override
     public void onSuccessListener(String requestID,String response) {
-        if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
-            try {
-                showAlertDialog(getString(R.string.leave_apply_msg,
-                        btnStartDate.getText().toString(),
-                        btnEndDate.getText().toString()),
-                        getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
-            } catch (Exception e) {
-                Log.e("TAG", "Exception");
-            }
-        }
-        if(requestID.equalsIgnoreCase(LeavesPresenter.REQUEST_USER_COMPOFF)) {
-            try {
-                showAlertDialog(getString(R.string.compoff_requested_msg,
-                        btnStartDate.getText().toString(),
-                        btnEndDate.getText().toString()),
-                        getString(R.string.compoff_requested_msg1), getString(R.string.ok), "");
-            } catch (Exception e) {
-                Log.e("TAG", "Exception");
-            }
-        }
+//        if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
+//            try {
+                showAlertDialog("Status",response,getString(R.string.ok), "");
+//            } catch (Exception e) {
+//                Log.e("TAG", "Exception");
+//            }
+//        }
+//        if(requestID.equalsIgnoreCase(LeavesPresenter.REQUEST_USER_COMPOFF)) {
+//            try {
+//                showAlertDialog(getString(R.string.compoff_requested_msg,
+//                        btnStartDate.getText().toString(),
+//                        btnEndDate.getText().toString()),
+//                        getString(R.string.compoff_requested_msg1), getString(R.string.ok), "");
+//            } catch (Exception e) {
+//                Log.e("TAG", "Exception");
+//            }
+//        }
     }
 
     @Override

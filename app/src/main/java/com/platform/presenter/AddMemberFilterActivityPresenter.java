@@ -11,6 +11,7 @@ import com.platform.models.events.Participant;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
+import com.platform.request.AddMemeberFilterRequestCall;
 import com.platform.request.EventRequestCall;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
@@ -35,7 +36,7 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 //    }
 
     public void getOrganizationRoles(String orgId) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
+        AddMemeberFilterRequestCall requestCall = new AddMemeberFilterRequestCall();
         requestCall.setListener(this);
         addMemberFilterActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);

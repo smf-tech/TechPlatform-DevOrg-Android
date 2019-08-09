@@ -67,10 +67,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             layNotification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    switch (notificationList.get(getAdapterPosition()).getToOpen()) {
-                        case "":
-                            break;
-                        default:
+                    if(notificationList.get(getAdapterPosition()).getToOpen()!=null){
+                        switch (notificationList.get(getAdapterPosition()).getToOpen()) {
+                            case "":
+                                break;
+                            default:
+                        }
                     }
                 }
             });
@@ -79,8 +81,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View view) {
                     DatabaseManager.getDBInstance(Platform.getInstance())
                             .getNotificationDataDeo().deleteNotification(notificationList.get(getAdapterPosition()).getId());
-//                    DatabaseManager.getDBInstance(Platform.getInstance())
-//                            .getNotifications().deleteAllNotifications();
                     notificationList.remove(getAdapterPosition());
                     notifyDataSetChanged();
                 }

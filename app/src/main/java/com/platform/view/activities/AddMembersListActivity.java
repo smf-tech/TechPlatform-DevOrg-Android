@@ -101,15 +101,18 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             btAddMembers.setVisibility(View.INVISIBLE);
         }
 
-        membersList.addAll(filterMemberList);
-        checkAllSelected(filterMemberList);
-        RecyclerView rvMembers = findViewById(R.id.rv_members);
-        addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this,
-                filterMemberList, isDeleteVisible, isCheckVisible);
+        if(filterMemberList!=null && filterMemberList.size()>0){
+            membersList.addAll(filterMemberList);
+            checkAllSelected(filterMemberList);
+            RecyclerView rvMembers = findViewById(R.id.rv_members);
+            addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this,
+                    filterMemberList, isDeleteVisible, isCheckVisible);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rvMembers.setLayoutManager(mLayoutManager);
-        rvMembers.setAdapter(addMembersListAdapter);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            rvMembers.setLayoutManager(mLayoutManager);
+            rvMembers.setAdapter(addMembersListAdapter);
+        }
+
         setListeners();
     }
 
@@ -158,7 +161,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
     private void filter(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
         filterMemberList.clear();
-        if (searchText.length() > 0) {
+        if (searchText.length() > 0 && membersList.size()>0) {
             for (Participant member : membersList) {
                 if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
                     filterMemberList.add(member);
@@ -218,6 +221,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
                     presenter.taskMemberList();
                 } else {
                     Intent intent = new Intent(this, AddMembersFilterActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                     intent.putExtra(Constants.Planner.EVENT_TASK_ID, eventTaskID);
                     intent.putExtra(Constants.Planner.MEMBERS_LIST, filterMemberList);
                     this.startActivity(intent);
@@ -237,6 +241,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         }
         Intent returnIntent = new Intent();
         returnIntent.putExtra(Constants.Planner.MEMBER_LIST_DATA, list);
+        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, list.size());
         setResult(Constants.Planner.MEMBER_LIST, returnIntent);
         finish();
     }
@@ -305,7 +310,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     @Override
     public <T> void showNextScreen(T data) {
-        finish();
+        addMembersToEvent();
     }
 
     @Override
@@ -338,6 +343,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             }
         }
         Intent intent = new Intent(this, AddMembersListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         intent.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, true);
         intent.putExtra(Constants.Planner.IS_DELETE_VISIBLE, false);
         intent.putExtra(Constants.Planner.EVENT_TASK_ID, eventTaskID);

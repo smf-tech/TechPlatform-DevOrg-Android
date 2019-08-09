@@ -283,7 +283,8 @@ public class Constants {
         public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
-        public static final String MEMBER_LIST_DATA = "RepeatEventDta";
+        public static final String MEMBER_LIST_DATA = "MemberListData";
+        public static final String MEMBER_LIST_COUNT = "MemberListCount";
         public static final String PLANNED_STATUS = "planned";
         public static final String COMPLETED_STATUS = "completed";
 

@@ -2,7 +2,10 @@ package com.platform.view.activities;
 
 
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -69,6 +73,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private ActionBarDrawerToggle toggle;
     private boolean doubleBackToExitPressedOnce = false;
     private final String TAG = this.getClass().getSimpleName();
+    private BroadcastReceiver mMessageReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         setContentView(R.layout.activity_home);
         initMenuView();
 
-        /*FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -87,7 +92,22 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                         String token = task.getResult().getToken();
                         Toast.makeText(HomeActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
+
+        initBrodcastResiver();
+    }
+
+    private void initBrodcastResiver() {
+
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUnreadNotificationsCount();
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(Constants.PUSH_NOTIFICATION));
 
     }
 
@@ -162,12 +182,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
-        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
-        if (notificationClicked) {
-            loadTeamsPage();
-        } else {
-            loadHomePage();
-        }
+//        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
+//        if (notificationClicked) {
+//            loadTeamsPage();
+//        } else {
+//
+//        }
+        loadHomePage();
     }
 
     private void updateUnreadNotificationsCount() {
