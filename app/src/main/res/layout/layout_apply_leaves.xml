@@ -26,6 +26,7 @@
         android:textAllCaps="false"
         android:textColor="@color/leave_form_text_color"
         android:textSize="@dimen/text_size_13"
+        android:fontFamily="@font/opensans_regular"
         tools:ignore="RtlSymmetry" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,7 @@
             android:paddingTop="@dimen/dimen_15dp"
             android:text="@string/category"
             android:textAllCaps="false"
+            android:fontFamily="@font/opensans_regular"
             android:textColor="@color/leave_form_text_color"
             android:textSize="@dimen/text_size_13"
             tools:ignore="RtlSymmetry" />
@@ -78,26 +80,28 @@
             android:layout_marginBottom="@dimen/dimen_25dp"
             android:weightSum="2">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_full_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
+                app:backgroundTint="@color/light_blue"
                 android:text="@string/full_day"
                 android:textAllCaps="false"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13"
+                android:layout_marginEnd="@dimen/dimen_05dp"
                 tools:ignore="ButtonStyle" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_half_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_50dp"
                 android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
+                app:backgroundTint="@color/light_blue"
                 android:text="@string/half_day"
                 android:textAllCaps="false"
+                android:layout_marginStart="@dimen/dimen_05dp"
                 android:textColor="@color/leave_form_text_color"
                 android:textSize="@dimen/text_size_13"
                 tools:ignore="ButtonStyle" />
@@ -192,20 +196,19 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_apply_leave"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
+            style="@style/AppStyleButton"
             android:layout_marginTop="@dimen/dimen_25dp"
             android:layout_marginStart="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
             android:layout_marginBottom="@dimen/dimen_05dp"
-            android:background="@drawable/bg_button"
             android:elevation="@dimen/dimen_03dp"
             android:text="@string/btn_leave_apply_str"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16" />
+             />
 
 </LinearLayout>
 

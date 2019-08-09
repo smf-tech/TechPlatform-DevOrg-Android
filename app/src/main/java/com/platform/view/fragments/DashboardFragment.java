@@ -236,7 +236,7 @@ public class DashboardFragment extends Fragment {
                         break;
 
                     case 1:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.MEETINGS);
+                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.PLANNER);
                         AppEvents.trackAppEvent(getString(R.string.event_meetings_tab_click));
                         break;
 

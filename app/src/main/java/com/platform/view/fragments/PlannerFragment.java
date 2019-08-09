@@ -35,6 +35,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -246,17 +248,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         progressBarLayout = plannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = plannerView.findViewById(R.id.pb_profile_act);
-        if(Util.isConnected(getContext())) {
-            plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-            plannerFragmentPresenter.getPlannerData();
-        }else{
-            Util.showToast(getString(R.string.msg_no_network), this);
-        }
+
 
         checkTodayMarkInOrNot();
 
         // comment by deepak on 1-07-2019
-
+        plannerFragmentPresenter = new PlannerFragmentPresenter(this);
 
         RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
         RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
@@ -356,7 +353,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     getUserCheckOutTimeFromServer(todayCheckOutTime);
 
 
-                    if(availableOnServer!=null&&!availableOnServer.isEmpty())
+                    if(availableOnServer!=null&&
+                            !availableOnServer.isEmpty())
                     {
                         //preferenceHelper.insertString(Constants.KEY_ATTENDANCDE,availableOnServer);
                         Log.i("AttendanceId", "111" + availableOnServer);
@@ -395,6 +393,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
                 case Constants.Planner.LEAVES_KEY:
                     if(obj.getLeave()!=null && obj.getLeave().size()>0){
+                        leaveBalance.clear();
                         leaveBalance.addAll(obj.getLeave());
                         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
                                 LinearLayoutManager.HORIZONTAL, true);
@@ -539,7 +538,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 getCompleteAddressString(Double.parseDouble(strLat), Double.parseDouble(strLong));
                 millis = getLongFromDate();
                 Log.i("LogOutTime","111"+millis);
-
                 if (!Util.isConnected(getActivity())) {
 
                     // offline storage
@@ -550,7 +548,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                     if (getCheckOut.size() > 0 && !getCheckOut.isEmpty() && getCheckOut != null) {
                         Toast.makeText(getActivity(), "Already check out", Toast.LENGTH_LONG).show();
-                        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         //tvCheckOutTime.setText(getCheckOut.get(0).getTime());
                     } else {
@@ -583,7 +581,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         }
 
                         userCheckOutDao.insert(attendaceData);
-                        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         checkOutText=checkOutText + checkOutTime;
                         btCheckout.setText(checkOutText);
@@ -610,7 +608,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         e.printStackTrace();
                     }
                     Log.i("TotalHrs","111"+diffInCheckInandCheckout);
-
 
                     SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
                     submitAttendanceFragmentPresenter.markOutAttendance(availableOnServer,CHECK_OUT, millis, strLat, strLong,diffInCheckInandCheckout);
@@ -763,7 +760,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                         userAttendanceDao.insert(attendaceData);
 
-                        btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+
+                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckIn.setText(checkInText + time);
                         //tvCheckInTime.setText(time);
@@ -925,7 +923,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         //tvCheckInTime.setText(time);
                         userAttendanceDao.insert(attendaceData);
 
-                        btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
+
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
 
                         //tvCheckInTime.set
@@ -961,8 +960,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty()) {
                 Toast.makeText(getActivity(), "User Already Check Out", Toast.LENGTH_LONG).show();
             } else {
-
-
                 AttendaceCheckOut attendaceData = new AttendaceCheckOut();
                 attendaceData.setUid(attendaceId);
                 Double lat = Double.parseDouble(strLat);
@@ -993,7 +990,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                 try {
                     userCheckOutDao.insert(attendaceData);
-                    btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+                    btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                     btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
                     checkOutText=checkOutText + checkOutTime;
                     btCheckout.setText(checkOutText);
@@ -1039,7 +1036,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         public void enableCheckOut ()
         {
-            btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_button));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
             btCheckout.setTextColor(getResources().getColor(R.color.white));
             btCheckout.setEnabled(true);
         }
@@ -1144,26 +1141,35 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         super.onResume();
         setButtonText();
 
-
-        //plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-        //plannerFragmentPresenter.getPlannerData();
+        if(Util.isConnected(getContext())) {
+            plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+            plannerFragmentPresenter.getPlannerData();
+        }else{
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
 
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
         if(getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
 
-            btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckIn.setText(checkInText+ getUserType.get(0).getTime());
-            // set total hours
             enableCheckOut();
+
+            //set background
+           /* btCheckout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btCheckout.setTextColor(getResources().getColor(R.color.white));
+            btCheckout.setEnabled(true);*/
         }
-
-
         getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty())
         {
-            btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            //btCheckout.setBackgroundResource(R.drawable.bg_grey_box_with_border);
+            //btCheckout.setBackgroundColor(getResources().getColor(R.color.card_gray_bg));
+            //btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            /*btCheckout.getBackground().setColorFilter(getResources().getColor(R.color.card_gray_bg), PorterDuff.Mode.MULTIPLY);*/
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckout.setText(checkOutText+ getCheckOut.get(0).getTime());
             String totalHrs=getCheckOut.get(0).getTotalHrs();
@@ -1176,10 +1182,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         //  check that user time is available on server
 
         if(userServerCheckInTime!=null){
-
             makeCheckInButtonGray();
             btCheckIn.setText(checkInText+ userServerCheckInTime);
-
         }
         if(userServerCheckOutTime!=null){
             makeCheckOutButtonGray();
@@ -1190,11 +1194,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         if(!isCheckOut){
             getDiffBetweenTwoHours();
         }
-
-        // show total hours
-
-
-
     }
 
     public void setButtonText(){
@@ -1229,15 +1228,14 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public void checkTodayMarkInOrNot()
     {
         getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
-        if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty())
-        {
-
-            btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
-            btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
+        if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
             setButtonText();
+            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
+            btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
+
         }else {
 
-            btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             btCheckout.setEnabled(false);
 
@@ -1246,7 +1244,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty())
         {
-            btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             String checkInTime = getCheckOut.get(0).getTime();
             setButtonText();
@@ -1304,12 +1302,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
 
     public void makeCheckInButtonGray(){
-        btCheckIn.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
     }
 
     public void makeCheckOutButtonGray(){
-        btCheckout.setBackground(getResources().getDrawable(R.drawable.bg_grey_box_with_border));
+        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
     }
 

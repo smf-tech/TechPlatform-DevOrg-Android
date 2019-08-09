@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.platform.listeners.TMUserProfileApprovalRequestCallListener;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.TMLandingPageRequestsResponse;
+import com.platform.models.tm.TMUserFormsApprovalRequest;
 import com.platform.models.tm.TMUserFormsApprovalRequestsResponse;
 import com.platform.request.TMUserAttendenceApprovalRequestCall;
 import com.platform.request.TMUserFormsApprovalRequestCall;
@@ -51,8 +52,8 @@ public class TMUserFormsApprovalFragmentPresenter implements TMUserProfileApprov
     public void TMUserProfileApprovalRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            TMUserFormsApprovalRequestsResponse pendingRequestsResponse
-                    = new Gson().fromJson(response, TMUserFormsApprovalRequestsResponse.class);
+            TMUserFormsApprovalRequest pendingRequestsResponse
+                    = new Gson().fromJson(response, TMUserFormsApprovalRequest.class);
             if (pendingRequestsResponse != null && pendingRequestsResponse.getData() != null
                     && !pendingRequestsResponse.getData().isEmpty()
                     && pendingRequestsResponse.getData().size() > 0) {

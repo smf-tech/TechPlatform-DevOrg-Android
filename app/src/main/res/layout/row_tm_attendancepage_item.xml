@@ -134,18 +134,19 @@
                 android:gravity="bottom"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_reject"
+                <com.google.android.material.button.MaterialButton
                     style="@style/AppStyleBorderButton"
+                    android:id="@+id/btn_reject"
+
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
                     android:textColor="@color/dark_grey" />
 
-                <Button
-                    android:id="@+id/btn_approve"
+                <com.google.android.material.button.MaterialButton
                     style="@style/AppStyleButton"
+                    android:id="@+id/btn_approve"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"

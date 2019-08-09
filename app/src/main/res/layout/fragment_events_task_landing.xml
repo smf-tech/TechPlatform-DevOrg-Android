@@ -167,7 +167,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:src="@android:drawable/ic_input_add"
-            android:tint="@color/white"
+            app:tint="@color/white"
             app:backgroundTint="@color/colorPrimary"
             app:fabSize="mini"
             tools:ignore="RelativeOverlap" />

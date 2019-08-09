@@ -27,12 +27,12 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
         this.addMemberFilterActivity = new WeakReference<>(addMembersFilterActivity);
     }
 
-    public void getOrganizations() {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-        addMemberFilterActivity.get().showProgressBar();
-        requestCall.getOrganizations();
-    }
+//    public void getOrganizations() {
+//        ProfileRequestCall requestCall = new ProfileRequestCall();
+//        requestCall.setListener(this);
+//        addMemberFilterActivity.get().showProgressBar();
+//        requestCall.getOrganizations();
+//    }
 
     public void getOrganizationRoles(String orgId) {
         ProfileRequestCall requestCall = new ProfileRequestCall();

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -227,22 +228,24 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
             case R.id.btn_half_day:
                 dayLeaveType = 0;
-                btnHalfDay.setBackgroundResource(R.drawable.bg_button);
-                btnFullDay.setBackgroundResource(R.drawable.leave_form_view_unfocused);
+
                 btnHalfDay.setTextColor(getResources().getColor(R.color.white));
+                btnHalfDay.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.color_db_tab_select));
                 btnFullDay.setTextColor(getResources().getColor(R.color.leave_form_text_color));
+                btnFullDay.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.light_blue));
                 btnEndDate.setEnabled(false);
-//                if(!btnStartDate.getText().toString().equalsIgnoreCase("Start Date")){
-//                    btnEndDate.setText(btnStartDate.getText().toString());
-//                }
+                if(!btnStartDate.getText().toString().equalsIgnoreCase("Start Date")){
+                    btnEndDate.setText(btnStartDate.getText().toString());
+                }
                 break;
 
             case R.id.btn_full_day:
                 dayLeaveType = 1;
-                btnHalfDay.setBackgroundResource(R.drawable.leave_form_view_unfocused);
-                btnFullDay.setBackgroundResource(R.drawable.bg_button);
+
                 btnFullDay.setTextColor(getResources().getColor(R.color.white));
+                btnFullDay.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.color_db_tab_select));
                 btnHalfDay.setTextColor(getResources().getColor(R.color.leave_form_text_color));
+                btnHalfDay.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.light_blue));
 
                 btnEndDate.setEnabled(true);
                 break;

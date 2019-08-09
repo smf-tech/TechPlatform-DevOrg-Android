@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/lighter_grey">
 
     <ScrollView
@@ -116,7 +117,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_05dp"
-                    android:id="@+id/ly_attendance">
+                    android:id="@+id/ly_attendance"
+                    android:visibility="gone">
 
 
                     <LinearLayout
@@ -129,6 +131,7 @@
                             android:id="@+id/tv_attendance_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans"
                             android:layout_alignStart="@+id/lin_attendance"
                             android:layout_alignTop="@+id/lin_attendance"
                             android:layout_gravity="center_vertical"
@@ -236,41 +239,49 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:layout_weight="8">
+                                    android:layout_weight="7.5">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
                                         android:layout_marginLeft="5dp"
-                                        android:weightSum="2">
+                                        >
 
-                                        <Button
+                                        <com.google.android.material.button.MaterialButton
                                             android:id="@+id/bt_check_in"
                                             android:layout_width="0dp"
-                                            android:layout_height="@dimen/dimen_40dp"
+                                            style="@style/AppStyleButton"
+                                            android:layout_height="@dimen/dimen_50dp"
                                             android:layout_marginLeft="5dp"
-                                            android:layout_weight="0.90"
-                                            android:background="@drawable/bg_button"
+                                            android:layout_weight="1"
+                                            app:backgroundTint="@color/colorPrimary"
                                             android:baselineAligned="false"
-                                            android:singleLine="true"
                                             android:text="@string/check_in"
+                                            android:gravity="center"
+                                            android:layout_gravity="center"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
+                                            tools:ignore="ButtonStyle"
                                             android:textStyle="bold" />
 
-                                        <Button
+                                        <com.google.android.material.button.MaterialButton
                                             android:id="@+id/bt_checkout"
                                             android:layout_width="0dp"
-                                            android:layout_height="@dimen/dimen_40dp"
+                                            style="@style/AppStyleButton"
+                                            android:layout_height="@dimen/dimen_50dp"
                                             android:layout_marginLeft="5dp"
-                                            android:layout_weight="0.90"
-                                            android:background="@drawable/bg_button"
-                                            android:singleLine="true"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            app:backgroundTint="@color/button_gray_color"
                                             android:text="@string/check_out"
+                                            android:layout_gravity="center"
                                             android:textAllCaps="false"
                                             android:textColor="@drawable/text_color_on_selection"
                                             android:textSize="@dimen/text_size_10"
+                                            tools:ignore="ButtonStyle"
                                             android:textStyle="bold" />
 
                                     </LinearLayout>
@@ -366,7 +377,7 @@
                     android:layout_below="@+id/ly_attendance"
                     android:layout_height="@dimen/dimen_277dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/event_header"
@@ -445,7 +456,7 @@
                     android:layout_height="@dimen/dimen_277dp"
                     android:layout_below="@+id/ly_events"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/task_header"
@@ -528,7 +539,9 @@
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_235dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
                     android:layout_below="@+id/ly_task"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dimen_05dp">
 
                     <TextView
@@ -544,7 +557,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_235dp"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_leaves_label"
                         android:background="@color/white"
                         android:layout_margin="@dimen/dimen_10dp"
@@ -568,8 +581,9 @@
                         android:id="@+id/card_fotte_leave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         android:layout_below="@+id/rv_leave_balance"
-                        android:layout_marginTop="@dimen/dimen_10dp">
+                        android:layout_marginTop="@dimen/dimen_20dp">
 
                         <TextView
                             android:id="@+id/tv_link_check_leaves"

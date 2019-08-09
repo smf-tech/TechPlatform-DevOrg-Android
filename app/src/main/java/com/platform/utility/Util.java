@@ -432,7 +432,7 @@ public class Util {
 
         return 0L;
     }
-    public static int getDateInepoch(String dateString) {
+    public static long getDateInepoch(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInepoch(new Date().toString());
         }
@@ -442,7 +442,7 @@ public class Util {
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
             int test = (int) (epoch/1000);
-            return (int)(epoch/1000);
+            return epoch;
 
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());

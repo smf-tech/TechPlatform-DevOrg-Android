@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:elevation="0dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:paddingStart="@dimen/dimen_10dp"
+        android:paddingEnd="5dp"
+        app:titleTextColor="@android:color/white">
+
+        <LinearLayout
+            android:id="@+id/toolbar_action_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/toolbar_back_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                android:contentDescription="@string/content_description"
+                android:background="@drawable/ic_back_white" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="bold"
+                android:fontFamily="@font/opensans"/>
+
+            <ImageView
+                android:id="@+id/toolbar_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="2dp"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/dimen_10dp"
+                android:tint="@color/white"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/toolbar_edit_action"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="2dp"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/dimen_05dp"
+                android:src="@drawable/ic_close"
+                android:tint="@color/white"
+                android:visibility="visible" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+</com.google.android.material.appbar.AppBarLayout>

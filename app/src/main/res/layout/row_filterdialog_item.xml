@@ -34,7 +34,10 @@
         android:id="@+id/cb_select_filter"
         android:backgroundTint="@color/colorPrimary"
         android:buttonTint="@color/colorPrimary"
-        android:layout_margin="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_05dp"
         android:layout_height="wrap_content" />
     </LinearLayout>
         <View

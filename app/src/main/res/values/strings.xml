@@ -1,5 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
+    <string name="notification_channel_name" translatable="false">Platform</string>
+    <string name="notification_channel_description" translatable="false">Platform</string>
     <string name="app_name_ss">Sujalam Suphalam</string>
     <string name="content_description">Description</string>
     <string name="back_string">Please click BACK again to exit</string>
@@ -246,13 +248,13 @@
     <!--Events & Tasks-->
     <string name="events">Events</string>
     <string name="all_events">All Events</string>
-    <string name="today_events">Today\'s Events</string>
+    <string name="today_events">Upcoming Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
     <string name="create_task">Create Task</string>
     <string name="all_tasks">All Tasks</string>
     <string name="my_tasks">My Tasks</string>
-    <string name="today_tasks">Today\'s Tasks</string>
+    <string name="today_tasks">Upcoming Tasks</string>
     <string name="no_tasks">No tasks today!</string>
     <string name="task_category">Category</string>
     <string name="task_title">Title</string>
@@ -391,7 +393,7 @@
     <string name="please_wait">Please wait…</string>
     <string name="holiday_list">Holiday List</string>
     <string name="edit_leave">Edit Leave</string>
-    <string name="apply_leave">Apply For Leave</string>
+    <string name="apply_leave">Apply Leave</string>
     <string name="leave_deleted_msg">Leave has been deleted successfully.</string>
     <string name="no_leave_applied_msg">You have not applied any leave in this month.</string>
     <string name="compoff_request">Request For Comp-Off</string>
@@ -413,15 +415,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="generate_code">Generate Code</string>
+    <string name="generate_code">Generate code</string>
     <string name="details">Details</string>
-    <string name="msg_enter_proper_date">Start datetime should not be greater than end datetime</string>
+    <string name="msg_enter_proper_date">Start date time should not be greater than end date time</string>
     <string name="venue">Venue</string>
     <string name="delayedin_checkin">Delayed in chek in and found another location</string>
     <string name="delayin_checkin_title">please provide a reason</string>
     <string name="see_details">See Details</string>
+    <string name="add_forms">Add Forms</string>
+    <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Suceesful</string>
     <string name="check_out_msg">Checked Out Successful</string>
+
 
 
 

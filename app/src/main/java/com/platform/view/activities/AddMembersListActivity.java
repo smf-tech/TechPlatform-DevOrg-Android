@@ -1,6 +1,7 @@
 package com.platform.view.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,17 +35,21 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         View.OnClickListener, PlatformTaskListener {
 
     private AddMembersListAdapter addMembersListAdapter;
-    private ArrayList<Participant> membersList = new ArrayList<>();
+    private ArrayList<Participant> filterMemberList = new ArrayList<>();
+    private final ArrayList<Participant> membersList = new ArrayList<>();
     private String eventTaskID;
     private String userId;
-    private final ArrayList<Participant> filterMembersList = new ArrayList<>();
+
     private SearchView editSearch;
     private CheckBox cbSelectAllMembers;
     private ImageView toolbarAction;
     private ImageView ivBackIcon;
-    private Button btAddMembers;
+    private TextView tvAddMembers;
+    private Button btAddMembers,btMembersSubmit;
+    private String toOpen;
     private boolean isCheckVisible;
     private boolean isDeleteVisible;
+    private boolean isSearchVisible;
 
     private AddMembersListPresenter presenter;
     private ProgressBar progressBar;
@@ -63,31 +69,43 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         progressBar = findViewById(R.id.pb_profile_act);
         presenter = new  AddMembersListPresenter(this);
 
+        isSearchVisible=false;
+
         cbSelectAllMembers = findViewById(R.id.cb_select_all_members);
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         toolbarAction = findViewById(R.id.toolbar_edit_action);
         editSearch = findViewById(R.id.search_view);
 
-        membersList = (ArrayList<Participant>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
+        filterMemberList = (ArrayList<Participant>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
+        toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         eventTaskID = getIntent().getStringExtra(Constants.Planner.EVENT_TASK_ID);
         isCheckVisible = getIntent().getBooleanExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
         isDeleteVisible = getIntent().getBooleanExtra(Constants.Planner.IS_DELETE_VISIBLE, false);
 
         TextView tvInfoLabel = findViewById(R.id.tv_info_label);
-        btAddMembers=findViewById(R.id.bt_add_members);
+        btAddMembers = findViewById(R.id.bt_add_members);
+        btMembersSubmit = findViewById(R.id.bt_members_submit);
+        tvAddMembers = findViewById(R.id.tv_add_members);
+
         if (isCheckVisible) {
             cbSelectAllMembers.setVisibility(View.VISIBLE);
+            tvAddMembers.setVisibility(View.GONE);
+            if(eventTaskID!=null && !eventTaskID.isEmpty()){
+                btMembersSubmit.setVisibility(View.VISIBLE);
+            } else {
+                btAddMembers.setVisibility(View.VISIBLE);
+            }
         } else {
             tvInfoLabel.setVisibility(View.GONE);
-            cbSelectAllMembers.setVisibility(View.GONE);
-            btAddMembers.setVisibility(View.GONE);
+            cbSelectAllMembers.setVisibility(View.INVISIBLE);
+            btAddMembers.setVisibility(View.INVISIBLE);
         }
 
-        filterMembersList.addAll(membersList);
-        checkAllSelected(membersList);
+        membersList.addAll(filterMemberList);
+        checkAllSelected(filterMemberList);
         RecyclerView rvMembers = findViewById(R.id.rv_members);
         addMembersListAdapter = new AddMembersListAdapter(AddMembersListActivity.this,
-                membersList, isDeleteVisible, isCheckVisible);
+                filterMemberList, isDeleteVisible, isCheckVisible);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvMembers.setLayoutManager(mLayoutManager);
@@ -101,6 +119,8 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         toolbarAction.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
         btAddMembers.setOnClickListener(this);
+        btMembersSubmit.setOnClickListener(this);
+        tvAddMembers.setOnClickListener(this);
     }
 
     public void checkAllSelected(ArrayList<Participant> membersList) {
@@ -137,17 +157,17 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     private void filter(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
-        membersList.clear();
+        filterMemberList.clear();
         if (searchText.length() > 0) {
-            for (Participant member : filterMembersList) {
+            for (Participant member : membersList) {
                 if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
-                    membersList.add(member);
+                    filterMemberList.add(member);
                 }
             }
         } else {
-            membersList.addAll(filterMembersList);
+            filterMemberList.addAll(membersList);
         }
-
+        checkAllSelected( membersList);
         addMembersListAdapter.notifyDataSetChanged();
     }
 
@@ -160,6 +180,15 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
             case R.id.toolbar_edit_action:
                 //Submit attendance
+                if(isSearchVisible){
+                    isSearchVisible=false;
+                    editSearch.setVisibility(View.VISIBLE);
+                    toolbarAction.setImageResource(R.drawable.ic_close);
+                } else {
+                    isSearchVisible=true;
+                    editSearch.setVisibility(View.GONE);
+                    toolbarAction.setImageResource(R.drawable.ic_search);
+                }
 
                 break;
 
@@ -167,24 +196,41 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
                 addMembersToEvent();
                 break;
 
+            case R.id.bt_members_submit:
+                addSubmitMembers();
+                break;
+
             case R.id.cb_select_all_members:
                 if (((CheckBox) v).isChecked()) {
-                    for (Participant participant : membersList) {
+                    for (Participant participant : filterMemberList) {
                         participant.setMemberSelected(true);
                     }
                 } else {
-                    for (Participant participant : membersList) {
+                    for (Participant participant : filterMemberList) {
                         participant.setMemberSelected(false);
                     }
                 }
                 addMembersListAdapter.notifyDataSetChanged();
+                break;
+
+            case R.id.tv_add_members:
+                if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
+                    presenter.taskMemberList();
+                } else {
+                    Intent intent = new Intent(this, AddMembersFilterActivity.class);
+                    intent.putExtra(Constants.Planner.EVENT_TASK_ID, eventTaskID);
+                    intent.putExtra(Constants.Planner.MEMBERS_LIST, filterMemberList);
+                    this.startActivity(intent);
+                    finish();
+                }
+
                 break;
         }
     }
 
     private void addMembersToEvent() {
         ArrayList<Participant> list = new ArrayList<>();
-        for(Participant p:filterMembersList){
+        for(Participant p:membersList){
             if(p.isMemberSelected()){
                 list.add(p);
             }
@@ -195,6 +241,16 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         finish();
     }
 
+    public void addSubmitMembers(){
+        ArrayList<Participant> list = new ArrayList<>();
+        for(Participant p:membersList){
+            if(p.isMemberSelected()){
+                list.add(p);
+            }
+        }
+        presenter.addMemberToEventTask(eventTaskID,list);
+    }
+
     private void setActionbar(String title) {
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(title);
@@ -202,7 +258,29 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     public void removeMember(String userId) {
         this.userId=userId;
-        presenter.deleteMember(userId,eventTaskID);
+
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete alert")
+                    .setMessage(getString(R.string.sure_to_delete))
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                            presenter.deleteMember(userId,eventTaskID);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.dismiss();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            alertDialog = builder.create();
+            alertDialog.show();
+
+
     }
 
     @Override
@@ -227,7 +305,7 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     @Override
     public <T> void showNextScreen(T data) {
-
+        finish();
     }
 
     @Override
@@ -238,9 +316,9 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     public void onMembersDeleted(CommonResponse response) {
         if (response != null && response.getStatus() ==200) {
-            for(int i=0;i<membersList.size();i++){
-                if(membersList.get(i).getId().equals(userId)){
-                    membersList.remove(i);
+            for(int i=0;i<filterMemberList.size();i++){
+                if(filterMemberList.get(i).getId().equals(userId)){
+                    filterMemberList.remove(i);
                     break;
                 }
             }
@@ -249,5 +327,22 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
         } else {
             showErrorMessage(response.getMessage());
         }
+    }
+    public void showMemberList(ArrayList<Participant> data) {
+        for(int i=0;i<filterMemberList.size();i++){
+            for(int j=0;j<data.size();j++){
+                if(filterMemberList.get(i).getId().equals(data.get(j).getId())){
+                    data.get(j).setMemberSelected(true);
+                    break;
+                }
+            }
+        }
+        Intent intent = new Intent(this, AddMembersListActivity.class);
+        intent.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, true);
+        intent.putExtra(Constants.Planner.IS_DELETE_VISIBLE, false);
+        intent.putExtra(Constants.Planner.EVENT_TASK_ID, eventTaskID);
+        intent.putExtra(Constants.Planner.MEMBERS_LIST, data);
+        this.startActivity(intent);
+        finish();
     }
 }
