@@ -3,7 +3,7 @@ package com.platform.listeners;
 
 import com.android.volley.VolleyError;
 
-public interface LeavePresenterListener {
+public interface APIPresenterListener {
 
     void onFailureListener(String requestID,String message);
 

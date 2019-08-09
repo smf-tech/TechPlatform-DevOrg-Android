@@ -1,21 +1,16 @@
 package com.platform.view.fragments;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,18 +20,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
-import com.platform.listeners.LeaveDataListener;
+import com.platform.listeners.APIDataListener;
 import com.platform.models.leaves.HolidayData;
 import com.platform.models.leaves.LeaveData;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.MonthlyLeaveDataAPIResponse;
 import com.platform.models.leaves.MonthlyLeaveHolidayData;
 import com.platform.presenter.LeavesPresenter;
-import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
@@ -60,12 +52,11 @@ import java.util.Objects;
 
 import static com.platform.presenter.LeavesPresenter.DELETE_LEAVE;
 import static com.platform.presenter.LeavesPresenter.GET_USER_LEAVE_DETAILS;
-import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Constants.FORM_DATE;
 import static com.platform.utility.Util.getDateFromTimestamp;
 
 public class LeaveDetailsFragment extends Fragment implements View.OnClickListener,
-        AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, OnMonthChangedListener, LeaveDataListener {
+        AppliedLeavesAdapter.LeaveAdapterListener, OnDateSelectedListener, OnMonthChangedListener, APIDataListener {
 
     private RecyclerView leavesList;
     private final ArrayList<LeaveData> leavesListData = new ArrayList<>();

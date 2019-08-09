@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,37 +25,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.platform.R;
-import com.platform.listeners.LeaveDataListener;
+import com.platform.listeners.APIDataListener;
 import com.platform.models.leaves.LeaveData;
 import com.platform.models.leaves.LeaveDetail;
-import com.platform.models.leaves.LeaveType;
-import com.platform.models.leaves.UserLeaves;
 import com.platform.presenter.LeavesPresenter;
-import com.platform.utility.Constants;
-import com.platform.utility.PlatformGson;
-import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
-import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Util.getDateFromTimestamp;
 
-public class LeaveApplyFragment extends Fragment implements View.OnClickListener, LeaveDataListener {
+public class LeaveApplyFragment extends Fragment implements View.OnClickListener, APIDataListener {
 
     RecyclerView rvLeaveBalance;
     RecyclerView rvLeaveCategory;

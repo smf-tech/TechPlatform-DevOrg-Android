@@ -6,11 +6,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
-import com.platform.listeners.LeavePresenterListener;
+import com.platform.listeners.APIPresenterListener;
 import com.platform.models.leaves.LeaveData;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -21,11 +20,11 @@ import org.json.JSONObject;
 public class LeavesRequestCall {
 
     private Gson gson;
-    private LeavePresenterListener leavePresenterListener;
+    private APIPresenterListener apiPresenterListener;
     private final String TAG = LeavesRequestCall.class.getName();
 
-    public void setLeavePresenterListener(LeavePresenterListener listener) {
-        this.leavePresenterListener = listener;
+    public void setApiPresenterListener(APIPresenterListener listener) {
+        this.apiPresenterListener = listener;
         gson = new GsonBuilder().serializeNulls()
                 .create();
     }
@@ -33,7 +32,7 @@ public class LeavesRequestCall {
     public void getUsersAllLeavesDetails(String requestID, String year, String month) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (leavePresenterListener == null) {
+            if (apiPresenterListener == null) {
                 return;
             }
 
@@ -41,14 +40,14 @@ public class LeavesRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getUsersAllLeavesDetails - Resp: " + res);
-                    leavePresenterListener.onSuccessListener(requestID,res);
+                    apiPresenterListener.onSuccessListener(requestID,res);
                 }
             } catch (Exception e) {
-                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+                apiPresenterListener.onFailureListener(requestID,e.getMessage());
             }
         };
 
-        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID,error);
 
         final String getMontlyLeavesUrl = BuildConfig.BASE_URL
         + String.format(Urls.Leaves.GET_MONTHLY_LEAVES, year, month);
@@ -74,21 +73,21 @@ public class LeavesRequestCall {
     public void postUserLeave(String requestID, LeaveData leaveData) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (leavePresenterListener == null) {
+            if (apiPresenterListener == null) {
                 return;
             }
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "ApplyLeave - Resp: " + res);
-                    leavePresenterListener.onSuccessListener(requestID,res);
+                    apiPresenterListener.onSuccessListener(requestID,res);
                 }
             } catch (Exception e) {
-                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+                apiPresenterListener.onFailureListener(requestID,e.getMessage());
             }
         };
 
-        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID,error);
 
         final String applyLeaveUrl = BuildConfig.BASE_URL + String.format(Urls.Leaves.APPLY_LEAVE);
         Gson gson = new GsonBuilder().create();
@@ -114,21 +113,21 @@ public class LeavesRequestCall {
     public void requestUserCompoff(String requestID, LeaveData leaveData) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (leavePresenterListener == null) {
+            if (apiPresenterListener == null) {
                 return;
             }
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "requestUserCompoff - Resp: " + res);
-                    leavePresenterListener.onSuccessListener(requestID,res);
+                    apiPresenterListener.onSuccessListener(requestID,res);
                 }
             } catch (Exception e) {
-                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+                apiPresenterListener.onFailureListener(requestID,e.getMessage());
             }
         };
 
-        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID,error);
 
         final String requestUserCompoffUrl = BuildConfig.BASE_URL + String.format(Urls.Leaves.REQUEST_COMPOFF_);
         Gson gson = new GsonBuilder().create();
@@ -154,7 +153,7 @@ public class LeavesRequestCall {
     public void deleteUserLeave(String requestID, String leaveId) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (leavePresenterListener == null) {
+            if (apiPresenterListener == null) {
                 return;
             }
 
@@ -162,15 +161,15 @@ public class LeavesRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "deleteUserLeave - Resp: " + res);
-                    leavePresenterListener.onSuccessListener(requestID,res);
+                    apiPresenterListener.onSuccessListener(requestID,res);
 
                 }
             } catch (Exception e) {
-                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+                apiPresenterListener.onFailureListener(requestID,e.getMessage());
             }
         };
 
-        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID,error);
 
         final String deleteUserLeaveUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Leaves.DELETE_USER_LEAVE, leaveId);
@@ -194,7 +193,7 @@ public class LeavesRequestCall {
     public void getHolidayList(String requestID) {
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
-            if (leavePresenterListener == null) {
+            if (apiPresenterListener == null) {
                 return;
             }
 
@@ -202,15 +201,15 @@ public class LeavesRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "deleteUserLeave - Resp: " + res);
-                    leavePresenterListener.onSuccessListener(requestID,res);
+                    apiPresenterListener.onSuccessListener(requestID,res);
 
                 }
             } catch (Exception e) {
-                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+                apiPresenterListener.onFailureListener(requestID,e.getMessage());
             }
         };
 
-        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID,error);
 
         final String getMontlyLeavesUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Leaves.HOLIDAY_LIST);

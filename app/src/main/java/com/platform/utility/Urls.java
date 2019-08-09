@@ -87,4 +87,8 @@ public class Urls {
     public class ContentManagement{
         public static final String GET_CONTENT_DATA="api/contentDashboard";
     }
+
+    public class Matrimony {
+        public static final String MATRIMONY_MEET_TYPES= "api/";
+    }
 }

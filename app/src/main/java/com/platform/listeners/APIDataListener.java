@@ -3,7 +3,7 @@ package com.platform.listeners;
 import com.android.volley.VolleyError;
 
 @SuppressWarnings("unused")
-public interface LeaveDataListener {
+public interface APIDataListener {
 
     void onFailureListener(String requestID, String message);
 
