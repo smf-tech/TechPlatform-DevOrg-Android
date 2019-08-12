@@ -1,29 +1,24 @@
 package com.platform.presenter;
 
-import android.text.TextUtils;
-
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.platform.listeners.APIDataListener;
 import com.platform.listeners.APIPresenterListener;
-import com.platform.listeners.ProfileRequestCallListener;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.request.MatrimonyMeetRequestCall;
-import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Constants;
-import com.platform.view.activities.CreateMatrimonyMeetActivity;
+import com.platform.view.fragments.CreateMeetFirstFragment;
 
 import java.lang.ref.WeakReference;
 
-public class MatrimonyMeetPresenter implements APIPresenterListener {
+public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
 
-    private WeakReference<APIDataListener> fragmentWeakReference;
+    private WeakReference<CreateMeetFirstFragment> fragmentWeakReference;
 
     public static final String GET_MATRIMONY_MEET_TYPES ="getMatrimonyMeetTypes";
     public static final String GET_STATES ="getStates";
     public static final String GET_DISTRICTS ="getDistricts";
 
-    public MatrimonyMeetPresenter(APIDataListener tmFragment) {
+    public CreateMeetFirstFragmentPresenter(CreateMeetFirstFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
 
@@ -75,7 +70,27 @@ public class MatrimonyMeetPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                fragmentWeakReference.get().onSuccessListener(requestID, response);
+                if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_MATRIMONY_MEET_TYPES)){
+                    fragmentWeakReference.get().setMatrimonyMeetTypes();
+                }
+                if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES) ||
+                        requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_DISTRICTS)){
+                    JurisdictionLevelResponse jurisdictionLevelResponse
+                            = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+
+                    if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
+                            && !jurisdictionLevelResponse.getData().isEmpty()
+                            && jurisdictionLevelResponse.getData().size() > 0) {
+                        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.STATE_LEVEL);
+                        }
+                        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_DISTRICTS)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());

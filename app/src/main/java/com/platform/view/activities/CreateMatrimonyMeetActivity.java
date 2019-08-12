@@ -8,8 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.platform.R;
@@ -84,5 +87,18 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+            try {
+                fManager.popBackStackImmediate();
+            } catch (IllegalStateException e) {
+                Log.e("TAG", e.getMessage());
+            }
+
+            if (fManager.getBackStackEntryCount() == 0) {
+                finish();
+            }
     }
 }

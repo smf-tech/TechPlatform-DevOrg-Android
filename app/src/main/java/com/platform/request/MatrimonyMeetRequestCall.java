@@ -73,7 +73,7 @@ public class MatrimonyMeetRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getJurisdictionLevelData - Resp: " + res);
-                    apiPresenterListener.onSuccessListener(res, requestID);
+                    apiPresenterListener.onSuccessListener(requestID, res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
