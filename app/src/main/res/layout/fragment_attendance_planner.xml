@@ -37,7 +37,7 @@
             android:paddingLeft="@dimen/dimen_05dp"
             android:paddingTop="@dimen/dimen_05dp"
             android:paddingRight="@dimen/dimen_05dp"
-            android:src="@drawable/ic_down_arrow_light_blue" />
+            android:src="@drawable/ic_shape_down_arrow" />
     </RelativeLayout>
 
     <ScrollView

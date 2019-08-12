@@ -163,6 +163,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private CheckOut checkOut;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    private Location location;
+    ImageView ivCalendarMode;
 
     public AttendancePlannerFragment() {
         // Required empty public constructor
@@ -268,7 +270,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         progressBar=plannerView.findViewById(R.id.pb_profile_act);
         progressBarLayout=plannerView.findViewById(R.id.profile_act_progress_bar);
-        ImageView ivCalendarMode = plannerView.findViewById(R.id.iv_calendar_mode);
+        ivCalendarMode = plannerView.findViewById(R.id.iv_calendar_mode);
         calendarView = plannerView.findViewById(R.id.calendarView);
         calendarView.state().edit().setMaximumDate(Calendar.getInstance().getTime()).commit();
 
@@ -353,7 +355,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckIn.setText(checkInText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm"));
                         btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
-
                         btCheckIn.setEnabled(false);
                     }else {
                         btCheckIn.setText("CheckIn at 00:00");
@@ -657,8 +658,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 if (!gpsTracker.canGetLocation()) {
                     Toast.makeText(getActivity(),"Unable to get lat and log",Toast.LENGTH_LONG).show();
                 }
-                getLocation();
-                getCompleteAddressString(Double.parseDouble(strLat),Double.parseDouble(strLong));
+
                 millis=getLongFromDate();
                 if(!Util.isConnected(getActivity()))
                 {
@@ -672,46 +672,59 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         Toast.makeText(getActivity(),"Already check in",Toast.LENGTH_LONG).show();
                     }
                     else {
-                        AttendaceData attendaceData=new AttendaceData();
-                        attendaceData.setUid("000");
-                        Double lat=Double.parseDouble(strLat);
-                        Double log=Double.parseDouble(strLong);
-                        attendaceData.setLatitude(lat);
-                        attendaceData.setLongitude(log);
-                        attendaceData.setAddress(strAdd);
-                        attendaceData.setAttendaceDate(millis);
-                        attendaceData.setAttendanceType(CHECK_IN);
-                        attendaceData.setTime(String.valueOf(time));
-                        attendaceData.setSync(false);
-                        attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
-                        attendaceData.setMobileNumber(Util.getUserMobileFromPref());
-                        userAttendanceDao.insert(attendaceData);
+                        if(getLocation()!=null){
 
-                        //tvCheckInTime.setText(time);
-                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-                        btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
+                            AttendaceData attendaceData=new AttendaceData();
+                            attendaceData.setUid("000");
+                            Double lat=Double.parseDouble(strLat);
+                            Double log=Double.parseDouble(strLong);
+                            attendaceData.setLatitude(lat);
+                            attendaceData.setLongitude(log);
+                            attendaceData.setAddress(strAdd);
+                            attendaceData.setAttendaceDate(millis);
+                            attendaceData.setAttendanceType(CHECK_IN);
+                            attendaceData.setTime(String.valueOf(time));
+                            attendaceData.setSync(false);
+                            attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                            attendaceData.setMobileNumber(Util.getUserMobileFromPref());
+                            userAttendanceDao.insert(attendaceData);
+
+                            //tvCheckInTime.setText(time);
+                            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
+                            btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
 
-                        preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
-                        preferenceHelper.totalHours(KEY_TOTALHOURS,true);
-                        checkInText=checkInText+ checkInTime;
-                        btCheckIn.setText(checkInText);
-                        preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
+                            preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
+                            preferenceHelper.totalHours(KEY_TOTALHOURS,true);
+                            checkInText=checkInText+ checkInTime;
+                            btCheckIn.setText(checkInText);
+                            preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
 
-                        //setButtonText();
-                        enableCheckOut();
+                            //setButtonText();
+                            enableCheckOut();
 
-                        Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
+                            Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
 
-                        Log.i("OfflineStorage","111"+attendaceData);
+                            Log.i("OfflineStorage","111"+attendaceData);
+
+                        }else{
+                            Util.showToast("Unable to get location",getActivity());
+                        }
+
                      }
-
 
                 }
                 else {
-                    Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
-                    submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                    submitAttendanceFragmentPresenter.markAttendace(CHECK_IN.toLowerCase(),millis,time.toString(),"",strLat,strLong,strAdd);
+
+                    if(getLocation()!=null){
+                        Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
+                        submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
+                        submitAttendanceFragmentPresenter.markAttendace(CHECK_IN.toLowerCase(),millis,time.toString(),"",strLat,strLong,strAdd);
+
+                    }else {
+                        Util.showToast("Unable to get location",getActivity());
+                    }
+
                 }
 
 
@@ -738,72 +751,83 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             if (!gpsTracker.canGetLocation()) {
                 gpsTracker.showSettingsAlert();
             }
-            getLocation();
-            getCompleteAddressString(Double.parseDouble(strLat),Double.parseDouble(strLong));
+
             millis=getLongFromDate();
             if(!Util.isConnected(getActivity())){
 
                 getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
-
                 if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
-                    Toast.makeText(getActivity(),"User already check out",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"User already checked out",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    AttendaceCheckOut attendaceData=new AttendaceCheckOut();
-                    attendaceData.setUid("000");
-                    Double lat=Double.parseDouble(strLat);
-                    Double log=Double.parseDouble(strLong);
-                    attendaceData.setLatitude(lat);
-                    attendaceData.setLongitude(log);
-                    attendaceData.setAddress(strAdd);
-                    attendaceData.setAttendaceDate(millis);
-                    attendaceData.setAttendanceType(CHECK_OUT);
-                    attendaceData.setTime(String.valueOf(time));
-                    attendaceData.setSync(false);
-                    attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                    if(getLocation()!=null){
+                        AttendaceCheckOut attendaceData=new AttendaceCheckOut();
+                        attendaceData.setUid("000");
+                        Double lat=Double.parseDouble(strLat);
+                        Double log=Double.parseDouble(strLong);
+                        attendaceData.setLatitude(lat);
+                        attendaceData.setLongitude(log);
+                        attendaceData.setAddress(strAdd);
+                        attendaceData.setAttendaceDate(millis);
+                        attendaceData.setAttendanceType(CHECK_OUT);
+                        attendaceData.setTime(String.valueOf(time));
+                        attendaceData.setSync(false);
+                        attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
 
-                    try {
-                        attendaceData.setTotalHrs(getTotalHours());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                        try {
+                            attendaceData.setTotalHrs(getTotalHours());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        attendaceData.setMobileNumber(Util.getUserMobileFromPref());
+                        userCheckOutDao.insert(attendaceData);
+
+                        btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
+                        btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
+
+                        checkOutText=checkOutText+ chkOutTime;
+                        btCheckout.setText(checkOutText);
+                        preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
+
+
+                        //setButtonText();
+                        if(!isCheckOut){
+                            getDiffBetweenTwoHours();
+
+                        }
+                        isCheckOut=true;
+                        preferenceHelper.totalHours(KEY_TOTALHOURS,false);
+                        Util.showToast(getResources().getString(R.string.check_out),getActivity());
+
+
                     }
-
-                    attendaceData.setMobileNumber(Util.getUserMobileFromPref());
-                    userCheckOutDao.insert(attendaceData);
-
-                    btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-                    btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
-
-                    checkOutText=checkOutText+ chkOutTime;
-                    btCheckout.setText(checkOutText);
-                    preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
-
-
-                    //setButtonText();
-                    if(!isCheckOut){
-                        getDiffBetweenTwoHours();
-
+                    else {
+                        Util.showToast("Unable to get location",getActivity());
                     }
-                    isCheckOut=true;
-                    preferenceHelper.totalHours(KEY_TOTALHOURS,false);
-                    Util.showToast(getResources().getString(R.string.check_out),getActivity());
 
 
 
                 }
 
             }else {
-                attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(),Util.getUserMobileFromPref());
-                Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
-                String diffInCheckInandCheckout=null;
-                try {
-                    diffInCheckInandCheckout=totalHoursAfterCheckOut();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if(getLocation()!=null){
+                    attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(),Util.getUserMobileFromPref());
+                    Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
+                    String diffInCheckInandCheckout=null;
+                    try {
+                        diffInCheckInandCheckout=totalHoursAfterCheckOut();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("TotalHrs","111"+diffInCheckInandCheckout);
+                    submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
+                    submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
+
+                }else{
+                    Util.showToast("Unable to get location",getActivity());
                 }
-                Log.i("TotalHrs","111"+diffInCheckInandCheckout);
-                submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
+
             }
 
 
@@ -826,11 +850,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
                     .commit();
+            ivCalendarMode.setRotation(180);
+
         } else {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.WEEKS)
                     .commit();
+            ivCalendarMode.setRotation(0);
         }
 
         calendarView.setSelectedDate(instance.getTime());
@@ -839,7 +866,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     }
 
-    private void highlightDates() {
+    private void highlightDates()
+    {
         // set the date list to highlight
         ArrayList<CalendarDay> dateList = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
@@ -904,9 +932,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     }
 
-    public void getLocation(){
-        Location location = gpsTracker.getLocation();
-
+    public Location getLocation(){
+        location = gpsTracker.getLocation();
         if (location != null) {
             strLat = String.valueOf(location.getLatitude());
             strLong = String.valueOf(location.getLongitude());
@@ -915,8 +942,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             strLong = gpsTracker.getLongitude();
         }
         Log.i("latLong","222"+strLat+":-"+strLong);
-
-
+        return location;
     }
 
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
@@ -1211,12 +1237,15 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
 
         if(userCheckInTime!=null){
+
             makeCheckInButtonGray();
-            btCheckIn.setText(checkInText+userCheckInTime);
+            clearCheckInButtonText();
+            btCheckIn.setText("Check in at"+ userCheckInTime);
         }
         if(userCheckOutTime!=null){
             makeCheckOutButtonGray();
-            btCheckout.setText(checkOutText + userCheckOutTime);
+            clearCheckOutButtonText();
+            btCheckout.setText("Check out at" + userCheckOutTime);
         }
     }
 
@@ -1239,10 +1268,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public void checkUserIsMakedIn(){
 
         if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
-
             btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
-            btCheckIn.setText(checkInText+ getUserType.get(0).getTime());
+            clearCheckInButtonText();
+            btCheckIn.setText("Check in at "+ getUserType.get(0).getTime());
             //setButtonText();
             enableCheckOut();
 
@@ -1259,7 +1288,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
-            btCheckout.setText(checkOutText+ getUserCheckOutType.get(0).getTime());
+            clearCheckOutButtonText();
+            btCheckout.setText("Check out at" + getUserCheckOutType.get(0).getTime());
             //setButtonText();
         }
     }
@@ -1362,6 +1392,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         });
     }
 
+    public void clearCheckInButtonText(){
+        btCheckIn.setText("");
+    }
+
+    public void clearCheckOutButtonText(){
+        btCheckout.setText("");
+    }
 
 }
 
