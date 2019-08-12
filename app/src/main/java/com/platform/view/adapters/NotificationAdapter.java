@@ -67,10 +67,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             layNotification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    switch (notificationList.get(getAdapterPosition()).getToOpen()) {
-                        case "":
-                            break;
-                        default:
+                    if (notificationList.get(getAdapterPosition()).getToOpen()!=null) {
+                        switch (notificationList.get(getAdapterPosition()).getToOpen()) {
+                            case "":
+                                break;
+                            default:
+                        }
                     }
                 }
             });
