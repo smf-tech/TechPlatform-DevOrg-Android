@@ -375,7 +375,7 @@
                     android:id="@+id/ly_events"
                     android:layout_width="match_parent"
                     android:layout_below="@+id/ly_attendance"
-                    android:layout_height="@dimen/dimen_277dp"
+                    android:layout_height="@dimen/dimen_120dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
                     android:visibility="gone">
 

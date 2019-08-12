@@ -243,8 +243,6 @@
     <string name="check">Checked In Successful</string>
 
 
-
-
     <!--Events & Tasks-->
     <string name="events">Events</string>
     <string name="all_events">All Events</string>
@@ -426,8 +424,6 @@
     <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Suceesful</string>
     <string name="check_out_msg">Checked Out Successful</string>
-
-
 
 
 </resources>

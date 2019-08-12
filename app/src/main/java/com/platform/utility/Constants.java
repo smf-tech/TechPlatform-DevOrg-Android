@@ -71,6 +71,10 @@ public class Constants {
 
         static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
         static final String FILE_EXTENSION = ".txt";
+
+        public static final String FirebaseTopicProjectWise = "ProjectWise";
+        public static final String FirebaseTopicProjectRoleWise = "ProjectRoleWise";
+
     }
 
     public static class AssociatesType {

@@ -103,6 +103,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     TextView tvAttendanceDetails;
     Button btCheckIn;
     Button btCheckout;
+
+    private RelativeLayout lyEvents;
+    private RelativeLayout lyTasks;
+    private RelativeLayout lyAttendance;
+    private RelativeLayout lyLeaves;
+
     private PlannerFragmentPresenter plannerFragmentPresenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
@@ -255,10 +261,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         // comment by deepak on 1-07-2019
         plannerFragmentPresenter = new PlannerFragmentPresenter(this);
 
-        RelativeLayout rl_events = plannerView.findViewById(R.id.ly_events);
-        RelativeLayout rl_tasks = plannerView.findViewById(R.id.ly_task);
-        RelativeLayout rl_attendance = plannerView.findViewById(R.id.ly_attendance);
-        RelativeLayout rl_leaves = plannerView.findViewById(R.id.ly_leave);
+        lyEvents= plannerView.findViewById(R.id.ly_events);
+        lyTasks= plannerView.findViewById(R.id.ly_task);
+        lyAttendance= plannerView.findViewById(R.id.ly_attendance);
+        lyLeaves= plannerView.findViewById(R.id.ly_leave);
 
         List<Modules> approveModules = DatabaseManager.getDBInstance(getActivity().getApplicationContext())
                 .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
@@ -270,19 +276,19 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         for (Modules m : approveModules) {
             switch (m.getName().getDefaultValue()) {
                 case Constants.Planner.ATTENDANCE_KEY_:
-                    rl_attendance.setVisibility(View.VISIBLE);
+                    lyAttendance.setVisibility(View.VISIBLE);
                     setAttendaceView();
                     break;
                 case Constants.Planner.EVENTS_KEY_:
-                    rl_events.setVisibility(View.VISIBLE);
+                    lyEvents.setVisibility(View.VISIBLE);
                     setEventView();
                     break;
                 case Constants.Planner.TASKS_KEY_:
-                    rl_tasks.setVisibility(View.VISIBLE);
+                    lyTasks.setVisibility(View.VISIBLE);
                     setTaskView();
                     break;
                 case Constants.Planner.LEAVES_KEY_:
-                    rl_leaves.setVisibility(View.VISIBLE);
+                    lyLeaves.setVisibility(View.VISIBLE);
                     setLeaveView();
                     break;
                 default:
@@ -373,8 +379,15 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_events);
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
+
+                        final float scale = getContext().getResources().getDisplayMetrics().density;
+                        int px = (int) (277 * scale + 0.5f);
+                        lyEvents.getLayoutParams().height = px;
                     } else {
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
+                        final float scale = getContext().getResources().getDisplayMetrics().density;
+                        int px = (int) (135 * scale + 0.5f);
+                        lyEvents.getLayoutParams().height = px;
                     }
                     break;
                 case Constants.Planner.TASKS_KEY:
@@ -386,9 +399,16 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         RecyclerView rvTask = plannerView.findViewById(R.id.rv_task);
                         rvTask.setLayoutManager(mLayoutManagerTask);
                         rvTask.setAdapter(taskListAdapter);
+
+                        final float scale = getContext().getResources().getDisplayMetrics().density;
+                        int px = (int) (277 * scale + 0.5f);
+                        lyTasks.getLayoutParams().height = px;
+
                     } else {
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
-
+                        final float scale = getContext().getResources().getDisplayMetrics().density;
+                        int px = (int) (135 * scale + 0.5f);
+                        lyTasks.getLayoutParams().height = px;
                     }
                     break;
                 case Constants.Planner.LEAVES_KEY:

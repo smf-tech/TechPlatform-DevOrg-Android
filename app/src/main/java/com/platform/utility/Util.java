@@ -355,6 +355,23 @@ public class Util {
         }
     }
 
+    public static void setStringInPref(String key,String value) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getStringFromPref(String key) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String value = preferences.getString(key, "");
+
+        return value;
+    }
+
     public static <T> void showToast(String msg, T context) {
         try {
             if (TextUtils.isEmpty(msg)) {
