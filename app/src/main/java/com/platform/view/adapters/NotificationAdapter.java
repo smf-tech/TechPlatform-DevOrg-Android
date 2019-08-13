@@ -14,18 +14,18 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.notifications.NotificationData;
-import com.platform.view.fragments.NotificationsFragment;
+import com.platform.view.activities.NotificationsActivity;
 
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
 
-    private NotificationsFragment context;
+    private NotificationsActivity context;
     private List<NotificationData> notificationList;
 
-    public NotificationAdapter(NotificationsFragment notificationsFragment, List<NotificationData> notificationList) {
+    public NotificationAdapter(NotificationsActivity context, List<NotificationData> notificationList) {
         this.notificationList = notificationList;
-        this.context = notificationsFragment;
+        this.context = context;
     }
 
     @NonNull
@@ -40,10 +40,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(@NonNull NotificationAdapter.MyViewHolder holder, int position) {
         holder.tvTitle.setText(notificationList.get(position).getTitle());
-        holder.tvDetel.setText(notificationList.get(position).getText());
-        if(notificationList.get(position).getUnread()){
-            holder.imgDelete.setBackground(context.getResources().getDrawable(R.drawable.circle_background));
-        }
+        holder.tvDetal.setText(notificationList.get(position).getText());
+        holder.tvDateTime.setText(notificationList.get(position).getDateTime());
+
+
+        //Check unread message..
+//        if(notificationList.get(position).getUnread()){
+//            holder.imgDelete.setBackground(context.getResources().getDrawable(R.drawable.circle_background));
+//        }
     }
 
     @Override
@@ -52,7 +56,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvDetel;
+        TextView tvTitle, tvDetal, tvDateTime;
         ImageView imgDelete;
         RelativeLayout layNotification;
 
@@ -60,17 +64,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.tv_title);
-            tvDetel = itemView.findViewById(R.id.tv_Detels);
+            tvDetal = itemView.findViewById(R.id.tv_detals);
+            tvDateTime = itemView.findViewById(R.id.tv_date_time);
             imgDelete = itemView.findViewById(R.id.row_img);
             layNotification = itemView.findViewById(R.id.row_layout);
 
             layNotification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    switch (notificationList.get(getAdapterPosition()).getToOpen()) {
-                        case "":
-                            break;
-                        default:
+                    if(notificationList.get(getAdapterPosition()).getToOpen()!=null){
+                        switch (notificationList.get(getAdapterPosition()).getToOpen()) {
+                            case "":
+                                break;
+                            default:
+                        }
                     }
                 }
             });
@@ -79,8 +86,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View view) {
                     DatabaseManager.getDBInstance(Platform.getInstance())
                             .getNotificationDataDeo().deleteNotification(notificationList.get(getAdapterPosition()).getId());
-//                    DatabaseManager.getDBInstance(Platform.getInstance())
-//                            .getNotifications().deleteAllNotifications();
                     notificationList.remove(getAdapterPosition());
                     notifyDataSetChanged();
                 }

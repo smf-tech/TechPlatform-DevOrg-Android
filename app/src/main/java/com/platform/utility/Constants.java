@@ -71,6 +71,10 @@ public class Constants {
 
         static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
         static final String FILE_EXTENSION = ".txt";
+
+        public static final String FirebaseTopicProjectWise = "ProjectWise";
+        public static final String FirebaseTopicProjectRoleWise = "ProjectRoleWise";
+
     }
 
     public static class AssociatesType {
@@ -283,7 +287,8 @@ public class Constants {
         public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
-        public static final String MEMBER_LIST_DATA = "RepeatEventDta";
+        public static final String MEMBER_LIST_DATA = "MemberListData";
+        public static final String MEMBER_LIST_COUNT = "MemberListCount";
         public static final String PLANNED_STATUS = "planned";
         public static final String COMPLETED_STATUS = "completed";
 

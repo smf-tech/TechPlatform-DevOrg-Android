@@ -2,9 +2,11 @@ package com.platform.presenter;
 
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.platform.listeners.LeaveDataListener;
 import com.platform.listeners.LeavePresenterListener;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.leaves.LeaveData;
 import com.platform.request.LeavesRequestCall;
 
@@ -84,9 +86,10 @@ public class LeavesPresenter implements LeavePresenterListener {
             return;
         }
         fragmentWeakReference.get().hideProgressBar();
+        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
         try {
             if (response != null) {
-                fragmentWeakReference.get().onSuccessListener(requestID, response);
+                fragmentWeakReference.get().onSuccessListener(requestID, responseOBJ.getMessage());
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());

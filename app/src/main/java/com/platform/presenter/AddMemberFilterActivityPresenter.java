@@ -11,6 +11,7 @@ import com.platform.models.events.Participant;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.models.profile.OrganizationRolesResponse;
+import com.platform.request.AddMemeberFilterRequestCall;
 import com.platform.request.EventRequestCall;
 import com.platform.request.ProfileRequestCall;
 import com.platform.utility.Util;
@@ -35,7 +36,7 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 //    }
 
     public void getOrganizationRoles(String orgId) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
+        AddMemeberFilterRequestCall requestCall = new AddMemeberFilterRequestCall();
         requestCall.setListener(this);
         addMemberFilterActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId);
@@ -68,7 +69,12 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
             if (orgResponse != null && orgResponse.getData() != null
                     && !orgResponse.getData().isEmpty()
                     && orgResponse.getData().size() > 0) {
-                addMemberFilterActivity.get().showOrganizations(orgResponse.getData());
+                if(orgResponse.getStatus()==200){
+                    addMemberFilterActivity.get().showOrganizations(orgResponse.getData());
+                } else {
+                    onFailureListener(orgResponse.getMessage());
+                }
+
             }
         }
     }
@@ -112,10 +118,12 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
         addMemberFilterActivity.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             MemberListResponse memberListResponse = new Gson().fromJson(response, MemberListResponse.class);
-            if (memberListResponse != null && memberListResponse.getData() != null
-                    && !memberListResponse.getData().isEmpty()
-                    && memberListResponse.getData().size() > 0) {
-                addMemberFilterActivity.get().showMember((ArrayList<Participant>) memberListResponse.getData());
+            if (memberListResponse != null) {
+                if(memberListResponse.getStatus()==200){
+                    addMemberFilterActivity.get().showMember((ArrayList<Participant>) memberListResponse.getData());
+                } else {
+                    onFailureListener(memberListResponse.getMessage());
+                }
             }
         }
     }

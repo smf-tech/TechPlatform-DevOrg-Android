@@ -370,7 +370,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     }
                     else{
                         btCheckout.setText("CheckOut at 00:00");
-
                     }
 
                     if(attendanceDateList.getTotalHrs()!=null){
@@ -379,6 +378,41 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         txt_total_hours.setText("00:00");
                     }
 
+                    //cheack that created at is equal to today date
+                    Calendar calendar=Calendar.getInstance();
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                    String currDate=sdf.format(new Date());
+
+                    if(AttendaceCreatedAt.equalsIgnoreCase(currDate)){
+                        if(attendanceDateList.getCheckOutTime().isEmpty()){
+
+                            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
+                            btCheckout.setText("CheckOut");
+                            btCheckout.setTextColor(getResources().getColor(R.color.white));
+                            btCheckout.setEnabled(true);
+                        }
+
+                    }
+
+
+
+
+
+
+
+
+
+                }
+                else {
+
+                    txt_total_hours.setText("00:00");
+                    btCheckIn.setText("CheckIn at 00:00");
+                    btCheckIn.setEnabled(false);
+
+                    makeCheckInButtonGray();
+                    btCheckout.setText("CheckOut at 00:00");
+                    btCheckout.setEnabled(false);
+                    makeCheckOutButtonGray();
                 }
 
             }
@@ -812,6 +846,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
             }else {
                 if(getLocation()!=null){
+
                     attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(),Util.getUserMobileFromPref());
                     Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
                     String diffInCheckInandCheckout=null;
@@ -821,8 +856,17 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         e.printStackTrace();
                     }
                     Log.i("TotalHrs","111"+diffInCheckInandCheckout);
-                    submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                    submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
+
+
+                    if(attendaceId!=null){
+                        submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
+                        submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
+                    }
+                    else {
+                        submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
+                        submitAttendanceFragmentPresenter.markOutAttendance(userAvailable,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
+                    }
+
 
                 }else{
                     Util.showToast("Unable to get location",getActivity());
@@ -1094,13 +1138,29 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         Log.i("checkOut","111"+response);
         Util.removeSimpleProgressDialog();
 
+        int status=0;
+        JSONObject jsonObject = null;
+        String msg="",id="";
+        try {
+            jsonObject = new JSONObject(response);
+            status = jsonObject.getInt("status");
+            JSONObject jsonData=jsonObject.getJSONObject("data");
+            id = jsonData.getString("_id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
 
         if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
             Toast.makeText(getActivity(),"User Already Check Out",Toast.LENGTH_LONG).show();
+        }else if(status==300){
+            Util.showToast("User already check out",getActivity());
         }else {
             AttendaceCheckOut attendaceData=new AttendaceCheckOut();
-            attendaceData.setUid(attendaceId);
+            attendaceData.setUid(id);
             Double lat=Double.parseDouble(strLat);
             Double log=Double.parseDouble(strLong);
             attendaceData.setLatitude(lat);
@@ -1132,7 +1192,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             }
             isCheckOut=true;
             preferenceHelper.totalHours(KEY_TOTALHOURS,false);
-            Util.showToast(getResources().getString(R.string.check_out),getActivity());
+            Util.showToast( getResources().getString(R.string.check_out),getActivity());
 
 
             Log.i("Online","111"+attendaceData);
@@ -1229,9 +1289,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
         monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
-
         setButtonText();
         checkUserIsMakedIn();
+        if(userAvailable!=null||userAvailable==""){
+            enableCheckOut();
+        }
+
         if(!isCheckOut){
             getDiffBetweenTwoHours();
         }
@@ -1247,6 +1310,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             clearCheckOutButtonText();
             btCheckout.setText("Check out at" + userCheckOutTime);
         }
+
     }
 
     public void setButtonText(){

@@ -80,8 +80,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void initView() {
         toOpen = getIntent().getStringExtra(Constants.Planner.TO_OPEN);
         eventTask = (EventTask) getIntent().getSerializableExtra(Constants.Planner.EVENT_DETAIL);
-        flagEdit=false;
-        flagUpdateMember=false;
+        flagEdit = false;
+        flagUpdateMember = false;
 
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
@@ -115,9 +115,9 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         tvStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(), Constants.FORM_DATE_FORMAT));
         tvEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(), Constants.FORM_DATE_FORMAT));
 
-        String strMemberDitels="Added members " + eventTask.getParticipantsCount();
+        String strMemberDitels = "Added members " + eventTask.getParticipantsCount();
         if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
-            strMemberDitels= strMemberDitels+ " | Attended by " + eventTask.getAttendedCompleted()+ " members";
+            strMemberDitels = strMemberDitels + " | Attended by " + eventTask.getAttendedCompleted() + " members";
         }
         tvMemberCount.setText(strMemberDitels);
 
@@ -152,8 +152,8 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     private void viewConfig() {
         DateFormat dateFormat = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
         DateFormat sdateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
-        Date starDate=null;
-        Date endDate=null;
+        Date starDate = null;
+        Date endDate = null;
         Date currentDate = Calendar.getInstance().getTime();
         long startTimeStamp = eventTask.getSchedule().getStartdatetime();
         long endTimeStamp = eventTask.getSchedule().getEnddatetime();
@@ -173,10 +173,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             Log.e("Exception", e.getMessage());
         }
 
-        if(endDate.getYear() >= currentDate.getYear()){
-            if(endDate.getMonth() >= currentDate.getMonth()){
-                if(endDate.getDate() >= currentDate.getDate()){
-                    flagEdit=true;
+        if (endDate.getYear() >= currentDate.getYear()) {
+            if (endDate.getMonth() >= currentDate.getMonth()) {
+                if (endDate.getDate() >= currentDate.getDate()) {
+                    flagEdit = true;
                 }
             }
         }
@@ -184,16 +184,15 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
             //owner
 //            if(starDate.getTime() > currentDate.getTime()) {
-            if(flagEdit) {
+            if (flagEdit) {
                 editButton.setVisibility(View.VISIBLE);
                 toolbarAction.setVisibility(View.VISIBLE);
             }
-            if(flagEdit){
-                flagUpdateMember=true;
+            if (flagEdit) {
+                flagUpdateMember = true;
             }
         } else {
             //viewer
-            tvMemberCount.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
             toolbarAction.setVisibility(View.GONE);
         }
@@ -202,22 +201,15 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             setActionbar(getString(R.string.task_detail));
             ivEventPic.setVisibility(View.GONE);
             btCompleteTask.setVisibility(View.VISIBLE);
-            if (eventTask.getParticipantsCount() > 0 ) {
-                btParticipants.setVisibility(View.VISIBLE);
-                lyMembarlistCode.setVisibility(View.VISIBLE);
-            }
         } else {
             setActionbar(getString(R.string.event_detail));
             //handling attendance button
-            if (eventTask.getParticipantsCount() > 0) {
-                btParticipants.setVisibility(View.VISIBLE);
-            }
             if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
                 lyMembarlistCode.setVisibility(View.VISIBLE);
                 if (eventTask.isMarkAttendanceRequired()) {
-                    if(flagEdit) {
+                    if (flagEdit) {
                         btGetCode.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         btGetCode.setVisibility(View.GONE);
                     }
                 } else {
@@ -226,9 +218,9 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             } else {
                 if (eventTask.isMarkAttendanceRequired()) {
                     btSetCode.setVisibility(View.VISIBLE);
-                    if(flagEdit) {
+                    if (flagEdit) {
                         btSetCode.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         btSetCode.setVisibility(View.GONE);
                     }
                 } else {
@@ -284,11 +276,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 break;
             case R.id.bt_participants:
                 //see showMemberList()
-                if (eventTask.getParticipantsCount() == 0) {
-                    showErrorMessage("No members");
-                } else {
-                    presenter.memberList(eventTask.getId());
-                }
+                presenter.memberList(eventTask.getId());
                 break;
 
             case R.id.bt_get_code:
@@ -393,18 +381,31 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     }
 
     public void showMemberList(ArrayList<Participant> memberList) {
-        if (memberList != null && memberList.size() > 0) {
-            Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-            intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
-            intentAddMembersListActivity.putExtra(Constants.Planner.TO_OPEN,toOpen);
-            intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, flagUpdateMember);
-            intentAddMembersListActivity.putExtra(Constants.Planner.EVENT_TASK_ID, eventTask.getId());
-            intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
-            this.startActivity(intentAddMembersListActivity);
-        } else {
-            showErrorMessage("No members");
+
+        Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
+        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, false);
+        intentAddMembersListActivity.putExtra(Constants.Planner.TO_OPEN, toOpen);
+        intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, flagUpdateMember);
+        intentAddMembersListActivity.putExtra(Constants.Planner.EVENT_TASK_ID, eventTask.getId());
+        intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, memberList);
+        this.startActivityForResult(intentAddMembersListActivity,Constants.Planner.MEMBER_LIST);
+//        this.startActivity(intentAddMembersListActivity);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.Planner.MEMBER_LIST && data != null) {
+            int memberCount = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT,0);
+            String strMemberDitels = "Added members " + memberCount;
+            if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
+                strMemberDitels = strMemberDitels + " | Attended by " + eventTask.getAttendedCompleted() + " members";
+            }
+            tvMemberCount.setText(strMemberDitels);
         }
     }
+
 
     @Override
     public void showProgressBar() {

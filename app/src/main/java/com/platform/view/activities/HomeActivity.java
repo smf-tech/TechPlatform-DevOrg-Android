@@ -2,7 +2,10 @@ package com.platform.view.activities;
 
 
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -42,6 +46,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.platform.R;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
@@ -51,15 +56,12 @@ import com.platform.utility.ForceUpdateChecker;
 import com.platform.utility.Util;
 import com.platform.view.fragments.ContentManagementFragment;
 import com.platform.view.fragments.HomeFragment;
-import com.platform.view.fragments.NotificationsFragment;
 import com.platform.view.fragments.PMFragment;
 import com.platform.view.fragments.PlannerFragment;
 import com.platform.view.fragments.ReportsFragment;
 
 import java.io.File;
 import java.util.List;
-
-import static com.platform.utility.Constants.Notification.NOTIFICATION;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,ContentManagementFragment.OnFragmentInteractionListener {
@@ -69,6 +71,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private ActionBarDrawerToggle toggle;
     private boolean doubleBackToExitPressedOnce = false;
     private final String TAG = this.getClass().getSimpleName();
+    private BroadcastReceiver mMessageReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +79,54 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         setContentView(R.layout.activity_home);
         initMenuView();
 
-        /*FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        String token = task.getResult().getToken();
-                        Toast.makeText(HomeActivity.this, token, Toast.LENGTH_SHORT).show();
-                    }
-                });*/
+        initBrodcastResiver();
+        subscribedToFirebaseTopics();
+    }
+
+    private void initBrodcastResiver() {
+
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUnreadNotificationsCount();
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(Constants.PUSH_NOTIFICATION));
 
     }
+
+    private void subscribedToFirebaseTopics() {
+        FirebaseMessaging.getInstance().subscribeToTopic("Test");
+/*
+        String userProject=Util.getUserObjectFromPref().getProjectIds().get(0).getName();
+        String userRoll=Util.getUserObjectFromPref().getRoleNames();
+        userProject =userProject.replaceAll(" ","_");
+        userRoll =userRoll.replaceAll(" ","_");
+
+        if((userProject).equals(Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise))
+                || Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise).equals("")){
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectWise,userProject);
+            FirebaseMessaging.getInstance().subscribeToTopic(userProject);
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise));
+            FirebaseMessaging.getInstance().subscribeToTopic(userProject);
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectWise,userProject);
+        }
+
+        if((userProject+"_"+userRoll).equals(Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise))
+                || Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise).equals("")){
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise,userProject+"_"+userRoll);
+            FirebaseMessaging.getInstance().subscribeToTopic(userProject+"_"+userRoll);
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise));
+            FirebaseMessaging.getInstance().subscribeToTopic(userProject+"_"+userRoll);
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise,userProject+"_"+userRoll);
+        }
+*/
+    }
+
 
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
@@ -162,12 +199,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
         versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
 
-        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
-        if (notificationClicked) {
-            loadTeamsPage();
-        } else {
-            loadHomePage();
-        }
+//        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
+//        if (notificationClicked) {
+//            loadTeamsPage();
+//        } else {
+//
+//        }
+        loadHomePage();
     }
 
     private void updateUnreadNotificationsCount() {
@@ -605,12 +643,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.home_bell_icon:
             case R.id.unread_notification_count:
-                findViewById(R.id.home_bell_icon).setVisibility(View.GONE);
-                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
-
-                Util.launchFragment(new NotificationsFragment(), this,
-                        getString(R.string.notifications), true);
-
+                Intent intent = new Intent(this, NotificationsActivity.class);
+                this.startActivity(intent);
                 break;
 
             case R.id.home_sync_icon:

@@ -45,6 +45,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -167,6 +168,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         etEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.TIME_FORMAT_));
         etDescription.setText(eventTask.getDescription());
         etAddress.setText(eventTask.getAddress());
+        findViewById(R.id.rl_add_members).setVisibility(View.GONE);
 
         if (toOpen.equalsIgnoreCase(Constants.Planner.EVENTS_LABEL)) {
 //            setAdapter(eventTask.getMembersList());
@@ -359,9 +361,11 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
+        Date currentDate = null;
         try {
             startDate = formatter.parse(etStartDate.getText().toString().trim()+" "+etStartTime.getText().toString().trim());
             endDate = formatter.parse(etEndDate.getText().toString().trim()+" "+etEndTime.getText().toString().trim());
+            currentDate = Calendar.getInstance().getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -380,6 +384,9 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             msg = getResources().getString(R.string.msg_enter_ned_date);
         } else if (startDate.getTime() > endDate.getTime()) {
             msg = getResources().getString(R.string.msg_enter_proper_date);
+        }else if (currentDate.getTime() > startDate.getTime()) {
+//            msg = getResources().getString(R.string.msg_enter_proper_date);
+            msg = "Cannot create event on past date or time";
         } else if (etAddress.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_address);
         } else if (cbIsRegistrationRequired.isChecked()) {

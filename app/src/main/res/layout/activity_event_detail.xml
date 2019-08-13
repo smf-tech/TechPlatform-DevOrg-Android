@@ -322,7 +322,6 @@
                     android:layout_margin="@dimen/dimen_05dp"
                     android:text="Members list"
                     android:textAllCaps="false"
-                    android:visibility="gone"
                     android:fontFamily="@font/opensans" />
 
             </LinearLayout>
