@@ -1,5 +1,6 @@
 package com.platform.view.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.notifications.NotificationData;
 import com.platform.view.activities.NotificationsActivity;
+import com.platform.view.activities.TMFiltersListActivity;
 
 import java.util.List;
 
@@ -74,7 +76,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View view) {
                     if(notificationList.get(getAdapterPosition()).getToOpen()!=null){
                         switch (notificationList.get(getAdapterPosition()).getToOpen()) {
-                            case "":
+                            case "Approval":
+                                Intent intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
                                 break;
                             default:
                         }

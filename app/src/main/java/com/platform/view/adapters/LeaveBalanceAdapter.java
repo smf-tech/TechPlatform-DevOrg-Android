@@ -48,7 +48,7 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
     @Override
     public void onBindViewHolder(@NonNull LeaveBalanceAdapter.MyViewHolder holder, int position) {
         if(adapterType.equalsIgnoreCase("LeaveBalance")){
-            holder.tvLeaveCount.setText(leave.get(position).getBalance());
+            holder.tvLeaveCount.setText(""+leave.get(position).getBalance());
         }
         holder.tvLeaveType.setText(leave.get(position).getType());
         if(adapterType.equalsIgnoreCase("Category")){
@@ -85,6 +85,7 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
                                 leaveBackground.remove(i);
                                 leaveBackground.add(i, R.drawable.leave_form_view_focused);
                                 context.selectedLeaveCatgory = leave.get(i).getType();
+                                context.selectedLeaveCatgoryBalance = leave.get(i).getBalance();
                             } else {
                                 leaveBackground.remove(i);
                                 leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
