@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.notifications.NotificationData;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.NotificationAdapter;
 
@@ -112,8 +114,6 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         // Create the AlertDialog object and return it
         alertDialog = builder.create();
         alertDialog.show();
-
-
     }
 
 }

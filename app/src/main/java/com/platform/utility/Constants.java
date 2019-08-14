@@ -150,6 +150,8 @@ public class Constants {
         public static final String HOME="Home";
         public static final String STORIES="Stories";
         public static final String CONNECT="Connect";
+        public static final String TO_OPEN="ToOpen";
+        public static final Integer NEVIGET_TO= 001;
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";

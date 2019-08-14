@@ -25,7 +25,7 @@ import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.events.EventTask;
 import com.platform.models.events.EventParams;
 import com.platform.models.events.EventsResponse;
-import com.platform.presenter.EventsPlannerFragmentPresenter;
+import com.platform.presenter.EventsTaskLandingFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.utility.Util;
@@ -65,7 +65,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
 
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    private EventsPlannerFragmentPresenter presenter;
+    private EventsTaskLandingFragmentPresenter presenter;
 
     private String toOpen;
     private boolean isMonth;
@@ -115,7 +115,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         eventParams.setUserId(Util.getUserObjectFromPref().getId());
         selectedMonth = Integer.parseInt(eventParams.getMonth());
 
-        presenter = new EventsPlannerFragmentPresenter(this);
+        presenter = new EventsTaskLandingFragmentPresenter(this);
         presenter.getEventsOfMonth(eventParams);
 
 

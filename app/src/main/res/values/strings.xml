@@ -187,7 +187,7 @@
     <string name="saved_forms">Saved</string>
     <string name="submitted_forms">Submitted</string>
     <string name="form_field_mandatory">%1$s%2$s</string>
-    <string name="msg_no_pending_req">There are no pending requests for approvals.</string>
+    <string name="msg_no_pending_req">No data available.</string>
     <string name="msg_no_form_offline">This form is not available in offline. To use this form in offline, please use it once in network.</string>
     <string name="msg_form_duplicate_error">Duplicate entries are not allowed.</string>
     <string name="msg_slow_network">Network is slow, please try again</string>
@@ -424,6 +424,8 @@
     <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Successful</string>
     <string name="check_out_msg">Checked Out Successful</string>
+    <string name="request_comp_0f">Request Comp-Off</string>
+    <string name="insufficisnt_leave_balance">You have insufficient leave balance.</string>
 
 
 </resources>

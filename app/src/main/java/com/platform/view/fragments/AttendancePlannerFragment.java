@@ -384,6 +384,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     String currDate=sdf.format(new Date());
 
                     if(AttendaceCreatedAt.equalsIgnoreCase(currDate)){
+
                         if(attendanceDateList.getCheckOutTime().isEmpty()){
 
                             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
@@ -1234,7 +1235,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         Date startDate = null;
-        prefCheckInTime=preferenceHelper.getCheckInTime(KEY_CHECKINTIME);
+
 
         try {
             if(prefCheckInTime!=null){
@@ -1287,13 +1288,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public void onResume() {
         super.onResume();
 
-        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
-        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
         setButtonText();
         checkUserIsMakedIn();
-        if(userAvailable!=null||userAvailable==""){
+
+        /*if(userAvailable!=null||userAvailable==""){
             enableCheckOut();
-        }
+        }*/
 
         if(!isCheckOut){
             getDiffBetweenTwoHours();
@@ -1303,13 +1303,21 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
             makeCheckInButtonGray();
             clearCheckInButtonText();
+            checkInTime=userCheckInTime;
             btCheckIn.setText("Check in at"+ userCheckInTime);
         }
         if(userCheckOutTime!=null){
             makeCheckOutButtonGray();
             clearCheckOutButtonText();
+            chkOutTime=userCheckOutTime;
             btCheckout.setText("Check out at" + userCheckOutTime);
         }
+
+
+        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
+
+
 
     }
 
@@ -1336,6 +1344,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckInButtonText();
             btCheckIn.setText("Check in at "+ getUserType.get(0).getTime());
+            checkInTime=getUserType.get(0).getTime();
             //setButtonText();
             enableCheckOut();
 
@@ -1354,6 +1363,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckOutButtonText();
             btCheckout.setText("Check out at" + getUserCheckOutType.get(0).getTime());
+            chkOutTime=getUserCheckOutType.get(0).getTime();
             //setButtonText();
         }
     }
@@ -1395,12 +1405,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         Date startDate = null;
-        prefCheckInTime=preferenceHelper.getCheckInTime(KEY_CHECKINTIME);
+
 
         try {
-            if(prefCheckInTime!=null){
-                startDate = simpleDateFormat.parse((String)prefCheckInTime);
-            }
+            startDate = simpleDateFormat.parse((String)checkInTime);
 
         } catch (ParseException e) {
             e.printStackTrace();

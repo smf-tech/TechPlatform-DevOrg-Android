@@ -358,7 +358,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         String msg = "";
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
         Date currentDate = null;
@@ -423,7 +423,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     private Long dateTimeToTimeStamp(String strDate, String strTime) {
         Date date;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             date = formatter.parse(strDate + " " + strTime);
             return date.getTime();

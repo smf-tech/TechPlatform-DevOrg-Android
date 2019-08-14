@@ -97,7 +97,7 @@
             android:padding="@dimen/dimen_10dp"
             android:background="@drawable/bg_button"
             android:textColor="@color/white"
-            android:text="Request Comp-Off" />
+            android:text="@string/request_comp_0f" />
 
      </LinearLayout>
     </LinearLayout>

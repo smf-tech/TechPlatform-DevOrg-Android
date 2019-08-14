@@ -1,14 +1,10 @@
 package com.platform.view.fragments;
 
-import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -16,8 +12,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Parcelable;
-import android.os.Parcelable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -34,9 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,25 +39,18 @@ import com.platform.R;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.dao.UserCheckOutDao;
 import com.platform.database.DatabaseManager;
-import com.platform.listeners.CreateEventListener;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.listeners.SubmitAttendanceListener;
 import com.platform.models.attendance.AttendaceCheckOut;
 import com.platform.models.attendance.AttendaceData;
-import com.platform.models.attendance.CheckIn;
-import com.platform.models.attendance.CheckOut;
 import com.platform.models.home.Modules;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.planner.SubmoduleData;
 import com.platform.models.planner.attendanceData;
-import com.platform.presenter.MonthlyAttendanceFragmentPresenter;
 import com.platform.presenter.PlannerFragmentPresenter;
 
 import com.platform.presenter.SubmitAttendanceFragmentPresenter;
-import com.platform.services.AttendanceService;
 import com.platform.services.ShowTimerService;
 import com.platform.utility.AppEvents;
-import com.platform.utility.Config;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.PreferenceHelper;
@@ -83,18 +68,12 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.content.Context.ACTIVITY_SERVICE;
-import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 
 public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
@@ -195,7 +174,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
         preferenceHelper=new PreferenceHelper(getActivity());
-
         userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
         userCheckOutDao=DatabaseManager.getDBInstance(getActivity()).getCheckOutAttendaceSchema();
 
@@ -388,6 +366,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (277 * scale + 0.5f);
                         lyEvents.getLayoutParams().height = px;
+
+                        plannerView.findViewById(R.id.cv_no_event).setVisibility(View.GONE);
                     } else {
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -408,7 +388,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (277 * scale + 0.5f);
                         lyTasks.getLayoutParams().height = px;
-
+                        plannerView.findViewById(R.id.cv_no_task).setVisibility(View.GONE);
                     } else {
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -528,6 +508,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         markOut();
                     }
 
+
+
+
                 }
             });
 
@@ -549,8 +532,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         }
 
         private void markOut () {
-
-
             gpsTracker = new GPSTracker(getActivity());
             if (gpsTracker.isGPSEnabled(getActivity(), this)) {
                 ///getCompleteAddressString(Double.parseDouble(strLat), Double.parseDouble(strLong));
@@ -996,17 +977,17 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             }
 
 
-            
+
             Util.removeSimpleProgressDialog();
             getCheckOut = userCheckOutDao.getCheckOutData(CHECK_OUT, Util.getTodaysDate(), Util.getUserMobileFromPref());
             if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty()) {
                 Toast.makeText(getActivity(), "User Already Check Out", Toast.LENGTH_LONG).show();
             } else if(status==300){
-                   Util.showToast("User Already check out",getActivity()); 
+                   Util.showToast("User Already check out",getActivity());
                 }
                 else
                 {
-                
+
                 AttendaceCheckOut attendaceData = new AttendaceCheckOut();
                 attendaceData.setUid(id);
                 Double lat = Double.parseDouble(strLat);
@@ -1043,11 +1024,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     btCheckout.setText(checkOutText);
                     preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
                     //setButtonText();
-
                     if(!isCheckOut){
                         getDiffBetweenTwoHours();
                     }
-
                     isCheckOut=true;
                     preferenceHelper.totalHours(KEY_TOTALHOURS,false);
                     Util.showToast(getResources().getString(R.string.check_out_msg),getActivity());
@@ -1193,8 +1172,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         if(Util.isConnected(getContext())) {
             plannerFragmentPresenter = new PlannerFragmentPresenter(this);
             plannerFragmentPresenter.getPlannerData();
-        }else {
-
+        }else{
             Util.showToast(getString(R.string.msg_no_network), this);
             // offline total hours calculation
             getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
@@ -1205,6 +1183,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 clearCheckInButtonText();
                 btCheckIn.setText("Check in at " + getUserType.get(0).getTime());
                 db_chkin_time=getUserType.get(0).getTime();
+                time = getUserType.get(0).getTime();
                 enableCheckOut();
             }
 
@@ -1243,6 +1222,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             clearCheckInButtonText();
             btCheckIn.setText("Check in at " + getUserType.get(0).getTime());
             db_chkin_time=getUserType.get(0).getTime();
+            time = getUserType.get(0).getTime();
             enableCheckOut();
 
             //set background
@@ -1250,7 +1230,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             btCheckout.setTextColor(getResources().getColor(R.color.white));
             btCheckout.setEnabled(true);*/
         }
-
         getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
         if (getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty())
         {
@@ -1274,8 +1253,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             clearCheckInButtonText();
             enableCheckOut();
             btCheckIn.setText("Check in at" + userServerCheckInTime);
+            time = userServerCheckInTime;
         }
-
         if(userServerCheckOutTime!=null){
             makeCheckOutButtonGray();
             clearCheckOutButtonText();
@@ -1290,27 +1269,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             String totalHrs=calculateTotalHours(db_chkin_time,db_chkout_time);
             txt_total_hours.setText(totalHrs);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /*if(deleteUserAttendanceData()){

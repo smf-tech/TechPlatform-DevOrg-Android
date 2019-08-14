@@ -644,7 +644,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.home_bell_icon:
             case R.id.unread_notification_count:
                 Intent intent = new Intent(this, NotificationsActivity.class);
-                this.startActivity(intent);
+                this.startActivityForResult(intent,Constants.Home.NEVIGET_TO);
                 break;
 
             case R.id.home_sync_icon:
