@@ -2,7 +2,7 @@
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
     <string name="notification_channel_name" translatable="false">Platform</string>
     <string name="notification_channel_description" translatable="false">Platform</string>
-    <string name="app_name_ss">Sujalam Suphalam</string>
+    <string name="app_name_ss">Octopus</string>
     <string name="content_description">Description</string>
     <string name="back_string">Please click BACK again to exit</string>
     <string name="select_lang">Select Language</string>
@@ -23,19 +23,19 @@
     <string name="msg_need_force_update">You need to update app to latest version.</string>
 
     <!--Login screen-->
-    <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
+    <string name="msg_enter_mobile">Please enter your mobile number to get started!</string>
     <!--<string name="msg_manual_otp">Enter the OTP below in case if we fail to detect it from SMS automatically</string>-->
     <string name="msg_mobile_number_is_empty">Mobile Number is empty</string>
     <string name="msg_mobile_number_is_invalid">Not a valid mobile number</string>
     <!--<string name="hint_enter_otp">_ _ _ _ _ _</string>-->
     <!--<string name="label_mobile_no">Mobile Number *</string>-->
-    <string name="label_login">Login</string>
+    <string name="label_login">Get OTP</string>
     <string name="label_time">time</string>
     <string name="resend"> <u>Resend OTP</u></string>
     <!--<string name="check_otp">Please check OTP</string>-->
     <string name="otp_timeout_text">Time out in %1$s sec</string>
-    <string name="msg_otp_verification_timeout">OTP verification time out, please try again.</string>
-    <string name="msg_waiting_for_otp_text">Waiting for the OTP sent to your mobile number.</string>
+    <string name="msg_otp_verification_timeout">Could not receive OTP, please try to resend OTP again.</string>
+    <string name="msg_waiting_for_otp_text">Auto-read OTP is in progress, Please wait...</string>
     <string name="msg_verify_otp_text">Click on verify button to verify your mobile number.</string>
     <string name="msg_logout">Do you want to Logout?</string>
     <string name="msg_auth_fail">Server issue, please try again later.</string>
@@ -171,9 +171,9 @@
     <string name="category_title">Category Title</string>
     <string name="forms">Forms</string>
     <string name="no_records_available">Data is not available!</string>
-    <string name="verification_code">Verification Code</string>
+    <string name="verification_code">OTP Verification</string>
     <string name="verify">Verify</string>
-    <string name="please_type_the_verification_code_n_sent_to">Please type the verification code\nsent to %1$s</string>
+    <string name="please_type_the_verification_code_n_sent_to">Please enter the OTP you received on your number \nsent to %1$s</string>
     <!--<string name="forms_are_not_available">Forms are not available</string>-->
     <string name="reports">Reports</string>
     <string name="submitted_form_count">Total count of submitted forms : %1$s</string>
@@ -245,14 +245,14 @@
 
     <!--Events & Tasks-->
     <string name="events">Events</string>
-    <string name="all_events">All Events</string>
-    <string name="today_events">Upcoming Events</string>
+    <string name="all_events">View All</string>
+    <string name="today_events">Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
     <string name="create_task">Create Task</string>
     <string name="all_tasks">All Tasks</string>
     <string name="my_tasks">My Tasks</string>
-    <string name="today_tasks">Upcoming Tasks</string>
+    <string name="today_tasks">Tasks</string>
     <string name="no_tasks">No tasks today!</string>
     <string name="task_category">Category</string>
     <string name="task_title">Title</string>
@@ -355,7 +355,7 @@
     <string name="leaves_applied">Leave Applied</string>
     <string name="link_leave_apply">Leave Details</string>
 
-    <string name="leave_details">Leave Details</string>
+    <string name="leave_details">Leaves</string>
     <string name="tv_no_leaves_balance">No Leave balance!</string>
 
     <string name="tab_pending_leaves">Pending</string>
@@ -419,13 +419,14 @@
     <string name="venue">Venue</string>
     <string name="delayedin_checkin">Delayed in chek in and found another location</string>
     <string name="delayin_checkin_title">please provide a reason</string>
-    <string name="see_details">See Details</string>
+    <string name="see_details">View All</string>
     <string name="add_forms">Add Forms</string>
     <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Successful</string>
     <string name="check_out_msg">Checked Out Successful</string>
     <string name="request_comp_0f">Request Comp-Off</string>
     <string name="insufficisnt_leave_balance">You have insufficient leave balance.</string>
+    <string name="powered_by">Powered by <b>Octopus</b></string>
 
 
 </resources>

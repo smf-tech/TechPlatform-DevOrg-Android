@@ -80,7 +80,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 Intent intent = new Intent(context, TMFiltersListActivity.class);
                                 context.startActivity(intent);
                                 break;
+                            case "Event":
+
+                                break;
+                            case "Task":
+
+                                break;
+                            case "Leaves":
+
+                                break;
+                            case "Attendances":
+
+                                break;
+                            case "Forms":
+
+                                break;
                             default:
+                                context.finish();
                         }
                     }
                 }

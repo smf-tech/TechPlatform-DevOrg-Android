@@ -196,9 +196,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         }
         profileView.setOnClickListener(this);
 
-        TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
-        versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
-
+//        TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
+//        versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
+        TextView userProject = headerLayout.findViewById(R.id.menu_user_project);
+        userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
+        TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
+        userRole.setText(Util.getUserObjectFromPref().getRoleNames());
 //        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
 //        if (notificationClicked) {
 //            loadTeamsPage();

@@ -1,7 +1,6 @@
 package com.platform.view.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -142,6 +142,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         calendarView.setOnMonthChangedListener(this);
         isMonth = !isMonth;
         setCalendar();
+        calendarView.setSelectedDate(Calendar.getInstance().getTime());
     }
 
     @Override
@@ -199,11 +200,9 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         Calendar instance = Calendar.getInstance();
-        calendarView.setSelectedDate(instance.getTime());
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
-
         if (isMonth) {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
@@ -217,8 +216,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                     .commit();
             ivCalendarMode.setRotation(0);
         }
-        calendarView.setSelectedDate(instance.getTime());
-        calendarView.setCurrentDate(instance.getTime());
+//        calendarView.setSelectedDate(instance.getTime());
+//        calendarView.setCurrentDate(instance.getTime());
     }
 
     public void displayLeavesOfMonth(List<LeaveData> data) {
@@ -257,8 +256,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay calendarDay) {
         Date d = new Date();
         presenter = new LeavesPresenter(this);
-        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),DateFormat.format("MM", calendarDay.getDate()).toString());
-
+        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),
+                DateFormat.format("MM", calendarDay.getDate()).toString());
     }
 
     @Override

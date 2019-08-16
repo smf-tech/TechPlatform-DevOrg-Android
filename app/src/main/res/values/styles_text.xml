@@ -56,7 +56,7 @@
 
     <style name="roboto_regular_light_black_12">
         <item name="android:textColor">@color/light_black</item>
-        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
         <!--<item name="android:fontFamily">@font/roboto_regular</item>-->
     </style>
 

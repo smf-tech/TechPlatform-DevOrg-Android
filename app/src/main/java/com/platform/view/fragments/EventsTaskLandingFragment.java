@@ -273,7 +273,6 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
         if (isMonth) {
-
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)

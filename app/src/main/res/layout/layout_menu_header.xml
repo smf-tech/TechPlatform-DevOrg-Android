@@ -17,14 +17,14 @@
         android:padding="@dimen/dimen_15dp">
 
         <RelativeLayout
-            android:layout_width="@dimen/dimen_60dp"
-            android:layout_height="@dimen/dimen_60dp"
+            android:layout_width="@dimen/dimen_80dp"
+            android:layout_height="@dimen/dimen_80dp"
             android:background="@drawable/bg_circle_profile">
 
             <ImageView
                 android:id="@+id/menu_user_profile_photo"
-                android:layout_width="@dimen/dimen_35dp"
-                android:layout_height="@dimen/dimen_35dp"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_person" />
@@ -51,17 +51,28 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/menu_user_location"
+                android:id="@+id/menu_user_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:fontFamily="@font/opensans"
-                android:textSize="@dimen/text_size_12" />
+                android:textSize="@dimen/text_size_12"
+                />
+
+            <TextView
+                android:id="@+id/menu_user_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:fontFamily="@font/opensans"
+                android:textSize="@dimen/text_size_12"
+                />
+
         </LinearLayout>
     </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_01dp"
