@@ -289,7 +289,6 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
 //        calendarView.setCurrentDate(instance.getTime());
     }
 
-
     @Override
     public void showProgressBar() {
         if (getActivity() != null) {

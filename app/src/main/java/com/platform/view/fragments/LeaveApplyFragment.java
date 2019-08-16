@@ -295,8 +295,10 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
             if (dayLeaveType == 0) {
                 leaveData.setFullHalfDay("half day");
+                leaveData.setHalfFullDay(0);
             } else if (dayLeaveType == 1) {
                 leaveData.setFullHalfDay("full day");
+                leaveData.setHalfFullDay(1);
             }
             leaveData.setReason(edtReason.getText().toString());
 
@@ -324,8 +326,10 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
             if (dayLeaveType == 0) {
                 leaveData.setFullHalfDay("half day");
+                leaveData.setHalfFullDay(0);
             } else if (dayLeaveType == 1) {
                 leaveData.setFullHalfDay("full day");
+                leaveData.setHalfFullDay(1);
             }
             leaveData.setReason(edtReason.getText().toString());
 

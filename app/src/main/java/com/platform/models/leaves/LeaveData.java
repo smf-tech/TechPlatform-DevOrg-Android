@@ -37,6 +37,18 @@ public class LeaveData implements Serializable {
     @Expose
     private String rejectionReason;
 
+    public int getHalfFullDay() {
+        return halfFullDay;
+    }
+
+    public void setHalfFullDay(int halfFullDay) {
+        this.halfFullDay = halfFullDay;
+    }
+
+    @SerializedName("half_full_day")
+    @Expose
+    private int halfFullDay;
+
     public String getId() {
         return id;
     }
