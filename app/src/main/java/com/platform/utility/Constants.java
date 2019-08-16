@@ -304,4 +304,8 @@ public class Constants {
     public static class ContentManagement{
         public static final String CONTENT_TOOLBAR_TEXT="ContentManagement";
     }
+
+    public static class Matrimony{
+        public static final String REFERENCES_LABEL = "References";
+    }
 }

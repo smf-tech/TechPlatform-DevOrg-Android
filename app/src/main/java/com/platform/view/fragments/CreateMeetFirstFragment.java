@@ -45,10 +45,10 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     List<String> meetTypes = new ArrayList<>();
     List<String> meetStates = new ArrayList<>();
     List<String> meetDistricts = new ArrayList<>();
-    private CreateMeetFirstFragmentPresenter matrimonyMeetPresenter;
+    private CreateMeetFirstFragmentPresenter matrimonyMeetFirstFragmentPresenter;
     private String selectedMeetType, selectedState, selectedDistrict;
-    private ArrayAdapter<String> meetTypeAdapter, meetStateAdapter,meetDistrictAdapter;
-    private EditText edtMeetDate,edtMeetTime,edtMeetRegDate,edtMeetRegTime;
+    private ArrayAdapter<String> meetTypeAdapter, meetStateAdapter, meetDistrictAdapter;
+    private EditText edtMeetDate,edtMeetTime,edtMeetRegStartDate,edtMeetRegEndDate;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     @Override
@@ -84,10 +84,10 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         edtMeetDate.setOnClickListener(this);
         edtMeetTime = view.findViewById(R.id.edt_meet_time);
         edtMeetTime.setOnClickListener(this);
-        edtMeetRegDate = view.findViewById(R.id.edt_meet_reg_date);
-        edtMeetRegDate.setOnClickListener(this);
-        edtMeetRegTime = view.findViewById(R.id.edt_meet_reg_time);
-        edtMeetRegTime.setOnClickListener(this);
+        edtMeetRegStartDate = view.findViewById(R.id.edt_meet_reg_date);
+        edtMeetRegStartDate.setOnClickListener(this);
+        edtMeetRegEndDate = view.findViewById(R.id.edt_meet_reg_end_date);
+        edtMeetRegEndDate.setOnClickListener(this);
 
         meetTypes.add("Meet Type");
         meetTypes.add("Educated");
@@ -109,10 +109,10 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         meetDistrictAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         citySpinner.setAdapter(meetDistrictAdapter);
 
-        matrimonyMeetPresenter = new CreateMeetFirstFragmentPresenter(this);
-//        matrimonyMeetPresenter.getMeetTypes();
+        matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
+        //matrimonyMeetFirstFragmentPresenter.getMeetTypes();
         UserInfo userInfo = Util.getUserObjectFromPref();
-        matrimonyMeetPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+        matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
                 "5c4ab05cd503a372d0391467",
                 Constants.JurisdictionLevelName.STATE_LEVEL);
     }
@@ -183,10 +183,11 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 Util.showTimeDialog(getActivity(), edtMeetTime);
                 break;
             case R.id.edt_meet_reg_date:
-                Util.showDateDialogMin(getActivity(), edtMeetRegDate);
+                Util.showDateDialogEnableBeforeDefinedDate(getActivity(),edtMeetRegStartDate, edtMeetDate.getText().toString());
                 break;
-            case R.id.edt_meet_reg_time:
-                Util.showTimeDialog(getActivity(), edtMeetRegTime);
+            case R.id.edt_meet_reg_end_date:
+                Util.showDateDialogEnableBetweenMinMax(getActivity(), edtMeetRegEndDate, edtMeetRegStartDate.getText().toString(),
+                        edtMeetDate.getText().toString());
                 break;
         }
     }
@@ -199,9 +200,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     @Override
     public void onDetach() {
         super.onDetach();
-        if (matrimonyMeetPresenter != null) {
-            matrimonyMeetPresenter.clearData();
-            matrimonyMeetPresenter = null;
+        if (matrimonyMeetFirstFragmentPresenter != null) {
+            matrimonyMeetFirstFragmentPresenter.clearData();
+            matrimonyMeetFirstFragmentPresenter = null;
         }
     }
 
@@ -265,7 +266,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case R.id.spinner_meet_state:
                 selectedState = meetStates.get(i);
                 if(selectedState!="" && selectedState!="State") {
-                    matrimonyMeetPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
                             "5c4ab05cd503a372d0391467",
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 }

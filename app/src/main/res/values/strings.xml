@@ -433,6 +433,7 @@
     <string name="online_payment_label">Online Payment</string>
     <string name="meet_next_label">Next</string>
     <string name="organizer_label">Organizer</string>
+    <string name="references_label">References</string>
     <string name="meet_save">Save Meet</string>
     <string name="create_meet_msg">You have created meet successfully.</string>
     <string name="back_to_dashboard_label">Back to Dashboard</string>

@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/lighter_grey">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,14 +76,15 @@
                         android:id="@+id/tv_references_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/organizer_label"
+                        android:text="@string/references_label"
                         android:paddingStart="@dimen/dimen_10dp"/>
 
-                    <Spinner
+                    <com.platform.widgets.MultiSelectSpinner
                         android:id="@+id/spinner_meet_references"
+                        style="@style/FormSpinner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_10dp"></Spinner>
+                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_marginTop="@dimen/dimen_10dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -109,4 +111,24 @@
                 android:fontFamily="@font/opensans"/>
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </RelativeLayout>
