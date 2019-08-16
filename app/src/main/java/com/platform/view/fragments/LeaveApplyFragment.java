@@ -28,10 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.LeaveDataListener;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.leaves.LeaveData;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.LeaveType;
@@ -82,7 +84,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private ArrayList<LeaveDetail> leaveBalance = new ArrayList<>();
     public static ArrayList<Integer> leaveBackground = new ArrayList<>();
     public String selectedLeaveCatgory;
-    public int selectedLeaveCatgoryBalance=0;
+    public double selectedLeaveCatgoryBalance=0;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     public LeaveApplyFragment() {
@@ -468,7 +470,8 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     public void onSuccessListener(String requestID,String response) {
 //        if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
 //            try {
-                showAlertDialog("Status",response,getString(R.string.ok), "");
+        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                showAlertDialog("Status",responseOBJ.getMessage(),getString(R.string.ok), "");
 //            } catch (Exception e) {
 //                Log.e("TAG", "Exception");
 //            }

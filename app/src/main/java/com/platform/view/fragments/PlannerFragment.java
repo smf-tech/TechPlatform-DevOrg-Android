@@ -363,11 +363,18 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
 
-                        final float scale = getContext().getResources().getDisplayMetrics().density;
-                        int px = (int) (277 * scale + 0.5f);
-                        lyEvents.getLayoutParams().height = px;
-
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.GONE);
+
+                        if (obj.getEventData() != null && obj.getEventData().size() == 1) {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (165 * scale + 0.5f);
+                            lyEvents.getLayoutParams().height = px;
+                        } else {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (285 * scale + 0.5f);
+                            lyEvents.getLayoutParams().height = px;
+                        }
+
                     } else {
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -385,10 +392,18 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvTask.setLayoutManager(mLayoutManagerTask);
                         rvTask.setAdapter(taskListAdapter);
 
-                        final float scale = getContext().getResources().getDisplayMetrics().density;
-                        int px = (int) (277 * scale + 0.5f);
-                        lyTasks.getLayoutParams().height = px;
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.GONE);
+
+                        if (obj.getTaskData() != null && obj.getTaskData().size() == 1) {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (165 * scale + 0.5f);
+                            lyTasks.getLayoutParams().height = px;
+                        } else {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (285 * scale + 0.5f);
+                            lyTasks.getLayoutParams().height = px;
+                        }
+
                     } else {
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;

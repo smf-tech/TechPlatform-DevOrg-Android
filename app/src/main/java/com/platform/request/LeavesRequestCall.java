@@ -94,6 +94,7 @@ public class LeavesRequestCall {
         Gson gson = new GsonBuilder().create();
         String parmjson = gson.toJson(leaveData);
         Log.d(TAG, "ApplyLeave: url" + applyLeaveUrl);
+        Log.d(TAG, "ApplyLeave: request" + parmjson);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
@@ -134,6 +135,7 @@ public class LeavesRequestCall {
         Gson gson = new GsonBuilder().create();
         String parmjson = gson.toJson(leaveData);
         Log.d(TAG, "requestUserCompoff: url" + requestUserCompoffUrl);
+        Log.d(TAG, "requestUserCompoff: request" + parmjson);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp"
         >
 
@@ -17,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/bg_circular_rect_white"
+
             android:padding="@dimen/dimen_08dp"
             android:weightSum="10">
 
@@ -37,7 +38,7 @@
                     android:layout_marginStart="@dimen/dimen_08dp"
                     android:maxLength="11"
                     android:text="03 may,\n2019"
-                    android:textColor="@color/white"
+                    android:textColor="@color/dark_grey"
                     android:textStyle="bold"
                     android:fontFamily="@font/opensans_regular"/>
 
@@ -50,7 +51,7 @@
                     android:layout_marginTop="@dimen/dimen_25dp"
                     android:maxLength="11"
                     android:text="10:30 AM"
-                    android:textColor="@color/white"
+                    android:textColor="@color/dark_grey"
                     android:textStyle="bold"
                     android:fontFamily="@font/opensans"/>
 

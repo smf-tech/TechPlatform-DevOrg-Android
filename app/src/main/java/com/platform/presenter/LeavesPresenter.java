@@ -86,10 +86,9 @@ public class LeavesPresenter implements LeavePresenterListener {
             return;
         }
         fragmentWeakReference.get().hideProgressBar();
-        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
         try {
             if (response != null) {
-                fragmentWeakReference.get().onSuccessListener(requestID, responseOBJ.getMessage());
+                fragmentWeakReference.get().onSuccessListener(requestID, response);
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());

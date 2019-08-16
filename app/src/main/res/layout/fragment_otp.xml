@@ -25,8 +25,9 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:text="@string/verification_code"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16"
+                android:fontFamily="@font/opensans_regular"
                 android:textStyle="bold" />
 
             <com.platform.view.customs.TextViewRegular
@@ -36,8 +37,8 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:gravity="center"
                 android:text="@string/please_type_the_verification_code_n_sent_to"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_14" />
+                android:textSize="@dimen/text_size_14"
+                android:fontFamily="@font/opensans_regular"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,9 +84,10 @@
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
+           <!-- <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_verify"
                 style="@style/AppStyleButton"
+                android:padding="@dimen/dimen_05dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_20dp"
@@ -93,10 +95,20 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:singleLine="true"
                 android:text="@string/verify"
-                android:textAllCaps="false"
-                android:textSize="@dimen/text_size_16"
+                 />-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_verify"
+                android:layout_width="fill_parent"
+                style="@style/AppStyleButton"
+                android:padding="@dimen/dimen_05dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:singleLine="true"
+                android:text="@string/verify"
+                android:textAllCaps="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:textColor="@color/white"
-                 />
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_otp_timer"
@@ -121,9 +133,9 @@
                 android:layout_marginTop="@dimen/dimen_15dp"
                 android:background="@drawable/selector_resend_otp"
                 android:text="@string/resend"
-                android:fontFamily="@font/opensans"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/text_size_16"
+                android:fontFamily="@font/opensans_regular"
                 android:visibility="visible" />
         </LinearLayout>
 
