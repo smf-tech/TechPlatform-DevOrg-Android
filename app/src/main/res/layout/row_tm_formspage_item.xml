@@ -9,11 +9,12 @@
         android:layout_gravity="center_vertical"
         app:cardBackgroundColor="@color/white"
         android:layout_margin="@dimen/dimen_10dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/dimen_10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,7 +39,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/dimen_50dp"
                         android:layout_toRightOf="@+id/user_profile_pic">
 
                         <com.platform.view.customs.TextViewBold
@@ -110,27 +111,28 @@
         </RelativeLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/white"
                 android:gravity="bottom"
+                android:layout_marginTop="@dimen/dimen_20dp"
                 android:visibility="visible"
                 android:orientation="horizontal">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_reject"
-                    style="@style/AppStyleButton"
+                    style="@style/AppStyleBorderButton"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/dark_grey" />
 
-                <Button
-                    android:id="@+id/btn_approve"
+                <com.google.android.material.button.MaterialButton
                     style="@style/AppStyleButton"
+                    android:id="@+id/btn_approve"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
                     android:textColor="@color/white" />

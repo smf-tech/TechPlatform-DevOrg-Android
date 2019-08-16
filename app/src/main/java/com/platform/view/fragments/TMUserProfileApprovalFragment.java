@@ -1,8 +1,11 @@
 package com.platform.view.fragments;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +29,10 @@ import com.platform.models.tm.TMUserProfileApprovalRequest;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.TMUserProfileApprovalFragmentPresenter;
 import com.platform.utility.AppEvents;
+import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+import com.platform.view.activities.TMUserProfileListActivity;
 import com.platform.view.customs.TextViewBold;
 import com.platform.view.customs.TextViewRegular;
 
@@ -40,7 +45,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
     private RequestOptions requestOptions;
     private View approvalsFragmentView;
     private Toolbar toolbar;
-    private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title;
+    private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title,tv_email_title_text;
     private Button btn_approve, btn_reject;
     private ImageView img_user_profle;
     private LinearLayout linear_dynamic_textview;
@@ -96,6 +101,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
         tv_name_title = approvalsFragmentView.findViewById(R.id.tv_name_value);
         tv_role_title = approvalsFragmentView.findViewById(R.id.tv_role_value);
         tv_mobile_title = approvalsFragmentView.findViewById(R.id.tv_mobile_value);
+        tv_email_title_text = approvalsFragmentView.findViewById(R.id.tv_email_title);
         tv_email_title = approvalsFragmentView.findViewById(R.id.tv_email_value);
         linear_dynamic_textview = approvalsFragmentView.findViewById(R.id.linear_dynamic_textview);
         btn_approve = approvalsFragmentView.findViewById(R.id.btn_approve);
@@ -121,6 +127,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
             public void onClick(View v) {
                 if (getActivity() != null) {
                     getActivity().onBackPressed();}
+                ((TMUserProfileListActivity)getActivity()).finishwithResult();
             }
         });
 
@@ -166,6 +173,21 @@ public class TMUserProfileApprovalFragment extends Fragment {
 
             }
         });
+        //to  call on phone number //create in util
+        tv_mobile_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(tv_mobile_title.getText()))
+                try {
+                    Intent dial = new Intent();
+                    dial.setAction("android.intent.action.DIAL");
+                    dial.setData(Uri.parse("tel:" + tv_mobile_title.getText()));
+                    startActivity(dial);
+                } catch (Exception e) {
+                    Log.e("Calling Phone", "" + e.getMessage());
+                }
+            }
+        });
         return approvalsFragmentView;
     }
 
@@ -192,7 +214,12 @@ public class TMUserProfileApprovalFragment extends Fragment {
         Util.logger("name", data.get(0).getName());
         tv_name_title.setText(data.get(0).getName());
         tv_role_title.setText(data.get(0).getRole_id().getName());
-        tv_email_title.setText(data.get(0).getEmail());
+        if (data.get(0).getEmail()!=null && !TextUtils.isEmpty(data.get(0).getEmail())) {
+            tv_email_title.setText(data.get(0).getEmail());
+        }else {
+            tv_email_title_text.setVisibility(View.GONE);
+            tv_email_title.setVisibility(View.GONE);
+        }
         tv_mobile_title.setText(data.get(0).getPhone());
         Util.logger("email", data.get(0).getEmail());
 
@@ -241,7 +268,10 @@ public class TMUserProfileApprovalFragment extends Fragment {
     }
 
     public void updateRequestStatus(String response, int position) {
-        Util.showToast("Thank You", getActivity());
+
+        Util.showSuccessFailureToast(response,getActivity(),getActivity().getWindow().getDecorView()
+                .findViewById(android.R.id.content));
+        getActivity().finish();
     }
 
     public void onReceiveReason(String s, int pos) {
@@ -267,7 +297,9 @@ public class TMUserProfileApprovalFragment extends Fragment {
             String jsonInString = gson.toJson(tmApprovalRequestModel);
             tmUserProfileApprovalFragmentPresenter.approveRejectRequest(jsonInString, 0);
         }else {
-            Util.showToast("Please enter reason to reject.",getActivity());
+
+            Util.showSuccessFailureToast("Please enter reason to reject.",getActivity(),getActivity().getWindow().getDecorView()
+                    .findViewById(android.R.id.content));
         }
     }
     // adding dynamic textviews below

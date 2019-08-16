@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dimen_10dp"
-    android:layout_marginBottom="@dimen/dimen_10dp"
+    android:layout_marginTop="@dimen/dimen_05dp"
+    android:layout_marginBottom="@dimen/dimen_05dp"
     android:paddingTop="@dimen/dimen_10dp"
     android:paddingBottom="@dimen/dimen_10dp"
     tools:ignore="PrivateResource">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <!--<com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_form_text_template"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,16 +19,33 @@
         app:hintTextAppearance="@style/TextInputLayoutHint"
         tools:ignore="RtlHardcoded">
 
-        <!--suppress AndroidElementNotAllowed -->
+        &lt;!&ndash;suppress AndroidElementNotAllowed &ndash;&gt;
         <EditText
             android:id="@+id/edit_form_text_template"
             android:layout_width="match_parent"
+            style="@style/RegistrationEditTextLayout"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
             android:inputType="text|textMultiLine"
             android:longClickable="false"
             android:textColor="@color/colorPrimaryDark"
             tools:ignore="Autofill,LabelFor,PrivateResource" />
+    </com.google.android.material.textfield.TextInputLayout>-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_form_text_template"
+        style="@style/textinputstyle"
+        android:layout_toEndOf="@+id/image_form_text_template"
+        android:layout_toRightOf="@+id/image_form_text_template"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+        <EditText
+            android:id="@+id/edit_form_text_template"
+            style="@style/RegistrationEditTextLayout"
+            android:hint="@string/first_name"
+            android:inputType="text|textMultiLine"
+            tools:ignore="Autofill" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
@@ -38,6 +55,7 @@
         android:layout_alignBottom="@id/text_input_form_text_template"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginRight="@dimen/dimen_10dp"
+        android:visibility="gone"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:contentDescription="@string/content_description"
         tools:ignore="RtlHardcoded" />

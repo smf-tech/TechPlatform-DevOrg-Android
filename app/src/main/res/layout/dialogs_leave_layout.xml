@@ -38,7 +38,7 @@
         android:layout_marginTop="@dimen/dimen_25dp"
         android:gravity="center">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dialog"
             android:visibility="gone"
             android:textSize="@dimen/text_size_14"
@@ -48,7 +48,7 @@
             android:background="@drawable/bg_button"
             android:textColor="@color/white" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dialog_1"
             android:visibility="gone"
             android:textSize="@dimen/text_size_14"

@@ -16,6 +16,8 @@
         android:maxLines="1"
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold"
+        android:textColor="@color/dark_grey"
+        android:fontFamily="@font/opensans"
         tools:ignore="RelativeOverlap" />
 
     <TextView
@@ -25,6 +27,7 @@
         android:layout_below="@+id/tv_member_name"
         android:layout_marginStart="@dimen/dimen_10dp"
         android:textColor="@color/light_grey"
+        android:fontFamily="@font/opensans"
         android:textSize="@dimen/text_size_11" />
 
     <CheckBox

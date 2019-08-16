@@ -75,7 +75,8 @@
         android:orientation="horizontal"
         android:weightSum="10">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
             android:id="@+id/btn_add_leaves"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -86,7 +87,8 @@
             android:textColor="@color/white"
             android:text="Apply Leave" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
             android:id="@+id/btn_compoff_request"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -95,7 +97,7 @@
             android:padding="@dimen/dimen_10dp"
             android:background="@drawable/bg_button"
             android:textColor="@color/white"
-            android:text="Request Comp-Off" />
+            android:text="@string/request_comp_0f" />
 
      </LinearLayout>
     </LinearLayout>

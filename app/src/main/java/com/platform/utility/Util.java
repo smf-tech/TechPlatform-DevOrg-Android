@@ -355,6 +355,23 @@ public class Util {
         }
     }
 
+    public static void setStringInPref(String key,String value) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getStringFromPref(String key) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String value = preferences.getString(key, "");
+
+        return value;
+    }
+
     public static <T> void showToast(String msg, T context) {
         try {
             if (TextUtils.isEmpty(msg)) {
@@ -365,7 +382,7 @@ public class Util {
                 msg = Platform.getInstance().getString(R.string.msg_no_network);
             }
 
-            if (context instanceof Fragment) {
+            if(context instanceof Fragment ){
                 Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
@@ -432,7 +449,7 @@ public class Util {
 
         return 0L;
     }
-    public static int getDateInepoch(String dateString) {
+    public static long getDateInepoch(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInepoch(new Date().toString());
         }
@@ -442,7 +459,7 @@ public class Util {
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
             int test = (int) (epoch/1000);
-            return (int)(epoch/1000);
+            return epoch;
 
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
@@ -469,8 +486,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT,Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT,Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
@@ -506,6 +523,16 @@ public class Util {
     public static String getCurrentDate() {
 
         String currentDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(new Date());
+
+        return currentDateString;
+    }
+    public static String getCurrentDatePreviousMonth() {
+
+        SimpleDateFormat format = new SimpleDateFormat(DAY_MONTH_YEAR);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        System.out.println(format.format(cal.getTime()));
+        String currentDateString = format.format(cal.getTime());
 
         return currentDateString;
     }
@@ -1086,6 +1113,16 @@ public class Util {
     }*/
 
 
+    public static void showSuccessFailureToast(String response,Context mContext,View view){
+        try {
+            JSONObject json = new JSONObject(response);
+            String str_value=json.getString("message");
+            Snackbar snackbar = Snackbar.make(view, str_value, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     //pojo to json string
     public static String modelToJson(TMApprovalRequestModel tmApprovalRequestModel){
         Gson gson =new Gson();
@@ -1150,6 +1187,7 @@ public class Util {
 
 return "";
    }
+
     public static String getTodaysDate()
     {
         Date d = new Date();

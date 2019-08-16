@@ -19,6 +19,7 @@
         android:drawableStart="@drawable/ic_holiday_list"
         android:textSize="@dimen/text_size_14"
         android:textStyle="bold"
+        android:fontFamily="@font/opensans_regular"
         android:background="@color/lighter_grey"/>
 
     <androidx.recyclerview.widget.RecyclerView

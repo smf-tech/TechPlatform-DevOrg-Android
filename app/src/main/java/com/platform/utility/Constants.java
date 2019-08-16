@@ -34,11 +34,13 @@ public class Constants {
     public static final String LIST_DATE_FORMAT = "dd MMM yyyy hh:mm:ss.SSS";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSSSS";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm";
+    public static final String DATE_TIME_FORMAT_ = "dd-MMM-YY hh:mm aa";
     public static final String DAY_MONTH_FORMAT = "dd MMM";
     public static final String EVENT_DATE_FORMAT = "dd MMM yyyy";
     public static final String TIME_FORMAT_ = "HH:mm";
     public static final String TIME_FORMAT = "hh:mm aa";
     public static final String WEEK_FORMAT = "EEEE";
+    public static final String ATTENDANCE_DATE="yyyy/MM/dd HH:mm:ss";
     public static final String DECIMAL_FORMAT = "#0.00";
 
     public static class App {
@@ -46,6 +48,7 @@ public class Constants {
         public static final String BJS_MODE = "BJS";
         static final String USER_LOC_OBJ = "userLocationObj";
         public static final String DATABASE_NAME = "TechPlatform";
+        public static final String CHANNEL_ID = "BJS";
 
         public static final String CLIENT_SECRET = "client_secret";
         public static final String CLIENT_ID = "client_id";
@@ -68,6 +71,10 @@ public class Constants {
 
         static final String UNREAD_NOTIFICATION_COUNT = "unreadCount";
         static final String FILE_EXTENSION = ".txt";
+
+        public static final String FirebaseTopicProjectWise = "ProjectWise";
+        public static final String FirebaseTopicProjectRoleWise = "ProjectRoleWise";
+
     }
 
     public static class AssociatesType {
@@ -140,6 +147,11 @@ public class Constants {
         public static final String WEBMODULE = "Webmodule";
         public static final String WEBMODULE_NAME = "webmodule";
         public static final String CONTENT="Content";
+        public static final String HOME="Home";
+        public static final String STORIES="Stories";
+        public static final String CONNECT="Connect";
+        public static final String TO_OPEN="ToOpen";
+        public static final Integer NEVIGET_TO= 001;
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -277,7 +289,8 @@ public class Constants {
         public static final String EVENTS_LABEL = "Event";
         public static final String TASKS_LABEL = "Task";
         public static final String REPEAT_EVENT_DATA = "RepeatEventDta";
-        public static final String MEMBER_LIST_DATA = "RepeatEventDta";
+        public static final String MEMBER_LIST_DATA = "MemberListData";
+        public static final String MEMBER_LIST_COUNT = "MemberListCount";
         public static final String PLANNED_STATUS = "planned";
         public static final String COMPLETED_STATUS = "completed";
 

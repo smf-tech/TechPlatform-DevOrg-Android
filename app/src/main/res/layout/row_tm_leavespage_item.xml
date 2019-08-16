@@ -26,7 +26,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"
                     android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -90,7 +93,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"
                     android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -156,7 +162,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_05dp"
                     android:layout_height="wrap_content">
                 <com.platform.view.customs.TextViewBold
                     android:id="@+id/tv_leave_reason_title"
@@ -191,24 +197,25 @@
                 android:gravity="bottom"
                 android:orientation="horizontal">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_reject"
-                    style="@style/AppStyleButton"
+                    style="@style/AppStyleBorderButton"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/dark_grey" />
 
-                <Button
-                    android:id="@+id/btn_approve"
+                <com.google.android.material.button.MaterialButton
                     style="@style/AppStyleButton"
+                    android:id="@+id/btn_approve"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_16dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
                     android:textColor="@color/white" />
             </LinearLayout>
+
             <!--<RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

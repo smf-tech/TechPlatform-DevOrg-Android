@@ -16,7 +16,8 @@
     <color name="light_grey">#909090</color>
     <color name="lighter_grey">#f1f5f8</color>
     <color name="lighter_grey_tab">#F0EFEF</color>
-    <color name="lighter_grey_transparent">#60EBEBEB</color>
+    <color name="lighter_grey_transparent">#EBEBEB</color>
+    <color name="text_lite_grey">#939393</color>
     <!--<color name="lightest_grey">#EDEDED</color>-->
     <color name="medium_grey">#676767</color>
 
@@ -97,5 +98,6 @@
 
     <color name="inactive_tab">#939393</color>
     <color name="active_tab">#3e3e3e</color>
+    <color name="frag_act_back">#fbfbfb</color>
 
 </resources>

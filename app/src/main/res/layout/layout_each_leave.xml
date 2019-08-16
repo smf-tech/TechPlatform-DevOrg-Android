@@ -25,6 +25,7 @@
             android:layout_gravity="center"
             android:layout_margin="@dimen/dimen_10dp"
             android:textColor="@color/white"
+            android:fontFamily="@font/opensans"
             android:textSize="@dimen/text_size_14" />
 
     <TextView
@@ -35,6 +36,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/dimen_10dp"
         android:text="0"
+        android:fontFamily="@font/opensans"
         android:textColor="@color/white"
         tools:ignore="HardcodedText" />
 

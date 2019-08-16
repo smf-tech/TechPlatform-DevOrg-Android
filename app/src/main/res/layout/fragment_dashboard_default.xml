@@ -11,6 +11,7 @@
         android:text="@string/menu_calendar"
         android:textSize="@dimen/text_size_20"
         android:textStyle="bold"
+        android:fontFamily="@font/opensans"
         android:visibility="gone" />
 
     <TextView
@@ -18,5 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/meeting_dummy_text"
         android:layout_centerInParent="true"
+        android:fontFamily="@font/opensans"
         android:text="@string/coming_soon" />
 </RelativeLayout>

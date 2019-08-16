@@ -47,6 +47,7 @@
                 android:maxLines="2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16"
+                android:fontFamily="@font/opensans"
                 android:textStyle="bold" />
 
             <TextView
@@ -56,6 +57,7 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:gravity="center"
                 android:textColor="@color/white"
+                android:fontFamily="@font/opensans"
                 android:textSize="@dimen/text_size_12" />
         </LinearLayout>
     </LinearLayout>

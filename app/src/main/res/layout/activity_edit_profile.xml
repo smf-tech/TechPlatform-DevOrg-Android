@@ -25,7 +25,12 @@
             <!--First Name-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_first_name"
-                style="@style/RegistrationTextInputLayout"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -39,7 +44,12 @@
             <!--Middle Name-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_middle_name"
-                style="@style/RegistrationTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -53,7 +63,12 @@
             <!--Last Name-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_last_name"
-                style="@style/RegistrationTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -67,7 +82,12 @@
             <!--Birth Date-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_birth_date"
-                style="@style/RegistrationTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -83,7 +103,13 @@
             <!--Mobile Number-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_mobile_number"
-                style="@style/RegistrationTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -99,7 +125,12 @@
             <!--Email-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_email_id"
-                style="@style/RegistrationTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -120,8 +151,9 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_user_geo_location"
-                    style="@style/RegistrationTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="8"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -170,13 +202,13 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:padding="@dimen/dimen_10dp">
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/tv_user_gender_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/text_size_16" />
+                    android:textSize="@dimen/text_size_12" />
 
                 <RadioGroup
                     android:id="@+id/user_gender_group"
@@ -207,16 +239,43 @@
             <!--Organization-->
             <TextView
                 style="@style/FormLabel"
+                android:visibility="visible"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_organization" />
+
 
             <Spinner
                 android:id="@+id/sp_user_organization"
                 style="@style/FormSpinner"
+                android:visibility="visible"
+                android:background="@drawable/bg_blue_box"
                 android:prompt="@string/organization" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_organization"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserOrganization"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_organization"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Project-->
             <TextView
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_project" />
 
             <com.platform.widgets.MultiSelectSpinner
@@ -228,6 +287,7 @@
             <!--Role-->
             <TextView
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_role" />
 
             <Spinner
@@ -240,6 +300,7 @@
             <TextView
                 android:id="@+id/txt_state"
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_state" />
 
             <Spinner
@@ -251,6 +312,7 @@
             <TextView
                 android:id="@+id/txt_district"
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_district"
                 android:visibility="gone" />
 
@@ -265,6 +327,7 @@
             <TextView
                 android:id="@+id/txt_taluka"
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_taluka"
                 android:visibility="gone" />
 
@@ -279,6 +342,7 @@
             <TextView
                 android:id="@+id/txt_cluster"
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_cluster"
                 android:visibility="gone" />
 
@@ -293,6 +357,7 @@
             <TextView
                 android:id="@+id/txt_village"
                 style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_village"
                 android:visibility="gone" />
 
@@ -307,6 +372,7 @@
             <TextView
                 style="@style/FormLabel"
                 android:text="@string/mandatory_school"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:visibility="gone" />
 
             <Spinner
@@ -323,16 +389,16 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_add_img" />
+                android:src="@drawable/ic_user_avatar" />
 
-            <TextView
+            <com.platform.view.customs.TextViewSemiBold
                 android:id="@+id/user_profile_pic_label"
                 style="@style/FormLabel"
                 android:layout_gravity="center"
                 android:layout_marginTop="0dp"
                 android:gravity="center"
                 android:text="@string/profile_pic"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_title_14" />
         </LinearLayout>
     </ScrollView>
 
@@ -356,14 +422,14 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_profile_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/AppStyleButton"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dimen_10dp"
-        android:background="@drawable/bg_button"
+
         android:text="@string/btn_submit"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_22" />
+         />
 </RelativeLayout>

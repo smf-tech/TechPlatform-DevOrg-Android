@@ -11,9 +11,15 @@ public class LandingPageRequest {
     @SerializedName("approvalType")
     @Expose
     private String approvalType;
+
+    @SerializedName("type")
+    @Expose
+    private String type;
+
     @SerializedName("pendingCount")
     @Expose
     private int pendingCount;
+
 
     public int getId() {
         return id;
@@ -39,4 +45,11 @@ public class LandingPageRequest {
         this.pendingCount = pendingCount;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

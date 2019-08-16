@@ -43,6 +43,7 @@ public class DashboardFragment extends Fragment {
             R.drawable.ic_approvals,
             R.drawable.ic_reports_icon_db,
             R.drawable.ic_webview_icon_db,
+            R.drawable.ic_webview_icon_db,
             R.drawable.ic_matrimony_icon_db
     };
     private final int[] disableTabIcons = {
@@ -235,7 +236,7 @@ public class DashboardFragment extends Fragment {
                         break;
 
                     case 1:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.MEETINGS);
+                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.PLANNER);
                         AppEvents.trackAppEvent(getString(R.string.event_meetings_tab_click));
                         break;
 

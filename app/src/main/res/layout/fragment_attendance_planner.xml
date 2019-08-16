@@ -37,7 +37,7 @@
             android:paddingLeft="@dimen/dimen_05dp"
             android:paddingTop="@dimen/dimen_05dp"
             android:paddingRight="@dimen/dimen_05dp"
-            android:src="@drawable/ic_down_arrow_light_blue" />
+            android:src="@drawable/ic_shape_down_arrow" />
     </RelativeLayout>
 
     <ScrollView
@@ -79,6 +79,7 @@
                     android:gravity="center"
                     android:text="@string/tab_pending_leaves"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/black_green"
                     android:textSize="@dimen/text_size_12" />
 
@@ -93,6 +94,7 @@
                     android:gravity="center"
                     android:text="@string/tab_approved_leaves"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/blur_tab"
                     android:textSize="@dimen/text_size_12" />
 
@@ -107,6 +109,7 @@
                     android:gravity="center"
                     android:text="@string/tab_rejected_leaves"
                     android:textAllCaps="true"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/blur_tab"
                     android:textSize="@dimen/text_size_12" />
             </LinearLayout>
@@ -122,4 +125,23 @@
                 android:paddingTop="@dimen/dimen_05dp" />
         </LinearLayout>
     </ScrollView>
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </LinearLayout>

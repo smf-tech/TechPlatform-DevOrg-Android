@@ -45,15 +45,16 @@ public class TMUserAttendanceApprovalRecyclerAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         //if ()
-        holder.tv_title_checkin.setText("" + Util.getLongDateInString(Long.parseLong(dataList.get(position).getCheck_in().getTime()), Constants.DAY_MONTH_YEAR));
+        holder.tv_title_checkin.setText("" + Util.getLongDateInString(Long.parseLong(dataList.get(position).getCheck_in().getTime()), Constants.FORM_DATE_FORMAT));
         holder.tv_address_checkin.setText("" + dataList.get(position).getCheck_in().getAddress());
-        if (!TextUtils.isEmpty(dataList.get(position).getCheck_out().getTime())) {
-            holder.tv_title_checkout.setText("" + Util.getLongDateInString(Long.parseLong(dataList.get(position).getCheck_out().getTime()), Constants.DAY_MONTH_YEAR));
+        if (dataList.get(position).getCheck_out() != null) {
+            if (!TextUtils.isEmpty(dataList.get(position).getCheck_out().getTime())) {
+                holder.tv_title_checkout.setText("" + Util.getLongDateInString(Long.parseLong(dataList.get(position).getCheck_out().getTime()), Constants.FORM_DATE_FORMAT));
+            }
+            if (!TextUtils.isEmpty(dataList.get(position).getCheck_out().getAddress())) {
+                holder.tv_address_checkout.setText("" + dataList.get(position).getCheck_out().getAddress());
+            }
         }
-        if (!TextUtils.isEmpty(dataList.get(position).getCheck_out().getAddress())) {
-            holder.tv_address_checkout.setText("" + dataList.get(position).getCheck_out().getAddress());
-        }
-
         String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
         if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)) {
             holder.btn_reject.setVisibility(View.VISIBLE);
