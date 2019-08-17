@@ -385,8 +385,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         } else if (startDate.getTime() > endDate.getTime()) {
             msg = getResources().getString(R.string.msg_enter_proper_date);
         }else if (currentDate.getTime() > startDate.getTime()) {
-//            msg = getResources().getString(R.string.msg_enter_proper_date);
-            msg = "Cannot create event on past date or time";
+            msg = getResources().getString(R.string.msg_post_date);
         } else if (etAddress.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_address);
         } else if (cbIsRegistrationRequired.isChecked()) {

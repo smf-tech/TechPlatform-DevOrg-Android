@@ -3,10 +3,12 @@ package com.platform.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -183,10 +185,13 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         if (eventTask.getOwnerid().equals(Util.getUserObjectFromPref().getId())) {
             //owner
-//            if(starDate.getTime() > currentDate.getTime()) {
-            if (flagEdit) {
+//            if (flagEdit) {
+            if(starDate.getTime() > currentDate.getTime()) {
                 editButton.setVisibility(View.VISIBLE);
                 toolbarAction.setVisibility(View.VISIBLE);
+            } else {
+                editButton.setVisibility(View.GONE);
+                toolbarAction.setVisibility(View.GONE);
             }
             if (flagEdit) {
                 flagUpdateMember = true;
@@ -208,7 +213,9 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 lyMembarlistCode.setVisibility(View.VISIBLE);
                 if (eventTask.isMarkAttendanceRequired()) {
                     if (flagEdit) {
-                        btGetCode.setVisibility(View.VISIBLE);
+                        if(starDate.getTime() < currentDate.getTime()) {
+                            btGetCode.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         btGetCode.setVisibility(View.GONE);
                     }
@@ -219,7 +226,9 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 if (eventTask.isMarkAttendanceRequired()) {
                     btSetCode.setVisibility(View.VISIBLE);
                     if (flagEdit) {
-                        btSetCode.setVisibility(View.VISIBLE);
+                        if(starDate.getTime() < currentDate.getTime()) {
+                            btSetCode.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         btSetCode.setVisibility(View.GONE);
                     }
@@ -249,6 +258,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         btParticipants.setOnClickListener(this);
         btCompleteTask.setOnClickListener(this);
         lyGreyedOut.setOnClickListener(this);
+        ivEventPic.setOnClickListener(this);
     }
 
     private void setActionbar(String title) {
@@ -294,6 +304,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             case R.id.ly_greyed_out:
                 lyGreyedOut.setVisibility(View.GONE);
                 snackbar.dismiss();
+                break;
+            case R.id.event_pic:
+
+                showEnlargeImage(eventTask.getThumbnailImage());
                 break;
         }
     }
@@ -376,6 +390,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                     }
                 });
         // Create the AlertDialog object and return it
+
         alertDialog = builder.create();
         alertDialog.show();
     }
@@ -415,6 +430,28 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 progressBarLayout.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void showEnlargeImage(String thumbnailImage) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View view = inflater.inflate(R.layout.dialog_enlarge_image, null);
+        final ImageView close_dialog = view.findViewById(R.id.iv_close);
+//        TouchImageView img_post = view.findViewById(R.id.img_post);
+        Glide.with(this)
+                .load(thumbnailImage)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into((ImageView) view.findViewById(R.id.iv_image));
+
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(view.getContext());
+        alertDialog.setView(view);
+        android.app.AlertDialog alertD = alertDialog.create();
+
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
+        alertD.show();
+
     }
 
     @Override

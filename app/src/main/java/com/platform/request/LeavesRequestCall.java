@@ -242,4 +242,42 @@ public class LeavesRequestCall {
         }
         return null;
     }
+
+    public void getLeavesBalance(String requestID) {
+
+        Response.Listener<JSONObject> getModulesResponseListener = response -> {
+            if (leavePresenterListener == null) {
+                return;
+            }
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "LEAVE_BALANCE - Resp: " + res);
+                    leavePresenterListener.onSuccessListener(requestID,res);
+                }
+            } catch (Exception e) {
+                leavePresenterListener.onFailureListener(requestID,e.getMessage());
+            }
+        };
+
+        Response.ErrorListener getModulesErrorListener = error -> leavePresenterListener.onErrorListener(requestID,error);
+
+        final String getMontlyLeavesUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Leaves.LEAVE_BALANCE);
+        Log.d(TAG, "LEAVE_BALANCE: url" + getMontlyLeavesUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getMontlyLeavesUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                getModulesResponseListener,
+                getModulesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
 }

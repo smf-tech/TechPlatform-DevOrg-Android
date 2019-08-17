@@ -245,13 +245,13 @@
 
     <!--Events & Tasks-->
     <string name="events">Events</string>
-    <string name="all_events">View All</string>
+    <string name="all_events">All Event</string>
     <string name="today_events">Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
     <string name="create_task">Create Task</string>
     <string name="all_tasks">All Tasks</string>
-    <string name="my_tasks">My Tasks</string>
+    <string name="my_tasks">Created by me</string>
     <string name="today_tasks">Tasks</string>
     <string name="no_tasks">No tasks today!</string>
     <string name="task_category">Category</string>
@@ -265,7 +265,7 @@
     <string name="task_address">Address</string>
     <string name="task_add_members">Members list</string>
     <string name="add_members">Add Members</string>
-    <string name="my_events">My Events</string>
+    <string name="my_events">Created by me</string>
     <string name="apply_filters">Apply Filters</string>
     <string name="filter">Filter</string>
     <string name="add_members_screen_msg">"You have applied filters, select members for eventTask."</string>
@@ -410,6 +410,8 @@
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
     <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
+    <string name="msg_post_date">Cannot create event on past date or time</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -427,6 +429,8 @@
     <string name="request_comp_0f">Request Comp-Off</string>
     <string name="insufficisnt_leave_balance">You have insufficient leave balance.</string>
     <string name="powered_by">Powered by <b>Octopus</b></string>
+    <string name="add_event">+Add Event</string>
+    <string name="add_task">+Add Task</string>
 
 
 </resources>

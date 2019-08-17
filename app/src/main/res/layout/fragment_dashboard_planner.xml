@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <!-- <RelativeLayout
                  android:id="@+id/ly_attendance"
@@ -137,12 +137,9 @@
                             android:id="@+id/tv_attendance_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignStart="@+id/lin_attendance"
-                            android:layout_alignTop="@+id/lin_attendance"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/opensans"
-                            android:paddingLeft="3dp"
-                            android:text="Attendance"
+                            android:text="@string/attendance"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_16"
                             android:textStyle="bold" />
@@ -187,7 +184,8 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:padding="@dimen/dimen_08dp"
-                                android:weightSum="10">
+                                android:weightSum="10"
+                                android:baselineAligned="false">
 
                                 <RelativeLayout
                                     android:id="@+id/ly_schedule"
@@ -254,7 +252,7 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginStart="5dp"
                                         android:gravity="center_vertical"
                                         android:orientation="horizontal">
 
@@ -264,7 +262,7 @@
                                             android:layout_width="0dp"
                                             android:layout_height="@dimen/dimen_50dp"
                                             android:layout_gravity="center"
-                                            android:layout_marginLeft="5dp"
+                                            android:layout_marginStart="5dp"
                                             android:layout_weight="1"
                                             android:baselineAligned="false"
                                             android:gravity="center"
@@ -282,7 +280,7 @@
                                             android:layout_width="0dp"
                                             android:layout_height="@dimen/dimen_50dp"
                                             android:layout_gravity="center"
-                                            android:layout_marginLeft="5dp"
+                                            android:layout_marginStart="5dp"
                                             android:layout_weight="1"
                                             android:gravity="center"
                                             android:text="@string/check_out"
@@ -354,7 +352,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="+Add Event" />
+                            android:text="@string/add_event" />
                     </LinearLayout>
 
                     <androidx.cardview.widget.CardView
@@ -445,7 +443,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="+Add Task" />
+                            android:text="@string/add_task" />
                     </LinearLayout>
 
                     <androidx.cardview.widget.CardView
@@ -563,7 +561,6 @@
                                 android:id="@+id/rv_leave_balance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_leaves_label"
                                 android:layout_marginTop="@dimen/dimen_10dp"
                                 android:layout_marginBottom="@dimen/dimen_10dp"
                                 android:orientation="horizontal" />

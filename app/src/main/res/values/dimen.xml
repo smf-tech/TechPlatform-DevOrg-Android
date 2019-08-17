@@ -40,6 +40,8 @@
     <dimen name="dimen_235dp">235dp</dimen>
     <dimen name="dimen_250dp">250dp</dimen>
     <dimen name="dimen_277dp">277dp</dimen>
+    <dimen name="dimen_300dp">300dp</dimen>
+    <dimen name="dimen_350dp">350dp</dimen>
 
     <dimen name="circle_size">30dp</dimen>
     <dimen name="dimen_65dp">65dp</dimen>

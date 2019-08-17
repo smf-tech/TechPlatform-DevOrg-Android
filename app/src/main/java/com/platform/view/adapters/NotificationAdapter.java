@@ -15,9 +15,14 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.notifications.NotificationData;
+import com.platform.utility.Constants;
+import com.platform.view.activities.CreateEventTaskActivity;
+import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.NotificationsActivity;
+import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
@@ -81,13 +86,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 context.startActivity(intent);
                                 break;
                             case "Event":
-
+                                Intent intentCreateEvent = new Intent(context, CreateEventTaskActivity.class);
+                                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                                context.startActivity(intentCreateEvent);
                                 break;
                             case "Task":
-
+                                Intent intentEventList = new Intent(context, PlannerDetailActivity.class);
+                                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                                context.startActivity(intentEventList);
                                 break;
                             case "Leaves":
-
+                                Intent intentLeaves = new Intent(context, GeneralActionsActivity.class);
+                                intentLeaves.putExtra("title", context.getString(R.string.leave));
+                                intentLeaves.putExtra("switch_fragments", "LeaveDetailsFragment");
+                                context.startActivity(intentLeaves);
                                 break;
                             case "Attendances":
 

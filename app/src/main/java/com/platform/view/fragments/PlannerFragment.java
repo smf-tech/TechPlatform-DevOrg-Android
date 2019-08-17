@@ -376,6 +376,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         }
 
                     } else {
+                        plannerView.findViewById(R.id.rv_events).setVisibility(View.GONE);
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
@@ -405,6 +406,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         }
 
                     } else {
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.GONE);
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
