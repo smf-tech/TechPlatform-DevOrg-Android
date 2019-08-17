@@ -449,8 +449,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             //progressBar.setVisibility(View.GONE);
             //notifyDataSetChanged();
             info.getProgressBar().setVisibility(View.GONE);
-
-
         }
 
         @Override
@@ -542,7 +540,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
     }
-
 
     private static class ViewHolder{
         ImageView imgDownload, imgShare;

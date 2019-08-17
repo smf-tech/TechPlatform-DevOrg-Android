@@ -165,6 +165,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private RelativeLayout progressBarLayout;
     private Location location;
     ImageView ivCalendarMode;
+    private String userServerCheckOutTime;
+    private String userServerCheckInTime;
 
     public AttendancePlannerFragment() {
         // Required empty public constructor
@@ -178,23 +180,27 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         plannerView = inflater.inflate(R.layout.fragment_attendance_planner, container, false);
+
+
         return plannerView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initView();
         createJson();
         context=getActivity();
-        // get attendance id
+
+                // get attendance id
 
 
         preferenceHelper=new PreferenceHelper(getActivity());
         userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
         userCheckOutDao=DatabaseManager.getDBInstance(getActivity()).getCheckOutAttendaceSchema();
 
-        alarmManager= (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+        /*alarmManager= (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
         Calendar calendar=Util.setHours(16,06);
 
         if(calendar.getTimeInMillis()<System.currentTimeMillis()){
@@ -205,7 +211,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             callAlarmReceiver.putExtra("messenger",new Messenger(handler));
             PendingIntent pendingIntent=PendingIntent.getService(getActivity(),0,callAlarmReceiver,PendingIntent.FLAG_CANCEL_CURRENT);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-        }
+        }*/
         getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
         getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
         checkUserIsMakedIn();
@@ -228,6 +234,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }*/
         deleteSharedPreferece();
 
+
+        CalendarDay calendarDay=calendarView.getCurrentDate();
+        year=calendarDay.getYear();
+        month=calendarDay.getMonth();
+        cmonth=month+1;
+
+
+        showProgressBar();
+        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
 
 
 
@@ -278,6 +294,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         attendanceCardLayout = plannerView.findViewById(R.id.rv_card_attendance);
 
         setUIData();
+
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -303,6 +320,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     dd=String.valueOf(day);
                 }
 
+
+
                 calendarSelectedDate=year+"-"+mm+"-"+dd;
 
                 showDialogForSelectedDate(calendarSelectedDate);
@@ -323,6 +342,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 if(!Util.isConnected(getActivity())){
                     Util.showToast("Network not available ! Try again",getActivity());
                 }else {
+
                     showProgressBar();
                     MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(AttendancePlannerFragment.this);
                     monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,month);
@@ -336,9 +356,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private void showDialogForSelectedDate(String calendarSelectedDate) {
         AttendanceDateList attendanceDateList;
 
+
+
         if(listDateWiseAttendace!=null
         &&listDateWiseAttendace.size()>0&&
                 !listDateWiseAttendace.isEmpty()){
+
 
             for(int i=0;i<listDateWiseAttendace.size();i++){
 
@@ -352,17 +375,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 {
                     if(!attendanceDateList.getCheckInTime().isEmpty()){
 
-                        btCheckIn.setText(checkInText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm"));
+
+
+                        btCheckIn.setText(checkInText+" "+Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm aa"));
                         btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckIn.setEnabled(false);
                     }else {
                         btCheckIn.setText("CheckIn at 00:00");
-
                     }
 
                     if(!attendanceDateList.getCheckOutTime().isEmpty()){
-                        btCheckout.setText(checkOutText+ Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()),"HH:mm"));
+                        btCheckout.setText(checkOutText+" "+Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()),"HH:mm aa"));
                         btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckout.setEnabled(false);
@@ -372,11 +396,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckout.setText("CheckOut at 00:00");
                     }
 
-                    if(attendanceDateList.getTotalHrs()!=null){
-                        txt_total_hours.setText(attendanceDateList.getTotalHrs());
-                    }else{
-                        txt_total_hours.setText("00:00");
-                    }
 
                     //cheack that created at is equal to today date
                     Calendar calendar=Calendar.getInstance();
@@ -394,26 +413,21 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         }
 
                     }
+                    /*String chkInTime=getUserCheckInTimeFromServer(attendanceDateList.getCheckInTime());
+                    String chkOutTime=getUserCheckOutTimeFromServer(attendanceDateList.getCheckOutTime());*/
+                    String calculateHrs= calculateTotalHours(getUserCheckInTimeFromServer(attendanceDateList.getCheckInTime()),getUserCheckOutTimeFromServer(attendanceDateList.getCheckOutTime()));
 
-
-
-
-
-
-
-
+                    txt_total_hours.setText(""+calculateHrs);
 
                 }
                 else {
-
-                    txt_total_hours.setText("00:00");
+                   /* txt_total_hours.setText("00:00");
                     btCheckIn.setText("CheckIn at 00:00");
                     btCheckIn.setEnabled(false);
-
                     makeCheckInButtonGray();
                     btCheckout.setText("CheckOut at 00:00");
                     btCheckout.setEnabled(false);
-                    makeCheckOutButtonGray();
+                    makeCheckOutButtonGray();*/
                 }
 
             }
@@ -457,16 +471,17 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             attendanceCardLayout.setLayoutParams(lp);
 
 
-            CalendarDay calendarDay=calendarView.getCurrentDate();
+            /*CalendarDay calendarDay=calendarView.getCurrentDate();
             year=calendarDay.getYear();
             month=calendarDay.getMonth();
             cmonth=month+1;
 
-
             MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
             monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
+*/
 
-            //attendanceListData();
+
+
         }
 
         isMonth = !isMonth;
@@ -474,8 +489,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     }
 
     public void getAttendanceInfo(MonthlyAttendance data) {
+        hideProgressBar();
 
-    hideProgressBar();
+
      Log.i("AttendanceData","222"+data);
      List<Datum>  dataList=data.getData();
      List<Attendance> attendanceList;
@@ -604,7 +620,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 // Print it!
         Long epoch=Util.getDateInLong(todayAsString);
         Log.i("Epoch","111"+epoch);
-        time = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
+        //time = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
         Log.i("Check time","111"+time);
 
         switch (v.getId()) {
@@ -612,8 +628,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 //tvCheckInTime.setVisibility(View.VISIBLE);
                 gpsTracker = new GPSTracker(getActivity());
 
-                checkInTime=DateFormat.format(Constants.TIME_FORMAT,new Date().getTime());
-
+                //checkInTime=DateFormat.format(Constants.TIME_FORMAT,new Date().getTime());
                 getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
                 if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
                     Util.showToast("User already checked in",getActivity());
@@ -627,7 +642,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                 break;
             case R.id.bt_checkout:
-                chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
+                //chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
                 getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
                 if(getUserCheckOutType!=null&& !getUserCheckOutType.isEmpty()&&getUserCheckOutType.size()>0){
                     Toast.makeText(getActivity(), "User Already check out", Toast.LENGTH_LONG).show();
@@ -689,12 +704,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     }
 
     private void markIn() {
+
+        checkInTime=DateFormat.format(Constants.TIME_FORMAT,new Date().getTime());
+        millis=getLongFromDate();
+
             if (gpsTracker.isGPSEnabled(getActivity(), this)) {
                 if (!gpsTracker.canGetLocation()) {
                     Toast.makeText(getActivity(),"Unable to get lat and log",Toast.LENGTH_LONG).show();
                 }
 
-                millis=getLongFromDate();
+
                 if(!Util.isConnected(getActivity()))
                 {
                     // offline storage
@@ -718,7 +737,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                             attendaceData.setAddress(strAdd);
                             attendaceData.setAttendaceDate(millis);
                             attendaceData.setAttendanceType(CHECK_IN);
-                            attendaceData.setTime(String.valueOf(time));
+                            attendaceData.setTime(String.valueOf(checkInTime));
                             attendaceData.setSync(false);
                             attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
                             attendaceData.setMobileNumber(Util.getUserMobileFromPref());
@@ -754,7 +773,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     if(getLocation()!=null){
                         Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
                         submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                        submitAttendanceFragmentPresenter.markAttendace(CHECK_IN.toLowerCase(),millis,time.toString(),"",strLat,strLong,strAdd);
+                        submitAttendanceFragmentPresenter.markAttendace(CHECK_IN.toLowerCase(),millis,checkInTime.toString(),"",strLat,strLong,strAdd);
 
                     }else {
                         Util.showToast("Unable to get location",getActivity());
@@ -781,13 +800,15 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
         btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));*/
 
+        chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
+        millis=getLongFromDate();
         gpsTracker = new GPSTracker(getActivity());
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             if (!gpsTracker.canGetLocation()) {
                 gpsTracker.showSettingsAlert();
             }
 
-            millis=getLongFromDate();
+
             if(!Util.isConnected(getActivity())){
 
                 getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
@@ -805,7 +826,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         attendaceData.setAddress(strAdd);
                         attendaceData.setAttendaceDate(millis);
                         attendaceData.setAttendanceType(CHECK_OUT);
-                        attendaceData.setTime(String.valueOf(time));
+                        attendaceData.setTime(String.valueOf(chkOutTime));
                         attendaceData.setSync(false);
                         attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
 
@@ -1291,14 +1312,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         setButtonText();
         checkUserIsMakedIn();
 
-        /*if(userAvailable!=null||userAvailable==""){
-            enableCheckOut();
-        }*/
-
-        if(!isCheckOut){
-            getDiffBetweenTwoHours();
-        }
-
         if(userCheckInTime!=null){
 
             makeCheckInButtonGray();
@@ -1314,8 +1327,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
 
 
-        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
-        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
+
 
 
 
@@ -1343,7 +1355,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckInButtonText();
-            btCheckIn.setText("Check in at "+ getUserType.get(0).getTime());
+            btCheckIn.setText("Check in at " + getUserType.get(0).getTime());
             checkInTime=getUserType.get(0).getTime();
             //setButtonText();
             enableCheckOut();
@@ -1470,6 +1482,106 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     public void clearCheckOutButtonText(){
         btCheckout.setText("");
+    }
+
+
+    private String calculateTotalHours(String userServerCheckInTime, String userServerCheckOutTime) {
+        long hours = 0,min=0;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm aa");
+        Date startDate = null;
+        try {
+            startDate = simpleDateFormat.parse(userServerCheckInTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date endDate = null;
+        try {
+
+            if(userServerCheckOutTime==null||userServerCheckOutTime==""){
+                Date d=new Date();
+                SimpleDateFormat sdf=new SimpleDateFormat("HH:mm  aa");
+                userServerCheckOutTime = sdf.format(d);
+                endDate=sdf.parse(userServerCheckOutTime);
+            }else {
+                endDate = simpleDateFormat.parse(userServerCheckOutTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(startDate!=null&&endDate!=null){
+
+            long difference = endDate.getTime() - startDate.getTime();
+            int days = (int) (difference / (1000*60*60*24));
+            hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+            min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+
+            //hours = (hours < 0 ? -hours : hours);
+
+            //hours = difference/(1000 * 60 * 60);
+            //min = (difference/(1000*60)) % 60;
+
+        }
+
+        Log.i("======= Hours"," :: "+hours);
+        Log.i("======= Minutes"," :: "+min);
+
+        return  hours+":"+min;
+    }
+
+    private String getUserCheckOutTimeFromServer(String todayCheckOutTime) {
+
+        String chkOutTime="";
+        try
+        {
+            String convertedDate=Util.getLongDateInString(Long.valueOf(todayCheckOutTime),"yyyy/MM/dd HH:mm:ss aa");
+            // 2019/08/01 12:52:59
+            Log.i("CheckOutDate","111"+convertedDate);
+
+            String splitDate[]=convertedDate.split(" ");
+            String hh=splitDate[0];
+            String mm=splitDate[1];
+            String timeFormat=splitDate[2];
+
+            String splitMin[]=mm.split(":");
+            String hours=splitMin[0];
+            String minutes=splitMin[1];
+
+            chkOutTime= hours+":"+minutes+" "+timeFormat;
+
+        }catch (Exception e){
+
+        }
+        return chkOutTime;
+
+    }
+
+    private String getUserCheckInTimeFromServer(String todayCheckInTime) {
+
+        String chkInTime="";
+        try
+        {
+            String convertedDate=Util.getLongDateInString(Long.valueOf(todayCheckInTime),"yyyy/MM/dd HH:mm:ss aa");
+            // 2019/08/01 12:52:59
+
+            Log.i("CheckInDate","111"+convertedDate);
+            String splitDate[]=convertedDate.split(" ");
+            String hh=splitDate[0];
+            String mm=splitDate[1];
+            String timeFormat=splitDate[2];
+
+            String splitMin[]=mm.split(":");
+            String hours=splitMin[0];
+            String minutes=splitMin[1];
+
+            chkInTime= hours+":"+minutes+" "+timeFormat;
+
+        }catch (Exception e){
+
+        }
+        return chkInTime;
+
     }
 
 }

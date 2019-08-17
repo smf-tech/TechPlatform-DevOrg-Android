@@ -23,7 +23,7 @@ public class LeaveDetail implements Serializable {
     private String type;
     @SerializedName("balance")
     @Expose
-    private int balance;
+    private float balance;
 
     public Integer getYear() {
         return year;
@@ -57,11 +57,11 @@ public class LeaveDetail implements Serializable {
         this.type = type;
     }
 
-    public int getBalance() {
+    public float getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(float balance) {
         this.balance = balance;
     }
 

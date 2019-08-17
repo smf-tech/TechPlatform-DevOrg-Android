@@ -82,7 +82,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private ArrayList<LeaveDetail> leaveBalance = new ArrayList<>();
     public static ArrayList<Integer> leaveBackground = new ArrayList<>();
     public String selectedLeaveCatgory;
-    public int selectedLeaveCatgoryBalance=0;
+    public float selectedLeaveCatgoryBalance=0;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     public LeaveApplyFragment() {
