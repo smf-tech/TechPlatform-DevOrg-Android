@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +48,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -164,7 +164,9 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         super.onResume();
         Date d = new Date();
         presenter = new LeavesPresenter(this);
-        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
+        SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy",Locale.ENGLISH);
+        SimpleDateFormat mmFormat = new SimpleDateFormat("MM",Locale.ENGLISH);
+        presenter.getUsersAllLeavesDetails(yyyyFormat.format(d.getTime()), mmFormat.format(d.getTime()));
     }
 
     @Override
@@ -254,10 +256,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay calendarDay) {
-        Date d = new Date();
+        //Date d = new Date();
         presenter = new LeavesPresenter(this);
-        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),
-                DateFormat.format("MM", calendarDay.getDate()).toString());
+//        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),
+//                DateFormat.format("MM", calendarDay.getDate()).toString());
     }
 
     @Override

@@ -656,10 +656,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
-                    showDiscardPopUp();
-                } else {
+//                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+//                    showDiscardPopUp();
+//                } else {
+//                    getActivity().finish();
+//                }
+                if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE ||
+                        formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE ||
+                        formModel.getData().getEditable().equalsIgnoreCase("false")) {
                     getActivity().finish();
+                } else {
+                    showDiscardPopUp();
                 }
                 break;
 
@@ -1172,10 +1179,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     @Override
     public void onDeviceBackButtonPressed() {
         if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE ||
-                formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE) {
+                formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE ||
+                formModel.getData().getEditable().equalsIgnoreCase("false")) {
             getActivity().finish();
         } else {
-            showDiscardPopUp();
+                showDiscardPopUp();
         }
     }
 
