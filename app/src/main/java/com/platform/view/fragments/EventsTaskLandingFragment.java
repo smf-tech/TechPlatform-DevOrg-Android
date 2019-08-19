@@ -192,6 +192,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
             eventParams.setMonth(MMFormat.format(calendarDay.getDate()));
             eventParams.setYear(yyyyFormat.format(calendarDay.getDate()));
             eventParams.setUserId(Util.getUserObjectFromPref().getId());
+            selectedMonth = Integer.parseInt(eventParams.getMonth());
 
             presenter.getEventsOfMonth(eventParams);
         }
@@ -276,7 +277,6 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
         if (isMonth) {
-
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
@@ -292,7 +292,6 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
 //        calendarView.setSelectedDate(instance.getTime());
 //        calendarView.setCurrentDate(instance.getTime());
     }
-
 
     @Override
     public void showProgressBar() {

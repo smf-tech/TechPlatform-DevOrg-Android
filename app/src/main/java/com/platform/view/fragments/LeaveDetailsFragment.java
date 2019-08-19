@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +74,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private List<LeaveDetail> leaveBalance = new ArrayList<>();
     private LeavesPresenter presenter;
     String deleteLeaveId;
+
+    int selectedMonth;
+    SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+    SimpleDateFormat mmFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
 
     public LeaveDetailsFragment() {
         // Required empty public constructor
@@ -141,6 +147,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         calendarView.setOnMonthChangedListener(this);
         isMonth = !isMonth;
         setCalendar();
+        calendarView.setSelectedDate(Calendar.getInstance().getTime());
     }
 
     @Override
@@ -161,7 +168,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         Date d = new Date();
-        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", d.getTime()).toString(),DateFormat.format("MM", d.getTime()).toString());
+        presenter.getUsersAllLeavesDetails(yyyyFormat.format(d.getTime()), mmFormat.format(d.getTime()));
+        selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
     }
 
     @Override
@@ -197,11 +205,9 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         Calendar instance = Calendar.getInstance();
-        calendarView.setSelectedDate(instance.getTime());
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
-
         if (isMonth) {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
@@ -215,8 +221,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                     .commit();
             ivCalendarMode.setRotation(0);
         }
-        calendarView.setSelectedDate(instance.getTime());
-        calendarView.setCurrentDate(instance.getTime());
+//        calendarView.setSelectedDate(instance.getTime());
+//        calendarView.setCurrentDate(instance.getTime());
     }
 
     public void displayLeavesOfMonth(List<LeaveData> data) {
@@ -253,10 +259,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay calendarDay) {
-        Date d = new Date();
-        presenter = new LeavesPresenter(this);
-        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),DateFormat.format("MM", calendarDay.getDate()).toString());
-
+        if (selectedMonth != Integer.parseInt(mmFormat.format(calendarDay.getDate()))) {
+            presenter.getUsersAllLeavesDetails(yyyyFormat.format(calendarDay.getDate()), mmFormat.format(calendarDay.getDate()));
+            selectedMonth=Integer.parseInt(mmFormat.format(calendarDay.getDate()));
+        }
     }
 
     @Override
