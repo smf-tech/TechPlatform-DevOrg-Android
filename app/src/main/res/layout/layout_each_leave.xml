@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/leave_card_view"
@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="@dimen/dimen_05dp"
-    app:cardCornerRadius="@dimen/dimen_10dp">
+    android:background="@drawable/bg_circular_rect_pink">
 
     <LinearLayout
         android:id="@+id/leave_balance_layout"
@@ -23,11 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/dimen_10dp"
-            android:fontFamily="@font/opensans"
+            android:fontFamily="@font/opensans_regular"
             android:gravity="center"
-            android:textColor="@color/dark_grey"
             android:textSize="@dimen/text_size_14"
-            android:textStyle="bold"
             android:text="@string/submit"/>
 
         <TextView
@@ -35,13 +33,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/opensans"
+            android:fontFamily="@font/opensans_regular"
             android:gravity="center"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/text_size_18"
-            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16"
             android:layout_marginBottom="@dimen/dimen_05dp"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

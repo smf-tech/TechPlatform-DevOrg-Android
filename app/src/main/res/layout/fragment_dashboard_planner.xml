@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/lighter_grey_transparent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,98 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- <RelativeLayout
-                 android:id="@+id/ly_attendance"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
-
-                 <TextView
-                     android:id="@+id/tv_attendance_label"
-                     style="@style/CardHeader"
-                     android:text="@string/mark_attendance" />
-
-                 <LinearLayout
-                     android:id="@+id/ly_check_in_out_dashboard"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/tv_attendance_label"
-                     android:layout_marginStart="@dimen/dimen_15dp"
-                     android:layout_marginTop="@dimen/dimen_20dp"
-                     android:layout_marginEnd="@dimen/dimen_15dp"
-                     android:layout_marginBottom="@dimen/dimen_20dp"
-                     android:baselineAligned="false"
-                     android:weightSum="2">
-
-                     <RelativeLayout
-                         android:layout_width="0dp"
-                         android:layout_height="match_parent"
-                         android:layout_weight="1">
-
-                         <Button
-                             android:id="@+id/bt_check_in"
-                             android:layout_width="match_parent"
-                             android:layout_height="@dimen/dimen_40dp"
-                             android:background="@drawable/bg_button_switch"
-                             android:text="@string/check_in"
-                             android:textAllCaps="false"
-                             android:textColor="@drawable/text_color_on_selection"
-                             android:textSize="@dimen/text_size_14"
-                             android:textStyle="bold" />
-
-                         <TextView
-                             android:id="@+id/tv_check_in_time"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/bt_check_in"
-                             android:layout_marginTop="@dimen/dimen_10dp"
-                             android:gravity="center_horizontal"
-                             android:textSize="@dimen/text_size_12"
-                             android:textStyle="bold"
-                             android:visibility="gone" />
-                     </RelativeLayout>
-
-                     <RelativeLayout
-                         android:layout_width="0dp"
-                         android:layout_height="match_parent"
-                         android:layout_marginStart="@dimen/dimen_15dp"
-                         android:layout_weight="1">
-
-                         <Button
-                             android:id="@+id/bt_checkout"
-                             android:layout_width="match_parent"
-                             android:layout_height="@dimen/dimen_40dp"
-                             android:background="@drawable/bg_button_switch"
-                             android:text="@string/check_out"
-                             android:textAllCaps="false"
-                             android:textColor="@drawable/text_color_on_selection"
-                             android:textSize="@dimen/text_size_14"
-                             android:textStyle="bold" />
-
-                         <TextView
-                             android:id="@+id/tv_check_out_time"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/bt_checkout"
-                             android:layout_marginTop="@dimen/dimen_10dp"
-                             android:gravity="center_horizontal"
-                             android:textSize="@dimen/text_size_12"
-                             android:textStyle="bold"
-                             android:visibility="gone" />
-                     </RelativeLayout>
-                 </LinearLayout>
-
-                 <TextView
-                     android:id="@+id/tv_attendance_details"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@id/ly_check_in_out_dashboard"
-                     android:layout_alignParentStart="true"
-                     android:layout_marginStart="@dimen/dimen_15dp"
-                     android:layout_marginBottom="@dimen/dimen_15dp"
-                     android:text="@string/attendance_details"
-                     android:textColor="@color/tab_selector"
-                     android:textSize="@dimen/text_size_14" />
-             </RelativeLayout>-->
 
             <!-- Attendance tab -->
             <androidx.cardview.widget.CardView
@@ -116,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:elevation="2dp"
-                android:backgroundTint="@color/lighter_grey"
+
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
@@ -163,20 +71,23 @@
 
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/card_attendance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/lin_attendance"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        android:elevation="2dp"
-                        android:backgroundTint="@color/white"
-                        app:cardCornerRadius="@dimen/dimen_10dp">
+                    <!--<androidx.cardview.widget.CardView-->
+                        <!--android:id="@+id/card_attendance"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@+id/lin_attendance"-->
+                        <!--android:layout_margin="@dimen/dimen_05dp"-->
+                        <!--android:elevation="2dp"-->
+                        <!--android:backgroundTint="@color/white"-->
+                        <!--app:cardCornerRadius="@dimen/dimen_10dp">-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:layout_below="@+id/lin_attendance"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:background="@drawable/bg_circular_border">
 
                             <LinearLayout
                                 android:id="@+id/lin_innercard"
@@ -192,8 +103,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="2.5"
-                                    android:background="@drawable/circular_rect_atten"
-
+                                    android:background="@drawable/bg_circular_rect_pink"
                                     android:padding="@dimen/dimen_05dp">
 
                                     <ImageView
@@ -295,7 +205,7 @@
                                 </RelativeLayout>
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    <!--</androidx.cardview.widget.CardView>-->
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -307,7 +217,7 @@
                 android:layout_below="@+id/ly_cv_attendance"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:elevation="2dp"
-                android:backgroundTint="@color/lighter_grey"
+
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
@@ -355,7 +265,7 @@
                             android:text="@string/add_event" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <RelativeLayout
                         android:id="@+id/cv_no_event"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -365,7 +275,7 @@
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_marginBottom="@dimen/dimen_05dp"
                         android:visibility="gone"
-                        app:cardCornerRadius="@dimen/dimen_10dp">
+                        >
 
                         <TextView
                             android:id="@+id/tv_no_events_msg"
@@ -373,9 +283,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/opensans"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
                             android:text="@string/no_events" />
 
-                    </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_events"
@@ -396,9 +308,6 @@
                 android:layout_below="@+id/ly_cv_events"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:elevation="5dp"
-
-                android:backgroundTint="@color/lighter_grey"
-
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
@@ -446,7 +355,7 @@
                             android:text="@string/add_task" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <RelativeLayout
                         android:id="@+id/cv_no_task"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -456,17 +365,18 @@
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_marginBottom="@dimen/dimen_05dp"
                         android:visibility="gone"
-                        app:cardCornerRadius="@dimen/dimen_10dp">
+                        android:background="@drawable/bg_circular_border">
 
                         <TextView
                             android:id="@+id/tv_no_task_msg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
                             android:fontFamily="@font/opensans"
                             android:text="@string/no_tasks" />
 
-                    </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_task"
@@ -495,7 +405,6 @@
                 android:layout_below="@+id/ly_cv_task"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:elevation="2dp"
-                android:backgroundTint="@color/lighter_grey"
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
@@ -543,18 +452,21 @@
                             android:text="@string/apply_leave" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/leaves_header"
-                        android:layout_margin="@dimen/dimen_10dp"
-                        android:backgroundTint="@color/white"
-                        app:cardCornerRadius="@dimen/dimen_10dp">
+                    <!--<androidx.cardview.widget.CardView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@+id/leaves_header"-->
+                        <!--android:layout_margin="@dimen/dimen_10dp"-->
+                        <!--android:backgroundTint="@color/white"-->
+                        <!--app:cardCornerRadius="@dimen/dimen_10dp">-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:layout_below="@+id/leaves_header"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:background="@drawable/bg_circular_border">
 
 
                             <androidx.recyclerview.widget.RecyclerView
@@ -577,7 +489,7 @@
 
                             <!--</RelativeLayout>-->
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    <!--</androidx.cardview.widget.CardView>-->
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
