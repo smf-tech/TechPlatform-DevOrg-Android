@@ -247,8 +247,8 @@
 
     <!--Events & Tasks-->
     <string name="events">Events</string>
-    <string name="all_events">All Events</string>
-    <string name="today_events">Upcoming Events</string>
+    <string name="all_events">View All</string>
+    <string name="today_events">Events</string>
     <string name="no_events">No events today!</string>
     <string name="create_event">Create Event</string>
     <string name="create_task">Create Task</string>
@@ -421,7 +421,7 @@
     <string name="venue">Venue</string>
     <string name="delayedin_checkin">Delayed in chek in and found another location</string>
     <string name="delayin_checkin_title">please provide a reason</string>
-    <string name="see_details">See Details</string>
+    <string name="see_details">View All</string>
     <string name="add_forms">Add Forms</string>
     <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Suceesful</string>
