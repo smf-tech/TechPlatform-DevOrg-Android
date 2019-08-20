@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,9 +24,11 @@ import com.android.volley.VolleyError;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.leaves.YearlyHolidayData;
 import com.platform.presenter.CreateMeetSecondFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
+import com.platform.view.adapters.MeetOrganizersReferencesAdapter;
 import com.platform.widgets.MultiSelectSpinner;
 
 import java.util.ArrayList;
@@ -41,6 +45,10 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     List<String> selectedMeetReferences = new ArrayList<>();
     private ArrayAdapter<String> meetOragnizersAdapter, meetReferencesAdapter;
     private Button btnSecondPartMeet;
+    RecyclerView rvMeetOrganizer, rvMeetReference;
+    private MeetOrganizersReferencesAdapter meetOrganizersListAdapter, meetReferencesListAdapter;
+    private final List<YearlyHolidayData> meetOrganizersList = new ArrayList<>();
+    private final List<YearlyHolidayData> meetReferencesList = new ArrayList<>();
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = CreateMeetSecondFragment.class.getName();
@@ -67,6 +75,12 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         spinnerOrganizer = view.findViewById(R.id.spinner_meet_organizer);
         spinnerOrganizer.setOnItemSelectedListener(this);
 
+        meetOragizers.add("Select Oraganizer");
+        meetOragnizersAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, meetOragizers);
+        meetOragnizersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerOrganizer.setAdapter(meetOragnizersAdapter);
+
         meetReferences.add("State President");
         meetReferences.add("District President");
         meetReferences.add("Chapter President");
@@ -74,16 +88,22 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         spinnerReferences.setSpinnerName(Constants.Matrimony.REFERENCES_LABEL);
         spinnerReferences.setItems(meetReferences, "References", this);
 
-        meetOragizers.add("Select Oraganizer");
-        meetOragnizersAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, meetOragizers);
-        meetOragnizersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerOrganizer.setAdapter(meetOragnizersAdapter);
-
         progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
         progressBar = view.findViewById(R.id.pb_profile_act);
         btnSecondPartMeet = view.findViewById(R.id.btn_second_part_meet);
         btnSecondPartMeet.setOnClickListener(this);
+
+        rvMeetOrganizer = view.findViewById(R.id.rv_meet_organizer);
+        meetOrganizersListAdapter = new MeetOrganizersReferencesAdapter(meetOrganizersList);
+        rvMeetOrganizer.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvMeetOrganizer.setAdapter(meetOrganizersListAdapter);
+
+        rvMeetReference = view.findViewById(R.id.rv_meet_organizer);
+        meetReferencesListAdapter = new MeetOrganizersReferencesAdapter(meetReferencesList);
+        rvMeetReference.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvMeetReference.setAdapter(meetReferencesListAdapter);
+
+        rvMeetReference = view.findViewById(R.id.rv_meet_reference);
         createMeetSecondFragmentPresenter = new CreateMeetSecondFragmentPresenter(this);
         createMeetSecondFragmentPresenter.getMeetOrganizersList();
     }

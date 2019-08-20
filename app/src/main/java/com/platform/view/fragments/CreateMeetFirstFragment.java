@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.Matrimony.MeetType;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.Location;
 import com.platform.models.user.UserInfo;
@@ -51,6 +52,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private EditText edtMeetDate,edtMeetTime,edtMeetRegStartDate,edtMeetRegEndDate;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    UserInfo userInfo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +91,13 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         edtMeetRegEndDate = view.findViewById(R.id.edt_meet_reg_end_date);
         edtMeetRegEndDate.setOnClickListener(this);
 
+        userInfo = Util.getUserObjectFromPref();
+
         meetTypes.add("Meet Type");
-        meetTypes.add("Educated");
-        meetTypes.add("Rural Area");
-        meetTypes.add("Urban Area");
+//        meetTypes.add("Educated");
+//        meetTypes.add("Rural Area");
+//        meetTypes.add("Urban Area");
+
         meetTypeAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, meetTypes);
         meetTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -110,11 +115,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         citySpinner.setAdapter(meetDistrictAdapter);
 
         matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
-        //matrimonyMeetFirstFragmentPresenter.getMeetTypes();
-        UserInfo userInfo = Util.getUserObjectFromPref();
-        matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                "5c4ab05cd503a372d0391467",
-                Constants.JurisdictionLevelName.STATE_LEVEL);
+        matrimonyMeetFirstFragmentPresenter.getMeetTypes();
     }
 
     private void setMeetData() {
@@ -134,10 +135,14 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         meetStates.add(location.getState().getName());
                     }
                     meetStateAdapter.notifyDataSetChanged();
+                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                            "5c4ab05cd503a372d0391467",
+                            Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
+
                 break;
 
-            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+            case Constants.JurisdictionLevelName.CITY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     meetDistricts.clear();
                     meetDistricts.add("District");
@@ -150,9 +155,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         }
                     }
                     meetDistrictAdapter.notifyDataSetChanged();
-//                    matrimonyMeetPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+//                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
 //                            "5c4ab05cd503a372d0391467",
-//                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+//                            Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;
 
@@ -161,12 +166,15 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public void setMatrimonyMeetTypes(){
+    public void setMatrimonyMeetTypes(List<MeetType> meetTypesList){
         meetTypes.clear();
-        //UserInfo userInfo = Util.getUserObjectFromPref();
-//        matrimonyMeetPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-//                "5c4ab05cd503a372d0391467",
-//                Constants.JurisdictionLevelName.STATE_LEVEL);
+        for(MeetType m : meetTypesList){
+            meetTypes.add(m.getType());
+        }
+        UserInfo userInfo = Util.getUserObjectFromPref();
+        matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                "5c4ab05cd503a372d0391467",
+                Constants.JurisdictionLevelName.STATE_LEVEL);
     }
 
     @Override

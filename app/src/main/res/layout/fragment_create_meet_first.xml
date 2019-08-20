@@ -207,7 +207,7 @@
                                 style="@style/RegistrationEditTextLayout"
                                 android:clickable="false"
                                 android:focusable="false"
-                                android:hint="@string/task_start_time"
+                                android:hint="@string/task_end_date"
                                 android:inputType="time"
                                 android:drawableEnd="@drawable/ic_clock"
                                 tools:ignore="Autofill"

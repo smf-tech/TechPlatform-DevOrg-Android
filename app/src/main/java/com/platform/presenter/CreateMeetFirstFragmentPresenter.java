@@ -6,9 +6,11 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
+import com.platform.models.Matrimony.MeetTypesAPIResponse;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.request.MatrimonyMeetRequestCall;
 import com.platform.utility.Constants;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
 import com.platform.view.fragments.CreateMeetFirstFragment;
 
@@ -19,8 +21,9 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
     private WeakReference<CreateMeetFirstFragment> fragmentWeakReference;
 
     public static final String GET_MATRIMONY_MEET_TYPES ="getMatrimonyMeetTypes";
-    public static final String GET_STATES ="getStates";
-    public static final String GET_DISTRICTS ="getDistricts";
+    public static final String GET_STATES = "getStates";
+    public static final String GET_DISTRICTS = "getDistricts";
+    public static final String GET_CITIES = "getCities";
     private final String TAG = CreateMeetFirstFragmentPresenter.class.getName();
 
     public CreateMeetFirstFragmentPresenter(CreateMeetFirstFragment tmFragment) {
@@ -55,6 +58,8 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
             //requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName, GET_DISTRICTS);
             requestCall.getDataApiCall(GET_DISTRICTS, getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)){
+            requestCall.getDataApiCall(GET_CITIES, getLocationUrl);
         }
     }
 
@@ -85,7 +90,8 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_MATRIMONY_MEET_TYPES)){
-                    fragmentWeakReference.get().setMatrimonyMeetTypes();
+                    MeetTypesAPIResponse meetTypes = PlatformGson.getPlatformGsonInstance().fromJson(response, MeetTypesAPIResponse.class);
+                    fragmentWeakReference.get().setMatrimonyMeetTypes(meetTypes.getData());
                 }
                 if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES) ||
                         requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_DISTRICTS)){

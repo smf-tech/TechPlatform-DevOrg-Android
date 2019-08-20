@@ -23,6 +23,10 @@
             android:layout_marginTop="@dimen/dimen_20dp"
             android:src="@drawable/ic_meet_create_second_step"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,10 +48,15 @@
                 <Spinner
                     android:id="@+id/spinner_meet_organizer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"></Spinner>
+                    android:layout_height="@dimen/dimen_30dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:background="@color/lighter_grey"></Spinner>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_meet_organizer"
@@ -60,6 +69,10 @@
                 android:layout_height="@dimen/dimen_01dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -83,10 +96,15 @@
                         android:id="@+id/spinner_meet_references"
                         style="@style/FormSpinner"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_50dp"
-                        android:layout_marginTop="@dimen/dimen_10dp" />
+                        android:layout_height="@dimen/dimen_30dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:background="@color/lighter_grey" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_meet_reference"
