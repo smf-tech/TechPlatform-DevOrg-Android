@@ -39,7 +39,7 @@ public class TMUserProfileListActivity extends BaseActivity {
             try {
                 JSONObject requestObject = new JSONObject(data.getString("filter_type_request"));
                 strRequestObject = data.getString("filter_type_request");
-                Util.logger(getLocalClassName().toString(), strRequestObject);
+                Util.logger(getLocalClassName(), strRequestObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -51,8 +51,8 @@ public class TMLandingPageRecyclerAdapter extends RecyclerView.Adapter<TMLanding
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
-                txtTitle = (TextView) itemView.findViewById(R.id.tv_title);
-                txtValue = (TextView) itemView.findViewById(R.id.tv_value);
+                txtTitle = itemView.findViewById(R.id.tv_title);
+                txtValue = itemView.findViewById(R.id.tv_value);
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
             }
         }

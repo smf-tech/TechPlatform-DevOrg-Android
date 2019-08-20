@@ -65,8 +65,8 @@ private PreferenceHelper preferenceHelper;
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
-                txtTitle = (TextView) itemView.findViewById(R.id.tv_title);
-                txtValue = (TextView) itemView.findViewById(R.id.tv_value);
+                txtTitle = itemView.findViewById(R.id.tv_title);
+                txtValue = itemView.findViewById(R.id.tv_value);
                 btn_approve = itemView.findViewById(R.id.btn_approve);
                 btn_reject  = itemView.findViewById(R.id.btn_reject);
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));

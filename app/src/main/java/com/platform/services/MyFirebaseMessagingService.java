@@ -93,7 +93,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setSmallIcon(R.mipmap.app_logo)
                         .setContentTitle(messageTitle)
                         .setContentText(messageBody)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
                         // Set the intent that will fire when the user taps the notification
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);

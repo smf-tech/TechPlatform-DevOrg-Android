@@ -26,9 +26,8 @@
             android:fitsSystemWindows="true"
             android:theme="@style/NavigationView"
             app:headerLayout="@layout/layout_menu_header"
-            app:itemHorizontalPadding="@dimen/dimen_45dp"
-            app:itemIconTint="@color/colorPrimary"
-            app:itemTextColor="@color/colorPrimary"
+            app:itemTextAppearance="@dimen/dimen_10dp"
+
             app:menu="@menu/activity_home_menu" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>

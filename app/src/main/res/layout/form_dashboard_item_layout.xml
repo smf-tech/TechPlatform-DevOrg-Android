@@ -25,7 +25,7 @@
         android:padding="@dimen/dimen_05dp"
         android:layout_margin="@dimen/dimen_10dp" />
 
-    <com.platform.view.customs.TextViewBold
+    <com.platform.view.customs.TextViewRegular
         android:id="@+id/text_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:textSize="@dimen/text_size_title_14"
         android:layout_centerVertical="true"/>
 
-    <com.platform.view.customs.TextViewBold
+    <com.platform.view.customs.TextViewRegular
         android:id="@+id/text_status_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

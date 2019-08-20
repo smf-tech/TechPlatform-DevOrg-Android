@@ -1,19 +1,29 @@
 package com.platform.models.tm;
 
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-
-
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
-
-        import java.util.List;
+import java.util.List;
 
 public class FilterlistDataResponse {
 
     @SerializedName("id")
     @Expose
     private int id;
+
+    public String getApprovalType() {
+        return approvalType;
+    }
+
+    public void setApprovalType(String approvalType) {
+        this.approvalType = approvalType;
+    }
+
+    @SerializedName("approvalType")
+    @Expose
+    private String approvalType;
+
     @SerializedName("type")
     @Expose
     private String type;

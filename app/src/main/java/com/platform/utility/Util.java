@@ -1119,7 +1119,7 @@ public class Util {
 
 
            Dialog dialog;
-           Button btnLogin,btn_cancel;
+           Button btnSubmit,btn_cancel;
            EditText edt_reason;
            Activity activity =context;
 
@@ -1131,7 +1131,7 @@ public class Util {
 
             edt_reason = dialog.findViewById(R.id.edt_reason);
        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-           btnLogin = dialog.findViewById(R.id.btn_submit);
+       btnSubmit = dialog.findViewById(R.id.btn_submit);
 
        btn_cancel.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -1140,7 +1140,7 @@ public class Util {
            }
        });
 
-           btnLogin.setOnClickListener(new View.OnClickListener() {
+       btnSubmit.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    /*Intent loginIntent = new Intent(context, LoginActivity.class);
@@ -1149,20 +1149,27 @@ public class Util {
                    context.startActivity(loginIntent);*/
                    String strReason  = edt_reason.getText().toString();
 
-                   if (fragment instanceof TMUserLeavesApprovalFragment) {
-                       ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
-                   if (fragment instanceof TMUserAttendanceApprovalFragment) {
-                       ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
-                   if (fragment instanceof TMUserProfileApprovalFragment) {
-                       ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
-                   if (fragment instanceof TMUserFormsApprovalFragment) {
-                       ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
+                   if (TextUtils.isEmpty(strReason)){
+                    Util.logger("Empty Reason","Reason Can not be blank");
+                       Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                       .findViewById(android.R.id.content), "Reason Can not be blank",
+                               Snackbar.LENGTH_LONG);
+                   }else {
+                       if (fragment instanceof TMUserLeavesApprovalFragment) {
+                           ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
+                       if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                           ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
+                       if (fragment instanceof TMUserProfileApprovalFragment) {
+                           ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
+                       if (fragment instanceof TMUserFormsApprovalFragment) {
+                           ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
 
-                   dialog.dismiss();
+                       dialog.dismiss();
+                   }
                }
            });
            dialog.show();

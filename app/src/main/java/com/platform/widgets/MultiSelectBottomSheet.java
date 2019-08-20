@@ -65,8 +65,8 @@ public class MultiSelectBottomSheet extends BottomSheetDialog implements
         tv_startdate = findViewById(R.id.tv_startdate);
         tv_enddate= findViewById(R.id.tv_enddate);
         rv_filterchoice = findViewById(R.id.rv_filterchoice);
-        yes = (Button) findViewById(R.id.btn_yes);
-        no = (Button) findViewById(R.id.btn_no);
+        yes = findViewById(R.id.btn_yes);
+        no = findViewById(R.id.btn_no);
         img_close =findViewById(R.id.toolbar_edit_action);
         toolbarTitle =findViewById(R.id.toolbar_title);
         toolbarTitle.setText(bottomSheetTitle);
@@ -107,7 +107,7 @@ public class MultiSelectBottomSheet extends BottomSheetDialog implements
 
     }
 
-    public void setSelectedValues(boolean selectedValues[]){
+    public void setSelectedValues(boolean[] selectedValues){
         this.selectedValues = selectedValues;
     }
 
@@ -155,7 +155,7 @@ public class MultiSelectBottomSheet extends BottomSheetDialog implements
             EmployeeViewHolder(View itemView) {
                 super(itemView);
                 this.setIsRecyclable(false);
-                txtTitle = (TextView) itemView.findViewById(R.id.tv_filters);
+                txtTitle = itemView.findViewById(R.id.tv_filters);
                 cb_select_filter = itemView.findViewById(R.id.cb_select_filter);
 
                 cb_select_filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

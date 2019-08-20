@@ -1,6 +1,7 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,12 @@ public class TMUserLeavesApprovalRecyclerAdapter extends RecyclerView.Adapter<TM
 
         holder.tv_startdate.setText(Util.getLongDateInString(Long.parseLong(dataList.get(position).getStartdate()), Constants.DAY_MONTH_YEAR));
         holder.tv_enddate.setText(Util.getLongDateInString(Long.parseLong(dataList.get(position).getEnddate()), Constants.DAY_MONTH_YEAR));
-        holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
-
+        if (!TextUtils.isEmpty(dataList.get(position).getReason())){
+            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
+        }
+        if (!TextUtils.isEmpty(dataList.get(position).getStatus().getRejection_reason())) {
+            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getStatus().getRejection_reason()));
+        }
 
         String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
         if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)) {
