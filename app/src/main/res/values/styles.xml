@@ -74,11 +74,12 @@
         <!--<item name="android:background">@drawable/approval_button_border</item>-->
     </style>
     <style name="StyleLabel">
-        <item name="android:textColor">@color/dark_grey</item>
-        <item name="android:textStyle">bold</item>
+
+        <item name="android:textStyle">normal</item>
         <item name="android:background">@drawable/bg_circular_border</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">@font/opensans</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:paddingTop">@dimen/dimen_05dp</item>
         <item name="android:paddingBottom">@dimen/dimen_05dp</item>
         <item name="android:paddingLeft">@dimen/dimen_15dp</item>
@@ -157,7 +158,8 @@
     <style name="NavigationView" >
         <item name="android:listDivider">@color/lighter_grey</item>
         <item name="android:textColorSecondary">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textSize">@dimen/dimen_16dp</item>
     </style>
 
     <style name="CardHeader">
