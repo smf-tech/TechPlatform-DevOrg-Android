@@ -83,8 +83,8 @@ public class TMUserProfileApprovalFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Util.logger(getActivity().getLocalClassName().toString(), "000000--" + requetsObject.toString());
-            Util.logger(getActivity().getLocalClassName().toString(), "!!!!!!!--" + filterTypeRequest);
+            Util.logger(getActivity().getLocalClassName(), "000000--" + requetsObject.toString());
+            Util.logger(getActivity().getLocalClassName(), "!!!!!!!--" + filterTypeRequest);
         }
         requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
         requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());

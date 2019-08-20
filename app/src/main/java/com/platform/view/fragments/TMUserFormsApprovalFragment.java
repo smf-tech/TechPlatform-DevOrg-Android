@@ -53,7 +53,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
         {
             strTitle =  bundle.getString("filter_type","");
             filterTypeRequest = bundle.getString("filter_type_request", "");
-            Util.logger(getActivity().getLocalClassName().toString(),filterTypeRequest);
+            Util.logger(getActivity().getLocalClassName(),filterTypeRequest);
             try {
                 requetsObject = new JSONObject(filterTypeRequest);
             } catch (JSONException e) {

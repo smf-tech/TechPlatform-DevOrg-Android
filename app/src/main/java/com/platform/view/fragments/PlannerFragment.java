@@ -1,26 +1,19 @@
 package com.platform.view.fragments;
 
-import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Parcelable;
-import android.os.Parcelable;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,37 +27,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.dao.UserCheckOutDao;
 import com.platform.database.DatabaseManager;
-import com.platform.listeners.CreateEventListener;
 import com.platform.listeners.PlatformTaskListener;
-import com.platform.listeners.SubmitAttendanceListener;
 import com.platform.models.attendance.AttendaceCheckOut;
 import com.platform.models.attendance.AttendaceData;
-import com.platform.models.attendance.CheckIn;
-import com.platform.models.attendance.CheckOut;
 import com.platform.models.home.Modules;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.planner.SubmoduleData;
 import com.platform.models.planner.attendanceData;
-import com.platform.presenter.MonthlyAttendanceFragmentPresenter;
 import com.platform.presenter.PlannerFragmentPresenter;
-
 import com.platform.presenter.SubmitAttendanceFragmentPresenter;
-import com.platform.services.AttendanceService;
 import com.platform.services.ShowTimerService;
 import com.platform.utility.AppEvents;
-import com.platform.utility.Config;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.PreferenceHelper;
@@ -76,24 +58,18 @@ import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.adapters.EventTaskListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
-import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.content.Context.ACTIVITY_SERVICE;
-import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 
 public class PlannerFragment extends Fragment implements PlatformTaskListener {
 

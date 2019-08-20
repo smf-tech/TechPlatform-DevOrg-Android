@@ -1152,7 +1152,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         try {
             if(prefCheckInTime!=null){
-                startDate = simpleDateFormat.parse((String)prefCheckInTime);
+                startDate = simpleDateFormat.parse(prefCheckInTime);
             }
 
         } catch (ParseException e) {
@@ -1305,7 +1305,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         try {
             if(prefCheckInTime!=null){
-                startDate = simpleDateFormat.parse((String)prefCheckInTime);
+                startDate = simpleDateFormat.parse(prefCheckInTime);
             }
 
         } catch (ParseException e) {

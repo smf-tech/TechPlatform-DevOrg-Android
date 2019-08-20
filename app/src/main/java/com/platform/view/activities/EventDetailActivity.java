@@ -314,7 +314,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_getattendancecode, null);
 
-        TextView editText = (TextView) dialogView.findViewById(R.id.tv_code);
+        TextView editText = dialogView.findViewById(R.id.tv_code);
         editText.setText(String.valueOf(response.getAttencdenceCode()));
 
         AlertDialog alertDialog = null;
@@ -336,7 +336,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_setattendance_code, null);
 
-        EditText editText = (EditText) dialogView.findViewById(R.id.et_code);
+        EditText editText = dialogView.findViewById(R.id.et_code);
 
         AlertDialog alertDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

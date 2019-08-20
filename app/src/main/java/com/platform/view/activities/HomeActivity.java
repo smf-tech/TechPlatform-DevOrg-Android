@@ -42,12 +42,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 import com.platform.view.fragments.ContentManagementFragment;
 import com.platform.view.fragments.HomeFragment;
@@ -75,7 +77,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initMenuView();
-
+        PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+        String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
+        Log.e("Firebase in oncreate",token);
         /*FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -510,6 +514,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         Util.setSubmittedFormsLoaded(false);
 
         Util.removeDatabaseRecords(false);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+        String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
+        Log.e("Firebase on logout",token);
 
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
