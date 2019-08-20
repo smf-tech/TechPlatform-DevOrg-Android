@@ -139,8 +139,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     SubmitAttendanceFromInnerPlanner submitAttendanceFragmentPresenter;
     private String attendaceId;
     private AlarmManager alarmManager;
-    private CharSequence chkOutTime;
-    private CharSequence checkInTime;
+    private CharSequence chkOutTime="";
+    private CharSequence checkInTime="";
 
     private static String KEY_CHECKINTIME="checkInTime";
     private static String KEY_TOTALHOURS="totalHours";
@@ -167,6 +167,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     ImageView ivCalendarMode;
     private String userServerCheckOutTime;
     private String userServerCheckInTime;
+    private String CheckInDate="";
+    private String CheckOutDate="";
 
     public AttendancePlannerFragment() {
         // Required empty public constructor
@@ -241,7 +243,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         cmonth=month+1;
 
 
-        showProgressBar();
+        //showProgressBar();
         MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
         monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
 
@@ -341,6 +343,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                 if(!Util.isConnected(getActivity())){
                     Util.showToast("Network not available ! Try again",getActivity());
+                    hideProgressBar();
                 }else {
 
                     showProgressBar();
@@ -416,7 +419,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     /*String chkInTime=getUserCheckInTimeFromServer(attendanceDateList.getCheckInTime());
                     String chkOutTime=getUserCheckOutTimeFromServer(attendanceDateList.getCheckOutTime());*/
                     String calculateHrs= calculateTotalHours(getUserCheckInTimeFromServer(attendanceDateList.getCheckInTime()),getUserCheckOutTimeFromServer(attendanceDateList.getCheckOutTime()));
-
                     txt_total_hours.setText(""+calculateHrs);
 
                 }
@@ -424,7 +426,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                    /* txt_total_hours.setText("00:00");
                     btCheckIn.setText("CheckIn at 00:00");
                     btCheckIn.setEnabled(false);
-                    makeCheckInButtonGray();
+                    makeCfheckInButtonGray();
                     btCheckout.setText("CheckOut at 00:00");
                     btCheckout.setEnabled(false);
                     makeCheckOutButtonGray();*/
@@ -649,6 +651,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 }
                 else
                     {
+                    if(PlannerFragment.timer!=null){
+                        PlannerFragment.timer.cancel();
+                        PlannerFragment.timer=null;
+                    }
                     markCheckOut();
                 }
                 /*if(!isCheckOut){
@@ -705,7 +711,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     private void markIn() {
 
-        checkInTime=DateFormat.format(Constants.TIME_FORMAT,new Date().getTime());
+        checkInTime=DateFormat.format("HH:mm aa",new Date().getTime());
         millis=getLongFromDate();
 
             if (gpsTracker.isGPSEnabled(getActivity(), this)) {
@@ -754,6 +760,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                             btCheckIn.setText(checkInText);
                             preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
 
+                            //CheckInDate=getCheckInDate();
+                            //txt_total_hours.setText(calculateHoursFromTwoDate(CheckInDate,""));
+
+                            txt_total_hours.setText(calculateTotalHours(getCheckInDateFromDB(),getCheckOutDateFronDB()));
+
                             //setButtonText();
                             enableCheckOut();
 
@@ -780,14 +791,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     }
 
                 }
-
-
             }
             else {
                 gpsTracker.showSettingsAlert();
             }
-
-
     }
 
 
@@ -800,7 +807,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 .getResources().getDrawable(R.drawable.bg_grey_box_with_border));
         btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));*/
 
-        chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
+        chkOutTime = DateFormat.format("HH:mm aa", new Date().getTime());
         millis=getLongFromDate();
         gpsTracker = new GPSTracker(getActivity());
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
@@ -830,12 +837,15 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         attendaceData.setSync(false);
                         attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
 
-                        try {
+                       /* try {
                             attendaceData.setTotalHrs(getTotalHours());
                         } catch (ParseException e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
+
+                        //CheckOutDate=getCheckOutDate();
+                        //attendaceData.setTotalHrs(calculateHoursFromTwoDate(CheckInDate,CheckOutDate));
                         attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                         userCheckOutDao.insert(attendaceData);
 
@@ -846,15 +856,22 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckout.setText(checkOutText);
                         preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
 
+                        txt_total_hours.setText(calculateTotalHours(getCheckInDateFromDB(),getCheckOutDateFronDB()));
+
 
                         //setButtonText();
-                        if(!isCheckOut){
+                       /* if(!isCheckOut){
                             getDiffBetweenTwoHours();
 
                         }
                         isCheckOut=true;
-                        preferenceHelper.totalHours(KEY_TOTALHOURS,false);
+                        preferenceHelper.totalHours(KEY_TOTALHOURS,false);*/
+
+                        //txt_total_hours.setText(attendaceData.getTotalHrs());
+
+                        //
                         Util.showToast(getResources().getString(R.string.check_out),getActivity());
+
 
 
                     }
@@ -1128,7 +1145,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendaceData.setAddress(strAdd);
                     attendaceData.setAttendaceDate(millis);
                     attendaceData.setAttendanceType(CHECK_IN);
-                    attendaceData.setTime(String.valueOf(time));
+                    attendaceData.setTime(String.valueOf(checkInTime));
                     attendaceData.setSync(true);
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
                     attendaceData.setMobileNumber(Util.getUserMobileFromPref());
@@ -1145,6 +1162,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     btCheckIn.setText(checkInText);
                     preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
 
+
+                    txt_total_hours.setText(calculateTotalHours(getCheckInDateFromDB(),getCheckOutDateFronDB()));
                     //setButtonText();
                     enableCheckOut();
                     Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
@@ -1190,15 +1209,17 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             attendaceData.setAddress(strAdd);
             attendaceData.setAttendaceDate(millis);
             attendaceData.setAttendanceType(CHECK_OUT);
-            attendaceData.setTime(String.valueOf(time));
+            attendaceData.setTime(String.valueOf(chkOutTime));
             attendaceData.setSync(true);
             attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+           // CheckOutDate=getCheckOutDate();
+            //attendaceData.setTotalHrs(calculateHoursFromTwoDate(CheckInDate,CheckOutDate));
             //tvCheckOutTime.setText(time);
-            try {
+         /*   try {
                 attendaceData.setTotalHrs(getTotalHours());
             } catch (ParseException e) {
                 e.printStackTrace();
-            }
+            }*/
             attendaceData.setMobileNumber(Util.getUserMobileFromPref());
             userCheckOutDao.insert(attendaceData);
 
@@ -1208,14 +1229,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             checkOutText=checkOutText+ chkOutTime;
             btCheckout.setText(checkOutText);
             preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
+            //txt_total_hours.setText(attendaceData.getTotalHrs());
 
-            if(!isCheckOut){
+            txt_total_hours.setText(calculateTotalHours(getCheckInDateFromDB(),getCheckOutDateFronDB()));
+          /*  if(!isCheckOut){
                 getDiffBetweenTwoHours();
             }
             isCheckOut=true;
-            preferenceHelper.totalHours(KEY_TOTALHOURS,false);
-            Util.showToast( getResources().getString(R.string.check_out),getActivity());
+            preferenceHelper.totalHours(KEY_TOTALHOURS,false);*/
 
+
+
+            Util.showToast( getResources().getString(R.string.check_out),getActivity());
 
             Log.i("Online","111"+attendaceData);
         }
@@ -1302,9 +1327,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         return totalHours;
     }
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -1317,19 +1339,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             makeCheckInButtonGray();
             clearCheckInButtonText();
             checkInTime=userCheckInTime;
-            btCheckIn.setText("Check in at"+ userCheckInTime);
+            btCheckIn.setText("Check in at " + userCheckInTime);
         }
         if(userCheckOutTime!=null){
             makeCheckOutButtonGray();
             clearCheckOutButtonText();
             chkOutTime=userCheckOutTime;
-            btCheckout.setText("Check out at" + userCheckOutTime);
+            btCheckout.setText("Check out at " + userCheckOutTime);
         }
-
-
-
-
-
 
     }
 
@@ -1349,6 +1366,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public String getCheckOutButtonText(String key){
         return preferenceHelper.getCheckOutText(key);
     }
+
     public void checkUserIsMakedIn(){
 
         if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
@@ -1374,7 +1392,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckOutButtonText();
-            btCheckout.setText("Check out at" + getUserCheckOutType.get(0).getTime());
+            btCheckout.setText("Check out at " + getUserCheckOutType.get(0).getTime());
             chkOutTime=getUserCheckOutType.get(0).getTime();
             //setButtonText();
         }
@@ -1516,7 +1534,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             int days = (int) (difference / (1000*60*60*24));
             hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
             min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
-
             //hours = (hours < 0 ? -hours : hours);
 
             //hours = difference/(1000 * 60 * 60);
@@ -1581,6 +1598,95 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         }
         return chkInTime;
+
+    }
+
+    public String getCheckInDate(){
+
+        String pattern = "yyyy/MM/dd HH:mm:ss a";
+        SimpleDateFormat df = new SimpleDateFormat(pattern,Locale.getDefault());
+        Date today = Calendar.getInstance().getTime();
+        CheckInDate= df.format(today);
+        return CheckInDate;
+    }
+    public String getCheckOutDate(){
+
+        String pattern = "yyyy/MM/dd HH:mm:ss a";
+        SimpleDateFormat df = new SimpleDateFormat(pattern,Locale.getDefault());
+        Date today = Calendar.getInstance().getTime();
+        CheckOutDate= df.format(today);
+        return CheckOutDate;
+    }
+
+    public String calculateHoursFromTwoDate(String checkInTime,String checkOutTime){
+
+        int hours = 0,min=0;
+        long ss=0;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss a");
+        Date startDate = null;
+        try {
+
+            startDate = simpleDateFormat.parse(checkInTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date endDate = null;
+        try {
+
+            if(checkOutTime==null||checkOutTime==""){
+                Date d=new Date();
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss a");
+                checkOutTime = sdf.format(d);
+                endDate=sdf.parse(checkOutTime);
+            }else {
+                endDate = simpleDateFormat.parse(checkOutTime);
+                // stop timer when got checkOutDate
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(startDate!=null&&endDate!=null){
+            long difference = endDate.getTime() - startDate.getTime();
+
+            int days = (int) (difference / (1000*60*60*24));
+            hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+            min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+            ss=(int)(difference /1000%60);
+
+
+
+
+            //hours = (hours < 0 ? -hours : hours);
+
+            //hours = difference/(1000 * 60 * 60);
+            //min = (difference/(1000*60)) % 60;
+
+        }
+
+       /* Log.i("======= Hours"," :: "+hours);
+        Log.i("======= Minutes"," :: "+min);*/
+
+        return  hours+":"+min+":"+ss;
+    }
+
+    public String getCheckInDateFromDB(){
+
+        if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
+            checkInTime=getUserType.get(0).getTime();
+        }
+
+        return (String)checkInTime;
+    }
+
+    public String getCheckOutDateFronDB(){
+        if (getUserCheckOutType.size() > 0 && !getUserCheckOutType.isEmpty() && getUserCheckOutType != null) {
+            chkOutTime=getUserType.get(0).getTime();
+        }
+
+        return (String)chkOutTime;
 
     }
 
