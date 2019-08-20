@@ -133,9 +133,9 @@
     <string name="locked">Locked</string>
 
     <!--Home-->
-    <string name="tab_dashboard">Home</string>
-    <string name="tab_connect">Connect</string>
-    <string name="tab_stories">Stories</string>
+    <string name="tab_dashboard">HOME</string>
+    <string name="tab_connect">CONNECT</string>
+    <string name="tab_stories">STORIES</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="planner">Planner</string>
     <string name="meetings">Meetings</string>
@@ -400,7 +400,7 @@
     <string name="registration_start_date">Registration start date</string>
     <string name="registration_end_date">Registration end date</string>
     <string name="select_forms">Select forms</string>
-    <string name="event_pic">Add photo</string>
+    <string name="event_pic">Click to add Image</string>
     <string name="msg_enter_title">Please enter the title.</string>
     <string name="msg_enter_start_date">Please enter the start date.</string>
     <string name="msg_enter_end_date">Please enter the end date.</string>
@@ -431,6 +431,7 @@
     <string name="powered_by">Powered by <b>Octopus</b></string>
     <string name="add_event">+Add Event</string>
     <string name="add_task">+Add Task</string>
+    <string name="leave_balance">Leave Balance</string>
 
 
 </resources>

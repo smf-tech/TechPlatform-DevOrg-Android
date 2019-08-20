@@ -369,5 +369,6 @@
 
     <string name="add_event">+कार्यक्रम जोड़ें</string>
     <string name="add_task">+ कार्य जोड़ें</string>
+    <string name="leave_balance">Leave Balance</string>
 
 </resources>

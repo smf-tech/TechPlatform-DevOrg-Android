@@ -59,6 +59,7 @@
     <dimen name="text_size_24">24sp</dimen>
     <dimen name="text_size_36">36sp</dimen>
     <dimen name="text_size_40">40sp</dimen>
+    <dimen name="text_size_50">50sp</dimen>
     <dimen name="form_item_status_indicator_width">6dp</dimen>
 
     <dimen name="standard_60">60dp</dimen>

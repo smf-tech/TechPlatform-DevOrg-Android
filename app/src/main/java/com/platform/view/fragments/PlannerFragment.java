@@ -363,6 +363,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
 
+                        plannerView.findViewById(R.id.rv_events).setVisibility(View.VISIBLE);
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.GONE);
 
                         if (obj.getEventData() != null && obj.getEventData().size() == 1) {
@@ -394,6 +395,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvTask.setAdapter(taskListAdapter);
 
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.GONE);
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.VISIBLE);
 
                         if (obj.getTaskData() != null && obj.getTaskData().size() == 1) {
                             final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -406,8 +408,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         }
 
                     } else {
-                        plannerView.findViewById(R.id.rv_task).setVisibility(View.GONE);
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.GONE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
                         lyTasks.getLayoutParams().height = px;
