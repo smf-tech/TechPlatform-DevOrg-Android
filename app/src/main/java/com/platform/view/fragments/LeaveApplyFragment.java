@@ -28,10 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.LeaveDataListener;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.leaves.LeaveData;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.LeaveType;
@@ -54,6 +56,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Util.getDateFromTimestamp;
@@ -81,6 +84,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     private ArrayList<LeaveDetail> leaveBalance = new ArrayList<>();
     public static ArrayList<Integer> leaveBackground = new ArrayList<>();
     public String selectedLeaveCatgory;
+    public double selectedLeaveCatgoryBalance=0;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     public LeaveApplyFragment() {
@@ -176,6 +180,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             if(applyType.equalsIgnoreCase("Comp-Off")){
                 rvLeaveCategory.setVisibility(View.GONE);
                 tvCategoryLabel.setVisibility(View.GONE);
+                btnApplyLeaves.setText(getString(R.string.request_comp_0f));
             }
         }
     }
@@ -203,6 +208,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 leaveBackground.remove(i);
                 leaveBackground.add(i, R.drawable.leave_form_view_focused);
                 selectedLeaveCatgory = leaveBalance.get(i).getType();
+                selectedLeaveCatgoryBalance = leaveBalance.get(i).getBalance();
             }
         }
         LeaveAdapterCategory.notifyDataSetChanged();
@@ -289,8 +295,10 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
             if (dayLeaveType == 0) {
                 leaveData.setFullHalfDay("half day");
+                leaveData.setHalfFullDay(0);
             } else if (dayLeaveType == 1) {
                 leaveData.setFullHalfDay("full day");
+                leaveData.setHalfFullDay(1);
             }
             leaveData.setReason(edtReason.getText().toString());
 
@@ -305,8 +313,12 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
                     Snackbar.LENGTH_LONG);
-        }
-        else {
+        } else if(selectedLeaveCatgoryBalance == 0 ){
+//            getDaysBetween(btnStartDate.getText().toString(),btnEndDate.getText().toString())
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.insufficisnt_leave_balance),
+                    Snackbar.LENGTH_LONG);
+        } else {
             LeaveData leaveData = new LeaveData();
             leaveData.setUserId(Util.getUserObjectFromPref().getId());
             leaveData.setLeaveType(selectedLeaveCatgory);
@@ -314,13 +326,32 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             leaveData.setEnddate(Util.dateTimeToTimeStamp(btnEndDate.getText().toString(), "00:00"));
             if (dayLeaveType == 0) {
                 leaveData.setFullHalfDay("half day");
+                leaveData.setHalfFullDay(0);
             } else if (dayLeaveType == 1) {
                 leaveData.setFullHalfDay("full day");
+                leaveData.setHalfFullDay(1);
             }
             leaveData.setReason(edtReason.getText().toString());
 
             presenter.postUserLeave(leaveData);
         }
+    }
+
+    private int getDaysBetween(String start, String end) {
+        int days=0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = sdf.parse(start);
+            Date endDate = sdf.parse(end);
+
+            long diff = endDate.getTime() - startDate.getTime();
+            days = (int)TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+1;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return days;
     }
 
     private void showDateDialogMin(Context context, final EditText editText, String dateType) {
@@ -441,26 +472,24 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
     @SuppressLint("StringFormatInvalid")
     @Override
     public void onSuccessListener(String requestID,String response) {
-        if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
-            try {
-                showAlertDialog(getString(R.string.leave_apply_msg,
-                        btnStartDate.getText().toString(),
-                        btnEndDate.getText().toString()),
-                        getString(R.string.leave_apply_msg1), getString(R.string.ok), "");
-            } catch (Exception e) {
-                Log.e("TAG", "Exception");
-            }
-        }
-        if(requestID.equalsIgnoreCase(LeavesPresenter.REQUEST_USER_COMPOFF)) {
-            try {
-                showAlertDialog(getString(R.string.compoff_requested_msg,
-                        btnStartDate.getText().toString(),
-                        btnEndDate.getText().toString()),
-                        getString(R.string.compoff_requested_msg1), getString(R.string.ok), "");
-            } catch (Exception e) {
-                Log.e("TAG", "Exception");
-            }
-        }
+//        if(requestID.equalsIgnoreCase(LeavesPresenter.POST_USER_DETAILS)) {
+//            try {
+        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                showAlertDialog("Status",responseOBJ.getMessage(),getString(R.string.ok), "");
+//            } catch (Exception e) {
+//                Log.e("TAG", "Exception");
+//            }
+//        }
+//        if(requestID.equalsIgnoreCase(LeavesPresenter.REQUEST_USER_COMPOFF)) {
+//            try {
+//                showAlertDialog(getString(R.string.compoff_requested_msg,
+//                        btnStartDate.getText().toString(),
+//                        btnEndDate.getText().toString()),
+//                        getString(R.string.compoff_requested_msg1), getString(R.string.ok), "");
+//            } catch (Exception e) {
+//                Log.e("TAG", "Exception");
+//            }
+//        }
     }
 
     @Override

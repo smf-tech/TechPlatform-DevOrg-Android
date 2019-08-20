@@ -73,7 +73,7 @@
                         android:padding="@dimen/dimen_02dp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans"/>
 
                     <TextView
@@ -83,9 +83,8 @@
                         android:layout_below="@+id/tv_label_description"
                         android:gravity="center"
                         android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:textSize="@dimen/text_size_13"
-                        android:layout_marginTop="@dimen/dimen_20dp"
                         android:fontFamily="@font/opensans"/>
 
                     <TextView
@@ -237,6 +236,7 @@
                         android:gravity="center"
                         android:padding="@dimen/dimen_05dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans"/>
                 </RelativeLayout>
 
@@ -284,7 +284,7 @@
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_20dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_11"
                 android:gravity="center_horizontal"
                 android:background="@color/dark_grey"
@@ -297,7 +297,6 @@
                 android:layout_below="@+id/tv_member_count"
                 android:orientation="horizontal"
                 android:weightSum="10"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/dimen_10dp">
 
                 <com.google.android.material.button.MaterialButton
@@ -322,7 +321,6 @@
                     android:layout_margin="@dimen/dimen_05dp"
                     android:text="Members list"
                     android:textAllCaps="false"
-                    android:visibility="gone"
                     android:fontFamily="@font/opensans" />
 
             </LinearLayout>

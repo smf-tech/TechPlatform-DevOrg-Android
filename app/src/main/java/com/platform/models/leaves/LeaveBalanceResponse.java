@@ -1,13 +1,11 @@
-package com.platform.models.events;
+package com.platform.models.leaves;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
-public class MemberListResponse {
-
+public class LeaveBalanceResponse {
     @SerializedName("status")
     @Expose
     private int status;
@@ -16,7 +14,7 @@ public class MemberListResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private List<Participant> data = null;
+    private List<LeaveDetail> data = null;
 
     public int getStatus() {
         return status;
@@ -34,11 +32,11 @@ public class MemberListResponse {
         this.message = message;
     }
 
-    public List<Participant> getData() {
+    public List<LeaveDetail> getData() {
         return data;
     }
 
-    public void setData(List<Participant> data) {
+    public void setData(List<LeaveDetail> data) {
         this.data = data;
     }
 

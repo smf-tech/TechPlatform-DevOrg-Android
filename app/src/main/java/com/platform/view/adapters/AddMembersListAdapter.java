@@ -52,7 +52,8 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.cbMemberSelect.setChecked(member.isMemberSelected());
 
         if( member.isAttendedCompleted()){
-            holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+            holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
+            holder.ivDelete.setVisibility(View.GONE);
         } /*else {
            holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
          }*/

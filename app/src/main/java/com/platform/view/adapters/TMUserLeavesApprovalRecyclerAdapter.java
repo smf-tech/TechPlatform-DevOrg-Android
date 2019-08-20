@@ -1,11 +1,11 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,16 +45,12 @@ public class TMUserLeavesApprovalRecyclerAdapter extends RecyclerView.Adapter<TM
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.tv_leave_category.setText(dataList.get(position).getLeave_type());
-        holder.tv_leave_type.setText(String.valueOf(dataList.get(position).getFull_half_day()));
+        holder.tv_leave_type.setText("("+dataList.get(position).getFull_half_day()+")");
 
         holder.tv_startdate.setText(Util.getLongDateInString(Long.parseLong(dataList.get(position).getStartdate()), Constants.DAY_MONTH_YEAR));
         holder.tv_enddate.setText(Util.getLongDateInString(Long.parseLong(dataList.get(position).getEnddate()), Constants.DAY_MONTH_YEAR));
-        if (!TextUtils.isEmpty(dataList.get(position).getReason())){
-            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
-        }
-        if (!TextUtils.isEmpty(dataList.get(position).getStatus().getRejection_reason())) {
-            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getStatus().getRejection_reason()));
-        }
+        holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
+        holder.tv_leave_status.setText(dataList.get(position).getStatus().getStatus());
 
         String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
         if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)) {
@@ -74,7 +70,7 @@ public class TMUserLeavesApprovalRecyclerAdapter extends RecyclerView.Adapter<TM
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_leave_category, tv_leave_type, tv_startdate, tv_enddate, tv_leave_reason;
+        TextView tv_leave_category, tv_leave_type, tv_startdate, tv_enddate, tv_leave_reason,tv_leave_status;
 
         Button btn_approve, btn_reject;
 
@@ -82,6 +78,7 @@ public class TMUserLeavesApprovalRecyclerAdapter extends RecyclerView.Adapter<TM
             super(itemView);
             tv_leave_category = itemView.findViewById(R.id.tv_leave_category);
             tv_leave_type = itemView.findViewById(R.id.tv_leave_type);
+            tv_leave_status = itemView.findViewById(R.id.tv_leave_status);
             tv_startdate = itemView.findViewById(R.id.tv_startdate);
             tv_enddate = itemView.findViewById(R.id.tv_enddate);
             tv_leave_reason = itemView.findViewById(R.id.tv_leave_reason);

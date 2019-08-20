@@ -10,28 +10,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:drawablePadding="@dimen/dimen_10dp"
-        android:paddingStart="@dimen/dimen_20dp"
-        android:paddingEnd="@dimen/dimen_20dp"
-        android:paddingBottom="@dimen/dimen_10dp"
-        android:paddingTop="@dimen/dimen_10dp"
         android:gravity="center_horizontal"
-        android:textColor="@color/selector_tab_text"
-        android:background="@drawable/bg_tab_madules"
-        tools:ignore="RelativeOverlap" />
-
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/text_size_14"
+        android:fontFamily="@font/opensans_bold"
+        tools:ignore="RelativeOverlap"
+        android:text="forms"/>
+    <!--android:background="@drawable/bg_tab_madules"-->
     <TextView
         android:id="@+id/pending_action_count"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_toRightOf="@+id/tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tab"
         android:background="@drawable/bg_circle_white"
+        android:layout_marginLeft="@dimen/dimen_03dp"
         android:gravity="center"
-        android:textSize="@dimen/text_size_12"
-        android:textStyle="bold"
-        android:visibility="visible" />
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/text_size_10"
+        android:fontFamily="@font/opensans_regular"
+        android:visibility="visible"
+        android:text="5"/>
 
 </RelativeLayout>
 

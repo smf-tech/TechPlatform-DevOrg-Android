@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -89,7 +90,7 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
         txtNoData.setText(getString(R.string.msg_no_pending_req));
         rvLandingPageView = tmFragmentView.findViewById(R.id.rvLandingPageView);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
         rvLandingPageView.setLayoutManager(layoutManager);
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_dashboard_tm);

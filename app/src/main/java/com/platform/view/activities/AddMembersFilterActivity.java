@@ -476,7 +476,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
     public String commaSeparatedString(ArrayList<JurisdictionType> jurisdictionList){
         ArrayList<String> s = new ArrayList<>();
-        for (JurisdictionType village : selectedVillages) {
+        for (JurisdictionType village : jurisdictionList) {
             s.add(village.getId());
         }
         return android.text.TextUtils.join(",", s);

@@ -199,7 +199,7 @@
             android:text="@string/add_members"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:visibility="gone"
+            android:visibility="invisible"
             />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_members_submit"
@@ -211,7 +211,7 @@
             android:text="@string/submit"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
     </RelativeLayout>
 
     <RelativeLayout

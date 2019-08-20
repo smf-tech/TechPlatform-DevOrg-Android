@@ -58,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public void saveLocaly(RemoteMessage remoteMessage){
         Date crDate = Calendar.getInstance().getTime();
-        String strDate = Util.getDateFromTimestamp(crDate.getTime(), Constants.DATE_TIME_FORMAT_);
+        String strDate = Util.getDateFromTimestamp(crDate.getTime(), Constants.FORM_DATE_FORMAT);
         NotificationData data = new NotificationData();
         data.setDateTime(strDate);
         data.setTitle(remoteMessage.getNotification().getTitle());

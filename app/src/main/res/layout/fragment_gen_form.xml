@@ -53,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
-
             android:text="@string/submit"
             android:textColor="#ffffff"
             />
@@ -65,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
-
             android:text="@string/save"
             android:textColor="#ffffff"
              />

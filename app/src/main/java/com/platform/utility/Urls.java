@@ -69,6 +69,7 @@ public class Urls {
         public static final String UPDATE_MEMBER_LIST = "api/addmembertoevent";
         public static final String SET_TASK_MARK_COMPLETE = "api/taskMarkComplete";
         public static final String DELETE_EVENT_TASK_MEMBERS = "api/deletemember";
+        public static final String GET_ORGANIZATION_ROLES = "api/roleEvent";
     }
 
     public class Leaves {
@@ -77,6 +78,7 @@ public class Urls {
         public static final String GET_MONTHLY_LEAVES = "api/getLeavesSummary/%1$s/%2$s";
         public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
         public static final String HOLIDAY_LIST= "api/getYearHolidayList";
+        public static final String LEAVE_BALANCE= "api/getUserLeaveBalance";
     }
 
     public class Attendance
