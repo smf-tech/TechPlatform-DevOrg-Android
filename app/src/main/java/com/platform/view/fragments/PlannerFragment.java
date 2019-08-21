@@ -291,6 +291,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         if (plannerView != null) {
             plannerView = null;
         }
+        if (timer!=null) {
+            timer.cancel();
+        }
         super.onDestroy();
     }
 
@@ -339,6 +342,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                         todayCheckInTime=checkInObj.getTime();
                         todayCheckOutTime=checkOutObj.getTime();
+
                     }
 
                     getUserCheckInTimeFromServer(todayCheckInTime);
@@ -354,6 +358,22 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                     updateButtonTextIfUserSaved();
 
+                    if(todayCheckInTime!=null){
+                        // start timer form current dsate
+                        if (todayCheckOutTime!=null){
+                            if (timer!=null){
+                                timer.cancel();
+                                timer =null;
+                            }
+
+                        }
+                        if(timer!=null){
+                            updateTime(Util.getDateFromTimestamp(Long.valueOf(todayCheckInTime),"yyyy/MM/dd HH:mm:ss a"),"");
+
+                        }
+                    }
+
+
 
 
 //((ViewHolderAttendace)holder).
@@ -367,12 +387,21 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
 
-                        final float scale = getContext().getResources().getDisplayMetrics().density;
-                        int px = (int) (277 * scale + 0.5f);
-                        lyEvents.getLayoutParams().height = px;
-
+                        plannerView.findViewById(R.id.rv_events).setVisibility(View.VISIBLE);
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.GONE);
+
+                        if (obj.getEventData() != null && obj.getEventData().size() == 1) {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (165 * scale + 0.5f);
+                            lyEvents.getLayoutParams().height = px;
+                        } else {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (285 * scale + 0.5f);
+                            lyEvents.getLayoutParams().height = px;
+                        }
+
                     } else {
+                        plannerView.findViewById(R.id.rv_events).setVisibility(View.GONE);
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
@@ -389,12 +418,22 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvTask.setLayoutManager(mLayoutManagerTask);
                         rvTask.setAdapter(taskListAdapter);
 
-                        final float scale = getContext().getResources().getDisplayMetrics().density;
-                        int px = (int) (277 * scale + 0.5f);
-                        lyTasks.getLayoutParams().height = px;
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.GONE);
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.VISIBLE);
+
+                        if (obj.getTaskData() != null && obj.getTaskData().size() == 1) {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (165 * scale + 0.5f);
+                            lyTasks.getLayoutParams().height = px;
+                        } else {
+                            final float scale = getContext().getResources().getDisplayMetrics().density;
+                            int px = (int) (285 * scale + 0.5f);
+                            lyTasks.getLayoutParams().height = px;
+                        }
+
                     } else {
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.GONE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
                         lyTasks.getLayoutParams().height = px;
@@ -545,7 +584,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     intent.putExtra("userAvailable",availableOnServer);
                     intent.putExtra("userCheckInTime",userServerCheckInTime);
                     intent.putExtra("userCheckOutTime",userServerCheckOutTime);
-
 
                     getActivity().startActivity(intent);
                 }
@@ -1316,9 +1354,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             // show total hrs
 
             if(timer==null){
-
                 txt_total_hours.setText(totalHoursFromTwonDate);
             }else {
+                updateTime((String)time,(String)checkOutTime);
                 String totalHours=calculateTotalHours((String)time,(String)checkOutTime);
                 txt_total_hours.setText(totalHours);
             }
@@ -1626,6 +1664,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
         int hours = 0,min=0;
         long ss=0;
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss a");
         Date startDate = null;
         try {

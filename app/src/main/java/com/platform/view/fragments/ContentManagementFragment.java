@@ -184,6 +184,7 @@ public class ContentManagementFragment extends Fragment {
             txt_noData.setVisibility(View.VISIBLE);
         }
         Log.i(TAG, "Res" + listDataChild);
+
         expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this, listDataHeader, listDataChild, getContext());
         expListView.setAdapter(expandableListAdapter);
 

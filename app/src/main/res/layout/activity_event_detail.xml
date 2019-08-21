@@ -73,7 +73,7 @@
                         android:padding="@dimen/dimen_02dp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans"/>
 
                     <TextView
@@ -83,9 +83,8 @@
                         android:layout_below="@+id/tv_label_description"
                         android:gravity="center"
                         android:paddingTop="@dimen/dimen_01dp"
-                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:textSize="@dimen/text_size_13"
-                        android:layout_marginTop="@dimen/dimen_20dp"
                         android:fontFamily="@font/opensans"/>
 
                     <TextView
@@ -237,6 +236,7 @@
                         android:gravity="center"
                         android:padding="@dimen/dimen_05dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans"/>
                 </RelativeLayout>
 

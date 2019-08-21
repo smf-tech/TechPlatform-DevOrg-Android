@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/leave_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/dimen_10dp"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/dimen_05dp">
+    android:layout_margin="@dimen/dimen_05dp"
+    android:background="@drawable/bg_circular_rect_pink">
 
     <LinearLayout
         android:id="@+id/leave_balance_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/brick_red"
+        android:background="@drawable/bg_circular_rect_pink"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_leaves_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
             android:layout_margin="@dimen/dimen_10dp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/opensans"
-            android:textSize="@dimen/text_size_14" />
+            android:fontFamily="@font/opensans_regular"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_14"
+            android:text="@string/submit"/>
 
-    <TextView
-        android:id="@+id/tv_leaves_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/dimen_10dp"
-        android:text="0"
-        android:fontFamily="@font/opensans"
-        android:textColor="@color/white"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/tv_leaves_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/opensans_regular"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_16"
+            android:layout_marginBottom="@dimen/dimen_05dp"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
-    </androidx.cardview.widget.CardView>
+</RelativeLayout>

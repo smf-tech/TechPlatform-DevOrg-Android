@@ -20,6 +20,10 @@ public class TMUserAttendanceApprovalRequest  {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("reason")
+    @Expose
+    private String reason;
+
     @SerializedName("created_on")
     @Expose
     private String created_on;
@@ -147,6 +151,14 @@ public class TMUserAttendanceApprovalRequest  {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public class Check_in {

@@ -174,6 +174,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 }
                 processResponse(json);
             }
+            hideProgressBar();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }

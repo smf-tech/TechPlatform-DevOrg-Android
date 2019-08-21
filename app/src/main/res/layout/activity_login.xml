@@ -54,7 +54,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:gravity="center"
+                    android:fontFamily="@font/opensans_regular"
                     android:text="@string/msg_enter_mobile" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="(Verification OTP will be sent on this number)"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="fill_parent"
@@ -83,7 +92,8 @@
                         android:singleLine="true"
                         android:textColor="@color/dark_grey"
                         android:textColorHint="@color/dark_grey"
-                        android:textSize="@dimen/text_size_16"
+                        android:textSize="@dimen/text_size_25"
+                        android:fontFamily="@font/opensans_regular"
                         tools:ignore="UnusedAttribute" />
                 </androidx.cardview.widget.CardView>
 

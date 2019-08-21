@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/form_title"
-        style="@style/roboto_medium_dark_grey_14"
+        android:textSize="@dimen/text_size_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -21,7 +21,9 @@
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_toStartOf="@id/add_form_button"
         android:ellipsize="end"
-        android:maxLines="2" />
+        android:maxLines="2"
+        android:fontFamily="@font/opensans_regular"
+        android:textColor="@color/medium_grey"/>
 
     <TextView
         android:id="@+id/target_date_label"

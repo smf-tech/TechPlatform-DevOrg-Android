@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
+    <string name="powered_by">Powered by Octopus</string>
     <string name="app_name_ss">सुजलाम सुफलाम</string>
     <string name="content_description">Description</string>
     <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
@@ -32,8 +33,8 @@
     <string name="resend"> <u>OTP को फिर से भेजें</u></string>
     <!--<string name="check_otp">कृपया OTP जांचें</string>-->
     <string name="otp_timeout_text">समय आउट %1$s सेकंड</string>
-    <string name="msg_otp_verification_timeout">OTP सत्यापन का समय समाप्त हो गया, कृपया फिरसे कोशिश करें।</string>
-    <string name="msg_waiting_for_otp_text">आपके मोबाइल नंबर पर भेजे गए ओटीपी का इंतजार है।</string>
+    <string name="msg_otp_verification_timeout">OTP प्राप्त नहीं कर सका, कृपया OTP फिर से भेजने का प्रयास करें।</string>
+    <string name="msg_waiting_for_otp_text">ऑटो-रीड ओटीपी जारी है, कृपया प्रतीक्षा करें ...</string>
     <string name="msg_verify_otp_text">अपना मोबाइल नंबर सत्यापित करने के लिए सत्यापन बटन पर क्लिक करें।</string>
     <string name="msg_logout">क्या आप लॉगआउट करना चाहते हैं?</string>
     <string name="msg_auth_fail">सर्वर समस्या, कृपया बाद में पुनः प्रयास करें।</string>
@@ -86,7 +87,7 @@
 
     <!--Profile error message-->
     <string name="msg_enter_name">कृपया नाम दर्ज करें</string>
-    <string name="msg_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
+    <string name="msg_enter_mobile_number">आरंभ करने के लिए कृपया अपना मोबाइल नंबर दर्ज करें!</string>
     <string name="msg_enter_valid_mobile_no">कृपया 10 अंकों का मोबाइल नंबर दर्ज करें</string>
     <string name="msg_enter_valid_email_id" tools:keep="@string/msg_enter_valid_email_id">कृपया मान्य ई-मेल पता दर्ज करें</string>
     <string name="msg_select_project" tools:keep="@string/msg_select_project">कृपया प्रोजेक्ट चुनें</string>
@@ -259,7 +260,7 @@
     <string name="task_description">विवरण</string>
     <string name="task_address">पता</string>
     <string name="task_add_members">सदस्य</string>
-    <string name="my_events">मेरी घटनाएँ</string>
+    <string name="my_events">मेरे द्वारा बनाई गई</string>
     <string name="apply_filters">फ़िल्टर लागू करें</string>
     <string name="filter">फ़िल्टर</string>
     <string name="event_detail">घटना का विवरण</string>
@@ -286,7 +287,7 @@
     <string name="attended_label">" उपस्थित थे"</string>
     <string name="not_attended_label">" उपस्थित नहीं थे"</string>
     <string name="never_label">कभी नहीँ</string>
-    <string name="mark_completed">Mark as completed</string>
+    <string name="mark_completed">पूर्ण के रूप में चिह्नित करें</string>
     <string name="cl_leaves">CL/SL</string>
     <string name="paid_leaves">Paid</string>
     <string name="unpaid_leaves">अवैतनिक</string>
@@ -339,30 +340,35 @@
     <string name="registration_start_date">पंजीकरण की शुरुआत की तारीख</string>
     <string name="registration_end_date">पंजीकरण की अंतिम तिथि</string>
     <string name="select_forms">रूपों का चयन करें</string>
-    <string name="event_pic">Add photo</string>
-    <string name="msg_enter_title">Please enter the title.</string>
-    <string name="msg_enter_start_date">Please enter the start date.</string>
-    <string name="msg_enter_end_date">Please enter the end date.</string>
-    <string name="msg_enter_ned_date">Please enter the end time.</string>
-    <string name="msg_enter_start_time">Please enter the start time.</string>
-    <string name="msg_enter_address">Please enter the address.</string>
-    <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
-    <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
-    <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
-    <string name="generate_code">Generate attendance code</string>
-    <string name="details">Details</string>
-    <string name="msg_enter_proper_date">Start datetime should not be grater than end datetime</string>
-    <string name="venue">Venue</string>
-    <string name="delayedin_checkin">Delayed in chek in and found</string>
-    <string name="delayin_checkin_title">please provide a reason</string>
-    <string name="see_details">See Details</string>
-    <string name="add_members">Add Members</string>
-    <string name="add_forms">Add Forms</string>
-    <string name="add_members_link">+ Add Member</string>
+    <string name="event_pic">तस्वीर जोड़ो</string>
+    <string name="msg_enter_title">कृपया शीर्षक दर्ज करें।</string>
+    <string name="msg_enter_start_date">कृपया प्रारंभ तिथि दर्ज करें।</string>
+    <string name="msg_enter_end_date">कृपया अंतिम तिथि प्रविष्ट करें।</string>
+    <string name="msg_enter_ned_date">कृपया अंतिम समय दर्ज करें।</string>
+    <string name="msg_enter_start_time">कृपया प्रारंभ समय दर्ज करें।</string>
+    <string name="msg_enter_address">कृपया पता दर्ज करें।</string>
+    <string name="msg_enter_registration_start_date">कृपया पंजीकरण प्रारंभ तिथि दर्ज करें।</string>
+    <string name="msg_enter_registration_end_date">कृपया पंजीकरण की अंतिम तिथि दर्ज करें।</string>
+    <string name="msg_title_length">शीर्षक की लंबाई 50 वर्णों से अधिक नहीं हो सकती।</string>
+    <string name="msg_post_date">पिछली तारीख या समय पर घटना नहीं बना सकते</string>
+    <string name="generate_code">उपस्थिति कोड उत्पन्न करें</string>
+    <string name="details">विवरण</string>
+    <string name="msg_enter_proper_date">आरंभिक जीवनकाल अंत डेटाइम की तुलना में ग्रेटर नहीं होना चाहिए</string>
+    <string name="venue">स्थान</string>
+    <string name="delayedin_checkin">में पाया और पाया में देरी</string>
+    <string name="delayin_checkin_title">कृपया एक कारण बताएं</string>
+    <string name="see_details">विवरण देखें</string>
+    <string name="add_members">सदस्य जोड़ें</string>
+    <string name="add_forms">प्रपत्र जोड़ें</string>
+    <string name="add_members_link">+ सदस्य जोड़ें</string>
 
-    <string name="check_in_msg">Cheked In Suceesful</string>
-    <string name="check_out_msg">Checked Out Successful</string>
-    <string name="request_comp_0f">Request Comp-Off</string>
-    <string name="insufficisnt_leave_balance">You have insufficient leave balance.</string>
+    <string name="check_in_msg">सुसेफुल में चीकू</string>
+    <string name="check_out_msg">सफल बाहर की जाँच की</string>
+    <string name="request_comp_0f">Comp-Off का अनुरोध करें</string>
+    <string name="insufficisnt_leave_balance">आपके पास अपर्याप्त अवकाश शेष है।</string>
+
+    <string name="add_event">+कार्यक्रम जोड़ें</string>
+    <string name="add_task">+ कार्य जोड़ें</string>
+    <string name="leave_balance">Leave Balance</string>
 
 </resources>

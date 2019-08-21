@@ -359,17 +359,15 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private void showDialogForSelectedDate(String calendarSelectedDate) {
         AttendanceDateList attendanceDateList;
 
-
-
         if(listDateWiseAttendace!=null
         &&listDateWiseAttendace.size()>0&&
                 !listDateWiseAttendace.isEmpty()){
-
 
             for(int i=0;i<listDateWiseAttendace.size();i++){
 
                 attendanceDateList=listDateWiseAttendace.get(i);
                 String checkInDate=attendanceDateList.getCreateAt();
+
 
                 String UserAttendaceDate[]=checkInDate.split(" ");
                 String AttendaceCreatedAt=UserAttendaceDate[0];
@@ -377,8 +375,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 if(calendarSelectedDate.equalsIgnoreCase(AttendaceCreatedAt))
                 {
                     if(!attendanceDateList.getCheckInTime().isEmpty()){
-
-
 
                         btCheckIn.setText(checkInText+" "+Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm aa"));
                         btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
@@ -423,13 +419,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                 }
                 else {
-                   /* txt_total_hours.setText("00:00");
+
+
+
+                    txt_total_hours.setText("00:00");
                     btCheckIn.setText("CheckIn at 00:00");
                     btCheckIn.setEnabled(false);
-                    makeCfheckInButtonGray();
+                    makeCheckInButtonGray();
                     btCheckout.setText("CheckOut at 00:00");
                     btCheckout.setEnabled(false);
-                    makeCheckOutButtonGray();*/
+                    makeCheckOutButtonGray();
                 }
 
             }
@@ -1340,6 +1339,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             clearCheckInButtonText();
             checkInTime=userCheckInTime;
             btCheckIn.setText("Check in at " + userCheckInTime);
+            enableCheckOut();
         }
         if(userCheckOutTime!=null){
             makeCheckOutButtonGray();

@@ -183,7 +183,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                         .getEnddatetime(),Constants.FORM_DATE));
             }
             if(eventTask.getThumbnailImage().equals("")){
-//                eventPic.setVisibility(View.GONE);
+                eventPic.setVisibility(View.GONE);
             } else {
                 Glide.with(this)
                         .load(eventTask.getThumbnailImage())
@@ -344,8 +344,8 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 eventTask.setThumbnailImage(mUploadedImageUrl);
             } else {
                 // Set old image url if image unchanged
-                if (!TextUtils.isEmpty(eventTask.getThumbnailImage())) {
-                    eventTask.setThumbnailImage(eventTask.getThumbnailImage());
+                if (this.eventTask!=null && this.eventTask.getThumbnailImage()!= null) {
+                    eventTask.setThumbnailImage(this.eventTask.getThumbnailImage());
                 }
             }
 
@@ -385,8 +385,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         } else if (startDate.getTime() > endDate.getTime()) {
             msg = getResources().getString(R.string.msg_enter_proper_date);
         }else if (currentDate.getTime() > startDate.getTime()) {
-//            msg = getResources().getString(R.string.msg_enter_proper_date);
-            msg = "Cannot create event on past date or time";
+            msg = getResources().getString(R.string.msg_post_date);
         } else if (etAddress.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_address);
         } else if (cbIsRegistrationRequired.isChecked()) {

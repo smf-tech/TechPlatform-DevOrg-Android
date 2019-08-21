@@ -99,6 +99,9 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             tvInfoLabel.setVisibility(View.GONE);
             cbSelectAllMembers.setVisibility(View.INVISIBLE);
             btAddMembers.setVisibility(View.INVISIBLE);
+            if(!isDeleteVisible){
+                tvAddMembers.setVisibility(View.GONE);
+            }
         }
 
         if(filterMemberList!=null && filterMemberList.size()>0){
@@ -160,25 +163,28 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
 
     private void filter(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
-        filterMemberList.clear();
-        if (searchText.length() > 0 && membersList.size()>0) {
-            for (Participant member : membersList) {
-                if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
-                    filterMemberList.add(member);
+
+        if(filterMemberList!=null) {
+            filterMemberList.clear();
+            if (searchText.length() > 0 && membersList.size() > 0) {
+                for (Participant member : membersList) {
+                    if (member.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
+                        filterMemberList.add(member);
+                    }
                 }
+            } else {
+                filterMemberList.addAll(membersList);
             }
-        } else {
-            filterMemberList.addAll(membersList);
+            checkAllSelected(membersList);
+            addMembersListAdapter.notifyDataSetChanged();
         }
-        checkAllSelected( membersList);
-        addMembersListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+               onBackPressed();
                 break;
 
             case R.id.toolbar_edit_action:
@@ -286,6 +292,20 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             alertDialog.show();
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent returnIntent = new Intent();
+        if(filterMemberList!=null){
+            returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, filterMemberList.size());
+        } else {
+            returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, 0);
+        }
+
+        setResult(Constants.Planner.MEMBER_LIST, returnIntent);
+        finish();
     }
 
     @Override

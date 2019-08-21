@@ -67,7 +67,7 @@ public class EventsTaskLandingFragmentPresenter implements CreateEventListener {
                 if(data.getStatus()==200){
                     fragmentWeakReference.get().displayEventsListOfMonth(data.getData());
                 } else {
-                    onFailureListener(data.getMessage());
+//                    onFailureListener(data.getMessage());
                 }
             }
         }

@@ -108,7 +108,7 @@
             android:layout_margin="10dp"
             android:text="Do you realy want to exit ?"
             android:textColor="@android:color/white"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:visibility="gone" />
 

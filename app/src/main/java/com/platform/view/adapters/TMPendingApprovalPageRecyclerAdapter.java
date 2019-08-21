@@ -68,8 +68,8 @@ public class TMPendingApprovalPageRecyclerAdapter extends RecyclerView.Adapter<T
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
-                txtTitle = (TextView) itemView.findViewById(R.id.tv_title);
-                txtValue = (TextView) itemView.findViewById(R.id.tv_value);
+                txtTitle = itemView.findViewById(R.id.tv_title);
+                txtValue = itemView.findViewById(R.id.tv_value);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
             }

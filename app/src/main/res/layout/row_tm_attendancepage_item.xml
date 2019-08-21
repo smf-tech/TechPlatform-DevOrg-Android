@@ -125,6 +125,39 @@
                 android:layout_margin="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_title_14"
                 android:layout_height="wrap_content" />
+
+
+
+
+            <com.platform.view.customs.TextViewBold
+                android:layout_width="@dimen/dimen_80dp"
+                android:id="@+id/tv_reason"
+                android:text="Reason:"
+                android:textStyle="bold"
+                android:layout_below="@+id/tv_address_checkout"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
+                android:layout_height="wrap_content" />
+
+
+            <com.platform.view.customs.TextViewRegular
+                android:layout_width="match_parent"
+                android:id="@+id/tv_reason_value"
+                android:text=""
+                android:textStyle="bold"
+                android:maxLines="4"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="@dimen/text_size_small_10"
+                app:autoSizeMaxTextSize="@dimen/text_size_title_14"
+                app:autoSizeStepGranularity="1sp"
+                android:layout_toRightOf="@+id/tv_reason"
+                android:layout_alignBaseline="@+id/tv_reason"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
+                android:layout_height="wrap_content" />
+
         </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"

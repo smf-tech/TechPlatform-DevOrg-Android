@@ -149,11 +149,29 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
                 DownloadImageTask downloadImageTask=new DownloadImageTask(info);
                 downloadImageTask.execute(downloadContent.getDef());
+            }
+        });
+
+        holder.imgShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+                //Uri uri = Uri.parse(downloadContent.getDef());
+                //File filePath=new File(uri.getPath());
 
 
+                Uri uri = Uri.parse(downloadContent.getDef());
+                File file = new File(uri.getPath());
+                String fileName = file.getName();
+
+                File filePath = new File(storagePath + "/" + fileName);
+                openFile(contentManagementFragment, filePath);
 
             }
         });
+
+
 
 
 
@@ -448,7 +466,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             //mWakeLock.release();
             //progressBar.setVisibility(View.GONE);
             //notifyDataSetChanged();
+
             info.getProgressBar().setVisibility(View.GONE);
+
         }
 
         @Override
@@ -478,8 +498,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             InputStream input = null;
             OutputStream output = null;
             HttpURLConnection connection = null;
-
-
 
                  try
                  {
