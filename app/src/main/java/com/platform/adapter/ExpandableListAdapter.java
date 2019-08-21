@@ -86,7 +86,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         position=childPosition;
-        Log.i("Children ","111"+parent.getChildCount());
         urlListl=new ArrayList<>();
 
         final DownloadContent downloadContent = (DownloadContent)getChild(groupPosition, childPosition);
@@ -108,6 +107,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             holder.info = info;
             holder.info.setProgressBar(holder.progressBar);
         }
+        Log.i("Info","111"+info);
 
 
         holder.imgDownload = convertView.findViewById(R.id.imgDownload);
@@ -148,7 +148,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 contentManagementFragment.beginDownload(downloadContent.getDef());
 
                 DownloadImageTask downloadImageTask=new DownloadImageTask(info);
-                downloadImageTask.execute(downloadContent.getDef());
+                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,downloadContent.getDef());
             }
         });
 
@@ -454,7 +454,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             progressBar.setMax(0);
             progressBar.setProgress(0);*/
 
-            info.getProgressBar().setVisibility(View.VISIBLE);
+            if(info!=null){
+                info.getProgressBar().setVisibility(View.VISIBLE);
+            }
 
 
 
@@ -467,7 +469,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             //progressBar.setVisibility(View.GONE);
             //notifyDataSetChanged();
 
-            info.getProgressBar().setVisibility(View.GONE);
+            if(info!=null){
+                info.getProgressBar().setVisibility(View.GONE);
+                notifyDataSetChanged();
+            }
 
         }
 
@@ -477,7 +482,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             info.setProgress(values[0]);
             ProgressBar bar = info.getProgressBar();
-
             if(bar != null) {
                 bar.setProgress(info.getProgress());
                 bar.invalidate();

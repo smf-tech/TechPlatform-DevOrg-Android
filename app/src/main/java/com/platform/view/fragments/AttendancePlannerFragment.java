@@ -420,29 +420,61 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 }
                 else {
 
+                    // get create date from object
+                    Calendar calendar=Calendar.getInstance();
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                    String currDate=sdf.format(new Date());
+
+                    if(currDate.equalsIgnoreCase(calendarSelectedDate)){
+                        btCheckIn.setText("CheckIn");
+                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
+                        btCheckIn.setTextColor(getResources().getColor(R.color.white));
+                        btCheckIn.setEnabled(true);
+                        txt_total_hours.setText("0:0");
+                        btCheckout.setText("Check Out");
+                    }else {
+                        txt_total_hours.setText("0:0");
+                        btCheckIn.setText("CheckIn at 00:00");
+                        btCheckIn.setEnabled(false);
+                        makeCheckInButtonGray();
+                        btCheckout.setText("CheckOut at 00:00");
+                        btCheckout.setEnabled(false);
+                        makeCheckOutButtonGray();
+
+                    }
 
 
-                    txt_total_hours.setText("00:00");
-                    btCheckIn.setText("CheckIn at 00:00");
-                    btCheckIn.setEnabled(false);
-                    makeCheckInButtonGray();
-                    btCheckout.setText("CheckOut at 00:00");
-                    btCheckout.setEnabled(false);
-                    makeCheckOutButtonGray();
+
+
+
                 }
 
             }
 
         }else{
 
-            txt_total_hours.setText("00:00");
-            btCheckIn.setText("CheckIn at 00:00");
-            btCheckIn.setEnabled(false);
 
-            makeCheckInButtonGray();
-            btCheckout.setText("CheckOut at 00:00");
-            btCheckout.setEnabled(false);
-            makeCheckOutButtonGray();
+            // check current date and make check in button enable
+
+            Calendar calendar=Calendar.getInstance();
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            String currDate=sdf.format(new Date());
+
+            if(calendarSelectedDate.equalsIgnoreCase(currDate)) {
+
+            btCheckIn.setEnabled(true);
+            }
+            else {
+                txt_total_hours.setText("00:00");
+                btCheckIn.setText("CheckIn at 00:00");
+                btCheckIn.setEnabled(false);
+
+                makeCheckInButtonGray();
+                btCheckout.setText("CheckOut at 00:00");
+                btCheckout.setEnabled(false);
+                makeCheckOutButtonGray();
+            }
+
         }
 
     }

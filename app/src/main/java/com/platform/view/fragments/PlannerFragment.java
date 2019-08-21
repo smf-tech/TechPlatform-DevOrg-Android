@@ -146,7 +146,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     public static Timer timer;
     BroadcastReceiver _broadcastReceiver;
     private final SimpleDateFormat _sdfWatchTime = new SimpleDateFormat("HH:mm");
-
+    private long checkInDateInLong,checkOutDateInLong;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -291,9 +291,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         if (plannerView != null) {
             plannerView = null;
         }
-        if (timer!=null) {
+        /*if (timer!=null) {
             timer.cancel();
-        }
+        }*/
         super.onDestroy();
     }
 
@@ -556,9 +556,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 @Override
                 public void onClick(View v) {
 
-
-
-
                     getCheckOut=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
                     if(getCheckOut != null && getCheckOut.size() > 0 && !getCheckOut.isEmpty())
                     {
@@ -566,9 +563,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     } else {
                         markOut();
                     }
-
-
-
 
                 }
             });
@@ -1327,6 +1321,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 db_chkin_time=getUserType.get(0).getTime();
                 time = getUserType.get(0).getTime();
                 userServerCheckInTime=(String)time;
+                checkInDateInLong=getUserType.get(0).getAttendaceDate();
+
                 enableCheckOut();
             }
 
@@ -1344,21 +1340,29 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 db_chkout_time=getCheckOut.get(0).getTime();
                 checkOutTime=getCheckOut.get(0).getTime();
                 userServerCheckOutTime=(String)checkOutTime;
+                checkOutDateInLong=getCheckOut.get(0).getAttendaceDate();
                 String totalHrs=getCheckOut.get(0).getTotalHrs();
                 txt_total_hours.setText(totalHrs);
-
             }
-
-
             //txt_total_hours.setText(totalHoursFromTwonDate);
             // show total hrs
 
-            if(timer==null){
+            if(userServerCheckInTime!=null){
+                // start timer form current dsate
+                if (userServerCheckOutTime!=null){
+                    if (timer!=null){
+                        timer.cancel();
+                        timer =null;
+                        // stop the timer
+                    }
+
+                }
+
                 txt_total_hours.setText(totalHoursFromTwonDate);
-            }else {
-                updateTime((String)time,(String)checkOutTime);
-                String totalHours=calculateTotalHours((String)time,(String)checkOutTime);
-                txt_total_hours.setText(totalHours);
+                    if(timer!=null){
+                        updateTime(Util.getDateFromTimestamp(Long.valueOf(checkInDateInLong),"yyyy/MM/dd HH:mm:ss a"),"");
+
+                    }
             }
 
 
@@ -1636,7 +1640,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
                 Message msg = mHandler.obtainMessage();
                 Bundle bundle = new Bundle();
                 bundle.putString(KEY_TOTALHOURS,calculateHoursFromTwoDate(checkIntime,checkOutTime));

@@ -157,7 +157,7 @@ public class ContentManagementFragment extends Fragment {
         createDirectory();
         clearPreviousData();
 
-        if (Util.isConnected(getContext())) {
+        if(Util.isConnected(getContext())){
             showProgressBar();
             getContentData();
         }
