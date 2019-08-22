@@ -68,10 +68,12 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
         viewHolder.tvName.setText(leavesList.get(i).getName());
         viewHolder.tvRole.setText(leavesList.get(i).getRole());
 
-        if(!leavesList.get(i).getStatus().equals("a")){
-            viewHolder.ivStatus.setImageResource(R.drawable.ic_search);
-        } else if(!leavesList.get(i).getStatus().equals("p")){
-            viewHolder.ivStatus.setImageResource(R.drawable.ic_close);
+        if(leavesList.get(i).getStatus().equals("a")){
+            viewHolder.ivStatus.setImageResource(R.drawable.ic_absent);
+        } else if(leavesList.get(i).getStatus().equals("p")){
+            viewHolder.ivStatus.setImageResource(R.drawable.ic_present);
+        } else if(leavesList.get(i).getStatus().equals("l")){
+            viewHolder.ivStatus.setImageResource(R.drawable.ic_leave);
         }
 
     }

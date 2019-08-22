@@ -531,6 +531,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     }
 
     private void setTeamAttendanceData() {
+        teamAttendanceList.clear();
         TeamUser u1 =new TeamUser("sachin kakade","tc","","a");
         teamAttendanceList.add(u1);
         TeamUser u2 =new TeamUser("sagar mahajan","fa","","p");

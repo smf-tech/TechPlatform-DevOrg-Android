@@ -137,10 +137,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (getIntent().getStringExtra(Constants.Login.ACTION) == null ||
                 !getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
             profilePresenter.getOrganizations();
         }
-
         initViews();
     }
 
@@ -280,7 +278,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             this.organizations = orgList;
                         }
                     }
-
                     if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
                         Glide.with(this)
                                 .load(userInfo.getProfilePic())

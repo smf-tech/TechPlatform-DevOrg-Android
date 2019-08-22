@@ -55,41 +55,56 @@
             android:background="@color/leaves_tab"
             android:elevation="@dimen/dimen_03dp"
             android:paddingTop="@dimen/dimen_20dp"
+            android:visibility="gone"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
-            app:tabMode="fixed"
-            android:visibility="gone"/>
+            app:tabMode="fixed" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_applied_leaves_list"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/button_lay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="10">
+            <TextView
+                android:id="@+id/tv_no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:gravity="center"
+                android:text="@string/no_data_available"
+                android:visibility="gone" />
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/AppStyleBorderButton"
-            android:id="@+id/btn_add_leaves"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:layout_weight="5"
-            android:padding="@dimen/dimen_10dp"
-            android:text="Apply Leave" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_applied_leaves_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp" />
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/AppStyleBorderButton"
-            android:id="@+id/btn_compoff_request"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:layout_weight="5"
-            android:padding="@dimen/dimen_10dp"
-            android:text="@string/request_comp_0f" />
+        </RelativeLayout>
 
-     </LinearLayout>
+        <LinearLayout
+            android:id="@+id/button_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_leaves"
+                style="@style/AppStyleBorderButton"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_weight="5"
+                android:padding="@dimen/dimen_10dp"
+                android:text="Apply Leave" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_compoff_request"
+                style="@style/AppStyleBorderButton"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_weight="5"
+                android:padding="@dimen/dimen_10dp"
+                android:text="@string/request_comp_0f" />
+
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

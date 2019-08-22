@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,6 +70,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private AppliedLeavesAdapter leavesAdapter;
     private MaterialCalendarView calendarView;
     ImageView ivCalendarMode;
+    private TextView tvNoData;
     private boolean isMonth = true;
     private String userLeaveDetailsResponse;
     private List<LeaveDetail> leaveBalance = new ArrayList<>();
@@ -105,6 +107,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         ivCalendarMode = view.findViewById(R.id.tv_calendar_mode);
         ivCalendarMode.setOnClickListener(this);
         calendarView = view.findViewById(R.id.calendarView);
+        tvNoData = view.findViewById(R.id.tv_no_data_msg);
         Button btnAddLeaves = view.findViewById(R.id.btn_add_leaves);
         btnAddLeaves.setOnClickListener(this);
         Button btnRequestCompoff = view.findViewById(R.id.btn_compoff_request);
@@ -120,14 +123,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
         if(Util.isConnected(getContext())){
             Bundle bundle = this.getArguments();
-//            if (bundle != null) {
-//                if(bundle.getSerializable("leaveBalance")!=null) {
-//                    leaveBalance.clear();
-//                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
-//                }
-//            }
-//
-//            if(leaveBalance.size()==0)
             presenter.getLeavesBalance();
             setListData();
             setUIData();
@@ -340,15 +335,19 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 List<LeaveData> monthlyLeaveData = monthlyLeaveHolidayData.getLeaveData();
                 List<HolidayData> monthlyHolidayData = monthlyLeaveHolidayData.getHolidayData();
                 if(monthlyLeaveData.size()==0){
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), getString(R.string.no_leave_applied_msg),
-                            Snackbar.LENGTH_LONG);
+//                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+//                                    .findViewById(android.R.id.content), getString(R.string.no_leave_applied_msg),
+//                            Snackbar.LENGTH_LONG);
+                    tvNoData.setVisibility(View.VISIBLE);
+                } else {
+                    leavesListData.addAll(monthlyLeaveData);
+                    leavesAdapter.notifyDataSetChanged();
+                    displayLeavesOfMonth(leavesListData);
+                    tvNoData.setVisibility(View.GONE);
                 }
-                leavesListData.addAll(monthlyLeaveData);
-                leavesAdapter.notifyDataSetChanged();
                 // To show highlighted calendar dates
                 holidaysListData.addAll(monthlyHolidayData);
-                displayLeavesOfMonth(leavesListData);
+
                 displayHolidaysOfMonth(holidaysListData);
             }
         }else if(requestID.equals(DELETE_LEAVE)){
