@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
 import com.platform.R;
@@ -363,6 +364,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
                         rvEvents.setAdapter(eventTaskListAdapter);
 
+                        plannerView.findViewById(R.id.rv_events).setVisibility(View.VISIBLE);
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.GONE);
 
                         if (obj.getEventData() != null && obj.getEventData().size() == 1) {
@@ -376,6 +378,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         }
 
                     } else {
+                        plannerView.findViewById(R.id.rv_events).setVisibility(View.GONE);
                         plannerView.findViewById(R.id.cv_no_event).setVisibility(View.VISIBLE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
@@ -393,6 +396,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                         rvTask.setAdapter(taskListAdapter);
 
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.GONE);
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.VISIBLE);
 
                         if (obj.getTaskData() != null && obj.getTaskData().size() == 1) {
                             final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -406,6 +410,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
 
                     } else {
                         plannerView.findViewById(R.id.cv_no_task).setVisibility(View.VISIBLE);
+                        plannerView.findViewById(R.id.rv_task).setVisibility(View.GONE);
                         final float scale = getContext().getResources().getDisplayMetrics().density;
                         int px = (int) (135 * scale + 0.5f);
                         lyTasks.getLayoutParams().height = px;
@@ -413,15 +418,29 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     break;
                 case Constants.Planner.LEAVES_KEY:
                     if(obj.getLeave()!=null && obj.getLeave().size()>0){
-                        leaveBalance.clear();
-                        leaveBalance.addAll(obj.getLeave());
-                        RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
-                                LinearLayoutManager.HORIZONTAL, true);
-                        LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(
-                                obj.getLeave(), "LeaveBalance");
-                        RecyclerView rvLeaveBalance = plannerView.findViewById(R.id.rv_leave_balance);
-                        rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
-                        rvLeaveBalance.setAdapter(LeaveAdapter);
+//                        leaveBalance.clear();
+//                        leaveBalance.addAll(obj.getLeave());
+//                        RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
+//                                LinearLayoutManager.HORIZONTAL, true);
+//                        LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(
+//                                obj.getLeave(), "LeaveBalance");
+//                        RecyclerView rvLeaveBalance = plannerView.findViewById(R.id.rv_leave_balance);
+//                        rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
+//                        rvLeaveBalance.setAdapter(LeaveAdapter);
+                        CircularProgressBar pbTotal = plannerView.findViewById(R.id.pb_total);
+                        pbTotal.setProgress(100f);
+                        TextView tvTotal=plannerView.findViewById(R.id.tv_total);
+                        tvTotal.setText("100");
+
+                        CircularProgressBar pbUsed = plannerView.findViewById(R.id.pb_used);
+                        pbUsed.setProgress(75f);
+                        TextView tvUsed=plannerView.findViewById(R.id.tv_used);
+                        tvUsed.setText("75");
+
+                        CircularProgressBar pbBalance = plannerView.findViewById(R.id.pb_balance);
+                        pbBalance.setProgress(25f);
+                        TextView tvbalance=plannerView.findViewById(R.id.tv_balance);
+                        tvbalance.setText("25");
                     }
                     break;
             }
@@ -734,7 +753,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                     intent.putExtra("title", getActivity().getString(R.string.leave));
                     intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                     getActivity().startActivity(intent);
                 }else{
                     Util.showToast(getString(R.string.msg_no_network), getContext());
@@ -749,7 +767,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 intent.putExtra("isEdit", false);
                 intent.putExtra("apply_type", "Leave");
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
-                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                 getActivity().startActivity(intent);
             }
         });

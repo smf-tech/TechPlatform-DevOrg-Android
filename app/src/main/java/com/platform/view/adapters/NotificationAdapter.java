@@ -15,9 +15,14 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.notifications.NotificationData;
+import com.platform.utility.Constants;
+import com.platform.view.activities.CreateEventTaskActivity;
+import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.NotificationsActivity;
+import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
@@ -75,24 +80,51 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View view) {
                     if(notificationList.get(getAdapterPosition()).getToOpen()!=null){
+
+                        Intent intent;
+
                         switch (notificationList.get(getAdapterPosition()).getToOpen()) {
-                            case "Approval":
-                                Intent intent = new Intent(context, TMFiltersListActivity.class);
+                            case "formApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+//                                intent.putExtra("filter_type","");
                                 context.startActivity(intent);
                                 break;
-                            case "Event":
+                            case "userApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            case "leaveApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            case "attendanceApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            case "compoffApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            case "event":
+                                intent = new Intent(context, CreateEventTaskActivity.class);
+                                intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                                context.startActivity(intent);
+                                break;
+                            case "task":
+                                intent = new Intent(context, PlannerDetailActivity.class);
+                                intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                                context.startActivity(intent);
+                                break;
+                            case "leave":
+                                intent= new Intent(context, GeneralActionsActivity.class);
+                                intent.putExtra("title", context.getString(R.string.leave));
+                                intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                                context.startActivity(intent);
+                                break;
+                            case "attendance":
 
                                 break;
-                            case "Task":
-
-                                break;
-                            case "Leaves":
-
-                                break;
-                            case "Attendances":
-
-                                break;
-                            case "Forms":
+                            case "forms":
 
                                 break;
                             default:

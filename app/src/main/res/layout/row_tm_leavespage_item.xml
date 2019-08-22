@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/dimen_10dp"
+        android:layout_margin="@dimen/dimen_05dp"
         android:padding="@dimen/dimen_10dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
@@ -17,176 +17,104 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:layout_marginBottom="@dimen/dimen_05dp"
-                    android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-                <com.platform.view.customs.TextViewBold
-                    android:id="@+id/tv_leave_category_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content">
 
-                    android:layout_toLeftOf="@+id/tv_value"
-                    android:text="Category: "
-                    android:textSize="@dimen/text_size_title_14"
-                    android:textStyle="bold" />
 
-                <com.platform.view.customs.TextViewRegular
+                <TextView
                     android:id="@+id/tv_leave_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-
-                    android:layout_toLeftOf="@+id/tv_value"
-                    android:layout_toRightOf="@+id/tv_leave_category_title"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
                     android:text="dsadad"
                     android:textSize="@dimen/text_size_title_14"
+                    android:fontFamily="@font/opensans_bold"
                     android:textStyle="bold" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:paddingStart="@dimen/dimen_10dp"
-                    android:layout_height="wrap_content">
-                <com.platform.view.customs.TextViewBold
-                    android:id="@+id/tv_leave_type_title"
+
+                <TextView
+                    android:id="@+id/tv_leave_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:text="staus"
+                    android:background="@drawable/bg_status_label"
+                    android:textSize="@dimen/text_size_12"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_02dp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/opensans_semibold"
+                    />
 
-                    android:text="Type: "
-                    android:textSize="@dimen/text_size_title_14"
-                    android:textStyle="bold" />
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/tv_leave_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-
-                        android:text="jhsdhasd"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
+                <TextView
+                    android:id="@+id/tv_leave_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_leave_category"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:layout_marginBottom="@dimen/dimen_05dp"
-                    android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="jhsdhasd"
+                    android:textSize="@dimen/text_size_title_14"
+                    android:textStyle="bold" />
 
-                    <com.platform.view.customs.TextViewBold
-                        android:id="@+id/tv_startdate_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-
-                        android:layout_toLeftOf="@+id/tv_value"
-                        android:text="From: "
-                        android:textSize="@dimen/text_size_title_14"
-                        android:textStyle="bold" />
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/tv_startdate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-
-                        android:layout_toLeftOf="@+id/tv_value"
-                        android:text="djkhfjs"
-                        android:gravity="start"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen_10dp"
-                    android:layout_height="wrap_content">
-                <com.platform.view.customs.TextViewBold
-                    android:id="@+id/tv_enddate_title"
+                <TextView
+                    android:id="@+id/tv_startdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-
-                    android:text="To: "
-                    android:textSize="@dimen/text_size_title_14"
-                    android:textStyle="bold" />
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/tv_enddate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="jhsdhasd"
-                        android:layout_gravity="right|center_vertical"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:textStyle="bold" />
-                </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/dimen_05dp"
-                    android:layout_height="wrap_content">
-                <com.platform.view.customs.TextViewBold
-                    android:id="@+id/tv_leave_reason_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
                     android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_toLeftOf="@+id/tv_value"
-                    android:text="Reason: "
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_below="@+id/tv_leave_category"
+                    android:gravity="start"
+                    android:drawableStart="@drawable/ic_calender_sml"
+                    android:drawablePadding="@dimen/dimen_05dp"
+                    android:text="12/02.2007"
+                    android:textSize="@dimen/text_size_12"
+                    android:fontFamily="@font/opensans_regular"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_dash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_below="@+id/tv_leave_category"
+                    android:layout_toEndOf="@+id/tv_startdate"
+                    android:text="  -  "
                     android:textSize="@dimen/text_size_title_14"
-                    android:textStyle="bold" />
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/tv_leave_reason"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_toLeftOf="@+id/tv_value"
-                        android:text="djkhfjs"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    android:textStyle="bold"
+                    android:fontFamily="@font/opensans_regular"/>
+
+                <TextView
+                    android:id="@+id/tv_enddate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_below="@+id/tv_leave_category"
+                    android:layout_toEndOf="@+id/tv_dash"
+                    android:drawableStart="@drawable/ic_calender_sml"
+                    android:drawablePadding="@dimen/dimen_05dp"
+                    android:text="12/02.2007"
+                    android:textSize="@dimen/text_size_12"
+                    android:fontFamily="@font/opensans_regular"/>
+
+
+                <com.platform.view.customs.TextViewRegular
+                    android:id="@+id/tv_leave_reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_startdate"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:fontFamily="@font/opensans_bold"
+                    android:text="djkhfjs"
+                    android:textSize="@dimen/text_size_16" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -201,48 +129,293 @@
                     android:id="@+id/btn_reject"
                     style="@style/AppStyleBorderButton"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/dark_grey" />
+                    android:textColor="@color/medium_grey"
+                    />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/AppStyleButton"
                     android:id="@+id/btn_approve"
+                    style="@style/AppStyleBorderButton"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/medium_grey"
+                    />
             </LinearLayout>
 
-            <!--<RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_05dp">
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:weightSum="2">
 
-                <Button
-                    android:id="@+id/btn_reject"
-                    style="@style/AppStyleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_marginRight="@dimen/dimen_10dp"
-                    android:layout_toLeftOf="@+id/btn_approve"
-                    android:text="Reject"
-                    android:textColor="@color/white"
-                     />
+                <!--<ImageView-->
+                    <!--android:id="@+id/btn_reject"-->
+                    <!--android:layout_width="@dimen/dimen_40dp"-->
+                    <!--android:layout_height="@dimen/dimen_40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:src="@drawable/ic_reject_clicked"/>-->
 
-                <Button
-                    android:id="@+id/btn_approve"
-                    style="@style/AppStyleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_alignParentEnd="true"
-                    android:text="Approve"
-                    android:textColor="@color/white"
-                     />
-            </RelativeLayout>-->
+                <!--<ImageView-->
+                    <!--android:id="@+id/btn_approve"-->
+                    <!--android:layout_width="@dimen/dimen_40dp"-->
+                    <!--android:layout_height="@dimen/dimen_40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:src="@drawable/ic_approved_clicked"-->
+                    <!--android:textColor="@color/white" />-->
+            </LinearLayout>
 
+            <!--
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <com.platform.view.customs.TextViewBold
+                                android:id="@+id/tv_leave_category_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:layout_toLeftOf="@+id/tv_value"
+                                android:text="Category: "
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+
+                            <com.platform.view.customs.TextViewRegular
+                                android:id="@+id/tv_leave_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+
+                                android:layout_toLeftOf="@+id/tv_value"
+                                android:layout_toRightOf="@+id/tv_leave_category_title"
+                                android:text="dsadad"
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="@dimen/dimen_10dp">
+
+                            <com.platform.view.customs.TextViewBold
+                                android:id="@+id/tv_leave_type_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
+
+                                android:text="Type: "
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+
+                            <com.platform.view.customs.TextViewRegular
+                                android:id="@+id/tv_leave_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
+                                android:text="jhsdhasd"
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <com.platform.view.customs.TextViewBold
+                                android:id="@+id/tv_startdate_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+
+                                android:layout_toLeftOf="@+id/tv_value"
+                                android:text="From: "
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+
+                            <com.platform.view.customs.TextViewRegular
+                                android:id="@+id/tv_startdate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+
+                                android:layout_toLeftOf="@+id/tv_value"
+                                android:gravity="start"
+                                android:text="djkhfjs"
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/dimen_10dp">
+
+                            <com.platform.view.customs.TextViewBold
+                                android:id="@+id/tv_enddate_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
+
+                                android:text="To: "
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+
+                            <com.platform.view.customs.TextViewRegular
+                                android:id="@+id/tv_enddate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical"
+                                android:text="jhsdhasd"
+                                android:textSize="@dimen/text_size_title_14"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="@dimen/dimen_05dp">
+
+                        <com.platform.view.customs.TextViewBold
+                            android:id="@+id/tv_leave_reason_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_toLeftOf="@+id/tv_value"
+                            android:text="Reason: "
+                            android:textSize="@dimen/text_size_title_14"
+                            android:textStyle="bold" />
+
+                        <com.platform.view.customs.TextViewRegular
+                            android:id="@+id/tv_leave_reason"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_toLeftOf="@+id/tv_value"
+                            android:text="djkhfjs"
+                            android:textSize="@dimen/text_size_title_14"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@color/white"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_reject"
+                        style="@style/AppStyleBorderButton"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:text="Reject"
+                        android:textColor="@color/dark_grey" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_approve"
+                        style="@style/AppStyleButton"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:text="Approve"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                &lt;!&ndash;<RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_05dp">
+
+                    <Button
+                        android:id="@+id/btn_reject"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_40dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_toLeftOf="@+id/btn_approve"
+                        android:text="Reject"
+                        android:textColor="@color/white"
+                         />
+
+                    <Button
+                        android:id="@+id/btn_approve"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_40dp"
+                        android:layout_alignParentEnd="true"
+                        android:text="Approve"
+                        android:textColor="@color/white"
+                         />
+                </RelativeLayout>&ndash;&gt;
+    -->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

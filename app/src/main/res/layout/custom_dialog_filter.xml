@@ -28,69 +28,126 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.platform.view.customs.TextViewRegular
-                    android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+               <!-- <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/view_startdate"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Select Start Date"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/text_size_title_14" />
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
 
-                <View
-                    android:id="@+id/view_startdate"
-                    android:layout_width="1dp"
-                    android:layout_height="10dp"
-                    android:layout_centerHorizontal="true" />
+                    <com.platform.view.customs.TextViewRegular
+                        android:id="@+id/start_date_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/view_startdate"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Start Date"
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_title_14" />
 
-                <com.platform.view.customs.TextViewSemiBold
-                    android:id="@+id/tv_startdate"
-                    android:layout_width="140dp"
+                    <com.platform.view.customs.TextViewSemiBold
+                        android:id="@+id/tv_startdate"
+                        android:layout_below="@+id/start_date_lbl"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_calender_sml"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="Start Date"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_title_14" />
+                </RelativeLayout>-->
+
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_start_date"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/view_startdate"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Start Date"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/text_size_title_14" />
-            </RelativeLayout>
+                    android:layout_below="@+id/tly_title"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp"
-                android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/tv_startdate"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/task_start_date"
+                        android:inputType="date"
+                        android:longClickable="false"/>
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.platform.view.customs.TextViewRegular
-                    android:layout_width="wrap_content"
+               <!-- <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/view_enddate"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Select End Date"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/text_size_title_14" />
+                    android:layout_weight="1">
 
-                <View
-                    android:id="@+id/view_enddate"
-                    android:layout_width="1dp"
-                    android:layout_height="10dp"
-                    android:layout_centerHorizontal="true" />
+                    <com.platform.view.customs.TextViewRegular
+                        android:id="@+id/end_date_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/view_enddate"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="End Date"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_title_14"
+                        android:fontFamily="@font/opensans_semibold"/>
 
-                <com.platform.view.customs.TextViewSemiBold
-                    android:id="@+id/tv_enddate"
-                    android:layout_width="140dp"
+                    <com.platform.view.customs.TextViewSemiBold
+                        android:id="@+id/tv_enddate"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/end_date_lbl"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="End Date"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_title_14"
+                        android:drawableStart="@drawable/ic_calender_sml"
+                        android:drawablePadding="@dimen/dimen_05dp"/>
+                </RelativeLayout>-->
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_end_date"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/view_enddate"
+                    android:layout_below="@+id/tly_title"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
 
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="End Date"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/text_size_title_14" />
-            </RelativeLayout>
+                    <EditText
+                        android:id="@+id/tv_enddate"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/task_start_date"
+                        android:inputType="date"
+                        android:longClickable="false"/>
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -123,23 +180,32 @@
 
             android:orientation="horizontal">
 
+            <!--<com.google.android.material.button.MaterialButton-->
+                <!--android:id="@+id/btn_yes"-->
+                <!--style="@style/AppStyleBorderButton"-->
+
+                <!--android:layout_margin="@dimen/dimen_10dp"-->
+                <!--android:clickable="true"-->
+                <!--android:text="Apply"-->
+
+                <!--android:textStyle="bold" />-->
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_yes"
-                style="@style/AppStyleButton"
-
-                android:layout_margin="@dimen/dimen_10dp"
-                android:clickable="true"
+                style="@style/AppStyleBorderButton"
+                android:layout_width="wrap_content"
                 android:text="Apply"
-
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:layout_margin="@dimen/dimen_10dp"
+                />
 
             <com.google.android.material.button.MaterialButton
-                style="@style/AppStyleButton"
+                style="@style/AppStyleBorderButton"
                 android:id="@+id/btn_no"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
-                android:background="@android:color/white"
                 android:clickable="true"
                 android:text="No"
                 android:textColor="#5DBCD2"

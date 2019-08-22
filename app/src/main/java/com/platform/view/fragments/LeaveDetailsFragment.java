@@ -5,15 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,18 +23,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 import com.platform.R;
 import com.platform.listeners.LeaveDataListener;
 import com.platform.models.leaves.HolidayData;
+import com.platform.models.leaves.LeaveBalanceResponse;
 import com.platform.models.leaves.LeaveData;
 import com.platform.models.leaves.LeaveDetail;
 import com.platform.models.leaves.MonthlyLeaveDataAPIResponse;
 import com.platform.models.leaves.MonthlyLeaveHolidayData;
 import com.platform.presenter.LeavesPresenter;
-import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Util;
@@ -48,7 +45,6 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,8 +55,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.platform.presenter.LeavesPresenter.DELETE_LEAVE;
+import static com.platform.presenter.LeavesPresenter.GET_LEAVE_BALANCE;
 import static com.platform.presenter.LeavesPresenter.GET_USER_LEAVE_DETAILS;
-import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Constants.FORM_DATE;
 import static com.platform.utility.Util.getDateFromTimestamp;
 
@@ -78,6 +74,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     private List<LeaveDetail> leaveBalance = new ArrayList<>();
     private LeavesPresenter presenter;
     String deleteLeaveId;
+
+    int selectedMonth;
+    SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+    SimpleDateFormat mmFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
 
     public LeaveDetailsFragment() {
         // Required empty public constructor
@@ -116,20 +116,24 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
             startActivity(intent);
         });
 
+        presenter = new LeavesPresenter(this);
+
         if(Util.isConnected(getContext())){
             Bundle bundle = this.getArguments();
-            if (bundle != null) {
-                if(bundle.getSerializable("leaveBalance")!=null) {
-                    leaveBalance.clear();
-                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
-                }
-            }
+//            if (bundle != null) {
+//                if(bundle.getSerializable("leaveBalance")!=null) {
+//                    leaveBalance.clear();
+//                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
+//                }
+//            }
+//
+//            if(leaveBalance.size()==0)
+            presenter.getLeavesBalance();
             setListData();
             setUIData();
         }else {
             Util.showToast(getString(R.string.msg_no_network), this);
         }
-
     }
     private void setListData() {
         leavesAdapter = new AppliedLeavesAdapter(leavesListData, this);
@@ -163,10 +167,8 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         Date d = new Date();
-        presenter = new LeavesPresenter(this);
-        SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy",Locale.ENGLISH);
-        SimpleDateFormat mmFormat = new SimpleDateFormat("MM",Locale.ENGLISH);
         presenter.getUsersAllLeavesDetails(yyyyFormat.format(d.getTime()), mmFormat.format(d.getTime()));
+        selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
     }
 
     @Override
@@ -256,10 +258,10 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay calendarDay) {
-        //Date d = new Date();
-        presenter = new LeavesPresenter(this);
-//        presenter.getUsersAllLeavesDetails(DateFormat.format("yyyy", calendarDay.getDate()).toString(),
-//                DateFormat.format("MM", calendarDay.getDate()).toString());
+        if (selectedMonth != Integer.parseInt(mmFormat.format(calendarDay.getDate()))) {
+            presenter.getUsersAllLeavesDetails(yyyyFormat.format(calendarDay.getDate()), mmFormat.format(calendarDay.getDate()));
+            selectedMonth=Integer.parseInt(mmFormat.format(calendarDay.getDate()));
+        }
     }
 
     @Override
@@ -364,6 +366,17 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 leavesListData.remove(deletePosition);
             }
             leavesAdapter.notifyDataSetChanged();
+        } else if(requestID.equals(GET_LEAVE_BALANCE)) {
+            LeaveBalanceResponse leaveBalanceResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, LeaveBalanceResponse.class);
+            if(leaveBalanceResponse.getStatus()==200){
+                leaveBalance.clear();
+                leaveBalance.addAll(leaveBalanceResponse.getData());
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), leaveBalanceResponse.getMessage(),
+                        Snackbar.LENGTH_LONG);
+            }
+
         }
     }
 

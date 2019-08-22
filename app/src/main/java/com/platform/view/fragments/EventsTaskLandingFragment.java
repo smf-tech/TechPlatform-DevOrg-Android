@@ -73,6 +73,10 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     private EventParams eventParams;
     private int selectedMonth;
 
+    SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
+    SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
+    SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+
     public EventsTaskLandingFragment() {
         // Required empty public constructor
     }
@@ -109,15 +113,14 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         Date d = new Date();
         eventParams = new EventParams();
         eventParams.setType(toOpen);
-        eventParams.setDay(DateFormat.format("dd", d.getTime()).toString());
-        eventParams.setMonth(DateFormat.format("MM", d.getTime()).toString());
-        eventParams.setYear(DateFormat.format("yyyy", d.getTime()).toString());
+        eventParams.setDay(ddFormat.format(d.getTime()));
+        eventParams.setMonth(MMFormat.format(d.getTime()));
+        eventParams.setYear(yyyyFormat.format(d.getTime()));
         eventParams.setUserId(Util.getUserObjectFromPref().getId());
         selectedMonth = Integer.parseInt(eventParams.getMonth());
 
         presenter = new EventsTaskLandingFragmentPresenter(this);
         presenter.getEventsOfMonth(eventParams);
-
 
         eventsList = new ArrayList<>();
         sortedEventsList = new ArrayList<>();
@@ -171,9 +174,9 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
 //        Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
         eventParams = new EventParams();
         eventParams.setType(toOpen);
-        eventParams.setDay(DateFormat.format("dd", calendarDay.getDate()).toString());
-        eventParams.setMonth(DateFormat.format("MM", calendarDay.getDate()).toString());
-        eventParams.setYear(DateFormat.format("yyyy", calendarDay.getDate()).toString());
+        eventParams.setDay(ddFormat.format(calendarDay.getDate()));
+        eventParams.setMonth(MMFormat.format(calendarDay.getDate()));
+        eventParams.setYear(yyyyFormat.format(calendarDay.getDate()));
         eventParams.setUserId(Util.getUserObjectFromPref().getId());
 
         presenter.getEventsOfDay(eventParams);
@@ -182,13 +185,14 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     @Override
     public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
 //        Toast.makeText(getActivity(), "Month Changed:" + calendarDay, Toast.LENGTH_SHORT).show();
-        if (selectedMonth != Integer.parseInt(DateFormat.format("MM", calendarDay.getDate()).toString())) {
+        if (selectedMonth != Integer.parseInt(MMFormat.format(calendarDay.getDate()))) {
             eventParams = new EventParams();
             eventParams.setType(toOpen);
-            eventParams.setDay(DateFormat.format("dd", calendarDay.getDate()).toString());
-            eventParams.setMonth(DateFormat.format("MM", calendarDay.getDate()).toString());
-            eventParams.setYear(DateFormat.format("yyyy", calendarDay.getDate()).toString());
+            eventParams.setDay(ddFormat.format(calendarDay.getDate()));
+            eventParams.setMonth(MMFormat.format(calendarDay.getDate()));
+            eventParams.setYear(yyyyFormat.format(calendarDay.getDate()));
             eventParams.setUserId(Util.getUserObjectFromPref().getId());
+            selectedMonth = Integer.parseInt(eventParams.getMonth());
 
             presenter.getEventsOfMonth(eventParams);
         }

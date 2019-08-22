@@ -17,7 +17,7 @@ public class LeavesPresenter implements LeavePresenterListener {
     private WeakReference<LeaveDataListener> fragmentWeakReference;
 
     public static final String GET_USER_LEAVE_DETAILS ="getUsersAllLeavesDetails";
-    public static final String GET_LEAVE_DETAILS ="getLeavesData";
+    public static final String GET_LEAVE_BALANCE ="getLeavesBalance";
     public static final String POST_USER_DETAILS ="postUserLeave";
     public static final String REQUEST_USER_COMPOFF ="requestUserCompoff";
     public static final String DELETE_LEAVE ="deleteUserLeave";
@@ -47,7 +47,7 @@ public class LeavesPresenter implements LeavePresenterListener {
     public void requestCompOff(LeaveData leaveData) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
-        requestCall.requestUserCompoff(REQUEST_USER_COMPOFF,leaveData);
+        requestCall.requestUserCompoff(POST_USER_DETAILS,leaveData);
     }
 
     public void deleteUserLeave(String leaveId) {
@@ -60,6 +60,12 @@ public class LeavesPresenter implements LeavePresenterListener {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
         requestCall.getHolidayList(HOLIDAY_LIST);
+    }
+
+    public void getLeavesBalance() {
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.getLeavesBalance(GET_LEAVE_BALANCE);
     }
 
     @Override
