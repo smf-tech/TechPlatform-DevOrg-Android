@@ -192,7 +192,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
             if (applyType.equalsIgnoreCase("Comp-Off")) {
                 rvLeaveCategory.setVisibility(View.GONE);
                 tvCategoryLabel.setVisibility(View.GONE);
-                btnApplyLeaves.setText(getString(R.string.request_comp_0f));
+                btnApplyLeaves.setText(getString(R.string.request_comp_off));
             }
         }
     }

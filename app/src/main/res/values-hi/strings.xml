@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
     <string name="powered_by">Powered by Octopus</string>
-    <string name="app_name_ss">सुजलाम सुफलाम</string>
+    <string name="app_name_ss">Octopus</string>
     <string name="content_description">Description</string>
     <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
     <string name="select_lang">भाषा चुनें</string>
@@ -293,7 +293,7 @@
     <string name="unpaid_leaves">अवैतनिक</string>
     <string name="comp_off_leaves">Comp OFF</string>
     <string name="total_leaves">कुल छुट्टी</string>
-    <string name="total">कुल </string>
+    <string name="total">कुल</string>
     <string name="btn_leave_apply_str">छुट्टी के लिए आवेदन करें</string>
     <string name="leaves_applied">Leave Applied</string>
     <string name="same_day">प्रत्येक माह के लिए एक ही तारीख</string>
@@ -330,7 +330,7 @@
     <string name="which_day">कौन से दिनों में</string>
     <string name="please_wait">कृपया प्रतीक्षा करें…</string>
     <string name="holiday_list">छुट्टी की सूची</string>
-    <string name="edit_leave">अवकाश संपादित करें</string>
+    <string name="edit_leave">छुट्टी संपादित करें</string>
     <string name="apply_leave">छुट्टी के लिए आवेदन करें</string>
     <string name="leave_deleted_msg">छुट्टी सफलतापूर्वक हटा दी गई है।</string>
     <string name="no_leave_applied_msg">आपने इस महीने में कोई छुट्टी आवेदन नहीं दी है।</string>
@@ -353,22 +353,31 @@
     <string name="msg_post_date">पिछली तारीख या समय पर घटना नहीं बना सकते</string>
     <string name="generate_code">उपस्थिति कोड उत्पन्न करें</string>
     <string name="details">विवरण</string>
-    <string name="msg_enter_proper_date">आरंभिक जीवनकाल अंत डेटाइम की तुलना में ग्रेटर नहीं होना चाहिए</string>
+    <string name="msg_enter_proper_date">प्रारंभ तिथि का समय अंतिम तिथि समय से अधिक नहीं होना चाहिए</string>
     <string name="venue">स्थान</string>
-    <string name="delayedin_checkin">में पाया और पाया में देरी</string>
+    <string name="delayedin_checkin">चेक इन में देरी और दुसरा स्थान मिला</string>
     <string name="delayin_checkin_title">कृपया एक कारण बताएं</string>
     <string name="see_details">विवरण देखें</string>
     <string name="add_members">सदस्य जोड़ें</string>
     <string name="add_forms">प्रपत्र जोड़ें</string>
     <string name="add_members_link">+ सदस्य जोड़ें</string>
 
-    <string name="check_in_msg">सुसेफुल में चीकू</string>
-    <string name="check_out_msg">सफल बाहर की जाँच की</string>
+    <string name="check_in_msg">चेक इन सफल</string>
+    <string name="check_out_msg">चेक आउट सफल</string>
     <string name="request_comp_off">Comp-Off का अनुरोध करें</string>
     <string name="insufficisnt_leave_balance">आपके पास अपर्याप्त अवकाश शेष है।</string>
 
     <string name="add_event">+कार्यक्रम जोड़ें</string>
     <string name="add_task">+ कार्य जोड़ें</string>
-    <string name="leave_balance">Leave Balance</string>
+    <string name="leave_balance">शेष छुट्टिया</string>
+    <string name="leave_type_label">अवकाश प्रकार</string>
+    <string name="used">Used</string>
+    <string name="mark_complete">पूर्ण करें</string>
+    <string name="enter_attendance_code">उपस्थिति कोड दर्ज करें</string>
+    <string name="members_list">सदस्यों की सूची</string>
+    <string name="start_date_collan">प्रारंभ तिथि: </string>
+    <string name="end_date_collan">अंतिम तिथि: </string>
+    <string name="owner_label">कर्ता: </string>
+    <string name="delete_alert">डिलीट अलर्ट</string>
 
 </resources>

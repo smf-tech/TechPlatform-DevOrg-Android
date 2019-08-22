@@ -77,7 +77,7 @@
                         android:layout_marginEnd="@dimen/dimen_20dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:paddingTop="@dimen/dimen_15dp"
-                        android:text="Leave Type"
+                        android:text="@string/leave_type_label"
                         android:textAllCaps="false"
                         android:textColor="@color/leave_form_text_color"
                         android:textSize="@dimen/text_size_14"

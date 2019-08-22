@@ -39,9 +39,10 @@
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/content_description"
                 android:gravity="center"
-                android:paddingLeft="@dimen/dimen_05dp"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_05dp"
-                android:paddingRight="@dimen/dimen_05dp"
+                android:paddingBottom="@dimen/dimen_05dp"
+                android:paddingEnd="@dimen/dimen_10dp"
                 android:src="@drawable/ic_shape_down_arrow" />
         </RelativeLayout>
 
@@ -80,7 +81,7 @@
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
             android:padding="@dimen/dimen_10dp"
-            android:text="Apply Leave" />
+            android:text="@string/apply_leave" />
 
         <com.google.android.material.button.MaterialButton
             style="@style/AppStyleBorderButton"
@@ -88,7 +89,7 @@
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
             android:padding="@dimen/dimen_10dp"
-            android:text="@string/request_comp_off" />
+            android:text="@string/compoff_request" />
 
      </LinearLayout>
     </LinearLayout>

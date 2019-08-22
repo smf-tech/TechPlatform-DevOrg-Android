@@ -292,15 +292,15 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
     public void showDeleteAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Delete alert")
+        builder.setTitle(R.string.delete_alert)
                 .setMessage(getString(R.string.sure_to_delete))
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         presenter.deleteUserLeave(deleteLeaveId);
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
                         dialog.dismiss();

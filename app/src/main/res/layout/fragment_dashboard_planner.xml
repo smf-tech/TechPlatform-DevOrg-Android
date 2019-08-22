@@ -453,14 +453,12 @@
                             android:text="@string/apply_leave" />
                     </LinearLayout>
 
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/leaves_header"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:orientation="vertical">
-
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_leave_balance"
@@ -491,7 +489,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:text="Used"
+                                android:text="@string/used"
                                 android:fontFamily="@font/opensans_regular"
                                 />
                             <TextView
