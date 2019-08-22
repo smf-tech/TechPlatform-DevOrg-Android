@@ -291,6 +291,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadFormsPage() {
+        setActionBarTitle(getString(R.string.forms));
         Util.launchFragment(new PMFragment(), this,
                 getString(R.string.forms), true);
     }
