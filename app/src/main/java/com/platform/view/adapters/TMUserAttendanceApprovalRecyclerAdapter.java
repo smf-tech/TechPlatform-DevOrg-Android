@@ -67,11 +67,16 @@ public class TMUserAttendanceApprovalRecyclerAdapter extends RecyclerView.Adapte
             if (TextUtils.isEmpty(dataList.get(position).getReason())){
               holder.tv_reason.setVisibility(View.GONE);
               holder.tv_reason_value.setVisibility(View.GONE);
-            }else {
-                holder.tv_reason.setVisibility(View.GONE);
-                holder.tv_reason_value.setVisibility(View.GONE);
+                //holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
             }
         }
+            if (dataList.get(position).getStatus()!=null){
+                holder.tv_reason.setVisibility(View.VISIBLE);
+                holder.tv_reason_value.setVisibility(View.VISIBLE);
+                holder.tv_reason_value.setText(String.valueOf(dataList.get(position).getStatus().getRejection_reason()));
+            }
+
+
 
     }
 

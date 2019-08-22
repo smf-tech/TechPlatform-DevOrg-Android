@@ -47,7 +47,7 @@ public class LeavesPresenter implements LeavePresenterListener {
     public void requestCompOff(LeaveData leaveData) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
         requestCall.setLeavePresenterListener(this);
-        requestCall.requestUserCompoff(REQUEST_USER_COMPOFF,leaveData);
+        requestCall.requestUserCompoff(POST_USER_DETAILS,leaveData);
     }
 
     public void deleteUserLeave(String leaveId) {

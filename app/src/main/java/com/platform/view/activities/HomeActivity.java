@@ -59,6 +59,7 @@ import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.PMFragment;
 import com.platform.view.fragments.PlannerFragment;
 import com.platform.view.fragments.ReportsFragment;
+import com.platform.view.fragments.TMUserLandingFragment;
 
 import java.io.File;
 import java.util.List;
@@ -301,12 +302,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadTeamsPage() {
 
-        /*Util.launchFragment(new TMUserApprovalsFragment(), this,
-                getString(R.string.approvals), true);*/
+        Util.launchFragment(new TMUserLandingFragment(), this,
+                getString(R.string.approvals), true);
         /*Intent startMain = new Intent(HomeActivity.this, TMFiltersListActivity.class);
         startActivity(startMain);*/
-        Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
-        startActivity(startMain);
+        /*Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
+        startActivity(startMain);*/
 
     }
 

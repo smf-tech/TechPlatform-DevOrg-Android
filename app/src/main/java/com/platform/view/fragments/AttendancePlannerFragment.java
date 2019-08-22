@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,7 @@ import com.platform.models.attendance.CheckOut;
 import com.platform.models.attendance.Datum;
 import com.platform.models.attendance.HolidayList;
 import com.platform.models.attendance.MonthlyAttendance;
+import com.platform.models.attendance.TeamUser;
 import com.platform.presenter.MonthlyAttendanceFragmentPresenter;
 import com.platform.presenter.SubmitAttendanceFromInnerPlanner;
 import com.platform.services.AttendanceService;
@@ -54,7 +57,7 @@ import com.platform.utility.GPSTracker;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 import com.platform.view.activities.GeneralActionsActivity;
-import com.platform.view.adapters.AttendanceAdapter;
+import com.platform.view.adapters.TeamAttendanceAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -73,67 +76,60 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener,
-        OnDateSelectedListener {
+        OnDateSelectedListener,RadioGroup.OnCheckedChangeListener {
 
     private View plannerView;
     private boolean isDashboard;
     private boolean isMonth = true;
     private int tabClicked = -1;
 
-    private TextView tvClickPending;
-    private TextView tvClickApproved;
-    private TextView tvClickRejected;
     private TextView tvAttendanceDetails;
     private TextView tvCheckInTime;
     private TextView tvCheckOutTime;
-    private TextView tv_lab_total_hours,txt_total_hours;
+    private TextView tv_lab_total_hours, txt_total_hours;
     private Button btCheckIn, btCheckout;
 
-    private RecyclerView rvAttendanceList;
     private RelativeLayout attendanceCardLayout;
     private RelativeLayout lyCalender;
     private LinearLayout lyCheckInOutDashboard;
     private LinearLayout lvAttendanceStatus;
     private MaterialCalendarView calendarView;
-    private String status,dateTimeStamp,userAvailable,userCheckInTime,userCheckOutTime;
-    public static final String APPROVED="approve";
-    public static final String PENDING="pending";
-    public static final String REJECTED="rejected";
+    private String status, dateTimeStamp, userAvailable, userCheckInTime, userCheckOutTime;
+    public static final String APPROVED = "approve";
+    public static final String PENDING = "pending";
+    public static final String REJECTED = "rejected";
 
-    ArrayList<String>pendingList;
-    ArrayList<String>approveList;
-    ArrayList<String>rejectList;
-
+    ArrayList<String> pendingList;
+    ArrayList<String> approveList;
+    ArrayList<String> rejectList;
 
 
     //private List<AttendanceStatus>attendanceStatusList;
-    String TAG=AttendancePlannerFragment.class.getSimpleName();
+    String TAG = AttendancePlannerFragment.class.getSimpleName();
     MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter;
-    private int year,month,cmonth;
+    private int year, month, cmonth;
     private String strLat, strLong;
     private GPSTracker gpsTracker;
     private String strAdd = "";
-    private Long millis=null;
+    private Long millis = null;
     private UserAttendanceDao userAttendanceDao;
-    private UserCheckOutDao  userCheckOutDao;
+    private UserCheckOutDao userCheckOutDao;
     private CharSequence time;
-    Long attendanceDate=null;
-    String date=null;
-    Date userAttendaceDate=null;
-    Date currentDate=null;
+    Long attendanceDate = null;
+    String date = null;
+    Date userAttendaceDate = null;
+    Date currentDate = null;
     private String previousTime;
     private String attendaceType;
 
     public String todayAsString;
-    List<AttendaceData>attendaceDataList;
-    private String CHECK_IN="checkin";
-    private String CHECK_OUT="checkout";
+    private String CHECK_IN = "checkin";
+    private String CHECK_OUT = "checkout";
     private List<AttendaceData> getUserType;
-    private List<AttendaceCheckOut>getUserCheckOutType;
+    private List<AttendaceCheckOut> getUserCheckOutType;
     private PreferenceHelper preferenceHelper;
 
     SubmitAttendanceFromInnerPlanner submitAttendanceFragmentPresenter;
@@ -142,18 +138,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private CharSequence chkOutTime;
     private CharSequence checkInTime;
 
-    private static String KEY_CHECKINTIME="checkInTime";
-    private static String KEY_TOTALHOURS="totalHours";
+    private static String KEY_CHECKINTIME = "checkInTime";
+    private static String KEY_TOTALHOURS = "totalHours";
 
-    public static  String KEY_CHECKINTEXT="checkInText";
-    public static  String KEY_CHECKOUTTEXT="checkOutText";
+    public static String KEY_CHECKINTEXT = "checkInText";
+    public static String KEY_CHECKOUTTEXT = "checkOutText";
 
-    private String checkInText=" Check in at ";
-    private String checkOutText=" Check out at ";
+    private String checkInText = " Check in at ";
+    private String checkOutText = " Check out at ";
     private String prefCheckInTime;
-    private String totalHrs,totalMin;
+    private String totalHrs, totalMin;
     private String totalHours;
-    private boolean isCheckOut=false;
+    private boolean isCheckOut = false;
     private String calendarSelectedDate;
     private Context context;
 
@@ -164,15 +160,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Location location;
-    ImageView ivCalendarMode;
+    private ImageView ivCalendarMode;
+    private RadioGroup radioGroup;
+    private RecyclerView rvTeamList;
+    List<TeamUser> teamAttendanceList;
+    TeamAttendanceAdapter adapter;
 
     public AttendancePlannerFragment() {
-        // Required empty public constructor
     }
 
-    public void onCreate(){
-
+    public void onCreate() {
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -186,53 +185,40 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         super.onViewCreated(view, savedInstanceState);
         initView();
         createJson();
-        context=getActivity();
+        context = getActivity();
         // get attendance id
+        preferenceHelper = new PreferenceHelper(getActivity());
+        userAttendanceDao = DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
+        userCheckOutDao = DatabaseManager.getDBInstance(getActivity()).getCheckOutAttendaceSchema();
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Util.setHours(16, 06);
 
-
-        preferenceHelper=new PreferenceHelper(getActivity());
-        userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
-        userCheckOutDao=DatabaseManager.getDBInstance(getActivity()).getCheckOutAttendaceSchema();
-
-        alarmManager= (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar=Util.setHours(16,06);
-
-        if(calendar.getTimeInMillis()<System.currentTimeMillis()){
-
-        }else {
-            Intent callAlarmReceiver=new Intent(getActivity(), AttendanceService.class);
-            callAlarmReceiver.putExtra("requestJson","");
-            callAlarmReceiver.putExtra("messenger",new Messenger(handler));
-            PendingIntent pendingIntent=PendingIntent.getService(getActivity(),0,callAlarmReceiver,PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+        } else {
+            Intent callAlarmReceiver = new Intent(getActivity(), AttendanceService.class);
+            callAlarmReceiver.putExtra("requestJson", "");
+            callAlarmReceiver.putExtra("messenger", new Messenger(handler));
+            PendingIntent pendingIntent = PendingIntent.getService(getActivity(), 0, callAlarmReceiver, PendingIntent.FLAG_CANCEL_CURRENT);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
-        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
-        getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
+        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
+        getUserCheckOutType = userCheckOutDao.getCheckOutData(CHECK_OUT, Util.getTodaysDate(), Util.getUserMobileFromPref());
         checkUserIsMakedIn();
         Bundle data = getActivity().getIntent().getExtras();
-        String totalHours=null;
-        if(data!=null){
-            totalHours=data.getString("TotalHours");
-
-            userAvailable=data.getString("userAvailable");
-            userCheckInTime=data.getString("userCheckInTime");
-            userCheckOutTime=data.getString("userCheckOutTime");
+        String totalHours = null;
+        if (data != null) {
+            totalHours = data.getString("TotalHours");
+            userAvailable = data.getString("userAvailable");
+            userCheckInTime = data.getString("userCheckInTime");
+            userCheckOutTime = data.getString("userCheckOutTime");
         }
         if (totalHours != null) {
-
             txt_total_hours.setText(totalHours);
         }
-
-       /* if(!isCheckOut){
-            getDiffBetweenTwoHours();
-        }*/
         deleteSharedPreferece();
 
 
 
-
-
-        //PlannerFragment.showTimerService.doWork();
     }
 
     private void initView() {
@@ -241,26 +227,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             isDashboard = bundle.getBoolean(Constants.Planner.KEY_IS_DASHBOARD);
         }
 
-        tv_lab_total_hours=plannerView.findViewById(R.id.tv_lab_total_hours);
-        //tv_lab_total_hours.setVisibility(View.INVISIBLE);
-        txt_total_hours=plannerView.findViewById(R.id.tv_total_hours);
-        //txt_total_hours.setVisibility(View.INVISIBLE);
-
-
-
+        tv_lab_total_hours = plannerView.findViewById(R.id.tv_lab_total_hours);
+        txt_total_hours = plannerView.findViewById(R.id.tv_total_hours);
         lyCalender = plannerView.findViewById(R.id.ly_calender);
-        //tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
-        //tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
-        // lyWorkingHours = plannerView.findViewById(R.id.ly_working_hours);
         lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_check_in_out_dashboard);
-        lvAttendanceStatus = plannerView.findViewById(R.id.lv_attendance_status);
-        rvAttendanceList = plannerView.findViewById(R.id.rv_attendance_list);
-        tvClickPending = plannerView.findViewById(R.id.tv_tb_pending);
-        tvClickPending.setOnClickListener(this);
-        tvClickApproved = plannerView.findViewById(R.id.tv_tb_approved);
-        tvClickApproved.setOnClickListener(this);
-        tvClickRejected = plannerView.findViewById(R.id.tv_tb_rejected);
-        tvClickRejected.setOnClickListener(this);
         btCheckIn = plannerView.findViewById(R.id.bt_check_in);
         btCheckIn.setOnClickListener(this);
         btCheckout = plannerView.findViewById(R.id.bt_checkout);
@@ -268,8 +238,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         tvAttendanceDetails = plannerView.findViewById(R.id.tv_attendance_details);
         tvAttendanceDetails.setOnClickListener(this);
 
-        progressBar=plannerView.findViewById(R.id.pb_profile_act);
-        progressBarLayout=plannerView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = plannerView.findViewById(R.id.pb_profile_act);
+        progressBarLayout = plannerView.findViewById(R.id.profile_act_progress_bar);
         ivCalendarMode = plannerView.findViewById(R.id.iv_calendar_mode);
         calendarView = plannerView.findViewById(R.id.calendarView);
         calendarView.state().edit().setMaximumDate(Calendar.getInstance().getTime()).commit();
@@ -277,178 +247,133 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         ivCalendarMode.setOnClickListener(this);
         attendanceCardLayout = plannerView.findViewById(R.id.rv_card_attendance);
 
+        teamAttendanceList=new ArrayList<>();
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        rvTeamList = plannerView.findViewById(R.id.rv_team_list);
+        adapter = new TeamAttendanceAdapter(getContext(),teamAttendanceList);
+        rvTeamList.setLayoutManager(mLayoutManager);
+        rvTeamList.setAdapter(adapter);
+
+        radioGroup = plannerView.findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener(this);
+
         setUIData();
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
-                int month=date.getMonth()+1;
-                int day=date.getDay();
-                int year=date.getYear();
+                int month = date.getMonth() + 1;
+                int day = date.getDay();
+                int year = date.getYear();
 
                 String mm = null;
-                String dd=null;
-
-
-                if(month<10){
-                    mm="0"+month;
-                }
-                else{
-                    mm=String.valueOf(month);
+                String dd = null;
+                if (month < 10) {
+                    mm = "0" + month;
+                } else {
+                    mm = String.valueOf(month);
                 }
 
-                if(day<10){
-                    dd="0"+day;
-                }else {
-                    dd=String.valueOf(day);
+                if (day < 10) {
+                    dd = "0" + day;
+                } else {
+                    dd = String.valueOf(day);
                 }
-
-                calendarSelectedDate=year+"-"+mm+"-"+dd;
-
+                calendarSelectedDate = year + "-" + mm + "-" + dd;
                 showDialogForSelectedDate(calendarSelectedDate);
-
-                ///Long calendarTime=getLongFromDate(calendarSelectedDate);
-
             }
-
         });
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                int month=date.getMonth()+1;
-                int year=date.getYear();
+                int month = date.getMonth() + 1;
+                int year = date.getYear();
 
                 // call api when swipw month
-
-                if(!Util.isConnected(getActivity())){
-                    Util.showToast("Network not available ! Try again",getActivity());
-                }else {
+                if (!Util.isConnected(getActivity())) {
+                    Util.showToast("Network not available ! Try again", getActivity());
+                } else {
                     showProgressBar();
-                    MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(AttendancePlannerFragment.this);
-                    monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,month);
-                    Log.i("MonthlyAttendace","111"+year+month);
+                    MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(AttendancePlannerFragment.this);
+                    monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year, month);
+                    Log.i("MonthlyAttendace", "111" + year + month);
                 }
-
             }
         });
     }
 
     private void showDialogForSelectedDate(String calendarSelectedDate) {
         AttendanceDateList attendanceDateList;
+        if (listDateWiseAttendace != null && listDateWiseAttendace.size() > 0 && !listDateWiseAttendace.isEmpty()) {
 
-        if(listDateWiseAttendace!=null
-        &&listDateWiseAttendace.size()>0&&
-                !listDateWiseAttendace.isEmpty()){
-
-            for(int i=0;i<listDateWiseAttendace.size();i++){
-
-                attendanceDateList=listDateWiseAttendace.get(i);
-                String checkInDate=attendanceDateList.getCreateAt();
-
-                String UserAttendaceDate[]=checkInDate.split(" ");
-                String AttendaceCreatedAt=UserAttendaceDate[0];
-
-                if(calendarSelectedDate.equalsIgnoreCase(AttendaceCreatedAt))
-                {
-                    if(!attendanceDateList.getCheckInTime().isEmpty()){
-
-                        btCheckIn.setText(checkInText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()),"HH:mm"));
+            for (int i = 0; i < listDateWiseAttendace.size(); i++) {
+                attendanceDateList = listDateWiseAttendace.get(i);
+                String checkInDate = attendanceDateList.getCreateAt();
+                String UserAttendaceDate[] = checkInDate.split(" ");
+                String AttendaceCreatedAt = UserAttendaceDate[0];
+                if (calendarSelectedDate.equalsIgnoreCase(AttendaceCreatedAt)) {
+                    if (!attendanceDateList.getCheckInTime().isEmpty()) {
+                        btCheckIn.setText(checkInText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()), "HH:mm"));
                         btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckIn.setEnabled(false);
-                    }else {
+                    } else {
                         btCheckIn.setText("CheckIn at 00:00");
-
                     }
 
-                    if(!attendanceDateList.getCheckOutTime().isEmpty()){
-                        btCheckout.setText(checkOutText+ Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()),"HH:mm"));
+                    if (!attendanceDateList.getCheckOutTime().isEmpty()) {
+                        btCheckout.setText(checkOutText + Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()), "HH:mm"));
                         btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckout.setEnabled(false);
-
-                    }
-                    else{
+                    } else {
                         btCheckout.setText("CheckOut at 00:00");
                     }
-
-                    if(attendanceDateList.getTotalHrs()!=null){
+                    if (attendanceDateList.getTotalHrs() != null) {
                         txt_total_hours.setText(attendanceDateList.getTotalHrs());
-                    }else{
+                    } else {
                         txt_total_hours.setText("00:00");
                     }
-
                     //cheack that created at is equal to today date
-                    Calendar calendar=Calendar.getInstance();
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-                    String currDate=sdf.format(new Date());
-
-                    if(AttendaceCreatedAt.equalsIgnoreCase(currDate)){
-
-                        if(attendanceDateList.getCheckOutTime().isEmpty()){
-
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String currDate = sdf.format(new Date());
+                    if (AttendaceCreatedAt.equalsIgnoreCase(currDate)) {
+                        if (attendanceDateList.getCheckOutTime().isEmpty()) {
                             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
                             btCheckout.setText("CheckOut");
                             btCheckout.setTextColor(getResources().getColor(R.color.white));
                             btCheckout.setEnabled(true);
                         }
-
                     }
-
-
-
-
-
-
-
-
-
-                }
-                else {
-
+                } else {
                     txt_total_hours.setText("00:00");
                     btCheckIn.setText("CheckIn at 00:00");
                     btCheckIn.setEnabled(false);
-
                     makeCheckInButtonGray();
                     btCheckout.setText("CheckOut at 00:00");
                     btCheckout.setEnabled(false);
                     makeCheckOutButtonGray();
                 }
-
             }
-
-        }else{
-
+        } else {
             txt_total_hours.setText("00:00");
             btCheckIn.setText("CheckIn at 00:00");
             btCheckIn.setEnabled(false);
-
             makeCheckInButtonGray();
             btCheckout.setText("CheckOut at 00:00");
             btCheckout.setEnabled(false);
             makeCheckOutButtonGray();
         }
-
     }
-
-
-
 
     private void setUIData() {
         if (isDashboard) {
-
             lvAttendanceStatus.setVisibility(View.GONE);
-            rvAttendanceList.setVisibility(View.GONE);
             lyCalender.setVisibility(View.GONE);
-            // lyWorkingHours.setVisibility(View.VISIBLE);
             lyCheckInOutDashboard.setVisibility(View.VISIBLE);
         } else {
-            //rvAttendanceList.setVisibility(View.VISIBLE);
-            //lvAttendanceStatus.setVisibility(View.VISIBLE);
-
             lyCalender.setVisibility(View.VISIBLE);
-            //lyWorkingHours.setVisibility(View.VISIBLE);
             tvAttendanceDetails.setVisibility(View.GONE);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -456,17 +381,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             lp.setMargins(70, 50, 70, 50);
             attendanceCardLayout.setLayoutParams(lp);
 
+            CalendarDay calendarDay = calendarView.getCurrentDate();
+            year = calendarDay.getYear();
+            month = calendarDay.getMonth();
+            cmonth = month + 1;
 
-            CalendarDay calendarDay=calendarView.getCurrentDate();
-            year=calendarDay.getYear();
-            month=calendarDay.getMonth();
-            cmonth=month+1;
-
-
-            MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
-            monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
-
-            //attendanceListData();
+            MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
+            monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year, cmonth);
         }
 
         isMonth = !isMonth;
@@ -475,125 +396,69 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     public void getAttendanceInfo(MonthlyAttendance data) {
 
-    hideProgressBar();
-     Log.i("AttendanceData","222"+data);
-     List<Datum>  dataList=data.getData();
-     List<Attendance> attendanceList;
-     String id,status,subModule;
-     String holidayName,holidayDate;
-     List<HolidayList> holidayList=null;
-     SimpleDateFormat formatter=new SimpleDateFormat("yyyy/MM/dd");
+        hideProgressBar();
+        Log.i("AttendanceData", "222" + data);
+        List<Datum> dataList = data.getData();
+        List<Attendance> attendanceList;
+        String id, status, subModule;
+        String holidayName, holidayDate;
+        List<HolidayList> holidayList = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
-       ArrayList<CalendarDay> holidays = new ArrayList<>();
-       listDateWiseAttendace=new ArrayList<>();
-       /* try {
-            holidays.add(CalendarDay.from(formatter.parse("2019/06/19")));
-            holidays.add(CalendarDay.from(formatter.parse("2019/06/21")));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        ArrayList<CalendarDay> holidays = new ArrayList<>();
+        listDateWiseAttendace = new ArrayList<>();
+
+        pendingList = new ArrayList<>();
+        approveList = new ArrayList<>();
+        rejectList = new ArrayList<>();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            subModule = dataList.get(i).getSubModule();
+            if (subModule.equalsIgnoreCase("attendance")) {
+
+                attendanceList = dataList.get(i).getAttendance();
+                for (int j = 0; j < attendanceList.size(); j++) {
+
+                    attendanceDateList = new AttendanceDateList();
+                    id = attendanceList.get(j).getId();
+                    status = attendanceList.get(j).getStatus();
+                    checkIn = attendanceList.get(j).getCheckIn();
+                    checkOut = attendanceList.get(j).getCheckOut();
+                    attendanceDateList.setCheckInTime(checkIn.getTime());
+                    attendanceDateList.setCheckOutTime(checkOut.getTime());
+                    attendanceDateList.setAttendanceDate(attendanceList.get(j).getCreatedOn());
+                    attendanceDateList.setStatus(attendanceList.get(j).getStatus());
+                    attendanceDateList.setTotalHrs(attendanceList.get(j).getTotalHours());
+                    attendanceDateList.setCreateAt(attendanceList.get(j).getCreatedAt());
+                    listDateWiseAttendace.add(attendanceDateList);
+                }
+            }
+
+            if (subModule.equalsIgnoreCase("holidayList")) {
+                holidayList = dataList.get(i).getHolidayList();
+                for (int k = 0; k < holidayList.size(); k++) {
+                    id = holidayList.get(k).getId();
+                    holidayName = holidayList.get(k).getName();
+                    holidayDate = holidayList.get(k).getDate().getDate().getNumberLong();
+
+                    // convert this date and add into list
+                    Long TimeStamp = Long.parseLong(holidayDate);
+                    Date d1 = new Date(TimeStamp);
+                    java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.FULL, java.text.DateFormat.FULL);
+                    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    //String FinalDate=df.format(d1);
+                    holidays.add(CalendarDay.from(d1));
+                    calendarView.addDecorator(new EventDecorator(getActivity(),
+                            holidays, getResources().getDrawable(R.drawable.circle_background)));
+                }
+            }
         }
-*/
-
-        pendingList=new ArrayList<>();
-        approveList=new ArrayList<>();
-        rejectList=new ArrayList<>();
-
-     for(int i=0;i<dataList.size();i++){
-
-         subModule=dataList.get(i).getSubModule();
-         if(subModule.equalsIgnoreCase("attendance")){
-
-             attendanceList=dataList.get(i).getAttendance();
-             for(int j=0;j<attendanceList.size();j++)
-             {
-
-                 attendanceDateList=new AttendanceDateList();
-                 id=attendanceList.get(j).getId();
-                 status=attendanceList.get(j).getStatus();
-                 checkIn=attendanceList.get(j).getCheckIn();
-                 checkOut=attendanceList.get(j).getCheckOut();
-
-                 attendanceDateList.setCheckInTime(checkIn.getTime());
-                 attendanceDateList.setCheckOutTime(checkOut.getTime());
-                 attendanceDateList.setAttendanceDate(attendanceList.get(j).getCreatedOn());
-                 attendanceDateList.setStatus(attendanceList.get(j).getStatus());
-                 attendanceDateList.setTotalHrs(attendanceList.get(j).getTotalHours());
-                 attendanceDateList.setCreateAt(attendanceList.get(j).getCreatedAt());
-
-                 listDateWiseAttendace.add(attendanceDateList);
-
-               /*  if(status.equalsIgnoreCase(PENDING))
-                 {
-
-                     String number= attendanceList.get(j).getCreatedOn();
-                     pendingList.add(number);
-                 }
-                 if(status.equalsIgnoreCase(APPROVED))
-                 {
-
-                     approveList.add(attendanceList.get(j).getCreatedOn());
-                 }
-                 if(status.equalsIgnoreCase(REJECTED))
-                 {
-                     rejectList.add(attendanceList.get(j).getCreatedOn());
-                 }
-*/
-             }
-         }
-
-         if(subModule.equalsIgnoreCase("holidayList")){
-             holidayList=dataList.get(i).getHolidayList();
-             for(int k=0;k<holidayList.size();k++){
-                 id=holidayList.get(k).getId();
-                 holidayName=holidayList.get(k).getName();
-                 holidayDate=holidayList.get(k).getDate().getDate().getNumberLong();
-                 // convert this date and add into list
-
-                 Long TimeStamp=Long.parseLong(holidayDate);
-                 Date d1 = new Date(TimeStamp);
-                 java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.FULL, java.text.DateFormat.FULL);
-                 df.setTimeZone(TimeZone.getTimeZone("UTC"));
-                 //String FinalDate=df.format(d1);
-                 holidays.add(CalendarDay.from(d1));
-                 calendarView.addDecorator(new EventDecorator(getActivity(),
-                         holidays, getResources().getDrawable(R.drawable.circle_background)));
-
-             }
-
-         }
-
-     }
-     // parse response
-    }
-
-    public void attendanceListData(String type) {
-
-
-        if(type.equalsIgnoreCase(PENDING))
-        {
-            AttendanceAdapter adapter = new AttendanceAdapter(getActivity(),pendingList,type);
-            rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvAttendanceList.setAdapter(adapter);
-        }
-        if(type.equalsIgnoreCase(APPROVED))
-        {
-            AttendanceAdapter adapter = new AttendanceAdapter(getActivity(),approveList,type);
-            rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvAttendanceList.setAdapter(adapter);
-        }
-        if(type.equalsIgnoreCase(REJECTED))
-        {
-            AttendanceAdapter adapter = new AttendanceAdapter(getActivity(),rejectList,type);
-            rvAttendanceList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvAttendanceList.setAdapter(adapter);
-        }
-
     }
 
     @Override
     public void onClick(View v) {
         Date d = new Date();
-        Timestamp ts=new Timestamp(d.getTime());
+        Timestamp ts = new Timestamp(d.getTime());
         String pattern = "MM/dd/yyyy HH:mm:ss";
         SimpleDateFormat df = new SimpleDateFormat(pattern);
 // Get the today date using Calendar object.
@@ -602,83 +467,43 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 // representation of a date with the defined format.
         todayAsString = df.format(today);
 // Print it!
-        Long epoch=Util.getDateInLong(todayAsString);
-        Log.i("Epoch","111"+epoch);
+        Long epoch = Util.getDateInLong(todayAsString);
+        Log.i("Epoch", "111" + epoch);
         time = DateFormat.format(Constants.TIME_FORMAT, d.getTime());
-        Log.i("Check time","111"+time);
+        Log.i("Check time", "111" + time);
 
         switch (v.getId()) {
             case R.id.bt_check_in:
                 //tvCheckInTime.setVisibility(View.VISIBLE);
                 gpsTracker = new GPSTracker(getActivity());
-
-                checkInTime=DateFormat.format(Constants.TIME_FORMAT,new Date().getTime());
-
-                getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
+                checkInTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
+                getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
                 if (getUserType.size() > 0 && !getUserType.isEmpty() && getUserType != null) {
-                    Util.showToast("User already checked in",getActivity());
-                }else if(userAvailable!=null&&!userAvailable.isEmpty()){
-                    Util.showToast("User already checked in",getActivity());
+                    Util.showToast("User already checked in", getActivity());
+                } else if (userAvailable != null && !userAvailable.isEmpty()) {
+                    Util.showToast("User already checked in", getActivity());
                     //enableCheckOut();
                     //markIn();
-                }else {
+                } else {
                     markIn();
                 }
 
                 break;
             case R.id.bt_checkout:
                 chkOutTime = DateFormat.format(Constants.TIME_FORMAT, new Date().getTime());
-                getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
-                if(getUserCheckOutType!=null&& !getUserCheckOutType.isEmpty()&&getUserCheckOutType.size()>0){
+                getUserCheckOutType = userCheckOutDao.getCheckOutData(CHECK_OUT, Util.getTodaysDate(), Util.getUserMobileFromPref());
+                if (getUserCheckOutType != null && !getUserCheckOutType.isEmpty() && getUserCheckOutType.size() > 0) {
                     Toast.makeText(getActivity(), "User Already check out", Toast.LENGTH_LONG).show();
-                }
-                else
-                    {
+                } else {
                     markCheckOut();
                 }
-                /*if(!isCheckOut){
-                    getDiffBetweenTwoHours();
-                }*/
                 break;
             case R.id.tv_attendance_details:
-                Intent intent = new Intent(getActivity(),GeneralActionsActivity.class);
+                Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                 intent.putExtra(Constants.Planner.KEY_IS_DASHBOARD, false);
                 intent.putExtra("title", getString(R.string.attendance));
                 intent.putExtra("switch_fragments", "AttendancePlannerFragment");
                 startActivity(intent);
-                break;
-
-            case R.id.tv_tb_pending:
-                if (tabClicked != 1) {
-                    tabClicked = 1;
-                    tvClickPending.setTextColor(getResources().getColor(R.color.black_green));
-                    tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickRejected.setTextColor(getResources().getColor(R.color.blur_tab));
-                }
-                attendanceListData(PENDING);
-
-
-                break;
-
-            case R.id.tv_tb_approved:
-                if (tabClicked != 2) {
-                    tabClicked = 2;
-                    tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickApproved.setTextColor(getResources().getColor(R.color.black_green));
-                    tvClickRejected.setTextColor(getResources().getColor(R.color.blur_tab));
-
-                }
-                attendanceListData(APPROVED);
-                break;
-
-            case R.id.tv_tb_rejected:
-                if (tabClicked != 3) {
-                    tabClicked = 3;
-                    tvClickPending.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickApproved.setTextColor(getResources().getColor(R.color.blur_tab));
-                    tvClickRejected.setTextColor(getResources().getColor(R.color.black_green));
-                }
-                attendanceListData(REJECTED);
                 break;
 
             case R.id.iv_calendar_mode:
@@ -688,93 +513,102 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void markIn() {
-            if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-                if (!gpsTracker.canGetLocation()) {
-                    Toast.makeText(getActivity(),"Unable to get lat and log",Toast.LENGTH_LONG).show();
-                }
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_my_attendance:
+                attendanceCardLayout.setVisibility(View.VISIBLE);
+                rvTeamList.setVisibility(View.GONE);
+                break;
 
-                millis=getLongFromDate();
-                if(!Util.isConnected(getActivity()))
-                {
-                    // offline storage
-                    //userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
-                    // offline save
-                    getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(),Util.getUserMobileFromPref());
+            case R.id.rb_my_team_attendance:
+                rvTeamList.setVisibility(View.VISIBLE);
+                attendanceCardLayout.setVisibility(View.GONE);
+                setTeamAttendanceData();
 
-                    if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty())
-                    {
-                        Toast.makeText(getActivity(),"Already check in",Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        if(getLocation()!=null){
+                break;
+        }
+    }
 
-                            AttendaceData attendaceData=new AttendaceData();
-                            attendaceData.setUid("000");
-                            Double lat=Double.parseDouble(strLat);
-                            Double log=Double.parseDouble(strLong);
-                            attendaceData.setLatitude(lat);
-                            attendaceData.setLongitude(log);
-                            attendaceData.setAddress(strAdd);
-                            attendaceData.setAttendaceDate(millis);
-                            attendaceData.setAttendanceType(CHECK_IN);
-                            attendaceData.setTime(String.valueOf(time));
-                            attendaceData.setSync(false);
-                            attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
-                            attendaceData.setMobileNumber(Util.getUserMobileFromPref());
-                            userAttendanceDao.insert(attendaceData);
+    private void setTeamAttendanceData() {
+        TeamUser u1 =new TeamUser("sachin kakade","tc","","a");
+        teamAttendanceList.add(u1);
+        TeamUser u2 =new TeamUser("sagar mahajan","fa","","p");
+        teamAttendanceList.add(u2);
+        TeamUser u3 =new TeamUser("sudhir joshi","dm","","l");
+        teamAttendanceList.add(u3);
 
-                            //tvCheckInTime.setText(time);
-                            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-                            btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
-
-
-                            preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
-                            preferenceHelper.totalHours(KEY_TOTALHOURS,true);
-                            checkInText=checkInText+ checkInTime;
-                            btCheckIn.setText(checkInText);
-                            preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
-
-                            //setButtonText();
-                            enableCheckOut();
-
-                            Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
-
-                            Log.i("OfflineStorage","111"+attendaceData);
-
-                        }else{
-                            Util.showToast("Unable to get location",getActivity());
-                        }
-
-                     }
-
-                }
-                else {
-
-                    if(getLocation()!=null){
-                        Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
-                        submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                        submitAttendanceFragmentPresenter.markAttendace(CHECK_IN.toLowerCase(),millis,time.toString(),"",strLat,strLong,strAdd);
-
-                    }else {
-                        Util.showToast("Unable to get location",getActivity());
-                    }
-
-                }
-
-
-            }
-            else {
-                gpsTracker.showSettingsAlert();
-            }
-
+        adapter.notifyDataSetChanged();
 
     }
 
+    private void markIn() {
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            if (!gpsTracker.canGetLocation()) {
+                Toast.makeText(getActivity(), "Unable to get lat and log", Toast.LENGTH_LONG).show();
+            }
 
-    private void markCheckOut()  {
+            millis = getLongFromDate();
+            if (!Util.isConnected(getActivity())) {
+                // offline storage
+                //userAttendanceDao=DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
+                // offline save
+                getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
+                if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
+                    Toast.makeText(getActivity(), "Already check in", Toast.LENGTH_LONG).show();
+                } else {
+                    if (getLocation() != null) {
 
-        boolean isAlreadyCheckOut=false;
+                        AttendaceData attendaceData = new AttendaceData();
+                        attendaceData.setUid("000");
+                        Double lat = Double.parseDouble(strLat);
+                        Double log = Double.parseDouble(strLong);
+                        attendaceData.setLatitude(lat);
+                        attendaceData.setLongitude(log);
+                        attendaceData.setAddress(strAdd);
+                        attendaceData.setAttendaceDate(millis);
+                        attendaceData.setAttendanceType(CHECK_IN);
+                        attendaceData.setTime(String.valueOf(time));
+                        attendaceData.setSync(false);
+                        attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
+                        attendaceData.setMobileNumber(Util.getUserMobileFromPref());
+                        userAttendanceDao.insert(attendaceData);
+
+                        //tvCheckInTime.setText(time);
+                        btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
+                        btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
+                        preferenceHelper.saveCheckInTime(KEY_CHECKINTIME, checkInTime);
+                        preferenceHelper.totalHours(KEY_TOTALHOURS, true);
+                        checkInText = checkInText + checkInTime;
+                        btCheckIn.setText(checkInText);
+                        preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT, checkInText);
+
+                        //setButtonText();
+                        enableCheckOut();
+                        Util.showToast(getResources().getString(R.string.check_in_msg), getActivity());
+                        Log.i("OfflineStorage", "111" + attendaceData);
+                    } else {
+                        Util.showToast("Unable to get location", getActivity());
+                    }
+                }
+            } else {
+                if (getLocation() != null) {
+                    Util.showSimpleProgressDialog(getActivity(), "Attendance", "Loading...", false);
+                    submitAttendanceFragmentPresenter = new SubmitAttendanceFromInnerPlanner(this);
+                    submitAttendanceFragmentPresenter.markAttendace(CHECK_IN.toLowerCase(), millis, time.toString(), "", strLat, strLong, strAdd);
+                } else {
+                    Util.showToast("Unable to get location", getActivity());
+                }
+            }
+        } else {
+            gpsTracker.showSettingsAlert();
+        }
+    }
+
+
+    private void markCheckOut() {
+
+        boolean isAlreadyCheckOut = false;
         //tvCheckOutTime.setVisibility(View.VISIBLE);
 
      /*   btCheckout.setBackground(Objects.requireNonNull(getActivity())
@@ -787,19 +621,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 gpsTracker.showSettingsAlert();
             }
 
-            millis=getLongFromDate();
-            if(!Util.isConnected(getActivity())){
+            millis = getLongFromDate();
+            if (!Util.isConnected(getActivity())) {
 
-                getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
-                if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
-                    Toast.makeText(getActivity(),"User already checked out",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    if(getLocation()!=null){
-                        AttendaceCheckOut attendaceData=new AttendaceCheckOut();
+                getUserCheckOutType = userCheckOutDao.getCheckOutData(CHECK_OUT, Util.getTodaysDate(), Util.getUserMobileFromPref());
+                if (getUserCheckOutType != null && getUserCheckOutType.size() > 0 && !getUserCheckOutType.isEmpty()) {
+                    Toast.makeText(getActivity(), "User already checked out", Toast.LENGTH_LONG).show();
+                } else {
+                    if (getLocation() != null) {
+                        AttendaceCheckOut attendaceData = new AttendaceCheckOut();
                         attendaceData.setUid("000");
-                        Double lat=Double.parseDouble(strLat);
-                        Double log=Double.parseDouble(strLong);
+                        Double lat = Double.parseDouble(strLat);
+                        Double log = Double.parseDouble(strLong);
                         attendaceData.setLatitude(lat);
                         attendaceData.setLongitude(log);
                         attendaceData.setAddress(strAdd);
@@ -821,62 +654,59 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                         btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
-                        checkOutText=checkOutText+ chkOutTime;
+                        checkOutText = checkOutText + chkOutTime;
                         btCheckout.setText(checkOutText);
-                        preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
+                        preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT, checkOutText);
 
 
                         //setButtonText();
-                        if(!isCheckOut){
+                        if (!isCheckOut) {
                             getDiffBetweenTwoHours();
 
                         }
-                        isCheckOut=true;
-                        preferenceHelper.totalHours(KEY_TOTALHOURS,false);
-                        Util.showToast(getResources().getString(R.string.check_out),getActivity());
+                        isCheckOut = true;
+                        preferenceHelper.totalHours(KEY_TOTALHOURS, false);
+                        Util.showToast(getResources().getString(R.string.check_out), getActivity());
 
 
+                    } else {
+                        Util.showToast("Unable to get location", getActivity());
                     }
-                    else {
-                        Util.showToast("Unable to get location",getActivity());
-                    }
-
 
 
                 }
 
-            }else {
-                if(getLocation()!=null){
+            } else {
+                if (getLocation() != null) {
 
-                    attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(),Util.getUserMobileFromPref());
-                    Util.showSimpleProgressDialog(getActivity(),"Attendance","Loading...",false);
-                    String diffInCheckInandCheckout=null;
+                    attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(), Util.getUserMobileFromPref());
+                    Util.showSimpleProgressDialog(getActivity(), "Attendance", "Loading...", false);
+                    String diffInCheckInandCheckout = null;
                     try {
-                        diffInCheckInandCheckout=totalHoursAfterCheckOut();
+                        diffInCheckInandCheckout = totalHoursAfterCheckOut();
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    Log.i("TotalHrs","111"+diffInCheckInandCheckout);
+                    Log.i("TotalHrs", "111" + diffInCheckInandCheckout);
 
 
-                    if(attendaceId!=null){
-                        submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                        submitAttendanceFragmentPresenter.markOutAttendance(attendaceId,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
+                    if (attendaceId != null) {
+                        submitAttendanceFragmentPresenter = new SubmitAttendanceFromInnerPlanner(this);
+                        submitAttendanceFragmentPresenter.markOutAttendance(attendaceId, CHECK_OUT.toLowerCase(), millis, strLat, strLong, diffInCheckInandCheckout);
+                    } else {
+                        submitAttendanceFragmentPresenter = new SubmitAttendanceFromInnerPlanner(this);
+                        submitAttendanceFragmentPresenter.markOutAttendance(userAvailable, CHECK_OUT.toLowerCase(), millis, strLat, strLong, diffInCheckInandCheckout);
                     }
-                    else {
-                        submitAttendanceFragmentPresenter=new SubmitAttendanceFromInnerPlanner(this);
-                        submitAttendanceFragmentPresenter.markOutAttendance(userAvailable,CHECK_OUT.toLowerCase(),millis,strLat,strLong,diffInCheckInandCheckout);
-                    }
 
 
-                }else{
-                    Util.showToast("Unable to get location",getActivity());
+                } else {
+                    Util.showToast("Unable to get location", getActivity());
                 }
 
             }
 
 
-        }else {
+        } else {
             gpsTracker.showSettingsAlert();
         }
 
@@ -911,8 +741,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     }
 
-    private void highlightDates()
-    {
+    private void highlightDates() {
         // set the date list to highlight
         ArrayList<CalendarDay> dateList = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
@@ -951,7 +780,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 */
 
 
-
     }
 
     @Override
@@ -961,23 +789,22 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
     }
 
-    public void showError(String error){
+    public void showError(String error) {
 
         //Toast.makeText(getActivity(),"User Already Checked In",Toast.LENGTH_LONG).show();
 
     }
 
-    public void createJson()
-    {
-        HashMap<String,String>checkinMap=new HashMap<String,String>();
-        checkinMap.put("checin","9:30 ");
-        checkinMap.put("checkout","6:30");
-        JSONObject obj=new JSONObject(checkinMap);
-        Log.i("CheckIn","111"+obj);
+    public void createJson() {
+        HashMap<String, String> checkinMap = new HashMap<String, String>();
+        checkinMap.put("checin", "9:30 ");
+        checkinMap.put("checkout", "6:30");
+        JSONObject obj = new JSONObject(checkinMap);
+        Log.i("CheckIn", "111" + obj);
 
     }
 
-    public Location getLocation(){
+    public Location getLocation() {
         location = gpsTracker.getLocation();
         if (location != null) {
             strLat = String.valueOf(location.getLatitude());
@@ -986,7 +813,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             strLat = gpsTracker.getLatitude();
             strLong = gpsTracker.getLongitude();
         }
-        Log.i("latLong","222"+strLat+":-"+strLong);
+        Log.i("latLong", "222" + strLat + ":-" + strLong);
         return location;
     }
 
@@ -1011,17 +838,17 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             e.printStackTrace();
             Log.w("My address", "Canont get Address!");
         }
-        Log.i("Address","222"+strAdd);
+        Log.i("Address", "222" + strAdd);
         return strAdd;
     }
 
-    public Long getLongFromDate(){
-        Long millis=null;
+    public Long getLongFromDate() {
+        Long millis = null;
         String pattern = "yyyy/MM/dd HH:mm:ss";
 
 // Create an instance of SimpleDateFormat used for formatting
 // the string representation of date according to the chosen pattern
-        SimpleDateFormat df = new SimpleDateFormat(pattern,Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat(pattern, Locale.getDefault());
 
 // Get the today date using Calendar object.
         Date today = Calendar.getInstance().getTime();
@@ -1035,15 +862,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         System.out.println("Today is: " + todayAsString);
 
         try {
-            millis = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",Locale.getDefault()).parse(todayAsString).getTime();
-            Log.i("Epoch","111"+millis);
+            millis = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).parse(todayAsString).getTime();
+            Log.i("Epoch", "111" + millis);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return millis;
     }
-    public Long getLongFromDate(String date){
-        Long millis=null;
+
+    public Long getLongFromDate(String date) {
+        Long millis = null;
         String pattern = "yyyy/MM/dd HH:mm:ss";
 
 // Create an instance of SimpleDateFormat used for formatting
@@ -1057,9 +885,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 // Using DateFormat format method we can create a string
 // representation of a date with the defined format.
 
-        Date mdate=null;
+        Date mdate = null;
         try {
-            mdate=df.parse(date);
+            mdate = df.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -1070,38 +898,37 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         try {
             millis = new SimpleDateFormat("yyyy/MM/dd").parse(todayAsString).getTime();
-            Log.i("Epoch","111"+millis);
+            Log.i("Epoch", "111" + millis);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return millis;
     }
 
-    public void checkInResponse(String response){
+    public void checkInResponse(String response) {
 
         Util.removeSimpleProgressDialog();
-        getUserType=userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(),Util.getUserMobileFromPref());
-        if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
-            Toast.makeText(getActivity(),"User Already check in",Toast.LENGTH_LONG).show();
-        }
-        else {
+        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
+        if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
+            Toast.makeText(getActivity(), "User Already check in", Toast.LENGTH_LONG).show();
+        } else {
 
             String attendanceId;
             int status;
-            try{
+            try {
 
-                JSONObject jsonObject=new JSONObject(response);
-                status= jsonObject.getInt("status");
-                if(status==300){
+                JSONObject jsonObject = new JSONObject(response);
+                status = jsonObject.getInt("status");
+                if (status == 300) {
                     Toast.makeText(getActivity(), "Today is holiday you cant login", Toast.LENGTH_SHORT).show();
-                }else {
-                    JSONObject jsonData=jsonObject.getJSONObject("data");
-                    attendanceId=jsonData.getString("attendanceId");
+                } else {
+                    JSONObject jsonData = jsonObject.getJSONObject("data");
+                    attendanceId = jsonData.getString("attendanceId");
 
-                    AttendaceData attendaceData=new AttendaceData();
+                    AttendaceData attendaceData = new AttendaceData();
                     attendaceData.setUid(attendanceId);
-                    Double lat=Double.parseDouble(strLat);
-                    Double log=Double.parseDouble(strLong);
+                    Double lat = Double.parseDouble(strLat);
+                    Double log = Double.parseDouble(strLong);
                     attendaceData.setLatitude(lat);
                     attendaceData.setLongitude(log);
                     attendaceData.setAddress(strAdd);
@@ -1113,20 +940,20 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendaceData.setMobileNumber(Util.getUserMobileFromPref());
                     //tvCheckInTime.setText(time);
                     userAttendanceDao.insert(attendaceData);
-                    Log.i("Online","111"+attendaceData);
+                    Log.i("Online", "111" + attendaceData);
 
                     btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
                     btCheckIn.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
-                    preferenceHelper.saveCheckInTime(KEY_CHECKINTIME,checkInTime);
-                    preferenceHelper.totalHours(KEY_TOTALHOURS,true);
-                    checkInText=checkInText + checkInTime;
+                    preferenceHelper.saveCheckInTime(KEY_CHECKINTIME, checkInTime);
+                    preferenceHelper.totalHours(KEY_TOTALHOURS, true);
+                    checkInText = checkInText + checkInTime;
                     btCheckIn.setText(checkInText);
-                    preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT,checkInText);
+                    preferenceHelper.saveCheckInButtonText(KEY_CHECKINTEXT, checkInText);
 
                     //setButtonText();
                     enableCheckOut();
-                    Util.showToast(getResources().getString(R.string.check_in_msg),getActivity());
+                    Util.showToast(getResources().getString(R.string.check_in_msg), getActivity());
                 }
 
 
@@ -1135,17 +962,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             }
         }
     }
-    public void checkOutResponse(String response){
-        Log.i("checkOut","111"+response);
+
+    public void checkOutResponse(String response) {
+        Log.i("checkOut", "111" + response);
         Util.removeSimpleProgressDialog();
 
-        int status=0;
+        int status = 0;
         JSONObject jsonObject = null;
-        String msg="",id="";
+        String msg = "", id = "";
         try {
             jsonObject = new JSONObject(response);
             status = jsonObject.getInt("status");
-            JSONObject jsonData=jsonObject.getJSONObject("data");
+            JSONObject jsonData = jsonObject.getJSONObject("data");
             id = jsonData.getString("_id");
 
         } catch (JSONException e) {
@@ -1153,17 +981,17 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
 
 
-        getUserCheckOutType=userCheckOutDao.getCheckOutData(CHECK_OUT,Util.getTodaysDate(),Util.getUserMobileFromPref());
+        getUserCheckOutType = userCheckOutDao.getCheckOutData(CHECK_OUT, Util.getTodaysDate(), Util.getUserMobileFromPref());
 
-        if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
-            Toast.makeText(getActivity(),"User Already Check Out",Toast.LENGTH_LONG).show();
-        }else if(status==300){
-            Util.showToast("User already check out",getActivity());
-        }else {
-            AttendaceCheckOut attendaceData=new AttendaceCheckOut();
+        if (getUserCheckOutType != null && getUserCheckOutType.size() > 0 && !getUserCheckOutType.isEmpty()) {
+            Toast.makeText(getActivity(), "User Already Check Out", Toast.LENGTH_LONG).show();
+        } else if (status == 300) {
+            Util.showToast("User already check out", getActivity());
+        } else {
+            AttendaceCheckOut attendaceData = new AttendaceCheckOut();
             attendaceData.setUid(id);
-            Double lat=Double.parseDouble(strLat);
-            Double log=Double.parseDouble(strLong);
+            Double lat = Double.parseDouble(strLat);
+            Double log = Double.parseDouble(strLong);
             attendaceData.setLatitude(lat);
             attendaceData.setLongitude(log);
             attendaceData.setAddress(strAdd);
@@ -1184,70 +1012,70 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getActivity().getResources().getColor(R.color.attendance_text_color));
 
-            checkOutText=checkOutText+ chkOutTime;
+            checkOutText = checkOutText + chkOutTime;
             btCheckout.setText(checkOutText);
-            preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT,checkOutText);
+            preferenceHelper.saveCheckOutText(KEY_CHECKOUTTEXT, checkOutText);
 
-            if(!isCheckOut){
+            if (!isCheckOut) {
                 getDiffBetweenTwoHours();
             }
-            isCheckOut=true;
-            preferenceHelper.totalHours(KEY_TOTALHOURS,false);
-            Util.showToast( getResources().getString(R.string.check_out),getActivity());
+            isCheckOut = true;
+            preferenceHelper.totalHours(KEY_TOTALHOURS, false);
+            Util.showToast(getResources().getString(R.string.check_out), getActivity());
 
 
-            Log.i("Online","111"+attendaceData);
+            Log.i("Online", "111" + attendaceData);
         }
 
     }
 
 
-    public void checkInError(String response){
-        Toast.makeText(getActivity(),"User Already CheckIn",Toast.LENGTH_LONG).show();
+    public void checkInError(String response) {
+        Toast.makeText(getActivity(), "User Already CheckIn", Toast.LENGTH_LONG).show();
         Util.removeSimpleProgressDialog();
 
     }
-    public void checkOutError(String response){
-        Toast.makeText(getActivity(),response,Toast.LENGTH_LONG).show();
+
+    public void checkOutError(String response) {
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
         Util.removeSimpleProgressDialog();
     }
 
-    public void enableCheckOut()
-    {
+    public void enableCheckOut() {
         btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
         btCheckout.setTextColor(getResources().getColor(R.color.white));
         btCheckout.setEnabled(true);
     }
 
-    Handler handler=new Handler(){
+    Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Bundle bundle= msg.getData();
-            String success=bundle.getString("success");
-            Log.i("Planner","111"+success);
+            Bundle bundle = msg.getData();
+            String success = bundle.getString("success");
+            Log.i("Planner", "111" + success);
             // clear all table values
         }
     };
 
-    public String getTotalHours () throws ParseException {
+    public String getTotalHours() throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         Date startDate = null;
 
 
         try {
-            if(prefCheckInTime!=null){
-                startDate = simpleDateFormat.parse((String)prefCheckInTime);
+            if (prefCheckInTime != null) {
+                startDate = simpleDateFormat.parse((String) prefCheckInTime);
             }
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        Date endDate = simpleDateFormat.parse((String) DateFormat.format(Constants.TIME_FORMAT_,new Date().getTime()));
-        if(endDate!=null&&startDate!=null){
+        Date endDate = simpleDateFormat.parse((String) DateFormat.format(Constants.TIME_FORMAT_, new Date().getTime()));
+        if (endDate != null && startDate != null) {
 
             long difference = endDate.getTime() - startDate.getTime();
             if (difference < 0) {
@@ -1266,11 +1094,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         return totalHrs + " :" + totalMin;
     }
 
-    public String getDiffBetweenTwoHours()
-    {
-        if(preferenceHelper.showTotalHours(KEY_TOTALHOURS)){
+    public String getDiffBetweenTwoHours() {
+        if (preferenceHelper.showTotalHours(KEY_TOTALHOURS)) {
             try {
-                totalHours=getTotalHours();
+                totalHours = getTotalHours();
                 txt_total_hours.setText(totalHours);
 
             } catch (ParseException e) {
@@ -1280,8 +1107,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
         return totalHours;
     }
-
-
 
 
     @Override
@@ -1295,61 +1120,61 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             enableCheckOut();
         }*/
 
-        if(!isCheckOut){
+        if (!isCheckOut) {
             getDiffBetweenTwoHours();
         }
 
-        if(userCheckInTime!=null){
+        if (userCheckInTime != null) {
 
             makeCheckInButtonGray();
             clearCheckInButtonText();
-            checkInTime=userCheckInTime;
-            btCheckIn.setText("Check in at"+ userCheckInTime);
+            checkInTime = userCheckInTime;
+            btCheckIn.setText("Check in at" + userCheckInTime);
         }
-        if(userCheckOutTime!=null){
+        if (userCheckOutTime != null) {
             makeCheckOutButtonGray();
             clearCheckOutButtonText();
-            chkOutTime=userCheckOutTime;
+            chkOutTime = userCheckOutTime;
             btCheckout.setText("Check out at" + userCheckOutTime);
         }
 
 
-        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter=new MonthlyAttendanceFragmentPresenter(this);
-        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year,cmonth);
-
+        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year, cmonth);
 
 
     }
 
-    public void setButtonText(){
+    public void setButtonText() {
 
-        String checkIn=getCheckInButtonText(KEY_CHECKINTEXT);
-        String checkOut=getCheckOutButtonText(KEY_CHECKOUTTEXT);
+        String checkIn = getCheckInButtonText(KEY_CHECKINTEXT);
+        String checkOut = getCheckOutButtonText(KEY_CHECKOUTTEXT);
 
         btCheckIn.setText(checkIn);
         btCheckout.setText(checkOut);
 
     }
-    public String getCheckInButtonText(String key){
+
+    public String getCheckInButtonText(String key) {
         return preferenceHelper.getCheckInButtonText(key);
     }
 
-    public String getCheckOutButtonText(String key){
+    public String getCheckOutButtonText(String key) {
         return preferenceHelper.getCheckOutText(key);
     }
-    public void checkUserIsMakedIn(){
 
-        if(getUserType!=null&&getUserType.size()>0&&!getUserType.isEmpty()){
+    public void checkUserIsMakedIn() {
+
+        if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
             btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckInButtonText();
-            btCheckIn.setText("Check in at "+ getUserType.get(0).getTime());
-            checkInTime=getUserType.get(0).getTime();
+            btCheckIn.setText("Check in at " + getUserType.get(0).getTime());
+            checkInTime = getUserType.get(0).getTime();
             //setButtonText();
             enableCheckOut();
 
-        }
-        else {
+        } else {
             // gray check out button
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
@@ -1357,30 +1182,30 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         }
 
-        if(getUserCheckOutType!=null&&getUserCheckOutType.size()>0&&!getUserCheckOutType.isEmpty()){
+        if (getUserCheckOutType != null && getUserCheckOutType.size() > 0 && !getUserCheckOutType.isEmpty()) {
 
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckOutButtonText();
             btCheckout.setText("Check out at" + getUserCheckOutType.get(0).getTime());
-            chkOutTime=getUserCheckOutType.get(0).getTime();
+            chkOutTime = getUserCheckOutType.get(0).getTime();
             //setButtonText();
         }
     }
 
-    public void deleteSharedPreferece()
-    {
-        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN,Util.getTodaysDate(),Util.getUserMobileFromPref());
-        if(getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
+    public void deleteSharedPreferece() {
+        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
+        if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
 
-        }else {
+        } else {
             deleteUserAttendanceData();
         }
 
     }
-    public void deleteUserAttendanceData(){
 
-        SharedPreferences sharedPreferences=getActivity().getSharedPreferences(PreferenceHelper.PREFER_NAME,Context.MODE_PRIVATE);
+    public void deleteUserAttendanceData() {
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PreferenceHelper.PREFER_NAME, Context.MODE_PRIVATE);
         sharedPreferences.edit().remove(KEY_CHECKINTIME).apply();
         sharedPreferences.edit().remove(KEY_CHECKINTEXT).apply();
         sharedPreferences.edit().remove(KEY_CHECKOUTTEXT).apply();
@@ -1401,21 +1226,21 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         getActivity().startActivity(planerfragment);*/
     }
 
-    public String  totalHoursAfterCheckOut() throws ParseException {
+    public String totalHoursAfterCheckOut() throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         Date startDate = null;
 
 
         try {
-            startDate = simpleDateFormat.parse((String)checkInTime);
+            startDate = simpleDateFormat.parse((String) checkInTime);
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        Date endDate = simpleDateFormat.parse((String)chkOutTime);
-        if(endDate!=null&&startDate!=null){
+        Date endDate = simpleDateFormat.parse((String) chkOutTime);
+        if (endDate != null && startDate != null) {
 
             long difference = endDate.getTime() - startDate.getTime();
             if (difference < 0) {
@@ -1434,16 +1259,16 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         return totalHrs + " :" + totalMin;
     }
-    public void makeCheckInButtonGray(){
+
+    public void makeCheckInButtonGray() {
         btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
     }
 
-    public void makeCheckOutButtonGray(){
+    public void makeCheckOutButtonGray() {
         btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
         btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
     }
-
 
 
     public void showProgressBar() {
@@ -1464,11 +1289,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         });
     }
 
-    public void clearCheckInButtonText(){
+    public void clearCheckInButtonText() {
         btCheckIn.setText("");
     }
 
-    public void clearCheckOutButtonText(){
+    public void clearCheckOutButtonText() {
         btCheckout.setText("");
     }
 

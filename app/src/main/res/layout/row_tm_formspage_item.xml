@@ -118,7 +118,12 @@
                 android:layout_marginTop="@dimen/dimen_20dp"
                 android:visibility="visible"
                 android:orientation="horizontal">
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Reason"
+                    android:visibility="gone"
+                    android:id="@+id/tv_leave_reason"
+                    android:layout_height="wrap_content" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_reject"
                     style="@style/AppStyleBorderButton"
@@ -126,16 +131,16 @@
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/dark_grey" />
+                    android:textColor="@color/medium_grey" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/AppStyleButton"
+                    style="@style/AppStyleBorderButton"
                     android:id="@+id/btn_approve"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/medium_grey" />
             </LinearLayout>
             <!--<RelativeLayout-->
                 <!--android:layout_width="match_parent"-->

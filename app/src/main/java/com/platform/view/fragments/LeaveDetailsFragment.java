@@ -120,16 +120,15 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
 
         if(Util.isConnected(getContext())){
             Bundle bundle = this.getArguments();
-            if (bundle != null) {
-                if(bundle.getSerializable("leaveBalance")!=null) {
-                    leaveBalance.clear();
-                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
-                }
-            }
-
-            if(leaveBalance.size()==0)
-                presenter.getLeavesBalance();
-
+//            if (bundle != null) {
+//                if(bundle.getSerializable("leaveBalance")!=null) {
+//                    leaveBalance.clear();
+//                    leaveBalance.addAll((ArrayList<LeaveDetail>) bundle.getSerializable("leaveBalance"));
+//                }
+//            }
+//
+//            if(leaveBalance.size()==0)
+            presenter.getLeavesBalance();
             setListData();
             setUIData();
         }else {

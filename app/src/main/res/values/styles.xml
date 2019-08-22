@@ -69,7 +69,7 @@
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_50dp</item>
         <item name="strokeColor">@color/colorPrimary</item>
         <!--<item name="android:background">@drawable/approval_button_border</item>-->
