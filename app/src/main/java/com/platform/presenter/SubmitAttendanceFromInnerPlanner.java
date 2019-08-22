@@ -53,7 +53,7 @@ public class SubmitAttendanceFromInnerPlanner implements SubmitAttendanceListene
     {
         SubmitAttendanceCall attendanceCall=new SubmitAttendanceCall();
         attendanceCall.addListener(this);
-        attendanceCall.AttendanceCheckIn(type,d,time,chktype,strLat,strLong,strAdd);
+        attendanceCall.AttendanceCheckIn(type,d,strLat,strLong);
 
     }
 

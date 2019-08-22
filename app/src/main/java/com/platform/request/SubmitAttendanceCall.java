@@ -47,7 +47,7 @@ public class SubmitAttendanceCall  {
         this.submitAttendanceListener=submitAttendanceListener;
     }
 
-    public void AttendanceCheckIn(String type, Long d, String time, String chktype, String strLat, String strLong, String strAdd){
+    public void AttendanceCheckIn(String type, Long timeStamp, String strLat, String strLong){
         Response.Listener<JSONObject> monthlyAttendancSuceessListener = response -> {
             try {
                 if (response != null) {
@@ -89,8 +89,7 @@ public class SubmitAttendanceCall  {
         try{
             gsonRequest.setHeaderParams(Util.requestHeader(true));
             gsonRequest.setShouldCache(false);
-            gsonRequest.setBodyParams(getSubmitAttendaceJson(type,d
-                    ,time,chktype,strLat,strLong,strAdd));
+            gsonRequest.setBodyParams(getSubmitAttendaceJson(type,timeStamp,strLat,strLong));
             Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
         }catch (Exception e){
             Log.i("NetworkException","111"+e.toString());
@@ -98,18 +97,13 @@ public class SubmitAttendanceCall  {
     }
 
 
-    public JsonObject getSubmitAttendaceJson(String type, Long d, String time, String chktype, String strLat, String strLong, String strAdd){
+    public JsonObject getSubmitAttendaceJson(String type, Long timeStamp, String strLat, String strLong){
         String validType=type.replace(" ","");
         HashMap<String,String>map=new HashMap<>();
         map.put(KEY_TYPE,validType);
         map.put(KEY_LAT,strLat);
         map.put(KEY_LONG,strLong);
-        map.put(KEY_DATE,String.valueOf(d));
-        //map.put(KEY_CHEKINTIME,time);
-        //map.put(KEY_CHEKOUTTIME,chktype);
-        //map.put(KEY_LAT,strLat);
-        //map.put(KEY_LONG,strLong);
-        //map.put(KEY_ADDRESS,strAdd);
+        map.put(KEY_DATE,String.valueOf(timeStamp));
 
         JsonObject requestObject = new JsonObject();
 

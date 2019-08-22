@@ -50,11 +50,11 @@ public class SubmitAttendanceFragmentPresenter implements SubmitAttendanceListen
         }
     }
     // make a request call
-    public void markAttendace(String type, Long d, String time, String chktype , String strLat, String strLong, String strAdd)
+    public void markAttendace(String type, Long timeStamp, String strLat, String strLong)
     {
         SubmitAttendanceCall attendanceCall=new SubmitAttendanceCall();
         attendanceCall.addListener(this);
-        attendanceCall.AttendanceCheckIn(type,d,time,chktype,strLat,strLong,strAdd);
+        attendanceCall.AttendanceCheckIn(type,timeStamp,strLat,strLong);
 
     }
 
