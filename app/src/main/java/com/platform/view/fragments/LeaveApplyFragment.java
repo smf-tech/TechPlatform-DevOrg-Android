@@ -184,6 +184,8 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 btnApplyLeaves.setVisibility(View.GONE);
                 edtReason.setEnabled(false);
                 edtRejectedReason.setEnabled(false);
+                btnHalfDay.setEnabled(false);
+                btnFullDay.setEnabled(false);
             } else {
                 rbGroup.setOnCheckedChangeListener(this);
                 btnStartDate.setOnClickListener(this);

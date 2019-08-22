@@ -176,6 +176,9 @@
             android:layout_width="match_parent"
             android:text="Reason"
             android:visibility="gone"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_05dp"
             android:id="@+id/tv_leave_reason"
             android:layout_height="wrap_content" />
 
