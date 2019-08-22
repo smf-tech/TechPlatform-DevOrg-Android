@@ -183,7 +183,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                         .getEnddatetime(),Constants.FORM_DATE));
             }
             if(eventTask.getThumbnailImage().equals("")){
-                eventPic.setVisibility(View.GONE);
+                eventPic.setVisibility(View.VISIBLE);
             } else {
                 Glide.with(this)
                         .load(eventTask.getThumbnailImage())
@@ -344,7 +344,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 eventTask.setThumbnailImage(mUploadedImageUrl);
             } else {
                 // Set old image url if image unchanged
-                if (!TextUtils.isEmpty(this.eventTask.getThumbnailImage())) {
+                if (this.eventTask!=null && this.eventTask.getThumbnailImage()!= null) {
                     eventTask.setThumbnailImage(this.eventTask.getThumbnailImage());
                 }
             }

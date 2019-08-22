@@ -50,79 +50,51 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_calender"
+                android:background="@color/lighter_grey_tab"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp">
+
+                <RadioButton
+                    android:id="@+id/rb_my_attendance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:textColor="@drawable/radio_btn_txt_colour"
+                    android:fontFamily="@font/opensans"
+                    android:text="My Attendance"/>
+
+                <RadioButton
+                    android:id="@+id/rb_my_team_attendance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:textColor="@drawable/radio_btn_txt_colour"
+                    android:fontFamily="@font/opensans"
+                    android:text="My Team Attendance"/>
+            </RadioGroup>
             <include
                 android:id="@+id/rv_card_attendance"
                 layout="@layout/layout_attendance_card" />
 
-            <LinearLayout
-                android:id="@+id/lv_attendance_status"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_75dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen_01dp"
-                android:layout_marginTop="@dimen/dimen_01dp"
-                android:layout_marginEnd="@dimen/dimen_01dp"
-                android:background="@color/leaves_tab"
-                android:elevation="@dimen/dimen_03dp"
-                android:paddingTop="@dimen/dimen_20dp"
-                android:visibility="gone"
-                android:weightSum="3">
-
-                <TextView
-                    android:id="@+id/tv_tb_pending"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/selector_pending_tab"
-                    android:drawablePadding="-15dp"
-                    android:gravity="center"
-                    android:text="@string/tab_pending_leaves"
-                    android:textAllCaps="true"
-                    android:fontFamily="@font/opensans"
-                    android:textColor="@color/black_green"
-                    android:textSize="@dimen/text_size_12" />
-
-                <TextView
-                    android:id="@+id/tv_tb_approved"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_approved"
-                    android:drawablePadding="-15dp"
-                    android:gravity="center"
-                    android:text="@string/tab_approved_leaves"
-                    android:textAllCaps="true"
-                    android:fontFamily="@font/opensans"
-                    android:textColor="@color/blur_tab"
-                    android:textSize="@dimen/text_size_12" />
-
-                <TextView
-                    android:id="@+id/tv_tb_rejected"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_rejected"
-                    android:drawablePadding="-15dp"
-                    android:gravity="center"
-                    android:text="@string/tab_rejected_leaves"
-                    android:textAllCaps="true"
-                    android:fontFamily="@font/opensans"
-                    android:textColor="@color/blur_tab"
-                    android:textSize="@dimen/text_size_12" />
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_attendance_list"
+                android:id="@+id/rv_team_list"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dimen_02dp"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:background="@color/lighter_grey"
-                android:paddingTop="@dimen/dimen_05dp" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:visibility="visible"
+                />
         </LinearLayout>
     </ScrollView>
     <RelativeLayout

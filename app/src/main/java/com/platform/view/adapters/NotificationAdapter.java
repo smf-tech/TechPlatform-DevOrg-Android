@@ -80,31 +80,51 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View view) {
                     if(notificationList.get(getAdapterPosition()).getToOpen()!=null){
+
+                        Intent intent;
+
                         switch (notificationList.get(getAdapterPosition()).getToOpen()) {
-                            case "Approval":
-                                Intent intent = new Intent(context, TMFiltersListActivity.class);
+                            case "formApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+//                                intent.putExtra("filter_type","");
                                 context.startActivity(intent);
                                 break;
-                            case "Event":
-                                Intent intentCreateEvent = new Intent(context, CreateEventTaskActivity.class);
-                                intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                                context.startActivity(intentCreateEvent);
+                            case "userApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
                                 break;
-                            case "Task":
-                                Intent intentEventList = new Intent(context, PlannerDetailActivity.class);
-                                intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                                context.startActivity(intentEventList);
+                            case "leaveApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
                                 break;
-                            case "Leaves":
-                                Intent intentLeaves = new Intent(context, GeneralActionsActivity.class);
-                                intentLeaves.putExtra("title", context.getString(R.string.leave));
-                                intentLeaves.putExtra("switch_fragments", "LeaveDetailsFragment");
-                                context.startActivity(intentLeaves);
+                            case "attendanceApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
                                 break;
-                            case "Attendances":
+                            case "compoffApproval":
+                                intent = new Intent(context, TMFiltersListActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            case "event":
+                                intent = new Intent(context, CreateEventTaskActivity.class);
+                                intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                                context.startActivity(intent);
+                                break;
+                            case "task":
+                                intent = new Intent(context, PlannerDetailActivity.class);
+                                intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                                context.startActivity(intent);
+                                break;
+                            case "leave":
+                                intent= new Intent(context, GeneralActionsActivity.class);
+                                intent.putExtra("title", context.getString(R.string.leave));
+                                intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                                context.startActivity(intent);
+                                break;
+                            case "attendance":
 
                                 break;
-                            case "Forms":
+                            case "forms":
 
                                 break;
                             default:

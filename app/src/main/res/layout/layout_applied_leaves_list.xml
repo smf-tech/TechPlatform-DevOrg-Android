@@ -70,33 +70,24 @@
     <LinearLayout
         android:id="@+id/button_lay"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_80dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10">
 
         <com.google.android.material.button.MaterialButton
-            style="@style/AppStyleButton"
+            style="@style/AppStyleBorderButton"
             android:id="@+id/btn_add_leaves"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
             android:padding="@dimen/dimen_10dp"
-            android:background="@drawable/bg_button"
-            android:textColor="@color/white"
             android:text="Apply Leave" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/AppStyleButton"
+            style="@style/AppStyleBorderButton"
             android:id="@+id/btn_compoff_request"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
             android:padding="@dimen/dimen_10dp"
-            android:background="@drawable/bg_button"
-            android:textColor="@color/white"
             android:text="@string/request_comp_0f" />
 
      </LinearLayout>

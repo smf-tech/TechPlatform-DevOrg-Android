@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -299,7 +300,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         public RecyclerView rv_filterchoice;
         public Dialog d;
         public Button yes, no;
-        public TextView tv_startdate,tv_enddate;
+        public EditText tv_startdate,tv_enddate;
         public ArrayList<String> filterChoiceList = new ArrayList<>();
         FilterChoicedapter adapter;
         public CustomDialogClass(Activity a,String formTitle) {
