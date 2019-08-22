@@ -104,7 +104,7 @@ public class ContentManagementFragment extends Fragment {
     ExpandableListAdapter expandableListAdapter;
     private String downloadFilePath = "";
     private String filename;
-    private DownloadManager downloadmanager;
+
     private ImageView imgDwn, imgShare;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar,mProgressBar;
@@ -113,6 +113,7 @@ public class ContentManagementFragment extends Fragment {
     private Handler handler = new Handler();
     private List<Long> downloadIdList=new ArrayList<>();
     DownloadInfo downloadInfo;
+    DownloadManager downloadmanager;
 
 
     public ContentManagementFragment() {
@@ -397,9 +398,9 @@ public class ContentManagementFragment extends Fragment {
 
     }
 
-    public void beginDownload(String url) {
-
-        DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+    public boolean beginDownload(String url) {
+        boolean isRunning=false;
+        downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
         filename = file.getName();
@@ -411,17 +412,37 @@ public class ContentManagementFragment extends Fragment {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         if (Permissions.isCameraPermissionGranted(getActivity(), getActivity())) {
-            request.setDestinationInExternalPublicDir("/MV", filename);
+            request.setDestinationInExternalPublicDir("/MV",filename);
         }
 
         //downloadFilePath = path + filename;
         downloadID = downloadmanager.enqueue(request);
         downloadIdList.add(downloadID);
-        //updateProgressBar();
-        //getActivity().getContentResolver().registerContentObserver(uri, true,new DownloadObserver(handler));
 
+        Cursor cursor = downloadmanager.query(new DownloadManager.Query().setFilterById(downloadID));
 
+        if (cursor != null && cursor.moveToNext()) {
+            int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+            cursor.close();
+
+            if (status == DownloadManager.STATUS_FAILED) {
+                // do something when failed
+            }
+            else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
+                // do something pending or paused
+            }
+            else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                // do something when successful
+            }
+            else if (status == DownloadManager.STATUS_RUNNING) {
+                // do something when running
+                isRunning=true;
+            }
+        }
+        return isRunning;
     }
+
+
 
 
 
@@ -565,6 +586,8 @@ public class ContentManagementFragment extends Fragment {
             expandableListAdapter.notifyDataSetChanged();
         }
     }
+
+
 
 
 }

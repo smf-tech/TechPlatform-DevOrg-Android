@@ -195,7 +195,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         createJson();
         context=getActivity();
 
+        checkInText=getString(R.string.check_in_at);
+        checkOutText=getString(R.string.check_out_it);
                 // get attendance id
+
 
 
         preferenceHelper=new PreferenceHelper(getActivity());
@@ -381,7 +384,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
                         btCheckIn.setEnabled(false);
                     }else {
-                        btCheckIn.setText("CheckIn at 00:00");
+                        btCheckIn.setText(checkInText+" "+"00:00");
                     }
 
                     if(!attendanceDateList.getCheckOutTime().isEmpty()){
@@ -392,7 +395,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
                     }
                     else{
-                        btCheckout.setText("CheckOut at 00:00");
+                        btCheckout.setText(checkOutText+" "+"00:00");
                     }
 
 
@@ -426,7 +429,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     String currDate=sdf.format(new Date());
 
                     if(currDate.equalsIgnoreCase(calendarSelectedDate)){
-                        btCheckIn.setText("CheckIn");
+                        btCheckIn.setText(checkInText);
                         btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
                         btCheckIn.setTextColor(getResources().getColor(R.color.white));
                         btCheckIn.setEnabled(true);
@@ -434,10 +437,10 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         btCheckout.setText("Check Out");
                     }else {
                         txt_total_hours.setText("0:0");
-                        btCheckIn.setText("CheckIn at 00:00");
+                        btCheckIn.setText(checkInText+" "+"00:00");
                         btCheckIn.setEnabled(false);
                         makeCheckInButtonGray();
-                        btCheckout.setText("CheckOut at 00:00");
+                        btCheckout.setText(checkOutText+" "+"00:00");
                         btCheckout.setEnabled(false);
                         makeCheckOutButtonGray();
 
@@ -466,11 +469,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             }
             else {
                 txt_total_hours.setText("00:00");
-                btCheckIn.setText("CheckIn at 00:00");
+                btCheckIn.setText(checkInText+" "+"00:00");
                 btCheckIn.setEnabled(false);
 
                 makeCheckInButtonGray();
-                btCheckout.setText("CheckOut at 00:00");
+                btCheckout.setText(checkOutText+" "+"00:00");
                 btCheckout.setEnabled(false);
                 makeCheckOutButtonGray();
             }
@@ -1370,14 +1373,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             makeCheckInButtonGray();
             clearCheckInButtonText();
             checkInTime=userCheckInTime;
-            btCheckIn.setText("Check in at " + userCheckInTime);
+            btCheckIn.setText(checkInText+" "+userCheckInTime);
             enableCheckOut();
         }
         if(userCheckOutTime!=null){
             makeCheckOutButtonGray();
             clearCheckOutButtonText();
             chkOutTime=userCheckOutTime;
-            btCheckout.setText("Check out at " + userCheckOutTime);
+            btCheckout.setText(checkOutText+" "+userCheckOutTime);
         }
 
     }
@@ -1405,7 +1408,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckInButtonText();
-            btCheckIn.setText("Check in at " + getUserType.get(0).getTime());
+            btCheckIn.setText(checkInText+" "+getUserType.get(0).getTime());
             checkInTime=getUserType.get(0).getTime();
             //setButtonText();
             enableCheckOut();
@@ -1424,7 +1427,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
             btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckOutButtonText();
-            btCheckout.setText("Check out at " + getUserCheckOutType.get(0).getTime());
+            btCheckout.setText(checkOutText+" "+getUserCheckOutType.get(0).getTime());
             chkOutTime=getUserCheckOutType.get(0).getTime();
             //setButtonText();
         }

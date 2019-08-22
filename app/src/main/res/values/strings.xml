@@ -432,6 +432,8 @@
     <string name="add_event">+Add Event</string>
     <string name="add_task">+Add Task</string>
     <string name="leave_balance">Leave Balance</string>
+    <string name="check_in_at">Check in at </string>
+    <string name="check_out_it">Check out at</string>
 
 
 </resources>

@@ -44,6 +44,7 @@ import com.platform.models.content.DownloadContent;
 import com.platform.models.content.DownloadInfo;
 import com.platform.models.content.Url;
 import com.platform.utility.Permissions;
+import com.platform.utility.Util;
 import com.platform.view.fragments.ContentManagementFragment;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -59,6 +60,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> urlListl=new ArrayList<>();
     private String[] urlArray;
     private int position;
+    private TextView txt_percentage;
+    boolean isDownloading;
 
     public ExpandableListAdapter(ContentManagementFragment context, List<String> listDataHeader,
                                  HashMap<String, List<DownloadContent>> listChildData, Context _context) {
@@ -114,8 +117,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         holder.imgShare = convertView.findViewById(R.id.imgshare);
         holder.txttitle = convertView.findViewById(R.id.txtName);
         holder.progressBar = convertView.findViewById(R.id.progress_bar);
-        holder.txttitle.setText(downloadContent.getName());
+        holder.txtpercentage=convertView.findViewById(R.id.txtCount);
 
+        holder.txttitle.setText(downloadContent.getName());
         holder.progressBar.setProgress(info.getProgress());
         holder.progressBar.setMax(100);
         info.setProgressBar(holder.progressBar);
@@ -129,26 +133,30 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             holder.imgShare.setVisibility(View.GONE);
         }
 
-
-
         holder.imgDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // check file is present in directory or not
                 // opene a language dialog
                 //urls=new String[]
-
                 urlListl.add(downloadContent.getDef());
                 //urlArray= urlListl.toArray(new String[urlListl.size()]);
                 //finalProgressBar.setVisibility(View.VISIBLE);
                 //final DownloadTask downloadTask = new DownloadTask(_context,finalConvertView,urlListl);
                 //urlArray=urlListl.toArray(new String[urlListl.size()]);
+                //holder.progressBar.setVisibility(View.VISIBLE);
 
-                holder.progressBar.setVisibility(View.VISIBLE);
-                contentManagementFragment.beginDownload(downloadContent.getDef());
 
-                DownloadImageTask downloadImageTask=new DownloadImageTask(info);
-                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,downloadContent.getDef());
+
+                    contentManagementFragment.beginDownload(downloadContent.getDef());
+                    DownloadImageTask downloadImageTask=new DownloadImageTask(info);
+                    downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,downloadContent.getDef());
+
+
+
+
+
             }
         });
 
@@ -288,9 +296,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView != null) {
             ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
             if (isExpanded) {
-                imgGroup.setImageResource(R.drawable.downarrow);
+                imgGroup.setImageResource(R.drawable.ic_shape_down_arrow);
             } else {
-                imgGroup.setImageResource(R.drawable.rightarrow);
+                imgGroup.setImageResource(R.drawable.ic_arrow_right);
             }
 
             TextView txtName = convertView.findViewById(R.id.txtName);
@@ -419,6 +427,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private class DownloadImageTask extends AsyncTask<String, Integer, String> {
         DownloadInfo info;
+        private boolean isDownloading;
 
         public DownloadImageTask(DownloadInfo info) {
             this.info=info;
@@ -455,9 +464,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             progressBar.setProgress(0);*/
 
             if(info!=null){
+
                 info.getProgressBar().setVisibility(View.VISIBLE);
+                isDownloading=false;
+
             }
 
+            //txt_percentage=contentManagementFragment.getActivity().findViewById(R.id.txtCount);
 
 
         }
@@ -465,9 +478,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            isDownloading=true;
             //mWakeLock.release();
             //progressBar.setVisibility(View.GONE);
             //notifyDataSetChanged();
+
 
             if(info!=null){
                 info.getProgressBar().setVisibility(View.GONE);
@@ -482,7 +497,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             info.setProgress(values[0]);
             ProgressBar bar = info.getProgressBar();
-            if(bar != null) {
+            if(bar != null){
+
                 bar.setProgress(info.getProgress());
                 bar.invalidate();
             }
@@ -565,7 +581,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private static class ViewHolder{
         ImageView imgDownload, imgShare;
-        TextView txttitle;
+        TextView txttitle,txtpercentage;
         ProgressBar progressBar = null;
         DownloadInfo info;
 
