@@ -516,18 +516,22 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     public void showMember(ArrayList<Participant> memberList) {
         if(oldMembersList!=null && oldMembersList.size()>0){
             boolean flagPresent=false;
+            boolean isAttended=false;
             int position=0;
+
             for(int i=0;i<oldMembersList.size();i++){
                 for(int j=0;j<memberList.size();j++){
                     flagPresent=false;
                     if(oldMembersList.get(i).getId().equals(memberList.get(j).getId())){
                         position=j;
+                        isAttended=oldMembersList.get(i).isAttendedCompleted();
                         flagPresent=true;
                         break;
                     }
                 }
                 if(flagPresent){
                     memberList.get(position).setMemberSelected(true);
+                    memberList.get(position).setAttendedCompleted(isAttended);
                 } else {
                     oldMembersList.get(i).setMemberSelected(true);
                     memberList.add(oldMembersList.get(i));

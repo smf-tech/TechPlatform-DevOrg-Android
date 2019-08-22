@@ -133,14 +133,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         setContentView(R.layout.activity_edit_profile);
 
         profilePresenter = new ProfileActivityPresenter(this);
-
         if (getIntent().getStringExtra(Constants.Login.ACTION) == null ||
                 !getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
             profilePresenter.getOrganizations();
         }
-
         initViews();
     }
 
@@ -164,11 +161,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 case R.id.gender_male:
                     userGender = Constants.Login.MALE;
                     break;
-
                 case R.id.gender_female:
                     userGender = Constants.Login.FEMALE;
                     break;
-
                 case R.id.gender_other:
                     userGender = Constants.Login.OTHER;
                     break;
@@ -280,7 +275,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             this.organizations = orgList;
                         }
                     }
-
                     if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
                         Glide.with(this)
                                 .load(userInfo.getProfilePic())

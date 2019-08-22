@@ -22,6 +22,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--Profile Pic-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp">
+
+                <ImageView
+                    android:id="@+id/user_profile_pic"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/ic_user_avatar" />
+
+            </RelativeLayout>
+
+
+
+            <com.platform.view.customs.TextViewSemiBold
+                android:id="@+id/user_profile_pic_label"
+                style="@style/FormLabel"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:text="@string/profile_pic"
+                android:textSize="@dimen/text_size_title_14" />
+
             <!--First Name-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_first_name"
@@ -381,24 +409,7 @@
                 android:prompt="@string/school"
                 android:visibility="gone" />
 
-            <!--Profile Pic-->
-            <ImageView
-                android:id="@+id/user_profile_pic"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_user_avatar" />
 
-            <com.platform.view.customs.TextViewSemiBold
-                android:id="@+id/user_profile_pic_label"
-                style="@style/FormLabel"
-                android:layout_gravity="center"
-                android:layout_marginTop="0dp"
-                android:gravity="center"
-                android:text="@string/profile_pic"
-                android:textSize="@dimen/text_size_title_14" />
         </LinearLayout>
     </ScrollView>
 
@@ -432,4 +443,5 @@
 
         android:text="@string/btn_submit"
          />
+
 </RelativeLayout>

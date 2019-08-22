@@ -183,7 +183,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                         .getEnddatetime(),Constants.FORM_DATE));
             }
             if(eventTask.getThumbnailImage().equals("")){
-                eventPic.setVisibility(View.GONE);
+                eventPic.setVisibility(View.VISIBLE);
             } else {
                 Glide.with(this)
                         .load(eventTask.getThumbnailImage())

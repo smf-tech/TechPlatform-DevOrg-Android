@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:keep="@string/app_name">Platform</string>
     <string name="powered_by">Powered by Octopus</string>
-    <string name="app_name_ss">सुजलाम सुफलाम</string>
+    <string name="app_name_ss">Octopus</string>
     <string name="content_description">Description</string>
     <string name="back_string">कृपया बाहेर पडण्यासाठी पुन्हा परत क्लिक करा</string>
     <string name="select_lang">भाषा निवडा</string>
@@ -338,7 +338,7 @@
     <string name="apply_leave">सुट्टीसाठी अर्ज करा</string>
     <string name="leave_deleted_msg">रजा यशस्वीरित्या हटविली गेली आहे.</string>
     <string name="no_leave_applied_msg">आपण या महिन्यात कोणत्याही रजा अर्ज  केल्या नाहीत.</string>
-    <string name="compoff_request">कॉम्प-ऑफसाठी विनंती</string>
+    <string name="compoff_request">कॉम्प-ऑफ विनंती</string>
     <string name="is_attendance_required">उपस्थित असणे आवश्यक आहे</string>
     <string name="is_registration_required">नोंदणी आवश्यक आहे</string>
     <string name="registration_start_date">नोंदणी प्रारंभ तारीख</string>
@@ -357,23 +357,31 @@
     <string name="msg_post_date">मागील तारखेला किंवा वेळेस कार्यक्रम तयार करू शकत नाही</string>
     <string name="generate_code">उपस्थिती कोड व्युत्पन्न करा</string>
     <string name="details">तपशील</string>
-    <string name="msg_enter_proper_date">प्रारंभ तारीख समाप्ती तारखेपेक्षा ग्रेटर नसावी</string>
+    <string name="msg_enter_proper_date">प्रारंभ तारीख वेळ अंतिम तारखेच्या वेळेपेक्षा जास्त नसावा</string>
     <string name="venue">ठिकाण</string>
-    <string name="delayedin_checkin">चेक इनमध्ये विलंब झाला आणि सापडला</string>
+    <string name="delayedin_checkin">चेक इनमध्ये विलंब झाला आणि दुसरे स्थान सापडले</string>
     <string name="delayin_checkin_title">कृपया एखादे कारण द्या</string>
     <string name="see_details">तपशील बघा</string>
     <string name="add_members">सभासद जोडा</string>
     <string name="add_forms">फॉर्म जोडा</string>
     <string name="add_members_link">+ फॉर्म जोडा</string>
-    <string name="check_in_msg">चेक्ड इन सुसेफुल</string>
+    <string name="check_in_msg">चेक इन यशस्वी</string>
     <string name="check_out_msg">चेक आउट यशस्वी</string>
-    <string name="request_comp_0f">विनंती बंद-बंद</string>
     <string name="insufficisnt_leave_balance">आपल्याकडे पुरेशी रजा शिल्लक नाही.</string>
     <string name="add_event">+ कार्यक्रम जोडा</string>
     <string name="add_task">+कार्य जोड़ें</string>
-    <string name="leave_balance">Leave Balance</string>
+    <string name="leave_balance">शिल्लक रजा</string>
+    <string name="leave_type_label">रजा प्रकार</string>
+    <string name="used">Used</string>
+    <string name="mark_complete">पूर्ण करा</string>
+    <string name="enter_attendance_code">उपस्थिती कोड प्रविष्ट करा</string>
+    <string name="members_list">सदस्यांची यादी</string>
+    <string name="start_date_collan">प्रारंभ तारीख: </string>
+    <string name="end_date_collan">समाप्ती तारीख: </string>
+    <string name="owner_label">कर्ता: </string>
+    <string name="delete_alert">डिलीट अलर्ट</string>
     <string name="check_in_at">चेक इन वेळ</string>
-    <string name="check_out_it">चेकआउट वेळ </string>
+    <string name="check_out_it"> चेक आऊट वेळ</string>
 
 
 </resources>

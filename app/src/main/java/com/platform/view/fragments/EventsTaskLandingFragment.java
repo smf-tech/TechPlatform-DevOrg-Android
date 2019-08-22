@@ -54,6 +54,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
     private ImageView ivCalendarMode;
     private TextView tvAllEventsDetail;
     private TextView tvToolbarTitle;
+    private TextView tvNoDataMsg;
     private View eventsPlannerView;
     private RadioGroup radioGroup;
     private FloatingActionButton btAddEvents;
@@ -132,6 +133,7 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         ivCalendarMode = eventsPlannerView.findViewById(R.id.iv_calendar_mode);
         tvAllEventsDetail = eventsPlannerView.findViewById(R.id.tv_all_events_list);
         tvToolbarTitle = eventsPlannerView.findViewById(R.id.tv_toolbar_title);
+        tvNoDataMsg = eventsPlannerView.findViewById(R.id.tv_no_data_msg);
 
         btAddEvents = eventsPlannerView.findViewById(R.id.bt_add_events);
         RecyclerView rvEvents = eventsPlannerView.findViewById(R.id.rv_events);
@@ -334,7 +336,10 @@ public class EventsTaskLandingFragment extends Fragment implements View.OnClickL
         if (data.getStatus() == 200) {
             if (data.getData() != null && data.getData().size() > 0) {
                 eventsList.addAll(data.getData());
+                tvNoDataMsg.setVisibility(View.GONE);
             }
+        } else  if (data.getStatus() == 300) {
+            tvNoDataMsg.setVisibility(View.VISIBLE);
         } else {
             showErrorMessage(data.getMessage());
         }

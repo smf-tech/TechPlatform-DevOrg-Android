@@ -175,16 +175,16 @@
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/dark_grey" />
+                    android:textColor="@color/medium_grey" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/AppStyleButton"
+                    style="@style/AppStyleBorderButton"
                     android:id="@+id/btn_approve"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/medium_grey" />
             </LinearLayout>
             <!--<RelativeLayout-->
                 <!--android:layout_width="match_parent"-->

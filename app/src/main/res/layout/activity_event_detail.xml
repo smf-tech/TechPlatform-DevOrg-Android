@@ -119,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            android:text="Owner: "
+                            android:text="@string/owner_label"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:fontFamily="@font/opensans"/>
@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            android:text="Start Date: "
+                            android:text="@string/start_date_collan"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:fontFamily="@font/opensans"/>
@@ -181,7 +181,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="@dimen/dimen_05dp"
-                            android:text="End Date: "
+                            android:text="@string/end_date_collan"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:fontFamily="@font/opensans"/>
@@ -319,7 +319,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:layout_margin="@dimen/dimen_05dp"
-                    android:text="Members list"
+                    android:text="@string/members_list"
                     android:textAllCaps="false"
                     android:fontFamily="@font/opensans" />
 
@@ -334,7 +334,7 @@
                 android:layout_below="@+id/ly_membarlist_code"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
-                android:text="Enter attendance code"
+                android:text="@string/enter_attendance_code"
                 android:textAllCaps="false"
                 android:visibility="gone"
                 android:fontFamily="@font/opensans"/>
@@ -347,7 +347,7 @@
                 android:layout_below="@+id/ly_membarlist_code"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
-                android:text="Mark Complete"
+                android:text="@string/mark_complete"
                 android:textAllCaps="false"
                 android:visibility="gone"
                 android:fontFamily="@font/opensans"/>

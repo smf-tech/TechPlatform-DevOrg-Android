@@ -364,7 +364,7 @@
     <string name="category">Category</string>
     <string name="full_day">Full Day</string>
     <string name="half_day">Half Day</string>
-    <string name="start_date">Start Date</string>
+    <string name="start_date">Start Date </string>
     <string name="end_date">End Date</string>
     <string name="enter_start_date">Please enter start date.</string>
     <string name="enter_correct_details">Please enter correct details.</string>
@@ -426,13 +426,22 @@
     <string name="add_members_link">+ Add Member</string>
     <string name="check_in_msg">Checked In Successful</string>
     <string name="check_out_msg">Checked Out Successful</string>
-    <string name="request_comp_0f">Request Comp-Off</string>
+    <string name="request_comp_off">Request Comp-Off</string>
     <string name="insufficisnt_leave_balance">You have insufficient leave balance.</string>
     <string name="powered_by">Powered by <b>Octopus</b></string>
     <string name="add_event">+Add Event</string>
     <string name="add_task">+Add Task</string>
     <string name="leave_balance">Leave Balance</string>
-    <string name="check_in_at">Check in at </string>
+    <string name="leave_type_label">Leave Type</string>
+    <string name="used">Used</string>
+    <string name="mark_complete">Mark Complete</string>
+    <string name="enter_attendance_code">Enter attendance code</string>
+    <string name="members_list">Members List</string>
+    <string name="start_date_collan">Start Date: </string>
+    <string name="end_date_collan">End Date: </string>
+    <string name="owner_label">Owner:</string>
+    <string name="delete_alert">Delete Alert</string>
+    <string name="check_in_at">Check in at</string>
     <string name="check_out_it">Check out at</string>
 
 

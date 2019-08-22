@@ -45,7 +45,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
     private RequestOptions requestOptions;
     private View approvalsFragmentView;
     private Toolbar toolbar;
-    private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title,tv_email_title_text;
+    private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title,tv_email_title_text,tv_leave_reason;
     private Button btn_approve, btn_reject;
     private ImageView img_user_profle;
     private LinearLayout linear_dynamic_textview;
@@ -106,14 +106,17 @@ public class TMUserProfileApprovalFragment extends Fragment {
         linear_dynamic_textview = approvalsFragmentView.findViewById(R.id.linear_dynamic_textview);
         btn_approve = approvalsFragmentView.findViewById(R.id.btn_approve);
         btn_reject = approvalsFragmentView.findViewById(R.id.btn_reject);
+        tv_leave_reason = approvalsFragmentView.findViewById(R.id.tv_leave_reason);
         PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
         String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
         if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)){
             btn_reject.setVisibility(View.VISIBLE);
             btn_approve.setVisibility(View.VISIBLE);
+            tv_leave_reason.setVisibility(View.GONE);
         }else {
             btn_reject.setVisibility(View.GONE);
             btn_approve.setVisibility(View.GONE);
+            tv_leave_reason.setVisibility(View.VISIBLE);
         }
 
 
@@ -212,6 +215,13 @@ public class TMUserProfileApprovalFragment extends Fragment {
         userProfileApprovalRequestList = data;
         //handle respo
         Util.logger("name", data.get(0).getName());
+        if (data.get(0).getStatus()!=null) {
+            if (data.get(0).getStatus().getRejection_reason()!=null) {
+                tv_leave_reason.setText(data.get(0).getStatus().getRejection_reason());
+            }else {tv_leave_reason.setVisibility(View.GONE);}
+        }else {
+            tv_leave_reason.setVisibility(View.GONE);
+        }
         tv_name_title.setText(data.get(0).getName());
         tv_role_title.setText(data.get(0).getRole_id().getName());
         if (data.get(0).getEmail()!=null && !TextUtils.isEmpty(data.get(0).getEmail())) {

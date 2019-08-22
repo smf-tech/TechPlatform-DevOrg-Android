@@ -19,7 +19,15 @@ public class TMUserAttendanceApprovalRequest  {
     private Check_out check_out;
     @SerializedName("status")
     @Expose
-    private String status;
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
     @SerializedName("reason")
     @Expose
     private String reason;
@@ -81,13 +89,7 @@ public class TMUserAttendanceApprovalRequest  {
         this.check_out = check_out;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getCreated_on() {
         return created_on;
@@ -255,6 +257,56 @@ public class TMUserAttendanceApprovalRequest  {
 
         public void setAddress(String address) {
             this.address = address;
+        }
+
+    }
+
+
+    public class Status {
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("action_by")
+        @Expose
+        private String action_by;
+        @SerializedName("action_on")
+        @Expose
+        private String action_on;
+        @SerializedName("rejection_reason")
+        @Expose
+        private String rejection_reason;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getAction_by() {
+            return action_by;
+        }
+
+        public void setAction_by(String action_by) {
+            this.action_by = action_by;
+        }
+
+        public String getAction_on() {
+            return action_on;
+        }
+
+        public void setAction_on(String action_on) {
+            this.action_on = action_on;
+        }
+
+        public String getRejection_reason() {
+            return rejection_reason;
+        }
+
+        public void setRejection_reason(String rejection_reason) {
+            this.rejection_reason = rejection_reason;
         }
 
     }

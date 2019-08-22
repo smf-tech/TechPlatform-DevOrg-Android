@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
 import com.platform.R;
@@ -95,7 +96,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private PlannerFragmentPresenter plannerFragmentPresenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    private List<LeaveDetail> leaveBalance = new ArrayList<>();
     public static ArrayList<Integer> leaveBackground = new ArrayList<>();
     private GPSTracker gpsTracker;
     private String strLat, strLong;
@@ -449,16 +449,21 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     }
                     break;
                 case Constants.Planner.LEAVES_KEY:
-                    if(obj.getLeave()!=null && obj.getLeave().size()>0){
-                        leaveBalance.clear();
-                        leaveBalance.addAll(obj.getLeave());
-                        RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
-                                LinearLayoutManager.HORIZONTAL, true);
-                        LeaveBalanceAdapter LeaveAdapter = new LeaveBalanceAdapter(
-                                obj.getLeave(), "LeaveBalance");
-                        RecyclerView rvLeaveBalance = plannerView.findViewById(R.id.rv_leave_balance);
-                        rvLeaveBalance.setLayoutManager(mLayoutManagerLeave);
-                        rvLeaveBalance.setAdapter(LeaveAdapter);
+                    if(obj.getLeave()!=null){
+                        CircularProgressBar pbTotal = plannerView.findViewById(R.id.pb_total);
+                        pbTotal.setProgress((obj.getLeave().getTotal()/obj.getLeave().getTotal())*100);
+                        TextView tvTotal=plannerView.findViewById(R.id.tv_total);
+                        tvTotal.setText(obj.getLeave().getTotal().toString());
+
+                        CircularProgressBar pbUsed = plannerView.findViewById(R.id.pb_used);
+                        pbUsed.setProgress((obj.getLeave().getUsed()/obj.getLeave().getTotal())*100);
+                        TextView tvUsed=plannerView.findViewById(R.id.tv_used);
+                        tvUsed.setText(obj.getLeave().getUsed().toString());
+
+                        CircularProgressBar pbBalance = plannerView.findViewById(R.id.pb_balance);
+                        pbBalance.setProgress((obj.getLeave().getBalance()/obj.getLeave().getTotal())*100);
+                        TextView tvbalance=plannerView.findViewById(R.id.tv_balance);
+                        tvbalance.setText(obj.getLeave().getBalance().toString());
                     }
                     break;
             }
@@ -804,7 +809,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
                     intent.putExtra("title", getActivity().getString(R.string.leave));
                     intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                    intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                     getActivity().startActivity(intent);
                 }else{
                     Util.showToast(getString(R.string.msg_no_network), getContext());
@@ -819,7 +823,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                 intent.putExtra("isEdit", false);
                 intent.putExtra("apply_type", "Leave");
                 intent.putExtra("switch_fragments", "LeaveApplyFragment");
-                intent.putExtra("leaveBalance", (Serializable) leaveBalance);
                 getActivity().startActivity(intent);
             }
         });

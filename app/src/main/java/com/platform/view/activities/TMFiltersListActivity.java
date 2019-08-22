@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -164,7 +165,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             case R.id.tv_filtertype:
                 CustomDialogClass cdd=new CustomDialogClass(TMFiltersListActivity.this,"Select filters");
                 cdd.show();
-                Objects.requireNonNull(cdd.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 //onBackPressed();
                 break;
@@ -292,23 +293,19 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
 
     public class CustomDialogClass extends BottomSheetDialog implements
             android.view.View.OnClickListener {
-        private int mYear;
-        private int mMonth;
-        private int mDay;
-        Activity activity;
-        LinearLayout linear_dynamic_filterheight;
-        TextView toolbarTitle;
-        ImageView img_close;
-        String bottomSheetTitle;
-        RecyclerView rv_filterchoice;
+        private int mYear, mMonth, mDay, mHour, mMinute;
+        public Activity activity;
+        public LinearLayout linear_dynamic_filterheight;
+        public TextView toolbarTitle;
+        public ImageView img_close;
+        public String bottomSheetTitle;
+        public RecyclerView rv_filterchoice;
         public Dialog d;
-        Button yes;
-        Button no;
-        TextView tv_startdate;
-        TextView tv_enddate;
+        public Button yes, no;
+        public EditText tv_startdate,tv_enddate;
         public ArrayList<String> filterChoiceList = new ArrayList<>();
         FilterChoicedapter adapter;
-        CustomDialogClass(Activity a, String formTitle) {
+        public CustomDialogClass(Activity a,String formTitle) {
             super(a);
             // TODO Auto-generated constructor stub
             this.activity = a;
@@ -341,7 +338,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             no = findViewById(R.id.btn_no);
             img_close =findViewById(R.id.toolbar_edit_action);
             toolbarTitle =findViewById(R.id.toolbar_title);
-            Objects.requireNonNull(toolbarTitle).setText(bottomSheetTitle);
+            toolbarTitle.setText(bottomSheetTitle);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
             rv_filterchoice.setLayoutManager(layoutManager);
 
@@ -539,7 +536,7 @@ private void selectStartDate(TextView textview) {
 private void showFilterDialog(){
     CustomDialogClass cdd=new CustomDialogClass(TMFiltersListActivity.this,"Select filters");
     cdd.show();
-    Objects.requireNonNull(cdd.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+    cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
 }
     private void defaultFilterRequest(){
