@@ -6,4 +6,442 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/profile_toolbar"
+        layout="@layout/app_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/btn_profile_submit"
+        android:layout_below="@+id/profile_toolbar"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Profile Pic-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp">
+
+                <ImageView
+                    android:id="@+id/user_profile_pic"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/ic_user_avatar" />
+
+            </RelativeLayout>
+
+
+
+            <com.platform.view.customs.TextViewSemiBold
+                android:id="@+id/user_profile_pic_label"
+                style="@style/FormLabel"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:text="@string/profile_pic"
+                android:textSize="@dimen/text_size_title_14" />
+
+            <!--First Name-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_first_name"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_first_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/first_name"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Middle Name-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_middle_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_middle_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/middle_name"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Last Name-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_last_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_last_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/last_name"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Birth Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_birth_date"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_birth_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="@string/birth_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Mobile Number-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_mobile_number"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_mobile_number"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789"
+                    android:hint="@string/mobile_no"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Email-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_email_id"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_email_id"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/email_id"
+                    android:inputType="textEmailAddress"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Geo Location-->
+            <LinearLayout
+                android:id="@+id/user_geo_location_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_user_geo_location"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_user_geo_location"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/work_location"
+                        android:inputType="textEmailAddress"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/btn_user_refresh_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginEnd="@dimen/dimen_20dp"
+                    android:layout_weight="2"
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/ic_refresh" />
+            </LinearLayout>
+
+            <!--Address-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_address"
+                style="@style/RegistrationTextInputLayout"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_user_address"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/address"
+                    android:inputType="textPostalAddress"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Gender-->
+            <RelativeLayout
+                android:id="@+id/user_gender_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:padding="@dimen/dimen_10dp">
+
+                <com.platform.view.customs.TextViewRegular
+                    android:id="@+id/tv_user_gender_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_12" />
+
+                <RadioGroup
+                    android:id="@+id/user_gender_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_user_gender_label"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/gender_male"
+                        style="@style/GenderTypes"
+                        android:checked="true"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/gender_female"
+                        style="@style/GenderTypes"
+                        android:text="@string/female" />
+
+                    <RadioButton
+                        android:id="@+id/gender_other"
+                        style="@style/GenderTypes"
+                        android:text="@string/other" />
+                </RadioGroup>
+            </RelativeLayout>
+
+            <!--Organization-->
+            <TextView
+                style="@style/FormLabel"
+                android:visibility="visible"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_organization" />
+
+
+            <Spinner
+                android:id="@+id/sp_user_organization"
+                style="@style/FormSpinner"
+                android:visibility="visible"
+                android:background="@drawable/bg_blue_box"
+                android:prompt="@string/organization" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_organization"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserOrganization"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_organization"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Project-->
+            <TextView
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_project" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_project"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
+
+            <!--Role-->
+            <TextView
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_role" />
+
+            <Spinner
+                android:id="@+id/sp_role"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp" />
+
+            <!--State-->
+            <TextView
+                android:id="@+id/txt_state"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_state" />
+
+            <Spinner
+                android:id="@+id/sp_user_state"
+                style="@style/FormSpinner"
+                android:prompt="@string/state" />
+
+            <!--District-->
+            <TextView
+                android:id="@+id/txt_district"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_district"
+                android:visibility="gone" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_district"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:visibility="gone" />
+
+            <!--Taluka-->
+            <TextView
+                android:id="@+id/txt_taluka"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_taluka"
+                android:visibility="gone" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_taluka"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:visibility="gone" />
+
+            <!--Cluster-->
+            <TextView
+                android:id="@+id/txt_cluster"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_cluster"
+                android:visibility="gone" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_cluster"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:visibility="gone" />
+
+            <!--Village-->
+            <TextView
+                android:id="@+id/txt_village"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_village"
+                android:visibility="gone" />
+
+            <com.platform.widgets.MultiSelectSpinner
+                android:id="@+id/sp_village"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:visibility="gone" />
+
+            <!--School-->
+            <TextView
+                style="@style/FormLabel"
+                android:text="@string/mandatory_school"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/sp_user_structure"
+                style="@style/FormSpinner"
+                android:prompt="@string/school"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_profile_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AppStyleButton"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimen_10dp"
+
+        android:text="@string/btn_submit"
+         />
+
 </RelativeLayout>
