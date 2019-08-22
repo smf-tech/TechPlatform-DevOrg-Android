@@ -419,7 +419,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         selectedStates.clear();
 
         etUserdistrict.setVisibility(View.GONE);
-        etUserdistrict.setVisibility(View.GONE);
         districts.clear();
         selectedDistricts.clear();
 
@@ -726,12 +725,36 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     }
                     setStateData(stateNames);
                 }
+                //--------
+
+                    if (Util.isConnected(this)) {
+                        profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                                selectedRole.getProject().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    } else {
+                        List<String> districtNames = new ArrayList<>();
+                        UserInfo userInfo = Util.getUserObjectFromPref();
+                        List<JurisdictionType> districtObj = userInfo.getUserLocation().getDistrictIds();
+
+                        Collections.sort(districtObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
+
+                        for (int k = 0; k < districtObj.size(); k++) {
+                            districtNames.add(districtObj.get(k).getName());
+                            this.districts.add(districtObj.get(k));
+                        }
+
+                        setDistrictData(districtNames);
+                    }
+
+
+
                 break;
 
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 //spDistrict.setVisibility(View.VISIBLE);
                 //findViewById(R.id.txt_district).setVisibility(View.VISIBLE);
                 etUserdistrict.setVisibility(View.VISIBLE);
+
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
@@ -912,7 +935,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
+                        for (JurisdictionType state : states) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 districts.add(location.getDistrict().getName());
                                 this.districts.add(location.getDistrict());

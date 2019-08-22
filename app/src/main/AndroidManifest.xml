@@ -30,7 +30,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.NotificationsActivity"></activity>
+        <activity android:name=".view.activities.UserRegistrationMatrimonyActivity"></activity>
+        <activity android:name=".view.activities.NotificationsActivity" />
         <activity android:name=".view.activities.ContentDownloadedActivity" />
         <activity android:name=".view.activities.BaseActivity" />
         <activity
@@ -180,7 +181,7 @@
             android:exported="true" />
         <service
             android:name=".services.ShowTimerService"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
