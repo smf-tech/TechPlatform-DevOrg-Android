@@ -441,6 +441,8 @@
     <string name="end_date_collan">End Date: </string>
     <string name="owner_label">Owner:</string>
     <string name="delete_alert">Delete Alert</string>
+    <string name="check_in_at">Check in at</string>
+    <string name="check_out_it">Check out at</string>
 
 
 </resources>

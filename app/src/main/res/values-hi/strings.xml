@@ -379,5 +379,7 @@
     <string name="end_date_collan">अंतिम तिथि: </string>
     <string name="owner_label">कर्ता: </string>
     <string name="delete_alert">डिलीट अलर्ट</string>
+    <string name="check_in_at"> चेक इन समय</string>
+    <string name="check_out_it">चेक आऊट समय</string>
 
 </resources>

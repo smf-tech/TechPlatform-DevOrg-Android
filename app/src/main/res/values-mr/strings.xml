@@ -380,6 +380,8 @@
     <string name="end_date_collan">समाप्ती तारीख: </string>
     <string name="owner_label">कर्ता: </string>
     <string name="delete_alert">डिलीट अलर्ट</string>
+    <string name="check_in_at">चेक इन वेळ</string>
+    <string name="check_out_it"> चेक आऊट वेळ</string>
 
 
 </resources>
