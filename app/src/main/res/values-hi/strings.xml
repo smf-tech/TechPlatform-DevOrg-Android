@@ -362,7 +362,7 @@
 
     <string name="check_in_msg">Cheked In Suceesful</string>
     <string name="check_out_msg">Checked Out Successful</string>
-    <string name="request_comp_0f">Request Comp-Off</string>
+    <string name="request_comp_off">Request Comp-Off</string>
     <string name="insufficisnt_leave_balance">You have insufficient leave balance.</string>
     <string name="powered_by">Powered by Octopus</string>
 
