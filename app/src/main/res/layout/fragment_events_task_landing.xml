@@ -133,11 +133,13 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/tv_no_events_msg"
+            android:id="@+id/tv_no_data_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_05dp"
-            android:text="@string/no_events"
+            android:text="@string/no_data_available"
+            android:gravity="center"
+            android:layout_centerVertical="true"
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -56,17 +56,32 @@
             android:background="@color/leaves_tab"
             android:elevation="@dimen/dimen_03dp"
             android:paddingTop="@dimen/dimen_20dp"
+            android:visibility="gone"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
-            app:tabMode="fixed"
-            android:visibility="gone"/>
+            app:tabMode="fixed" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_applied_leaves_list"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:gravity="center"
+                android:text="@string/no_data_available"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_applied_leaves_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp" />
+
+        </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/button_lay"
@@ -91,6 +106,6 @@
             android:padding="@dimen/dimen_10dp"
             android:text="@string/compoff_request" />
 
-     </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

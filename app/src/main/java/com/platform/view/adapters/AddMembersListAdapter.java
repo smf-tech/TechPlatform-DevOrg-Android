@@ -52,11 +52,12 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.cbMemberSelect.setChecked(member.isMemberSelected());
 
         if( member.isAttendedCompleted()){
-            holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
-            holder.ivDelete.setVisibility(View.GONE);
-        } /*else {
-           holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-         }*/
+            holder.ivDelete.setImageResource(R.drawable.ic_check_mark);
+            holder.ivDelete.setClickable(false);
+        } else {
+            holder.ivDelete.setImageResource(R.drawable.ic_delete);
+            holder.ivDelete.setClickable(true);
+        }
 
     }
 

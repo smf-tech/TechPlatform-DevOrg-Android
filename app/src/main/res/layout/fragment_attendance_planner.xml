@@ -54,11 +54,10 @@
                 android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_calender"
-                android:background="@color/lighter_grey_tab"
+                android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:paddingBottom="@dimen/dimen_10dp">
+                android:paddingTop="@dimen/dimen_05dp"
+                android:paddingBottom="@dimen/dimen_05dp">
 
                 <RadioButton
                     android:id="@+id/rb_my_attendance"
@@ -69,7 +68,7 @@
                     android:checked="true"
                     android:gravity="center"
                     android:textColor="@drawable/radio_btn_txt_colour"
-                    android:fontFamily="@font/opensans"
+                    android:fontFamily="@font/opensans_semibold"
                     android:text="My Attendance"/>
 
                 <RadioButton
@@ -80,7 +79,7 @@
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:textColor="@drawable/radio_btn_txt_colour"
-                    android:fontFamily="@font/opensans"
+                    android:fontFamily="@font/opensans_semibold"
                     android:text="My Team Attendance"/>
             </RadioGroup>
             <include

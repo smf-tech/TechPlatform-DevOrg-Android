@@ -4,11 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_70dp"
-    android:layout_marginStart="@dimen/dimen_15dp"
-    android:layout_marginTop="@dimen/dimen_10dp"
-    android:layout_marginEnd="@dimen/dimen_15dp"
-    android:layout_marginBottom="@dimen/dimen_05dp"
-    android:background="@color/white"
+    android:layout_margin="@dimen/dimen_05dp"
+    android:background="@drawable/bg_grey_box"
     android:elevation="@dimen/dimen_02dp"
     android:padding="@dimen/dimen_05dp"
     tools:ignore="RtlSymmetry">

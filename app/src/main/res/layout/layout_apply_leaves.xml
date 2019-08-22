@@ -98,6 +98,7 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:orientation="horizontal"
+
                         android:paddingTop="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_10dp">
 
@@ -108,7 +109,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/rbn_bg_selector_leaves"
                             android:button="@android:color/transparent"
-                            android:checked="true"
                             android:fontFamily="@font/opensans"
                             android:gravity="center"
                             android:text="@string/full_day"

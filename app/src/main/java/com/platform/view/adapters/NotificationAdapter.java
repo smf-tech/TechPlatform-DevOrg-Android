@@ -86,27 +86,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         switch (notificationList.get(getAdapterPosition()).getToOpen()) {
                             case "formApproval":
                                 intent = new Intent(context, TMFiltersListActivity.class);
-//                                intent.putExtra("filter_type","");
+                                intent.putExtra("filter_type","forms");
                                 context.startActivity(intent);
                                 break;
                             case "userApproval":
                                 intent = new Intent(context, TMFiltersListActivity.class);
+                                intent.putExtra("filter_type","userapproval");
                                 context.startActivity(intent);
                                 break;
                             case "leaveApproval":
                                 intent = new Intent(context, TMFiltersListActivity.class);
+                                intent.putExtra("filter_type","leave");
                                 context.startActivity(intent);
                                 break;
                             case "attendanceApproval":
                                 intent = new Intent(context, TMFiltersListActivity.class);
+                                intent.putExtra("filter_type","attendance");
                                 context.startActivity(intent);
                                 break;
                             case "compoffApproval":
                                 intent = new Intent(context, TMFiltersListActivity.class);
+                                intent.putExtra("filter_type","compoff");
                                 context.startActivity(intent);
                                 break;
                             case "event":
-                                intent = new Intent(context, CreateEventTaskActivity.class);
+                                intent = new Intent(context, PlannerDetailActivity.class);
                                 intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                                 context.startActivity(intent);
                                 break;
