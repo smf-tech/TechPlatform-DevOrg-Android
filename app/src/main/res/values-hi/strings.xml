@@ -364,7 +364,7 @@
 
     <string name="check_in_msg">चेक इन सफल</string>
     <string name="check_out_msg">चेक आउट सफल</string>
-    <string name="request_comp_off">Comp-Off का अनुरोध करें</string>
+    <string name="request_comp_off">कॉम्प ऑफ अनुरोध</string>
     <string name="insufficisnt_leave_balance">आपके पास अपर्याप्त अवकाश शेष है।</string>
 
     <string name="add_event">+कार्यक्रम जोड़ें</string>

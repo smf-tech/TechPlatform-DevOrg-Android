@@ -61,7 +61,7 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
     @Override
     public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int position) {
         viewHolder.tvStartdate.setText(Util.getDateFromTimestamp(leavesList.get(position).getStartdate(), DAY_MONTH_YEAR));
-        viewHolder.tvStartdate.setText(Util.getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
+        viewHolder.tvEnddate.setText(Util.getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
         viewHolder.tvStatus.setText(leavesList.get(position).getStatus());
         viewHolder.tvLeaveCategory.setText(leavesList.get(position).getLeaveType());
         viewHolder.tvLeaveReason.setText(leavesList.get(position).getReason());
