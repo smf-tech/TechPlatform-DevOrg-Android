@@ -59,6 +59,8 @@ import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.fragments.HomeFragment;
+import com.platform.view.fragments.PlannerFragment;
+import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserAttendanceApprovalFragment;
 import com.platform.view.fragments.TMUserFormsApprovalFragment;
 import com.platform.view.fragments.TMUserLeavesApprovalFragment;
@@ -590,7 +592,7 @@ public class Util {
             Bundle b = new Bundle();
             b.putSerializable("TITLE", titleName);
             b.putBoolean("SHOW_ALL", false);
-            if (fragment instanceof HomeFragment) {
+            if (fragment instanceof HomeFragment ||fragment instanceof PlannerFragment ||fragment instanceof ReportsFragment) {
                 b.putBoolean("SHOW_BACK", false);
             } else {
                 b.putBoolean("SHOW_BACK", true);

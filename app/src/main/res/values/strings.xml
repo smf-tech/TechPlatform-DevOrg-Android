@@ -105,7 +105,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_community">My Community</string>
     <string name="menu_forms">Forms</string>
-    <string name="menu_teams">Teams</string>
+    <string name="menu_teams">Approvals</string>
     <string name="menu_calendar">Planner</string>
     <string name="menu_assets">Assets</string>
     <string name="menu_reports">Reports</string>
@@ -446,4 +446,5 @@
 
 
     <string name="default_notification_channel_id" translatable="false">BJS</string>
+    <string name="verification_otp_will_be_sent_on_this_number">(Verification OTP will be sent on this number)</string>
 </resources>

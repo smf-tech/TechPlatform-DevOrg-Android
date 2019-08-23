@@ -28,7 +28,7 @@
     <string name="msg_mobile_number_is_invalid">मान्य मोबाइल नंबर नहीं</string>
     <!--<string name="hint_enter_otp">_ _ _ _ _ _</string>-->
     <!--<string name="label_mobile_no">मोबाइल नंबर *</string>-->
-    <string name="label_login">लॉगइन करें</string>
+    <string name="label_login">लॉग इन करें</string>
     <string name="label_time">पहर</string>
     <string name="resend"> <u>OTP को फिर से भेजें</u></string>
     <!--<string name="check_otp">कृपया OTP जांचें</string>-->
@@ -364,7 +364,7 @@
 
     <string name="check_in_msg">चेक इन सफल</string>
     <string name="check_out_msg">चेक आउट सफल</string>
-    <string name="request_comp_off">Comp-Off का अनुरोध करें</string>
+    <string name="request_comp_off">कॉम्प ऑफ अनुरोध</string>
     <string name="insufficisnt_leave_balance">आपके पास अपर्याप्त अवकाश शेष है।</string>
 
     <string name="add_event">+कार्यक्रम जोड़ें</string>
@@ -381,5 +381,6 @@
     <string name="delete_alert">डिलीट अलर्ट</string>
     <string name="check_in_at"> चेक इन समय</string>
     <string name="check_out_it">चेक आऊट समय</string>
+    <string name="verification_otp_will_be_sent_on_this_number">(इस नंबर पर ओटीपी भेजा जाएगा)</string>
 
 </resources>

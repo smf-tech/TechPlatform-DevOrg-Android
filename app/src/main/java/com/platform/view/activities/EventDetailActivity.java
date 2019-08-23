@@ -206,6 +206,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
             setActionbar(getString(R.string.task_detail));
             ivEventPic.setVisibility(View.GONE);
             btCompleteTask.setVisibility(View.VISIBLE);
+            if (eventTask.getEventStatus().equalsIgnoreCase("completed")){
+                btCompleteTask.setVisibility(View.GONE);
+            }
+
         } else {
             setActionbar(getString(R.string.event_detail));
             //handling attendance button
@@ -224,7 +228,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 }
             } else {
                 if (eventTask.isMarkAttendanceRequired()) {
-                    btSetCode.setVisibility(View.VISIBLE);
+//                    btSetCode.setVisibility(View.VISIBLE);
                     if (flagEdit) {
                         if(starDate.getTime() < currentDate.getTime()) {
                             btSetCode.setVisibility(View.VISIBLE);

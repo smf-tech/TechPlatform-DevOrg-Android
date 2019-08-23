@@ -88,7 +88,7 @@ public class TMUserProfileListActivity extends BaseActivity {
 
                 case "compoff":
                     fragment = new TMUserLeavesApprovalFragment();
-                    bundle.putString("filter_type", "Leaves Approval");
+                    bundle.putString("filter_type", "CompOff Approval");
                     bundle.putString("filter_type_request", strRequestObject);
                     fragment.setArguments(bundle);
                     openFragment();

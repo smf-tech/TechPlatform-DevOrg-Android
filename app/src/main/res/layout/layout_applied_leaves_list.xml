@@ -42,6 +42,7 @@
                 android:paddingLeft="@dimen/dimen_05dp"
                 android:paddingTop="@dimen/dimen_05dp"
                 android:paddingRight="@dimen/dimen_05dp"
+                android:tint="@color/medium_grey"
                 android:src="@drawable/ic_down_arrow_light_blue" />
         </RelativeLayout>
 
@@ -64,7 +65,7 @@
             android:id="@+id/rv_applied_leaves_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="1" />
 
         <TextView
@@ -89,7 +90,7 @@
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
             android:padding="@dimen/dimen_10dp"
-            android:text="Apply Leave" />
+            android:text="@string/apply_leave" />
 
         <com.google.android.material.button.MaterialButton
             style="@style/AppStyleBorderButton"

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_100dp"
+    android:layout_height="wrap_content"
     android:background="@color/lighter_grey"
     android:gravity="center"
     tools:ignore="RtlSymmetry">
@@ -13,9 +13,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_100dp"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_margin="@dimen/dimen_05dp"
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
@@ -104,32 +102,41 @@
                 android:fontFamily="@font/opensans_regular"/>
 
 
-            <com.platform.view.customs.TextViewRegular
-                android:id="@+id/tv_leave_reason"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_below="@+id/tv_startdate"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_05dp"
-                android:fontFamily="@font/opensans_bold"
-                android:text="djkhfjs"
-                android:textSize="@dimen/text_size_16" />
+                android:weightSum="10">
+
+                <com.platform.view.customs.TextViewRegular
+                    android:id="@+id/tv_leave_reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_bold"
+                    android:text="djkhfjs"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_weight="9.5"/>
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_delete"
-                style="@style/AppStyleBorderButton"
-                android:layout_gravity="center"
-                android:text="Delete"
-                android:textColor="@color/medium_grey"
-                android:layout_height="@dimen/dimen_40dp"
-                android:layout_width="@dimen/dimen_90dp"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/tv_leave_type"
-                android:textAllCaps="false"
-                android:layout_marginTop="@dimen/dimen_20dp"
-                android:layout_marginEnd="@dimen/dimen_05dp"
-                />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_delete"
+                    style="@style/AppStyleBorderButton"
+                    android:layout_gravity="center"
+                    android:text="Delete"
+                    android:textColor="@color/medium_grey"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:layout_width="@dimen/dimen_90dp"
+                    android:textAllCaps="false"
+                    android:layout_weight="0.5"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    />
+
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/img_delete"

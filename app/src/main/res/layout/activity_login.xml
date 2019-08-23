@@ -63,7 +63,7 @@
                     android:textSize="@dimen/text_size_12"
                     android:layout_gravity="center"
                     android:fontFamily="@font/opensans_regular"
-                    android:text="(Verification OTP will be sent on this number)"/>
+                    android:text="@string/verification_otp_will_be_sent_on_this_number"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="fill_parent"

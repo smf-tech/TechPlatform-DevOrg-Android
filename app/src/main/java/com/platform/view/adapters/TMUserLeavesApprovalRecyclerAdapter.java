@@ -54,10 +54,10 @@ public class TMUserLeavesApprovalRecyclerAdapter extends RecyclerView.Adapter<TM
         holder.tv_leave_status.setText(dataList.get(position).getStatus().getStatus());
 
         if (!TextUtils.isEmpty(dataList.get(position).getReason())){
-            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
+            holder.tv_leave_reason.setText("Reason:- "+String.valueOf(dataList.get(position).getReason()));
         }
         if (!TextUtils.isEmpty(dataList.get(position).getStatus().getRejection_reason())) {
-            holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getStatus().getRejection_reason()));
+            holder.tv_leave_reason.setText("Rejected Reason:- "+String.valueOf(dataList.get(position).getStatus().getRejection_reason()));
         }
         String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
         if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)) {

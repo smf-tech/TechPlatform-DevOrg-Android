@@ -104,16 +104,16 @@
                     android:fontFamily="@font/opensans_regular"/>
 
 
-                <com.platform.view.customs.TextViewRegular
+                <TextView
                     android:id="@+id/tv_leave_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_startdate"
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:fontFamily="@font/opensans_bold"
                     android:text="djkhfjs"
-                    android:textSize="@dimen/text_size_16" />
+                    android:textSize="@dimen/text_size_12"
+                    android:fontFamily="@font/opensans_regular"/>
 
             </RelativeLayout>
 
