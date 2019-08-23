@@ -561,7 +561,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     if (getLocation() != null) {
 
                         AttendaceData attendaceData = new AttendaceData();
-                        attendaceData.setUid("000");
+//                        attendaceData.setUid("000");
                         Double lat = Double.parseDouble(strLat);
                         Double log = Double.parseDouble(strLong);
                         attendaceData.setLatitude(lat);
@@ -569,7 +569,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                         attendaceData.setAddress(strAdd);
                         attendaceData.setAttendaceDate(millis);
                         attendaceData.setAttendanceType(CHECK_IN);
-                        attendaceData.setTime(String.valueOf(time));
+                        attendaceData.setTime(millis);
                         attendaceData.setSync(false);
                         attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
                         attendaceData.setMobileNumber(Util.getUserMobileFromPref());
@@ -680,7 +680,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             } else {
                 if (getLocation() != null) {
 
-                    attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(), Util.getUserMobileFromPref());
+//                    attendaceId = userAttendanceDao.getUserId(Util.getTodaysDate(), Util.getUserMobileFromPref());
                     Util.showSimpleProgressDialog(getActivity(), "Attendance", "Loading...", false);
                     String diffInCheckInandCheckout = null;
                     try {
@@ -927,7 +927,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendanceId = jsonData.getString("attendanceId");
 
                     AttendaceData attendaceData = new AttendaceData();
-                    attendaceData.setUid(attendanceId);
+//                    attendaceData.setUid(attendanceId);
                     Double lat = Double.parseDouble(strLat);
                     Double log = Double.parseDouble(strLong);
                     attendaceData.setLatitude(lat);
@@ -935,7 +935,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     attendaceData.setAddress(strAdd);
                     attendaceData.setAttendaceDate(millis);
                     attendaceData.setAttendanceType(CHECK_IN);
-                    attendaceData.setTime(String.valueOf(time));
+//                    attendaceData.setTime(String.valueOf(time));
                     attendaceData.setSync(true);
                     attendaceData.setAttendanceFormattedDate(Util.getTodaysDate());
                     attendaceData.setMobileNumber(Util.getUserMobileFromPref());
@@ -1171,7 +1171,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
             clearCheckInButtonText();
             btCheckIn.setText("Check in at " + getUserType.get(0).getTime());
-            checkInTime = getUserType.get(0).getTime();
+//            checkInTime = getUserType.get(0).getTime();
             //setButtonText();
             enableCheckOut();
 
