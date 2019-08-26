@@ -155,10 +155,20 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
                 selectedDate = date.getDate();
-                String datestr = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
-                showDialogForSelectedDate(datestr);
+//                String datestr = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
+//                showDialogForSelectedDate(datestr);
+
+                String attendanceDate = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
+                long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
+
+                showDialogForSelectedDate(attnDate);
+
                 if(isTeamAttendance){
-                    monthlyAttendanceFragmentPresenter.getTeamAttendance(selectedDate);
+                    if(Util.isConnected(getContext())) {
+                        monthlyAttendanceFragmentPresenter.getTeamAttendance(selectedDate);
+                    }else{
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
                 }
             }
         });
@@ -170,22 +180,30 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     Util.showToast("Network not available ! Try again", getActivity());
                 } else {
                     showProgressBar();
-                    monthlyAttendanceFragmentPresenter.getMonthlyAttendance(date.getYear(), date.getMonth() + 1);
+                    if(Util.isConnected(getContext())) {
+                        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(date.getYear(), date.getMonth() + 1);
+                    }else{
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
                 }
             }
         });
     }
 
-    private void showDialogForSelectedDate(String calendarSelectedDate) {
+    private void showDialogForSelectedDate(long calendarSelectedDate) {
         AttendanceDateList attendanceDateList;
         if (listDateWiseAttendace != null && listDateWiseAttendace.size() > 0 && !listDateWiseAttendace.isEmpty()) {
 
             for (int i = 0; i < listDateWiseAttendace.size(); i++) {
                 attendanceDateList = listDateWiseAttendace.get(i);
-                String checkInDate = attendanceDateList.getCreateAt();
-                String UserAttendaceDate[] = checkInDate.split(" ");
-                String AttendaceCreatedAt = UserAttendaceDate[0];
-                if (calendarSelectedDate.equalsIgnoreCase(AttendaceCreatedAt)) {
+                String checkInDate = attendanceDateList.getAttendanceDate();
+                Date d=new Date(Long.parseLong(checkInDate));
+
+
+                String datestr = Util.getDateFromTimestamp(d.getTime(), "yyyy-MM-dd");
+                long attnDate = Util.dateTimeToTimeStamp(datestr, "00:00");
+
+                if (calendarSelectedDate==attnDate) {
                     if (!attendanceDateList.getCheckInTime().isEmpty()) {
                         tvCheckInTime.setText( Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()), "hh:mm aa"));
                     }
@@ -220,10 +238,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 break;
 
             case R.id.rb_my_team_attendance:
-                isTeamAttendance=true;
-                rvTeamList.setVisibility(View.VISIBLE);
-                attendanceCardLayout.setVisibility(View.GONE);
-                monthlyAttendanceFragmentPresenter.getTeamAttendance(selectedDate);
+                if(Util.isConnected(getContext())) {
+                    isTeamAttendance = true;
+                    rvTeamList.setVisibility(View.VISIBLE);
+                    attendanceCardLayout.setVisibility(View.GONE);
+                    monthlyAttendanceFragmentPresenter.getTeamAttendance(selectedDate);
+                }else{
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
 
                 break;
         }
@@ -267,7 +289,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                             attendList, getResources().getDrawable(R.drawable.circular_background)));
 
                 String datestr = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
-                showDialogForSelectedDate(datestr);
+                long attnDate = Util.dateTimeToTimeStamp(datestr, "00:00");
+                showDialogForSelectedDate(attnDate);
             } else if (dataList.get(i).getSubModule().equalsIgnoreCase("holidayList")) {
                 holidayList = dataList.get(i).getHolidayList();
                 for (int k = 0; k < holidayList.size(); k++) {
@@ -364,7 +387,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         int year = calendar.get(Calendar.YEAR);
 
         monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
-        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1);
+
+        if(Util.isConnected(getContext())) {
+            monthlyAttendanceFragmentPresenter.getMonthlyAttendance(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1);
+        }else{
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
+
     }
 
     public void showProgressBar() {
