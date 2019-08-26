@@ -24,10 +24,10 @@ public class SubmitAttendanceFromInnerPlanner implements SubmitAttendanceListene
         Log.i("Response","111"+response);
         switch(id){
             case 1:
-                fragmentWeakReference.get().checkInResponse(response);
+//                fragmentWeakReference.get().checkInResponse(response);
                 break;
             case 2:
-                fragmentWeakReference.get().checkOutResponse(response);
+//                fragmentWeakReference.get().checkOutResponse(response);
                 break;
             default:
         }
@@ -40,10 +40,10 @@ public class SubmitAttendanceFromInnerPlanner implements SubmitAttendanceListene
         //fragmentWeakReference.get().showError(error);
         switch(id){
             case 1:
-                fragmentWeakReference.get().checkInError(error);
+//                fragmentWeakReference.get().checkInError(error);
                 break;
             case 2:
-                fragmentWeakReference.get().checkOutError(error);
+//                fragmentWeakReference.get().checkOutError(error);
                 break;
             default:
         }

@@ -5,10 +5,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.platform.listeners.MonthlyAttendaceListener;
 import com.platform.models.attendance.MonthlyAttendance;
+import com.platform.models.attendance.TeamAttendanceResponse;
 import com.platform.request.MonthlyAttendaceCall;
 import com.platform.view.fragments.AttendancePlannerFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 
 public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListener {
 
@@ -19,16 +21,50 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
 
     String TAG=MonthlyAttendanceFragmentPresenter.class.getSimpleName();
 
+
+    // make a request call
+    public void getMonthlyAttendance(int year,int month)
+    {
+        fragmentWeakReference.get().showProgressBar();
+        MonthlyAttendaceCall attendaceCall=new MonthlyAttendaceCall();
+        attendaceCall.addListener(this);
+        attendaceCall.getAllMonthDates(year,month);
+    }
+    //get TeamAttendance
+    public void getTeamAttendance(Date selectedDate) {
+        fragmentWeakReference.get().showProgressBar();
+        MonthlyAttendaceCall attendaceCall=new MonthlyAttendaceCall();
+        attendaceCall.addListener(this);
+        attendaceCall.getTeamAttendance(selectedDate);
+    }
+
+    @Override
+    public void onTeamAttendance(String response) {
+        fragmentWeakReference.get().hideProgressBar();
+        if(response!=null){
+            try {
+                TeamAttendanceResponse res=new Gson().fromJson(response, TeamAttendanceResponse.class);
+                if (res.getData()!=null && res.getData().size()>0){
+                    fragmentWeakReference.get().setTeamAttendanceData(res.getData());
+                } else {
+                    onError(res.getMessage());
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void onSuccess(String response) {
         // parse a response and pass to activity
+        fragmentWeakReference.get().hideProgressBar();
         Log.i(TAG,"AttendanceData"+response);
-
         String ValidString=response.replace("$","");
         try {
             MonthlyAttendance monthlyAttendance=new Gson().fromJson(ValidString, MonthlyAttendance.class);
             fragmentWeakReference.get().getAttendanceInfo(monthlyAttendance);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,20 +72,14 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
 
     @Override
     public void onError(String error) {
-        Log.i(TAG,"AttendanceDataError"+error);
+        fragmentWeakReference.get().hideProgressBar();
         fragmentWeakReference.get().showError(error);
     }
 
     @Override
     public void OnErrorResponse(String errorRes) {
+        fragmentWeakReference.get().hideProgressBar();
         Log.i(TAG,errorRes);
     }
 
-    // make a request call
-    public void getMonthlyAttendance(int year,int month)
-    {
-        MonthlyAttendaceCall attendaceCall=new MonthlyAttendaceCall();
-        attendaceCall.addListener(this);
-        attendaceCall.getAllMonthDates(year,month);
-    }
 }

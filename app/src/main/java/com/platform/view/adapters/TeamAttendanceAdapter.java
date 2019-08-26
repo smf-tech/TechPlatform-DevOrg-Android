@@ -13,22 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.platform.R;
-import com.platform.models.attendance.TeamUser;
-import com.platform.utility.Util;
+import com.platform.models.attendance.TeamAttendanceData;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 @SuppressWarnings("CanBeFinal")
 public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<TeamUser> leavesList;
+    private List<TeamAttendanceData> leavesList;
     private RequestOptions requestOptions;
 
-    public TeamAttendanceAdapter(final Context context, final List<TeamUser> leavesList) {
+    public TeamAttendanceAdapter(final Context context, final List<TeamAttendanceData> leavesList) {
         this.mContext = context;
         this.leavesList = leavesList;
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
@@ -66,7 +62,7 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
                     .into(viewHolder.ivUserImage);
         }
         viewHolder.tvName.setText(leavesList.get(i).getName());
-        viewHolder.tvRole.setText(leavesList.get(i).getRole());
+        viewHolder.tvRole.setText(leavesList.get(i).getRoleName());
 
         if(leavesList.get(i).getStatus().equals("a")){
             viewHolder.ivStatus.setImageResource(R.drawable.ic_absent);
