@@ -46,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -358,8 +359,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public void onResume() {
         super.onResume();
 
-        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
-        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(selectedDate.getYear(), selectedDate.getMonth()+1);
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(selectedDate);
+        int year = calendar.get(Calendar.YEAR);
+
+        monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1);
     }
 
     public void showProgressBar() {
