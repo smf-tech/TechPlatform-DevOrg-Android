@@ -135,6 +135,7 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
         }
 
         final ProcessData finalFormResult = data;
+        ProcessData finalData = data;
         view.setOnClickListener(v -> {
             if (Util.isUserApproved()) {
                 if (finalFormResult != null) {
@@ -147,7 +148,12 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
                     intent.putExtra(Constants.PM.EDIT_MODE, true);
                     intent.putExtra(Constants.PM.PARTIAL_FORM, false);
 
-                    if (cat.equals(mContext.getString(R.string.syncing_pending))) {
+//                    if (cat.equals(mContext.getString(R.string.syncing_pending))) {
+//                        intent.putExtra(Constants.PM.FORM_ID, formID);
+//                        intent.putExtra(Constants.PM.PROCESS_ID, processID);
+//                        intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+//                    }
+                    if(finalData.getFormApprovalStatus()!=null && finalData.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
                         intent.putExtra(Constants.PM.FORM_ID, formID);
                         intent.putExtra(Constants.PM.PROCESS_ID, processID);
                         intent.putExtra(Constants.PM.PARTIAL_FORM, true);
