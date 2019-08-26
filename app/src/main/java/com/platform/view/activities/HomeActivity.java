@@ -48,6 +48,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.platform.R;
+import com.platform.dao.UserAttendanceDao;
+import com.platform.database.DatabaseManager;
+import com.platform.models.attendance.AttendaceData;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
 import com.platform.utility.AppEvents;
@@ -62,6 +65,7 @@ import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserLandingFragment;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
@@ -554,7 +558,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         Util.saveLoginObjectInPref("");
         Util.setSubmittedFormsLoaded(false);
-
         Util.removeDatabaseRecords(false);
 
         try {

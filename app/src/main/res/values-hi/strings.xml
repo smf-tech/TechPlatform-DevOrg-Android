@@ -36,7 +36,7 @@
     <string name="msg_otp_verification_timeout">OTP प्राप्त नहीं कर सका, कृपया OTP फिर से भेजने का प्रयास करें।</string>
     <string name="msg_waiting_for_otp_text">ऑटो-रीड ओटीपी जारी है, कृपया प्रतीक्षा करें ...</string>
     <string name="msg_verify_otp_text">अपना मोबाइल नंबर सत्यापित करने के लिए सत्यापन बटन पर क्लिक करें।</string>
-    <string name="msg_logout">क्या आप लॉगआउट करना चाहते हैं?</string>
+    <string name="msg_logout">लॉगआउट पर, ऑफ़लाइन-सहेजा गया डेटा खो जाएगा। क्या आप अभी भी लॉगआउट करना चाहते हैं?</string>
     <string name="msg_auth_fail">सर्वर समस्या, कृपया बाद में पुनः प्रयास करें।</string>
 
     <!--Registration-->

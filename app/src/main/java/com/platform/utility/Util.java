@@ -616,6 +616,9 @@ public class Util {
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+        DatabaseManager.getDBInstance(Platform.getInstance()).getAttendaceSchema().deleteAllAttendance();
+        DatabaseManager.getDBInstance(Platform.getInstance()).getNotificationDataDeo().deleteAllNotifications();
+
         deleteCache(Platform.getInstance());
 
         if (refreshData) {

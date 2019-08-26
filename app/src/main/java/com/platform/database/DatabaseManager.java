@@ -203,10 +203,6 @@ public class DatabaseManager {
         UserAttendanceDao userAttendanceDao=appDatabase.userAttendanceDao();
         return  userAttendanceDao;
     }
-    public UserCheckOutDao getCheckOutAttendaceSchema(){
-        UserCheckOutDao userCheckOutDao=appDatabase.userCheckOutDao();
-        return  userCheckOutDao;
-    }
 
     public NotificationDataDao getNotificationDataDeo(){
         NotificationDataDao notificationDataDao=appDatabase.notificationsDataDao();
