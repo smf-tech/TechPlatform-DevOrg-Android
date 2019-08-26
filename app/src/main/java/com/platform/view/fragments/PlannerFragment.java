@@ -324,10 +324,11 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void showErrorMessage(String result) {
         getActivity().runOnUiThread(() -> Util.showToast(result, this));
+        setOfflineAttendance();
     }
 
     private void setOfflineAttendance(){
-        String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(),"dd-MM-YYYY");
+        String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(),"yyyy-MM-dd");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY", Locale.getDefault());
         long attnDate= Util.dateTimeToTimeStamp(attendanceDate,"00:00");
 //        Date date = null;
@@ -378,18 +379,22 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                     if (attendanceData.size() > 0) {
                         for (int i = 0; i < attendanceData.size(); i++) {
 
-                            String attendanceDate = Util.getDateFromTimestamp(Long.parseLong(attendanceData.get(i).getCheckIn().getTime()),"dd-MM-YYYY");
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY", Locale.getDefault());
-                            Date date = null;
-                            try {
-                                date = formatter.parse(attendanceDate);
-                            } catch (ParseException e) {
-                                Log.e("TAG", e.getMessage());
-                            }
+                            String attendanceDate = Util.getDateFromTimestamp(Long.parseLong(attendanceData.get(i).getCheckIn().getTime()),"yyyy-MM-dd");
+//                            String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(),"yyyy-MM-dd");
+//                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY", Locale.getDefault());
+                            long attnDate= Util.dateTimeToTimeStamp(attendanceDate,"00:00");
 
-                            AttendaceData attendaceCheckinTemp = userAttendanceDao.getUserAttendace(date.getTime(), CHECK_IN);
+//                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY", Locale.getDefault());
+//                            Date date = null;
+//                            try {
+//                                date = formatter.parse(attendanceDate);
+//                            } catch (ParseException e) {
+//                                Log.e("TAG", e.getMessage());
+//                            }
+
+                            AttendaceData attendaceCheckinTemp = userAttendanceDao.getUserAttendace(attnDate, CHECK_IN);
                             if(attendaceCheckinTemp!=null) {
-                                userAttendanceDao.updateUserAttendace(attendanceData.get(i).get_id(), true, date.getTime(), CHECK_IN);
+                                userAttendanceDao.updateUserAttendace(attendanceData.get(i).get_id(), true, attnDate, CHECK_IN);
                             }else{
                                 AttendaceData attendaceCheckinData = new AttendaceData();
                                 attendaceCheckinData.setAttendanceId(attendanceData.get(i).get_id());
@@ -397,30 +402,31 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
                                 attendaceCheckinData.setLongitude(Double.parseDouble(attendanceData.get(i).getCheckIn().getLong()));
                                 attendaceCheckinData.setAttendanceType(CHECK_IN);
                                 attendaceCheckinData.setDate(Long.parseLong(attendanceData.get(i).getCheckIn().getTime()));
-                                attendaceCheckinData.setAttendaceDate(date.getTime());
+                                attendaceCheckinData.setAttendaceDate(attnDate);
                                 userAttendanceDao.insert(attendaceCheckinData);
                             }
-                            String attendanceCheckoutDate = Util.getDateFromTimestamp(Long.parseLong(attendanceData.get(i).getCheckOut().getTime()),"dd-MM-YYYY");
-                            SimpleDateFormat checkOutformatter = new SimpleDateFormat("dd-MM-YYYY", Locale.getDefault());
-                            Date checkoutDate = null;
-                            try {
-                                checkoutDate = checkOutformatter.parse(attendanceCheckoutDate);
-                            } catch (ParseException e) {
-                                Log.e("TAG", e.getMessage());
-                            }
+                            String attendanceCheckoutDate = Util.getDateFromTimestamp(Long.parseLong(attendanceData.get(i).getCheckOut().getTime()),"yyyy-MM-dd");
+                            long attnCheckoutDate= Util.dateTimeToTimeStamp(attendanceCheckoutDate,"00:00");
+//                            SimpleDateFormat checkOutformatter = new SimpleDateFormat("dd-MM-YYYY", Locale.getDefault());
+//                            Date checkoutDate = null;
+//                            try {
+//                                checkoutDate = checkOutformatter.parse(attendanceCheckoutDate);
+//                            } catch (ParseException e) {
+//                                Log.e("TAG", e.getMessage());
+//                            }
                             AttendaceData attendaceCheckoutTemp = userAttendanceDao.getUserAttendace
-                                    (checkoutDate.getTime(), CHECK_OUT);
+                                    (attnCheckoutDate, CHECK_OUT);
 
                             if(attendaceCheckoutTemp!=null) {
-                                userAttendanceDao.updateUserAttendace(attendanceData.get(i).get_id(), true, date.getTime(), CHECK_OUT);
+                                userAttendanceDao.updateUserAttendace(attendanceData.get(i).get_id(), true, attnCheckoutDate, CHECK_OUT);
                             }else{
                                 AttendaceData attendaceCheckoutData = new AttendaceData();
                                 attendaceCheckoutData.setAttendanceId(attendanceData.get(i).get_id());
                                 attendaceCheckoutData.setLatitude(Double.parseDouble(attendanceData.get(i).getCheckOut().getLat()));
                                 attendaceCheckoutData.setLongitude(Double.parseDouble(attendanceData.get(i).getCheckOut().getLong()));
-                                attendaceCheckoutData.setAttendanceType(CHECK_IN);
+                                attendaceCheckoutData.setAttendanceType(CHECK_OUT);
                                 attendaceCheckoutData.setDate(Long.parseLong(attendanceData.get(i).getCheckOut().getTime()));
-                                attendaceCheckoutData.setAttendaceDate(date.getTime());
+                                attendaceCheckoutData.setAttendaceDate(attnCheckoutDate);
                                 userAttendanceDao.insert(attendaceCheckoutData);
                             }
 
