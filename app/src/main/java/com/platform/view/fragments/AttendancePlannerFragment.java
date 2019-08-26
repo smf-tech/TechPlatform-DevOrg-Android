@@ -19,8 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.platform.R;
 import com.platform.models.attendance.Attendance;
 import com.platform.models.attendance.AttendanceDateList;
@@ -31,6 +29,7 @@ import com.platform.models.attendance.HolidayList;
 import com.platform.models.attendance.MonthlyAttendance;
 import com.platform.models.attendance.TeamAttendanceData;
 import com.platform.presenter.MonthlyAttendanceFragmentPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.EventDecorator;
 import com.platform.utility.Util;
 import com.platform.view.adapters.TeamAttendanceAdapter;
@@ -50,46 +49,30 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener,
-        OnDateSelectedListener, RadioGroup.OnCheckedChangeListener {
+        RadioGroup.OnCheckedChangeListener {
 
     private View plannerView;
     private boolean isMonth = true;
 
-    private RelativeLayout lyCalender;
-    private LinearLayout lyCheckInOutDashboard;
-    private LinearLayout lvAttendanceStatus;
+    private TextView tvCheckInTime;
+    private TextView tvCheckOutTime;
+    private Date selectedDate;
+    private boolean isTeamAttendance;
+
+    private RelativeLayout attendanceCardLayout;
     private MaterialCalendarView calendarView;
 
-    ArrayList<String> pendingList;
-    ArrayList<String> approveList;
-    ArrayList<String> rejectList;
-
-
-    //private List<AttendanceStatus>attendanceStatusList;
-    MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter;
-    private int year, month, cmonth;
-
-    public String todayAsString;
-    private String calendarSelectedDate;
-
-    ImageView ivUserImage;
-    TextView tvName, tvRole, tvCheckInTime, tvCheckOutTime, tvStatus;
+    private MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter;
 
     private AttendanceDateList attendanceDateList;
     private List<AttendanceDateList> listDateWiseAttendace;
-    private CheckIn checkIn;
-    private CheckOut checkOut;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private ImageView ivCalendarMode;
     private RadioGroup radioGroup;
     private RecyclerView rvTeamList;
-    List<TeamAttendanceData> teamAttendanceList;
-    TeamAttendanceAdapter adapter;
-    RelativeLayout lyMain;
-    Date selectedDate;
-    boolean isTeamList;
-
+    private List<TeamAttendanceData> teamAttendanceList;
+    private TeamAttendanceAdapter adapter;
 
     public AttendancePlannerFragment() {
     }
@@ -108,15 +91,18 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
 
+        initView();
     }
 
     private void initView() {
-        Bundle bundle = this.getArguments();
 
-        lyCalender = plannerView.findViewById(R.id.ly_calender);
-        lyCheckInOutDashboard = plannerView.findViewById(R.id.ly_check_in_out_dashboard);
+        tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
+        tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
+
+        selectedDate = new Date();
+        isTeamAttendance=false;
+        listDateWiseAttendace=new ArrayList<AttendanceDateList>();
 
         progressBar = plannerView.findViewById(R.id.pb_profile_act);
         progressBarLayout = plannerView.findViewById(R.id.profile_act_progress_bar);
@@ -124,25 +110,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         calendarView = plannerView.findViewById(R.id.calendarView);
         calendarView.state().edit().setMaximumDate(Calendar.getInstance().getTime()).commit();
 
+        monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(AttendancePlannerFragment.this);
+
         ivCalendarMode.setOnClickListener(this);
+        attendanceCardLayout = plannerView.findViewById(R.id.ly_main);
 
-        ivUserImage = plannerView.findViewById(R.id.iv_user_profile_pic);
-        tvName = plannerView.findViewById(R.id.tv_name);
-        tvRole = plannerView.findViewById(R.id.tv_role);
-        tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
-        tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
-        tvStatus = plannerView.findViewById(R.id.iv_status);
-        lyMain = plannerView.findViewById(R.id.ly_main);
-        isTeamList = false;
-
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
-        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-        Glide.with(this)
-                .applyDefaultRequestOptions(requestOptions)
-                .load(Util.getUserObjectFromPref().getProfilePic())
-                .into(ivUserImage);
-        tvName.setText(Util.getUserObjectFromPref().getUserName());
-        tvRole.setText(Util.getUserObjectFromPref().getRoleNames());
+        radioGroup = plannerView.findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener(this);
 
         teamAttendanceList = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -151,81 +125,57 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         rvTeamList.setLayoutManager(mLayoutManager);
         rvTeamList.setAdapter(adapter);
 
-        radioGroup = plannerView.findViewById(R.id.radio_group);
-        radioGroup.setOnCheckedChangeListener(this);
+        isMonth = !isMonth;
+        setCalendar();
 
-        monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(AttendancePlannerFragment.this);
-
-
-        setUIData();
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
                 selectedDate = date.getDate();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                calendarSelectedDate = df.format(selectedDate);
-                showDialogForSelectedDate(calendarSelectedDate);
-                if (isTeamList)
+                String datestr = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
+                showDialogForSelectedDate(datestr);
+                if(isTeamAttendance){
                     monthlyAttendanceFragmentPresenter.getTeamAttendance(selectedDate);
-
+                }
             }
         });
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                int month = date.getMonth() + 1;
-                int year = date.getYear();
 
-                // call api when swipw month
                 if (!Util.isConnected(getActivity())) {
                     Util.showToast("Network not available ! Try again", getActivity());
                 } else {
                     showProgressBar();
-                    monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year, month);
-                    Log.i("MonthlyAttendace", "111" + year + month);
+                    monthlyAttendanceFragmentPresenter.getMonthlyAttendance(date.getYear(), date.getMonth() + 1);
                 }
             }
         });
     }
 
     private void showDialogForSelectedDate(String calendarSelectedDate) {
+        AttendanceDateList attendanceDateList;
         if (listDateWiseAttendace != null && listDateWiseAttendace.size() > 0 && !listDateWiseAttendace.isEmpty()) {
-            for (AttendanceDateList attendanceDate : listDateWiseAttendace) {
-                String checkInDate = attendanceDate.getCreateAt();
+
+            for (int i = 0; i < listDateWiseAttendace.size(); i++) {
+                attendanceDateList = listDateWiseAttendace.get(i);
+                String checkInDate = attendanceDateList.getCreateAt();
                 String UserAttendaceDate[] = checkInDate.split(" ");
                 String AttendaceCreatedAt = UserAttendaceDate[0];
                 if (calendarSelectedDate.equalsIgnoreCase(AttendaceCreatedAt)) {
-                    if (!attendanceDate.getCheckInTime().isEmpty()) {
-                        tvCheckInTime.setText(Util.getDateFromTimestamp(Long.valueOf(attendanceDate.getCheckInTime()), "hh:mm aa"));
+                    if (!attendanceDateList.getCheckInTime().isEmpty()) {
+                        tvCheckInTime.setText( Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckInTime()), "hh:mm aa"));
                     }
-                    if (!attendanceDate.getCheckOutTime().isEmpty()) {
-                        tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(attendanceDate.getCheckOutTime()), "hh:mm aa"));
-                    }
-                    tvStatus.setVisibility(View.VISIBLE);
-                    tvStatus.setText(attendanceDate.getStatus());
+                    if (!attendanceDateList.getCheckOutTime().isEmpty()) {
+                        tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()), "hh:mm aa"));
+                    }   //cheack that created at is equal to today date
                 } else {
                     tvCheckInTime.setText("");
                     tvCheckOutTime.setText("");
-                    tvStatus.setVisibility(View.GONE);
                 }
             }
         }
-    }
-
-    private void setUIData() {
-        CalendarDay calendarDay = calendarView.getCurrentDate();
-
-        selectedDate = calendarDay.getDate();
-        year = calendarDay.getYear();
-        month = calendarDay.getMonth();
-        cmonth = month + 1;
-
-        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
-        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(year, cmonth);
-
-        isMonth = !isMonth;
-        setCalendar();
     }
 
     @Override
@@ -242,86 +192,62 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rb_my_attendance:
-                lyMain.setVisibility(View.VISIBLE);
+                isTeamAttendance=false;
+                attendanceCardLayout.setVisibility(View.VISIBLE);
                 rvTeamList.setVisibility(View.GONE);
-                isTeamList = false;
                 break;
 
             case R.id.rb_my_team_attendance:
+                isTeamAttendance=true;
                 rvTeamList.setVisibility(View.VISIBLE);
-                lyMain.setVisibility(View.GONE);
-                isTeamList = true;
+                attendanceCardLayout.setVisibility(View.GONE);
                 monthlyAttendanceFragmentPresenter.getTeamAttendance(selectedDate);
+
                 break;
         }
     }
 
-    //Month data api response
     public void getAttendanceInfo(MonthlyAttendance data) {
 
         hideProgressBar();
         Log.i("AttendanceData", "222" + data);
         List<Datum> dataList = data.getData();
         List<Attendance> attendanceList;
-        String id, status, subModule;
-        String holidayName, leaveDate, holidayDate;
+        String holidayName, holidayDate;
         List<HolidayList> holidayList = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-
         ArrayList<CalendarDay> holidays = new ArrayList<>();
-        ArrayList<CalendarDay> leavsDaysList = new ArrayList<>();
-        listDateWiseAttendace = new ArrayList<>();
-
-        pendingList = new ArrayList<>();
-        approveList = new ArrayList<>();
-        rejectList = new ArrayList<>();
+        ArrayList<CalendarDay> attendList = new ArrayList<>();
 
         for (int i = 0; i < dataList.size(); i++) {
-            subModule = dataList.get(i).getSubModule();
-            if (subModule.equalsIgnoreCase("attendance")) {
 
+            if (dataList.get(i).getSubModule().equalsIgnoreCase("attendance")) {
                 attendanceList = dataList.get(i).getAttendance();
                 for (int j = 0; j < attendanceList.size(); j++) {
 
                     attendanceDateList = new AttendanceDateList();
-                    id = attendanceList.get(j).getId();
-                    status = attendanceList.get(j).getStatus().getStatus();
-                    checkIn = attendanceList.get(j).getCheckIn();
-                    checkOut = attendanceList.get(j).getCheckOut();
-                    attendanceDateList.setCheckInTime(checkIn.getTime());
-                    attendanceDateList.setCheckOutTime(checkOut.getTime());
+                    attendanceDateList.setCheckInTime(attendanceList.get(j).getCheckIn().getTime());
+                    attendanceDateList.setCheckOutTime(attendanceList.get(j).getCheckOut().getTime());
                     attendanceDateList.setAttendanceDate(attendanceList.get(j).getCreatedOn());
                     attendanceDateList.setStatus(attendanceList.get(j).getStatus().getStatus());
                     attendanceDateList.setTotalHrs(attendanceList.get(j).getTotalHours());
                     attendanceDateList.setCreateAt(attendanceList.get(j).getCreatedAt());
                     listDateWiseAttendace.add(attendanceDateList);
 
-                    leaveDate = attendanceList.get(j).getCheckIn().getTime();
-
-                    // convert this date and add into list
-                    Long TimeStamp = Long.parseLong(leaveDate);
+                    Long TimeStamp = Long.parseLong(attendanceList.get(j).getCheckIn().getTime());
                     Date d1 = new Date(TimeStamp);
                     java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.FULL, java.text.DateFormat.FULL);
                     df.setTimeZone(TimeZone.getTimeZone("UTC"));
                     //String FinalDate=df.format(d1);
-                    leavsDaysList.add(CalendarDay.from(d1));
+                    attendList.add(CalendarDay.from(d1));
                 }
-
-                if (leavsDaysList.size() > 0)
+                if (attendList.size() > 0)
                     calendarView.addDecorator(new EventDecorator(getActivity(),
-                            leavsDaysList, getResources().getDrawable(R.drawable.circle_background)));
+                            attendList, getResources().getDrawable(R.drawable.circle_background)));
 
-
-                Date date = Calendar.getInstance().getTime();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                calendarSelectedDate = df.format(date);
-                showDialogForSelectedDate(calendarSelectedDate);
-            }
-
-            if (subModule.equalsIgnoreCase("holidayList")) {
+            } else if (dataList.get(i).getSubModule().equalsIgnoreCase("holidayList")) {
                 holidayList = dataList.get(i).getHolidayList();
                 for (int k = 0; k < holidayList.size(); k++) {
-                    id = holidayList.get(k).getId();
+
                     holidayName = holidayList.get(k).getName();
                     holidayDate = holidayList.get(k).getDate().getDate().getNumberLong();
 
@@ -332,6 +258,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     df.setTimeZone(TimeZone.getTimeZone("UTC"));
                     //String FinalDate=df.format(d1);
                     holidays.add(CalendarDay.from(d1));
+
                 }
                 if (holidays.size() > 0)
                     calendarView.addDecorator(new EventDecorator(getActivity(),
@@ -340,10 +267,9 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    //Team Attancance data api response
-    public void setTeamAttendanceData(List<TeamAttendanceData> teamAttList) {
+    public void setTeamAttendanceData(List<TeamAttendanceData> dataList) {
         teamAttendanceList.clear();
-        teamAttendanceList.addAll(teamAttList);
+        teamAttendanceList.addAll(dataList);
         adapter.notifyDataSetChanged();
     }
 
@@ -372,51 +298,45 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         calendarView.setSelectedDate(instance.getTime());
         calendarView.setCurrentDate(instance.getTime());
-        highlightDates();
+//        highlightDates();
 
     }
 
-    private void highlightDates() {
-        // set the date list to highlight
-        ArrayList<CalendarDay> dateList = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        //String reg_date = formatter.format(cal.getTime());
+//    private void highlightDates() {
+//        // set the date list to highlight
+//        ArrayList<CalendarDay> dateList = new ArrayList<>();
+//        Calendar cal = Calendar.getInstance();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//        //String reg_date = formatter.format(cal.getTime());
+//
+//        cal.add(Calendar.DATE, 2);
+//        try {
+//            dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
+//        } catch (ParseException e) {
+//            Log.e("TAG", e.getMessage());
+//        }
+//        cal.add(Calendar.DATE, 3);
+//        try {
+//            dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
+//        } catch (ParseException e) {
+//            Log.e("TAG", e.getMessage());
+//        }
+//        //noinspection deprecation
+//        calendarView.addDecorator(new EventDecorator(getActivity(),
+//                dateList, getResources().getDrawable(R.drawable.circle_background)));
+//
+//    }
 
-        cal.add(Calendar.DATE, 2);
-        try {
-            dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
-        } catch (ParseException e) {
-            Log.e("TAG", e.getMessage());
-        }
-        cal.add(Calendar.DATE, 3);
-        try {
-            dateList.add(CalendarDay.from(formatter.parse(formatter.format(cal.getTime()))));
-        } catch (ParseException e) {
-            Log.e("TAG", e.getMessage());
-        }
-        //noinspection deprecation
-        calendarView.addDecorator(new EventDecorator(getActivity(),
-                dateList, getResources().getDrawable(R.drawable.circle_background)));
-
-    }
-
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView,
-                               @NonNull CalendarDay calendarDay, boolean b) {
-
-        Toast.makeText(getActivity(), "date:" + calendarDay, Toast.LENGTH_SHORT).show();
+    public void showError(String error) {
+        Toast.makeText(getActivity(),error,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+        MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter = new MonthlyAttendanceFragmentPresenter(this);
+        monthlyAttendanceFragmentPresenter.getMonthlyAttendance(selectedDate.getYear(), selectedDate.getMonth()+1);
     }
 
     public void showProgressBar() {
@@ -437,9 +357,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
         });
     }
 
-    public void showError(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-    }
 }
 
 

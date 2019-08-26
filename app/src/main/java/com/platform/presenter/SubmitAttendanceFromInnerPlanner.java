@@ -3,6 +3,7 @@ package com.platform.presenter;
 import android.util.Log;
 
 import com.platform.listeners.SubmitAttendanceListener;
+import com.platform.models.attendance.AttendaceData;
 import com.platform.request.SubmitAttendanceCall;
 import com.platform.view.fragments.AttendancePlannerFragment;
 import com.platform.view.fragments.PlannerFragment;
@@ -20,7 +21,7 @@ public class SubmitAttendanceFromInnerPlanner implements SubmitAttendanceListene
 
 
     @Override
-    public void onSuccess(int id,String response) {
+    public void onSuccess(int id, String response, AttendaceData a) {
         Log.i("Response","111"+response);
         switch(id){
             case 1:
@@ -49,11 +50,10 @@ public class SubmitAttendanceFromInnerPlanner implements SubmitAttendanceListene
         }
     }
     // make a request call
-    public void markAttendace(String type, Long d, String time, String chktype , String strLat, String strLong, String strAdd)
-    {
+    public void markAttendace(String type, Long d, String time, String chktype , String strLat, String strLong, String strAdd) {
         SubmitAttendanceCall attendanceCall=new SubmitAttendanceCall();
         attendanceCall.addListener(this);
-        attendanceCall.AttendanceCheckIn(type,d,time,chktype,strLat,strLong,strAdd);
+//        attendanceCall.AttendanceCheckIn(type,d,strLat,strLong);
 
     }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.android.volley.NetworkError;
 import com.platform.listeners.SubmitAttendanceListener;
+import com.platform.models.attendance.AttendaceData;
 import com.platform.request.SubmitAttendanceCall;
 import com.platform.view.fragments.AttendancePlannerFragment;
 import com.platform.view.fragments.PlannerFragment;
@@ -21,14 +22,14 @@ public class SubmitAttendanceFragmentPresenter implements SubmitAttendanceListen
 
 
     @Override
-    public void onSuccess(int id,String response) {
+    public void onSuccess(int id,String response, AttendaceData attendaceData) {
         Log.i("Response","111"+response);
         switch(id){
             case 1:
-                fragmentWeakReference.get().checkInResponse(response);
+                fragmentWeakReference.get().checkInResponse(response, attendaceData);
                 break;
             case 2:
-                fragmentWeakReference.get().checkOutResponse(response);
+                fragmentWeakReference.get().checkOutResponse(response, attendaceData);
                 break;
                 default:
         }
@@ -50,11 +51,11 @@ public class SubmitAttendanceFragmentPresenter implements SubmitAttendanceListen
         }
     }
     // make a request call
-    public void markAttendace(String type, Long d, String time, String chktype , String strLat, String strLong, String strAdd)
+    public void markAttendace(AttendaceData attendaceData)
     {
         SubmitAttendanceCall attendanceCall=new SubmitAttendanceCall();
         attendanceCall.addListener(this);
-        attendanceCall.AttendanceCheckIn(type,d,time,chktype,strLat,strLong,strAdd);
+        attendanceCall.AttendanceCheckIn(attendaceData);
 
     }
 

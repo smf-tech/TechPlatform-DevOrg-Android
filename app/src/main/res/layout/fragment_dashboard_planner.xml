@@ -35,7 +35,7 @@
                     android:visibility="gone">
 
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/lin_attendance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -52,34 +52,18 @@
                             android:textSize="@dimen/text_size_16"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
                         <TextView
                             android:id="@+id/tv_attendance_details"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:layout_marginEnd="@dimen/dimen_05dp"
                             android:gravity="center_vertical"
-                            android:text="@string/see_details"
-
-                            />
+                            android:text="@string/see_details" />
 
 
-                    </LinearLayout>
-
-                    <!--<androidx.cardview.widget.CardView-->
-                    <!--android:id="@+id/card_attendance"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/lin_attendance"-->
-                    <!--android:layout_margin="@dimen/dimen_05dp"-->
-                    <!--android:elevation="2dp"-->
-                    <!--android:backgroundTint="@color/white"-->
-                    <!--app:cardCornerRadius="@dimen/dimen_10dp">-->
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -95,7 +79,6 @@
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
                             android:orientation="horizontal"
-                            android:padding="@dimen/dimen_08dp"
                             android:weightSum="10">
 
                             <RelativeLayout
@@ -107,35 +90,24 @@
                                 android:padding="@dimen/dimen_05dp">
 
                                 <ImageView
-                                    android:id="@+id/tv_date_label"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:id="@+id/iv_clock"
+                                    android:layout_width="@dimen/dimen_30dp"
+                                    android:layout_height="@dimen/dimen_30dp"
+                                    android:layout_centerHorizontal="true"
                                     android:layout_marginStart="@dimen/dimen_10dp"
                                     android:layout_marginTop="5dp"
                                     android:src="@drawable/clock_shape"
                                     android:tint="@color/black" />
 
                                 <TextView
-                                    android:id="@+id/txt_timer"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tv_date_label"
-                                    android:layout_marginStart="10dp"
-                                    android:text="10:30"
-                                    android:textColor="@color/dark_grey"
-                                    android:textStyle="bold"
-                                    android:visibility="invisible">
-
-                                </TextView>
-
-                                <TextView
-                                    android:id="@+id/tv_date"
+                                    android:id="@+id/tv_time_label"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/txt_timer"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_below="@+id/iv_clock"
+                                    android:layout_centerHorizontal="true"
                                     android:layout_marginTop="@dimen/dimen_20dp"
-                                    android:text="Total Hrs"
+                                    android:gravity="center"
+                                    android:text="@string/total_hours"
                                     android:textColor="@color/dark_grey"
                                     android:textStyle="normal" />
 
@@ -143,69 +115,60 @@
                                     android:id="@+id/iv_total_hours"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tv_date"
-                                    android:layout_marginStart="@dimen/dimen_12dp"
-                                    android:contentDescription="@string/content_description"
+                                    android:layout_below="@+id/tv_time_label"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dimen_05dp"
+                                    android:layout_marginBottom="@dimen/dimen_05dp"
+                                    android:gravity="center"
                                     android:text="00:00"
                                     android:textColor="@color/dark_grey"
                                     android:textStyle="bold" />
-
-
                             </RelativeLayout>
 
-                            <RelativeLayout
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_weight="7.5"
                                 android:layout_gravity="center_vertical"
-                                android:layout_weight="7.5">
+                                android:orientation="horizontal">
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/bt_check_in"
+                                    style="@style/AppStyleButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
                                     android:layout_marginStart="5dp"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal">
+                                    android:layout_weight="1"
+                                    android:baselineAligned="false"
+                                    android:gravity="center"
+                                    android:text="@string/check_in"
+                                    android:textAllCaps="false"
+                                    android:textColor="@drawable/text_color_on_selection"
+                                    android:textSize="@dimen/text_size_10"
+                                    android:textStyle="bold"
+                                    tools:ignore="ButtonStyle" />
 
-                                    <com.google.android.material.button.MaterialButton
-                                        android:id="@+id/bt_check_in"
-                                        style="@style/AppStyleButton"
-                                        android:layout_width="0dp"
-                                        android:layout_height="@dimen/dimen_50dp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginStart="5dp"
-                                        android:layout_weight="1"
-                                        android:baselineAligned="false"
-                                        android:gravity="center"
-                                        android:text="@string/check_in"
-                                        android:textAllCaps="false"
-                                        android:textColor="@drawable/text_color_on_selection"
-                                        android:textSize="@dimen/text_size_10"
-                                        android:textStyle="bold"
-                                        app:backgroundTint="@color/colorPrimary"
-                                        tools:ignore="ButtonStyle" />
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/bt_checkout"
+                                    style="@style/AppStyleButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="@string/check_out"
+                                    android:textAllCaps="false"
+                                    android:textColor="@drawable/text_color_on_selection"
+                                    android:textSize="@dimen/text_size_10"
+                                    android:textStyle="bold"
+                                    tools:ignore="ButtonStyle" />
 
-                                    <com.google.android.material.button.MaterialButton
-                                        android:id="@+id/bt_checkout"
-                                        style="@style/AppStyleButton"
-                                        android:layout_width="0dp"
-                                        android:layout_height="@dimen/dimen_50dp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginStart="5dp"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:text="@string/check_out"
-                                        android:textAllCaps="false"
-                                        android:textColor="@drawable/text_color_on_selection"
-                                        android:textSize="@dimen/text_size_10"
-                                        android:textStyle="bold"
-                                        app:backgroundTint="@color/button_gray_color"
-                                        tools:ignore="ButtonStyle" />
-
-                                </LinearLayout>
-                            </RelativeLayout>
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-                    <!--</androidx.cardview.widget.CardView>-->
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -313,7 +276,7 @@
                 <RelativeLayout
                     android:id="@+id/ly_task"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_277dp"
+                    android:layout_height="@dimen/dimen_120dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
                     android:visibility="gone">
 
@@ -434,7 +397,6 @@
                             android:textSize="@dimen/text_size_16"
                             android:textStyle="bold" />
 
-
                         <TextView
                             android:id="@+id/tv_link_check_leaves"
                             style="@style/StyleLabel"
@@ -474,41 +436,43 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:weightSum="3"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:text="Total"
                                 android:fontFamily="@font/opensans_regular"
-                                />
+                                android:gravity="center_horizontal"
+                                android:text="Total" />
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:text="@string/used"
                                 android:fontFamily="@font/opensans_regular"
-                                />
+                                android:gravity="center_horizontal"
+                                android:text="@string/used" />
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:text="Balance"
                                 android:fontFamily="@font/opensans_regular"
-                                />
+                                android:gravity="center_horizontal"
+                                android:text="Balance" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_below="@+id/ly_lebal"
+                            android:id="@+id/ly_circular_progress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
+                            android:layout_below="@+id/ly_lebal"
                             android:layout_marginTop="@dimen/dimen_05dp"
-                            android:weightSum="3">
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:visibility="gone">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -521,8 +485,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
-                                    android:fontFamily="@font/opensans_semibold"
-                                    />
+                                    android:fontFamily="@font/opensans_semibold" />
 
                                 <com.budiyev.android.circularprogressbar.CircularProgressBar
                                     android:id="@+id/pb_total"
@@ -557,8 +520,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
-                                    android:fontFamily="@font/opensans_semibold"
-                                    />
+                                    android:fontFamily="@font/opensans_semibold" />
 
                                 <com.budiyev.android.circularprogressbar.CircularProgressBar
                                     android:id="@+id/pb_used"
@@ -593,8 +555,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
-                                    android:fontFamily="@font/opensans_semibold"
-                                    />
+                                    android:fontFamily="@font/opensans_semibold" />
 
                                 <com.budiyev.android.circularprogressbar.CircularProgressBar
                                     android:id="@+id/pb_balance"
@@ -619,7 +580,6 @@
                             </RelativeLayout>
 
                         </LinearLayout>
-
 
 
                     </RelativeLayout>

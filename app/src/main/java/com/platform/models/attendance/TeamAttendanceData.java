@@ -21,10 +21,10 @@ public class TeamAttendanceData {
     private String status;
     @SerializedName("check_in")
     @Expose
-    private List<Object> checkIn = null;
+    private CheckIn checkIn = null;
     @SerializedName("check_out")
     @Expose
-    private List<Object> checkOut = null;
+    private CheckIn checkOut = null;
 
     public String getName() {
         return name;
@@ -50,10 +50,6 @@ public class TeamAttendanceData {
         this.status = status;
     }
 
-    public List<Object> getCheckIn() {
-        return checkIn;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -63,15 +59,21 @@ public class TeamAttendanceData {
     }
 
 
-    public void setCheckIn(List<Object> checkIn) {
+    public CheckIn getCheckIn() {
+        return checkIn;
+    }
+
+
+
+    public void setCheckIn(CheckIn checkIn) {
         this.checkIn = checkIn;
     }
 
-    public List<Object> getCheckOut() {
+    public CheckIn getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(List<Object> checkOut) {
+    public void setCheckOut(CheckIn checkOut) {
         this.checkOut = checkOut;
     }
 

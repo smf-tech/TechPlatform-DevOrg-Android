@@ -237,7 +237,7 @@
     <!--Attendance-->
     <string name="attendance">Attendance</string>
     <string name="mark_attendance"> Mark Attendance</string>
-    <string name="total_hours">Total Hours</string>
+    <string name="total_hours">Total Hrs</string>
     <string name="attendance_details">Check Attendance Details</string>
     <string name="attendacne_check_header">Delayed in chek in and also found another location </string>
     <string name="check">Checked In Successful</string>

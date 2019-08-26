@@ -25,7 +25,7 @@
         android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_toEndOf="@+id/iv_user_profile_pic"
         android:textColor="@color/attendance_list_item"
-        android:text="Sachin Kakade"/>
+        />
 
     <TextView
         android:id="@+id/tv_role"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name"
         android:layout_toEndOf="@+id/iv_user_profile_pic"
-        android:text="Taluka corodi"/>
+        />
 
     <RelativeLayout
         android:id="@+id/ly_chackin_checkout"
@@ -47,8 +47,7 @@
             android:id="@+id/tv_check_in_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:text="10:10 am"/>
+            />
         <TextView
             android:id="@+id/tv_dash"
             android:layout_width="wrap_content"
@@ -60,9 +59,8 @@
             android:id="@+id/tv_check_out_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
             android:layout_toEndOf="@+id/tv_dash"
-            android:text="10:10 am"/>
+            />
 
     </RelativeLayout>
 

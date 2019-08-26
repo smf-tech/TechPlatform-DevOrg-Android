@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2830e562c8ea5ea1abb90e5947c235e2",
+    "identityHash": "c621ebad51946a6c7296ce97312eae1f",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -408,12 +408,12 @@
       },
       {
         "tableName": "UserAttendance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `Address` TEXT, `attendaceDate` INTEGER, `attendanceType` TEXT, `mobileNumber` TEXT, `attendanceFormattedDate` TEXT, `time` TEXT, `isSync` INTEGER, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `attendanceId` TEXT, `attendaceDate` INTEGER, `attendanceType` TEXT, `date` INTEGER, `attendanceFormattedDate` TEXT, `Address` TEXT, `isSync` INTEGER, `mobileNumber` TEXT)",
         "fields": [
           {
             "fieldPath": "uid",
             "columnName": "uid",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -429,8 +429,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "Address",
-            "columnName": "Address",
+            "fieldPath": "attendanceId",
+            "columnName": "attendanceId",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -447,9 +447,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "mobileNumber",
-            "columnName": "mobileNumber",
-            "affinity": "TEXT",
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -459,8 +459,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "time",
-            "columnName": "time",
+            "fieldPath": "Address",
+            "columnName": "Address",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -469,13 +469,19 @@
             "columnName": "isSync",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "mobileNumber",
+            "columnName": "mobileNumber",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
             "uid"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -614,7 +620,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2830e562c8ea5ea1abb90e5947c235e2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c621ebad51946a6c7296ce97312eae1f')"
     ]
   }
 }

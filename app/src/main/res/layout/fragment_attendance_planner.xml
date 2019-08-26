@@ -143,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:text="00:00 am"/>
+                        android:text=""/>
                     <TextView
                         android:id="@+id/tv_dash"
                         android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_05dp"
                         android:layout_toEndOf="@+id/tv_dash"
-                        android:text="00:00 am"/>
+                        android:text=""/>
 
                 </RelativeLayout>
 
@@ -170,7 +170,7 @@
                     android:paddingBottom="@dimen/dimen_05dp"
                     android:textColor="@color/white"
                     android:background="@drawable/bg_status_label"
-                    android:text="status" />
+                    android:text="Not found" />
 
             </RelativeLayout>
         </LinearLayout>
