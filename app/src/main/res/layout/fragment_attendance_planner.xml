@@ -120,7 +120,7 @@
                     android:layout_marginTop="@dimen/dimen_05dp"
                     android:layout_toEndOf="@+id/iv_user_profile_pic"
                     android:textColor="@color/attendance_list_item"
-                    android:text="Sachin Kakade"/>
+                    />
 
                 <TextView
                     android:id="@+id/tv_role"
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_name"
                     android:layout_toEndOf="@+id/iv_user_profile_pic"
-                    android:text="Taluka corodi"/>
+                    />
 
                 <RelativeLayout
                     android:id="@+id/ly_chackin_checkout"

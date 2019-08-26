@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.platform.R;
 import com.platform.models.attendance.Attendance;
 import com.platform.models.attendance.AttendanceDateList;
@@ -56,8 +58,13 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     private TextView tvCheckInTime;
     private TextView tvCheckOutTime;
+    private TextView tvUserName;
+    private TextView tvUserRole;
+    private ImageView ivUserProfilePic;
+
     private Date selectedDate;
     private boolean isTeamAttendance;
+    private RequestOptions requestOptions;
 
     private RelativeLayout attendanceCardLayout;
     private MaterialCalendarView calendarView;
@@ -97,8 +104,22 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     private void initView() {
 
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
+        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
+        tvUserName = plannerView.findViewById(R.id.tv_name);
+        tvUserRole = plannerView.findViewById(R.id.tv_role);
+        ivUserProfilePic = plannerView.findViewById(R.id.iv_user_profile_pic);
+        tvUserName.setText(Util.getUserObjectFromPref().getUserName());
+        tvUserRole.setText(Util.getUserObjectFromPref().getRoleNames());
+        if(Util.getUserObjectFromPref().getProfilePic()!=null){
+            Glide.with(this)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(Util.getUserObjectFromPref().getProfilePic())
+                    .into(ivUserProfilePic);
+        }
 
         selectedDate = new Date();
         isTeamAttendance=false;
@@ -244,6 +265,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     calendarView.addDecorator(new EventDecorator(getActivity(),
                             attendList, getResources().getDrawable(R.drawable.circle_background)));
 
+                String datestr = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
+                showDialogForSelectedDate(datestr);
             } else if (dataList.get(i).getSubModule().equalsIgnoreCase("holidayList")) {
                 holidayList = dataList.get(i).getHolidayList();
                 for (int k = 0; k < holidayList.size(); k++) {
