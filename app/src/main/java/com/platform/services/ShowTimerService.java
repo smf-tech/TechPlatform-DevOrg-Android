@@ -14,12 +14,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class ShowTimerService extends Service {
     public static volatile boolean shouldContinue=true;
     private String checkInTime="";
     public MyBinder binder = new MyBinder();
+    private int hours;
+    private int min;
 
 
     @Nullable
@@ -30,6 +34,7 @@ public class ShowTimerService extends Service {
 
 
     public class MyBinder extends Binder {
+
         public ShowTimerService getService() {
             return ShowTimerService.this;
         }
@@ -41,8 +46,6 @@ public class ShowTimerService extends Service {
         if(bundle!=null){
             checkInTime=bundle.getString("CheckInTime");
         }
-        doWork();
-
         return START_STICKY;
     }
 
@@ -50,67 +53,63 @@ public class ShowTimerService extends Service {
     public void onCreate() {
         super.onCreate();
     }
-    /*public ShowTimerService() {
-        super("timer service");
 
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public String doWork() {
 
 
-        doWork(intent);
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
 
-    }*/
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
 
-    public void doWork() {
-
-        /*Bundle bundle=intent.getExtras();
-        if(bundle!=null){
-            checkInTime=bundle.getString("CheckInTime");
-        }*/
-        // get hourd difference
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
-
-        if(!checkInTime.isEmpty()){
-            Date startDate = null;
-            try {
-                startDate = simpleDateFormat.parse(checkInTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                if(!checkInTime.isEmpty()){
+                    Date startDate = null;
+                    try {
+                        startDate = simpleDateFormat.parse(checkInTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
 
-            Calendar calendar=Calendar.getInstance();
-            String CurrentTime=simpleDateFormat.format(calendar.getTime());
+                    Calendar calendar=Calendar.getInstance();
+                    String CurrentTime=simpleDateFormat.format(calendar.getTime());
 
 
-            Date endDate = null;
-            try {
-                endDate = simpleDateFormat.parse(CurrentTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                    Date endDate = null;
+                    try {
+                        endDate = simpleDateFormat.parse(CurrentTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
 
-            long difference = endDate.getTime() - startDate.getTime();
-            if(difference<0)
-            {
-                Date dateMax = null;
-                try {
-                    dateMax = simpleDateFormat.parse("24:00");
-                    Date dateMin = simpleDateFormat.parse("00:00");
-                    difference=(dateMax.getTime() -startDate.getTime() )+(endDate.getTime()-dateMin.getTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    long difference = endDate.getTime() - startDate.getTime();
+                    if(difference<0)
+                    {
+                        Date dateMax = null;
+                        try {
+                            dateMax = simpleDateFormat.parse("24:00");
+                            Date dateMin = simpleDateFormat.parse("00:00");
+                            difference=(dateMax.getTime() -startDate.getTime() )+(endDate.getTime()-dateMin.getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    int days = (int) (difference / (1000*60*60*24));
+                    hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+                    min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+                    
+                    
+
                 }
 
             }
-            int days = (int) (difference / (1000*60*60*24));
-            int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
-            int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+        },1000);
 
-        }
+
         //Log.i("log_tag","Hours: "+hours+", Mins: "+min);
 
        /* Intent i = new Intent();
@@ -122,6 +121,7 @@ public class ShowTimerService extends Service {
         stopSelf();
         return;
         }*/
+       return hours+":"+min;
 
     }
 

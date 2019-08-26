@@ -17,6 +17,7 @@ public class DownloadInfo {
   private volatile Integer mProgress;
   private final Integer mFileSize;
   private volatile ProgressBar mProgressBar;
+
   
   public DownloadInfo(String filename, Integer size) {
     mFilename = filename;

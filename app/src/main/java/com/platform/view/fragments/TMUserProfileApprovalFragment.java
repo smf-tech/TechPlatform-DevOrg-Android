@@ -216,7 +216,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
         //handle respo
         Util.logger("name", data.get(0).getName());
         if (data.get(0).getStatus()!=null) {
-            if (data.get(0).getStatus().getRejection_reason()!=null) {
+            if (data.get(0).getStatus().getRejection_reason()!=null && !TextUtils.isEmpty(data.get(0).getStatus().getRejection_reason())) {
                 tv_leave_reason.setText("Rejected Reason:- "+data.get(0).getStatus().getRejection_reason());
             }else {tv_leave_reason.setVisibility(View.GONE);}
         }else {

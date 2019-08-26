@@ -38,6 +38,7 @@
                     android:id="@+id/et_title"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/task_title"
+                    android:maxLength="50"
                     android:inputType="text|textCapWords"
                     tools:ignore="Autofill"
                     />

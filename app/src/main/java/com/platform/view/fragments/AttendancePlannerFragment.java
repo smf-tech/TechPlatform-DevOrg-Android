@@ -264,7 +264,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 }
                 if (attendList.size() > 0)
                     calendarView.addDecorator(new EventDecorator(getActivity(),
-                            attendList, getResources().getDrawable(R.drawable.circle_background)));
+                            attendList, getResources().getDrawable(R.drawable.circular_background)));
 
                 String datestr = Util.getDateFromTimestamp(selectedDate.getTime(), "yyyy-MM-dd");
                 showDialogForSelectedDate(datestr);

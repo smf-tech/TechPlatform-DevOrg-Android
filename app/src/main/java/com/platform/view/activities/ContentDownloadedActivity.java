@@ -26,7 +26,7 @@ public class ContentDownloadedActivity extends AppCompatActivity implements Down
     RecyclerView recyclerView;
     Context context;
     private SearchView searchView;
-    private String path= Environment.getExternalStorageDirectory().getPath()+"/MV";
+    private String path= Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
     private ArrayList<String>filenames;
     private DownloadListAdapter downloadListAdapter;
 

@@ -128,9 +128,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             case "attendance":
 
                                 break;
-                            case "forms":
 
-                                break;
                             default:
                                 context.finish();
                         }

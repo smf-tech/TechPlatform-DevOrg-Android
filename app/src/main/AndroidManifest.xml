@@ -30,7 +30,6 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.UserRegistrationMatrimonyActivity"></activity>
         <activity android:name=".view.activities.NotificationsActivity" />
         <activity android:name=".view.activities.ContentDownloadedActivity" />
         <activity android:name=".view.activities.BaseActivity" />
@@ -189,6 +188,9 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/circle_background" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
     </application>
 
 </manifest>

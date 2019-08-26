@@ -56,7 +56,7 @@ private PreferenceHelper preferenceHelper;
                 holder.tv_leave_reason.setVisibility(View.VISIBLE);
                 if (dataList.get(position).getStatus()!=null&&dataList.get(position).getStatus().getRejection_reason()!=null) {
 
-                    holder.tv_leave_reason.setText(dataList.get(position).getStatus().getRejection_reason());
+                    holder.tv_leave_reason.setText("Rejected Reason:- "+dataList.get(position).getStatus().getRejection_reason());
                 }
             }
         }

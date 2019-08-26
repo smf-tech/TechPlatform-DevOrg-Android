@@ -113,7 +113,7 @@
             <com.platform.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_address_checkout_value"
-                android:text=""
+                android:text=" "
                 android:textStyle="bold"
                 android:maxLines="4"
                 app:autoSizeTextType="uniform"
@@ -139,6 +139,7 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_title_14"
+                android:visibility="gone"
                 android:layout_height="wrap_content" />
 
 
@@ -154,8 +155,9 @@
                 app:autoSizeStepGranularity="1sp"
                 android:layout_toRightOf="@+id/tv_reason"
                 android:layout_alignBaseline="@+id/tv_reason"
+                android:layout_below="@+id/tv_address_checkout_value"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_title_14"
+                android:textSize="@dimen/text_size_12"
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>

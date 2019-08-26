@@ -147,7 +147,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
         //Util.showToast("Form Reject",getActivity());
         String strReason = Util.showReasonDialog(getActivity(),pos,this);
 
-        TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
+  /*      TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
         try {
             tmApprovalRequestModel.setType("form");
             tmApprovalRequestModel.setApprove_type("rejected");
@@ -159,7 +159,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel),pos);
+        tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel),pos);*/
 
     }
 

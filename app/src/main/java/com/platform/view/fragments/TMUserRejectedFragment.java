@@ -86,7 +86,7 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
 
     public void init() {
         txtNoData = tmFragmentView.findViewById(R.id.txt_no_data);
-        txtNoData.setText(getString(R.string.msg_no_pending_req));
+        txtNoData.setText(getString(R.string.no_data_available));
 
         rvPendingRequests = tmFragmentView.findViewById(R.id.rv_pendingapprovalpageview);
         //rvPendingRequests.setGroupIndicator(null);
@@ -153,7 +153,7 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
         } else {
             DashboardFragment.setApprovalCount(0);
             txtNoData.setVisibility(View.VISIBLE);
-            txtNoData.setText(getString(R.string.msg_no_pending_req));
+            txtNoData.setText(getString(R.string.no_data_available));
             rvPendingRequests.setVisibility(View.GONE);
         }
 
@@ -181,7 +181,7 @@ public class TMUserRejectedFragment extends Fragment implements View.OnClickList
             DashboardFragment.setApprovalCount(0);
             rvPendingRequests.setVisibility(View.GONE);
             txtNoData.setVisibility(View.VISIBLE);
-            txtNoData.setText(getString(R.string.msg_no_pending_req));
+            txtNoData.setText(getString(R.string.no_data_available));
         }
 
         if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {

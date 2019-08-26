@@ -39,47 +39,52 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_height="@dimen/dimen_60dp"
                         android:layout_toRightOf="@+id/user_profile_pic">
-
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_toLeftOf="@+id/right_arrow"
+                            android:gravity="center_vertical"
+                            android:layout_height="@dimen/dimen_60dp">
                         <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_above="@+id/center_view"
                             android:paddingStart="@dimen/dimen_16dp"
                             android:text="Malcom Holding"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_title_14"
                             android:textStyle="bold|italic" />
 
-                        <View
+                        <!--<View
                             android:id="@+id/center_view"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_centerVertical="true"
-                            android:background="@android:color/transparent" />
+                            android:background="@android:color/transparent" />-->
 
                         <com.platform.view.customs.TextViewRegular
                             android:id="@+id/tv_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/center_view"
+                            android:layout_below="@+id/tv_title"
                             android:paddingStart="@dimen/dimen_16dp"
                             android:text="Captain"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_description_12"
                             android:textStyle="normal" />
-
+                        </RelativeLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/right_arrow"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_arrow_right" />
                     </RelativeLayout>
 
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_arrow_right" />
+
                 </RelativeLayout>
 
             </LinearLayout>
@@ -115,7 +120,7 @@
                 android:layout_gravity="bottom"
                 android:background="@color/white"
                 android:gravity="bottom"
-                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:visibility="visible"
                 android:orientation="horizontal">
                 <TextView
@@ -123,6 +128,8 @@
                     android:text="Reason"
                     android:visibility="gone"
                     android:id="@+id/tv_leave_reason"
+                    android:textSize="@dimen/text_size_12"
+                    android:fontFamily="@font/opensans_regular"
                     android:layout_height="wrap_content" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_reject"

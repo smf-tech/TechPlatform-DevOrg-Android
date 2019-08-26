@@ -105,7 +105,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_community">My Community</string>
     <string name="menu_forms">Forms</string>
-    <string name="menu_teams">Teams</string>
+    <string name="menu_teams">Approvals</string>
     <string name="menu_calendar">Planner</string>
     <string name="menu_assets">Assets</string>
     <string name="menu_reports">Reports</string>
@@ -441,6 +441,10 @@
     <string name="end_date_collan">End Date: </string>
     <string name="owner_label">Owner:</string>
     <string name="delete_alert">Delete Alert</string>
+    <string name="check_in_at">Check in at</string>
+    <string name="check_out_it">Check out at</string>
 
 
+    <string name="default_notification_channel_id" translatable="false">BJS</string>
+    <string name="verification_otp_will_be_sent_on_this_number">(Verification OTP will be sent on this number)</string>
 </resources>

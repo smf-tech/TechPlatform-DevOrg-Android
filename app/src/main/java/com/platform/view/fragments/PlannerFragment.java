@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -15,6 +16,7 @@ import android.os.IBinder;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.Parcelable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,7 +68,6 @@ import com.platform.view.adapters.EventTaskListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
 
 import java.io.Serializable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -613,7 +614,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         tvAllEventsDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Util.isConnected(getContext())) {
+                if(Util.isConnected(getContext())) {
                     Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
                     intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
                     getActivity().startActivity(intentEventList);

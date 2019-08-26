@@ -48,6 +48,16 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/AppStyleButton"
+            android:id="@+id/btn_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="5"
+            android:text="@string/save"
+            android:textColor="#ffffff"
+            />
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
             android:id="@+id/btn_submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -56,17 +66,6 @@
             android:text="@string/submit"
             android:textColor="#ffffff"
             />
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/AppStyleButton"
-            android:id="@+id/btn_save"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:layout_weight="5"
-            android:text="@string/save"
-            android:textColor="#ffffff"
-             />
 
     </LinearLayout>
 

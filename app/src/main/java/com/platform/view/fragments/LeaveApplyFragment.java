@@ -247,11 +247,18 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
 
             case R.id.btn_apply_leave:
-                if (applyType.equalsIgnoreCase("Leave")) {
-                    applyForLeave();
-                } else if (applyType.equalsIgnoreCase("Comp-Off")) {
-                    applyForCompOff();
-                }
+                if (Util.isConnected(getActivity())){
+                    if (applyType.equalsIgnoreCase("Leave")) {
+                        if (Util.isConnected(getActivity()))
+                            applyForLeave();
+                    } else if (applyType.equalsIgnoreCase("Comp-Off")) {
+                        applyForCompOff();
+                    }
+                }else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.msg_no_network),
+                                Snackbar.LENGTH_LONG);
+                    }
 
                 break;
 

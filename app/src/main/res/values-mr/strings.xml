@@ -28,7 +28,7 @@
     <string name="msg_mobile_number_is_invalid">वैध मोबाइल नंबर नाही</string>
     <!--<string name="hint_enter_otp">_ _ _ _ _ _</string>-->
     <!--<string name="label_mobile_no">मोबाइल नंबर *</string>-->
-    <string name="label_login">लॉगइन</string>
+    <string name="label_login">लॉगिन करा</string>
     <string name="label_time">वेळ</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
     <!--<string name="check_otp">कृपया OTP तपासा</string>-->
@@ -381,6 +381,9 @@
     <string name="owner_label">कर्ता: </string>
     <string name="delete_alert">डिलीट अलर्ट</string>
     <string name="request_comp_off">कॉम्प ऑफ विनंती</string>
+    <string name="check_in_at">चेक इन वेळ</string>
+    <string name="check_out_it"> चेक आऊट वेळ</string>
+    <string name="verification_otp_will_be_sent_on_this_number">(या नंबरवर ओटीपी  पाठविला जाईल)</string>
 
 
 </resources>

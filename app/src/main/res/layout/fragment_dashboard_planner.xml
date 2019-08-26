@@ -39,7 +39,10 @@
                         android:id="@+id/lin_attendance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp">
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:layout_marginBottom="@dimen/dimen_05dp">
 
                         <TextView
                             android:id="@+id/tv_attendance_title"
@@ -61,7 +64,6 @@
                             android:layout_marginEnd="@dimen/dimen_05dp"
                             android:gravity="center_vertical"
                             android:text="@string/see_details" />
-
 
                     </RelativeLayout>
 
@@ -87,7 +89,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2.5"
                                 android:background="@drawable/bg_circular_rect_pink"
-                                android:padding="@dimen/dimen_05dp">
+                                android:padding="@dimen/dimen_05dp"
+                                android:layout_margin="@dimen/dimen_05dp">
 
                                 <ImageView
                                     android:id="@+id/iv_clock"

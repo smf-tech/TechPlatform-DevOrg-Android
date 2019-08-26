@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_bold"
                     android:text="djkhfjs"
-                    android:textSize="@dimen/text_size_16"
+                    android:textSize="@dimen/text_size_12"
                     android:layout_weight="9.5"/>
 
 
