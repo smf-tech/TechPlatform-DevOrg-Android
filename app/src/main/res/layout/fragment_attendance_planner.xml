@@ -82,9 +82,9 @@
                     android:fontFamily="@font/opensans_semibold"
                     android:text="My Team Attendance"/>
             </RadioGroup>
-            <include
-                android:id="@+id/rv_card_attendance"
-                layout="@layout/layout_attendance_card" />
+            <!--<include-->
+                <!--android:id="@+id/rv_card_attendance"-->
+                <!--layout="@layout/layout_attendance_card" />-->
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -94,6 +94,85 @@
                 android:layout_margin="@dimen/dimen_05dp"
                 android:visibility="visible"
                 />
+
+            <RelativeLayout
+                android:id="@+id/ly_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:background="@drawable/bg_grey_box"
+                android:elevation="@dimen/dimen_02dp"
+                android:padding="@dimen/dimen_05dp"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:id="@+id/iv_user_profile_pic"
+                    android:layout_width="@dimen/dimen_40dp"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:src="@drawable/ic_user_avatar" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_toEndOf="@+id/iv_user_profile_pic"
+                    android:textColor="@color/attendance_list_item"
+                    android:text="Sachin Kakade"/>
+
+                <TextView
+                    android:id="@+id/tv_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_toEndOf="@+id/iv_user_profile_pic"
+                    android:text="Taluka corodi"/>
+
+                <RelativeLayout
+                    android:id="@+id/ly_chackin_checkout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_role"
+                    android:layout_toEndOf="@+id/iv_user_profile_pic"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_check_in_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:text=""/>
+                    <TextView
+                        android:id="@+id/tv_dash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/tv_check_in_time"
+                        android:text=" - "/>
+                    <TextView
+                        android:id="@+id/tv_check_out_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_toEndOf="@+id/tv_dash"
+                        android:text=""/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/iv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_05dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_status_label"
+                    android:text="Not found" />
+
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
     <RelativeLayout

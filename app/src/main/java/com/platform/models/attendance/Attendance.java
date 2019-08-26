@@ -8,42 +8,6 @@ import com.google.gson.annotations.SerializedName;
 public class Attendance implements Serializable
 {
 
-    /*@SerializedName("_id")
-    @Expose
-    private String id;
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("created_on")
-    @Expose
-    private String createdOn;
-    private final static long serialVersionUID = 4821275104015454198L;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-*/
-
         @SerializedName("_id")
         @Expose
         private String id;
@@ -58,7 +22,7 @@ public class Attendance implements Serializable
         private CheckOut checkOut;
         @SerializedName("status")
         @Expose
-        private String status;
+        private Status status;
         @SerializedName("created_on")
         @Expose
         private String createdOn;
@@ -129,11 +93,11 @@ public class Attendance implements Serializable
             this.checkOut = checkOut;
         }
 
-        public String getStatus() {
+        public Status getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(Status status) {
             this.status = status;
         }
 

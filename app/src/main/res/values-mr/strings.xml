@@ -380,6 +380,7 @@
     <string name="end_date_collan">समाप्ती तारीख: </string>
     <string name="owner_label">कर्ता: </string>
     <string name="delete_alert">डिलीट अलर्ट</string>
+    <string name="request_comp_off">कॉम्प ऑफ विनंती</string>
 
 
 </resources>
