@@ -41,8 +41,13 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -55,10 +60,13 @@ import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.tm.TMApprovalRequestModel;
 import com.platform.models.tm.TMUserProfileApprovalRequest;
+import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.fragments.HomeFragment;
+import com.platform.view.fragments.PlannerFragment;
+import com.platform.view.fragments.ReportsFragment;
 import com.platform.view.fragments.TMUserAttendanceApprovalFragment;
 import com.platform.view.fragments.TMUserFormsApprovalFragment;
 import com.platform.view.fragments.TMUserLeavesApprovalFragment;
@@ -355,6 +363,23 @@ public class Util {
         }
     }
 
+    public static void setStringInPref(String key,String value) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getStringFromPref(String key) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String value = preferences.getString(key, "");
+
+        return value;
+    }
+
     public static <T> void showToast(String msg, T context) {
         try {
             if (TextUtils.isEmpty(msg)) {
@@ -365,7 +390,7 @@ public class Util {
                 msg = Platform.getInstance().getString(R.string.msg_no_network);
             }
 
-            if (context instanceof Fragment) {
+            if(context instanceof Fragment ){
                 Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
@@ -432,7 +457,7 @@ public class Util {
 
         return 0L;
     }
-    public static int getDateInepoch(String dateString) {
+    public static long getDateInepoch(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInepoch(new Date().toString());
         }
@@ -442,7 +467,7 @@ public class Util {
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
             int test = (int) (epoch/1000);
-            return (int)(epoch/1000);
+            return epoch;
 
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
@@ -469,8 +494,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT,Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT,Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
@@ -573,7 +598,7 @@ public class Util {
             Bundle b = new Bundle();
             b.putSerializable("TITLE", titleName);
             b.putBoolean("SHOW_ALL", false);
-            if (fragment instanceof HomeFragment) {
+            if (fragment instanceof HomeFragment ||fragment instanceof PlannerFragment ||fragment instanceof ReportsFragment) {
                 b.putBoolean("SHOW_BACK", false);
             } else {
                 b.putBoolean("SHOW_BACK", true);
@@ -599,6 +624,9 @@ public class Util {
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllReports();
         DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllFormSchema();
+        DatabaseManager.getDBInstance(Platform.getInstance()).getAttendaceSchema().deleteAllAttendance();
+        DatabaseManager.getDBInstance(Platform.getInstance()).getNotificationDataDeo().deleteAllNotifications();
+
         deleteCache(Platform.getInstance());
 
         if (refreshData) {
@@ -1165,7 +1193,7 @@ public class Util {
 
 
            Dialog dialog;
-           Button btnLogin,btn_cancel;
+           Button btnSubmit,btn_cancel;
            EditText edt_reason;
            Activity activity =context;
 
@@ -1177,7 +1205,7 @@ public class Util {
 
             edt_reason = dialog.findViewById(R.id.edt_reason);
        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-           btnLogin = dialog.findViewById(R.id.btn_submit);
+       btnSubmit = dialog.findViewById(R.id.btn_submit);
 
        btn_cancel.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -1186,7 +1214,7 @@ public class Util {
            }
        });
 
-           btnLogin.setOnClickListener(new View.OnClickListener() {
+       btnSubmit.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    /*Intent loginIntent = new Intent(context, LoginActivity.class);
@@ -1195,20 +1223,27 @@ public class Util {
                    context.startActivity(loginIntent);*/
                    String strReason  = edt_reason.getText().toString();
 
-                   if (fragment instanceof TMUserLeavesApprovalFragment) {
-                       ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
-                   if (fragment instanceof TMUserAttendanceApprovalFragment) {
-                       ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
-                   if (fragment instanceof TMUserProfileApprovalFragment) {
-                       ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
-                   if (fragment instanceof TMUserFormsApprovalFragment) {
-                       ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason,pos);
-                   }
+                   if (TextUtils.isEmpty(strReason)){
+                    Util.logger("Empty Reason","Reason Can not be blank");
+                       Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                       .findViewById(android.R.id.content), "Reason Can not be blank",
+                               Snackbar.LENGTH_LONG);
+                   }else {
+                       if (fragment instanceof TMUserLeavesApprovalFragment) {
+                           ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
+                       if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                           ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
+                       if (fragment instanceof TMUserProfileApprovalFragment) {
+                           ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
+                       if (fragment instanceof TMUserFormsApprovalFragment) {
+                           ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                       }
 
-                   dialog.dismiss();
+                       dialog.dismiss();
+                   }
                }
            });
            dialog.show();
@@ -1273,5 +1308,53 @@ return "";
         calendar.set(Calendar.MINUTE,min);
         return  calendar;
     }
+
+
+
+
+//---------------------------
+public static void updateFirebaseIdRequests(JSONObject requestObject) {
+    Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
+        try {
+            if (response != null) {
+                String res = response.toString();
+                Log.d(TAG, "update firebase id Requests - Resp: " + res);
+              /*  User user = new Gson().fromJson(res, User.class);
+              //  listener.TMUserProfileApprovalRequestsFetched(res);
+                if (res != null && user.getUserInfo() != null) {
+                    Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+                }*/
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            //listener.onFailureListener(e.getMessage());
+        }
+    };
+
+    Response.ErrorListener pendingRequestsErrorListener = error ->
+    {
+     //   listener.onErrorListener(error);
+        Log.d(TAG, "update firebase id Requests - Resp error: " + error.getMessage());
+    };
+
+    Gson gson = new GsonBuilder().serializeNulls().create();
+    final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.PUT_UPDATE_FIREBASEID_TO_SERVER;
+
+    GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+            Request.Method.PUT,
+            getPendingRequestsUrl,
+            new TypeToken<JSONObject>() {
+            }.getType(),
+            gson,
+            pendingRequestsResponseListener,
+            pendingRequestsErrorListener
+    );
+
+    gsonRequest.setHeaderParams(Util.requestHeader(true));
+    gsonRequest.setShouldCache(false);
+    gsonRequest.setBodyParams(requestObject);
+    Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+}
 
 }

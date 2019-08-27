@@ -37,15 +37,15 @@ public class DashboardFragment extends Fragment {
     private TabLayout tabLayout;
     private boolean isSyncRequired;
     private boolean isUserApproved;
-    private final int[] tabIcons = {
-            R.drawable.ic_form_icon_db,
-            R.drawable.ic_planner_icon_db,
-            R.drawable.ic_approvals,
-            R.drawable.ic_reports_icon_db,
-            R.drawable.ic_webview_icon_db,
-            R.drawable.ic_webview_icon_db,
-            R.drawable.ic_matrimony_icon_db
-    };
+//    private final int[] tabIcons = {
+//            R.drawable.ic_form_icon_db,
+//            R.drawable.ic_planner_icon_db,
+//            R.drawable.ic_approvals,
+//            R.drawable.ic_reports_icon_db,
+//            R.drawable.ic_webview_icon_db,
+//            R.drawable.ic_webview_icon_db,
+//            R.drawable.ic_matrimony_icon_db
+//    };
     private final int[] disableTabIcons = {
             R.drawable.ic_lock
     };
@@ -214,18 +214,18 @@ public class DashboardFragment extends Fragment {
 
     private void setupTabIcons() {
         for (int i = 0; i < tabNames.size(); i++) {
-            if (getContext() == null) continue;
+                if (getContext() == null) continue;
 
-            RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
-                    .inflate(R.layout.layout_custom_tab, tabLayout, false);
-            TextView tabView = tabOne.findViewById(R.id.tab);
-            tabView.setText(tabNames.get(i).getName().getLocaleValue());
-            TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
-            drawTabCount(i, tabOne, tabView, pendingActionsCountView);
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            if (tab != null) {
-                tab.setCustomView(tabOne);
-            }
+                RelativeLayout tabOne = (RelativeLayout) LayoutInflater.from(getContext())
+                        .inflate(R.layout.layout_custom_tab, tabLayout, false);
+                TextView tabView = tabOne.findViewById(R.id.tab);
+                tabView.setText(tabNames.get(i).getName().getLocaleValue());
+                TextView pendingActionsCountView = tabOne.findViewById(R.id.pending_action_count);
+                drawTabCount(i, tabOne, tabView, pendingActionsCountView);
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                if (tab != null) {
+                    tab.setCustomView(tabOne);
+                }
         }
 
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
@@ -256,40 +256,40 @@ public class DashboardFragment extends Fragment {
 
             switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
-                    resId = tabIcons[0];
+//                    resId = tabIcons[0];
                     pendingActionCount = getFormsPendingActionCount();
                     break;
 
                 case Constants.Home.PLANNER:
-                    resId = tabIcons[1];
+//                    resId = tabIcons[1];
                     break;
 
                 case Constants.Home.APPROVALS:
-                    resId = tabIcons[2];
+//                    resId = tabIcons[2];
                     pendingActionCount = getApprovalCount();
                     break;
 
                 case Constants.Home.REPORTS:
-                    resId = tabIcons[3];
+//                    resId = tabIcons[3];
                     break;
 
                 case Constants.Home.WEBMODULE_NAME:
-                    resId = tabIcons[4];
+//                    resId = tabIcons[4];
                     break;
 
                 case Constants.Home.CONTENT:
-                    resId = tabIcons[5];
+//                    resId = tabIcons[4];
                     break;
 
                 case Constants.Home.MATRIMONY:
-                    resId = tabIcons[6];
+                    //resId = tabIcons[6];
                     break;
                 default:
-                    resId = R.drawable.bg_circle_default;
+//                    resId = R.drawable.bg_circle_default;
                     break;
             }
 
-            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
+//            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
                 pendingActionsCountView.setTextColor(getResources().getColor(R.color.black));

@@ -46,27 +46,26 @@
         android:weightSum="10"
         android:visibility="gone">
 
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:layout_weight="5"
-            android:background="@drawable/bg_button"
-            android:text="@string/submit"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
             android:id="@+id/btn_save"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_button"
             android:text="@string/save"
             android:textColor="#ffffff"
-            android:textSize="20sp" />
+            />
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppStyleButton"
+            android:id="@+id/btn_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="5"
+            android:text="@string/submit"
+            android:textColor="#ffffff"
+            />
 
     </LinearLayout>
 

@@ -178,7 +178,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_apply_leave"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dp"
@@ -218,7 +218,7 @@
         android:layout_marginBottom="@dimen/dimen_15dp"
         android:elevation="@dimen/dimen_03dp"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@color/white"
+        app:tint="@color/white"
         app:backgroundTint="@color/tab_selector"
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />

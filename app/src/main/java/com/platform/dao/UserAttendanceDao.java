@@ -18,21 +18,26 @@ import java.util.List;
 public interface UserAttendanceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(AttendaceData...attendaceData);
+
     @Update
     public void update(AttendaceData...attendaceData);
+
+    @Query("UPDATE userattendance SET attendanceId =:attendanceId, isSync =:isSync WHERE attendaceDate=:attendanceDate AND attendanceType=:attendanceType")
+    public void updateUserAttendace(String attendanceId, Boolean isSync, long attendanceDate, String attendanceType);
+
     @Delete
     public void delete(AttendaceData... attendaceData);
-    @Query("SELECT * FROM userattendance")
-    public List<AttendaceData> getAttendanceList();
-    @Query("SELECT * FROM userattendance WHERE uid =:userId")
-    public List<AttendaceData> getUserAttendace(String userId);
+
     @Query("SELECT * FROM userattendance WHERE isSync=:isonline")
-    public List<AttendaceData> getUserAttendace(Boolean isonline);
+    public List<AttendaceData> getUnsyncAttendance(Boolean isonline);
+
     @Query("SELECT * FROM userattendance WHERE attendanceType=:type AND attendanceFormattedDate=:formatdate AND mobileNumber=:mobile")
     public List<AttendaceData> getUserAttendanceType(String type,String formatdate,String mobile);
-    @Query("SELECT uid FROM userattendance WHERE attendanceFormattedDate=:cdate AND mobileNumber=:mobile")
-    public String getUserId(String cdate,String mobile);
 
+    @Query("SELECT * FROM userattendance WHERE attendaceDate=:attendanceDate AND attendanceType=:attendanceType")
+    public AttendaceData getUserAttendace(long attendanceDate, String attendanceType);
 
+    @Query("DELETE FROM userattendance")
+    void deleteAllAttendance();
 
 }

@@ -1,372 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/lighter_grey">
+    android:background="@color/lighter_grey_transparent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:paddingBottom="@dimen/dimen_15dp">
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-               <!-- <RelativeLayout
-                    android:id="@+id/ly_attendance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_attendance_label"
-                        style="@style/CardHeader"
-                        android:text="@string/mark_attendance" />
+            <!-- Attendance tab -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ly_cv_attendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:elevation="2dp"
 
-                    <LinearLayout
-                        android:id="@+id/ly_check_in_out_dashboard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_attendance_label"
-                        android:layout_marginStart="@dimen/dimen_15dp"
-                        android:layout_marginTop="@dimen/dimen_20dp"
-                        android:layout_marginEnd="@dimen/dimen_15dp"
-                        android:layout_marginBottom="@dimen/dimen_20dp"
-                        android:baselineAligned="false"
-                        android:weightSum="2">
+                app:cardCornerRadius="@dimen/dimen_10dp">
 
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <Button
-                                android:id="@+id/bt_check_in"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimen_40dp"
-                                android:background="@drawable/bg_button_switch"
-                                android:text="@string/check_in"
-                                android:textAllCaps="false"
-                                android:textColor="@drawable/text_color_on_selection"
-                                android:textSize="@dimen/text_size_14"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_check_in_time"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/bt_check_in"
-                                android:layout_marginTop="@dimen/dimen_10dp"
-                                android:gravity="center_horizontal"
-                                android:textSize="@dimen/text_size_12"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/dimen_15dp"
-                            android:layout_weight="1">
-
-                            <Button
-                                android:id="@+id/bt_checkout"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimen_40dp"
-                                android:background="@drawable/bg_button_switch"
-                                android:text="@string/check_out"
-                                android:textAllCaps="false"
-                                android:textColor="@drawable/text_color_on_selection"
-                                android:textSize="@dimen/text_size_14"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_check_out_time"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/bt_checkout"
-                                android:layout_marginTop="@dimen/dimen_10dp"
-                                android:gravity="center_horizontal"
-                                android:textSize="@dimen/text_size_12"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_attendance_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ly_check_in_out_dashboard"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="@dimen/dimen_15dp"
-                        android:layout_marginBottom="@dimen/dimen_15dp"
-                        android:text="@string/attendance_details"
-                        android:textColor="@color/tab_selector"
-                        android:textSize="@dimen/text_size_14" />
-                </RelativeLayout>-->
-
-                <!-- Events tab -->
                 <RelativeLayout
+                    android:id="@+id/ly_attendance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_05dp"
-                    android:id="@+id/ly_attendance">
+                    android:visibility="gone">
 
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/lin_attendance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp">
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:layout_marginBottom="@dimen/dimen_05dp">
 
                         <TextView
                             android:id="@+id/tv_attendance_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignStart="@+id/lin_attendance"
-                            android:layout_alignTop="@+id/lin_attendance"
                             android:layout_gravity="center_vertical"
-                            android:text="Mark Attendance"
-                            android:paddingLeft="3dp"
-                            android:textColor="@color/black"
+                            android:fontFamily="@font/opensans"
+                            android:text="@string/attendance"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/text_size_16"
                             android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
 
                         <TextView
                             android:id="@+id/tv_attendance_details"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:layout_marginEnd="@dimen/dimen_05dp"
                             android:gravity="center_vertical"
-                            android:text="@string/see_details"
-
-                            />
-
-
-
-                    </LinearLayout>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/card_attendance"
-                        android:layout_below="@+id/lin_attendance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:elevation="2dp"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        app:cardCornerRadius="@dimen/dimen_10dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <LinearLayout
-                                android:id="@+id/lin_innercard"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/dimen_08dp"
-                                android:weightSum="10">
-
-                                <RelativeLayout
-                                    android:id="@+id/ly_schedule"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2.5"
-                                    android:background="@drawable/circular_rect_atten"
-
-                                    android:padding="@dimen/dimen_05dp">
-
-                                    <ImageView
-                                        android:id="@+id/tv_date_label"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:layout_marginTop="5dp"
-                                        android:src="@drawable/clock_shape" />
-
-                                    <TextView
-                                        android:id="@+id/txt_timer"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/tv_date_label"
-                                        android:layout_marginStart="10dp"
-                                        android:text="10:30"
-                                        android:textColor="@color/white"
-                                        android:textStyle="bold"
-                                        android:visibility="invisible">
-
-                                    </TextView>
-
-                                    <TextView
-                                        android:id="@+id/tv_date"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/txt_timer"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:layout_marginTop="@dimen/dimen_20dp"
-                                        android:text="Total Hrs"
-                                        android:textColor="@color/white"
-                                        android:textStyle="normal" />
-
-                                    <TextView
-                                        android:id="@+id/iv_total_hours"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/tv_date"
-                                        android:layout_marginStart="@dimen/dimen_12dp"
-                                        android:contentDescription="@string/content_description"
-                                        android:text="00:00"
-                                        android:textColor="@color/white"
-                                        android:textStyle="bold" />
-
-
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_weight="8">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="5dp"
-                                        android:weightSum="2">
-
-                                        <Button
-                                            android:id="@+id/bt_check_in"
-                                            android:layout_width="0dp"
-                                            android:layout_height="@dimen/dimen_40dp"
-                                            android:layout_marginLeft="5dp"
-                                            android:layout_weight="0.90"
-                                            android:background="@drawable/bg_button"
-                                            android:baselineAligned="false"
-                                            android:singleLine="true"
-                                            android:text="@string/check_in"
-                                            android:textAllCaps="false"
-                                            android:textColor="@drawable/text_color_on_selection"
-                                            android:textSize="@dimen/text_size_10"
-                                            android:textStyle="bold" />
-
-                                        <Button
-                                            android:id="@+id/bt_checkout"
-                                            android:layout_width="0dp"
-                                            android:layout_height="@dimen/dimen_40dp"
-                                            android:layout_marginLeft="5dp"
-                                            android:layout_weight="0.90"
-                                            android:background="@drawable/bg_button"
-                                            android:singleLine="true"
-                                            android:text="@string/check_out"
-                                            android:textAllCaps="false"
-                                            android:textColor="@drawable/text_color_on_selection"
-                                            android:textSize="@dimen/text_size_10"
-                                            android:textStyle="bold" />
-
-                                    </LinearLayout>
-
-                                    <!--
-                                    <Button
-                                        android:id="@+id/bt_check_in"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/dimen_40dp"
-                                        android:background="@drawable/bg_button"
-                                        android:text="@string/check_in"
-                                        android:layout_marginLeft="0dp"
-                                        android:textAllCaps="false"
-                                        android:textColor="@drawable/text_color_on_selection"
-                                        android:textSize="@dimen/text_size_14"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:id="@+id/tv_check_in_time"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/bt_check_in"
-                                        android:layout_marginLeft="20dp"
-                                        android:layout_marginTop="@dimen/dimen_10dp"
-                                        android:gravity="center_horizontal"
-                                        android:textSize="@dimen/text_size_12"
-                                        android:textStyle="bold"
-                                        android:text=""
-                                        android:visibility="gone" />
-
-                                    <Button
-                                        android:id="@+id/bt_checkout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/dimen_40dp"
-
-                                        android:layout_marginLeft="0dp"
-                                        android:layout_toRightOf="@+id/bt_check_in"
-                                        android:background="@drawable/bg_button"
-                                        android:text="@string/check_out"
-                                        android:textAllCaps="false"
-                                        android:textColor="@drawable/text_color_on_selection"
-                                        android:textSize="@dimen/text_size_14"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:id="@+id/tv_check_out_time"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/bt_checkout"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:text=""
-                                        android:textSize="@dimen/text_size_12"
-                                        android:textStyle="bold"
-                                        android:visibility="gone" />-->
-
-                                </RelativeLayout>
-
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-
-
-                    </androidx.cardview.widget.CardView>
-                   <!-- <RelativeLayout
-                        android:layout_below="@+id/card_attendance"
-                        android:id="@+id/lin_attendance_details"
-                        android:layout_width="match_parent"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tv_attendance_details"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-
-                            android:layout_marginBottom="@dimen/dimen_15dp"
-                            android:text="@string/attendance_details"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_14" />
+                            android:text="@string/see_details" />
 
                     </RelativeLayout>
--->
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lin_attendance"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:background="@drawable/bg_circular_border"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/lin_innercard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
+
+                            <RelativeLayout
+                                android:id="@+id/ly_schedule"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.5"
+                                android:background="@drawable/bg_circular_rect_pink"
+                                android:padding="@dimen/dimen_05dp"
+                                android:layout_margin="@dimen/dimen_05dp">
+
+                                <ImageView
+                                    android:id="@+id/iv_clock"
+                                    android:layout_width="@dimen/dimen_20dp"
+                                    android:layout_height="@dimen/dimen_20dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:src="@drawable/clock_shape"
+                                    android:tint="@color/black" />
+
+                                <TextView
+                                    android:id="@+id/tv_time_label"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_clock"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dimen_20dp"
+                                    android:gravity="center"
+                                    android:text="@string/total_hours"
+                                    android:textColor="@color/dark_grey"
+                                    android:textStyle="normal" />
+
+                                <TextView
+                                    android:id="@+id/iv_total_hours"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_time_label"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dimen_05dp"
+                                    android:layout_marginBottom="@dimen/dimen_05dp"
+                                    android:gravity="center"
+                                    android:text="00:00"
+                                    android:textColor="@color/dark_grey"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="7.5"
+                                android:layout_gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/bt_check_in"
+                                    style="@style/AppStyleButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_weight="1"
+                                    android:baselineAligned="false"
+                                    android:gravity="center"
+                                    android:text="@string/check_in"
+                                    android:textAllCaps="false"
+                                    android:textColor="@drawable/text_color_on_selection"
+                                    android:textSize="@dimen/text_size_10"
+                                    android:textStyle="bold"
+                                    tools:ignore="ButtonStyle" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/bt_checkout"
+                                    style="@style/AppStyleButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="@string/check_out"
+                                    android:textAllCaps="false"
+                                    android:textColor="@drawable/text_color_on_selection"
+                                    android:textSize="@dimen/text_size_10"
+                                    android:textStyle="bold"
+                                    tools:ignore="ButtonStyle" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
                 </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Event tab -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ly_cv_events"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_cv_attendance"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:elevation="2dp"
+
+                app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
                     android:id="@+id/ly_events"
                     android:layout_width="match_parent"
-                    android:layout_below="@+id/ly_attendance"
-                    android:layout_height="@dimen/dimen_277dp"
+                    android:layout_height="@dimen/dimen_120dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/event_header"
@@ -380,12 +206,13 @@
                             android:id="@+id/tv_event_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/today_events"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"
-                            android:fontFamily="@font/opensans"/>
+                            android:fontFamily="@font/opensans"
+                            android:text="@string/today_events"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/text_size_16"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_all_events_list"
@@ -393,40 +220,41 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dimen_05dp"
-                            android:text="@string/all_events"
                             android:layout_weight="1"
-                            />
+                            android:text="@string/all_events" />
+
                         <TextView
                             android:id="@+id/bt_add_events"
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+Add Event"
                             android:layout_weight="1"
-                            />
+                            android:text="@string/add_event" />
                     </LinearLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <RelativeLayout
                         android:id="@+id/cv_no_event"
-                        android:layout_below="@+id/event_header"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:layout_below="@+id/event_header"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        app:cardCornerRadius="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:background="@drawable/bg_circular_border"
                         android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tv_no_events_msg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
                             android:layout_gravity="center"
-                            android:text="@string/no_events"
-                            android:fontFamily="@font/opensans"/>
+                            android:fontFamily="@font/opensans"
+                            android:text="@string/no_events" />
 
-                    </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_events"
@@ -434,18 +262,27 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/event_header"
                         android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"/>
+                        android:layout_marginEnd="@dimen/dimen_05dp" />
 
                 </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-                <!-- Task tab -->
+            <!-- Task tab -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ly_cv_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_cv_events"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:elevation="5dp"
+                app:cardCornerRadius="@dimen/dimen_10dp">
+
                 <RelativeLayout
                     android:id="@+id/ly_task"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_277dp"
-                    android:layout_below="@+id/ly_events"
+                    android:layout_height="@dimen/dimen_120dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/task_header"
@@ -459,12 +296,13 @@
                             android:id="@+id/tv_task_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/today_tasks"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"
-                            android:fontFamily="@font/opensans"/>
+                            android:fontFamily="@font/opensans"
+                            android:text="@string/today_tasks"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/text_size_16"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_all_task_list"
@@ -472,9 +310,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dimen_05dp"
-                            android:text="@string/all_tasks"
                             android:layout_weight="1"
-                            />
+                            android:text="@string/all_tasks" />
 
                         <TextView
                             android:id="@+id/bt_add_task"
@@ -482,29 +319,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="+Add Task" />
+                            android:text="@string/add_task" />
                     </LinearLayout>
-                    <androidx.cardview.widget.CardView
+
+                    <RelativeLayout
                         android:id="@+id/cv_no_task"
-                        android:layout_below="@+id/task_header"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:layout_below="@+id/task_header"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        app:cardCornerRadius="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:background="@drawable/bg_circular_border"
                         android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tv_no_task_msg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/no_tasks"
-                            android:fontFamily="@font/opensans"/>
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/opensans"
+                            android:text="@string/no_tasks" />
 
-                    </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_task"
                         android:layout_width="match_parent"
@@ -512,7 +352,7 @@
                         android:layout_above="@id/card_fotter_"
                         android:layout_below="@+id/task_header"
                         android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"/>
+                        android:layout_marginEnd="@dimen/dimen_05dp" />
 
                     <RelativeLayout
                         android:id="@+id/card_fotter_"
@@ -523,77 +363,232 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Leaves tab -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ly_cv_leaves"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_cv_task"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:elevation="2dp"
+                app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_235dp"
-                    android:layout_below="@+id/ly_task"
-                    android:layout_marginTop="@dimen/dimen_05dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/tv_leaves_label"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/leaves_header"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="@string/leave_details" />
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:weightSum="10">
 
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_235dp"
-                        android:layout_below="@+id/tv_leaves_label"
-                        android:background="@color/white"
-                        android:layout_margin="@dimen/dimen_10dp"
-                        app:cardCornerRadius="@dimen/dimen_10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/tv_leaves_label"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_leave_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_leaves_label"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:orientation="horizontal"/>
-
-                    <RelativeLayout
-                        android:id="@+id/card_fotte_leave"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/rv_leave_balance"
-                        android:layout_marginTop="@dimen/dimen_10dp">
+                            android:layout_weight="8"
+                            android:text="@string/leave_details"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/text_size_16"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_link_check_leaves"
+                            style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/StyleLabel"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:layout_weight="1"
                             android:text="@string/link_leave_apply" />
 
                         <TextView
                             android:id="@+id/fab_add_leaves"
+                            style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/StyleLabel"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_weight="1"
                             android:text="@string/apply_leave" />
-                    </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/leaves_header"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_leave_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/ly_lebal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/opensans_regular"
+                                android:gravity="center_horizontal"
+                                android:text="Total" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/opensans_regular"
+                                android:gravity="center_horizontal"
+                                android:text="@string/used" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/opensans_regular"
+                                android:gravity="center_horizontal"
+                                android:text="Balance" />
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:id="@+id/ly_circular_progress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/ly_lebal"
+                            android:layout_marginTop="@dimen/dimen_05dp"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:visibility="gone">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tv_total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:fontFamily="@font/opensans_semibold" />
+
+                                <com.budiyev.android.circularprogressbar.CircularProgressBar
+                                    android:id="@+id/pb_total"
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_centerHorizontal="true"
+                                    app:animateProgress="true"
+                                    app:backgroundStrokeColor="@color/lighter_grey"
+                                    app:backgroundStrokeWidth="3dp"
+                                    app:drawBackgroundStroke="true"
+                                    app:foregroundStrokeCap="butt"
+                                    app:foregroundStrokeColor="@color/cyan"
+                                    app:foregroundStrokeWidth="5dp"
+                                    app:indeterminate="false"
+                                    app:indeterminateMinimumAngle="45"
+                                    app:indeterminateRotationAnimationDuration="1200"
+                                    app:indeterminateSweepAnimationDuration="600"
+                                    app:maximum="100"
+                                    app:progress="50"
+                                    app:progressAnimationDuration="100"
+                                    app:startAngle="270" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tv_used"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:fontFamily="@font/opensans_semibold" />
+
+                                <com.budiyev.android.circularprogressbar.CircularProgressBar
+                                    android:id="@+id/pb_used"
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_centerHorizontal="true"
+                                    app:animateProgress="true"
+                                    app:backgroundStrokeColor="@color/lighter_grey"
+                                    app:backgroundStrokeWidth="3dp"
+                                    app:drawBackgroundStroke="true"
+                                    app:foregroundStrokeCap="butt"
+                                    app:foregroundStrokeColor="@color/cyan"
+                                    app:foregroundStrokeWidth="5dp"
+                                    app:indeterminate="false"
+                                    app:indeterminateMinimumAngle="45"
+                                    app:indeterminateRotationAnimationDuration="1200"
+                                    app:indeterminateSweepAnimationDuration="600"
+                                    app:maximum="100"
+                                    app:progress="50"
+                                    app:progressAnimationDuration="100"
+                                    app:startAngle="270" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tv_balance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:fontFamily="@font/opensans_semibold" />
+
+                                <com.budiyev.android.circularprogressbar.CircularProgressBar
+                                    android:id="@+id/pb_balance"
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_centerHorizontal="true"
+                                    app:animateProgress="true"
+                                    app:backgroundStrokeColor="@color/lighter_grey"
+                                    app:backgroundStrokeWidth="3dp"
+                                    app:drawBackgroundStroke="true"
+                                    app:foregroundStrokeCap="butt"
+                                    app:foregroundStrokeColor="@color/cyan"
+                                    app:foregroundStrokeWidth="5dp"
+                                    app:indeterminate="false"
+                                    app:indeterminateMinimumAngle="45"
+                                    app:indeterminateRotationAnimationDuration="1200"
+                                    app:indeterminateSweepAnimationDuration="600"
+                                    app:maximum="100"
+                                    app:progress="50"
+                                    app:progressAnimationDuration="100"
+                                    app:startAngle="270" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
                 </RelativeLayout>
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
 
     </ScrollView>

@@ -13,11 +13,11 @@ import com.platform.view.fragments.EventsTaskLandingFragment;
 
 import java.lang.ref.WeakReference;
 
-public class EventsPlannerFragmentPresenter implements CreateEventListener {
+public class EventsTaskLandingFragmentPresenter implements CreateEventListener {
 
     private final WeakReference<EventsTaskLandingFragment> fragmentWeakReference;
 
-    public EventsPlannerFragmentPresenter(EventsTaskLandingFragment fragmentWeakReference) {
+    public EventsTaskLandingFragmentPresenter(EventsTaskLandingFragment fragmentWeakReference) {
         this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);
 
     }
@@ -67,7 +67,7 @@ public class EventsPlannerFragmentPresenter implements CreateEventListener {
                 if(data.getStatus()==200){
                     fragmentWeakReference.get().displayEventsListOfMonth(data.getData());
                 } else {
-                    onFailureListener(data.getMessage());
+//                    onFailureListener(data.getMessage());
                 }
             }
         }

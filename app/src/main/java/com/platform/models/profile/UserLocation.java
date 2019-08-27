@@ -13,6 +13,17 @@ public class UserLocation {
     @SerializedName("district")
     private List<JurisdictionType> districtIds;
 
+    public List<JurisdictionType> getCityIds() {
+        return cityIds;
+    }
+
+    public void setCityIds(List<JurisdictionType> cityIds) {
+        this.cityIds = cityIds;
+    }
+
+    @SerializedName("city")
+    private List<JurisdictionType> cityIds;
+
     @SerializedName("taluka")
     private List<JurisdictionType> talukaIds;
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/lighter_grey"
+    android:paddingStart="@dimen/dimen_05dp"
+    android:paddingEnd="@dimen/dimen_05dp"
+    android:paddingTop="@dimen/dimen_05dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_03dp"
+        android:layout_marginTop="@dimen/dimen_03dp"
+        android:layout_marginEnd="@dimen/dimen_03dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/dimen_05dp"
+            android:layout_margin="@dimen/dimen_05dp">
+
+
+            <RelativeLayout
+                android:id="@+id/row_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:text="Title"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/tv_detals"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"
+                    android:text="text"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_date_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_detals"
+                    android:text="/@ 22/10/91 10:12 am"
+                    android:textSize="@dimen/text_size_10"
+                    android:textColor="@color/dark_grey"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/row_img"
+        android:layout_width="@dimen/dimen_20dp"
+        android:layout_height="@dimen/dimen_20dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/circle_background"
+        android:tint="@color/white"
+        android:src="@drawable/crop__ic_cancel" />
+</RelativeLayout>

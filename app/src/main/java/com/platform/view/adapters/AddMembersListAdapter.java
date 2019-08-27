@@ -1,6 +1,7 @@
 package com.platform.view.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
@@ -50,10 +52,12 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
         holder.cbMemberSelect.setChecked(member.isMemberSelected());
 
         if( member.isAttendedCompleted()){
-            holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-        } /*else {
-           holder.lyMain.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-         }*/
+            holder.ivDelete.setImageResource(R.drawable.ic_check_mark);
+            holder.ivDelete.setClickable(false);
+        } else {
+            holder.ivDelete.setImageResource(R.drawable.ic_delete);
+            holder.ivDelete.setClickable(true);
+        }
 
     }
 
@@ -91,6 +95,7 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
                     if (((CheckBox) v).isChecked()) {
                         membersList.get(getAdapterPosition()).setMemberSelected(true);
                         ((AddMembersListActivity) mContext).checkAllSelected(membersList);
+
                     } else {
                         membersList.get(getAdapterPosition()).setMemberSelected(false);
                         ((AddMembersListActivity) mContext).checkAllDeSelected();
@@ -104,5 +109,6 @@ public class AddMembersListAdapter extends RecyclerView.Adapter<AddMembersListAd
                 }
             });
         }
+
     }
 }

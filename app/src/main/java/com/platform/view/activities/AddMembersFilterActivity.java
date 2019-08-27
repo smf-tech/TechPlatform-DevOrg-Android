@@ -32,7 +32,7 @@ import java.util.List;
 public class AddMembersFilterActivity extends BaseActivity implements AddMemberListener,
         View.OnClickListener, MultiSelectSpinner.MultiSpinnerListener {
 
-    private MultiSelectSpinner spOrganization;
+//    private MultiSelectSpinner spOrganization;
     private MultiSelectSpinner spState;
     private MultiSelectSpinner spRole;
 
@@ -41,7 +41,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     private MultiSelectSpinner spCluster;
     private MultiSelectSpinner spVillage;
 
-    private List<Organization> organizations = new ArrayList<>();
+//    private List<Organization> organizations = new ArrayList<>();
 //    private List<OrganizationProject> projects = new ArrayList<>();
     private List<OrganizationRole> roles = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     private List<JurisdictionType> villages = new ArrayList<>();
 
 //    private ArrayList<String> selectedProjects = new ArrayList<>();
-    private ArrayList<String> selectedOrganizations = new ArrayList<>();
+//    private ArrayList<String> selectedOrganizations = new ArrayList<>();
     private ArrayList<String> selectedRolesId = new ArrayList<>();
     private ArrayList<String> selectedRolesJurisdictionTypeId = new ArrayList<>();
 
@@ -70,14 +70,16 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
 
+    private String eventID;
+    private ArrayList<Participant> oldMembersList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member_filer);
 
         addMemberFilerPresenter = new AddMemberFilterActivityPresenter(this);
-        addMemberFilerPresenter.getOrganizations();
-
+        addMemberFilerPresenter.getOrganizationRoles(Util.getUserObjectFromPref().getOrgId());
         initView();
     }
 
@@ -85,12 +87,15 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
         setActionbar(getString(R.string.filter));
 
+        oldMembersList = (ArrayList<Participant>) getIntent().getSerializableExtra(Constants.Planner.MEMBERS_LIST);
+        eventID = getIntent().getStringExtra(Constants.Planner.EVENT_TASK_ID);
+
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
         backButton = findViewById(R.id.toolbar_back_action);
 
-        spOrganization = findViewById(R.id.sp_user_organization);
-        spOrganization.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_ORGANIZATION);
+//        spOrganization = findViewById(R.id.sp_user_organization);
+//        spOrganization.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_ORGANIZATION);
 
         spRole = findViewById(R.id.sp_role);
         spRole.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_ROLE);
@@ -150,19 +155,19 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 //                    }
 //                }
 //                break;
-            case Constants.MultiSelectSpinnerType.SPINNER_ORGANIZATION:
-                selectedOrganizations.clear();
-                for (int i = 0; i < selected.length; i++) {
-                    if (selected[i]) {
-                        selectedOrganizations.add(organizations.get(i).getId());
-                    }
-                }
-                //Change this "selectedOrganizations.get(0)" after API changes
-                if(this.selectedOrganizations.size()!=0){
-                    addMemberFilerPresenter.getOrganizationRoles(android.text.TextUtils.join(",", selectedOrganizations));
-//                    addMemberFilerPresenter.getOrganizationRoles(this.selectedOrganizations.get(0));
-                }
-                break;
+//            case Constants.MultiSelectSpinnerType.SPINNER_ORGANIZATION:
+//                selectedOrganizations.clear();
+//                for (int i = 0; i < selected.length; i++) {
+//                    if (selected[i]) {
+//                        selectedOrganizations.add(organizations.get(i).getId());
+//                    }
+//                }
+//                //Change this "selectedOrganizations.get(0)" after API changes
+//                if(this.selectedOrganizations.size()!=0){
+//                    addMemberFilerPresenter.getOrganizationRoles(android.text.TextUtils.join(",", selectedOrganizations));
+////                    addMemberFilerPresenter.getOrganizationRoles(this.selectedOrganizations.get(0));
+//                }
+//                break;
 
             case Constants.MultiSelectSpinnerType.SPINNER_ROLE:
                 selectedRolesId.clear();
@@ -176,8 +181,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 //                addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
 //                        selectedRoles.get(0),selectedRole.getProject().getJurisdictionTypeId(),
 //                        Constants.JurisdictionLevelName.STATE_LEVEL);
-                if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
-                    addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                if(selectedRolesJurisdictionTypeId.size()!=0) {
+                    addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                             selectedRolesJurisdictionTypeId.get(0),
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
@@ -191,8 +196,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     }
                 }
                 if (spDistrict.getVisibility() == View.VISIBLE) {
-                    if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                    if(selectedRolesJurisdictionTypeId.size()!=0) {
+                        addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                     }
@@ -208,8 +213,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 }
 
                 if (spTaluka.getVisibility() == View.VISIBLE) {
-                    if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                    if(selectedRolesJurisdictionTypeId.size()!=0) {
+                        addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.TALUKA_LEVEL);
                     }
@@ -225,8 +230,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 }
 
                 if (spVillage.getVisibility() == View.VISIBLE) {
-                    if(this.selectedOrganizations.size()!=0 && selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getJurisdictionLevelData(this.selectedOrganizations.get(0),
+                    if(selectedRolesJurisdictionTypeId.size()!=0) {
+                        addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                     }
@@ -282,20 +287,20 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
     @Override
     public void showOrganizations(List<Organization> organizations) {
-        List<String> org = new ArrayList<>();
-        for (int i = 0; i < organizations.size(); i++) {
-            org.add(organizations.get(i).getOrgName());
-        }
+//        List<String> org = new ArrayList<>();
+//        for (int i = 0; i < organizations.size(); i++) {
+//            org.add(organizations.get(i).getOrgName());
+//        }
 
-        spOrganization.setItems(org, getString(R.string.organization), this);
+//        spOrganization.setItems(org, getString(R.string.organization), this);
 
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddMemberFilerActivity.this,
 //                android.R.layout.simple_spinner_item, org);
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spOrganization.setAdapter(adapter);
 
-        this.organizations.clear();
-        this.organizations.addAll(organizations);
+//        this.organizations.clear();
+//        this.organizations.addAll(organizations);
 
     }
 
@@ -458,7 +463,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     private void submitDetails() {
 
         ParametersFilterMember parametersFilter = new ParametersFilterMember();
-        parametersFilter.setOrganizationIds(android.text.TextUtils.join(",", selectedOrganizations));
+        parametersFilter.setOrganizationIds(Util.getUserObjectFromPref().getOrgId());
         parametersFilter.setRoleIds(android.text.TextUtils.join(",", selectedRolesId));
         parametersFilter.setState(commaSeparatedString(selectedStates));
         parametersFilter.setDistrict(commaSeparatedString(selectedDistricts));
@@ -471,7 +476,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
     public String commaSeparatedString(ArrayList<JurisdictionType> jurisdictionList){
         ArrayList<String> s = new ArrayList<>();
-        for (JurisdictionType village : selectedVillages) {
+        for (JurisdictionType village : jurisdictionList) {
             s.add(village.getId());
         }
         return android.text.TextUtils.join(",", s);
@@ -509,11 +514,37 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
     @Override
     public void showMember(ArrayList<Participant> memberList) {
-        Intent intentAddMembersListActivity = new Intent(this, AddMembersListActivity.class);
-        intentAddMembersListActivity.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);
-        intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST,memberList);
-        this.startActivity(intentAddMembersListActivity);
+        if(oldMembersList!=null && oldMembersList.size()>0){
+            boolean flagPresent=false;
+            boolean isAttended=false;
+            int position=0;
+
+            for(int i=0;i<oldMembersList.size();i++){
+                for(int j=0;j<memberList.size();j++){
+                    flagPresent=false;
+                    if(oldMembersList.get(i).getId().equals(memberList.get(j).getId())){
+                        position=j;
+                        isAttended=oldMembersList.get(i).isAttendedCompleted();
+                        flagPresent=true;
+                        break;
+                    }
+                }
+                if(flagPresent){
+                    memberList.get(position).setMemberSelected(true);
+                    memberList.get(position).setAttendedCompleted(isAttended);
+                } else {
+                    oldMembersList.get(i).setMemberSelected(true);
+                    memberList.add(oldMembersList.get(i));
+                }
+            }
+        }
+
+        Intent intent = new Intent(this, AddMembersListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        intent.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST,true);
+        intent.putExtra(Constants.Planner.MEMBERS_LIST,memberList);
+        intent.putExtra(Constants.Planner.EVENT_TASK_ID, eventID);
+        this.startActivity(intent);
         finish();
     }
 }

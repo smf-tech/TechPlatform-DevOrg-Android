@@ -3,31 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/dimen_10dp"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/dimen_350dp"
     android:layout_height="wrap_content">
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/dimen_10dp"
         android:layout_height="wrap_content">
         <com.platform.view.customs.TextViewBold
-            android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:id="@+id/txt_dialog_title"
-            android:textStyle="bold"
-            android:textColor="@color/black_green"
-            android:text="Please provide reason for rejection"
-            android:layout_height="wrap_content" />
-        <!--<EditText
-            android:layout_width="wrap_content"
-            android:id="@+id/edt_reason"
-            android:layout_gravity="center_horizontal"
-            android:hint="Please enter reason"
-            android:textColorHint="@color/black_green"
-            android:layout_margin="@dimen/dimen_10dp"
-            android:gravity="center"
-            android:maxLength="100"
-            android:layout_height="wrap_content" />-->
+            android:gravity="center_horizontal"
+            android:textColor="@color/medium_grey"
+            android:text="Rejection Reason"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_bold"
+            android:textSize="@dimen/text_size_16"/>
 
         <EditText
             android:id="@+id/edt_reason"
@@ -36,7 +27,7 @@
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
             android:layout_marginTop="10dp"
-            android:hint="Please enter reason"
+            android:hint="Please write the reason for rejection."
             android:textColor="@color/black"
             android:textStyle="normal"
             android:fontFamily="@font/opensans_regular"
@@ -51,20 +42,31 @@
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
-
             android:layout_height="wrap_content">
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/AppStyleBorderButton"
                 android:layout_width="wrap_content"
-                style="@style/AppStyleButton"
                 android:text="Cancel"
                 android:layout_weight="1"
                 android:visibility="visible"
                 android:id="@+id/btn_cancel"
                 android:layout_margin="@dimen/dimen_10dp"
                  />
-            <Button
+            <!--<com.google.android.material.button.MaterialButton-->
+                <!--android:id="@+id/btn_reject"-->
+                <!--style="@style/AppStyleBorderButton"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginStart="@dimen/dimen_10dp"-->
+                <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
+                <!--android:layout_marginTop="@dimen/dimen_10dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="Reject"-->
+                <!--android:textColor="@color/medium_grey"-->
+                <!--/>-->
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/AppStyleBorderButton"
                 android:layout_width="wrap_content"
-                style="@style/AppStyleButton"
                 android:text="Submit"
                 android:layout_weight="1"
                 android:id="@+id/btn_submit"

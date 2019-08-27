@@ -26,7 +26,7 @@
         <item
             android:id="@+id/action_menu_teams"
             android:icon="@drawable/ic_menu_teams"
-            android:title="@string/menu_teams"
+            android:title="@string/approvals"
             android:visible="false" />
         <item
             android:id="@+id/action_menu_assets"

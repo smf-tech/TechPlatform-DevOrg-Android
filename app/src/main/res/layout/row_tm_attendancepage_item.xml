@@ -113,7 +113,7 @@
             <com.platform.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_address_checkout_value"
-                android:text=""
+                android:text=" "
                 android:textStyle="bold"
                 android:maxLines="4"
                 app:autoSizeTextType="uniform"
@@ -125,6 +125,41 @@
                 android:layout_margin="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_title_14"
                 android:layout_height="wrap_content" />
+
+
+
+
+            <com.platform.view.customs.TextViewBold
+                android:layout_width="@dimen/dimen_80dp"
+                android:id="@+id/tv_reason"
+                android:text="Reason:"
+                android:textStyle="bold"
+                android:layout_below="@+id/tv_address_checkout"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_title_14"
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
+
+
+            <com.platform.view.customs.TextViewRegular
+                android:layout_width="match_parent"
+                android:id="@+id/tv_reason_value"
+                android:text=""
+                android:textStyle="bold"
+                android:maxLines="4"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="@dimen/text_size_small_10"
+                app:autoSizeMaxTextSize="@dimen/text_size_title_14"
+                app:autoSizeStepGranularity="1sp"
+                android:layout_toRightOf="@+id/tv_reason"
+                android:layout_alignBaseline="@+id/tv_reason"
+                android:layout_below="@+id/tv_address_checkout_value"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_12"
+                android:layout_height="wrap_content" />
+
         </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -134,23 +169,24 @@
                 android:gravity="bottom"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_reject"
+                <com.google.android.material.button.MaterialButton
                     style="@style/AppStyleBorderButton"
+                    android:id="@+id/btn_reject"
+
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Reject"
-                    android:textColor="@color/dark_grey" />
+                    android:textColor="@color/medium_grey" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
+                    style="@style/AppStyleBorderButton"
                     android:id="@+id/btn_approve"
-                    style="@style/AppStyleButton"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
                     android:layout_weight="1"
                     android:text="Approve"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/medium_grey" />
             </LinearLayout>
             <!--<RelativeLayout-->
                 <!--android:layout_width="match_parent"-->

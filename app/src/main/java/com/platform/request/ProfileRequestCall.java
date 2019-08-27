@@ -160,7 +160,7 @@ public class ProfileRequestCall {
         Response.ErrorListener jurisdictionErrorListener = error -> listener.onErrorListener(error);
 
         final String getStateUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, "5c4ab05cd503a372d0391467", levelName);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

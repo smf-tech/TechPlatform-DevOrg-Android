@@ -117,7 +117,8 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
     public void onApproveClicked(int pos) {
         TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
         try {
-            tmApprovalRequestModel.setType("leave");
+            //tmApprovalRequestModel.setType("leave");requetsObject.get("type");
+            tmApprovalRequestModel.setType(requetsObject.getString("type"));
             tmApprovalRequestModel.setApprove_type("approved");
             tmApprovalRequestModel.setReason("");
             tmApprovalRequestModel.setLeave_type(tmUserLeaveApplicationsList.get(pos).getLeave_type());
@@ -147,7 +148,8 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
         if (!TextUtils.isEmpty(strReason)) {
             TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
             try {
-                tmApprovalRequestModel.setType("leave");
+                //tmApprovalRequestModel.setType("leave");
+                tmApprovalRequestModel.setType(requetsObject.getString("type"));
                 tmApprovalRequestModel.setApprove_type("rejected");
                 tmApprovalRequestModel.setReason(strReason);
                 tmApprovalRequestModel.setLeave_type(tmUserLeaveApplicationsList.get(pos).getLeave_type());

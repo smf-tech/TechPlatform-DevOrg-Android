@@ -18,26 +18,27 @@
             android:layout_marginTop="@dimen/dimen_80dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.platform.view.customs.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:text="@string/verification_code"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_22"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16"
+                android:fontFamily="@font/opensans_regular"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.platform.view.customs.TextViewRegular
                 android:id="@+id/enter_mobile_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:gravity="center"
                 android:text="@string/please_type_the_verification_code_n_sent_to"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_14"
+                android:fontFamily="@font/opensans_regular"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,8 +84,10 @@
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
             </LinearLayout>
 
-            <Button
+           <!-- <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_verify"
+                style="@style/AppStyleButton"
+                android:padding="@dimen/dimen_05dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_20dp"
@@ -92,9 +95,20 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:singleLine="true"
                 android:text="@string/verify"
-                android:textAllCaps="false"
+                 />-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_verify"
+                android:layout_width="fill_parent"
+                style="@style/AppStyleButton"
+                android:padding="@dimen/dimen_05dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:singleLine="true"
+                android:text="@string/verify"
+                android:textAllCaps="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_20" />
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/tv_otp_timer"
@@ -106,6 +120,7 @@
                 android:drawablePadding="@dimen/dimen_10dp"
                 android:gravity="center_horizontal"
                 android:text="@string/label_time"
+                android:fontFamily="@font/opensans"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/text_size_16"
                 android:visibility="gone" />
@@ -120,6 +135,7 @@
                 android:text="@string/resend"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/text_size_16"
+                android:fontFamily="@font/opensans_regular"
                 android:visibility="visible" />
         </LinearLayout>
 

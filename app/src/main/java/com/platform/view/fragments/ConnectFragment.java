@@ -26,8 +26,8 @@ public class ConnectFragment extends Fragment {
 
 //        if (getActivity() != null && getArguments() != null) {
 //            String title = (String) getArguments().getSerializable("TITLE");
-        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.tab_connect));
-        ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+//        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.tab_connect));
+//        ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
 
 //            if ((boolean)getArguments().getSerializable("SHOW_BACK")) {
 //                ((HomeActivity) getActivity()).showBackArrow();

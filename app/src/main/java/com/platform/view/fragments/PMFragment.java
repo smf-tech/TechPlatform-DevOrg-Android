@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +92,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         txtViewAllForms.setOnClickListener(this);
         rvFormsStatusCount = pmFragmentView.findViewById(R.id.rv_forms_dashboard);
         formsDashboardAdapter = new FormsDashboardAdapter(getActivity(), formStatusCountDataList);
-        rvFormsStatusCount.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        rvFormsStatusCount.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvFormsStatusCount.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvFormsStatusCount.setAdapter(formsDashboardAdapter);
 
         rvFormsStatusCount.addOnScrollListener(new RecyclerView.OnScrollListener() {

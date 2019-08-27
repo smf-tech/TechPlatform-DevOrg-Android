@@ -35,6 +35,7 @@
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:text="@string/app_name_ss"
                 android:textColor="@color/dark_grey"
+                android:fontFamily="@font/opensans"
                 android:textSize="@dimen/text_size_20"
                 android:visibility="gone" />
 
@@ -46,14 +47,23 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/enter_mobile_label"
                     style="@style/roboto_regular_light_black_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:gravity="center"
+                    android:fontFamily="@font/opensans_regular"
                     android:text="@string/msg_enter_mobile" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="@string/verification_otp_will_be_sent_on_this_number"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="fill_parent"
@@ -72,38 +82,35 @@
                         android:layout_height="@dimen/dimen_50dp"
                         android:background="@android:color/transparent"
                         android:digits="0123456789"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:importantForAutofill="no"
                         android:inputType="phone"
                         android:maxLength="10"
+                        android:layout_gravity="center"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:singleLine="true"
                         android:textColor="@color/dark_grey"
                         android:textColorHint="@color/dark_grey"
-                        android:textSize="@dimen/text_size_16"
+                        android:textSize="@dimen/text_size_25"
+                        android:fontFamily="@font/opensans_regular"
                         tools:ignore="UnusedAttribute" />
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardElevation="@dimen/dimen_07dp">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_login"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_button"
+                        style="@style/AppStyleButton"
+                        android:padding="@dimen/dimen_05dp"
                         android:gravity="center_horizontal|center_vertical"
                         android:singleLine="true"
                         android:text="@string/label_login"
                         android:textAllCaps="true"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_20" />
-                </androidx.cardview.widget.CardView>
+                        android:textSize="@dimen/text_size_16" />
+
 
                 <TextView
                     android:id="@+id/tv_otp_timer"
@@ -115,11 +122,12 @@
                     android:drawablePadding="@dimen/dimen_10dp"
                     android:gravity="center_horizontal"
                     android:text="@string/label_time"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_size_16"
                     android:visibility="gone" />
 
-                <TextView
+                <com.platform.view.customs.TextViewRegular
                     android:id="@+id/tv_resend_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

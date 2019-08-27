@@ -84,7 +84,7 @@ public class EventTaskListAdapter extends RecyclerView.Adapter<EventTaskListAdap
 
             if (type.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
 //                task
-                lySchedule.setBackground(mContext.getDrawable(R.drawable.bg_circular_rect_yellow));
+                lySchedule.setBackground(mContext.getDrawable(R.drawable.bg_circular_rect_pink));
                 tvStatus.setVisibility(View.VISIBLE);
             } else {
 //                event

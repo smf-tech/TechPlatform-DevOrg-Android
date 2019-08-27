@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.listeners.LeaveDataListener;
 import com.platform.models.leaves.YearlyHolidayData;
 import com.platform.models.leaves.YearlyHolidaysAPIResponse;
 import com.platform.presenter.LeavesPresenter;
@@ -25,7 +26,7 @@ import com.platform.view.adapters.YearlyHolidaysAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HolidayListFragment extends Fragment implements APIDataListener {
+public class HolidayListFragment extends Fragment implements LeaveDataListener {
 
     private LeavesPresenter presenter;
     private final List<YearlyHolidayData> yearlyHolidayList = new ArrayList<>();

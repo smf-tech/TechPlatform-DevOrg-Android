@@ -40,7 +40,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_50dp"
                         android:layout_margin="@dimen/dimen_10dp"
-                        android:background="@drawable/leave_form_view_unfocused"></Spinner>
+                        android:background="@drawable/bg_grey_box"></Spinner>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -55,14 +55,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dimen_50dp"
                             android:layout_weight="1"
-                            android:background="@drawable/leave_form_view_unfocused"></Spinner>
+                            android:background="@drawable/bg_grey_box"></Spinner>
                         <Spinner
                             android:id="@+id/spinner_meet_city"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dimen_50dp"
                             android:layout_weight="1"
                             android:layout_marginStart="@dimen/dimen_10dp"
-                            android:background="@drawable/leave_form_view_unfocused"></Spinner>
+                            android:background="@drawable/bg_grey_box"></Spinner>
 
                     </LinearLayout>
 
@@ -73,7 +73,7 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:background="@drawable/leave_form_view_unfocused"
+                        android:background="@drawable/bg_grey_box"
                         android:gravity="top"
                         android:hint="@string/matrimony_venue_label"
                         android:importantForAutofill="no"
@@ -199,6 +199,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/ly_meet_time"
                             style="@style/RegistrationTextInputLayout"
+                            android:background="@drawable/bg_grey_box"
                             android:layout_weight="5"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 

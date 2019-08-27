@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,16 +49,16 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
     @Override
     public void onBindViewHolder(@NonNull LeaveBalanceAdapter.MyViewHolder holder, int position) {
         if(adapterType.equalsIgnoreCase("LeaveBalance")){
-            holder.tvLeaveCount.setText(leave.get(position).getBalance());
+            holder.tvLeaveCount.setText(""+leave.get(position).getBalance());
         }
         holder.tvLeaveType.setText(leave.get(position).getType());
         if(adapterType.equalsIgnoreCase("Category")){
-            holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.leave_form_text_color));
-            holder.tvLeaveCount.setVisibility(View.GONE);
+            holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.medium_grey));
+            holder.lyCount.setVisibility(View.GONE);
 
             if(leaveBackground!=null && leaveBackground.size()==leave.size()) {
                 holder.leaveBalanceLayout.setBackgroundResource(leaveBackground.get(position));
-                if(leaveBackground.get(position)==(R.drawable.leave_form_view_focused)){
+                if(leaveBackground.get(position)==(R.drawable.bg_rect_primary_field)){
                     holder.tvLeaveType.setTextColor(context.getResources().getColor(R.color.white));
                 }
             }
@@ -70,11 +71,12 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout leaveBalanceLayout;
+        RelativeLayout leaveBalanceLayout,lyCount;
         TextView tvLeaveCount,tvLeaveType;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             leaveBalanceLayout = itemView.findViewById(R.id.leave_balance_layout);
+            lyCount = itemView.findViewById(R.id.ly_count);
             tvLeaveCount = itemView.findViewById(R.id.tv_leaves_count);
             tvLeaveType = itemView.findViewById(R.id.tv_leaves_type);
             if(adapterType.equalsIgnoreCase("Category")) {
@@ -83,11 +85,12 @@ public class LeaveBalanceAdapter extends RecyclerView.Adapter<LeaveBalanceAdapte
                         for (int i = 0; i < leaveBackground.size(); i++) {
                             if (i == getAdapterPosition()) {
                                 leaveBackground.remove(i);
-                                leaveBackground.add(i, R.drawable.leave_form_view_focused);
+                                leaveBackground.add(i, R.drawable.bg_rect_primary_field);
                                 context.selectedLeaveCatgory = leave.get(i).getType();
+                                context.selectedLeaveCatgoryBalance = leave.get(i).getBalance();
                             } else {
                                 leaveBackground.remove(i);
-                                leaveBackground.add(i, R.drawable.leave_form_view_unfocused);
+                                leaveBackground.add(i, R.drawable.bg_rect_primary_border);
                             }
                         }
                         notifyDataSetChanged();

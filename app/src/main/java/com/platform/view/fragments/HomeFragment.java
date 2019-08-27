@@ -62,11 +62,10 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
 
         if (getActivity() != null) {
             context = getActivity();
-            ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
             ((HomeActivity) context).setSyncClickListener(this);
         }
 
-        String str=getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
+        String str = getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
         dialogNotApproved = new AlertDialog.Builder(context).create();
         AppEvents.trackAppEvent(getString(R.string.event_home_screen_visit));
     }
@@ -157,6 +156,34 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             tabLayout.getTabAt(1).setIcon(tabIcons[1]);
             tabLayout.getTabAt(2).setIcon(tabIcons[2]);
 
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
+                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.HOME);
+                            break;
+
+                        case 1:
+                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.STORIES);
+                            break;
+
+                        case 2:
+                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONNECT);
+                            break;
+
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
+            ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
             return;
         }
 

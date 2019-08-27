@@ -3,27 +3,29 @@ package com.platform.presenter;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.platform.listeners.APIDataListener;
-import com.platform.listeners.APIPresenterListener;
+import com.google.gson.JsonObject;
+import com.platform.listeners.LeaveDataListener;
+import com.platform.listeners.LeavePresenterListener;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.leaves.LeaveData;
 import com.platform.request.LeavesRequestCall;
 
 import java.lang.ref.WeakReference;
 
-public class LeavesPresenter implements APIPresenterListener {
+public class LeavesPresenter implements LeavePresenterListener {
 
-    private WeakReference<APIDataListener> fragmentWeakReference;
+    private WeakReference<LeaveDataListener> fragmentWeakReference;
 
     public static final String GET_USER_LEAVE_DETAILS ="getUsersAllLeavesDetails";
-    public static final String GET_LEAVE_DETAILS ="getLeavesData";
+    public static final String GET_LEAVE_BALANCE ="getLeavesBalance";
     public static final String POST_USER_DETAILS ="postUserLeave";
     public static final String REQUEST_USER_COMPOFF ="requestUserCompoff";
     public static final String DELETE_LEAVE ="deleteUserLeave";
     public static final String HOLIDAY_LIST ="holiday_list";
 
-    public LeavesPresenter(APIDataListener tmFragment) {
+    public LeavesPresenter(LeaveDataListener tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
+
     }
 
     public void clearData() {
@@ -32,32 +34,38 @@ public class LeavesPresenter implements APIPresenterListener {
 
     public void getUsersAllLeavesDetails(String year, String month) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
-        requestCall.setApiPresenterListener(this);
+        requestCall.setLeavePresenterListener(this);
         requestCall.getUsersAllLeavesDetails(GET_USER_LEAVE_DETAILS, year, month);
     }
 
     public void postUserLeave(LeaveData leaveData) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
-        requestCall.setApiPresenterListener(this);
+        requestCall.setLeavePresenterListener(this);
         requestCall.postUserLeave(POST_USER_DETAILS,leaveData);
     }
 
     public void requestCompOff(LeaveData leaveData) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.requestUserCompoff(REQUEST_USER_COMPOFF,leaveData);
+        requestCall.setLeavePresenterListener(this);
+        requestCall.requestUserCompoff(POST_USER_DETAILS,leaveData);
     }
 
     public void deleteUserLeave(String leaveId) {
         LeavesRequestCall requestCall = new LeavesRequestCall();
-        requestCall.setApiPresenterListener(this);
+        requestCall.setLeavePresenterListener(this);
         requestCall.deleteUserLeave(DELETE_LEAVE, leaveId);
     }
 
     public void getHolidayList() {
         LeavesRequestCall requestCall = new LeavesRequestCall();
-        requestCall.setApiPresenterListener(this);
+        requestCall.setLeavePresenterListener(this);
         requestCall.getHolidayList(HOLIDAY_LIST);
+    }
+
+    public void getLeavesBalance() {
+        LeavesRequestCall requestCall = new LeavesRequestCall();
+        requestCall.setLeavePresenterListener(this);
+        requestCall.getLeavesBalance(GET_LEAVE_BALANCE);
     }
 
     @Override

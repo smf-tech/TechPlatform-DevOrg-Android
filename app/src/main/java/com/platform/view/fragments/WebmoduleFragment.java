@@ -48,7 +48,7 @@ public class WebmoduleFragment extends Fragment {
             weblink = getArguments().getString("Weblink");
             webModule_name = getArguments().getString("Webmodule_name");
         }
-        webview = (WebView)webModuleFragmentView.findViewById(R.id.webview);
+        webview = webModuleFragmentView.findViewById(R.id.webview);
         webview.loadUrl(weblink);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
