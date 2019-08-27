@@ -265,8 +265,8 @@ public class DashboardFragment extends Fragment {
     private void drawTabCount(int i, View tabOne, TextView tabView, TextView pendingActionsCountView) {
         if (getContext() == null) return;
         if (!tabNames.get(i).isActive()) {
-//            ((TextView) tabOne.findViewById(R.id.tab))
-//                    .setCompoundDrawablesWithIntrinsicBounds(disableTabIcons[0], 0, 0, 0);
+            ((TextView) tabOne.findViewById(R.id.tab))
+                    .setCompoundDrawablesWithIntrinsicBounds(disableTabIcons[0], 0, 0, 0);
             pendingActionsCountView.setVisibility(View.GONE);
         } else {
             pendingActionsCountView.setVisibility(View.VISIBLE);

@@ -33,6 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.platform.Platform;
 import com.platform.R;
@@ -276,7 +277,13 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         }
                     }
                     if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
+
+                        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
+                        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+
+
                         Glide.with(this)
+                                .applyDefaultRequestOptions(requestOptions)
                                 .load(userInfo.getProfilePic())
                                 .into(imgUserProfilePic);
 

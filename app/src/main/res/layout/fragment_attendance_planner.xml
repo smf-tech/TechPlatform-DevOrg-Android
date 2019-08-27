@@ -118,6 +118,7 @@
                     android:layout_marginTop="@dimen/dimen_05dp"
                     android:layout_toEndOf="@+id/iv_user_profile_pic"
                     android:textColor="@color/attendance_list_item"
+                    android:fontFamily="@font/opensans_semibold"
                     />
 
                 <TextView
@@ -126,6 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_name"
                     android:layout_toEndOf="@+id/iv_user_profile_pic"
+                    android:textSize="@dimen/text_size_12"
+                    android:fontFamily="@font/opensans"
                     />
 
                 <RelativeLayout
@@ -141,6 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans"
                         android:text=""/>
                     <TextView
                         android:id="@+id/tv_dash"
@@ -154,6 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_05dp"
                         android:layout_toEndOf="@+id/tv_dash"
+                        android:fontFamily="@font/opensans"
                         android:text=""/>
 
                 </RelativeLayout>
@@ -163,6 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dimen_05dp"
                     android:paddingStart="@dimen/dimen_10dp"
                     android:paddingEnd="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_05dp"
