@@ -37,12 +37,6 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
             String title = data.getString("title") != null
                     ? data.getString("title") : "";
 
-            // intent.putExtra("userAvailable",availableOnServer);
-            //                    intent.putExtra("userCheckInTime",userServerCheckInTime);
-            //                    intent.putExtra("userCheckOutTime",userServerCheckOutTime);
-
-
-
             TextView toolBar = findViewById(R.id.toolbar_title);
             ImageView toolBarMenu = findViewById(R.id.toolbar_edit_action);
             toolBar.setText(title);

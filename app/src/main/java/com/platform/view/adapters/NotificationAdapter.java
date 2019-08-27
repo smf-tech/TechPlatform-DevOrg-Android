@@ -126,7 +126,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 context.startActivity(intent);
                                 break;
                             case "attendance":
-
+                                intent = new Intent(context, GeneralActionsActivity.class);
+                                intent.putExtra("title", context.getString(R.string.attendance));
+                                intent.putExtra("switch_fragments", "AttendancePlannerFragment");
+                                context.startActivity(intent);
                                 break;
 
                             default:

@@ -72,11 +72,11 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
         if (leavesList.get(i).getCheckOut() != null)
             viewHolder.tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa"));
 
-        if (leavesList.get(i).getStatus().equals("Absent")) {
+        if (leavesList.get(i).getStatus().equalsIgnoreCase("absent")) {
             viewHolder.ivStatus.setImageResource(R.drawable.ic_absent);
-        } else if (leavesList.get(i).getStatus().equals("Present")) {
+        } else if (leavesList.get(i).getStatus().equalsIgnoreCase("present")) {
             viewHolder.ivStatus.setImageResource(R.drawable.ic_present);
-        } else if (leavesList.get(i).getStatus().equals("Leave")) {
+        } else if (leavesList.get(i).getStatus().equalsIgnoreCase("leave")) {
             viewHolder.ivStatus.setImageResource(R.drawable.ic_leave);
         }
 

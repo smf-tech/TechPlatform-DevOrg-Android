@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -267,9 +264,9 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void deleteLeaves(String leaveId) {
-        deleteLeaveId = leaveId;
-        showDeleteAlert();
+    public void deleteLeaves(String id) {
+        deleteLeaveId = id;
+        showDeleteAlert(deleteLeaveId);
     }
 
     @Override
@@ -285,13 +282,13 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         startActivity(intent);
     }
 
-    public void showDeleteAlert(){
+    public void showDeleteAlert(String LeaveId){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.delete_alert)
                 .setMessage(getString(R.string.sure_to_delete))
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        presenter.deleteUserLeave(deleteLeaveId);
+                        presenter.deleteUserLeave(LeaveId);
                         dialog.dismiss();
                     }
                 })
