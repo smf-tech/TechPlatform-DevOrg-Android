@@ -41,8 +41,13 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -55,6 +60,7 @@ import com.platform.models.profile.OrganizationRolesResponse;
 import com.platform.models.profile.UserLocation;
 import com.platform.models.tm.TMApprovalRequestModel;
 import com.platform.models.tm.TMUserProfileApprovalRequest;
+import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.TMFiltersListActivity;
@@ -1256,5 +1262,53 @@ return "";
         calendar.set(Calendar.MINUTE,min);
         return  calendar;
     }
+
+
+
+
+//---------------------------
+public static void updateFirebaseIdRequests(JSONObject requestObject) {
+    Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
+        try {
+            if (response != null) {
+                String res = response.toString();
+                Log.d(TAG, "update firebase id Requests - Resp: " + res);
+              /*  User user = new Gson().fromJson(res, User.class);
+              //  listener.TMUserProfileApprovalRequestsFetched(res);
+                if (res != null && user.getUserInfo() != null) {
+                    Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+                }*/
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            //listener.onFailureListener(e.getMessage());
+        }
+    };
+
+    Response.ErrorListener pendingRequestsErrorListener = error ->
+    {
+     //   listener.onErrorListener(error);
+        Log.d(TAG, "update firebase id Requests - Resp error: " + error.getMessage());
+    };
+
+    Gson gson = new GsonBuilder().serializeNulls().create();
+    final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.PUT_UPDATE_FIREBASEID_TO_SERVER;
+
+    GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+            Request.Method.PUT,
+            getPendingRequestsUrl,
+            new TypeToken<JSONObject>() {
+            }.getType(),
+            gson,
+            pendingRequestsResponseListener,
+            pendingRequestsErrorListener
+    );
+
+    gsonRequest.setHeaderParams(Util.requestHeader(true));
+    gsonRequest.setShouldCache(false);
+    gsonRequest.setBodyParams(requestObject);
+    Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+}
 
 }

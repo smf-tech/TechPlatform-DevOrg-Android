@@ -44,8 +44,9 @@ public class Urls {
         public static final String GET_TM_USER_APPROVE_REJECT_REQUEST ="api/applicationapproval";
 
 
-
+        public static final String PUT_UPDATE_FIREBASEID_TO_SERVER ="api/updateFirebaseId";
     }
+
 
     public class Report {
         public static final String GET_ALL_REPORTS = "api/reports";

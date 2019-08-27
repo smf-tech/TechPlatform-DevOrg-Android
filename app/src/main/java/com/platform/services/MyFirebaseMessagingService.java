@@ -26,6 +26,9 @@ import com.platform.view.activities.EditProfileActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.LoginActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -154,5 +157,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PreferenceHelper preferenceHelper = new PreferenceHelper(getApplicationContext());
         preferenceHelper.insertString(PreferenceHelper.TOKEN, s);
+        //Util.updateFirebaseIdRequests(jsonObject);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("firebase_id", s);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject != null) {
+            Util.updateFirebaseIdRequests(jsonObject);
+        }
     }
 }
