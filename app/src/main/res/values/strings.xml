@@ -469,4 +469,6 @@
     <string name="event_matrimony_screen_visit">Event Matrimony Screen visited</string>
     <string name="matrimony">Matrimony</string>
     <string name="msg_select_city">Please select City</string>
+    <string name="matrimony_name_label">Meet Name</string>
+    <string name="meet_date">Meet Date</string>
 </resources>

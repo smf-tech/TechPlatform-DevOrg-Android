@@ -115,19 +115,19 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
     }
 
     private void PopulateData(){
-        MatrimonyMeet m1 = new MatrimonyMeet();
-        m1.setMeetTitle("First Meet");
-        m1.setMeetDateTime("1 August 2019");
-        MatrimonyMeet m2 = new MatrimonyMeet();
-        m2.setMeetTitle("Second Meet");
-        m2.setMeetDateTime("10 August 2019");
-        MatrimonyMeet m3 = new MatrimonyMeet();
-        m3.setMeetTitle("Third Meet");
-        m3.setMeetDateTime("20 August 2019");
-        matrimonyMeetList.clear();
-        matrimonyMeetList.add(m1);
-        matrimonyMeetList.add(m2);
-        matrimonyMeetList.add(m3);
+//        MatrimonyMeet m1 = new MatrimonyMeet();
+//        m1.setMeetTitle("First Meet");
+//        m1.setMeetDateTime("1 August 2019");
+//        MatrimonyMeet m2 = new MatrimonyMeet();
+//        m2.setMeetTitle("Second Meet");
+//        m2.setMeetDateTime("10 August 2019");
+//        MatrimonyMeet m3 = new MatrimonyMeet();
+//        m3.setMeetTitle("Third Meet");
+//        m3.setMeetDateTime("20 August 2019");
+//        matrimonyMeetList.clear();
+//        matrimonyMeetList.add(m1);
+//        matrimonyMeetList.add(m2);
+//        matrimonyMeetList.add(m3);
         adapter.notifyDataSetChanged();
     }
 

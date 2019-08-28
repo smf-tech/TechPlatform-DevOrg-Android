@@ -324,6 +324,7 @@ public class Constants {
     }
 
     public static class Matrimony{
+        public static final String ORGANIZERS_LABEL = "Organizers";
         public static final String REFERENCES_LABEL = "References";
     }
 }

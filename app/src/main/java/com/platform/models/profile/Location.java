@@ -30,6 +30,9 @@ public class Location {
     @SerializedName("district")
     @Expose
     private JurisdictionType district;
+    @SerializedName("city")
+    @Expose
+    private JurisdictionType city;
     @SerializedName("taluka")
     @Expose
     private JurisdictionType taluka;
@@ -136,6 +139,10 @@ public class Location {
     public void setDistrict(JurisdictionType district) {
         this.district = district;
     }
+
+    public JurisdictionType getCity() { return city; }
+
+    public void setCity(JurisdictionType city) { this.city = city; }
 
     public JurisdictionType getTaluka() {
         return taluka;

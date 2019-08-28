@@ -17,7 +17,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dimen_10dp"
-        android:backgroundTint="@color/color_db_tab_select"
+        android:backgroundTint="@color/colorPrimary"
         android:rotation="45"
         android:src="@drawable/ic_close" />
 

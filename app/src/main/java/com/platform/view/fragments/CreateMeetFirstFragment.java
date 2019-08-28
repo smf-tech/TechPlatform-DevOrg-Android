@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -39,19 +42,24 @@ import java.util.List;
 import java.util.Locale;
 
 public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener,
-        APIDataListener {
+        RadioGroup.OnCheckedChangeListener, APIDataListener {
 
-    private Spinner meetTypeSpinner,stateSpinner,citySpinner;
+    private Spinner meetTypeSpinner,stateSpinner,citySpinner, chapterSpinner;
     private Button btnFirstPartMeet;
     List<String> meetTypes = new ArrayList<>();
     List<String> meetStates = new ArrayList<>();
-    List<String> meetDistricts = new ArrayList<>();
+    List<String> meetCities = new ArrayList<>();
+    List<String> meetChapters = new ArrayList<>();
     private CreateMeetFirstFragmentPresenter matrimonyMeetFirstFragmentPresenter;
-    private String selectedMeetType, selectedState, selectedDistrict;
-    private ArrayAdapter<String> meetTypeAdapter, meetStateAdapter, meetDistrictAdapter;
-    private EditText edtMeetDate,edtMeetTime,edtMeetRegStartDate,edtMeetRegEndDate;
+    private String selectedMeetType, selectedState, selectedCity, selectedChapter;
+    private ArrayAdapter<String> meetTypeAdapter, meetStateAdapter, meetCityAdapter, meetChapterAdapter;
+    private EditText edtMeetName, edtMeetVenue,edtMeetDate, edtMeetStartTime, edtMeetEndTime,edtMeetRegStartDate,
+            edtMeetRegEndDate, edtRegAmt;
+    private RadioGroup rgPaidFree;
+    private RadioButton rbPaid, rbFree, rbOnlinePayment;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    private boolean isRegPaid, isOnlinePaymentAllowed;
     UserInfo userInfo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,24 +88,39 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         stateSpinner.setOnItemSelectedListener(this);
         citySpinner = view.findViewById(R.id.spinner_meet_city);
         citySpinner.setOnItemSelectedListener(this);
+        chapterSpinner = view.findViewById(R.id.spinner_meet_chapter);
+        chapterSpinner.setOnItemSelectedListener(this);
         btnFirstPartMeet = view.findViewById(R.id.btn_first_part_meet);
         btnFirstPartMeet.setOnClickListener(this);
+        edtMeetName = view.findViewById(R.id.edit_meet_name);
+        edtMeetVenue = view.findViewById(R.id.edit_meet_venue);
         edtMeetDate = view.findViewById(R.id.edt_meet_date);
         edtMeetDate.setOnClickListener(this);
-        edtMeetTime = view.findViewById(R.id.edt_meet_time);
-        edtMeetTime.setOnClickListener(this);
+        edtMeetStartTime = view.findViewById(R.id.edt_start_time);
+        edtMeetStartTime.setOnClickListener(this);
+        edtMeetEndTime = view.findViewById(R.id.edt_end_time);
+        edtMeetEndTime.setOnClickListener(this);
         edtMeetRegStartDate = view.findViewById(R.id.edt_meet_reg_date);
         edtMeetRegStartDate.setOnClickListener(this);
         edtMeetRegEndDate = view.findViewById(R.id.edt_meet_reg_end_date);
         edtMeetRegEndDate.setOnClickListener(this);
+        edtRegAmt = view.findViewById(R.id.edt_reg_amt);
+        rgPaidFree = view.findViewById(R.id.rg_paid_free);
+        rgPaidFree.setOnCheckedChangeListener(this);
+        rbPaid = view.findViewById(R.id.rb_paid);
+        rbFree = view.findViewById(R.id.rb_free);
+        rbOnlinePayment = view.findViewById(R.id.rb_online_payment);
 
         userInfo = Util.getUserObjectFromPref();
 
-        meetTypes.add("Meet Type");
+        isRegPaid = false;
+        //rbFree.setSelected(true);
+        isOnlinePaymentAllowed = false;
+        //rbOnlinePayment.setSelected(false);
 //        meetTypes.add("Educated");
 //        meetTypes.add("Rural Area");
 //        meetTypes.add("Urban Area");
-
+        meetTypes.add("Meet Type");
         meetTypeAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, meetTypes);
         meetTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,18 +131,40 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         meetStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(meetStateAdapter);
 
-        meetDistricts.add("District");
-        meetDistrictAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, meetDistricts);
-        meetDistrictAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(meetDistrictAdapter);
+        meetCities.add("City");
+        meetCityAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, meetCities);
+        meetCityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(meetCityAdapter);
+
+        meetChapters.add("Chapter");
+        meetChapterAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, meetChapters);
+        meetChapterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        chapterSpinner.setAdapter(meetChapterAdapter);
 
         matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
         matrimonyMeetFirstFragmentPresenter.getMeetTypes();
     }
 
     private void setMeetData() {
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetDateTime("10/8/2019");
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setTitle(edtMeetName.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetType(selectedMeetType);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setState(selectedState);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCity(selectedCity);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setChapter(selectedChapter);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setDateTime
+                (Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetStartTime(edtMeetStartTime.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetEndTime(edtMeetEndTime.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsRegPaid(isRegPaid);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegStartDateTime
+                (Util.dateTimeToTimeStamp(edtMeetRegStartDate.getText().toString(), "00:00"));
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegEndDateTime
+                (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "00:00"));
+        //((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString()));
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
     }
 
     public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
@@ -135,26 +180,26 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         meetStates.add(location.getState().getName());
                     }
                     meetStateAdapter.notifyDataSetChanged();
-                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5c4ab05cd503a372d0391467",
-                            Constants.JurisdictionLevelName.CITY_LEVEL);
+//                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+//                            "5d5a735d5dda76489501b4e1",
+//                            Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
 
                 break;
 
             case Constants.JurisdictionLevelName.CITY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    meetDistricts.clear();
-                    meetDistricts.add("District");
+                    meetCities.clear();
+                    meetCities.add("City");
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                             if (selectedState.equalsIgnoreCase(location.getState().getName())) {
-                                meetDistricts.add(location.getDistrict().getName());
+                                meetCities.add(location.getCity().getName());
                         }
                     }
-                    meetDistrictAdapter.notifyDataSetChanged();
+                    meetCityAdapter.notifyDataSetChanged();
 //                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
 //                            "5c4ab05cd503a372d0391467",
 //                            Constants.JurisdictionLevelName.CITY_LEVEL);
@@ -173,7 +218,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
         UserInfo userInfo = Util.getUserObjectFromPref();
         matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                "5c4ab05cd503a372d0391467",
+                "5d5a735d5dda76489501b4e1",
                 Constants.JurisdictionLevelName.STATE_LEVEL);
     }
 
@@ -181,14 +226,19 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_first_part_meet:
-                setMeetData();
-                ((CreateMatrimonyMeetActivity) getActivity()).openFragment("CreateMeetSecondFragment");
+                //if(isAllDataValid()) {
+                    setMeetData();
+                    ((CreateMatrimonyMeetActivity) getActivity()).openFragment("CreateMeetSecondFragment");
+                //}
                 break;
             case R.id.edt_meet_date:
                 Util.showDateDialogMin(getActivity(), edtMeetDate);
                 break;
-            case R.id.edt_meet_time:
-                Util.showTimeDialog(getActivity(), edtMeetTime);
+            case R.id.edt_start_time:
+                Util.showTimeDialog(getActivity(), edtMeetStartTime);
+                break;
+            case R.id.edt_end_time:
+                Util.showTimeDialog(getActivity(), edtMeetEndTime);
                 break;
             case R.id.edt_meet_reg_date:
                 Util.showDateDialogEnableBeforeDefinedDate(getActivity(),edtMeetRegStartDate, edtMeetDate.getText().toString());
@@ -275,18 +325,61 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 selectedState = meetStates.get(i);
                 if(selectedState!="" && selectedState!="State") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5c4ab05cd503a372d0391467",
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                            "5d5a735d5dda76489501b4e1",
+                            Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;
+
             case R.id.spinner_meet_city:
-                selectedDistrict = meetDistricts.get(i);
+                selectedCity = meetCities.get(i);
+                break;
+
+            case R.id.spinner_meet_chapter:
+                selectedChapter = meetChapters.get(i);
                 break;
         }
+    }
+
+    private boolean isAllDataValid(){
+        if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
+                || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
+                || TextUtils.isEmpty(edtRegAmt.getText().toString().trim())
+                || TextUtils.isEmpty(edtMeetDate.getText().toString().trim())
+                || TextUtils.isEmpty(edtMeetStartTime.getText().toString().trim())
+                || TextUtils.isEmpty(edtMeetEndTime.getText().toString().trim())
+                || TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())
+                || TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())
+                || selectedMeetType == null || selectedState == null || selectedCity == null || selectedChapter == null ) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_paid:
+                isRegPaid = true;
+                break;
+
+            case R.id.rb_free:
+                isRegPaid = false;
+                break;
+
+            case R.id.rb_online_payment:
+                if(isOnlinePaymentAllowed) {
+                    isOnlinePaymentAllowed = false;
+                } else {
+                    isOnlinePaymentAllowed = true;
+                }
+        }
     }
 }

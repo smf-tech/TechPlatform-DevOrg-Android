@@ -38,9 +38,9 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
 
     private CreateMeetSecondFragmentPresenter createMeetSecondFragmentPresenter;
-    private Spinner spinnerOrganizer;
-    private MultiSelectSpinner spinnerReferences;
-    List<String> meetOragizers = new ArrayList<>();
+    // private Spinner spinnerOrganizer;
+    private MultiSelectSpinner spinnerOrganizer, spinnerReferences;
+    List<String> meetOrganizers = new ArrayList<>();
     List<String> meetReferences = new ArrayList<>();
     List<String> selectedMeetReferences = new ArrayList<>();
     private ArrayAdapter<String> meetOragnizersAdapter, meetReferencesAdapter;
@@ -72,14 +72,18 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     private void init(View view) {
+        meetOrganizers.add("State President");
+        meetOrganizers.add("District President");
+        meetOrganizers.add("Chapter President");
         spinnerOrganizer = view.findViewById(R.id.spinner_meet_organizer);
-        spinnerOrganizer.setOnItemSelectedListener(this);
-
-        meetOragizers.add("Select Oraganizer");
-        meetOragnizersAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, meetOragizers);
-        meetOragnizersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerOrganizer.setAdapter(meetOragnizersAdapter);
+        spinnerOrganizer.setSpinnerName(Constants.Matrimony.ORGANIZERS_LABEL);
+        spinnerOrganizer.setItems(meetOrganizers, "Organizers", this);
+        //spinnerOrganizer.setOnItemSelectedListener(this);
+        //meetOragizers.add("Select Organizer");
+//        meetOragnizersAdapter = new ArrayAdapter<>(getActivity(),
+//                android.R.layout.simple_spinner_item, meetOragizers);
+//        meetOragnizersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerOrganizer.setAdapter(meetOragnizersAdapter);
 
         meetReferences.add("State President");
         meetReferences.add("District President");
@@ -109,7 +113,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     private void setMeetData() {
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetDateTime("12/08/2019");
+        //((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetDateTime("12/08/2019");
     }
 
     @Override

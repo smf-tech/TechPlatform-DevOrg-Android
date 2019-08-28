@@ -36,24 +36,22 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/dimen_10dp">
 
                 <TextView
                     android:id="@+id/tv_organizer_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/organizer_label"
-                    android:paddingStart="@dimen/dimen_10dp"/>
+                    android:layout_margin="@dimen/dimen_10dp"/>
 
-                <Spinner
+                    <com.platform.widgets.MultiSelectSpinner
                     android:id="@+id/spinner_meet_organizer"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_30dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_marginBottom="@dimen/dimen_10dp"
-                    android:background="@color/lighter_grey"></Spinner>
+                    style="@style/FormSpinner"
+                    android:layout_marginBottom="@dimen/dimen_10dp">
+                    </com.platform.widgets.MultiSelectSpinner>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             </RelativeLayout>
@@ -83,25 +81,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/dimen_10dp">
 
                     <TextView
                         android:id="@+id/tv_references_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/references_label"
-                        android:paddingStart="@dimen/dimen_10dp"/>
+                        android:layout_margin="@dimen/dimen_10dp"/>
 
                     <com.platform.widgets.MultiSelectSpinner
                         android:id="@+id/spinner_meet_references"
                         style="@style/FormSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_30dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginBottom="@dimen/dimen_10dp"
-                        android:background="@color/lighter_grey" />
+                        android:layout_marginBottom="@dimen/dimen_10dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             </RelativeLayout>
@@ -116,17 +109,11 @@
                 android:id="@+id/btn_second_part_meet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/meet_save"
-                android:layout_below="@+id/card_create_meet"
-                android:layout_marginTop="@dimen/dimen_30dp"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_20dp"
-                android:background="@drawable/bg_button"
-                android:textAllCaps="false"
+                style="@style/AppStyleButton"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_22"
-                android:fontFamily="@font/opensans"/>
+                android:text="@string/meet_save" />
         </LinearLayout>
     </ScrollView>
 
