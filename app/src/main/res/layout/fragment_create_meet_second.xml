@@ -46,11 +46,24 @@
                     android:text="@string/organizer_label"
                     android:layout_margin="@dimen/dimen_10dp"/>
 
-                    <com.platform.widgets.MultiSelectSpinner
-                    android:id="@+id/spinner_meet_organizer"
-                    style="@style/FormSpinner"
-                    android:layout_marginBottom="@dimen/dimen_10dp">
-                    </com.platform.widgets.MultiSelectSpinner>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_organizers"
+                        style="@style/textinputstyle"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                        <EditText
+                            android:id="@+id/edit_meet_organizers"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/meet_select_organizers"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:enabled="false"
+                            android:longClickable="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -91,10 +104,24 @@
                         android:text="@string/references_label"
                         android:layout_margin="@dimen/dimen_10dp"/>
 
-                    <com.platform.widgets.MultiSelectSpinner
-                        android:id="@+id/spinner_meet_references"
-                        style="@style/FormSpinner"
-                        android:layout_marginBottom="@dimen/dimen_10dp"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_references"
+                        style="@style/textinputstyle"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                        <EditText
+                            android:id="@+id/edit_meet_references"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/meet_select_references"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:enabled="false"
+                            android:longClickable="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             </RelativeLayout>

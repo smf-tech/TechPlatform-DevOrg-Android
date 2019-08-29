@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -23,35 +24,50 @@ import android.widget.Spinner;
 import com.android.volley.VolleyError;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.listeners.CustomSpinnerListener;
 import com.platform.listeners.PlatformTaskListener;
+import com.platform.models.Matrimony.MatrimonyRolesUsers;
+import com.platform.models.Matrimony.MatrimonyUserDetails;
+import com.platform.models.Matrimony.MeetReference;
+import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.leaves.YearlyHolidayData;
+import com.platform.models.tm.Name_;
+import com.platform.models.tm.SubFilterset;
 import com.platform.presenter.CreateMeetSecondFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
+import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.adapters.MeetOrganizersReferencesAdapter;
+import com.platform.view.customs.CustomSpinnerDialogClass;
 import com.platform.widgets.MultiSelectSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, APIDataListener,
-        AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener {
+public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, APIDataListener,CustomSpinnerListener {
+        //AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener, CustomSpinnerListener {
 
     private CreateMeetSecondFragmentPresenter createMeetSecondFragmentPresenter;
     // private Spinner spinnerOrganizer;
-    private MultiSelectSpinner spinnerOrganizer, spinnerReferences;
-    List<String> meetOrganizers = new ArrayList<>();
-    List<String> meetReferences = new ArrayList<>();
-    List<String> selectedMeetReferences = new ArrayList<>();
-    private ArrayAdapter<String> meetOragnizersAdapter, meetReferencesAdapter;
+    //private MultiSelectSpinner spinnerOrganizer, spinnerReferences;
+    //List<String> meetOrganizers = new ArrayList<>();
+    //List<String> meetReferences = new ArrayList<>();
+    //List<String> selectedMeetReferences = new ArrayList<>();
+    //private ArrayAdapter<String> meetOragnizersAdapter, meetReferencesAdapter;
+    private EditText etMeetOrganizers,etMeetReferences;
     private Button btnSecondPartMeet;
     RecyclerView rvMeetOrganizer, rvMeetReference;
     private MeetOrganizersReferencesAdapter meetOrganizersListAdapter, meetReferencesListAdapter;
-    private final List<YearlyHolidayData> meetOrganizersList = new ArrayList<>();
-    private final List<YearlyHolidayData> meetReferencesList = new ArrayList<>();
+    //private final List<YearlyHolidayData> meetOrganizersList = new ArrayList<>();
+    //private final List<YearlyHolidayData> meetReferencesList = new ArrayList<>();
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = CreateMeetSecondFragment.class.getName();
+    private ArrayList<CustomSpinnerObject> spinnerObjectList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> organizersSpinnerList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> nonOrganizersSpinnerList = new ArrayList<>();
+    private ArrayList<MatrimonyUserDetails> organizersList = new ArrayList<>();
+    private ArrayList<MatrimonyUserDetails> nonOrganizersList = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +88,12 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     private void init(View view) {
-        meetOrganizers.add("State President");
-        meetOrganizers.add("District President");
-        meetOrganizers.add("Chapter President");
-        spinnerOrganizer = view.findViewById(R.id.spinner_meet_organizer);
-        spinnerOrganizer.setSpinnerName(Constants.Matrimony.ORGANIZERS_LABEL);
-        spinnerOrganizer.setItems(meetOrganizers, "Organizers", this);
+//        meetOrganizers.add("State President");
+//        meetOrganizers.add("District President");
+//        meetOrganizers.add("Chapter President");
+//        spinnerOrganizer = view.findViewById(R.id.spinner_meet_organizer);
+//        spinnerOrganizer.setSpinnerName(Constants.Matrimony.ORGANIZERS_LABEL);
+//        spinnerOrganizer.setItems(meetOrganizers, "Organizers", this);
         //spinnerOrganizer.setOnItemSelectedListener(this);
         //meetOragizers.add("Select Organizer");
 //        meetOragnizersAdapter = new ArrayAdapter<>(getActivity(),
@@ -85,42 +101,72 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
 //        meetOragnizersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spinnerOrganizer.setAdapter(meetOragnizersAdapter);
 
-        meetReferences.add("State President");
-        meetReferences.add("District President");
-        meetReferences.add("Chapter President");
-        spinnerReferences = view.findViewById(R.id.spinner_meet_references);
-        spinnerReferences.setSpinnerName(Constants.Matrimony.REFERENCES_LABEL);
-        spinnerReferences.setItems(meetReferences, "References", this);
+//        meetReferences.add("State President");
+//        meetReferences.add("District President");
+//        meetReferences.add("Chapter President");
+//        spinnerReferences = view.findViewById(R.id.spinner_meet_references);
+//        spinnerReferences.setSpinnerName(Constants.Matrimony.REFERENCES_LABEL);
+//        spinnerReferences.setItems(meetReferences, "References", this);
 
         progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
         progressBar = view.findViewById(R.id.pb_profile_act);
+        etMeetOrganizers = view.findViewById(R.id.edit_meet_organizers);
+        etMeetOrganizers.setOnClickListener(this);
+        etMeetReferences = view.findViewById(R.id.edit_meet_references);
+        etMeetReferences.setOnClickListener(this);
         btnSecondPartMeet = view.findViewById(R.id.btn_second_part_meet);
         btnSecondPartMeet.setOnClickListener(this);
 
         rvMeetOrganizer = view.findViewById(R.id.rv_meet_organizer);
-        meetOrganizersListAdapter = new MeetOrganizersReferencesAdapter(meetOrganizersList);
+        //meetOrganizersListAdapter = new MeetOrganizersReferencesAdapter(meetOrganizersList);
         rvMeetOrganizer.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvMeetOrganizer.setAdapter(meetOrganizersListAdapter);
 
         rvMeetReference = view.findViewById(R.id.rv_meet_organizer);
-        meetReferencesListAdapter = new MeetOrganizersReferencesAdapter(meetReferencesList);
+        //meetReferencesListAdapter = new MeetOrganizersReferencesAdapter(meetReferencesList);
         rvMeetReference.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvMeetReference.setAdapter(meetReferencesListAdapter);
 
         rvMeetReference = view.findViewById(R.id.rv_meet_reference);
+        CustomSpinnerObject c1 = new CustomSpinnerObject();
+        c1.set_id("123");
+        c1.setName("Sagar Mahajan");
+        CustomSpinnerObject c2 = new CustomSpinnerObject();
+        c2.set_id("456");
+        c2.setName("Sjkwfkjewbv wbwcie  wb");
+        CustomSpinnerObject c3 = new CustomSpinnerObject();
+        c3.set_id("789");
+        c3.setName("Sjkendjkqne edhiqnwdjqjn");
+        spinnerObjectList.add(c1);
+        spinnerObjectList.add(c2);
+        spinnerObjectList.add(c3);
         createMeetSecondFragmentPresenter = new CreateMeetSecondFragmentPresenter(this);
-        createMeetSecondFragmentPresenter.getMeetOrganizersList();
+        createMeetSecondFragmentPresenter.getMatrimonyUsersList();
     }
 
     private void setMeetData() {
         //((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetDateTime("12/08/2019");
+        CustomSpinnerObject c = spinnerObjectList.get(0);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_second_part_meet:
-                createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
+                setMeetData();
+                //createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
+                break;
+            case R.id.edit_meet_organizers:
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Organizers", organizersSpinnerList);
+                cdd.show();
+                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.edit_meet_references:
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Organizers", organizersSpinnerList);
+                cdd1.show();
+                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
         }
     }
@@ -181,34 +227,76 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//    @Override
+//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//    }
+//
+//    @Override
+//    public void onValuesSelected(boolean[] selected, String spinnerName) {
+//        try {
+//            switch (spinnerName) {
+//                case Constants.Matrimony.ORGANIZERS_LABEL:
+//
+//                    break;
+//                case Constants.Matrimony.REFERENCES_LABEL:
+////                    selectedMeetReferences.clear();
+////                    for (int i = 0; i < selected.length; i++) {
+////                        if (selected[i]) {
+////                            selectedMeetReferences.add(meetReferences.get(i));
+////                        }
+////                    }
+////                    if(selectedMeetReferences.size()>0){
+////                        createMeetSecondFragmentPresenter.getMeetReferencesList();
+////                    }
+//                    break;
+//            }
+//        } catch (Exception e){
+//            Log.e(TAG, "EXCEPTION_IN_ON_VALUE_SELECTED");
+//        }
+//    }
 
+    public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonyRolesUsersList) {
+        for(MatrimonyRolesUsers matrimonyRole: matrimonyRolesUsersList){
+            for(MatrimonyUserDetails matrimonyUserDetails: matrimonyRole.getUserDetails()){
+                matrimonyUserDetails.setRoleName(matrimonyRole.getDisplayName());
+
+                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                customSpinnerObject.set_id(matrimonyUserDetails.getId());
+                customSpinnerObject.setName(matrimonyUserDetails.getName());
+
+                if(matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
+                    organizersList.add(matrimonyUserDetails);
+                    organizersSpinnerList.add(customSpinnerObject);
+                }else{
+                    nonOrganizersList.add(matrimonyUserDetails);
+                    nonOrganizersSpinnerList.add(customSpinnerObject);
+                }
+            }
+        }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @Override
-    public void onValuesSelected(boolean[] selected, String spinnerName) {
-        try {
-            switch (spinnerName) {
-                case Constants.Matrimony.REFERENCES_LABEL:
-                    selectedMeetReferences.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedMeetReferences.add(meetReferences.get(i));
+    public void onCustomSpinnerSelection(String type) {
+        if(type.equalsIgnoreCase("Organizers")){
+            ArrayList<MatrimonyUserDetails> selectedOrganizersList = new ArrayList<>();
+            for(CustomSpinnerObject c: organizersSpinnerList){
+                if(c.isSelected()){
+                    for(MatrimonyUserDetails m : organizersList){
+                        if(m.getId().equals(c.get_id())){
+                            selectedOrganizersList.add(m);
                         }
                     }
-                    if(selectedMeetReferences.size()>0){
-                        createMeetSecondFragmentPresenter.getMeetReferencesList();
-                    }
-                    break;
+                }
             }
-        } catch (Exception e){
-            Log.e(TAG, "EXCEPTION_IN_ON_VALUE_SELECTED");
+            selectedOrganizersList.get(0);
+        } else if(type.equalsIgnoreCase("References")){
+
         }
     }
 }

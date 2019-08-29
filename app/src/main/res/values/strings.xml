@@ -471,4 +471,6 @@
     <string name="msg_select_city">Please select City</string>
     <string name="matrimony_name_label">Meet Name</string>
     <string name="meet_date">Meet Date</string>
+    <string name="meet_select_organizers">Select Organizers</string>
+    <string name="meet_select_references">Select References</string>
 </resources>

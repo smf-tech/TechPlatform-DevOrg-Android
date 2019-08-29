@@ -332,6 +332,11 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
             case R.id.spinner_meet_city:
                 selectedCity = meetCities.get(i);
+                if(selectedCity!="" && selectedCity!="City") {
+                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                            "5d5a735d5dda76489501b4e1",
+                            Constants.JurisdictionLevelName.CITY_LEVEL);
+                }
                 break;
 
             case R.id.spinner_meet_chapter:
