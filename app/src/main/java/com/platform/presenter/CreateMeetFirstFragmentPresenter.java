@@ -21,6 +21,7 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
     private WeakReference<CreateMeetFirstFragment> fragmentWeakReference;
 
     public static final String GET_MATRIMONY_MEET_TYPES ="getMatrimonyMeetTypes";
+    public static final String GET_COUNTRIES = "getCountries";
     public static final String GET_STATES = "getStates";
     public static final String GET_DISTRICTS = "getDistricts";
     public static final String GET_CITIES = "getCities";
@@ -51,7 +52,11 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
 
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+            //requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName, GET_STATES);
+            requestCall.getDataApiCall(GET_COUNTRIES, getLocationUrl);
+
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
             //requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName, GET_STATES);
             requestCall.getDataApiCall(GET_STATES, getLocationUrl);
 
@@ -93,7 +98,8 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
                     MeetTypesAPIResponse meetTypes = PlatformGson.getPlatformGsonInstance().fromJson(response, MeetTypesAPIResponse.class);
                     fragmentWeakReference.get().setMatrimonyMeetTypes(meetTypes.getData());
                 }
-                if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES) ||
+                if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_COUNTRIES) ||
+                        requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES) ||
                         requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_CITIES)){
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
@@ -101,11 +107,13 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
                     if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
                             && !jurisdictionLevelResponse.getData().isEmpty()
                             && jurisdictionLevelResponse.getData().size() > 0) {
-                        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)) {
+                        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_COUNTRIES)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.COUNTRY_LEVEL);
+                        }else if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)) {
                             fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.STATE_LEVEL);
-                        }
-                        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_CITIES)) {
+                        } else if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_CITIES)) {
                             fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.CITY_LEVEL);
                         }

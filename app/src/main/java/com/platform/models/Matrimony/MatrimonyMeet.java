@@ -19,9 +19,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("city")
     @Expose
     private String city;
-    @SerializedName("chapter")
+    @SerializedName("country")
     @Expose
-    private String chapter;
+    private String country;
     @SerializedName("venue")
     @Expose
     private String venue;
@@ -91,12 +91,12 @@ public class MatrimonyMeet implements Serializable {
         this.city = city;
     }
 
-    public String getChapter() {
-        return chapter;
+    public String getCountry() {
+        return country;
     }
 
-    public void setChapter(String chapter) {
-        this.chapter = chapter;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getVenue() {

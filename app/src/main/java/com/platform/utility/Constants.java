@@ -132,6 +132,7 @@ public class Constants {
     }
 
     public static class JurisdictionLevelName {
+        public static final String COUNTRY_LEVEL = "Country";
         public static final String STATE_LEVEL = "State";
         public static final String DISTRICT_LEVEL = "District";
         // added city level for matrimony project

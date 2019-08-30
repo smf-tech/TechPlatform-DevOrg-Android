@@ -53,9 +53,19 @@
                         android:layout_marginBottom="@dimen/dimen_10dp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <Spinner
-                        android:id="@+id/spinner_meet_types"
-                        style="@style/FormSpinner"></Spinner>
+                    <TextView
+                        android:id="@+id/tv_meet_types"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_30dp"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_blue_box"
+                        android:hint="@string/select_meet_type"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:editable="false"
+                        android:longClickable="false"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -65,22 +75,49 @@
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginBottom="@dimen/dimen_10dp">
 
-                        <Spinner
-                            android:id="@+id/spinner_meet_state"
-                            style="@style/FormSpinner"
-                            android:layout_weight="1"></Spinner>
-                        <Spinner
-                            android:id="@+id/spinner_meet_city"
-                            style="@style/FormSpinner"
+                        <TextView
+                            android:id="@+id/tv_meet_country"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_30dp"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:paddingStart="@dimen/dimen_10dp"
                             android:layout_weight="1"
-                            android:layout_marginStart="@dimen/dimen_10dp"></Spinner>
+                            android:background="@drawable/bg_blue_box"
+                            android:hint="@string/country"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:editable="false"
+                            android:longClickable="false"/>
+                        <TextView
+                            android:id="@+id/tv_meet_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_30dp"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:paddingStart="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_blue_box"
+                            android:hint="@string/state"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:editable="false"
+                            android:longClickable="false"/>
+
 
                     </LinearLayout>
 
-                    <Spinner
-                        android:id="@+id/spinner_meet_chapter"
-                        style="@style/FormSpinner"
-                        android:layout_weight="1"></Spinner>
+                    <TextView
+                        android:id="@+id/tv_meet_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_30dp"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_blue_box"
+                        android:hint="@string/city"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:editable="false"
+                        android:longClickable="false"/>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tly_address"

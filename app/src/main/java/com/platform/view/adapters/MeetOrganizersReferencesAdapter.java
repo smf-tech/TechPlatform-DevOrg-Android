@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
+import com.platform.models.Matrimony.MatrimonyUserDetails;
 import com.platform.models.leaves.YearlyHolidayData;
 
 import java.util.List;
 
 public class MeetOrganizersReferencesAdapter extends RecyclerView.Adapter<MeetOrganizersReferencesAdapter.ViewHolder>{
-    private List<YearlyHolidayData> meetOrganizersReferencesList;
+    private List<MatrimonyUserDetails> meetOrganizersReferencesList;
 
-    public MeetOrganizersReferencesAdapter(final List<YearlyHolidayData> meetOrganizersReferencesList) {
+    public MeetOrganizersReferencesAdapter(final List<MatrimonyUserDetails> meetOrganizersReferencesList) {
         this.meetOrganizersReferencesList = meetOrganizersReferencesList;
     }
     @NonNull
@@ -29,21 +30,25 @@ public class MeetOrganizersReferencesAdapter extends RecyclerView.Adapter<MeetOr
 
     @Override
     public void onBindViewHolder(@NonNull MeetOrganizersReferencesAdapter.ViewHolder holder, int position) {
-//        holder.tvHolidayDate.setText();
-//        holder.tvHolidayText.setText();
+        holder.tvUserName.setText(meetOrganizersReferencesList.get(position).getName());
+        holder.tvUserRole.setText(meetOrganizersReferencesList.get(position).getRoleName());
+        holder.tvUserMobile.setText(meetOrganizersReferencesList.get(position).getPhone());
+        holder.tvUserEmail.setText(meetOrganizersReferencesList.get(position).getEmail());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        // TextView tvHolidayDate, tvHolidayText;
+         TextView tvUserName, tvUserRole, tvUserMobile, tvUserEmail;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-//            tvHolidayDate = itemView.findViewById(R.id.tv_holiday_date);
-//            tvHolidayText = itemView.findViewById(R.id.tv_holiday_text);
+            tvUserName = itemView.findViewById(R.id.tv_user_name);
+            tvUserRole = itemView.findViewById(R.id.tv_user_role);
+            tvUserMobile = itemView.findViewById(R.id.tv_user_mobile);
+            tvUserEmail = itemView.findViewById(R.id.tv_user_email);
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return meetOrganizersReferencesList.size();
     }
 }

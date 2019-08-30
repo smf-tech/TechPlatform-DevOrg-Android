@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_05dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -7,19 +15,15 @@
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sagar Mahajan"
-        android:padding="@dimen/dimen_10dp"
-        android:textColor="@color/attendance_list_item"
-        android:textSize="@dimen/text_size_16" />
+        android:layout_margin="@dimen/dimen_05dp"
+        android:textColor="@color/attendance_list_item" />
 
     <TextView
         android:id="@+id/tv_user_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_10dp"
-        android:text="22 Jun @019"
+        android:layout_margin="@dimen/dimen_05dp"
         android:textColor="@color/attendance_list_item"
-        android:textSize="@dimen/text_size_16"
         android:layout_alignParentRight="true"/>
 
     <TextView
@@ -27,33 +31,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_user_name"
-        android:text="Mob: 9090978690"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:layout_alignParentStart="true"
-        android:textSize="@dimen/text_size_16"/>
+        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_05dp"
+        android:layout_alignParentStart="true"/>
 
     <TextView
         android:id="@+id/tv_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_user_role"
-        android:text="Eamil: hjdschds@gmail.com"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:layout_alignParentEnd="true"
-        android:textSize="@dimen/text_size_16"/>
+        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_alignParentEnd="true"/>
 
-    <ImageView
-        android:id="@+id/iv_dotted_line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_03dp"
-        android:layout_below="@+id/tv_user_mobile"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:contentDescription="@string/content_description"
-        android:layerType="software"
-        android:src="@drawable/dotted_line"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_dotted_line"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dimen_03dp"-->
+        <!--android:layout_below="@+id/tv_user_mobile"-->
+        <!--android:layout_marginTop="@dimen/dimen_10dp"-->
+        <!--android:contentDescription="@string/content_description"-->
+        <!--android:layerType="software"-->
+        <!--android:src="@drawable/dotted_line"/>-->
 
 </RelativeLayout>
+</androidx.cardview.widget.CardView>

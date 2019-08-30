@@ -38,7 +38,7 @@ public class CustomSpinnerDialogClass extends BottomSheetDialog implements
     private ArrayList<CustomSpinnerObject> subFiltersets = new ArrayList<>();
     private CustomSpinnerListener customSpinnerListener;
 
-    public CustomSpinnerDialogClass(Activity a, CreateMeetSecondFragment f, String formTitle, ArrayList<CustomSpinnerObject> subFiltersets) {
+    public CustomSpinnerDialogClass(Activity a, CustomSpinnerListener f, String formTitle, ArrayList<CustomSpinnerObject> subFiltersets) {
         super(a);
         // TODO Auto-generated constructor stub
         this.activity = a;
@@ -75,10 +75,8 @@ public class CustomSpinnerDialogClass extends BottomSheetDialog implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_apply:
-                if(bottomSheetTitle.equals("Organizers")){
                     customSpinnerListener.onCustomSpinnerSelection(bottomSheetTitle);
                     dismiss();
-                }
                 break;
             case R.id.toolbar_edit_action:
                 dismiss();

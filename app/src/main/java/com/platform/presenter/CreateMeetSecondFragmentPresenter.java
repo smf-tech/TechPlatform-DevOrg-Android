@@ -28,10 +28,10 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
     public static final String GET_MEET_USERS_LIST ="getMeetUsersList";
     public static final String GET_MEET_REFERENCES_LIST ="getMeetReferncesList";
     public static final String SUBMIT_MEET ="submitMeet";
-//    private static final String KEY_STATE_ID = "state_id";
-//    private static final String KEY_CITY_ID = "city_id";
-//    private static final String KEY_CHAPTER_ID = "chapter_id";
-//    private static final String KEY_TYPE_ID = "type";
+    private static final String KEY_PROJECT_ID = "project_id";
+    private static final String KEY_COUNTRY_ID = "country_id";
+    private static final String KEY_STATE_ID = "state_id";
+    private static final String KEY_CITY_ID = "city_id";
 
     private final String TAG = CreateMeetFirstFragmentPresenter.class.getName();
 
@@ -51,14 +51,17 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
     }
 
     public void getMatrimonyUsersList(){
-        Util.getUserObjectFromPref().getProjectIds().get(0).getId();
+        //Util.getUserObjectFromPref().getProjectIds().get(0).getId();
+        Gson gson = new GsonBuilder().create();
+        String paramjson = gson.toJson(getMeetOrganizersJson("5d4129345dda7642c4094b62",
+                "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
         final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST, "5d4129345dda7642c4094b62");
+                + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST);
                 //Util.getUserObjectFromPref().getProjectIds().get(0).getId());
         Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall(GET_MEET_USERS_LIST, getMatrimonyUsersUrl);
+        requestCall.postDataApiCall(GET_MEET_USERS_LIST, paramjson, getMatrimonyUsersUrl);
     }
 
     public void submitMeet(MatrimonyMeet matrimonyMeet){
@@ -72,25 +75,25 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(SUBMIT_MEET, paramjson, getMatrimonyMeetTypesUrl);
     }
 
-//    public JsonObject getMeetOrganizersJson(String stateId, String cityId, String chapterId, String type){
-//        //String validType=type.replace(" ","");
-//        HashMap<String,String> map=new HashMap<>();
-//        map.put(KEY_STATE_ID, stateId);
-//        map.put(KEY_CITY_ID, cityId);
-//        map.put(KEY_CHAPTER_ID, chapterId);
-//        map.put(KEY_TYPE_ID, type);
-//
-//        JsonObject requestObject = new JsonObject();
-//
-//        for (Map.Entry<String, String> entry : map.entrySet()) {
-//            String key = entry.getKey();
-//            String value = entry.getValue();
-//            requestObject.addProperty(key, value);
-//        }
-//
-//        return requestObject;
-//
-//    }
+    public JsonObject getMeetOrganizersJson(String projectId, String countryId, String stateId, String cityId){
+        //String validType=type.replace(" ","");
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_PROJECT_ID, projectId);
+        map.put(KEY_COUNTRY_ID, countryId);
+        map.put(KEY_STATE_ID, stateId);
+        map.put(KEY_CITY_ID, cityId);
+
+        JsonObject requestObject = new JsonObject();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            requestObject.addProperty(key, value);
+        }
+
+        return requestObject;
+
+    }
 
     @Override
     public void onFailureListener(String requestID, String message) {

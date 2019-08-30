@@ -12,9 +12,15 @@ public class Location {
     @SerializedName("jurisdiction_type_id")
     @Expose
     private String jurisdictionTypeId;
+    @SerializedName("country_id")
+    @Expose
+    private String countryId;
     @SerializedName("state_id")
     @Expose
     private String stateId;
+    @SerializedName("city_id")
+    @Expose
+    private String cityId;
     @SerializedName("district_id")
     @Expose
     private String districtId;
@@ -24,6 +30,9 @@ public class Location {
     @SerializedName("village_id")
     @Expose
     private String villageId;
+    @SerializedName("country")
+    @Expose
+    private JurisdictionType country;
     @SerializedName("state")
     @Expose
     private JurisdictionType state;
@@ -92,6 +101,13 @@ public class Location {
         this.id = id;
     }
 
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
     public String getStateId() {
         return stateId;
     }
@@ -108,6 +124,14 @@ public class Location {
         this.districtId = districtId;
     }
 
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
+
     public String getTalukaId() {
         return talukaId;
     }
@@ -122,6 +146,14 @@ public class Location {
 
     public void setVillageId(String villageId) {
         this.villageId = villageId;
+    }
+
+    public JurisdictionType getCountry() {
+        return country;
+    }
+
+    public void setCountry(JurisdictionType country) {
+        this.country = country;
     }
 
     public JurisdictionType getState() {
