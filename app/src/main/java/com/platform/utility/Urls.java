@@ -91,4 +91,16 @@ public class Urls {
     public class ContentManagement{
         public static final String GET_CONTENT_DATA="api/contentDashboard";
     }
+
+    public class Matrimony {
+        public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
+        public static final String MEET_REFERENCES_LIST = "api/";
+        public static final String MEET_ORGANIZERS_LIST = "api/";
+        public static final String SUBMIT_MEET = "api/";
+
+        //userRegistration
+        public static final String USER_REGI_MASTER = "api/masterData";
+
+    }
+
 }

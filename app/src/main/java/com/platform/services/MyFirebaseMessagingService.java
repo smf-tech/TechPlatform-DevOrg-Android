@@ -95,7 +95,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationBuilder = new NotificationCompat.Builder(this, Constants.App.CHANNEL_ID)
                         .setSmallIcon(R.mipmap.app_logo)
                         .setContentTitle(messageTitle)
-                        .setContentText(messageBody)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         // Set the intent that will fire when the user taps the notification
                         .setContentIntent(pendingIntent)
@@ -104,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationBuilder = new NotificationCompat.Builder(this, "")
                         .setSmallIcon(R.mipmap.app_logo)
                         .setContentTitle(messageTitle)
-                        .setContentText(messageBody)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);

@@ -58,11 +58,11 @@
     </style>
     <style name="AppStyleButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
 
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dimen_60dp</item>
+        <item name="android:layout_height">@dimen/dimen_50dp</item>
         <item name="android:background">@drawable/bg_button</item>
     </style>
     <style name="AppStyleBorderButton" parent="Widget.MaterialComponents.Button.OutlinedButton">

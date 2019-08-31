@@ -31,6 +31,7 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
     private MultiSpinnerListener listener;
     public Activity activity;
     private boolean[] selectedValues;
+    private int selectedPosition;
     private ArrayList<String> dataList;
     private String spinnerText;
     public TextView toolbarTitle;
@@ -92,7 +93,7 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
         switch (v.getId()) {
             case R.id.btn_yes:
                 setSelectedFilledText();
-                listener.onValuesSelected(selectedValues, bottomSheetTitle,spinnerText);
+                listener.onValuesSelected(selectedPosition, bottomSheetTitle,spinnerText);
                 dismiss();
                 break;
             case R.id.toolbar_edit_action:
@@ -111,7 +112,7 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
     }
 
     public interface MultiSpinnerListener {
-        void onValuesSelected(boolean[] selected, String spinnerName, String selectedValues);
+        void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues);
     }
 
     public class FilterChoicedapter extends RecyclerView.Adapter<FilterChoicedapter.EmployeeViewHolder> {
@@ -162,6 +163,10 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         //dataList.get(getAdapterPosition()).setSelected(isChecked);
                         selectedValues[getAdapterPosition()] = isChecked;
+                        if (isChecked==true) {
+                            selectedPosition = getAdapterPosition();
+                        }
+
                     }
                 });
                 cb_select_filter.setOnClickListener(new View.OnClickListener() {
