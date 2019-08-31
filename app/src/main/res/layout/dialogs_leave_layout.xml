@@ -7,55 +7,50 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:elevation="@dimen/dimen_03dp"
-            android:paddingStart="@dimen/dimen_30dp"
-            android:paddingEnd="@dimen/dimen_30dp"
-            android:paddingTop="@dimen/dimen_40dp"
-            android:paddingBottom="@dimen/dimen_30dp">
+            android:orientation="vertical">
 
     <com.platform.view.customs.TextViewBold
         android:id="@+id/tv_dialog_title"
-        android:layout_marginBottom="@dimen/dimen_30dp"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/dark_grey"
-        android:textSize="@dimen/text_size_14" />
+        android:layout_height="@dimen/dimen_50dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_16" />
 
     <com.platform.view.customs.TextViewRegular
         android:id="@+id/tv_dialog_subtext"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/dark_grey"
-        android:textSize="@dimen/text_size_14" />
+        android:layout_marginTop="@dimen/dimen_20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_25dp"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:weightSum="2">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dialog"
             android:visibility="gone"
-            android:textSize="@dimen/text_size_14"
-            android:layout_width="@dimen/dimen_70dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_40dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/bg_button"
-            android:textColor="@color/white" />
+            style="@style/RegistrationEditTextLayout"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:textColor="@color/white"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dialog_1"
             android:visibility="gone"
-            android:textSize="@dimen/text_size_14"
-            android:layout_width="@dimen/dimen_70dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/dimen_15dp"
-            android:background="@drawable/bg_button"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/dimen_05dp"
+            style="@style/RegistrationEditTextLayout"
             android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

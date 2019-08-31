@@ -60,7 +60,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private ArrayList<CustomSpinnerObject> meetStateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetCityList = new ArrayList<>();
     private CreateMeetFirstFragmentPresenter matrimonyMeetFirstFragmentPresenter;
-    private String selectedMeetType, selectedCountry, selectedState, selectedCity;
+    private String selectedMeetType, selectedCountry, selectedState, selectedCity,
+            selectedCountryId, selectedStateId, selectedCityId;
     //private ArrayAdapter<String> meetTypeAdapter, meetCountryAdapter, meetStateAdapter, meetCityAdapter;
     private EditText edtMeetName, edtMeetVenue,edtMeetDate, edtMeetStartTime, edtMeetEndTime,edtMeetRegStartDate,
             edtMeetRegEndDate, edtRegAmt;
@@ -159,9 +160,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private void setMeetData() {
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setTitle(edtMeetName.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetType(selectedMeetType);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCountry(selectedCountry);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setState(selectedState);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCity(selectedCity);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCountry(selectedCountryId);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setState(selectedStateId);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCity(selectedCityId);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setDateTime
                 (Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
@@ -172,7 +173,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 (Util.dateTimeToTimeStamp(edtMeetRegStartDate.getText().toString(), "00:00"));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegEndDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "00:00"));
-        //((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString()));
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString()));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
     }
 
@@ -182,12 +183,13 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             CustomSpinnerObject cMeetType = new CustomSpinnerObject();
             cMeetType.setName(m.getType());
             cMeetType.set_id(m.getId());
-            meetTypesList.add(cMeetType);
+            cMeetType.setSelected(false);
+             meetTypesList.add(cMeetType);
             //meetTypes.add(m.getType());
         }
         UserInfo userInfo = Util.getUserObjectFromPref();
         matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                "5c4ab05cd503a372d0391467",
+                "5d68c6645dda765a632b4ac3",
                 Constants.JurisdictionLevelName.COUNTRY_LEVEL);
     }
 
@@ -205,6 +207,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getCountryId());
                         meetCountry.setName(location.getCountry().getName());
+                        meetCountry.setSelected(false);
                         meetCountryList.add(meetCountry);
                         //meetCountries.add(location.getCountry().getName());
                     }
@@ -223,13 +226,14 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
-                        if(selectedCountry.equals(location.getCountry().getName())) {
+                        //if(selectedCountry.equals(location.getCountry().getName())) {
                             CustomSpinnerObject meetState = new CustomSpinnerObject();
                             meetState.set_id(location.getStateId());
                             meetState.setName(location.getState().getName());
+                            meetState.setSelected(false);
                             meetStateList.add(meetState);
                             //meetStates.add(location.getState().getName());
-                        }
+                        //}
                     }
                     //meetStateAdapter.notifyDataSetChanged();
 //                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
@@ -251,6 +255,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                                 CustomSpinnerObject meetCity = new CustomSpinnerObject();
                                 meetCity.set_id(location.getCityId());
                                 meetCity.setName(location.getCity().getName());
+                                meetCity.setSelected(false);
                                 meetCityList.add(meetCity);
                                 //meetCities.add(location.getCity().getName());
                         }
@@ -274,14 +279,16 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 //}
                 break;
             case R.id.tv_meet_types:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "MeetTypesList", meetTypesList);
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "MeetTypesList", meetTypesList,
+                        true);
                 cdd.show();
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
 
                 break;
             case R.id.tv_meet_country:
-                CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "MeetCountryList", meetCountryList);
+                CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "MeetCountryList", meetCountryList,
+                        true);
                 cddCountry.show();
                 cddCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -289,7 +296,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 //selectedCountry = meetCountries.get(i);
                 break;
             case R.id.tv_meet_state:
-                CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "MeetStateList", meetStateList);
+                CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "MeetStateList", meetStateList,
+                        true);
                 cddState.show();
                 cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -297,7 +305,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 //selectedCountry = meetCountries.get(i);
                 break;
             case R.id.tv_meet_city:
-                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "MeetCityList", meetCountryList);
+                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "MeetCityList", meetCityList,
+                        true);
                 cddCity.show();
                 cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -417,7 +426,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private boolean isAllDataValid(){
+    public boolean isAllDataValid(){
         if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
                 || TextUtils.isEmpty(edtRegAmt.getText().toString().trim())
@@ -470,40 +479,47 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         break;
                     }
                 }
+                tvMeetType.setText(selectedMeetType);
                 break;
             case "MeetCountryList":
                 for(CustomSpinnerObject mCountry: meetCountryList){
                     if(mCountry.isSelected()){
-                        selectedCountry = mCountry.get_id();
+                        selectedCountry = mCountry.getName();
+                        selectedCountryId = mCountry.get_id();
                         break;
                     }
                 }
+                tvMeetCountry.setText(selectedCountry);
                 if(selectedCountry!="" && selectedCountry!="Country") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5c4ab05cd503a372d0391467",
+                            "5d68c6645dda765a632b4ac3",
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
                 break;
             case "MeetStateList":
                 for(CustomSpinnerObject mState: meetStateList){
                     if(mState.isSelected()){
-                        selectedState = mState.get_id();
+                        selectedState = mState.getName();
+                        selectedStateId = mState.get_id();
                         break;
                     }
                 }
+                tvMeetState.setText(selectedState);
                 if(selectedState!="" && selectedState!="State") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5c4ab05cd503a372d0391467",
+                            "5d68c6645dda765a632b4ac3",
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;
             case "MeetCityList":
-                for(CustomSpinnerObject mCity: meetStateList){
+                for(CustomSpinnerObject mCity: meetCityList){
                     if(mCity.isSelected()){
-                        selectedCity = mCity.get_id();
+                        selectedCity = mCity.getName();
+                        selectedCityId = mCity.get_id();
                         break;
                     }
                 }
+                tvMeetCity.setText(selectedCity);
                 break;
         }
     }

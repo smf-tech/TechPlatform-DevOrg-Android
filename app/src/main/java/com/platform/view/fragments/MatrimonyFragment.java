@@ -66,7 +66,6 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
         }
-        init();
     }
 
     private void init() {
@@ -94,6 +93,7 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
     @Override
     public void onResume() {
         super.onResume();
+        init();
         if (Util.isConnected(getContext())) {
             //api call
         } else {

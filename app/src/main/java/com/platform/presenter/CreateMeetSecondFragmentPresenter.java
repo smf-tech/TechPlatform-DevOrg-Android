@@ -7,9 +7,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
+import com.platform.R;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.models.Matrimony.MatrimonyRoleUsersAPIResponse;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.leaves.LeaveData;
 import com.platform.request.MatrimonyMeetRequestCall;
 import com.platform.utility.Constants;
@@ -41,13 +43,6 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
 
     public void clearData() {
         fragmentWeakReference = null;
-    }
-
-    public void getMeetReferencesList(){
-        final String applyLeaveUrl = BuildConfig.BASE_URL + String.format(Urls.Matrimony.MEET_REFERENCES_LIST);
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall(GET_MEET_REFERENCES_LIST, applyLeaveUrl);
     }
 
     public void getMatrimonyUsersList(){
@@ -124,6 +119,15 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
                 if(requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.GET_MEET_USERS_LIST)){
                     MatrimonyRoleUsersAPIResponse matrimonyRoleUsers = PlatformGson.getPlatformGsonInstance().fromJson(response, MatrimonyRoleUsersAPIResponse.class);
                     fragmentWeakReference.get().setMatrimonyUsers(matrimonyRoleUsers.getData());
+                }
+                if(requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.SUBMIT_MEET)){
+                    try {
+//                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+//                        fragmentWeakReference.get().showResponseMessage(responseOBJ);
+                        fragmentWeakReference.get().onSuccessListener(requestID, response);
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
                 }
             }
         }catch (Exception e) {

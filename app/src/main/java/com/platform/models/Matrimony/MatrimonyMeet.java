@@ -54,10 +54,10 @@ public class MatrimonyMeet implements Serializable {
     private String meetImageUrl;
     @SerializedName("meetOrganizers")
     @Expose
-    private List<MeetOrganizer> meetOrganizers = null;
+    private List<MatrimonyUserDetails> meetOrganizers = null;
     @SerializedName("meetReferences")
     @Expose
-    private List<MeetReference> meetReferences = null;
+    private List<MatrimonyUserDetails> meetReferences = null;
 
     public String getTitle() {
         return title;
@@ -179,19 +179,19 @@ public class MatrimonyMeet implements Serializable {
         this.meetImageUrl = meetImageUrl;
     }
 
-    public List<MeetOrganizer> getMeetOrganizers() {
+    public List<MatrimonyUserDetails> getMeetOrganizers() {
         return meetOrganizers;
     }
 
-    public void setMeetOrganizers(List<MeetOrganizer> meetOrganizers) {
+    public void setMeetOrganizers(List<MatrimonyUserDetails> meetOrganizers) {
         this.meetOrganizers = meetOrganizers;
     }
 
-    public List<MeetReference> getMeetReferences() {
+    public List<MatrimonyUserDetails> getMeetReferences() {
         return meetReferences;
     }
 
-    public void setMeetReferences(List<MeetReference> meetReferences) {
+    public void setMeetReferences(List<MatrimonyUserDetails> meetReferences) {
         this.meetReferences = meetReferences;
     }
 

@@ -389,5 +389,7 @@
     <string name="meet_select_references">Select References</string>
     <string name="country">Country</string>
     <string name="select_meet_type">Select Meet Type</string>
+    <string name="meet_publish">Publish</string>
+    <string name="select_meet_organizers_references_msg">Please select Organizers and References.</string>
 
 </resources>

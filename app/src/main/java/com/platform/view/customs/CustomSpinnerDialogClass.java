@@ -37,14 +37,17 @@ public class CustomSpinnerDialogClass extends BottomSheetDialog implements
     private MutiselectDialogAdapter mutiselectDialogAdapter;
     private ArrayList<CustomSpinnerObject> subFiltersets = new ArrayList<>();
     private CustomSpinnerListener customSpinnerListener;
+    private boolean isMultiselectionAllowed;
 
-    public CustomSpinnerDialogClass(Activity a, CustomSpinnerListener f, String formTitle, ArrayList<CustomSpinnerObject> subFiltersets) {
+    public CustomSpinnerDialogClass(Activity a, CustomSpinnerListener f, String formTitle,
+                                    ArrayList<CustomSpinnerObject> subFiltersets, boolean isMultiselectionAllowed) {
         super(a);
         // TODO Auto-generated constructor stub
         this.activity = a;
         bottomSheetTitle = formTitle;
         this.subFiltersets = subFiltersets;
         this.customSpinnerListener = f;
+        this.isMultiselectionAllowed = isMultiselectionAllowed;
     }
 
     @Override
@@ -67,7 +70,7 @@ public class CustomSpinnerDialogClass extends BottomSheetDialog implements
         toolbarTitle.setText(bottomSheetTitle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         rvCustomSpinner.setLayoutManager(layoutManager);
-        mutiselectDialogAdapter = new MutiselectDialogAdapter(activity, subFiltersets);
+        mutiselectDialogAdapter = new MutiselectDialogAdapter(activity, subFiltersets, isMultiselectionAllowed);
         rvCustomSpinner.setAdapter(mutiselectDialogAdapter);
     }
 
