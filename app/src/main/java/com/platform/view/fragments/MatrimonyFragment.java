@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
@@ -29,11 +30,12 @@ import com.platform.view.adapters.ViewPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrimonyFragment extends Fragment implements PlatformTaskListener {
+public class MatrimonyFragment extends Fragment implements PlatformTaskListener, ViewPager.OnPageChangeListener {
     private View matrimonyFragmentView;
     private FloatingActionButton btnCreateMeet;
     List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     ViewPagerAdapter adapter;
+    TextView tv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,9 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
     }
 
     private void init() {
+        //PopulateData method called temporary
+        PopulateData();
+        //tv = matrimonyFragmentView.findViewById(R.id.test);
         ViewPager meetViewPager = matrimonyFragmentView.findViewById(R.id.meet_view_pager);
         // Disable clip to padding
         meetViewPager.setClipToPadding(false);
@@ -76,9 +81,8 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
         meetViewPager.setPadding(80, 20, 80, 20);
         // sets a margin b/w individual pages to ensure that there is a gap b/w them
         meetViewPager.setPageMargin(30);
+        meetViewPager.setOnPageChangeListener(this);
         setupViewPager(meetViewPager);
-        //PopulateData method called temporary
-        PopulateData();
         btnCreateMeet = matrimonyFragmentView.findViewById(R.id.btn_create_meet);
         btnCreateMeet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,20 +119,20 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
     }
 
     private void PopulateData(){
-//        MatrimonyMeet m1 = new MatrimonyMeet();
-//        m1.setMeetTitle("First Meet");
-//        m1.setMeetDateTime("1 August 2019");
-//        MatrimonyMeet m2 = new MatrimonyMeet();
-//        m2.setMeetTitle("Second Meet");
-//        m2.setMeetDateTime("10 August 2019");
-//        MatrimonyMeet m3 = new MatrimonyMeet();
-//        m3.setMeetTitle("Third Meet");
-//        m3.setMeetDateTime("20 August 2019");
-//        matrimonyMeetList.clear();
-//        matrimonyMeetList.add(m1);
-//        matrimonyMeetList.add(m2);
-//        matrimonyMeetList.add(m3);
-        adapter.notifyDataSetChanged();
+        MatrimonyMeet m1 = new MatrimonyMeet();
+        m1.setTitle("First Meet");
+        m1.setMeetStartTime("1 August 2019");
+        MatrimonyMeet m2 = new MatrimonyMeet();
+        m2.setTitle("Second Meet");
+        m2.setMeetStartTime("10 August 2019");
+        MatrimonyMeet m3 = new MatrimonyMeet();
+        m3.setTitle("Third Meet");
+        m3.setMeetStartTime("10 Sept 2019");
+        matrimonyMeetList.clear();
+        matrimonyMeetList.add(m1);
+        matrimonyMeetList.add(m2);
+        matrimonyMeetList.add(m3);
+        //adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -149,5 +153,21 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener 
     @Override
     public void showErrorMessage(String result) {
 
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        matrimonyMeetList.get(0);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        matrimonyMeetList.get(1);
+        //tv.setText(matrimonyMeetList.get(position).getTitle());
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        matrimonyMeetList.get(2);
     }
 }
