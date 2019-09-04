@@ -93,6 +93,7 @@ public class Urls {
     }
 
     public class Matrimony {
+        public static final String MATRIMONY_MEETS = "api/getMeet";
         public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
         public static final String MATRIMONY_USERS_LIST = "api/getMatrimonyRoleUsers";
         public static final String SUBMIT_MEET = "api/insertMeet";

@@ -6,20 +6,28 @@ import com.google.gson.annotations.SerializedName;
 public class AllMatrimonyMeetsAPIResponse {
     @SerializedName("status")
     @Expose
-    private String status;
+    private Integer status;
+    @SerializedName("data")
+    @Expose
+    private MatrimonyMeetsList data;
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("data")
-    @Expose
-    private MatrimonyMeet data;
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public MatrimonyMeetsList getData() {
+        return data;
+    }
+
+    public void setData(MatrimonyMeetsList data) {
+        this.data = data;
     }
 
     public String getMessage() {
@@ -28,13 +36,5 @@ public class AllMatrimonyMeetsAPIResponse {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public MatrimonyMeet getData() {
-        return data;
-    }
-
-    public void setData(MatrimonyMeet data) {
-        this.data = data;
     }
 }

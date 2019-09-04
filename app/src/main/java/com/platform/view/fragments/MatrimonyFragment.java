@@ -8,34 +8,56 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
+import com.platform.listeners.APIDataListener;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
+import com.platform.models.Matrimony.MatrimonyMeetsList;
+import com.platform.models.Matrimony.MatrimonyUserDetails;
+import com.platform.models.Matrimony.MeetAnalytics;
+import com.platform.models.Matrimony.MeetAnalyticsData;
+import com.platform.presenter.CreateMeetFirstFragmentPresenter;
+import com.platform.presenter.MatrimonyFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.adapters.MeetAnalyticsAdapter;
+import com.platform.view.adapters.MeetContactsListAdapter;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrimonyFragment extends Fragment implements PlatformTaskListener, ViewPager.OnPageChangeListener {
+public class MatrimonyFragment extends Fragment implements APIDataListener, ViewPager.OnPageChangeListener {
     private View matrimonyFragmentView;
     private FloatingActionButton btnCreateMeet;
-    List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
-    ViewPagerAdapter adapter;
-    TextView tv;
+    private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
+    private ViewPagerAdapter adapter;
+    private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt;
+    private RecyclerView rvMeetContacts,rvMeetAnalytics;
+    private MeetContactsListAdapter meetContactsListAdapter;
+    private MeetAnalyticsAdapter meetAnalyticsAdapter;
+    private ArrayList<MatrimonyUserDetails> contactsList= new ArrayList<>();
+    private ArrayList<MeetAnalytics> meetAnalyticsData = new ArrayList<>();
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
+    private MatrimonyFragmentPresenter matrimonyFragmentPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +93,24 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener,
     }
 
     private void init() {
+        progressBarLayout = matrimonyFragmentView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = matrimonyFragmentView.findViewById(R.id.pb_profile_act);
+        tvMeetTitle = matrimonyFragmentView.findViewById(R.id.tv_meet_title);
+        tvMeetDate = matrimonyFragmentView.findViewById(R.id.tv_meet_date);
+        tvMeetTime = matrimonyFragmentView.findViewById(R.id.tv_meet_time);
+        tvMeetCity = matrimonyFragmentView.findViewById(R.id.tv_meet_city);
+        tvMeetVenue = matrimonyFragmentView.findViewById(R.id.tv_meet_venue);
+        tvRegAmt = matrimonyFragmentView.findViewById(R.id.tv_reg_amt);
+        rvMeetContacts = matrimonyFragmentView.findViewById(R.id.rv_meet_organizer);
+        rvMeetAnalytics = matrimonyFragmentView.findViewById(R.id.rv_meet_analytics);
+
+        meetContactsListAdapter = new MeetContactsListAdapter(contactsList);
+        rvMeetContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvMeetContacts.setAdapter(meetContactsListAdapter);
+
+        meetAnalyticsAdapter = new MeetAnalyticsAdapter(this.getActivity(), meetAnalyticsData);
+        rvMeetAnalytics.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvMeetAnalytics.setAdapter(meetAnalyticsAdapter);
         //PopulateData method called temporary
         PopulateData();
         //tv = matrimonyFragmentView.findViewById(R.id.test);
@@ -99,7 +139,8 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener,
         super.onResume();
         init();
         if (Util.isConnected(getContext())) {
-            //api call
+            matrimonyFragmentPresenter = new MatrimonyFragmentPresenter(this);
+            matrimonyFragmentPresenter.getMatrimonyMeets();
         } else {
 
         }
@@ -119,40 +160,62 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener,
     }
 
     private void PopulateData(){
-        MatrimonyMeet m1 = new MatrimonyMeet();
-        m1.setTitle("First Meet");
-        m1.setMeetStartTime("1 August 2019");
-        MatrimonyMeet m2 = new MatrimonyMeet();
-        m2.setTitle("Second Meet");
-        m2.setMeetStartTime("10 August 2019");
-        MatrimonyMeet m3 = new MatrimonyMeet();
-        m3.setTitle("Third Meet");
-        m3.setMeetStartTime("10 Sept 2019");
-        matrimonyMeetList.clear();
-        matrimonyMeetList.add(m1);
-        matrimonyMeetList.add(m2);
-        matrimonyMeetList.add(m3);
+//        MatrimonyMeet m1 = new MatrimonyMeet();
+//        m1.setTitle("First Meet");
+//        m1.setMeetStartTime("1 August 2019");
+//        MatrimonyMeet m2 = new MatrimonyMeet();
+//        m2.setTitle("Second Meet");
+//        m2.setMeetStartTime("10 August 2019");
+//        MatrimonyMeet m3 = new MatrimonyMeet();
+//        m3.setTitle("Third Meet");
+//        m3.setMeetStartTime("10 Sept 2019");
+//        matrimonyMeetList.clear();
+//        matrimonyMeetList.add(m1);
+//        matrimonyMeetList.add(m2);
+//        matrimonyMeetList.add(m3);
         //adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showProgressBar() {
+    public void onFailureListener(String requestID, String message) {
 
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
-    public <T> void showNextScreen(T data) {
-        PopulateData();
-    }
-
-    @Override
-    public void showErrorMessage(String result) {
-
+    public void closeCurrentActivity() {
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -163,11 +226,26 @@ public class MatrimonyFragment extends Fragment implements PlatformTaskListener,
     @Override
     public void onPageSelected(int position) {
         matrimonyMeetList.get(1);
+        setCurrentMeetData(position);
+    }
+
+    private void setCurrentMeetData(int position) {
         //tv.setText(matrimonyMeetList.get(position).getTitle());
+        for(MatrimonyUserDetails matrimonyUserDetails: matrimonyMeetList.get(position).getMeetOrganizers()){
+            contactsList.add(matrimonyUserDetails);
+        }
+        meetAnalyticsData = matrimonyMeetList.get(position).getAnalytics();
+
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
         matrimonyMeetList.get(2);
+    }
+
+    public void setMatrimonyMeets(MatrimonyMeetsList data) {
+        for(MatrimonyMeet m: data.getMeets()){
+            matrimonyMeetList.add(m);
+        }
     }
 }

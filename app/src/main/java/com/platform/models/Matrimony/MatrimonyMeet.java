@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatrimonyMeet implements Serializable {
@@ -57,7 +58,10 @@ public class MatrimonyMeet implements Serializable {
     private List<MatrimonyUserDetails> meetOrganizers = null;
     @SerializedName("meetReferences")
     @Expose
-    private List<MatrimonyUserDetails> meetReferences = null;
+    private ArrayList<MatrimonyUserDetails> meetReferences = null;
+    @SerializedName("analytics")
+    @Expose
+    private ArrayList<MeetAnalytics> analytics = null;
 
     public String getTitle() {
         return title;
@@ -191,8 +195,16 @@ public class MatrimonyMeet implements Serializable {
         return meetReferences;
     }
 
-    public void setMeetReferences(List<MatrimonyUserDetails> meetReferences) {
+    public void setMeetReferences(ArrayList<MatrimonyUserDetails> meetReferences) {
         this.meetReferences = meetReferences;
+    }
+
+    public ArrayList<MeetAnalytics> getAnalytics() {
+        return analytics;
+    }
+
+    public void setAnalytics(ArrayList<MeetAnalytics> analytics) {
+        this.analytics = analytics;
     }
 
 }

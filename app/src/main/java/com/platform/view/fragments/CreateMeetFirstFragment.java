@@ -50,11 +50,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     private TextView tvMeetType ,tvMeetCountry, tvMeetState, tvMeetCity;
     private Button btnFirstPartMeet;
-//    List<String> meetTypes = new ArrayList<>();
-//    List<String> meetCountries = new ArrayList<>();
-//    List<String> meetStates = new ArrayList<>();
-//    List<String> meetCities = new ArrayList<>();
-//    List<String> meetChapters = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetTypesList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetCountryList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetStateList = new ArrayList<>();
