@@ -5,6 +5,14 @@
     android:layout_height="wrap_content"
     android:background="@color/lighter_grey">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/rl_meet_view_pager"
         android:layout_width="match_parent"
@@ -63,16 +71,13 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_meet_view_pager">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_below="@+id/rl_meet_view_pager">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -129,7 +134,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_meet_organizer"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                     </androidx.recyclerview.widget.RecyclerView>
@@ -153,16 +158,16 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@color/white"
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="@dimen/dimen_10dp">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_margin="@dimen/dimen_10dp">-->
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_meet_analytics"
@@ -170,10 +175,22 @@
                         android:layout_height="wrap_content">
                     </androidx.recyclerview.widget.RecyclerView>
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_publish_saved_meet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/meet_publish" />
+
         </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

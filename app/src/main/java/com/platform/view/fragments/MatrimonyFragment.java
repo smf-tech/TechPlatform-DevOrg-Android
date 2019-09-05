@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.PlatformTaskListener;
@@ -44,7 +45,9 @@ import com.platform.view.adapters.ViewPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrimonyFragment extends Fragment implements APIDataListener, ViewPager.OnPageChangeListener {
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+
+public class MatrimonyFragment extends Fragment implements  View.OnClickListener , APIDataListener, ViewPager.OnPageChangeListener{
     private View matrimonyFragmentView;
     private FloatingActionButton btnCreateMeet;
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
@@ -58,6 +61,9 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private MatrimonyFragmentPresenter matrimonyFragmentPresenter;
+    private ViewPager meetViewPager;
+    private Button btnPublishMeet;
+    private int currentPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,18 +109,10 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         tvRegAmt = matrimonyFragmentView.findViewById(R.id.tv_reg_amt);
         rvMeetContacts = matrimonyFragmentView.findViewById(R.id.rv_meet_organizer);
         rvMeetAnalytics = matrimonyFragmentView.findViewById(R.id.rv_meet_analytics);
+        btnPublishMeet = matrimonyFragmentView.findViewById(R.id.btn_publish_saved_meet);
+        btnPublishMeet.setOnClickListener(this);
 
-        meetContactsListAdapter = new MeetContactsListAdapter(contactsList);
-        rvMeetContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvMeetContacts.setAdapter(meetContactsListAdapter);
-
-        meetAnalyticsAdapter = new MeetAnalyticsAdapter(this.getActivity(), meetAnalyticsData);
-        rvMeetAnalytics.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvMeetAnalytics.setAdapter(meetAnalyticsAdapter);
-        //PopulateData method called temporary
-        PopulateData();
-        //tv = matrimonyFragmentView.findViewById(R.id.test);
-        ViewPager meetViewPager = matrimonyFragmentView.findViewById(R.id.meet_view_pager);
+        meetViewPager = matrimonyFragmentView.findViewById(R.id.meet_view_pager);
         // Disable clip to padding
         meetViewPager.setClipToPadding(false);
         // set padding manually, the more you set the padding the more you see of prev & next page
@@ -122,7 +120,17 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         // sets a margin b/w individual pages to ensure that there is a gap b/w them
         meetViewPager.setPageMargin(30);
         meetViewPager.setOnPageChangeListener(this);
-        setupViewPager(meetViewPager);
+        //setupViewPager(meetViewPager);
+
+        meetContactsListAdapter = new MeetContactsListAdapter(contactsList);
+        RecyclerView.LayoutManager mContactsLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        rvMeetContacts.setLayoutManager(mContactsLayoutManager);
+        rvMeetContacts.setAdapter(meetContactsListAdapter);
+
+        //PopulateData method called temporary
+        //PopulateData();
+
         btnCreateMeet = matrimonyFragmentView.findViewById(R.id.btn_create_meet);
         btnCreateMeet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,19 +168,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     }
 
     private void PopulateData(){
-//        MatrimonyMeet m1 = new MatrimonyMeet();
-//        m1.setTitle("First Meet");
-//        m1.setMeetStartTime("1 August 2019");
-//        MatrimonyMeet m2 = new MatrimonyMeet();
-//        m2.setTitle("Second Meet");
-//        m2.setMeetStartTime("10 August 2019");
-//        MatrimonyMeet m3 = new MatrimonyMeet();
-//        m3.setTitle("Third Meet");
-//        m3.setMeetStartTime("10 Sept 2019");
-//        matrimonyMeetList.clear();
-//        matrimonyMeetList.add(m1);
-//        matrimonyMeetList.add(m2);
-//        matrimonyMeetList.add(m3);
         //adapter.notifyDataSetChanged();
     }
 
@@ -220,32 +215,62 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        matrimonyMeetList.get(0);
     }
 
     @Override
     public void onPageSelected(int position) {
-        matrimonyMeetList.get(1);
+        currentPosition = position;
         setCurrentMeetData(position);
     }
 
     private void setCurrentMeetData(int position) {
-        //tv.setText(matrimonyMeetList.get(position).getTitle());
+        contactsList.clear();
+        meetAnalyticsData.clear();
+        tvMeetTitle.setText(matrimonyMeetList.get(position).getTitle());
+        tvMeetDate.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getSchedule().getDateTime(),DAY_MONTH_YEAR));
+        tvMeetTime.setText(matrimonyMeetList.get(position).getSchedule().getMeetStartTime()+"-"+
+                matrimonyMeetList.get(position).getSchedule().getMeetEndTime());
+        tvMeetCity.setText(matrimonyMeetList.get(position).getLocation().getCity());
+        tvMeetVenue.setText(matrimonyMeetList.get(position).getVenue());
+        tvRegAmt.setText(String.valueOf(matrimonyMeetList.get(position).getRegAmount()));
         for(MatrimonyUserDetails matrimonyUserDetails: matrimonyMeetList.get(position).getMeetOrganizers()){
             contactsList.add(matrimonyUserDetails);
         }
-        meetAnalyticsData = matrimonyMeetList.get(position).getAnalytics();
-
+        meetAnalyticsData.addAll(matrimonyMeetList.get(position).getAnalytics());
+        MeetAnalyticsAdapter meetAnalyticsAdapter = new MeetAnalyticsAdapter(this.getActivity(), meetAnalyticsData);
+        RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(getActivity(),
+                RecyclerView.VERTICAL, false);
+        rvMeetAnalytics.setLayoutManager(mLayoutManagerLeave);
+        rvMeetAnalytics.setAdapter(meetAnalyticsAdapter);
+        adapter.notifyDataSetChanged();
+        meetContactsListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        matrimonyMeetList.get(2);
     }
 
     public void setMatrimonyMeets(MatrimonyMeetsList data) {
+        matrimonyMeetList.clear();
         for(MatrimonyMeet m: data.getMeets()){
             matrimonyMeetList.add(m);
         }
+        setupViewPager(meetViewPager);
+        setCurrentMeetData(0);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_publish_saved_meet:
+                matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId(), "true");
+                break;
+        }
+    }
+
+    public void showResponse(String responseStatus) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
     }
 }

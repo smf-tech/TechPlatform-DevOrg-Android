@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.Matrimony.MeetAnalytics;
-import com.platform.models.Matrimony.MeetAnalyticsData;
 
 import java.util.ArrayList;
 
@@ -35,15 +34,16 @@ public class MeetAnalyticsAdapter extends RecyclerView.Adapter<MeetAnalyticsAdap
     @Override
     public void onBindViewHolder(@NonNull MeetAnalyticsAdapter.ViewHolder holder, int position) {
         holder.tvTitle.setText(meetAnalyticsData.get(position).getDisplayLabel());
-        holder.rvMeetModuleAnalytics.setLayoutManager(new LinearLayoutManager(context));
-        holder.rvMeetModuleAnalytics.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context,
+                LinearLayoutManager.HORIZONTAL, true);
+        holder.rvMeetModuleAnalytics.setLayoutManager(mLayoutManager);
         MeetModuleAnalyticsAdapter meetModuleAnalyticsAdapter = new MeetModuleAnalyticsAdapter(context, meetAnalyticsData.get(position).getDataModules());
         holder.rvMeetModuleAnalytics.setAdapter(meetModuleAnalyticsAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return meetAnalyticsData.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

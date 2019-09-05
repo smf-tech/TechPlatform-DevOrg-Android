@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.platform.R;
-import com.platform.models.Matrimony.MeetAnalyticsDataModule;
 import com.platform.models.Matrimony.MeetModuleAnalytics;
 
 import java.util.ArrayList;
@@ -34,19 +34,26 @@ public class MeetModuleAnalyticsAdapter extends RecyclerView.Adapter<MeetModuleA
 
     @Override
     public void onBindViewHolder(@NonNull MeetModuleAnalyticsAdapter.ViewHolder holder, int position) {
-        //holder.tvTitle.setText(meetAnalyticsData.get(position).getDisplayLabel());
+        holder.tvTitle.setText(meetModuleAnalyticsData.get(position).getType());
+        holder.tvResult.setText(String.valueOf(meetModuleAnalyticsData.get(position).getAvailableValue()));
+        holder.pbAnalytics.setProgress(
+                ((meetModuleAnalyticsData.get(position).getAvailableValue() /
+                                meetModuleAnalyticsData.get(position).getTotalValue()) * 100));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return meetModuleAnalyticsData.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        //TextView tvTitle;
+        TextView tvTitle,tvResult;
+        CircularProgressBar pbAnalytics;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-//            tvTitle = itemView.findViewById(R.id.tv_module_title);
+            tvTitle = itemView.findViewById(R.id.tv_module_title);
+            tvResult = itemView.findViewById(R.id.tv_result);
+            pbAnalytics = itemView.findViewById(R.id.pb_analytics);
         }
     }
 }

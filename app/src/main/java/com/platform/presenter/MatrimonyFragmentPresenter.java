@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.AllMatrimonyMeetsAPIResponse;
+import com.platform.models.events.CommonResponse;
 import com.platform.request.MatrimonyMeetRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
@@ -21,11 +22,14 @@ import java.util.Map;
 public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     private WeakReference<MatrimonyFragment> fragmentWeakReference;
-    public static final String GET_MATRIMONY_MEETS ="getMatrimonyMeetTypes";
+    public static final String GET_MATRIMONY_MEETS ="getMatrimonyMeets";
+    public static final String PUBLISH_SAVED_MEET ="getMatrimonyMeets";
     private final String TAG = MatrimonyFragmentPresenter.class.getName();
     private static final String KEY_COUNTRY_ID = "country_id";
     private static final String KEY_STATE_ID = "state_id";
     private static final String KEY_CITY_ID = "city_id";
+    private static final String KEY_MEET_ID = "_id";
+    private static final String KEY_IS_PUBLISH = "is_published";
 
     public MatrimonyFragmentPresenter(MatrimonyFragment mFragment){
         fragmentWeakReference = new WeakReference<>(mFragment);
@@ -47,11 +51,39 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(GET_MATRIMONY_MEETS, paramjson, getMatrimonyMeetsUrl);
     }
 
+    public void publishSavedMeet(String meetId, String isPublish) {
+        Gson gson = new GsonBuilder().create();
+        String paramJson = gson.toJson(getMeetPublishJson(meetId, isPublish));
+        final String publishSavedMeetUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Matrimony.PUBLISH_SAVED_MEET);
+        Log.d(TAG, "getMatrimonyMeetsUrl: url" + publishSavedMeetUrl);
+        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(PUBLISH_SAVED_MEET, paramJson, publishSavedMeetUrl);
+    }
+
     public JsonObject getMeetOrganizersJson(String countryId, String stateId, String cityId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_COUNTRY_ID, countryId);
         map.put(KEY_STATE_ID, stateId);
         map.put(KEY_CITY_ID, cityId);
+
+        JsonObject requestObject = new JsonObject();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            requestObject.addProperty(key, value);
+        }
+
+        return requestObject;
+
+    }
+
+    public JsonObject getMeetPublishJson(String meetId, String isPublish){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_MEET_ID, meetId);
+        map.put(KEY_IS_PUBLISH, isPublish);
 
         JsonObject requestObject = new JsonObject();
 
@@ -94,6 +126,14 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
                 if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.GET_MATRIMONY_MEETS)){
                     AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
                     fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
+                }
+                if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.PUBLISH_SAVED_MEET)){
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
                 }
             }
         } catch (Exception e) {

@@ -17,15 +17,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
+import com.platform.listeners.APIDataListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
+import com.platform.presenter.MatrimonyMeetFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.HomeActivity;
 
-public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuItemClickListener  {
+public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuItemClickListener, APIDataListener {
     private View matrimonyMeetFragmentView;
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
+    private MatrimonyMeetFragmentPresenter matrimonyMeetFragmentPresenter;
+    MatrimonyMeet meetData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +56,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            MatrimonyMeet meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
-            setMeetData(meetData);
+            meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
         }
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
@@ -55,19 +65,44 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 PopupMenu popup = new PopupMenu((getActivity()), v);
                 popup.setOnMenuItemClickListener(MatrimonyMeetFragment.this);
                 popup.inflate(R.menu.matrimony_meet_menu);
+                if(meetData.getIs_published().equals("true")){
+                    popup.getMenu().findItem(R.id.action_delete).setVisible(false);
+                }
                 popup.show();
             }
         });
     }
 
-    private void setMeetData(MatrimonyMeet meetData) {
+    private void init(){
+        progressBarLayout = matrimonyMeetFragmentView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = matrimonyMeetFragmentView.findViewById(R.id.pb_profile_act);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+        if (Util.isConnected(getContext())) {
+            matrimonyMeetFragmentPresenter = new MatrimonyMeetFragmentPresenter(this);
+        } else {
+
+        }
+    }
+
+    public void showResponse(String responseStatus) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_archive:
+                matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Archive");
+                break;
+            case R.id.action_delete:
+                matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Deleted");
                 break;
             case R.id.action_allocate_badge:
                 break;
@@ -77,5 +112,47 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void hideProgressBar() {
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
     }
 }

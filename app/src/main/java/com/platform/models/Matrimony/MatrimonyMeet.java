@@ -8,42 +8,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatrimonyMeet implements Serializable {
+    @SerializedName("_id")
+    @Expose
+    private String id;
     @SerializedName("title")
     @Expose
     private String title;
     @SerializedName("meetType")
     @Expose
     private String meetType;
-    @SerializedName("state")
+    @SerializedName("location")
     @Expose
-    private String state;
-    @SerializedName("city")
-    @Expose
-    private String city;
-    @SerializedName("country")
-    @Expose
-    private String country;
+    private MeetLocation location;
     @SerializedName("venue")
     @Expose
     private String venue;
-    @SerializedName("dateTime")
+    @SerializedName("schedule")
     @Expose
-    private long dateTime;
-    @SerializedName("meetStartTime")
-    @Expose
-    private String meetStartTime;
-    @SerializedName("meetEndTime")
-    @Expose
-    private String meetEndTime;
+    private MeetSchedule schedule;
+//    @SerializedName("dateTime")
+//    @Expose
+//    private long dateTime;
+//    @SerializedName("meetStartTime")
+//    @Expose
+//    private String meetStartTime;
+//    @SerializedName("meetEndTime")
+//    @Expose
+//    private String meetEndTime;
     @SerializedName("isRegPaid")
     @Expose
     private Boolean isRegPaid;
-    @SerializedName("regStartDateTime")
+    @SerializedName("registrationSchedule")
     @Expose
-    private long regStartDateTime;
-    @SerializedName("regEndDateTime")
-    @Expose
-    private long regEndDateTime;
+    private RegistrationSchedule registrationSchedule;
+//    @SerializedName("regStartDateTime")
+//    @Expose
+//    private long regStartDateTime;
+//    @SerializedName("regEndDateTime")
+//    @Expose
+//    private long regEndDateTime;
     @SerializedName("regAmount")
     @Expose
     private Integer regAmount;
@@ -62,6 +65,17 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("analytics")
     @Expose
     private ArrayList<MeetAnalytics> analytics = null;
+    @SerializedName("is_published")
+    @Expose
+    private String is_published;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -79,28 +93,12 @@ public class MatrimonyMeet implements Serializable {
         this.meetType = meetType;
     }
 
-    public String getState() {
-        return state;
+    public MeetLocation getLocation() {
+        return location;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setLocation(MeetLocation location) {
+        this.location = location;
     }
 
     public String getVenue() {
@@ -111,28 +109,12 @@ public class MatrimonyMeet implements Serializable {
         this.venue = venue;
     }
 
-    public long getDateTime() {
-        return dateTime;
+    public MeetSchedule getSchedule() {
+        return schedule;
     }
 
-    public void setDateTime(long dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getMeetStartTime() {
-        return meetStartTime;
-    }
-
-    public void setMeetStartTime(String meetStartTime) {
-        this.meetStartTime = meetStartTime;
-    }
-
-    public String getMeetEndTime() {
-        return meetEndTime;
-    }
-
-    public void setMeetEndTime(String meetEndTime) {
-        this.meetEndTime = meetEndTime;
+    public void setSchedule(MeetSchedule schedule) {
+        this.schedule = schedule;
     }
 
     public Boolean getIsRegPaid() {
@@ -143,20 +125,12 @@ public class MatrimonyMeet implements Serializable {
         this.isRegPaid = isRegPaid;
     }
 
-    public long getRegStartDateTime() {
-        return regStartDateTime;
+    public RegistrationSchedule getRegistrationSchedule() {
+        return registrationSchedule;
     }
 
-    public void setRegStartDateTime(long regStartDateTime) {
-        this.regStartDateTime = regStartDateTime;
-    }
-
-    public long getRegEndDateTime() {
-        return regEndDateTime;
-    }
-
-    public void setRegEndDateTime(long regEndDateTime) {
-        this.regEndDateTime = regEndDateTime;
+    public void setRegistrationSchedule(RegistrationSchedule registrationSchedule) {
+        this.registrationSchedule = registrationSchedule;
     }
 
     public Integer getRegAmount() {
@@ -205,6 +179,14 @@ public class MatrimonyMeet implements Serializable {
 
     public void setAnalytics(ArrayList<MeetAnalytics> analytics) {
         this.analytics = analytics;
+    }
+
+    public String getIs_published() {
+        return is_published;
+    }
+
+    public void setIs_published(String is_published) {
+        this.is_published = is_published;
     }
 
 }

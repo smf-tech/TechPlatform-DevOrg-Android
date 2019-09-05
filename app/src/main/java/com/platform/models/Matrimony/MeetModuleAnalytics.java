@@ -9,10 +9,10 @@ public class MeetModuleAnalytics {
     private String type;
     @SerializedName("availableValue")
     @Expose
-    private Integer availableValue;
+    private float availableValue;
     @SerializedName("totalValue")
     @Expose
-    private Integer totalValue;
+    private float totalValue;
 
     public String getType() {
         return type;
@@ -22,19 +22,19 @@ public class MeetModuleAnalytics {
         this.type = type;
     }
 
-    public Integer getAvailableValue() {
+    public float getAvailableValue() {
         return availableValue;
     }
 
-    public void setAvailableValue(Integer availableValue) {
+    public void setAvailableValue(float availableValue) {
         this.availableValue = availableValue;
     }
 
-    public Integer getTotalValue() {
+    public float getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(Integer totalValue) {
+    public void setTotalValue(float totalValue) {
         this.totalValue = totalValue;
     }
 }

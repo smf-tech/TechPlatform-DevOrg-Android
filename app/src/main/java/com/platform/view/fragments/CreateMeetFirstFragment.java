@@ -155,18 +155,20 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private void setMeetData() {
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setTitle(edtMeetName.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetType(selectedMeetType);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCountry(selectedCountryId);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setState(selectedStateId);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setCity(selectedCityId);
+
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation().setCountry(selectedCountryId);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation().setState(selectedStateId);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation().setCity(selectedCityId);
+
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString());
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setDateTime
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setDateTime
                 (Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetStartTime(edtMeetStartTime.getText().toString());
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetEndTime(edtMeetEndTime.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setMeetStartTime(edtMeetStartTime.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setMeetEndTime(edtMeetEndTime.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsRegPaid(isRegPaid);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegStartDateTime
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getRegistrationSchedule().setRegStartDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegStartDate.getText().toString(), "00:00"));
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegEndDateTime
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getRegistrationSchedule().setRegEndDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "00:00"));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString()));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
