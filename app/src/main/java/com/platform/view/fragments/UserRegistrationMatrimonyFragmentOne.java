@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.platform.R;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.UserRegistrationMatrimonyActivity;
-import com.platform.widgets.MultiSelectBottomSheet;
 import com.platform.widgets.SingleSelectBottomSheet;
 
 import java.text.SimpleDateFormat;
@@ -30,14 +31,6 @@ import java.util.Calendar;
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 
 public class UserRegistrationMatrimonyFragmentOne extends Fragment implements View.OnClickListener, SingleSelectBottomSheet.MultiSpinnerListener {
-    private View fragmentview;
-    private Button btn_load_next;
-    private TextView tv_pagetitle;
-    private EditText et_first_name, et_middle_name, et_last_name, et_birth_date, et_birth_time, et_birth_place,
-            et_age, et_marital_status, et_height, et_weight, et_complexion, et_patrika_match, et_sampraday, et_drink, et_smoke, et_residance_status;
-    private CheckBox checkbox_community_preference;
-    private String userGender = Constants.Login.MALE;
-
     //temporary arrays
     ArrayList<String> ListBloodGroup = new ArrayList<>();
     ArrayList<String> ListMaritalStatus = new ArrayList<>();
@@ -49,7 +42,14 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     ArrayList<String> ListDrink = new ArrayList<>();
     ArrayList<String> ListSmoke = new ArrayList<>();
     ArrayList<String> ListResidenceStatus = new ArrayList<>();
-
+    private View fragmentview;
+    private Button btn_load_next;
+    private TextView tv_pagetitle;
+    private EditText et_first_name, et_middle_name, et_last_name, et_birth_date, et_birth_time, et_birth_place, et_blood_group,
+            et_age, et_marital_status, et_height, et_weight, et_complexion, et_patrika_match, et_sampraday, et_drink, et_smoke, et_residance_status;
+    private CheckBox checkbox_community_preference;
+    private String userGender = Constants.Login.MALE;
+    private String userManglik ="dont know";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
 
     public static UserRegistrationMatrimonyFragmentOne newInstance() {
@@ -63,6 +63,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         fragmentview = inflater.inflate(R.layout.user_registration_matrimony_fragment_one, container, false);
         initViews();
         createTempArrayList();
+
         return fragmentview;
     }
 
@@ -81,6 +82,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         et_birth_time = fragmentview.findViewById(R.id.et_birth_time);
         et_birth_place = fragmentview.findViewById(R.id.et_birth_place);
         et_age = fragmentview.findViewById(R.id.et_age);
+        et_blood_group = fragmentview.findViewById(R.id.et_blood_group);
         et_marital_status = fragmentview.findViewById(R.id.et_marital_status);
         et_height = fragmentview.findViewById(R.id.et_height);
         et_weight = fragmentview.findViewById(R.id.et_weight);
@@ -106,6 +108,21 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     break;
             }
         });
+        //MANGLIK
+        RadioGroup radioGroupManglik = fragmentview.findViewById(R.id.user_manglik_group);
+        radioGroupManglik.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
+            switch (checkedId) {
+                case R.id.manglik:
+                    userManglik = "yes";
+                    break;
+                case R.id.nonmanglik:
+                    userGender = "no";
+                    break;
+                case R.id.dontknowmanglik:
+                    userGender = "Dont know";
+                    break;
+            }
+        });
 
         //set Listeners
         et_birth_date.setOnClickListener(this);
@@ -116,6 +133,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         et_birth_time.setOnClickListener(this);
         et_birth_place.setOnClickListener(this);
         et_age.setOnClickListener(this);
+        et_blood_group.setOnClickListener(this);
         et_marital_status.setOnClickListener(this);
         et_height.setOnClickListener(this);
         et_weight.setOnClickListener(this);
@@ -126,7 +144,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         et_smoke.setOnClickListener(this);
         et_residance_status.setOnClickListener(this);
 
-       // ListDrink = (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(0).getValues();
+        // ListDrink = (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(0).getValues();
     }
 
     @Override
@@ -139,18 +157,37 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_loadnext:
-                ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(2);
+                setValuesInModel();
+
+
                 break;
             case R.id.et_birth_date:
                 selectStartDate(et_birth_date);
                 break;
-            case R.id.et_drink:
-
-                showMultiSelectBottomsheet("et_drink",ListDrink);
+            case R.id.et_birth_time:
+                Util.showTimeDialog(getActivity(), fragmentview.findViewById(R.id.et_birth_time));
                 break;
+
+            case R.id.et_drink:
+                showMultiSelectBottomsheet("et_drink", ListDrink);
+                break;
+            case R.id.et_blood_group:
+                showMultiSelectBottomsheet("et_blood_group", ListBloodGroup);
+                break;
+            case R.id.et_weight:
+                //showMultiSelectBottomsheet("et_weight", ListWeight);
+                break;
+            case R.id.et_patrika_match:
+                showMultiSelectBottomsheet("et_patrika_match", ListmatchPatrika);
+                break;
+            case R.id.et_smoke:
+                showMultiSelectBottomsheet("et_smoke", ListSmoke);
+                break;
+
+
             case R.id.et_sampraday:
-                for (int i = 0; i <((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if(((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("sect")){
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("sect")) {
                         showMultiSelectBottomsheet("et_sampraday", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
@@ -158,32 +195,32 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 break;
 
             case R.id.et_marital_status:
-                for (int i = 0; i <((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if(((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("marital_status")){
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("marital_status")) {
                         showMultiSelectBottomsheet("et_marital_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
                 break;
             case R.id.et_height:
-                for (int i = 0; i <((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if(((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")){
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")) {
                         showMultiSelectBottomsheet("et_height", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
                 break;
             case R.id.et_complexion:
-                for (int i = 0; i <((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if(((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("complexion")){
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("complexion")) {
                         showMultiSelectBottomsheet("et_complexion", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
                 break;
             case R.id.et_residance_status:
-                for (int i = 0; i <((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if(((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("own_house")){
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("own_house")) {
                         showMultiSelectBottomsheet("et_residance_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
@@ -193,7 +230,44 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         }
     }
 
+    private void setValuesInModel() {
+        //if (isAllInputsValid())
+        {
+            if (UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel != null) {
+                if (UserRegistrationMatrimonyActivity.personalDetails != null) {
 
+                    UserRegistrationMatrimonyActivity.personalDetails.setFirst_name(et_first_name.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setMiddle_name(et_middle_name.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setLast_name(et_last_name.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setGender(userGender);
+                    UserRegistrationMatrimonyActivity.personalDetails.setIs_manglik(userManglik);
+                    UserRegistrationMatrimonyActivity.personalDetails.setBirth_date(Util.getDateInepoch(et_birth_date.getText().toString()));
+                    UserRegistrationMatrimonyActivity.personalDetails.setBirth_time("11.15 PM");
+                    UserRegistrationMatrimonyActivity.personalDetails.setBirth_city(et_birth_place.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setBlood_group(et_blood_group.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setMarital_status(et_marital_status.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setHeight(et_height.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setWeight(et_weight.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setComplexion(et_complexion.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(Boolean.parseBoolean("YES"));
+                    UserRegistrationMatrimonyActivity.personalDetails.setSect(et_sampraday.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setSmoke(et_smoke.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setDrink(et_drink.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setOwn_house(et_residance_status.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setSpecial_case("");
+
+
+                    UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.setPersonal_details(UserRegistrationMatrimonyActivity.personalDetails);
+
+                } else {
+                    Util.showToast("null object getPersonal_details()", getActivity());
+                }
+            } else {
+                Util.showToast("null object", getActivity());
+            }
+            ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(2);
+        }
+    }
 
 
     //select start date and end date for filter
@@ -223,49 +297,48 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     }
 
 
+    public void createTempArrayList() {
+        ListBloodGroup.add("A+");
+        ListBloodGroup.add("AB+");
+        ListBloodGroup.add("AB-");
+        ListBloodGroup.add("A-");
+        ListBloodGroup.add("B+");
+        ListBloodGroup.add("B-");
+        ListBloodGroup.add("O+");
+        ListBloodGroup.add("O-");
 
-    public void createTempArrayList(){
-        ListBloodGroup.add("O+ve");
-        ListBloodGroup.add("O-ve");
+        ListDrink.add("no");
+        ListDrink.add("yes");
+        ListDrink.add("occasionally");
 
-        ListDrink.add("NO,I don't drink.");
-        ListDrink.add("YES,I drink.");
-        ListDrink.add("SOMETIMES,I drink Sometimes");
+        ListSmoke.add("no");
+        ListSmoke.add("yes");
+        ListSmoke.add("occasionally");
 
-        ListSmoke.add("NO,I don't drink.");
-        ListSmoke.add("YES,I drink.");
-        ListSmoke.add("SOMETIMES,I drink Sometimes");
+        ListmatchPatrika.add("Yes");
+        ListmatchPatrika.add("No");
 
-        ListResidenceStatus.add("Owned");
-        ListResidenceStatus.add("Rented");
 
-        ListmatchPatrika.add("Yes,I want to match patrika");
-        ListmatchPatrika.add("No,I don't want to match patrika");
-
-        ListSkintone.add("Very fair");
-        ListSkintone.add("Fair");
-        ListSkintone.add("Dark");
-
-        ListSampraday.add("Sampraday one");
-        ListSampraday.add("Sampraday Two");
-
-        ListMaritalStatus.add("Unmarried");
-        ListMaritalStatus.add("Married");
-
+        ListWeight.add("30");
+        ListWeight.add("40");
         ListWeight.add("50");
         ListWeight.add("60");
         ListWeight.add("70");
-
-        ListHeight.add("5 feet");
-        ListHeight.add("6 feet");
-        ListHeight.add("7 feet");
+        ListWeight.add("80");
+        ListWeight.add("90");
+        ListWeight.add("100");
+        ListWeight.add("110");
+        ListWeight.add("120");
+        ListWeight.add("130");
+        ListWeight.add("140");
+        ListWeight.add("150");
 
     }
 
 
-    private void showMultiSelectBottomsheet(String selectedOption,ArrayList<String> List) {
+    private void showMultiSelectBottomsheet(String selectedOption, ArrayList<String> List) {
 
-        bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(),selectedOption,List,this::onValuesSelected);
+        bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
         bottomSheetDialogFragment.show();
         bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -273,10 +346,11 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
 
     @Override
     public void onValuesSelected(int selected, String spinnerName, String selectedValues) {
-        switch (spinnerName){
+        switch (spinnerName) {
             case "et_sampraday":
                 et_sampraday.setText(selectedValues);
-            break;
+                //  UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.getEducational_details().setEducation_level("");
+                break;
             case "et_marital_status":
                 et_marital_status.setText(selectedValues);
                 break;
@@ -290,10 +364,55 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 et_residance_status.setText(selectedValues);
                 break;
 
+            case "et_drink":
+                et_drink.setText(ListDrink.get(selected));
+                break;
+            case "et_smoke":
+                et_smoke.setText(ListSmoke.get(selected));
+                break;
+
+            case "et_blood_group":
+                et_blood_group.setText(ListBloodGroup.get(selected));
+                break;
+            case "et_weight":
+                et_weight.setText(ListWeight.get(selected));
+                break;
+            case "et_patrika_match":
+                et_patrika_match.setText(ListmatchPatrika.get(selected));
+                break;
 
 
         }
         //et_drink.setText(ListDrink.get(selected));
+    }
+
+
+    //Validations
+    private boolean isAllInputsValid() {
+        String msg = "";
+
+        if (et_first_name.getText().toString().trim().length() == 0) {
+            msg = "Please enter your first name.";//getResources().getString(R.string.msg_enter_name);
+        } else if (et_last_name.getText().toString().trim().length() == 0) {
+            msg = "Please enter your last name.";//getResources().getString(R.string.msg_enter_name);
+        } else if (et_birth_date.getText().toString().trim().length() == 0) {
+            msg = "Please enter your birth date.";//getResources().getString(R.string.msg_enter_proper_date);
+        }
+        else if (et_birth_place.getText().toString().trim().length() == 0) {
+            msg = "Please enter your birth place.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_height.getText().toString().trim().length() == 0) {
+            msg = "Please enter your height.";//getResources().getString(R.string.msg_enter_proper_date);
+        }
+        else if (et_sampraday.getText().toString().trim().length() == 0) {
+            msg = "Please enter your sampradaay.";//getResources().getString(R.string.msg_enter_proper_date);
+        }
+
+        if (TextUtils.isEmpty(msg)) {
+            return true;
+        }
+
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+        return false;
     }
 }
 

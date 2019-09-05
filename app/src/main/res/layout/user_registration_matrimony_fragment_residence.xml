@@ -67,6 +67,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:id="@+id/et_education"
                             android:hint="Education Category/Qualifications" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -82,6 +85,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_occupation_type"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Occupation type"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,6 +130,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_Annual_income"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Annual income"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,7 +141,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/RegistrationEditTextLayout"
@@ -167,6 +177,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_state"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="@string/state"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -181,6 +194,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_country"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Country"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -195,6 +211,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_primary_mobile"
+                            android:digits="0123456789"
+                            android:maxLength="10"
+                            android:inputType="phone"
                             android:hint="Primary Mobile Number"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
@@ -207,6 +226,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:digits="0123456789"
+                            android:maxLength="10"
                             android:id="@+id/et_primary_mobile_two"
                             android:hint="Mobile Number"/>
                     </com.google.android.material.textfield.TextInputLayout>
@@ -222,6 +244,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_primary_email"
+                            android:inputType="textEmailAddress"
                             android:hint="Primary email address"/>
                     </com.google.android.material.textfield.TextInputLayout>
 

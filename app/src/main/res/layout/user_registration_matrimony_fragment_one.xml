@@ -161,9 +161,10 @@
                                 android:drawableEnd="@drawable/ic_cal_event"
                                 android:clickable="false"
                                 android:focusable="false"
+                                android:longClickable="false"
                                 android:hint="@string/birth_date"
                                 android:inputType="date"
-                                android:longClickable="false" />
+                                 />
                             <!--android:drawableEnd="@drawable/ic_cal_event"-->
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -186,7 +187,7 @@
                                 android:clickable="false"
                                 android:drawableEnd="@drawable/ic_clock"
                                 android:focusable="false"
-                                android:hint="@string/task_start_date"
+                                android:hint="Birth time"
 
                                 android:longClickable="false" />
                             <!--android:drawableEnd="@drawable/ic_cal_event"-->
@@ -219,6 +220,7 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_age"
+                            android:inputType="number"
                             android:layout_height="wrap_content"
                             android:hint="@string/age" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -233,6 +235,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_blood_group"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Blood Group" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -247,6 +252,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_marital_status"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Marital Status" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -263,6 +271,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_height"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Height" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -277,6 +288,7 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_weight"
+
                             android:layout_height="wrap_content"
                             android:hint="Weight(in kg)" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -291,6 +303,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_complexion"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Complexion / Skin Tone" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -341,6 +356,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_patrika_match"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Do you want to match patrika?" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -354,7 +372,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_sampraday"
+                            android:clickable="false"
                             android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Sampraday / Sub Cast / Jain Sect" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -369,6 +389,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_drink"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Do you drink?" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -382,6 +405,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_smoke"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Do you smoke?" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -395,6 +421,9 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_residance_status"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Residential status" />
                     </com.google.android.material.textfield.TextInputLayout>

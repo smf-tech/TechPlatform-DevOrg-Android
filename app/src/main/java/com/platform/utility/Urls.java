@@ -100,6 +100,8 @@ public class Urls {
 
         //userRegistration
         public static final String USER_REGI_MASTER = "api/masterData";
+        public static final String USER_REGI_SUBMIT_API = "api/insertUser";
+
 
     }
 

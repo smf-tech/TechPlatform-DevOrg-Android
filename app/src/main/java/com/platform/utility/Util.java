@@ -33,6 +33,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -863,6 +864,34 @@ public class Util {
                         MessageFormat.format("{0}:{1}",
                                 String.format(Locale.getDefault(), "%02d", selectedHour),
                                 String.format(Locale.getDefault(), "%02d", selectedMinute))),
+                hour, minute, false);
+
+        timePicker.setTitle(context.getString(R.string.select_time_title));
+        timePicker.show();
+    }
+
+    public static void showTimeDialogTwelveHourFormat(Context context, final EditText editText) {
+        Calendar currentTime = Calendar.getInstance();
+        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = currentTime.get(Calendar.MINUTE);
+
+        TimePickerDialog timePicker = new TimePickerDialog(context,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker1, int selectedHour, int selectedMinute) {
+                        String amPm ="AM";
+                        if (selectedHour >= 12) {
+                            amPm = "PM";
+                            selectedHour = selectedHour-12;
+                        } else {
+                            amPm = "AM";
+                        }
+                        editText.setText(
+                                String.format("%s%s", MessageFormat.format("{0}:{1}",
+                                        String.format(Locale.getDefault(), "%02d", selectedHour),
+                                        String.format(Locale.getDefault(), "%02d", selectedMinute)), amPm));
+                    }
+                },
                 hour, minute, false);
 
         timePicker.setTitle(context.getString(R.string.select_time_title));

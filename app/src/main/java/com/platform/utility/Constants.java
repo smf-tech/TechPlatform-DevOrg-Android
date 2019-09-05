@@ -240,6 +240,11 @@ public class Constants {
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
+
+
+        //-------
+        public static final String IMAGE_TYPE_ADHARCARD = "ADHAR";
+        public static final String IMAGE_TYPE_EDUCATION = "EDUCATION";
     }
 
     public class Notification {
@@ -318,4 +323,6 @@ public class Constants {
     public static class ContentManagement{
         public static final String CONTENT_TOOLBAR_TEXT="ContentManagement";
     }
+
+
 }

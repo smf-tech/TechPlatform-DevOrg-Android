@@ -120,7 +120,45 @@
                             android:id="@+id/et_other_remark"
                             android:hint="Other Remark"/>
                     </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Please upload following document for verification"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Adhar Card*(Highest Degree)"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_height="wrap_content" />
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_img"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:id="@+id/img_adhar"
+                        android:background="@drawable/edittext_border"
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Education Certificate*(Highest Degree)"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_img"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:id="@+id/img_education_cert"
+                        android:background="@drawable/edittext_border"
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:layout_height="@dimen/dimen_100dp"/>
 
                 </LinearLayout>
             </ScrollView>

@@ -68,6 +68,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_family_type"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Family type" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,6 +156,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_father_occupation"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Father's occupation"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,6 +173,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_family_income"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Family income"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -195,6 +204,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_mothers_occupation"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="Mother's occupation"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -209,7 +221,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_brother"
-                            android:hint="Bother's"/>
+                            android:inputType="number"
+                            android:hint="no of brother's"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -223,7 +236,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_sister"
-                            android:hint="Sister's"/>
+                            android:inputType="number"
+                            android:hint="No of sister's"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>

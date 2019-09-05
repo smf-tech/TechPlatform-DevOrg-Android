@@ -1,23 +1,29 @@
 package com.platform.view.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.platform.R;
+import com.platform.utility.Util;
 import com.platform.view.activities.UserRegistrationMatrimonyActivity;
+import com.platform.widgets.SingleSelectBottomSheet;
 
-public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements View.OnClickListener, SingleSelectBottomSheet.MultiSpinnerListener {
     private View fragmentview;
+    private SingleSelectBottomSheet bottomSheetDialogFragment;
     private Button btn_load_next, btn_loadprevious;
     private TextView tv_pagetitle;
     private EditText et_family_type, et_Shakha_self, et_shakha_mama, et_shakha_dada, et_shakha_nana, et_father_name, et_father_occupation, et_family_income,
@@ -60,6 +66,12 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
         btn_load_next.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
 
+        et_family_type.setOnClickListener(this);
+        et_father_occupation.setOnClickListener(this);
+        et_family_income.setOnClickListener(this);
+        et_mothers_occupation.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -72,11 +84,135 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_loadnext:
-                ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(3);
+                setValuesInModel();
+
                 break;
             case R.id.btn_loadprevious:
                 ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(1);
                 break;
+
+            case R.id.et_family_type:
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("family_type")) {
+                    showMultiSelectBottomsheet("et_family_type", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                    break;
+                }
+            }
+                break;
+            case R.id.et_father_occupation:
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
+                        showMultiSelectBottomsheet("et_father_occupation", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        break;
+                    }
+                }
+                break;
+            case R.id.et_mothers_occupation:
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
+                        showMultiSelectBottomsheet("et_mothers_occupation", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        break;
+                    }
+                }
+                break;
+            case R.id.et_family_income:
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("income")) {
+                        showMultiSelectBottomsheet("et_family_income", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        break;
+                    }
+                }
+                break;
         }
+
+    }
+
+    private void setValuesInModel() {
+        //if (isAllInputsValid())
+        {
+            if (UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel != null) {
+                if (UserRegistrationMatrimonyActivity.familyDetails != null) {
+
+                    UserRegistrationMatrimonyActivity.familyDetails.setFamily_type(et_family_type.getText().toString());
+
+                    UserRegistrationMatrimonyActivity.gotra.setSelf_gotra(et_Shakha_self.getText().toString());
+                    UserRegistrationMatrimonyActivity.gotra.setMama_gotra(et_shakha_mama.getText().toString());
+                    UserRegistrationMatrimonyActivity.gotra.setDada_gotra(et_shakha_dada.getText().toString());
+                    UserRegistrationMatrimonyActivity.gotra.setNana_gotra(et_shakha_nana.getText().toString());
+
+                    UserRegistrationMatrimonyActivity.familyDetails.setGotra(UserRegistrationMatrimonyActivity.gotra);
+
+                    UserRegistrationMatrimonyActivity.familyDetails.setFather_name(et_father_name.getText().toString());
+                    UserRegistrationMatrimonyActivity.familyDetails.setFather_occupation(et_father_occupation.getText().toString());
+                    UserRegistrationMatrimonyActivity.familyDetails.setFamily_income(et_family_income.getText().toString());
+                    UserRegistrationMatrimonyActivity.familyDetails.setMother_name(et_mothers_name.getText().toString());
+                    UserRegistrationMatrimonyActivity.familyDetails.setMother_occupation(et_mothers_occupation.getText().toString());
+                    UserRegistrationMatrimonyActivity.familyDetails.setBrother_count(et_brother.getText().toString());
+                    UserRegistrationMatrimonyActivity.familyDetails.setSister_count(et_sister.getText().toString());
+
+
+                    UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.setFamily_details(UserRegistrationMatrimonyActivity.familyDetails);
+
+                } else {
+                    Util.showToast("null object getPersonal_details()", getActivity());
+                }
+            } else {
+                Util.showToast("null object", getActivity());
+            }
+            ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(3);
+        }
+    }
+    //------------
+
+    private void showMultiSelectBottomsheet(String selectedOption, ArrayList<String> List) {
+
+        bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
+        bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void onValuesSelected(int selected, String spinnerName, String selectedValues) {
+        switch (spinnerName) {
+            case "et_family_type":
+                et_family_type.setText(selectedValues);
+                break;
+            case "et_father_occupation":
+                et_father_occupation.setText(selectedValues);
+                break;
+            case "et_mothers_occupation":
+                et_mothers_occupation.setText(selectedValues);
+                break;
+            case "et_family_income":
+                et_family_income.setText(selectedValues);
+                break;
+
+
+
+        }
+
+    }
+
+    //Validations
+    private boolean isAllInputsValid() {
+        String msg = "";
+
+        if (et_Shakha_self.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_enter_name);
+        } /*else if (et_shakha_mama.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_enter_name);
+        } else if (et_shakha_dada.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_enter_name);
+        } else if (et_shakha_nana.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_enter_proper_date);
+        }*/
+
+        if (TextUtils.isEmpty(msg)) {
+            return true;
+        }
+
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+        return false;
     }
 }
