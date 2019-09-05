@@ -59,7 +59,7 @@ public class UserRegistrationMatrimonyActivityPresenter implements MatrimonyMast
     @Override
     public void UserRegistrationDataRequestsFetched(String response) {
         if (!TextUtils.isEmpty(response)) {
-
+            fragmentWeakReference.get().profileCreatedSuccessfully(response);
         }
     }
 

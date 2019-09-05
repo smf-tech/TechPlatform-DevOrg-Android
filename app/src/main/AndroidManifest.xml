@@ -31,6 +31,7 @@
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
         <activity android:name=".view.activities.UserRegistrationMatrimonyActivity"></activity>
+        <activity android:name=".view.activities.MatrimonyProfileListActivity"></activity>
         <activity android:name=".view.activities.NotificationsActivity" />
         <activity android:name=".view.activities.ContentDownloadedActivity" />
         <activity android:name=".view.activities.BaseActivity" />

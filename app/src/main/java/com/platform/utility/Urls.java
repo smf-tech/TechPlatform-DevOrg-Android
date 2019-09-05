@@ -102,6 +102,7 @@ public class Urls {
         public static final String USER_REGI_MASTER = "api/masterData";
         public static final String USER_REGI_SUBMIT_API = "api/insertUser";
 
+        public static final String GET_MATRIMONY_PROFILE_API = "api/getMeetUsers/%1$s";
 
     }
 

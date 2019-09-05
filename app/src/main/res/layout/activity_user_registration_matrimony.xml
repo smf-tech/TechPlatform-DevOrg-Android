@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
 
-        <androidx.viewpager.widget.ViewPager
+        <com.platform.view.customs.CustomViewPager
             android:id="@+id/approval_cat_view_pager"
             android:layout_width="match_parent"
             android:background="@color/base_background_color"

@@ -7,11 +7,14 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.listeners.TMFilterListRequestCallListener;
+import com.platform.models.Matrimony.MatrimonyUserProfileRequestModel;
 import com.platform.models.tm.PendingRequest;
 import com.platform.models.tm.SubFilterset;
 import com.platform.models.tm.TMFilterlistRequestsResponse;
+import com.platform.request.MatrimonyProfileListRequestCall;
 import com.platform.request.TMFiltersListRequestCall;
 import com.platform.utility.Util;
+import com.platform.view.activities.MatrimonyProfileListActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 
 import org.json.JSONArray;
@@ -22,17 +25,17 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 @SuppressWarnings("CanBeFinal")
-public class TMFilterListActivityPresenter implements TMFilterListRequestCallListener {
+public class MatrimonyProfilesListActivityPresenter implements TMFilterListRequestCallListener {
 
     private final String TAG = this.getClass().getName();
-    private WeakReference<TMFiltersListActivity> fragmentWeakReference;
+    private WeakReference<MatrimonyProfileListActivity> fragmentWeakReference;
 
-    public TMFilterListActivityPresenter(TMFiltersListActivity tmFiltersListActivity) {
+    public MatrimonyProfilesListActivityPresenter(MatrimonyProfileListActivity tmFiltersListActivity) {
         fragmentWeakReference = new WeakReference<>(tmFiltersListActivity);
     }
 
     public void getAllFiltersRequests() {
-        TMFiltersListRequestCall requestCall = new TMFiltersListRequestCall();
+        MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
         requestCall.setListener(this);
 
         //fragmentWeakReference.get().showProgressBar();
@@ -51,12 +54,12 @@ public class TMFilterListActivityPresenter implements TMFilterListRequestCallLis
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            TMFilterlistRequestsResponse pendingRequestsResponse
-                    = new Gson().fromJson(response, TMFilterlistRequestsResponse.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getData() != null
-                    && !pendingRequestsResponse.getData().isEmpty()
-                    && pendingRequestsResponse.getData().size() > 0) {
-                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getData());
+            MatrimonyUserProfileRequestModel pendingRequestsResponse
+                    = new Gson().fromJson(response, MatrimonyUserProfileRequestModel.class);
+            if (pendingRequestsResponse != null && pendingRequestsResponse.getUserProfileList() != null
+                    && !pendingRequestsResponse.getUserProfileList().isEmpty()
+                    && pendingRequestsResponse.getUserProfileList().size() > 0) {
+                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getUserProfileList());
             }
         }
     }

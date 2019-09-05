@@ -311,6 +311,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 getString(R.string.approvals), true);*/
         Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
         startActivity(startMain);
+        Intent startMain1 = new Intent(HomeActivity.this, MatrimonyProfileListActivity.class);
+        startActivity(startMain1);
+
     }
 
     private void loadReportsPage() {

@@ -10,15 +10,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.models.Matrimony.MatrimonyMasterRequestModel;
 import com.platform.models.Matrimony.MatrimonyUserRegRequestModel;
 import com.platform.presenter.UserRegistrationMatrimonyActivityPresenter;
+import com.platform.utility.Util;
 import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 import com.platform.view.fragments.UserRegistrationMatrimonyAboutmeFragment;
 import com.platform.view.fragments.UserRegistrationMatrimonyFamilyFragment;
 import com.platform.view.fragments.UserRegistrationMatrimonyFragmentOne;
 import com.platform.view.fragments.UserRegistrationMatrimonyResidenceFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +157,19 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
     public void imageUploadedSuccessfully()
     {
 
+    }
+
+    public void profileCreatedSuccessfully(String response)
+    {
+        String status =response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+             status = jsonObject.optString("message");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Util.showToast(status,this);
+        finish();
     }
 
 }

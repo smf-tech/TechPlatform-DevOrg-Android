@@ -288,7 +288,7 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:id="@+id/et_weight"
-
+                            android:inputType="number"
                             android:layout_height="wrap_content"
                             android:hint="Weight(in kg)" />
                     </com.google.android.material.textfield.TextInputLayout>
