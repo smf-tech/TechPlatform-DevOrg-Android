@@ -3,7 +3,9 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MeetLocation {
+import java.io.Serializable;
+
+public class MeetLocation implements Serializable {
     @SerializedName("country")
     @Expose
     private String country;

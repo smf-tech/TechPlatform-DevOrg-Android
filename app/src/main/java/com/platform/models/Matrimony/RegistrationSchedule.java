@@ -3,7 +3,9 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RegistrationSchedule {
+import java.io.Serializable;
+
+public class RegistrationSchedule implements Serializable {
     @SerializedName("regStartDateTime")
     @Expose
     private long regStartDateTime;

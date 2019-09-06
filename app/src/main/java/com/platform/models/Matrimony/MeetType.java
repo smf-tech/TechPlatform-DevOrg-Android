@@ -3,7 +3,9 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MeetType {
+import java.io.Serializable;
+
+public class MeetType implements Serializable {
     @SerializedName("_id")
     @Expose
     private String id;

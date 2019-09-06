@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
+import com.platform.R;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.AllMatrimonyMeetsAPIResponse;
 import com.platform.models.events.CommonResponse;
@@ -23,7 +24,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     private WeakReference<MatrimonyFragment> fragmentWeakReference;
     public static final String GET_MATRIMONY_MEETS ="getMatrimonyMeets";
-    public static final String PUBLISH_SAVED_MEET ="getMatrimonyMeets";
+    public static final String PUBLISH_SAVED_MEET ="publishSavedMeet";
     private final String TAG = MatrimonyFragmentPresenter.class.getName();
     private static final String KEY_COUNTRY_ID = "country_id";
     private static final String KEY_STATE_ID = "state_id";
@@ -51,7 +52,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(GET_MATRIMONY_MEETS, paramjson, getMatrimonyMeetsUrl);
     }
 
-    public void publishSavedMeet(String meetId, String isPublish) {
+    public void publishSavedMeet(String meetId, boolean isPublish) {
         Gson gson = new GsonBuilder().create();
         String paramJson = gson.toJson(getMeetPublishJson(meetId, isPublish));
         final String publishSavedMeetUrl = BuildConfig.BASE_URL
@@ -80,16 +81,16 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     }
 
-    public JsonObject getMeetPublishJson(String meetId, String isPublish){
-        HashMap<String,String> map=new HashMap<>();
+    public JsonObject getMeetPublishJson(String meetId, boolean isPublish){
+        HashMap<String,Object> map=new HashMap<>();
         map.put(KEY_MEET_ID, meetId);
         map.put(KEY_IS_PUBLISH, isPublish);
 
         JsonObject requestObject = new JsonObject();
 
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue();
+            boolean value = (boolean) entry.getValue();
             requestObject.addProperty(key, value);
         }
 

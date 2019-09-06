@@ -360,9 +360,9 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetReferences(selectedNonOrganizersList);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetImageUrl("");
         if(isPublish){
-            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published("true");
+            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(true);
         }else{
-            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published("false");
+            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(false);
         }
         createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
     }

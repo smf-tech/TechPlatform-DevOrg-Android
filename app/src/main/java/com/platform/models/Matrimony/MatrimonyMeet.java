@@ -67,7 +67,7 @@ public class MatrimonyMeet implements Serializable {
     private ArrayList<MeetAnalytics> analytics = null;
     @SerializedName("is_published")
     @Expose
-    private String is_published;
+    private Boolean is_published;
 
     public String getId() {
         return id;
@@ -181,11 +181,11 @@ public class MatrimonyMeet implements Serializable {
         this.analytics = analytics;
     }
 
-    public String getIs_published() {
+    public Boolean getIs_published() {
         return is_published;
     }
 
-    public void setIs_published(String is_published) {
+    public void setIs_published(Boolean is_published) {
         this.is_published = is_published;
     }
 

@@ -46,6 +46,16 @@
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/ic_options_icon"/>
 
+                <ImageView
+                    android:id="@+id/iv_icon_published"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:visibility="gone"
+                    android:background="@drawable/ic_icon_publish"/>
+
             </RelativeLayout>
             <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->

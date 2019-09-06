@@ -167,18 +167,14 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         meetViewPager.setAdapter(adapter);
     }
 
-    private void PopulateData(){
-        //adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        showResponse(String.valueOf(R.string.msg_something_went_wrong));
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        showResponse(getString(R.string.msg_something_went_wrong));
     }
 
     @Override
@@ -226,6 +222,11 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     private void setCurrentMeetData(int position) {
         contactsList.clear();
         meetAnalyticsData.clear();
+        if(matrimonyMeetList.get(position).getIs_published()){
+            btnPublishMeet.setVisibility(View.GONE);
+        }else{
+            btnPublishMeet.setVisibility(View.VISIBLE);
+        }
         tvMeetTitle.setText(matrimonyMeetList.get(position).getTitle());
         tvMeetDate.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getSchedule().getDateTime(),DAY_MONTH_YEAR));
         tvMeetTime.setText(matrimonyMeetList.get(position).getSchedule().getMeetStartTime()+"-"+
@@ -263,7 +264,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_publish_saved_meet:
-                matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId(), "true");
+                matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId(), true);
                 break;
         }
     }

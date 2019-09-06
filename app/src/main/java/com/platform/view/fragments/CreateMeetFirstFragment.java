@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.Matrimony.MeetLocation;
 import com.platform.models.Matrimony.MeetType;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionType;
@@ -156,9 +157,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setTitle(edtMeetName.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetType(selectedMeetType);
 
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation().setCountry(selectedCountryId);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation().setState(selectedStateId);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation().setCity(selectedCityId);
+        MeetLocation location = new MeetLocation();
+        location.setCountry(selectedCountryId);
+        location.setState(selectedStateId);
+        location.setCity(selectedCityId);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setLocation(location);
+
 
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setDateTime
@@ -359,9 +363,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
         }
         if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)){
-
-        }
-        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_DISTRICTS)){
 
         }
     }

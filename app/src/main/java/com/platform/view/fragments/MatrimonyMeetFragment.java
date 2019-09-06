@@ -58,6 +58,10 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if (arguments != null) {
             meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
         }
+        if(meetData.getIs_published()){
+            ImageView ivIconPublished = view.findViewById(R.id.iv_icon_published);
+            ivIconPublished.setVisibility(View.VISIBLE);
+        }
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +69,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 PopupMenu popup = new PopupMenu((getActivity()), v);
                 popup.setOnMenuItemClickListener(MatrimonyMeetFragment.this);
                 popup.inflate(R.menu.matrimony_meet_menu);
-                if(meetData.getIs_published().equals("true")){
+                if(meetData.getIs_published()){
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
                 popup.show();
@@ -105,8 +109,10 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Deleted");
                 break;
             case R.id.action_allocate_badge:
+                matrimonyMeetFragmentPresenter.meetAllocateBadges(meetData.getId(),"allocateBadges");
                 break;
             case R.id.action_finalise_badge:
+                matrimonyMeetFragmentPresenter.meetAllocateBadges(meetData.getId(),"finalizeBadges");
                 break;
             case R.id.action_gen_booklate:
                 break;

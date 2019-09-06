@@ -19,6 +19,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
 
     private WeakReference<MatrimonyMeetFragment> fragmentWeakReference;
     public static final String MATRIMONY_MEET_ARCHIVE ="matrimonyMeetArchive";
+    public static final String MEET_ALLOCATE_FINALIZE_BADGES ="meetAllocateFinalize";
     private final String TAG = MatrimonyMeetFragmentPresenter.class.getName();
 
     public MatrimonyMeetFragmentPresenter(MatrimonyMeetFragment mFragment){
@@ -65,6 +66,16 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
                     //AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
                     //fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
                 }
+                if(requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_FINALIZE_BADGES)){
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                    //AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
+                    //fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
+                }
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
@@ -78,5 +89,19 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
         final String meetArchiveDeleteUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MEET_ARCHIVE_DELETE, meetId, type);
         requestCall.getDataApiCall(MATRIMONY_MEET_ARCHIVE, meetArchiveDeleteUrl);
+    }
+    public void meetAllocateBadges(String meetId, String type) {
+        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        requestCall.setApiPresenterListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        String meetAllocateFinalizeBadgesUrl = null;
+        if(type.equals("finalizeBadges")){
+            meetAllocateFinalizeBadgesUrl = BuildConfig.BASE_URL
+                    + String.format(Urls.Matrimony.MEET_FINALISE_BADGES, meetId);
+        }else if(type.equals("allocateBadges")){
+            meetAllocateFinalizeBadgesUrl = BuildConfig.BASE_URL
+                    + String.format(Urls.Matrimony.MEET_ALLOCATE_BADGES, meetId);
+        }
+        requestCall.getDataApiCall(MEET_ALLOCATE_FINALIZE_BADGES, meetAllocateFinalizeBadgesUrl);
     }
 }

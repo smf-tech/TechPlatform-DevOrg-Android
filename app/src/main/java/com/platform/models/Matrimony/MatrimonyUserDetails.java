@@ -3,7 +3,9 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MatrimonyUserDetails {
+import java.io.Serializable;
+
+public class MatrimonyUserDetails implements Serializable {
 
     @SerializedName("name")
     @Expose

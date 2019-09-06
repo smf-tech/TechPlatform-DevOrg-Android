@@ -3,10 +3,11 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeetAnalyticsData {
+public class MeetAnalyticsData implements Serializable {
     @SerializedName("displayLabel")
     @Expose
     private String displayLabel;

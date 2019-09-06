@@ -3,7 +3,9 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MeetModuleAnalytics {
+import java.io.Serializable;
+
+public class MeetModuleAnalytics implements Serializable {
     @SerializedName("type")
     @Expose
     private String type;

@@ -97,60 +97,68 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:text="31 June 2019"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_clock_black"
+                        android:drawablePadding="@dimen/dimen_05dp"/>
 
                     <TextView
                         android:id="@+id/tv_meet_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        android:text="03:00 PM - 07:00 PM" />
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"/>
 
                     <TextView
                         android:id="@+id/tv_meet_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:text="Pune"
+                        android:drawableStart="@drawable/ic_venue_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_meet_venue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
-                        android:text="3rd Floor, Muttha Tower, SB road, Pune" />
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/dimen_05dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_phone_black"
+                        android:drawableLeft="@drawable/ic_contacts_black"
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:gravity="center"
-                        android:paddingStart="@dimen/dimen_10dp"
                         android:text="Contacts"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:textStyle="bold"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_meet_organizer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_05dp">
                     </androidx.recyclerview.widget.RecyclerView>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_15dp"
                         android:text="Registration Fees"
+                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_reg_amt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
+                        android:drawableStart="@drawable/ic_rupee_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
                         android:text="1000" />
 
                 </LinearLayout>
