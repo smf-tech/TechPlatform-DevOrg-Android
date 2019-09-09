@@ -29,7 +29,9 @@ import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.Matrimony.MeetLocation;
+import com.platform.models.Matrimony.MeetSchedule;
 import com.platform.models.Matrimony.MeetType;
+import com.platform.models.Matrimony.RegistrationSchedule;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionType;
 import com.platform.models.profile.Location;
@@ -162,18 +164,19 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         location.setState(selectedStateId);
         location.setCity(selectedCityId);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setLocation(location);
-
-
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString());
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setDateTime
-                (Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setMeetStartTime(edtMeetStartTime.getText().toString());
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getSchedule().setMeetEndTime(edtMeetEndTime.getText().toString());
+        MeetSchedule meetSchedule = new MeetSchedule();
+        meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
+        meetSchedule.setMeetStartTime(edtMeetStartTime.getText().toString());
+        meetSchedule.setMeetEndTime(edtMeetEndTime.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setSchedule(meetSchedule);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsRegPaid(isRegPaid);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getRegistrationSchedule().setRegStartDateTime
+        RegistrationSchedule registrationSchedule = new RegistrationSchedule();
+        registrationSchedule.setRegStartDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegStartDate.getText().toString(), "00:00"));
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getRegistrationSchedule().setRegEndDateTime
+        registrationSchedule.setRegEndDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "00:00"));
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegistrationSchedule(registrationSchedule);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString()));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
     }
@@ -212,10 +215,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         meetCountryList.add(meetCountry);
                         //meetCountries.add(location.getCountry().getName());
                     }
-                    //meetCountryAdapter.notifyDataSetChanged();
-//                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-//                            "5d5a735d5dda76489501b4e1",
-//                            Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
 
                 break;
@@ -236,10 +235,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                             //meetStates.add(location.getState().getName());
                         //}
                     }
-                    //meetStateAdapter.notifyDataSetChanged();
-//                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-//                            "5d5a735d5dda76489501b4e1",
-//                            Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
 
                 break;
@@ -398,29 +393,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         UserInfo userInfo = Util.getUserObjectFromPref();
         switch (adapterView.getId()) {
-//            case R.id.spinner_meet_types:
-//                selectedMeetType = meetTypes.get(i);
-//                break;
-//            case R.id.spinner_meet_country:
-//                selectedCountry = meetCountries.get(i);
-//                if(selectedCountry!="" && selectedCountry!="Country") {
-//                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-//                            "5d5a735d5dda76489501b4e1",
-//                            Constants.JurisdictionLevelName.STATE_LEVEL);
-//                }
-//                break;
-//            case R.id.spinner_meet_state:
-//                selectedState = meetStates.get(i);
-//                if(selectedState!="" && selectedState!="State") {
-//                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-//                            "5d5a735d5dda76489501b4e1",
-//                            Constants.JurisdictionLevelName.CITY_LEVEL);
-//                }
-//                break;
-//
-//            case R.id.spinner_meet_city:
-//                selectedCity = meetCities.get(i);
-//                break;
         }
     }
 

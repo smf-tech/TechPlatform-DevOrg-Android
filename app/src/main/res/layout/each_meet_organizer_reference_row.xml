@@ -15,15 +15,17 @@
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:text="dinaoidviwuevoidnc"
         android:textColor="@color/attendance_list_item" />
 
     <TextView
         android:id="@+id/tv_user_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_margin="@dimen/dimen_10dp"
         android:textColor="@color/attendance_list_item"
+        android:text="dinaoidviwuevoidnc"
         android:layout_alignParentRight="true"/>
 
     <TextView
@@ -31,8 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_user_name"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_05dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:text="dinaoidviwuevoidnc"
         android:layout_alignParentStart="true"/>
 
     <TextView
@@ -40,7 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_user_role"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:text="dinaoidviwuevoidnc"
         android:layout_alignParentEnd="true"/>
 
     <!--<ImageView-->

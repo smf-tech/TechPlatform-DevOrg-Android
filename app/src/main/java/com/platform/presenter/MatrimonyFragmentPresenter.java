@@ -42,7 +42,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     public void getMatrimonyMeets(){
         Gson gson = new GsonBuilder().create();
-        String paramjson = gson.toJson(getMeetOrganizersJson(
+        String paramjson = gson.toJson(getMeetJson(
                 "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
         final String getMatrimonyMeetsUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MATRIMONY_MEETS);
@@ -63,7 +63,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(PUBLISH_SAVED_MEET, paramJson, publishSavedMeetUrl);
     }
 
-    public JsonObject getMeetOrganizersJson(String countryId, String stateId, String cityId){
+    public JsonObject getMeetJson(String countryId, String stateId, String cityId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_COUNTRY_ID, countryId);
         map.put(KEY_STATE_ID, stateId);

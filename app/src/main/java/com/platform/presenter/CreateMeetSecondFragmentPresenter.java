@@ -28,7 +28,6 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
     private WeakReference<CreateMeetSecondFragment> fragmentWeakReference;
 
     public static final String GET_MEET_USERS_LIST ="getMeetUsersList";
-    public static final String GET_MEET_REFERENCES_LIST ="getMeetReferncesList";
     public static final String SUBMIT_MEET ="submitMeet";
     private static final String KEY_PROJECT_ID = "project_id";
     private static final String KEY_COUNTRY_ID = "country_id";
@@ -45,14 +44,18 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference = null;
     }
 
-    public void getMatrimonyUsersList(){
+    public void getMatrimonyUsersList(String countryId, String stateId, String cityId){
         //Util.getUserObjectFromPref().getProjectIds().get(0).getId();
         Gson gson = new GsonBuilder().create();
+//        String paramjson = gson.toJson(getMeetOrganizersJson("5d4129345dda7642c4094b62",
+//                "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
         String paramjson = gson.toJson(getMeetOrganizersJson("5d4129345dda7642c4094b62",
-                "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
+                countryId, stateId, cityId));
+
         final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST);
-                //Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+
+        Util.getUserObjectFromPref().getProjectIds().get(0).getId();
         Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
@@ -71,7 +74,6 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
     }
 
     public JsonObject getMeetOrganizersJson(String projectId, String countryId, String stateId, String cityId){
-        //String validType=type.replace(" ","");
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_PROJECT_ID, projectId);
         map.put(KEY_COUNTRY_ID, countryId);
@@ -85,9 +87,7 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
             String value = entry.getValue();
             requestObject.addProperty(key, value);
         }
-
         return requestObject;
-
     }
 
     @Override

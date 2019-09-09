@@ -55,25 +55,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, APIDataListener,CustomSpinnerListener {
-    //AdapterView.OnItemSelectedListener, MultiSelectSpinner.MultiSpinnerListener, CustomSpinnerListener {
 
     private CreateMeetSecondFragmentPresenter createMeetSecondFragmentPresenter;
-    // private Spinner spinnerOrganizer;
-    //private MultiSelectSpinner spinnerOrganizer, spinnerReferences;
-    //List<String> meetOrganizers = new ArrayList<>();
-    //List<String> meetReferences = new ArrayList<>();
-    //List<String> selectedMeetReferences = new ArrayList<>();
-    //private ArrayAdapter<String> meetOragnizersAdapter, meetReferencesAdapter;
     private TextView tvMeetOrganizers, tvMeetReferences;
     private Button btnSecondPartMeet, btnPublishMeet;
     RecyclerView rvMeetOrganizer, rvMeetReference;
     private MeetOrganizersReferencesAdapter meetOrganizersListAdapter, meetReferencesListAdapter;
-    //private final List<YearlyHolidayData> meetOrganizersList = new ArrayList<>();
-    //private final List<YearlyHolidayData> meetReferencesList = new ArrayList<>();
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = CreateMeetSecondFragment.class.getName();
-    //private ArrayList<CustomSpinnerObject> spinnerObjectList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> organizersSpinnerList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> nonOrganizersSpinnerList = new ArrayList<>();
     private ArrayList<MatrimonyUserDetails> organizersList = new ArrayList<>();
@@ -154,7 +144,10 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
 //        spinnerObjectList.add(c2);
 //        spinnerObjectList.add(c3);
         createMeetSecondFragmentPresenter = new CreateMeetSecondFragmentPresenter(this);
-        createMeetSecondFragmentPresenter.getMatrimonyUsersList();
+        createMeetSecondFragmentPresenter.getMatrimonyUsersList(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
+                .getCountry(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
+                .getState(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
+                .getCity());
     }
 
     @Override
@@ -265,40 +258,6 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         }
     }
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//    }
-//
-//    @Override
-//    public void onValuesSelected(boolean[] selected, String spinnerName) {
-//        try {
-//            switch (spinnerName) {
-//                case Constants.Matrimony.ORGANIZERS_LABEL:
-//
-//                    break;
-//                case Constants.Matrimony.REFERENCES_LABEL:
-////                    selectedMeetReferences.clear();
-////                    for (int i = 0; i < selected.length; i++) {
-////                        if (selected[i]) {
-////                            selectedMeetReferences.add(meetReferences.get(i));
-////                        }
-////                    }
-////                    if(selectedMeetReferences.size()>0){
-////                        createMeetSecondFragmentPresenter.getMeetReferencesList();
-////                    }
-//                    break;
-//            }
-//        } catch (Exception e){
-//            Log.e(TAG, "EXCEPTION_IN_ON_VALUE_SELECTED");
-//        }
-//    }
-
     public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonyRolesUsersList) {
         for (MatrimonyRolesUsers matrimonyRole : matrimonyRolesUsersList) {
             for (MatrimonyUserDetails matrimonyUserDetails : matrimonyRole.getUserDetails()) {
@@ -323,6 +282,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     @Override
     public void onCustomSpinnerSelection(String type) {
         if (type.equalsIgnoreCase("Organizers")) {
+            selectedOrganizersList.clear();
             for (CustomSpinnerObject c : organizersSpinnerList) {
                 if (c.isSelected()) {
                     for (MatrimonyUserDetails m : organizersList) {
@@ -334,6 +294,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             }
             meetOrganizersListAdapter.notifyDataSetChanged();
         } else if (type.equalsIgnoreCase("References")) {
+            selectedNonOrganizersList.clear();
             for (CustomSpinnerObject cReference : nonOrganizersSpinnerList) {
                 if (cReference.isSelected()) {
                     for (MatrimonyUserDetails mReference : nonOrganizersList) {

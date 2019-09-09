@@ -159,8 +159,10 @@ public class ProfileRequestCall {
 
         Response.ErrorListener jurisdictionErrorListener = error -> listener.onErrorListener(error);
 
+//        final String getStateUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, "5c4ab05cd503a372d0391467", levelName);
         final String getStateUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, "5c4ab05cd503a372d0391467", levelName);
+                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -252,6 +254,14 @@ public class ProfileRequestCall {
                         locationArray.add(districts.getId());
                     }
                     locationObj.add(Constants.Location.DISTRICT, locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getCityIds() != null) {
+                    for (JurisdictionType cities : userLocation.getCityIds()) {
+                        locationArray.add(cities.getId());
+                    }
+                    locationObj.add(Constants.Location.CITY, locationArray);
                 }
 
                 locationArray = new JsonArray();
