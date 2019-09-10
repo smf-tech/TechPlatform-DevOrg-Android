@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -48,8 +49,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener,
-        RadioGroup.OnCheckedChangeListener, APIDataListener, CustomSpinnerListener {
+public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener,
+        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,APIDataListener, CustomSpinnerListener {
 
     private TextView tvMeetType ,tvMeetCountry, tvMeetState, tvMeetCity;
     private Button btnFirstPartMeet;
@@ -60,7 +61,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private CreateMeetFirstFragmentPresenter matrimonyMeetFirstFragmentPresenter;
     private String selectedMeetType, selectedCountry, selectedState, selectedCity,
             selectedCountryId, selectedStateId, selectedCityId;
-    //private ArrayAdapter<String> meetTypeAdapter, meetCountryAdapter, meetStateAdapter, meetCityAdapter;
     private EditText edtMeetName, edtMeetVenue,edtMeetDate, edtMeetStartTime, edtMeetEndTime,edtMeetRegStartDate,
             edtMeetRegEndDate, edtRegAmt;
     private RadioGroup rgPaidFree;
@@ -118,38 +118,11 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         rbPaid = view.findViewById(R.id.rb_paid);
         rbFree = view.findViewById(R.id.rb_free);
         rbOnlinePayment = view.findViewById(R.id.rb_online_payment);
-
+        rbOnlinePayment.setOnCheckedChangeListener(this);
         userInfo = Util.getUserObjectFromPref();
 
         isRegPaid = false;
-        //rbFree.setSelected(true);
         isOnlinePaymentAllowed = false;
-        //rbOnlinePayment.setSelected(false);
-//        meetTypes.add("Educated");
-//        meetTypes.add("Rural Area");
-//        meetTypes.add("Urban Area");
-        //meetTypes.add("Meet Type");
-//        meetTypeAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item, meetTypes);
-//        meetTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        meetTypeSpinner.setAdapter(meetTypeAdapter);
-
-//        meetCountryAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item, meetCountries);
-//        meetCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        countrySpinner.setAdapter(meetCountryAdapter);
-
-        //meetStates.add("State");
-//        meetStateAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item, meetStates);
-//        meetStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        stateSpinner.setAdapter(meetStateAdapter);
-
-        //meetCities.add("City");
-//        meetCityAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item, meetCities);
-//        meetCityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        citySpinner.setAdapter(meetCityAdapter);
 
         matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
         matrimonyMeetFirstFragmentPresenter.getMeetTypes();
@@ -202,8 +175,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     meetCountryList.clear();
-//                    meetCountries.clear();
-//                    meetCountries.add("Country");
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
@@ -213,27 +184,22 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         meetCountry.setName(location.getCountry().getName());
                         meetCountry.setSelected(false);
                         meetCountryList.add(meetCountry);
-                        //meetCountries.add(location.getCountry().getName());
                     }
                 }
 
                 break;
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-//                    meetStates.clear();
-//                    meetStates.add("State");
+                    meetStateList.clear();
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
-                        //if(selectedCountry.equals(location.getCountry().getName())) {
                             CustomSpinnerObject meetState = new CustomSpinnerObject();
                             meetState.set_id(location.getStateId());
                             meetState.setName(location.getState().getName());
                             meetState.setSelected(false);
                             meetStateList.add(meetState);
-                            //meetStates.add(location.getState().getName());
-                        //}
                     }
                 }
 
@@ -241,9 +207,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
             case Constants.JurisdictionLevelName.CITY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-//                    meetCities.clear();
-//                    meetCities.add("City");
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
+                    meetCityList.clear();
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
@@ -253,10 +218,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                                 meetCity.setName(location.getCity().getName());
                                 meetCity.setSelected(false);
                                 meetCityList.add(meetCity);
-                                //meetCities.add(location.getCity().getName());
                         }
                     }
-                    //meetCityAdapter.notifyDataSetChanged();
                 }
                 break;
 
@@ -269,10 +232,10 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_first_part_meet:
-                //if(isAllDataValid()) {
+                if(isAllDataValid()) {
                     setMeetData();
                     ((CreateMatrimonyMeetActivity) getActivity()).openFragment("CreateMeetSecondFragment");
-                //}
+                }
                 break;
             case R.id.tv_meet_types:
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "MeetTypesList", meetTypesList,
@@ -280,7 +243,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 cdd.show();
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-
                 break;
             case R.id.tv_meet_country:
                 CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "MeetCountryList", meetCountryList,
@@ -288,8 +250,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 cddCountry.show();
                 cddCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-
-                //selectedCountry = meetCountries.get(i);
                 break;
             case R.id.tv_meet_state:
                 CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "MeetStateList", meetStateList,
@@ -297,8 +257,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 cddState.show();
                 cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-
-                //selectedCountry = meetCountries.get(i);
                 break;
             case R.id.tv_meet_city:
                 CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "MeetCityList", meetCityList,
@@ -306,8 +264,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 cddCity.show();
                 cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-
-                //selectedCity = meetCities.get(i);
                 break;
             case R.id.edt_meet_date:
                 Util.showDateDialogMin(getActivity(), edtMeetDate);
@@ -354,12 +310,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_MATRIMONY_MEET_TYPES)){
 
-        }
-        if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)){
-
-        }
     }
 
     @Override
@@ -389,13 +340,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        UserInfo userInfo = Util.getUserObjectFromPref();
-        switch (adapterView.getId()) {
-        }
-    }
-
     public boolean isAllDataValid(){
         if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
@@ -412,31 +356,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        switch (checkedId) {
-            case R.id.rb_paid:
-                isRegPaid = true;
-                break;
-
-            case R.id.rb_free:
-                isRegPaid = false;
-                break;
-
-            case R.id.rb_online_payment:
-                if(isOnlinePaymentAllowed) {
-                    isOnlinePaymentAllowed = false;
-                } else {
-                    isOnlinePaymentAllowed = true;
-                }
-        }
     }
 
     @Override
@@ -491,6 +410,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 tvMeetCity.setText(selectedCity);
                 break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_paid:
+                isRegPaid = true;
+                break;
+
+            case R.id.rb_free:
+                isRegPaid = false;
+                break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if(isOnlinePaymentAllowed) {
+            isOnlinePaymentAllowed = false;
+        } else {
+            isOnlinePaymentAllowed = true;
         }
     }
 }

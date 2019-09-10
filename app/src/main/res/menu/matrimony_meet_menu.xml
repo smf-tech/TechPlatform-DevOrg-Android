@@ -4,7 +4,8 @@
     <!-- Default overflow menu items -->
     <item
         android:id="@+id/action_archive"
-        android:title="Archive" />
+        android:title="Archive"
+        />
     <item
         android:id="@+id/action_delete"
         android:title="Delete" />

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -55,7 +56,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt;
     private RecyclerView rvMeetContacts,rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
-    private MeetAnalyticsAdapter meetAnalyticsAdapter;
     private ArrayList<MatrimonyUserDetails> contactsList= new ArrayList<>();
     private ArrayList<MeetAnalytics> meetAnalyticsData = new ArrayList<>();
     private ProgressBar progressBar;
@@ -128,9 +128,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         rvMeetContacts.setLayoutManager(mContactsLayoutManager);
         rvMeetContacts.setAdapter(meetContactsListAdapter);
 
-        //PopulateData method called temporary
-        //PopulateData();
-
         btnCreateMeet = matrimonyFragmentView.findViewById(R.id.btn_create_meet);
         btnCreateMeet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,12 +142,14 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        init();
         if (Util.isConnected(getContext())) {
+            init();
             matrimonyFragmentPresenter = new MatrimonyFragmentPresenter(this);
             matrimonyFragmentPresenter.getMatrimonyMeets();
         } else {
-
+            RelativeLayout rlMatrimonyFragment = matrimonyFragmentView.findViewById(R.id.rl_matrimony_fragment);
+            rlMatrimonyFragment.setVisibility(View.GONE);
+            Util.showToast(getString(R.string.msg_no_network), this);
         }
     }
 
@@ -169,11 +168,15 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
 
     @Override
     public void onFailureListener(String requestID, String message) {
+        ScrollView svMatrimonyFragment = matrimonyFragmentView.findViewById(R.id.sv_matrimony_fragment);
+        svMatrimonyFragment.setVisibility(View.GONE);
         showResponse(String.valueOf(R.string.msg_something_went_wrong));
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
+        ScrollView svMatrimonyFragment = matrimonyFragmentView.findViewById(R.id.sv_matrimony_fragment);
+        svMatrimonyFragment.setVisibility(View.GONE);
         showResponse(getString(R.string.msg_something_went_wrong));
     }
 

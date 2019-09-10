@@ -500,7 +500,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                 leaveBalance.clear();
                 leaveBalance.addAll(leaveBalanceResponse.getData());
 
-                //////////////////////////////////////////////
                 for (LeaveDetail l : leaveBalance) {
                     leaveBackground.add(R.drawable.bg_rect_primary_border);
                 }
@@ -519,14 +518,11 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                     rvLeaveCategory.setLayoutManager(mLayoutManagerLeaveCategory);
                     rvLeaveCategory.setAdapter(LeaveAdapterCategory);
                 }
-                //////////////////////////////////////////////
-
             } else {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                 .findViewById(android.R.id.content), leaveBalanceResponse.getMessage(),
                         Snackbar.LENGTH_LONG);
             }
-
         }
     }
 

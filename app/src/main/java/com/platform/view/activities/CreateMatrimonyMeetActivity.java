@@ -98,4 +98,11 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
                 finish();
             }
     }
+
+
+    @Override
+    protected void onDestroy() {
+        fragment = null;
+        super.onDestroy();
+    }
 }

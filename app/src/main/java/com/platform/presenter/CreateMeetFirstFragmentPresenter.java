@@ -60,9 +60,6 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
             //requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName, GET_STATES);
             requestCall.getDataApiCall(GET_STATES, getLocationUrl);
 
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
-            //requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName, GET_DISTRICTS);
-            requestCall.getDataApiCall(GET_DISTRICTS, getLocationUrl);
         } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)){
             requestCall.getDataApiCall(GET_CITIES, getLocationUrl);
         }

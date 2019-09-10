@@ -49,7 +49,7 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         Gson gson = new GsonBuilder().create();
 //        String paramjson = gson.toJson(getMeetOrganizersJson("5d4129345dda7642c4094b62",
 //                "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
-        String paramjson = gson.toJson(getMeetOrganizersJson("5d4129345dda7642c4094b62",
+        String paramjson = gson.toJson(getMeetOrganizersJson(Util.getUserObjectFromPref().getProjectIds().get(0).getId(),
                 countryId, stateId, cityId));
 
         final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
@@ -122,8 +122,6 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
                 }
                 if(requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.SUBMIT_MEET)){
                     try {
-//                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-//                        fragmentWeakReference.get().showResponseMessage(responseOBJ);
                         fragmentWeakReference.get().onSuccessListener(requestID, response);
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");

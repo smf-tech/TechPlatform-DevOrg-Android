@@ -122,6 +122,7 @@ public class Constants {
     }
 
     public static class Location {
+        public static final String COUNTRY = "country";
         public static final String STATE = "state";
         public static final String DISTRICT = "district";
         public static final String CITY = "city";

@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
@@ -62,6 +64,12 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             ImageView ivIconPublished = view.findViewById(R.id.iv_icon_published);
             ivIconPublished.setVisibility(View.VISIBLE);
         }
+        if(meetData.getMeetImageUrl() != null && !meetData.getMeetImageUrl().isEmpty()){
+            ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
+            Glide.with(this)
+                    .load(meetData.getMeetImageUrl())
+                    .into(ivMeetImage);
+        }
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +78,11 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 popup.setOnMenuItemClickListener(MatrimonyMeetFragment.this);
                 popup.inflate(R.menu.matrimony_meet_menu);
                 if(meetData.getIs_published()){
+                    popup.getMenu().findItem(R.id.action_delete).setVisible(false);
+                }
+                if(meetData.getBadgeFanlize()){
+                    popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
+                    popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
                 popup.show();

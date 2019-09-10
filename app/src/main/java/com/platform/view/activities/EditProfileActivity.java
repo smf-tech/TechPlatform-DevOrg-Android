@@ -522,10 +522,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             msg = getString(R.string.msg_select_project);
         } else if (selectedRoles == null || selectedRoles.size() == 0) {
             msg = getString(R.string.msg_select_role);
-        } else if (selectedCountries == null || selectedCountries.size() == 0) {
+        } else if ((spCountry.getVisibility() == View.VISIBLE) &&
+                (selectedCountries == null || selectedCountries.size() == 0)) {
             msg = getString(R.string.msg_select_country);
         } else if ((spState.getVisibility() == View.VISIBLE) &&
-                selectedStates == null || selectedStates.size() == 0) {
+                (selectedStates == null || selectedStates.size() == 0)) {
             msg = getString(R.string.msg_select_state);
         } else if ((spDistrict.getVisibility() == View.VISIBLE) &&
                 (selectedDistricts == null || selectedDistricts.size() == 0)) {
@@ -1138,8 +1139,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             UserInfo userInfo = Util.getUserObjectFromPref();
             List<JurisdictionType> countryId = userInfo.getUserLocation().getCountryId();
             for (int i = 0; i < countries.size(); i++) {
-                if (countryId.get(0).getId().equals(countryId.get(i).getId())) {
-                    id = i;
+                if(countryId != null) {
+                    if (countryId.get(0).getId().equals(countries.get(i).getId())) {
+                        id = i;
+                    }
                 }
             }
             spCountry.setSelection(id);
@@ -1160,8 +1163,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             UserInfo userInfo = Util.getUserObjectFromPref();
             List<JurisdictionType> stateId = userInfo.getUserLocation().getStateId();
             for (int i = 0; i < states.size(); i++) {
-                if (stateId.get(0).getId().equals(states.get(i).getId())) {
-                    id = i;
+                if(stateId != null) {
+                    if (stateId.get(0).getId().equals(states.get(i).getId())) {
+                        id = i;
+                    }
                 }
             }
             spState.setSelection(id);

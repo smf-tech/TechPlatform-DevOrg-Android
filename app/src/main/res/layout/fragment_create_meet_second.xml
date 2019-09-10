@@ -44,16 +44,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/organizer_label"
-                    android:layout_margin="@dimen/dimen_10dp"/>
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans_semibold"/>
 
                         <TextView
                             android:id="@+id/tv_meet_organizers"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_30dp"
+                            android:layout_height="@dimen/dimen_50dp"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:paddingStart="@dimen/dimen_10dp"
                             android:background="@drawable/bg_blue_box"
                             android:hint="@string/meet_select_organizers"
+                            android:textColorHint="@color/medium_grey"
+                            android:fontFamily="@font/opensans"
                             android:gravity="center_vertical"
                             android:layout_marginBottom="@dimen/dimen_10dp"
                             android:editable="false"
@@ -97,17 +100,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/references_label"
-                        android:layout_margin="@dimen/dimen_10dp"/>
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"/>
 
                         <TextView
                             android:id="@+id/tv_meet_references"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_30dp"
+                            android:layout_height="@dimen/dimen_50dp"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:paddingStart="@dimen/dimen_10dp"
                             android:background="@drawable/bg_blue_box"
                             android:gravity="center_vertical"
                             android:hint="@string/meet_select_references"
+                            android:textColorHint="@color/medium_grey"
+                            android:fontFamily="@font/opensans"
                             android:layout_marginBottom="@dimen/dimen_10dp"
                             android:editable="false"
                             android:longClickable="false"/>

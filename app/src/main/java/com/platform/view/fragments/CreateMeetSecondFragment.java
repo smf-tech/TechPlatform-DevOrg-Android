@@ -90,26 +90,6 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     private void init(View view) {
-//        meetOrganizers.add("State President");
-//        meetOrganizers.add("District President");
-//        meetOrganizers.add("Chapter President");
-//        spinnerOrganizer = view.findViewById(R.id.spinner_meet_organizer);
-//        spinnerOrganizer.setSpinnerName(Constants.Matrimony.ORGANIZERS_LABEL);
-//        spinnerOrganizer.setItems(meetOrganizers, "Organizers", this);
-        //spinnerOrganizer.setOnItemSelectedListener(this);
-        //meetOragizers.add("Select Organizer");
-//        meetOragnizersAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item, meetOragizers);
-//        meetOragnizersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerOrganizer.setAdapter(meetOragnizersAdapter);
-
-//        meetReferences.add("State President");
-//        meetReferences.add("District President");
-//        meetReferences.add("Chapter President");
-//        spinnerReferences = view.findViewById(R.id.spinner_meet_references);
-//        spinnerReferences.setSpinnerName(Constants.Matrimony.REFERENCES_LABEL);
-//        spinnerReferences.setItems(meetReferences, "References", this);
-
         progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
         progressBar = view.findViewById(R.id.pb_profile_act);
         tvMeetOrganizers = view.findViewById(R.id.tv_meet_organizers);
@@ -130,19 +110,6 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         meetReferencesListAdapter = new MeetOrganizersReferencesAdapter(selectedNonOrganizersList);
         rvMeetReference.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvMeetReference.setAdapter(meetReferencesListAdapter);
-
-//        CustomSpinnerObject c1 = new CustomSpinnerObject();
-//        c1.set_id("123");
-//        c1.setName("Sagar Mahajan");
-//        CustomSpinnerObject c2 = new CustomSpinnerObject();
-//        c2.set_id("456");
-//        c2.setName("Sjkwfkjewbv wbwcie  wb");
-//        CustomSpinnerObject c3 = new CustomSpinnerObject();
-//        c3.set_id("789");
-//        c3.setName("Sjkendjkqne edhiqnwdjqjn");
-//        spinnerObjectList.add(c1);
-//        spinnerObjectList.add(c2);
-//        spinnerObjectList.add(c3);
         createMeetSecondFragmentPresenter = new CreateMeetSecondFragmentPresenter(this);
         createMeetSecondFragmentPresenter.getMatrimonyUsersList(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
                 .getCountry(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
@@ -227,7 +194,6 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         if (requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.SUBMIT_MEET)) {
             CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
             showResponseDialog("Confirmation", responseOBJ.getMessage(), "OK", "");
-
         }
     }
 
@@ -308,24 +274,19 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         }
     }
 
-//    public void showResponseDialog(CommonResponse responseObject){
-//        //CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-//        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-//                        .findViewById(android.R.id.content), responseObject.getMessage(),
-//                Snackbar.LENGTH_LONG);
-//        closeCurrentActivity();
-//    }
-
     private void updateMeetData(boolean isPublish) {
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetOrganizers(selectedOrganizersList);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetReferences(selectedNonOrganizersList);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetImageUrl("");
         if(isPublish){
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(true);
+            showPublishApiDialog("Confirmation", "This meet will be visible to users. " +
+                    "Are you sure you want to publish?", "YES", "No");
         }else{
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(false);
+            createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
         }
-        createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
+
     }
 
     public boolean isAllDataValid() {
@@ -370,6 +331,49 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 // Close dialog
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void showPublishApiDialog(String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
+                dialog.dismiss();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
             });
         }
 

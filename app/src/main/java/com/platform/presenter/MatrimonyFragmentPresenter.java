@@ -11,9 +11,11 @@ import com.platform.R;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.AllMatrimonyMeetsAPIResponse;
 import com.platform.models.events.CommonResponse;
+import com.platform.models.profile.JurisdictionType;
 import com.platform.request.MatrimonyMeetRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
+import com.platform.utility.Util;
 import com.platform.view.fragments.MatrimonyFragment;
 
 import java.lang.ref.WeakReference;
@@ -42,8 +44,38 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     public void getMatrimonyMeets(){
         Gson gson = new GsonBuilder().create();
+        String countries = "";
+        for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getCountryId().size(); i++){
+            JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(i);
+            if(i == Util.getUserObjectFromPref().getUserLocation().getCountryId().size()-1) {
+                countries = j.getId();
+            } else{
+                countries = j.getId() + ",";
+            }
+        }
+        String states = "";
+        for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++){
+            JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+            if(i == Util.getUserObjectFromPref().getUserLocation().getStateId().size()-1) {
+                states = j.getId();
+            } else{
+                states = j.getId() + ",";
+            }
+        }
+        String cities = "";
+        for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getCityIds().size(); i++){
+            JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCityIds().get(i);
+            if(i == Util.getUserObjectFromPref().getUserLocation().getCityIds().size()-1) {
+                cities = j.getId();
+            } else{
+                cities = j.getId() + ",";
+            }
+        }
         String paramjson = gson.toJson(getMeetJson(
-                "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
+                countries,
+                states,
+                cities));
+
         final String getMatrimonyMeetsUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MATRIMONY_MEETS);
         Log.d(TAG, "getMatrimonyMeetsUrl: url" + getMatrimonyMeetsUrl);

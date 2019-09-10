@@ -68,6 +68,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("is_published")
     @Expose
     private Boolean is_published;
+    @SerializedName("isBadgeFanlize")
+    @Expose
+    private Boolean isBadgeFanlize;
 
     public String getId() {
         return id;
@@ -187,6 +190,14 @@ public class MatrimonyMeet implements Serializable {
 
     public void setIs_published(Boolean is_published) {
         this.is_published = is_published;
+    }
+
+    public Boolean getBadgeFanlize() {
+        return isBadgeFanlize;
+    }
+
+    public void setBadgeFanlize(Boolean badgeFanlize) {
+        isBadgeFanlize = badgeFanlize;
     }
 
 }

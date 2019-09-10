@@ -9,8 +9,7 @@
         android:id="@+id/tv_module_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="vcvwqdycvwcu"
-        android:textStyle="bold"/>
+        android:fontFamily="@font/opensans_semibold"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_meet_module_analytics"

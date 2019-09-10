@@ -241,6 +241,14 @@ public class ProfileRequestCall {
                 JsonObject locationObj = new JsonObject();
 
                 JsonArray locationArray = new JsonArray();
+                if (userLocation.getCountryId() != null) {
+                    for (JurisdictionType countries : userLocation.getCountryId()) {
+                        locationArray.add(countries.getId());
+                    }
+                    locationObj.add(Constants.Location.COUNTRY, locationArray);
+                }
+
+                locationArray = new JsonArray();
                 if (userLocation.getStateId() != null) {
                     for (JurisdictionType states : userLocation.getStateId()) {
                         locationArray.add(states.getId());

@@ -39,29 +39,29 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tly_title"
                         style="@style/textinputstyle"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextInputLayoutHint">
+                        android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/edit_meet_name"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/matrimony_name_label"
-                        android:layout_marginBottom="@dimen/dimen_10dp"/>
+                        android:inputType="textMultiLine"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/tv_meet_types"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_30dp"
-                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
                         android:paddingStart="@dimen/dimen_10dp"
-                        android:layout_weight="1"
                         android:background="@drawable/bg_blue_box"
                         android:hint="@string/select_meet_type"
+                        android:textColorHint="@color/medium_grey"
+                        android:fontFamily="@font/opensans"
                         android:gravity="center_vertical"
                         android:layout_marginBottom="@dimen/dimen_10dp"
                         android:editable="false"
@@ -72,33 +72,33 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="2"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_marginBottom="@dimen/dimen_10dp">
+                        android:layout_margin="@dimen/dimen_10dp">
 
                         <TextView
                             android:id="@+id/tv_meet_country"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_30dp"
-                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_height="@dimen/dimen_50dp"
                             android:paddingStart="@dimen/dimen_10dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_blue_box"
                             android:hint="@string/country"
+                            android:textColorHint="@color/medium_grey"
+                            android:fontFamily="@font/opensans"
                             android:gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
                             android:editable="false"
                             android:longClickable="false"/>
                         <TextView
                             android:id="@+id/tv_meet_state"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_30dp"
-                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_height="@dimen/dimen_50dp"
+                            android:layout_marginStart="@dimen/dimen_10dp"
                             android:paddingStart="@dimen/dimen_10dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_blue_box"
                             android:hint="@string/state"
+                            android:textColorHint="@color/medium_grey"
+                            android:fontFamily="@font/opensans"
                             android:gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
                             android:editable="false"
                             android:longClickable="false"/>
 
@@ -108,14 +108,15 @@
                     <TextView
                         android:id="@+id/tv_meet_city"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_30dp"
+                        android:layout_height="@dimen/dimen_50dp"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_blue_box"
                         android:hint="@string/city"
+                        android:textColorHint="@color/medium_grey"
+                        android:fontFamily="@font/opensans"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="@dimen/dimen_10dp"
                         android:editable="false"
                         android:longClickable="false"/>
 
@@ -124,7 +125,7 @@
                         style="@style/textinputstyle"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tly_description"
@@ -132,12 +133,8 @@
 
                     <EditText
                         android:id="@+id/edit_meet_venue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/RegistrationEditTextLayout"
                         android:inputType="textMultiLine"
-                        android:textSize="@dimen/text_size_14"
-                        tools:ignore="Autofill"
-                        android:fontFamily="@font/opensans"
                         android:hint="@string/matrimony_venue_label" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,7 +146,7 @@
                         style="@style/textinputstyle"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_15dp"
                         app:hintTextAppearance="@style/TextInputLayoutHint">
 
                         <EditText
@@ -169,6 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tly_title"
+                        android:layout_marginTop="@dimen/dimen_15dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:weightSum="10">
@@ -179,9 +177,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/textinputstyle"
-                            android:layout_marginStart="@dimen/dimen_10dp"
-                            android:layout_marginEnd="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_weight="5"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -191,6 +186,7 @@
                                 android:clickable="false"
                                 android:drawableEnd="@drawable/ic_cal_event"
                                 android:focusable="false"
+                                android:layout_marginStart="@dimen/dimen_10dp"
                                 android:hint="@string/task_start_time"
                                 android:inputType="date"
                                 tools:ignore="Autofill"
@@ -205,7 +201,6 @@
                             style="@style/textinputstyle"
                             android:layout_marginStart="@dimen/dimen_10dp"
                             android:layout_marginEnd="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_weight="5"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -226,8 +221,8 @@
                         android:id="@+id/rg_paid_free"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_05dp">
                         
                         <RadioButton
                             android:id="@+id/rb_paid"
@@ -235,7 +230,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen_20dp"
                             android:text="@string/meet_paid"
-                            android:textStyle="bold"
+                            android:textColor="@color/dark_grey"
+                            android:fontFamily="@font/opensans"
                             android:padding="@dimen/dimen_10dp"/>
 
                         <RadioButton
@@ -244,8 +240,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen_30dp"
                             android:text="@string/meet_free"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/opensans"
                             android:padding="@dimen/dimen_10dp"
+                            android:textColor="@color/dark_grey"
                             android:checked="true"/>
 
                     </RadioGroup>
@@ -262,9 +259,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/meet_registration_label"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:textSize="@dimen/dimen_20dp"
-                        android:textStyle="bold"/>
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"/>
 
                     <LinearLayout
                         android:id="@+id/ly_meet_date_time"
@@ -273,6 +269,7 @@
                         android:layout_below="@+id/tly_title"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:weightSum="10">
 
                         <!--Start Date-->
@@ -282,8 +279,6 @@
                             android:layout_height="wrap_content"
                             style="@style/textinputstyle"
                             android:layout_marginStart="@dimen/dimen_10dp"
-                            android:layout_marginEnd="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_weight="5"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -306,8 +301,6 @@
                             android:layout_height="wrap_content"
                             style="@style/textinputstyle"
                             android:layout_marginStart="@dimen/dimen_10dp"
-                            android:layout_marginEnd="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_weight="5"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -328,7 +321,7 @@
                         style="@style/textinputstyle"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -345,9 +338,10 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:text="@string/online_payment_label"
-                        android:textStyle="bold"
                         android:padding="@dimen/dimen_10dp"
                         android:layout_marginStart="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans"
+                        android:textColor="@color/dark_grey"
                         android:checked="false"/>
 
                 </LinearLayout>
