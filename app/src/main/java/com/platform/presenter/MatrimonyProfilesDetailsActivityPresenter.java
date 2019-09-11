@@ -6,51 +6,43 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.platform.listeners.TMFilterListRequestCallListener;
-import com.platform.models.Matrimony.MatrimonyUserProfileRequestModel;
-import com.platform.models.tm.PendingRequest;
-import com.platform.models.tm.SubFilterset;
-import com.platform.models.tm.TMFilterlistRequestsResponse;
+import com.platform.listeners.ProfileDetailRequestCallListener;
+import com.platform.request.MatrimonyProfileDetailRequestCall;
 import com.platform.request.MatrimonyProfileListRequestCall;
-import com.platform.request.TMFiltersListRequestCall;
-import com.platform.utility.Util;
-import com.platform.view.activities.MatrimonyProfileListActivity;
-import com.platform.view.activities.TMFiltersListActivity;
+import com.platform.view.activities.MatrimonyProfileDetailsActivity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 @SuppressWarnings("CanBeFinal")
-public class MatrimonyProfilesListActivityPresenter implements TMFilterListRequestCallListener {
+public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailRequestCallListener {
 
     private final String TAG = this.getClass().getName();
-    private WeakReference<MatrimonyProfileListActivity> fragmentWeakReference;
+    private WeakReference<MatrimonyProfileDetailsActivity> fragmentWeakReference;
 
-    public MatrimonyProfilesListActivityPresenter(MatrimonyProfileListActivity tmFiltersListActivity) {
+    public MatrimonyProfilesDetailsActivityPresenter(MatrimonyProfileDetailsActivity tmFiltersListActivity) {
         fragmentWeakReference = new WeakReference<>(tmFiltersListActivity);
     }
 
-    public void getAllFiltersRequests() {
+  /*  public void getAllFiltersRequests() {
         MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
         requestCall.setListener(this);
 
         //fragmentWeakReference.get().showProgressBar();
         requestCall.getAllPendingRequests();
-    }
+    }*/
 
-    public void approveRejectRequest(JSONObject requestObject, int position,String requestType) {
-        MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
+    public void markAttendanceRequest(JSONObject requestObject, int position, String requestType) {
+        MatrimonyProfileDetailRequestCall requestCall = new MatrimonyProfileDetailRequestCall();
         requestCall.setListener(this);
 
         //fragmentWeakReference.get().showProgressBar();
-        requestCall.approveRejectRequest(requestObject, position,requestType);
+        requestCall.approveRejectRequest(requestObject, position, requestType);
     }
 
-    @Override
+   /* @Override
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
@@ -78,6 +70,11 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
         if (!TextUtils.isEmpty(response)) {
             fragmentWeakReference.get().updateRequestStatus(response, position);
         }
+    }*/
+
+    @Override
+    public void onRequestStatusChanged(String response, int position, String requestType) {
+        fragmentWeakReference.get().updateRequestStatus(response, position,requestType);
     }
 
     @Override
@@ -103,7 +100,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
 
     //---------Approve Reject Request-----------
 
-    public JSONObject createBodyParams(String meetid,String type,String userid,String approval_type){
+    public JSONObject createBodyParams(String meetid, String userid, String approval_type) {
         JSONObject requestObject = new JSONObject();
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson("");
@@ -111,8 +108,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
 
         try {
             requestObject.put("meet_id", "5d6f90c25dda765c2f0b5dd4");
-            requestObject.put("type", type);
-            requestObject.put("approval", approval_type);
+            requestObject.put("type", approval_type);
             requestObject.put("user_id", userid);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,7 +120,6 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
         }
         return null;
     }
-
 
 
 }

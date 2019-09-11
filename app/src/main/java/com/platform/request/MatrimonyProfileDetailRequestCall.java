@@ -8,31 +8,28 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
 import com.platform.Platform;
+import com.platform.listeners.ProfileDetailRequestCallListener;
 import com.platform.listeners.TMFilterListRequestCallListener;
-import com.platform.models.tm.PendingRequest;
-import com.platform.utility.Constants;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MatrimonyProfileListRequestCall {
+public class MatrimonyProfileDetailRequestCall {
 
-    private TMFilterListRequestCallListener listener;
-    private final String TAG = MatrimonyProfileListRequestCall.class.getName();
+    private ProfileDetailRequestCallListener listener;
+    private final String TAG = MatrimonyProfileDetailRequestCall.class.getName();
 
-    public void setListener(TMFilterListRequestCallListener listener) {
+    public void setListener(ProfileDetailRequestCallListener listener) {
         this.listener = listener;
     }
 
-    public void getAllPendingRequests() {
+    /*public void getAllPendingRequests() {
         Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
             try {
                 if (response != null) {
@@ -68,7 +65,7 @@ public class MatrimonyProfileListRequestCall {
         gsonRequest.setShouldCache(false);
 
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-    }
+    }*/
 
    /* private JSONObject createBodyParams() {
         JSONObject requestObject = new JSONObject();
@@ -127,7 +124,7 @@ public class MatrimonyProfileListRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "approveRejectRequest - Resp: " + res);
-                    listener.onRequestStatusChanged(res, position);
+                    listener.onRequestStatusChanged(res, position,requestType);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -138,7 +135,7 @@ public class MatrimonyProfileListRequestCall {
         Response.ErrorListener approveRejectRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String approveRejectUrl = BuildConfig.BASE_URL + Urls.Matrimony.USER_APPROVAL_API;
+        final String approveRejectUrl = BuildConfig.BASE_URL + Urls.Matrimony.MARK_ATTENDANCE_INTERVIEW_API;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,

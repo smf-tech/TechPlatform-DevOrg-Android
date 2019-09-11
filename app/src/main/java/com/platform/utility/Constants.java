@@ -2,6 +2,13 @@ package com.platform.utility;
 
 public class Constants {
 
+
+    public static final String MARK_ATTENDANCE = "Attendance";
+    public static final String MARK_INTERVIEW = "Interview";
+
+    public static final String APPROVE = "approved";
+    public static final String REJECT = "rejected";
+
     public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;

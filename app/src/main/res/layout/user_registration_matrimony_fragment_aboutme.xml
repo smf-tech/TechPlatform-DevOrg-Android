@@ -158,7 +158,7 @@
                         android:padding="2dp"
                         android:scaleType="fitXY"
                         android:adjustViewBounds="true"
-                        android:layout_height="@dimen/dimen_100dp"/>
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
             </ScrollView>

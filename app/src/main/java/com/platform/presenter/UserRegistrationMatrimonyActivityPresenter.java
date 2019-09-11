@@ -2,9 +2,11 @@ package com.platform.presenter;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.R;
 import com.platform.listeners.ImageRequestCallListener;
 import com.platform.listeners.MatrimonyMasterDataRequestCallListener;
 import com.platform.models.Matrimony.MatrimonyMasterRequestModel;
@@ -12,7 +14,10 @@ import com.platform.models.Matrimony.MatrimonyUserRegRequestModel;
 import com.platform.models.tm.PendingRequest;
 import com.platform.request.ImageRequestCall;
 import com.platform.request.MatrimonyMasterDataRequestCall;
+import com.platform.utility.Util;
 import com.platform.view.activities.UserRegistrationMatrimonyActivity;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -70,7 +75,24 @@ public class UserRegistrationMatrimonyActivityPresenter implements MatrimonyMast
 
     @Override
     public void onImageUploadedListener(String response, String formName) {
-        //fragmentWeakReference.get().
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+        fragmentWeakReference.get().runOnUiThread(() -> Util.showToast(
+                fragmentWeakReference.get().getResources().getString(R.string.image_upload_success),fragmentWeakReference.get()));
+        //profileActivity.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+                fragmentWeakReference.get().imageUploadedSuccessfully(url,formName);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
     }
 
     @Override

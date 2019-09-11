@@ -15,6 +15,7 @@ import com.platform.R;
 import com.platform.models.Matrimony.MatrimonyMasterRequestModel;
 import com.platform.models.Matrimony.MatrimonyUserRegRequestModel;
 import com.platform.presenter.UserRegistrationMatrimonyActivityPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.SmartFragmentStatePagerAdapter;
 import com.platform.view.fragments.UserRegistrationMatrimonyAboutmeFragment;
@@ -154,9 +155,19 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void imageUploadedSuccessfully()
+    public void imageUploadedSuccessfully(String response,String type)
     {
-
+        if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(type)) {
+            otherMaritialInformation.setProfile_image(response);
+            //img_user_profle.setImageURI(finalUri);
+        } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(type)) {
+            //img_adhar.setImageURI(finalUri);
+            otherMaritialInformation.setAadhar_url(response);
+        }
+        if (Constants.Image.IMAGE_TYPE_EDUCATION.equalsIgnoreCase(type)) {
+            otherMaritialInformation.setEducational_url(response);
+            //img_education_cert.setImageURI(finalUri);
+        }
     }
 
     public void profileCreatedSuccessfully(String response)

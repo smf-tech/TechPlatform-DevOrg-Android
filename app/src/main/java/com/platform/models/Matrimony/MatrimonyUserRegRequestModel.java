@@ -649,6 +649,15 @@ public class MatrimonyUserRegRequestModel {
         @SerializedName("profile_image")
         @Expose
         private String profile_image;
+
+        @SerializedName("aadhar_url")
+        @Expose
+        private String aadhar_url;
+
+        @SerializedName("educational_url")
+        @Expose
+        private String educational_url;
+
         @SerializedName("activity_achievements")
         @Expose
         private String activity_achievements;
@@ -696,5 +705,20 @@ public class MatrimonyUserRegRequestModel {
             this.other_remarks = other_remarks;
         }
 
+        public String getAadhar_url() {
+            return aadhar_url;
+        }
+
+        public void setAadhar_url(String aadhar_url) {
+            this.aadhar_url = aadhar_url;
+        }
+
+        public String getEducational_url() {
+            return educational_url;
+        }
+
+        public void setEducational_url(String educational_url) {
+            this.educational_url = educational_url;
+        }
     }
 }

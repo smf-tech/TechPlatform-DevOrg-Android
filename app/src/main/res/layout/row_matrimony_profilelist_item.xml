@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dimen_300dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -12,8 +12,7 @@
         android:layout_marginTop="@dimen/dimen_05dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
-        android:paddingTop="@dimen/dimen_10dp"
-        android:paddingBottom="@dimen/dimen_10dp"
+
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/dimen_07dp">
 
@@ -25,61 +24,111 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/dimen_10dp"
                 android:gravity="center_vertical">
 
-                <ImageView
-                    android:id="@+id/user_profile_pic"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:padding="@dimen/dimen_05dp"
-                    android:src="@drawable/ic_user_avatar" />
 
-                <RelativeLayout
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/user_profile_pic">
-
-                    <com.platform.view.customs.TextViewBold
-                        android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/center_view"
-                        android:paddingStart="@dimen/dimen_16dp"
-                        android:text="Malcom Holding"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:textStyle="bold|italic" />
-
-                    <View
-                        android:id="@+id/center_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:background="@android:color/transparent" />
-
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/tv_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/center_view"
-                        android:paddingStart="@dimen/dimen_16dp"
-                        android:text="Captain"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_size_description_12"
-                        android:textStyle="normal" />
-
-                </RelativeLayout>
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_arrow_right" />
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/user_profile_pic"
+                    android:src="@drawable/profileimagetest" />
+
+                <TextView
+                    android:layout_width="@dimen/dimen_75dp"
+                    android:text="Approved"
+                    android:id="@+id/tv_approval_status"
+                    android:layout_marginTop="@dimen/dimen_25dp"
+                    android:background="@drawable/ic_publish_ribbon"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/opensans_bold"
+                    android:textSize="@dimen/text_size_10"
+                    android:paddingStart="@dimen/dimen_05dp"
+                    android:layout_height="@dimen/dimen_25dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Premium"
+                    android:id="@+id/tv_premium"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dimen_25dp"
+                    android:textColor="@color/dark_grey"
+                    android:visibility="gone"
+                    android:fontFamily="@font/opensans_bold"
+                    android:textSize="@dimen/text_size_10"
+                    android:background="@drawable/ic_publish_ribbon"
+                    android:paddingStart="@dimen/dimen_05dp"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/gradient_sample"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/center_view"
+                            android:layout_centerHorizontal="true"
+                            android:text="Malcom Holding"
+                            android:gravity="center"
+                            android:fontFamily="@font/opensans"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_title_14"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_below="@+id/tv_title"
+                            android:text="Captain"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_description_12"
+                            android:textStyle="normal" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_height="wrap_content">
+                            <com.google.android.material.button.MaterialButton
+                                android:layout_width="wrap_content"
+                                style="@style/AppStyleBorderButton"
+                                android:textColor="@color/white"
+                                android:text="Reject"
+                                android:id="@+id/btn_reject"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                app:strokeColor="@color/white"
+                                android:layout_height="wrap_content" />
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="wrap_content"
+                            style="@style/AppStyleBorderButton"
+                            android:textColor="@color/white"
+                            android:text="Approve"
+                            android:id="@+id/btn_approve"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            app:strokeColor="@color/white"
+                            android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
             </RelativeLayout>
 
         </LinearLayout>

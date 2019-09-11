@@ -71,6 +71,11 @@ public class TMFilterListActivityPresenter implements TMFilterListRequestCallLis
     }
 
     @Override
+    public void onRequestStatusChanged(String response, int position) {
+
+    }
+
+    @Override
     public void onFailureListener(String message) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(message)) {

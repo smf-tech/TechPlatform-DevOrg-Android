@@ -221,7 +221,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(imageFile)) {
                         //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
-                        UserRegistrationMatrimonyActivity.userRegistrationMatrimonyActivityPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE, "");
+                        UserRegistrationMatrimonyActivity.userRegistrationMatrimonyActivityPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
                         if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
                             img_user_profle.setImageURI(finalUri);
                         } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {
@@ -284,7 +284,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
                 UserRegistrationMatrimonyActivity.otherMaritialInformation.setExpectation_from_life_partner(et_partner_expectation.getText().toString());
                 UserRegistrationMatrimonyActivity.otherMaritialInformation.setActivity_achievements(et_achivements.getText().toString());
                 UserRegistrationMatrimonyActivity.otherMaritialInformation.setOther_remarks(et_other_remark.getText().toString());
-                UserRegistrationMatrimonyActivity.otherMaritialInformation.setProfile_image("");
+                //UserRegistrationMatrimonyActivity.otherMaritialInformation.setProfile_image("");
 
 
                 UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.setOther_maritial_information(UserRegistrationMatrimonyActivity.otherMaritialInformation);

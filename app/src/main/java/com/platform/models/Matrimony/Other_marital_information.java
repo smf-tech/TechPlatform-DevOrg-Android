@@ -20,9 +20,9 @@ public class Other_marital_information {
     @SerializedName("aadhar_url")
     @Expose
     private String aadhar_url;
-    @SerializedName("educational")
+    @SerializedName("educational_url")
     @Expose
-    private String educational;
+    private String educational_url;
 
     public String getAbout_me() {
         return about_me;
@@ -64,12 +64,12 @@ public class Other_marital_information {
         this.aadhar_url = aadhar_url;
     }
 
-    public String getEducational() {
-        return educational;
+
+    public String getEducational_url() {
+        return educational_url;
     }
 
-    public void setEducational(String educational) {
-        this.educational = educational;
+    public void setEducational_url(String educational_url) {
+        this.educational_url = educational_url;
     }
-
 }

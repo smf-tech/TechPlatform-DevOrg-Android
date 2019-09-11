@@ -103,6 +103,11 @@ public class Urls {
         public static final String USER_REGI_SUBMIT_API = "api/insertUser";
 
         public static final String GET_MATRIMONY_PROFILE_API = "api/getMeetUsers/%1$s";
+        public static final String USER_APPROVAL_API = "api/userApproval";
+
+        public static final String MARK_ATTENDANCE_INTERVIEW_API = "api/markAttendance_interview";
+
+
 
     }
 

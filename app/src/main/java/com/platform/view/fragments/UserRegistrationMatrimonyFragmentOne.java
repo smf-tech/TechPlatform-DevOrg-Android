@@ -45,7 +45,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     private View fragmentview;
     private Button btn_load_next;
     private TextView tv_pagetitle;
-    private EditText et_first_name, et_middle_name, et_last_name, et_birth_date, et_birth_time, et_birth_place, et_blood_group,
+    private EditText et_first_name, et_middle_name, et_last_name, et_birth_date, et_birth_time, et_birth_place, et_blood_group,et_special_case,
             et_age, et_marital_status, et_height, et_weight, et_complexion, et_patrika_match, et_sampraday, et_drink, et_smoke, et_residance_status;
     private CheckBox checkbox_community_preference;
     private String userGender = Constants.Login.MALE;
@@ -90,6 +90,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         et_patrika_match = fragmentview.findViewById(R.id.et_patrika_match);
         et_sampraday = fragmentview.findViewById(R.id.et_sampraday);
         et_drink = fragmentview.findViewById(R.id.et_drink);
+        et_special_case = fragmentview.findViewById(R.id.et_special_case);
         et_smoke = fragmentview.findViewById(R.id.et_smoke);
         et_residance_status = fragmentview.findViewById(R.id.et_residance_status);
 
@@ -141,6 +142,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         et_patrika_match.setOnClickListener(this);
         et_sampraday.setOnClickListener(this);
         et_drink.setOnClickListener(this);
+        et_special_case.setOnClickListener(this);
         et_smoke.setOnClickListener(this);
         et_residance_status.setOnClickListener(this);
 
@@ -170,6 +172,15 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
 
             case R.id.et_drink:
                 showMultiSelectBottomsheet("et_drink", ListDrink);
+                break;
+            case R.id.et_special_case:
+
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("special_case")) {
+                        showMultiSelectBottomsheet("et_special_case", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        break;
+                    }
+                }
                 break;
             case R.id.et_blood_group:
                 showMultiSelectBottomsheet("et_blood_group", ListBloodGroup);
@@ -254,7 +265,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     UserRegistrationMatrimonyActivity.personalDetails.setSmoke(et_smoke.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setDrink(et_drink.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setOwn_house(et_residance_status.getText().toString());
-                    UserRegistrationMatrimonyActivity.personalDetails.setSpecial_case("");
+                    UserRegistrationMatrimonyActivity.personalDetails.setSpecial_case(et_special_case.getText().toString());
 
 
                     UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.setPersonal_details(UserRegistrationMatrimonyActivity.personalDetails);
@@ -379,6 +390,9 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 break;
             case "et_patrika_match":
                 et_patrika_match.setText(ListmatchPatrika.get(selected));
+                break;
+            case "et_special_case":
+                et_special_case.setText(selectedValues);
                 break;
 
 
