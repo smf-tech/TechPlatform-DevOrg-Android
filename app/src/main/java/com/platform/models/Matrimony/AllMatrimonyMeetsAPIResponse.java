@@ -3,13 +3,15 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class AllMatrimonyMeetsAPIResponse {
     @SerializedName("status")
     @Expose
     private Integer status;
     @SerializedName("data")
     @Expose
-    private MatrimonyMeetsList data;
+    private List<MatrimonyMeet> data;
     @SerializedName("message")
     @Expose
     private String message;
@@ -22,11 +24,11 @@ public class AllMatrimonyMeetsAPIResponse {
         this.status = status;
     }
 
-    public MatrimonyMeetsList getData() {
+    public List<MatrimonyMeet> getData() {
         return data;
     }
 
-    public void setData(MatrimonyMeetsList data) {
+    public void setData(List<MatrimonyMeet> data) {
         this.data = data;
     }
 

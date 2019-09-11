@@ -96,6 +96,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
         }
+        init();
     }
 
     private void init() {
@@ -142,8 +143,11 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        getMeetsCall();
+    }
+
+    public void getMeetsCall(){
         if (Util.isConnected(getContext())) {
-            init();
             matrimonyFragmentPresenter = new MatrimonyFragmentPresenter(this);
             matrimonyFragmentPresenter.getMatrimonyMeets();
         } else {
@@ -254,11 +258,12 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void onPageScrollStateChanged(int state) {
     }
 
-    public void setMatrimonyMeets(MatrimonyMeetsList data) {
+    public void setMatrimonyMeets(List<MatrimonyMeet> data) {
         matrimonyMeetList.clear();
-        for(MatrimonyMeet m: data.getMeets()){
-            matrimonyMeetList.add(m);
-        }
+        matrimonyMeetList.addAll(data);
+//        for(MatrimonyMeet m: data.getMeets()){
+//            matrimonyMeetList.add(m);
+//        }
         setupViewPager(meetViewPager);
         setCurrentMeetData(0);
     }
@@ -267,7 +272,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_publish_saved_meet:
-                matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId(), true);
+                matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId());
                 break;
         }
     }
@@ -276,5 +281,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
+        getMeetsCall();
     }
 }

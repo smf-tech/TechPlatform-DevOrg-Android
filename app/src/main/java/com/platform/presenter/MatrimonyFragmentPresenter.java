@@ -84,15 +84,15 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(GET_MATRIMONY_MEETS, paramjson, getMatrimonyMeetsUrl);
     }
 
-    public void publishSavedMeet(String meetId, boolean isPublish) {
-        Gson gson = new GsonBuilder().create();
-        String paramJson = gson.toJson(getMeetPublishJson(meetId, isPublish));
+    public void publishSavedMeet(String meetId) {
+        //Gson gson = new GsonBuilder().create();
+        //String paramJson = gson.toJson(getMeetPublishJson(meetId, isPublish));
         final String publishSavedMeetUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Matrimony.PUBLISH_SAVED_MEET);
+                + String.format(Urls.Matrimony.PUBLISH_SAVED_MEET, meetId);
         Log.d(TAG, "getMatrimonyMeetsUrl: url" + publishSavedMeetUrl);
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(PUBLISH_SAVED_MEET, paramJson, publishSavedMeetUrl);
+        requestCall.getDataApiCall(PUBLISH_SAVED_MEET, publishSavedMeetUrl);
     }
 
     public JsonObject getMeetJson(String countryId, String stateId, String cityId){
@@ -113,22 +113,22 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     }
 
-    public JsonObject getMeetPublishJson(String meetId, boolean isPublish){
-        HashMap<String,Object> map=new HashMap<>();
-        map.put(KEY_MEET_ID, meetId);
-        map.put(KEY_IS_PUBLISH, isPublish);
-
-        JsonObject requestObject = new JsonObject();
-
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            boolean value = (boolean) entry.getValue();
-            requestObject.addProperty(key, value);
-        }
-
-        return requestObject;
-
-    }
+//    public JsonObject getMeetPublishJson(String meetId, boolean isPublish){
+//        HashMap<String,Object> map=new HashMap<>();
+//        map.put(KEY_MEET_ID, meetId);
+//        map.put(KEY_IS_PUBLISH, isPublish);
+//
+//        JsonObject requestObject = new JsonObject();
+//
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            String key = entry.getKey();
+//            boolean value = (boolean) entry.getValue();
+//            requestObject.addProperty(key, value);
+//        }
+//
+//        return requestObject;
+//
+//    }
 
     @Override
     public void onFailureListener(String requestID, String message) {
