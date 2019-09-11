@@ -36,9 +36,11 @@ public class MeetModuleAnalyticsAdapter extends RecyclerView.Adapter<MeetModuleA
     public void onBindViewHolder(@NonNull MeetModuleAnalyticsAdapter.ViewHolder holder, int position) {
         holder.tvTitle.setText(meetModuleAnalyticsData.get(position).getType());
         holder.tvResult.setText(String.valueOf(meetModuleAnalyticsData.get(position).getAvailableValue()));
-        holder.pbAnalytics.setProgress(
-                ((meetModuleAnalyticsData.get(position).getAvailableValue() /
-                                meetModuleAnalyticsData.get(position).getTotalValue()) * 100));
+        if(meetModuleAnalyticsData.get(position).getTotalValue()> 0.0) {
+            holder.pbAnalytics.setProgress(
+                    ((meetModuleAnalyticsData.get(position).getAvailableValue() /
+                            meetModuleAnalyticsData.get(position).getTotalValue()) * 100));
+        }
     }
 
     @Override
