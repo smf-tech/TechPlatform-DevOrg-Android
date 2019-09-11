@@ -6,17 +6,27 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class MeetBatchesResponseModel {
-
-    @SerializedName("Group")
+    @SerializedName("status")
     @Expose
-    private List<Group> group = null;
+    private String status;
+    @SerializedName("data")
+    @Expose
+    private Data data;
 
-    public List<Group> getGroup() {
-        return group;
+    public String getStatus() {
+        return status;
     }
 
-    public void setGroup(List<Group> group) {
-        this.group = group;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 
 }

@@ -116,9 +116,10 @@ public class Urls {
         public static final String MEET_ARCHIVE_DELETE = "api/archiveMeet/%1$s/%2$s";
         public static final String MEET_ALLOCATE_BADGES = "api/allocateBadge/%1$s";
         public static final String MEET_FINALISE_BADGES = "api/isFinalize/%1$s";
-        public static final String PUBLISH_SAVED_MEET = "api/meetpublished";
+
         //for batches
         public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";
 
+        public static final String PUBLISH_SAVED_MEET = "api/meetpublished/%1$s";
     }
 }

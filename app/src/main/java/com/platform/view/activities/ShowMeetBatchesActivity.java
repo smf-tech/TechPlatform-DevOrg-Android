@@ -47,11 +47,11 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
         txtNoData = findViewById(R.id.txt_no_data);
         txtNoData.setText("No Batches available yet.");
         rvBaches = findViewById(R.id.rvLandingPageView);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
 
         rvBaches.setLayoutManager(layoutManager);
 
-        mAdapter = new ShowBatchesPageRecyclerAdapter(this, meetBatchesResponseModel.getGroup(),this::onItemClicked);
+        mAdapter = new ShowBatchesPageRecyclerAdapter(this, meetBatchesResponseModel.getData().getGroup(),this::onItemClicked);
         rvBaches.setAdapter(mAdapter);
 
        /* try {
@@ -74,6 +74,7 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onItemClicked(int pos) {
-
+        meetBatchesResponseModel.getData().getGroup().get(pos);
+        Log.e(TAG, "Exception :: OtpActivity : initView");
     }
 }

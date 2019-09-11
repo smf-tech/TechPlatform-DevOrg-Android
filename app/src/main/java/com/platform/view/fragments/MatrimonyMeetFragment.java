@@ -112,6 +112,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
+
     }
 
     @Override
@@ -186,6 +187,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         Bundle bundle = new Bundle();
         bundle.putString("batches_resposne",response);
         intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 }

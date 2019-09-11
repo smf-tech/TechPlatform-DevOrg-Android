@@ -37,6 +37,8 @@
         <activity android:name=".view.activities.NotificationsActivity" />
         <activity android:name=".view.activities.ContentDownloadedActivity" />
         <activity android:name=".view.activities.CreateMatrimonyMeetActivity" />
+        <activity android:name=".view.activities.ShowMeetBatchesActivity" />
+
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
