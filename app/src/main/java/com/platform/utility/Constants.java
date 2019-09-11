@@ -129,8 +129,10 @@ public class Constants {
     }
 
     public static class Location {
+        public static final String COUNTRY = "country";
         public static final String STATE = "state";
         public static final String DISTRICT = "district";
+        public static final String CITY = "city";
         public static final String TALUKA = "taluka";
         public static final String VILLAGE = "village";
         public static final String CLUSTER = "cluster";
@@ -139,8 +141,11 @@ public class Constants {
     }
 
     public static class JurisdictionLevelName {
+        public static final String COUNTRY_LEVEL = "Country";
         public static final String STATE_LEVEL = "State";
         public static final String DISTRICT_LEVEL = "District";
+        // added city level for matrimony project
+        public static final String CITY_LEVEL = "City";
         public static final String TALUKA_LEVEL = "Taluka";
         public static final String CLUSTER_LEVEL = "Cluster";
         public static final String VILLAGE_LEVEL = "Village";
@@ -161,6 +166,7 @@ public class Constants {
         public static final String CONNECT="Connect";
         public static final String TO_OPEN="ToOpen";
         public static final Integer NEVIGET_TO= 001;
+        public static final String MATRIMONY="Matrimony";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -222,6 +228,7 @@ public class Constants {
         public static final String SPINNER_ROLE = "Role";
         public static final String SPINNER_STATE = "State";
         public static final String SPINNER_DISTRICT = "District";
+        public static final String SPINNER_CITY = "City";
         public static final String SPINNER_TALUKA = "Taluka";
         public static final String SPINNER_CLUSTER = "Cluster";
         public static final String SPINNER_VILLAGE = "Village";
@@ -331,5 +338,8 @@ public class Constants {
         public static final String CONTENT_TOOLBAR_TEXT="ContentManagement";
     }
 
-
+    public static class Matrimony{
+        public static final String ORGANIZERS_LABEL = "Organizers";
+        public static final String REFERENCES_LABEL = "References";
+    }
 }

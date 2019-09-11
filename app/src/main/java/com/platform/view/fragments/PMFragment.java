@@ -55,11 +55,10 @@ import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedFor
 @SuppressWarnings("CanBeFinal")
 // We have updated this fragment. We are not going to show forms section over here.So all all the respective api and Ui code has been commented.
 // Now we are showing forms dashboard data.
-public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener
-        {
+public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
     private View pmFragmentView;
-    private int unsynchCount,savedCount;
+    private int unsynchCount, savedCount;
     private ArrayList<FormStatusCountData> formStatusCountDataList = new ArrayList<>();
     private RecyclerView rvFormsStatusCount;
     private FormsDashboardAdapter formsDashboardAdapter;
@@ -119,7 +118,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             UserInfo user = Util.getUserObjectFromPref();
             PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
             pmFragmentPresenter.getAllFormsCount(user);
-        }else{
+        } else {
             formStatusCountDataList.clear();
             populateOfflineData();
         }
@@ -146,36 +145,36 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     @Override
     public <T> void showNextScreen(T data) {
         populateData((FormStatusCount) data);
-
     }
 
     @Override
     public void showErrorMessage(String result) {
 
     }
-            private void populateData(FormStatusCount formCount) {
-                if (formCount != null) {
-                    formStatusCountDataList.clear();
-                    for (FormStatusCountData data : formCount.getData()) {
-                        if (data != null && data.getType() != null) {
-                            formStatusCountDataList.add(data);
-                        }
-                    }
-                    populateOfflineData();
+
+    private void populateData(FormStatusCount formCount) {
+        if (formCount != null) {
+            formStatusCountDataList.clear();
+            for (FormStatusCountData data : formCount.getData()) {
+                if (data != null && data.getType() != null) {
+                    formStatusCountDataList.add(data);
                 }
             }
+            populateOfflineData();
+        }
+    }
 
-            private void populateOfflineData(){
-                unsynchCount = DatabaseManager.getDBInstance(this.getActivity()).getNonSyncedPendingForms().size();
-                savedCount = DatabaseManager.getDBInstance(this.getActivity()).getAllPartiallySavedForms().size();
-                FormStatusCountData unsyncCountData = new FormStatusCountData();
-                FormStatusCountData savedCountData = new FormStatusCountData();
-                unsyncCountData.setType(Constants.PM.UNSYNC_STATUS);
-                unsyncCountData.setCount(unsynchCount);
-                savedCountData.setType(Constants.PM.SAVED_STATUS);
-                savedCountData.setCount(savedCount);
-                formStatusCountDataList.add(unsyncCountData);
-                formStatusCountDataList.add(savedCountData);
-                formsDashboardAdapter.notifyDataSetChanged();
-            }
+    private void populateOfflineData() {
+        unsynchCount = DatabaseManager.getDBInstance(this.getActivity()).getNonSyncedPendingForms().size();
+        savedCount = DatabaseManager.getDBInstance(this.getActivity()).getAllPartiallySavedForms().size();
+        FormStatusCountData unsyncCountData = new FormStatusCountData();
+        FormStatusCountData savedCountData = new FormStatusCountData();
+        unsyncCountData.setType(Constants.PM.UNSYNC_STATUS);
+        unsyncCountData.setCount(unsynchCount);
+        savedCountData.setType(Constants.PM.SAVED_STATUS);
+        savedCountData.setCount(savedCount);
+        formStatusCountDataList.add(unsyncCountData);
+        formStatusCountDataList.add(savedCountData);
+        formsDashboardAdapter.notifyDataSetChanged();
+    }
 }

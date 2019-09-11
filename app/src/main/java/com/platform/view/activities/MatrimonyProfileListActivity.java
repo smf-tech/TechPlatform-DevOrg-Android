@@ -30,6 +30,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private String approvalType;
     private String meetIdReceived;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void onResume() {
         super.onResume();
         //initViews();
-        tmFilterListActivityPresenter.getAllFiltersRequests();
+        tmFilterListActivityPresenter.getAllFiltersRequests(meetIdReceived);
     }
 
     private void initViews() {

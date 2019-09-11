@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_matrimony_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lighter_grey">
+
+    <ScrollView
+        android:id="@+id/sv_matrimony_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_meet_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="230dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/meet_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_200dp" />
+
+        <TextView
+            android:id="@+id/tv_meet_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:gravity="center_horizontal"
+            android:text="BJS Matrimonial Meet"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16"
+            android:fontFamily="@font/opensans_semibold"/>
+
+        <LinearLayout
+            android:id="@+id/button_lay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_60dp"
+            android:layout_marginStart="@dimen/dimen_40dp"
+            android:layout_below="@+id/tv_meet_title"
+            android:layout_marginEnd="@dimen/dimen_40dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/btn_view_profiles"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:padding="@dimen/dimen_10dp"
+                android:background="@drawable/bg_white_border_grey"
+                android:text="@string/view_profiles_btn_label"
+                android:textAllCaps="false"
+                android:fontFamily="@font/opensans_regular"/>
+
+            <TextView
+                android:id="@+id/btn_register_profile"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:padding="@dimen/dimen_10dp"
+                android:background="@drawable/bg_white_border_grey"
+                android:text="@string/register_profile_btn_label"
+                android:textAllCaps="false"
+                android:fontFamily="@font/opensans_regular"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/rl_meet_view_pager">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:background="@color/white"
+                app:cardCornerRadius="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/dimen_10dp">
+
+                    <TextView
+                        android:id="@+id/tv_meet_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_clock_black"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:drawablePadding="@dimen/dimen_05dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_meet_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:layout_marginTop="@dimen/dimen_05dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_meet_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:drawableStart="@drawable/ic_venue_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold" />
+
+                    <TextView
+                        android:id="@+id/tv_meet_venue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_contacts_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:gravity="center"
+                        android:text="Contacts"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:fontFamily="@font/opensans_semibold"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_meet_organizer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_05dp">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:text="Registration Fees"
+                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold" />
+
+                    <TextView
+                        android:id="@+id/tv_reg_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_rupee_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_regular" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:background="@color/white"
+                app:cardCornerRadius="@dimen/dimen_10dp">
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_margin="@dimen/dimen_10dp">-->
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_meet_analytics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05dp">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                <!--</LinearLayout>-->
+
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_publish_saved_meet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/meet_publish" />
+
+        </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_create_meet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:rotation="45"
+        app:tint="@color/white"
+        android:src="@drawable/ic_close"/>
+
+</RelativeLayout>

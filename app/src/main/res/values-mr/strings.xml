@@ -385,6 +385,17 @@
     <string name="check_out_it"> चेक आऊट वेळ</string>
     <string name="verification_otp_will_be_sent_on_this_number">(या नंबरवर ओटीपी  पाठविला जाईल)</string>
     <string name="msg_select_city">Please select City</string>
+    <string name="matrimony_name_label">Meet Name</string>
+    <string name="meet_date">Meet Date</string>
+    <string name="meet_select_organizers">Select Organizers</string>
+    <string name="meet_select_references">Select References</string>
+    <string name="country">Country</string>
+    <string name="select_meet_type">Select Meet Type</string>
+    <string name="meet_publish">Publish</string>
+    <string name="select_meet_organizers_references_msg">Please select Organizers and References.</string>
+    <string name="msg_select_country">Please select Country</string>
+    <string name="mandatory_country">Country *</string>
+
     <string name="birth_place">Birth Place</string>
     <string name="age">Age</string>
 

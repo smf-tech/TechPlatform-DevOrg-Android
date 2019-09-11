@@ -6,12 +6,17 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class UserLocation {
+    @SerializedName("country")
+    private List<JurisdictionType> countryId;
 
     @SerializedName("state")
     private List<JurisdictionType> stateId;
 
     @SerializedName("district")
     private List<JurisdictionType> districtIds;
+
+    @SerializedName("city")
+    private List<JurisdictionType> cityIds;
 
     @SerializedName("taluka")
     private List<JurisdictionType> talukaIds;
@@ -21,6 +26,14 @@ public class UserLocation {
 
     @SerializedName("village")
     private List<JurisdictionType> villageIds;
+
+    public List<JurisdictionType> getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(List<JurisdictionType> countryId) {
+        this.countryId = countryId;
+    }
 
     public List<JurisdictionType> getStateId() {
         return stateId;
@@ -36,6 +49,14 @@ public class UserLocation {
 
     public void setDistrictIds(List<JurisdictionType> districtIds) {
         this.districtIds = districtIds;
+    }
+
+    public List<JurisdictionType> getCityIds() {
+        return cityIds;
+    }
+
+    public void setCityIds(List<JurisdictionType> cityIds) {
+        this.cityIds = cityIds;
     }
 
     public List<JurisdictionType> getTalukaIds() {

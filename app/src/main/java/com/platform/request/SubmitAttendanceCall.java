@@ -147,8 +147,6 @@ public class SubmitAttendanceCall  {
             }
         };
 
-
-
         Gson gson = new GsonBuilder().serializeNulls().create();
 
         final String USER_CHECKOUT = BuildConfig.BASE_URL+ Urls.Attendance.SUBMIT_ATTENDANCE;

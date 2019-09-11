@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Default overflow menu items -->
+    <item
+        android:id="@+id/action_archive"
+        android:title="Archive"
+        />
+    <item
+        android:id="@+id/action_delete"
+        android:title="Delete" />
+    <item
+        android:id="@+id/action_allocate_badge"
+        android:title="Allocate Badge" />
+    <item
+        android:id="@+id/action_finalise_badge"
+        android:title="Finalise Badge" />
+    <item
+        android:id="@+id/action_gen_booklate"
+        android:title="Generate Booklate" />
+    <item
+        android:id="@+id/action_show_baches"
+        android:title="Show Batches" />
+
+</menu>

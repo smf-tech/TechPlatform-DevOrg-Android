@@ -249,7 +249,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                     Intent intentAddMemberFilerActivity = new Intent(this, AddMembersFilterActivity.class);
                     this.startActivityForResult(intentAddMemberFilerActivity, Constants.Planner.MEMBER_LIST);
                 }
-
                 break;
 
             case R.id.et_registration_start_date:

@@ -128,7 +128,7 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
     }
 
     private void setValuesInModel() {
-        //if (isAllInputsValid())
+        if (isAllInputsValid())
         {
             if (UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel != null) {
                 if (UserRegistrationMatrimonyActivity.familyDetails != null) {

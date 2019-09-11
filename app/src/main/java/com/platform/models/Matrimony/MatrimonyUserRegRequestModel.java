@@ -643,7 +643,7 @@ public class MatrimonyUserRegRequestModel {
         @SerializedName("about_me")
         @Expose
         private String about_me;
-        @SerializedName("expectation_from_life_partner")
+        @SerializedName("expectation_from_partner")
         @Expose
         private String expectation_from_life_partner;
         @SerializedName("profile_image")

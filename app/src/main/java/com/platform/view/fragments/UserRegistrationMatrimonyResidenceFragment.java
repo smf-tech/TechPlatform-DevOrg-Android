@@ -149,7 +149,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
     }
 
     private void setValuesInModel() {
-        //if (isAllInputsValid())
+        if (isAllInputsValid())
         {
             if (UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel != null) {
                 if (UserRegistrationMatrimonyActivity.residentialDetails != null) {

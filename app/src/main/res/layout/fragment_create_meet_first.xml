@@ -1,0 +1,383 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.platform.view.fragments.MatrimonyMeetFragment"
+    android:background="@color/lighter_grey">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_steps_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:src="@drawable/ic_meet_create_first_step"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_create_meet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:cardCornerRadius="@dimen/dimen_10dp"
+                android:layout_below="@+id/img_steps_indicator"
+                android:layout_margin="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!--Title-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_title"
+                        style="@style/textinputstyle"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edit_meet_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/matrimony_name_label"
+                        android:inputType="textMultiLine"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_meet_types"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:background="@drawable/bg_blue_box"
+                        android:hint="@string/select_meet_type"
+                        android:textColorHint="@color/medium_grey"
+                        android:fontFamily="@font/opensans"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:editable="false"
+                        android:longClickable="false"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_margin="@dimen/dimen_10dp">
+
+                        <TextView
+                            android:id="@+id/tv_meet_country"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_50dp"
+                            android:paddingStart="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_blue_box"
+                            android:hint="@string/country"
+                            android:textColorHint="@color/medium_grey"
+                            android:fontFamily="@font/opensans"
+                            android:gravity="center_vertical"
+                            android:editable="false"
+                            android:longClickable="false"/>
+                        <TextView
+                            android:id="@+id/tv_meet_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_50dp"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:paddingStart="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_blue_box"
+                            android:hint="@string/state"
+                            android:textColorHint="@color/medium_grey"
+                            android:fontFamily="@font/opensans"
+                            android:gravity="center_vertical"
+                            android:editable="false"
+                            android:longClickable="false"/>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_meet_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_blue_box"
+                        android:hint="@string/city"
+                        android:textColorHint="@color/medium_grey"
+                        android:fontFamily="@font/opensans"
+                        android:gravity="center_vertical"
+                        android:editable="false"
+                        android:longClickable="false"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_address"
+                        style="@style/textinputstyle"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tly_description"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edit_meet_venue"
+                        style="@style/RegistrationEditTextLayout"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/matrimony_venue_label" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--Start Date-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_meet_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/textinputstyle"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                        <EditText
+                            android:id="@+id/edt_meet_date"
+                            style="@style/RegistrationEditTextLayout"
+                            android:clickable="false"
+                            android:drawableEnd="@drawable/ic_cal_event"
+                            android:focusable="false"
+                            android:hint="@string/meet_date"
+                            android:inputType="date"
+                            tools:ignore="Autofill"
+                            android:longClickable="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ly_start_end_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tly_title"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <!--Start Date-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tly_start_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/textinputstyle"
+                            android:layout_weight="5"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <EditText
+                                android:id="@+id/edt_start_time"
+                                style="@style/RegistrationEditTextLayout"
+                                android:clickable="false"
+                                android:drawableEnd="@drawable/ic_cal_event"
+                                android:focusable="false"
+                                android:layout_marginStart="@dimen/dimen_10dp"
+                                android:hint="@string/task_start_time"
+                                android:inputType="date"
+                                tools:ignore="Autofill"
+                                android:longClickable="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--End Date-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tly_end_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/textinputstyle"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_weight="5"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <EditText
+                                android:id="@+id/edt_end_time"
+                                style="@style/RegistrationEditTextLayout"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:hint="@string/task_end_time"
+                                android:inputType="time"
+                                android:drawableEnd="@drawable/ic_clock"
+                                tools:ignore="Autofill"
+                                android:longClickable="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/rg_paid_free"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_05dp">
+                        
+                        <RadioButton
+                            android:id="@+id/rb_paid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_20dp"
+                            android:text="@string/meet_paid"
+                            android:textColor="@color/dark_grey"
+                            android:fontFamily="@font/opensans"
+                            android:padding="@dimen/dimen_10dp"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_free"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_30dp"
+                            android:text="@string/meet_free"
+                            android:fontFamily="@font/opensans"
+                            android:padding="@dimen/dimen_10dp"
+                            android:textColor="@color/dark_grey"
+                            android:checked="true"/>
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_01dp"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:background="@color/grey" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meet_registration_label"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"/>
+
+                    <LinearLayout
+                        android:id="@+id/ly_meet_date_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tly_title"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:weightSum="10">
+
+                        <!--Start Date-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/ly_meet_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/textinputstyle"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_weight="5"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <EditText
+                                android:id="@+id/edt_meet_reg_date"
+                                style="@style/RegistrationEditTextLayout"
+                                android:clickable="false"
+                                android:drawableEnd="@drawable/ic_cal_event"
+                                android:focusable="false"
+                                android:hint="@string/task_start_date"
+                                android:inputType="date"
+                                tools:ignore="Autofill"
+                                android:longClickable="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--End Date-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/ly_meet_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/textinputstyle"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_weight="5"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <EditText
+                                android:id="@+id/edt_meet_reg_end_date"
+                                style="@style/RegistrationEditTextLayout"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:hint="@string/task_end_date"
+                                android:inputType="time"
+                                android:drawableEnd="@drawable/ic_clock"
+                                tools:ignore="Autofill"
+                                android:longClickable="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_reg_amt"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/meet_registration_amount_label"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <RadioButton
+                        android:id="@+id/rb_online_payment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:text="@string/online_payment_label"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans"
+                        android:textColor="@color/dark_grey"
+                        android:checked="false"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_first_part_meet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppStyleButton"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:text="@string/meet_next_label"
+                android:layout_below="@+id/card_create_meet"
+                android:textColor="@android:color/white"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

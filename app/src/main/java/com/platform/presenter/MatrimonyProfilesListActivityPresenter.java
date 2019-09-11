@@ -34,12 +34,12 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
         fragmentWeakReference = new WeakReference<>(tmFiltersListActivity);
     }
 
-    public void getAllFiltersRequests() {
+    public void getAllFiltersRequests(String meetId) {
         MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
         requestCall.setListener(this);
 
         //fragmentWeakReference.get().showProgressBar();
-        requestCall.getAllPendingRequests();
+        requestCall.getAllPendingRequests(meetId);
     }
 
     public void approveRejectRequest(JSONObject requestObject, int position,String requestType) {

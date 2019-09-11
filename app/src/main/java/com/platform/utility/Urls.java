@@ -93,10 +93,10 @@ public class Urls {
     }
 
     public class Matrimony {
-        public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
+
         public static final String MEET_REFERENCES_LIST = "api/";
         public static final String MEET_ORGANIZERS_LIST = "api/";
-        public static final String SUBMIT_MEET = "api/";
+
 
         //userRegistration
         public static final String USER_REGI_MASTER = "api/masterData";
@@ -109,6 +109,16 @@ public class Urls {
 
 
 
-    }
+        public static final String MATRIMONY_MEETS = "api/getMeet";
+        public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
+        public static final String MATRIMONY_USERS_LIST = "api/getMatrimonyRoleUsers";
+        public static final String SUBMIT_MEET = "api/insertMeet";
+        public static final String MEET_ARCHIVE_DELETE = "api/archiveMeet/%1$s/%2$s";
+        public static final String MEET_ALLOCATE_BADGES = "api/allocateBadge/%1$s";
+        public static final String MEET_FINALISE_BADGES = "api/isFinalize/%1$s";
+        public static final String PUBLISH_SAVED_MEET = "api/meetpublished";
+        //for batches
+        public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";
 
+    }
 }

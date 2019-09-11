@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
+    private String meetIdReceived;
     private ViewPager viewPager;
     private MatrimonyViewPagerAdapter matrimonyViewPagerAdapter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> MasterDataArrayList;
@@ -53,6 +54,8 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
                     .replace(R.id.container, UserRegistrationMatrimonyFragmentOne.newInstance())
                     .commitNow();*/
         }
+
+        meetIdReceived = getIntent().getStringExtra("meetid");
         viewPager = findViewById(R.id.approval_cat_view_pager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
@@ -146,7 +149,7 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
     }
 
     public void submitUserRegistrationRequest(){
-        matrimonyUserRegRequestModel.setMeet_id("5d6f90c25dda765c2f0b5dd4");
+        matrimonyUserRegRequestModel.setMeet_id(meetIdReceived);
         userRegistrationMatrimonyActivityPresenter.UserRegistrationRequests(matrimonyUserRegRequestModel);
     }
 

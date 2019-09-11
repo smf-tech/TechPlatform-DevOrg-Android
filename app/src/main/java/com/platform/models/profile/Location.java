@@ -12,9 +12,15 @@ public class Location {
     @SerializedName("jurisdiction_type_id")
     @Expose
     private String jurisdictionTypeId;
+    @SerializedName("country_id")
+    @Expose
+    private String countryId;
     @SerializedName("state_id")
     @Expose
     private String stateId;
+    @SerializedName("city_id")
+    @Expose
+    private String cityId;
     @SerializedName("district_id")
     @Expose
     private String districtId;
@@ -24,12 +30,18 @@ public class Location {
     @SerializedName("village_id")
     @Expose
     private String villageId;
+    @SerializedName("country")
+    @Expose
+    private JurisdictionType country;
     @SerializedName("state")
     @Expose
     private JurisdictionType state;
     @SerializedName("district")
     @Expose
     private JurisdictionType district;
+    @SerializedName("city")
+    @Expose
+    private JurisdictionType city;
     @SerializedName("taluka")
     @Expose
     private JurisdictionType taluka;
@@ -89,6 +101,13 @@ public class Location {
         this.id = id;
     }
 
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
     public String getStateId() {
         return stateId;
     }
@@ -103,6 +122,14 @@ public class Location {
 
     public void setDistrictId(String districtId) {
         this.districtId = districtId;
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
     public String getTalukaId() {
@@ -121,6 +148,14 @@ public class Location {
         this.villageId = villageId;
     }
 
+    public JurisdictionType getCountry() {
+        return country;
+    }
+
+    public void setCountry(JurisdictionType country) {
+        this.country = country;
+    }
+
     public JurisdictionType getState() {
         return state;
     }
@@ -136,6 +171,10 @@ public class Location {
     public void setDistrict(JurisdictionType district) {
         this.district = district;
     }
+
+    public JurisdictionType getCity() { return city; }
+
+    public void setCity(JurisdictionType city) { this.city = city; }
 
     public JurisdictionType getTaluka() {
         return taluka;

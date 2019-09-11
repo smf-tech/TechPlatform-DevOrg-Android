@@ -242,7 +242,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     }
 
     private void setValuesInModel() {
-        //if (isAllInputsValid())
+        if (isAllInputsValid())
         {
             if (UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel != null) {
                 if (UserRegistrationMatrimonyActivity.personalDetails != null) {
