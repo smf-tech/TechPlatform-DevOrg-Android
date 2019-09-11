@@ -26,27 +26,12 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("schedule")
     @Expose
     private MeetSchedule schedule;
-//    @SerializedName("dateTime")
-//    @Expose
-//    private long dateTime;
-//    @SerializedName("meetStartTime")
-//    @Expose
-//    private String meetStartTime;
-//    @SerializedName("meetEndTime")
-//    @Expose
-//    private String meetEndTime;
     @SerializedName("isRegPaid")
     @Expose
     private Boolean isRegPaid;
     @SerializedName("registrationSchedule")
     @Expose
     private RegistrationSchedule registrationSchedule;
-//    @SerializedName("regStartDateTime")
-//    @Expose
-//    private long regStartDateTime;
-//    @SerializedName("regEndDateTime")
-//    @Expose
-//    private long regEndDateTime;
     @SerializedName("regAmount")
     @Expose
     private Integer regAmount;
@@ -71,6 +56,12 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("isBadgeFanlize")
     @Expose
     private Boolean isBadgeFanlize;
+    @SerializedName("is_deleted")
+    @Expose
+    private Boolean isDeleted;
+    @SerializedName("is_archive")
+    @Expose
+    private Boolean isArchive;
 
     public String getId() {
         return id;
@@ -198,6 +189,22 @@ public class MatrimonyMeet implements Serializable {
 
     public void setBadgeFanlize(Boolean badgeFanlize) {
         isBadgeFanlize = badgeFanlize;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Boolean getArchive() {
+        return isArchive;
+    }
+
+    public void setArchive(Boolean archive) {
+        isArchive = archive;
     }
 
 }
