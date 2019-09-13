@@ -449,6 +449,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/opensans"
                         android:textSize="@dimen/text_size_12"
+                        android:visibility="gone"
                         android:id="@+id/checkbox_community_preference"
                         android:text="Not perticular about partners Community" />
                 </LinearLayout>

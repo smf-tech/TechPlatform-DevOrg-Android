@@ -3,6 +3,8 @@ package com.platform.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private String approvalType;
     private String meetIdReceived;
 
+    private ImageView toolbar_back_action;
+    private TextView toolbar_title;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,12 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     private void initViews() {
 
+
+        toolbar_back_action= findViewById(R.id.toolbar_back_action);
+        toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText("Profile");
+        toolbar_back_action.setOnClickListener(this::onClick);
+
         rv_matrimonyprofileview = findViewById(R.id.rv_matrimonyprofileview);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -67,6 +78,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 break;
             case R.id.img_filter_image:
 
+                break;
+            case R.id.toolbar_back_action:
+                    finish();
                 break;
         }
     }

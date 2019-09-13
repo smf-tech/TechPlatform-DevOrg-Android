@@ -52,6 +52,13 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();
             holder.txtValue.setText(s);
             holder.tv_approval_status.setText(dataList.get(position).getIsApproved());
+            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
+
+            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
+                holder.btn_reject.setVisibility(View.GONE);
+            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("a")){
+                holder.btn_approve.setVisibility(View.GONE);
+            }
             if (dataList.get(position).isIsPremium()){
                 holder.tv_premium.setText("Premium");
             }else {

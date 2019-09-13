@@ -164,7 +164,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
 
                 break;
             case R.id.et_birth_date:
-                selectStartDate(et_birth_date);
+                selectStartDate(et_birth_date,et_age);
                 break;
             case R.id.et_birth_time:
                 Util.showTimeDialog(getActivity(), fragmentview.findViewById(R.id.et_birth_time));
@@ -282,7 +282,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
 
 
     //select start date and end date for filter
-    private void selectStartDate(EditText et_birth_date_view) {
+    private void selectStartDate(EditText et_birth_date_view,EditText et_age) {
         final Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
@@ -301,12 +301,29 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                         String selectedDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(calendar.getTime());
                         et_birth_date_view.setText(selectedDateString);
                         //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
+                        et_age.setText(getAge(year,monthOfYear,dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+    }
 
     public void createTempArrayList() {
         ListBloodGroup.add("A+");
@@ -428,5 +445,8 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
         return false;
     }
+
+
+
 }
 

@@ -97,6 +97,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         matrimonyProfilesDetailsActivityPresenter = new MatrimonyProfilesDetailsActivityPresenter(this);
         //for(int i=0;i<IMAGES.length;i++)
         {
+            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image())){
+                ProfileImageList.add(userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image());
+            }
             ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");
             ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");
             ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");

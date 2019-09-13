@@ -1529,7 +1529,7 @@
                             android:layout_below="@+id/tv_aadhar_lable"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/profileimagetest"
+                            android:src="@mipmap/app_logo"
                             />
                     </RelativeLayout>
 
@@ -1550,7 +1550,7 @@
                             android:layout_below="@+id/tv_education_certificates_lable"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/profileimagetest"
+                            android:src="@mipmap/app_logo"
                             />
 
                     </RelativeLayout>
