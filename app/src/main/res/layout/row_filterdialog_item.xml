@@ -16,29 +16,34 @@
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content">
     <com.platform.view.customs.TextViewSemiBold
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tv_filters"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="text"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:padding="5dp"
         android:textColor="@color/dark_grey"
         android:paddingStart="@dimen/dimen_10dp"
-        android:textSize="@dimen/text_size_title_14"
-        android:layout_height="wrap_content"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:checked="true"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/cb_select_filter"
-        android:backgroundTint="@color/colorPrimary"
-        android:buttonTint="@color/colorPrimary"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_05dp"
-        android:layout_height="wrap_content" />
+        android:textSize="@dimen/text_size_title_14"/>
+    <!--<CheckBox-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:checked="true"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:id="@+id/cb_select_filter"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:buttonTint="@color/colorPrimary"-->
+        <!--android:layout_marginStart="@dimen/dimen_10dp"-->
+        <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
+        <!--android:layout_marginTop="@dimen/dimen_05dp"-->
+        <!--android:layout_marginBottom="@dimen/dimen_05dp"-->
+        <!--android:layout_height="wrap_content" />-->
+     <Button
+         android:id="@+id/bt_select_filter"
+         android:layout_width="30dp"
+         android:layout_height="@dimen/dimen_30dp"
+         android:layout_gravity="center_vertical"
+         android:layout_margin="@dimen/dimen_05dp"/>
     </LinearLayout>
         <View
             android:layout_width="match_parent"

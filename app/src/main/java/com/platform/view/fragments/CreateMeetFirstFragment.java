@@ -239,28 +239,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.tv_meet_types:
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "MeetTypesList", meetTypesList,
-                        true);
+                        false);
                 cdd.show();
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_country:
                 CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "MeetCountryList", meetCountryList,
-                        true);
+                        false);
                 cddCountry.show();
                 cddCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_state:
                 CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "MeetStateList", meetStateList,
-                        true);
+                        false);
                 cddState.show();
                 cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_city:
                 CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "MeetCityList", meetCityList,
-                        true);
+                        false);
                 cddCity.show();
                 cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
