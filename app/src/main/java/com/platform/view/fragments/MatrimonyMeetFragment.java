@@ -1,29 +1,23 @@
 package com.platform.view.fragments;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
@@ -31,8 +25,7 @@ import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.presenter.MatrimonyMeetFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.activities.CreateMatrimonyMeetActivity;
-import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.MatrimonyBookletActivity;
 
 public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuItemClickListener, APIDataListener {
     private View matrimonyMeetFragmentView;
@@ -129,8 +122,11 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             case R.id.action_finalise_badge:
                 matrimonyMeetFragmentPresenter.meetAllocateBadges(meetData.getId(),"finalizeBadges");
                 break;
-            case R.id.action_gen_booklate:
-//                ((CreateMatrimonyMeetActivity) getActivity()).openFragment("openGenerateBookletFragment");
+            case R.id.action_gen_booklet:
+                Intent bookletIntent = new Intent(getActivity(), MatrimonyBookletActivity.class);
+                bookletIntent.putExtra("bookletId","1");
+                bookletIntent.putExtra("meetId",meetData.getId());
+                getActivity().startActivity(bookletIntent);
                 break;
         }
         return false;
