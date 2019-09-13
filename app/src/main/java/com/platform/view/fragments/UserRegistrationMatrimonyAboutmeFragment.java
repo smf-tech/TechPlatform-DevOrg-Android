@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -277,6 +278,8 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
 
     //set selected data for request
     private void setValuesInModel() {
+        if (isAllInputsValid())
+        {
         if (UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel != null) {
             if (UserRegistrationMatrimonyActivity.otherMaritialInformation != null) {
 
@@ -296,5 +299,34 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
         } else {
             Util.showToast("null object", getActivity());
         }
+    }
+    }
+
+
+
+    private boolean isAllInputsValid() {
+        String msg = "";
+
+        /*if (et_Annual_income.getText().toString().trim().length() == 0) {
+            msg = "Please enter the mobile annual income";//getResources().getString(R.string.msg_enter_name);
+        } else*/
+        if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getProfile_image().trim().length() == 0) {
+            msg = "Please upload profile image.";//getResources().getString(R.string.msg_enter_proper_date);
+        }
+        else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getAadhar_url().trim().length() == 0) {
+            msg = "Please upload Adhar card image.";//getResources().getString(R.string.msg_enter_name);
+        } else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url().trim().length() == 0) {
+            msg = "Please education certificate image."; //getResources().getString(R.string.msg_enter_name);
+        }
+        /*else if (et_education.getText().toString().trim().length() == 0) {
+            msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);
+        }*/
+
+        if (TextUtils.isEmpty(msg)) {
+            return true;
+        }
+
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+        return false;
     }
 }

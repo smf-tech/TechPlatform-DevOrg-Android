@@ -3,9 +3,14 @@ package com.platform.view.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,19 +18,21 @@ import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.models.Matrimony.MeetBatchesResponseModel;
 import com.platform.models.login.LoginInfo;
-import com.platform.utility.Constants;
 import com.platform.view.adapters.ShowBatchesPageRecyclerAdapter;
-import com.platform.view.fragments.NewOtpFragment;
+import com.platform.view.fragments.ShowBachesDialogFragment;
 
-public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClickListener,ShowBatchesPageRecyclerAdapter.OnRequestItemClicked {
-
+public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClickListener, ShowBatchesPageRecyclerAdapter.OnRequestItemClicked {
     private final String TAG = ShowMeetBatchesActivity.class.getName();
+    private FragmentManager fManager;
+    private Fragment fragment;
     private LoginInfo loginInfo;
     private RecyclerView rvBaches;
     private TextView txtNoData;
     private ShowBatchesPageRecyclerAdapter mAdapter;
     private MeetBatchesResponseModel meetBatchesResponseModel;
     private String meetBatchesResponseString;
+    private ImageView toolbar_back_action;
+    private TextView toolbar_title;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,19 +46,20 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
         if (bundle != null) {
             meetBatchesResponseString = bundle.getString("batches_resposne");
         }
-
+        fManager = getSupportFragmentManager();
         Gson gson = new Gson();
 
         meetBatchesResponseModel = gson.fromJson(meetBatchesResponseString, MeetBatchesResponseModel.class);
 
         txtNoData = findViewById(R.id.txt_no_data);
         txtNoData.setText("No Batches available yet.");
+        txtNoData.setVisibility(View.GONE);
         rvBaches = findViewById(R.id.rvLandingPageView);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
 
         rvBaches.setLayoutManager(layoutManager);
 
-        mAdapter = new ShowBatchesPageRecyclerAdapter(this, meetBatchesResponseModel.getData().getGroup(),this::onItemClicked);
+        mAdapter = new ShowBatchesPageRecyclerAdapter(this, meetBatchesResponseModel.getData().getGroup(), this::onItemClicked);
         rvBaches.setAdapter(mAdapter);
 
        /* try {
@@ -65,16 +73,54 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
         } catch (Exception e) {
             Log.e(TAG, "Exception :: OtpActivity : initView");
         }*/
+
+        toolbar_back_action= findViewById(R.id.toolbar_back_action);
+        toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText("Meet Batches");
+        toolbar_back_action.setOnClickListener(this::onClick);
+
     }
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.toolbar_back_action:
+                if(fManager.getBackStackEntryCount() > 0)
+                    fManager.popBackStack();
+                else
+                finish();
+                break;
+        }
     }
 
     @Override
     public void onItemClicked(int pos) {
+        Bundle bundle = new Bundle();
         meetBatchesResponseModel.getData().getGroup().get(pos);
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(meetBatchesResponseModel.getData().getGroup().get(pos));
         Log.e(TAG, "Exception :: OtpActivity : initView");
+        fragment = new ShowBachesDialogFragment();
+        bundle.putString("filter_type", "User Approval");
+        bundle.putString("bachesObjectString", jsonString);
+        fragment.setArguments(bundle);
+        openFragment();
+
+/*        FragmentManager fm = getSupportFragmentManager();
+//fragment class name : DFragment
+        ShowBachesDialogFragment dFragment = new ShowBachesDialogFragment();
+        // Show DialogFragment
+        dFragment.setArguments(bundle);
+        dFragment.show(fm, "Dialog Fragment");*/
+        //fragment.show(fManager, "Dialog Fragment");
+
+    }
+
+    private void openFragment() {
+        Log.d("testLOg", "@@@@@---" + fragment.getTag());
+        FragmentTransaction fTransaction = fManager.beginTransaction();
+        fTransaction.addToBackStack("showbatch");
+        fTransaction.replace(R.id.home_page_container, fragment)
+                .commit();
     }
 }

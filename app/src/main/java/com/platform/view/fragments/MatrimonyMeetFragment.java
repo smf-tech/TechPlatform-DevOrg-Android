@@ -26,9 +26,11 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
+import com.platform.models.Matrimony.MeetBatchesResponseModel;
 import com.platform.presenter.MatrimonyMeetFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -183,11 +185,22 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
 
     public void showBachesResponse(String response) {
         Util.logger("Batches response-",response);
+
+        Gson gson = new Gson();
+
+        MeetBatchesResponseModel meetBatchesResponseModel = gson.fromJson(response, MeetBatchesResponseModel.class);
+        if (meetBatchesResponseModel.getStatus().equalsIgnoreCase("200")){
+
+
+
         Intent intent =new Intent(getActivity(), ShowMeetBatchesActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("batches_resposne",response);
         intent.putExtras(bundle);
         startActivity(intent);
+        }else {
+            Util.showToast("No Batches available yet",getActivity());
+        }
 
     }
 }
