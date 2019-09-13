@@ -68,9 +68,9 @@ public class CustomSpinnerDialogClass extends BottomSheetDialog implements
         img_close.setOnClickListener(this);
         toolbarTitle =findViewById(R.id.toolbar_title);
         toolbarTitle.setText(bottomSheetTitle);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getOwnerActivity());
         rvCustomSpinner.setLayoutManager(layoutManager);
-        mutiselectDialogAdapter = new MutiselectDialogAdapter(activity, subFiltersets, isMultiselectionAllowed);
+        mutiselectDialogAdapter = new MutiselectDialogAdapter(getOwnerActivity(), subFiltersets, isMultiselectionAllowed);
         rvCustomSpinner.setAdapter(mutiselectDialogAdapter);
     }
 

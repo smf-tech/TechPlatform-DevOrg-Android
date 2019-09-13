@@ -17,6 +17,7 @@ import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.view.fragments.CreateMeetFirstFragment;
 import com.platform.view.fragments.CreateMeetSecondFragment;
 import com.platform.view.fragments.CreateMeetThirdFragment;
+import com.platform.view.fragments.MatrimonyBookletFragment;
 
 public class CreateMatrimonyMeetActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBackIcon;
@@ -57,9 +58,11 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
                 case "CreateMeetSecondFragment":
                     fragment = new CreateMeetSecondFragment();
                     break;
-
                 case "CreateMeetThirdFragment":
                     fragment = new CreateMeetThirdFragment();
+                    break;
+                case "openGenerateBookletFragment":
+                    fragment = new MatrimonyBookletFragment();
                     break;
             }
         }

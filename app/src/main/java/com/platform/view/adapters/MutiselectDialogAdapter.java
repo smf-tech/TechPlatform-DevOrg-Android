@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -44,7 +45,12 @@ import java.util.ArrayList;
     @Override
     public void onBindViewHolder(MutiselectDialogAdapter.ViewHolder holder, int position) {
         holder.txtTitle.setText(dataList.get(position).getName());
-        holder.cb_select_filter.setChecked(dataList.get(position).isSelected());
+        if(dataList.get(position).isSelected()){
+            holder.btSelectFilter.setBackgroundResource(R.drawable.ic_custom_checked);
+        } else {
+            holder.btSelectFilter.setBackgroundResource(R.drawable.ic_custom_unchecked);
+        }
+        //holder.cb_select_filter.setChecked(dataList.get(position).isSelected());
     }
 
     @Override
@@ -54,33 +60,34 @@ import java.util.ArrayList;
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtTitle, txtValue;
+        TextView txtTitle;
         CheckBox cb_select_filter;
-        //RadioButton rbSelectFilter;
-        int selectedPosition = -1;
+        Button btSelectFilter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.setIsRecyclable(false);
             txtTitle = itemView.findViewById(R.id.tv_filters);
-            cb_select_filter = itemView.findViewById(R.id.cb_select_filter);
-            //rbSelectFilter = itemView.findViewById(R.id.rb_select_filter);
-
-            cb_select_filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            btSelectFilter = itemView.findViewById(R.id.bt_select_filter);
+            btSelectFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isMultiselectionAllowed) {
-                        dataList.get(getAdapterPosition()).setSelected(isChecked);
-                    } else{
-                        //dataList.get(selectedPosition).setSelected(false);
-//                        dataList.get(getAdapterPosition()).setSelected(isChecked);
-//                        if(selectedPosition != -1){
-//                            dataList.get(selectedPosition).setSelected(false);
-//                        }
-//                        if(isChecked) {
-//                            selectedPosition = getAdapterPosition();
-//                        }
+                public void onClick(View view) {
+                    if (isMultiselectionAllowed) {
+                        if(dataList.get(getAdapterPosition()).isSelected()){
+                            dataList.get(getAdapterPosition()).setSelected(false);
+                        } else {
+                            dataList.get(getAdapterPosition()).setSelected(true);
+                        }
+                    } else {
+                        for (int i = 0; i < dataList.size(); i++) {
+                            if(dataList.get(i).isSelected()) {
+                                dataList.get(i).setSelected(false);
+                                break;
+                            }
+                        }
+                        dataList.get(getAdapterPosition()).setSelected(true);
                     }
+                    notifyDataSetChanged();
                 }
             });
         }

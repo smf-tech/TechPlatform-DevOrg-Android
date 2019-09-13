@@ -34,6 +34,7 @@ import com.platform.models.Matrimony.MeetBatchesResponseModel;
 import com.platform.presenter.MatrimonyMeetFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.ShowMeetBatchesActivity;
 
@@ -133,6 +134,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 matrimonyMeetFragmentPresenter.meetAllocateBadges(meetData.getId(),"finalizeBadges");
                 break;
             case R.id.action_gen_booklate:
+//                ((CreateMatrimonyMeetActivity) getActivity()).openFragment("openGenerateBookletFragment");
                 break;
             case R.id.action_show_baches:
                 matrimonyMeetFragmentPresenter.showMeetBaches(meetData.getId(),"showbaches");
