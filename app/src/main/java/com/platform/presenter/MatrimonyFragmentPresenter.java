@@ -65,10 +65,10 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         String cities = "";
         for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getCityIds().size(); i++){
             JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCityIds().get(i);
-            if(i == Util.getUserObjectFromPref().getUserLocation().getCityIds().size()-1) {
+            if(i == 0) {
                 cities = j.getId();
             } else{
-                cities = j.getId() + ",";
+                cities = cities+","+j.getId();
             }
         }
         String paramjson = gson.toJson(getMeetJson(
@@ -79,17 +79,17 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         final String getMatrimonyMeetsUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MATRIMONY_MEETS);
         Log.d(TAG, "getMatrimonyMeetsUrl: url" + getMatrimonyMeetsUrl);
+        fragmentWeakReference.get().showProgressBar();
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_MATRIMONY_MEETS, paramjson, getMatrimonyMeetsUrl);
     }
 
     public void publishSavedMeet(String meetId) {
-        //Gson gson = new GsonBuilder().create();
-        //String paramJson = gson.toJson(getMeetPublishJson(meetId, isPublish));
         final String publishSavedMeetUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.PUBLISH_SAVED_MEET, meetId);
         Log.d(TAG, "getMatrimonyMeetsUrl: url" + publishSavedMeetUrl);
+        fragmentWeakReference.get().showProgressBar();
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(PUBLISH_SAVED_MEET, publishSavedMeetUrl);
@@ -112,23 +112,6 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         return requestObject;
 
     }
-
-//    public JsonObject getMeetPublishJson(String meetId, boolean isPublish){
-//        HashMap<String,Object> map=new HashMap<>();
-//        map.put(KEY_MEET_ID, meetId);
-//        map.put(KEY_IS_PUBLISH, isPublish);
-//
-//        JsonObject requestObject = new JsonObject();
-//
-//        for (Map.Entry<String, Object> entry : map.entrySet()) {
-//            String key = entry.getKey();
-//            boolean value = (boolean) entry.getValue();
-//            requestObject.addProperty(key, value);
-//        }
-//
-//        return requestObject;
-//
-//    }
 
     @Override
     public void onFailureListener(String requestID, String message) {
@@ -158,12 +141,16 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
             if (response != null) {
                 if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.GET_MATRIMONY_MEETS)){
                     AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
+                    if(allMeets.getStatus() == 200){
                     fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
+                    } else{
+                        fragmentWeakReference.get().showResponse(allMeets.getMessage());
+                    }
                 }
                 if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.PUBLISH_SAVED_MEET)){
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage());
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }

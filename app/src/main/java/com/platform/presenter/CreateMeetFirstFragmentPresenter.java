@@ -39,6 +39,7 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MATRIMONY_MEET_TYPES);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMatrimonyMeetTypesUrl);
+        fragmentWeakReference.get().showProgressBar();
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_MATRIMONY_MEET_TYPES, getMatrimonyMeetTypesUrl);
@@ -51,6 +52,8 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        fragmentWeakReference.get().showProgressBar();
 
         if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
             //requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName, GET_STATES);

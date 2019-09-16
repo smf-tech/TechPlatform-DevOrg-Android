@@ -261,9 +261,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void setMatrimonyMeets(List<MatrimonyMeet> data) {
         matrimonyMeetList.clear();
         matrimonyMeetList.addAll(data);
-//        for(MatrimonyMeet m: data.getMeets()){
-//            matrimonyMeetList.add(m);
-//        }
         setupViewPager(meetViewPager);
         setCurrentMeetData(0);
     }
@@ -281,6 +278,15 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        getMeetsCall();
+    }
+
+    public void showResponse(String responseStatus, Integer status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if(status == 200){
+            matrimonyMeetList.get(currentPosition).setIs_published(true);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

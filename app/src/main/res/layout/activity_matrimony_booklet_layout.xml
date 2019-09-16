@@ -28,7 +28,6 @@
             android:id="@+id/iv_booklet1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_200dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
             android:background="@drawable/ic_matrimony_booklet_temp_one"/>
 
         </RelativeLayout>
@@ -43,7 +42,6 @@
             android:id="@+id/iv_booklet2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_200dp"
-            android:layout_marginStart="@dimen/dimen_10dp"
             android:background="@drawable/ic_matrimony_booklet_temp_two"/>
         </RelativeLayout>
     </LinearLayout>
@@ -53,6 +51,7 @@
         android:layout_height="@dimen/dimen_200dp"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:layout_margin="@dimen/dimen_20dp"
         android:layout_below="@+id/ll_booklet_temp1">
 
         <RelativeLayout
@@ -65,8 +64,6 @@
             android:id="@+id/iv_booklet3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_200dp"
-            android:layout_marginTop="@dimen/dimen_20dp"
-            android:layout_marginStart="@dimen/dimen_20dp"
             android:background="@drawable/ic_matrimony_booklet_temp_three"/>
         </RelativeLayout>
 
@@ -80,8 +77,7 @@
             android:id="@+id/iv_booklet4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_200dp"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/dimen_10dp"/>
+            android:layout_weight="1"/>
         </RelativeLayout>
     </LinearLayout>
 

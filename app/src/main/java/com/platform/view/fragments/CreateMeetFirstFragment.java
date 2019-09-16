@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,APIDataListener, CustomSpinnerListener {
+        RadioGroup.OnCheckedChangeListener, APIDataListener, CustomSpinnerListener {
 
     private TextView tvMeetType ,tvMeetCountry, tvMeetState, tvMeetCity;
     private Button btnFirstPartMeet;
@@ -63,8 +63,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             selectedCountryId, selectedStateId, selectedCityId;
     private EditText edtMeetName, edtMeetVenue,edtMeetDate, edtMeetStartTime, edtMeetEndTime,edtMeetRegStartDate,
             edtMeetRegEndDate, edtRegAmt;
-    private RadioGroup rgPaidFree;
-    private RadioButton rbPaid, rbFree, rbOnlinePayment;
+    private RadioGroup rgPaidFree, rgOnlinePayment;
+    private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private boolean isRegPaid, isOnlinePaymentAllowed;
@@ -117,12 +117,14 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         rgPaidFree.setOnCheckedChangeListener(this);
         rbPaid = view.findViewById(R.id.rb_paid);
         rbFree = view.findViewById(R.id.rb_free);
-        rbOnlinePayment = view.findViewById(R.id.rb_online_payment);
-        rbOnlinePayment.setOnCheckedChangeListener(this);
+        rgOnlinePayment = view.findViewById(R.id.rg_online_payment);
+        rgOnlinePayment.setOnCheckedChangeListener(this);
+        rbOnlineYes = view.findViewById(R.id.rb_online_yes);
+        rbOnlineNo = view.findViewById(R.id.rb_online_no);
         userInfo = Util.getUserObjectFromPref();
 
-        isRegPaid = false;
-        isOnlinePaymentAllowed = false;
+//        isRegPaid = true;
+//        isOnlinePaymentAllowed = true;
 
         matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
         matrimonyMeetFirstFragmentPresenter.getMeetTypes();
@@ -418,20 +420,20 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         switch (checkedId) {
             case R.id.rb_paid:
                 isRegPaid = true;
+                edtRegAmt.setVisibility(View.VISIBLE);
+                rgOnlinePayment.setVisibility(View.VISIBLE);
                 break;
-
             case R.id.rb_free:
                 isRegPaid = false;
+                edtRegAmt.setVisibility(View.GONE);
+                rgOnlinePayment.setVisibility(View.GONE);
                 break;
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if(isOnlinePaymentAllowed) {
-            isOnlinePaymentAllowed = false;
-        } else {
-            isOnlinePaymentAllowed = true;
+            case R.id.rb_online_yes:
+                isOnlinePaymentAllowed = true;
+                break;
+            case R.id.rb_online_no:
+                isOnlinePaymentAllowed = false;
+                break;
         }
     }
 }

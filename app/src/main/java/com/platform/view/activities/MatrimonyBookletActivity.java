@@ -48,7 +48,6 @@ public class MatrimonyBookletActivity extends Activity implements View.OnClickLi
         toolbar_title.setText(title);
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
