@@ -94,7 +94,7 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
             case R.id.et_family_type:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                 if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("family_type")) {
-                    showMultiSelectBottomsheet("et_family_type", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                    showMultiSelectBottomsheet("Family Type","et_family_type", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                     break;
                 }
             }
@@ -102,7 +102,7 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
             case R.id.et_father_occupation:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
-                        showMultiSelectBottomsheet("et_father_occupation", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Fathers Occupation","et_father_occupation", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -110,7 +110,7 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
             case R.id.et_mothers_occupation:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
-                        showMultiSelectBottomsheet("et_mothers_occupation", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Mothers Occupation","et_mothers_occupation", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -118,7 +118,7 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
             case R.id.et_family_income:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("income")) {
-                        showMultiSelectBottomsheet("et_family_income", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Family Income","et_family_income", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -164,10 +164,11 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
     }
     //------------
 
-    private void showMultiSelectBottomsheet(String selectedOption, ArrayList<String> List) {
+    private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
 
         bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
         bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.toolbarTitle.setText(Title);
         bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
     }

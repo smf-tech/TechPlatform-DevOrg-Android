@@ -104,7 +104,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
             case R.id.btn_loadnext:
                 Util.showToast("Call Submit", getActivity());
                 setValuesInModel();
-                ((UserRegistrationMatrimonyActivity) getActivity()).submitUserRegistrationRequest();
+              //  ((UserRegistrationMatrimonyActivity) getActivity()).submitUserRegistrationRequest();
                 break;
             case R.id.btn_loadprevious:
                 ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(3);
@@ -292,7 +292,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
 
                 UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.setOther_maritial_information(UserRegistrationMatrimonyActivity.otherMaritialInformation);
 
-
+                ((UserRegistrationMatrimonyActivity) getActivity()).submitUserRegistrationRequest();
             } else {
                 Util.showToast("null object getPersonal_details()", getActivity());
             }

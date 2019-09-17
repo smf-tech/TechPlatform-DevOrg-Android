@@ -85,7 +85,8 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 if(meetData.getIs_published()){
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
-                if(meetData.getBadgeFanlize()){
+                //if(meetData.getBadgeFanlize()){
+                if(meetData.getBadgeFanlize() != null && meetData.getBadgeFanlize()) {
                     popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);

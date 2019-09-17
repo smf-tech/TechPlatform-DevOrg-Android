@@ -68,8 +68,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_first_name"
-                            android:inputType="text|textPersonName"
-                            android:hint="@string/first_name" />
+                            android:inputType="text|textCapWords"
+                            android:hint="@string/first_name"
+                            android:imeOptions="actionNext"
+                            />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -82,6 +84,7 @@
                             style="@style/RegistrationEditTextLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="text|textCapWords"
                             android:id="@+id/et_middle_name"
                             android:hint="@string/middle_name" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -97,6 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_last_name"
+                            android:inputType="text|textCapWords"
                             android:hint="@string/last_name" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -207,6 +211,7 @@
                             android:id="@+id/et_birth_place"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="text|textCapWords"
                             android:hint="@string/birth_place" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -221,6 +226,8 @@
                             android:layout_width="match_parent"
                             android:id="@+id/et_age"
                             android:inputType="number"
+                            android:clickable="false"
+                            android:focusable="false"
                             android:layout_height="wrap_content"
                             android:hint="@string/age" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -289,6 +296,7 @@
                             android:layout_width="match_parent"
                             android:id="@+id/et_weight"
                             android:inputType="number"
+                            android:maxLength="3"
                             android:layout_height="wrap_content"
                             android:hint="Weight(in kg)" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -391,6 +399,7 @@
                             android:id="@+id/et_drink"
                             android:clickable="false"
                             android:focusable="false"
+                            android:inputType="text|textCapWords"
                             android:longClickable="false"
                             android:layout_height="wrap_content"
                             android:hint="Do you drink?" />
@@ -408,6 +417,7 @@
                             android:focusable="false"
                             android:clickable="false"
                             android:longClickable="false"
+                            android:inputType="text|textCapWords"
                             android:layout_height="wrap_content"
                             android:hint="Do you smoke?" />
                     </com.google.android.material.textfield.TextInputLayout>

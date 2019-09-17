@@ -50,6 +50,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     private CheckBox checkbox_community_preference;
     private String userGender = Constants.Login.MALE;
     private String userManglik ="dont know";
+    private String heightSelected ="0";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
 
     public static UserRegistrationMatrimonyFragmentOne newInstance() {
@@ -117,10 +118,10 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     userManglik = "yes";
                     break;
                 case R.id.nonmanglik:
-                    userGender = "no";
+                    userManglik = "no";
                     break;
                 case R.id.dontknowmanglik:
-                    userGender = "Dont know";
+                    userManglik = "Dont know";
                     break;
             }
         });
@@ -171,35 +172,35 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 break;
 
             case R.id.et_drink:
-                showMultiSelectBottomsheet("et_drink", ListDrink);
+                showMultiSelectBottomsheet("Drink","et_drink", ListDrink);
                 break;
             case R.id.et_special_case:
 
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("special_case")) {
-                        showMultiSelectBottomsheet("et_special_case", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Special Case","et_special_case", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
                 break;
             case R.id.et_blood_group:
-                showMultiSelectBottomsheet("et_blood_group", ListBloodGroup);
+                showMultiSelectBottomsheet("Blood Group","et_blood_group", ListBloodGroup);
                 break;
             case R.id.et_weight:
                 //showMultiSelectBottomsheet("et_weight", ListWeight);
                 break;
             case R.id.et_patrika_match:
-                showMultiSelectBottomsheet("et_patrika_match", ListmatchPatrika);
+                showMultiSelectBottomsheet("Patrika Match","et_patrika_match", ListmatchPatrika);
                 break;
             case R.id.et_smoke:
-                showMultiSelectBottomsheet("et_smoke", ListSmoke);
+                showMultiSelectBottomsheet("Smoke","et_smoke", ListSmoke);
                 break;
 
 
             case R.id.et_sampraday:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("sect")) {
-                        showMultiSelectBottomsheet("et_sampraday", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Sampraday","et_sampraday", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -208,7 +209,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_marital_status:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("marital_status")) {
-                        showMultiSelectBottomsheet("et_marital_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Marital Status","et_marital_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -216,7 +217,8 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_height:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")) {
-                        showMultiSelectBottomsheet("et_height", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        ListHeight = getlistHeight((ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Height","et_height",ListHeight);
                         break;
                     }
                 }
@@ -224,7 +226,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_complexion:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("complexion")) {
-                        showMultiSelectBottomsheet("et_complexion", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("complexion","et_complexion", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -232,13 +234,25 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_residance_status:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("own_house")) {
-                        showMultiSelectBottomsheet("et_residance_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Residance Status","et_residance_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
                 break;
 
         }
+    }
+
+    private ArrayList<String> getlistHeight(ArrayList<String> values) {
+        ListHeight.clear();
+        for (int i = 0; i <values.size() ; i++) {
+            int cm = Integer.parseInt(values.get(i));
+            int feet = (int) (cm/30.48);
+            int inches = (int) ((cm/2.54) - (feet * 12));
+            Util.logger("There are " + feet + " feet and " , inches + " inches in ");
+            ListHeight.add(feet+" feet "+inches+" inches");
+        }
+        return ListHeight;
     }
 
     private void setValuesInModel() {
@@ -257,8 +271,9 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     UserRegistrationMatrimonyActivity.personalDetails.setBirth_city(et_birth_place.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setBlood_group(et_blood_group.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setMarital_status(et_marital_status.getText().toString());
-                    UserRegistrationMatrimonyActivity.personalDetails.setHeight(et_height.getText().toString());
-                    UserRegistrationMatrimonyActivity.personalDetails.setWeight(et_weight.getText().toString());
+
+                    UserRegistrationMatrimonyActivity.personalDetails.setHeight(heightSelected);
+                    UserRegistrationMatrimonyActivity.personalDetails.setWeight(et_weight.getText().toString());   //getWeightValidated(Integer.parseInt(et_weight.getText().toString())));//et_weight.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setComplexion(et_complexion.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(Boolean.parseBoolean("YES"));
                     UserRegistrationMatrimonyActivity.personalDetails.setSect(et_sampraday.getText().toString());
@@ -278,6 +293,16 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             }
             ((UserRegistrationMatrimonyActivity) getActivity()).loadNextScreen(2);
         }
+    }
+
+    private String getWeightValidated(int weight) {
+       String strWeight = String.valueOf(weight);
+        if (weight<200){
+
+        }else {
+
+        }
+        return null;
     }
 
 
@@ -304,6 +329,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                         et_age.setText(getAge(year,monthOfYear,dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
@@ -364,10 +390,11 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     }
 
 
-    private void showMultiSelectBottomsheet(String selectedOption, ArrayList<String> List) {
+    private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
 
         bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
         bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.toolbarTitle.setText(Title);
         bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
     }
@@ -384,6 +411,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 break;
             case "et_height":
                 et_height.setText(selectedValues);
+                heightSelected = ListHeight.get(selected);
                 break;
             case "et_complexion":
                 et_complexion.setText(selectedValues);
@@ -431,7 +459,20 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         }
         else if (et_birth_place.getText().toString().trim().length() == 0) {
             msg = "Please enter your birth place.";//getResources().getString(R.string.msg_enter_proper_date);
-        }else if (et_height.getText().toString().trim().length() == 0) {
+        }else if (!TextUtils.isEmpty(et_age.getText())){
+            if (userGender.equalsIgnoreCase(Constants.Login.MALE)){
+                if (Integer.parseInt(et_age.getText().toString())<21)
+                {
+                    msg = "Please enter valid marital age.";
+                }
+            }else if (userGender.equalsIgnoreCase(Constants.Login.FEMALE)){
+                if (Integer.parseInt(et_age.getText().toString())<18)
+                {
+                    msg = "Please enter valid marital age.";
+                }
+            }
+
+        } else if (et_height.getText().toString().trim().length() == 0) {
             msg = "Please enter your height.";//getResources().getString(R.string.msg_enter_proper_date);
         }
         else if (et_sampraday.getText().toString().trim().length() == 0) {

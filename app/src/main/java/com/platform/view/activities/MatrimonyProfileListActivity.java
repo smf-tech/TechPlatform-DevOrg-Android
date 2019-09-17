@@ -33,7 +33,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private String meetIdReceived;
 
     private ImageView toolbar_back_action;
-    private TextView toolbar_title;
+    private TextView toolbar_title,txt_no_data;
 
 
     @Override
@@ -54,7 +54,8 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     private void initViews() {
 
-
+        txt_no_data = findViewById(R.id.txt_no_data);
+        txt_no_data.setVisibility(View.VISIBLE);
         toolbar_back_action= findViewById(R.id.toolbar_back_action);
         toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("Profile");
@@ -105,8 +106,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, pendingRequestList,
                     this, this);
             rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
+            txt_no_data.setVisibility(View.GONE);
         } else {
-
+            txt_no_data.setVisibility(View.VISIBLE);
         }
     }
 

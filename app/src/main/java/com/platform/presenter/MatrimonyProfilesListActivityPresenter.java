@@ -54,12 +54,25 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            MatrimonyUserProfileRequestModel pendingRequestsResponse
-                    = new Gson().fromJson(response, MatrimonyUserProfileRequestModel.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getUserProfileList() != null
-                    && !pendingRequestsResponse.getUserProfileList().isEmpty()
-                    && pendingRequestsResponse.getUserProfileList().size() > 0) {
-                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getUserProfileList());
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(response);
+
+            String status = jsonObject.getString("status");
+            String msg = jsonObject.getString("message");
+            if (Integer.parseInt(status) == 200) {
+                MatrimonyUserProfileRequestModel pendingRequestsResponse
+                        = new Gson().fromJson(response, MatrimonyUserProfileRequestModel.class);
+                if (pendingRequestsResponse != null && pendingRequestsResponse.getUserProfileList() != null
+                        && !pendingRequestsResponse.getUserProfileList().isEmpty()
+                        && pendingRequestsResponse.getUserProfileList().size() > 0) {
+                    fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getUserProfileList());
+                }
+            }else {
+
+            }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -67,6 +67,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates;
     private Button btn_mark_attendance,btn_interview_done;
+    private TextView tv_approval_status;
 
 
     @Override
@@ -109,6 +110,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             TextView title = toolbar.findViewById(R.id.toolbar_title);
             title.setText("Profile Details");
         }
+        ImageView img_back = findViewById(R.id.toolbar_back_action);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
         //vpProfileImage = findViewById(R.id.vp_profile_images);
         vpProfileImage = (ViewPager) findViewById(R.id.viewpager);
         indicator = (CircleIndicator) findViewById(R.id.circle_indicator);
@@ -141,6 +145,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_disability = findViewById(R.id.tv_disability);
         tv_smoke = findViewById(R.id.tv_smoke);
         tv_drink = findViewById(R.id.tv_drink);
+        tv_approval_status = findViewById(R.id.tv_approval_status);
+
+        tv_approval_status.setText(userProfileList.getIsApproved());
+
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
         tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name());
@@ -309,6 +317,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             case R.id.btn_interview_done:
                 JSONObject jsonObj = matrimonyProfilesDetailsActivityPresenter.createBodyParams("5d6f90c25dda765c2f0b5dd4", userProfileList.get_id(), Constants.MARK_INTERVIEW);
                 matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObj,1,Constants.MARK_INTERVIEW);
+                break;
+            case R.id.toolbar_back_action:
+                finish();
                 break;
 
 

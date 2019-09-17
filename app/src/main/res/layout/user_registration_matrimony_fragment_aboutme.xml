@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content" />
                     <TextView
                         android:layout_width="match_parent"
-                        android:text="Adhar Card*(Highest Degree)"
+                        android:text="Adhar Card*(Identification)"
                         android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_height="wrap_content" />
 

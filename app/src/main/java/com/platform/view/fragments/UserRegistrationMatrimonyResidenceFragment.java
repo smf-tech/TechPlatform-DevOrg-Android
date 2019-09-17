@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +106,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             case R.id.et_education:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("education_level")) {
-                        showMultiSelectBottomsheet("et_education", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Education","et_education", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -113,7 +114,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             case R.id.et_occupation_type:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
-                        showMultiSelectBottomsheet("et_occupation_type", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Occupation","et_occupation_type", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -121,7 +122,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             case R.id.et_Annual_income:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("income")) {
-                        showMultiSelectBottomsheet("et_Annual_income", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Annual Income","et_Annual_income", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -129,7 +130,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             case R.id.et_state:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("state")) {
-                        showMultiSelectBottomsheet("et_state", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("State","et_state", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -137,7 +138,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             case R.id.et_country:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("country")) {
-                        showMultiSelectBottomsheet("et_country", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Country","et_country", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -189,10 +190,11 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
 
     //------------
 
-    private void showMultiSelectBottomsheet(String selectedOption, ArrayList<String> List) {
+    private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
 
         bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
         bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.toolbarTitle.setText(Title);
         bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
     }
@@ -270,8 +272,10 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         if (et_occupation_type.getText().toString().trim().length() == 0) {
             msg = "Please select the occupation type.";//getResources().getString(R.string.msg_enter_proper_date);
         }
-        else if (et_primary_mobile.getText().toString().trim().length() == 0) {
-            msg = "Please enter the mobile number";//getResources().getString(R.string.msg_enter_name);
+        else if (et_primary_mobile.getText().toString().trim().length() != 10 ) {
+            msg = "Please enter the valid mobile number";//getResources().getString(R.string.msg_enter_name);
+        }else if ((!TextUtils.isEmpty(et_primary_email.getText()) && Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText()).matches())) {
+            msg = "Please enter the valid email address";//getResources().getString(R.string.msg_enter_name);
         } else if (et_country.getText().toString().trim().length() == 0) {
             msg = "Please mention the Country"; //getResources().getString(R.string.msg_enter_name);
         }
