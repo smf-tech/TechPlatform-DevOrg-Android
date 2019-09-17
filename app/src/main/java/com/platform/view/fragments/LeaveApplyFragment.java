@@ -329,7 +329,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
                             .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
                     Snackbar.LENGTH_LONG);
         } else if (selectedLeaveCatgoryBalance == 0) {
-//            getDaysBetween(btnStartDate.getText().toString(),btnEndDate.getText().toString())
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.insufficisnt_leave_balance),
                     Snackbar.LENGTH_LONG);
@@ -350,23 +349,6 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
             presenter.postUserLeave(leaveData);
         }
-    }
-
-    private int getDaysBetween(String start, String end) {
-        int days = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date startDate = sdf.parse(start);
-            Date endDate = sdf.parse(end);
-
-            long diff = endDate.getTime() - startDate.getTime();
-            days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return days;
     }
 
     private void showDateDialogMin(Context context, final EditText editText, String dateType) {

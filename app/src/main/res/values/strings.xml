@@ -479,4 +479,6 @@
     <string name="select_meet_organizers_references_msg">Please select Organizers and References.</string>
     <string name="msg_select_country">Please select Country</string>
     <string name="mandatory_country">Country *</string>
+    <string name="meet_badges_finalized">Meet badges has been finalized.</string>
+    <string name="meet_badges_not_finalized">Meet badges has not been finalized.</string>
 </resources>

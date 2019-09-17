@@ -49,7 +49,6 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
 
-        fragmentWeakReference.get().showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
         Log.d(TAG, "getLocationUrl: url" + getLocationUrl);

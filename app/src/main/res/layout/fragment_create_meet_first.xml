@@ -366,6 +366,7 @@
                             android:layout_marginStart="@dimen/dimen_20dp"
                             android:text="@string/no"
                             android:fontFamily="@font/opensans"
+                            android:padding="@dimen/dimen_10dp"
                             android:textColor="@color/dark_grey"/>
 
                     </RadioGroup>

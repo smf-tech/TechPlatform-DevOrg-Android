@@ -17,6 +17,7 @@ import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.view.fragments.CreateMeetFirstFragment;
 import com.platform.view.fragments.CreateMeetSecondFragment;
 import com.platform.view.fragments.CreateMeetThirdFragment;
+import com.platform.view.fragments.HolidayListFragment;
 
 public class CreateMatrimonyMeetActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBackIcon;
@@ -64,7 +65,7 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
         }
         // Begin transaction.
         FragmentTransaction fTransaction = fManager.beginTransaction();
-        fTransaction.replace(R.id.create_meet_frame_layout, fragment)
+        fTransaction.replace(R.id.create_meet_frame_layout, fragment).addToBackStack(null)
                 .commit();
     }
 
@@ -85,8 +86,10 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
         }
     }
 
+
     @Override
     public void onBackPressed() {
+        if (shouldHandleBackPress()) {
             try {
                 fManager.popBackStackImmediate();
             } catch (IllegalStateException e) {
@@ -96,6 +99,21 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
             if (fManager.getBackStackEntryCount() == 0) {
                 finish();
             }
+        }
+    }
+
+    private boolean shouldHandleBackPress() {
+        if (fManager != null && fManager.getFragments().size() > 0) {
+
+            Fragment fragment = fManager.getFragments().get(0);
+            if (fragment != null) {
+                if (fragment instanceof HolidayListFragment) {
+                    // return !(Utils.isProgressShowing());
+                    return true;
+                }
+            }
+        }
+        return true;
     }
 
 

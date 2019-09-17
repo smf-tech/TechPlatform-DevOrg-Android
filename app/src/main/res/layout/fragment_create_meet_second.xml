@@ -58,7 +58,6 @@
                             android:textColorHint="@color/medium_grey"
                             android:fontFamily="@font/opensans"
                             android:gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
                             android:editable="false"
                             android:longClickable="false"/>
 

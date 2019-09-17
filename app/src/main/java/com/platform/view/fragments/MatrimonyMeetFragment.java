@@ -63,6 +63,11 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             Glide.with(this)
                     .load(meetData.getMeetImageUrl())
                     .into(ivMeetImage);
+        } else {
+            ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
+            Glide.with(this)
+                    .load(R.drawable.matrimony_meet_bg)
+                    .into(ivMeetImage);
         }
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +129,6 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 break;
             case R.id.action_gen_booklet:
                 Intent bookletIntent = new Intent(getActivity(), MatrimonyBookletActivity.class);
-                bookletIntent.putExtra("bookletId","1");
                 bookletIntent.putExtra("meetId",meetData.getId());
                 getActivity().startActivity(bookletIntent);
                 break;
