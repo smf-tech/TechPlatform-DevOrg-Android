@@ -479,29 +479,10 @@
     <string name="select_meet_organizers_references_msg">Please select Organizers and References.</string>
     <string name="msg_select_country">Please select Country</string>
     <string name="mandatory_country">Country *</string>
-
-
+    <string name="meet_badges_finalized">Meet badges has been finalized.</string>
+    <string name="meet_badges_not_finalized">Meet badges has not been finalized.</string>
     <string name="matrimony_meet_label">BJS Matrimonial Meet</string>
-
-    <!--<string name="matrimony_datetime_label">Date-Time</string>
-    <string name="view_profiles_btn_label">View Profiles</string>
-    <string name="register_profile_btn_label">Register Profile</string>
-    <string name="create_meet">Create Meet</string>
-    <string name="meet_paid">Paid</string>
-    <string name="meet_free">Free</string>
-    <string name="meet_registration_label">Registration Details</string>
-    <string name="meet_registration_amount_label">Registration Amount</string>
-    <string name="online_payment_label">Online Payment</string>
-    <string name="meet_next_label">Next</string>
-    <string name="organizer_label">Organizer</string>
-    <string name="meet_save">Save Meet</string>
-    <string name="create_meet_msg">You have created meet successfully.</string>
-    <string name="back_to_dashboard_label">Back to Dashboard</string>
-    <string name="references_label">References</string>
-    <string name="event_matrimony_screen_visit">Event Matrimony Screen visited</string>-->
-
-
-    <string name="birth_place">Birth Place</string>
+<string name="birth_place">Birth Place</string>
     <string name="age">Age</string>
 
 </resources>

@@ -121,5 +121,6 @@ public class Urls {
         public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";
 
         public static final String PUBLISH_SAVED_MEET = "api/meetpublished/%1$s";
+        public static final String DOWNLOAD_MEET_BOOKLET = "api/downloadBooklet/%1$s/%2$s";
     }
 }

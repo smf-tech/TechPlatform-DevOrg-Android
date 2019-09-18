@@ -6,25 +6,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
@@ -34,6 +28,7 @@ import com.platform.models.Matrimony.MeetBatchesResponseModel;
 import com.platform.presenter.MatrimonyMeetFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.activities.MatrimonyBookletActivity;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.ShowMeetBatchesActivity;
@@ -73,6 +68,11 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
             Glide.with(this)
                     .load(meetData.getMeetImageUrl())
+                    .into(ivMeetImage);
+        } else {
+            ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
+            Glide.with(this)
+                    .load(R.drawable.matrimony_meet_bg)
                     .into(ivMeetImage);
         }
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
@@ -134,8 +134,10 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             case R.id.action_finalise_badge:
                 matrimonyMeetFragmentPresenter.meetAllocateBadges(meetData.getId(),"finalizeBadges");
                 break;
-            case R.id.action_gen_booklate:
-//                ((CreateMatrimonyMeetActivity) getActivity()).openFragment("openGenerateBookletFragment");
+            case R.id.action_gen_booklet:
+                Intent bookletIntent = new Intent(getActivity(), MatrimonyBookletActivity.class);
+                bookletIntent.putExtra("meetId",meetData.getId());
+                getActivity().startActivity(bookletIntent);
                 break;
             case R.id.action_show_baches:
                 matrimonyMeetFragmentPresenter.showMeetBaches(meetData.getId(),"showbaches");

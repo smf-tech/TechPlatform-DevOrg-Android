@@ -92,6 +92,8 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().showProgressBar();
         final String meetArchiveDeleteUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MEET_ARCHIVE_DELETE, meetId, type);
+        Log.d(TAG, "meetArchiveDeleteUrl: url" + meetArchiveDeleteUrl);
+        fragmentWeakReference.get().showProgressBar();
         requestCall.getDataApiCall(MATRIMONY_MEET_ARCHIVE, meetArchiveDeleteUrl);
     }
 
@@ -107,6 +109,8 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
             meetAllocateFinalizeBadgesUrl = BuildConfig.BASE_URL
                     + String.format(Urls.Matrimony.MEET_ALLOCATE_BADGES, meetId);
         }
+        Log.d(TAG, "meetAllocateFinalizeBadgesUrl: url" + meetAllocateFinalizeBadgesUrl);
+        fragmentWeakReference.get().showProgressBar();
         requestCall.getDataApiCall(MEET_ALLOCATE_FINALIZE_BADGES, meetAllocateFinalizeBadgesUrl);
     }
 

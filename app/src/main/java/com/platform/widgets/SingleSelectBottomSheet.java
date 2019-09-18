@@ -215,9 +215,9 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
                 spinnerSelectedText = dataList.get(i);
             }
         }
-        if (lastSelectedPosition<0)
+        if (lastSelectedPosition!=-1)
         spinnerSelectedText = dataList.get(lastSelectedPosition);
-        spinnerText = spinnerSelectedText.toString();
+        spinnerText = spinnerSelectedText;
 /*
         if (spinnerSelectedText.length() != 0) {
             spinnerText = spinnerSelectedText.toString();

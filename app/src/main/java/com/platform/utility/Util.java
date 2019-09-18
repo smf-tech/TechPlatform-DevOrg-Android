@@ -99,6 +99,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import static com.platform.utility.Constants.DATE_FORMAT;
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
@@ -591,6 +592,35 @@ public class Util {
             }
         }
         return "";
+    }
+
+    public static String getAmPmTimeStringFromTimeString(String time){
+
+        try {
+            final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            final Date dateObj = sdf.parse(time);
+            return new SimpleDateFormat("hh:mm aaa").format(dateObj);
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private int getDaysBetween(String start, String end) {
+        int days = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = sdf.parse(start);
+            Date endDate = sdf.parse(end);
+
+            long diff = endDate.getTime() - startDate.getTime();
+            days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return days;
     }
 
     public static void launchFragment(Fragment fragment, Context context, String titleName,

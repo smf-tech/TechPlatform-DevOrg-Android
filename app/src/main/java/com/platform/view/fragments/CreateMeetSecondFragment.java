@@ -2,6 +2,8 @@ package com.platform.view.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -123,20 +125,12 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             case R.id.btn_save_meet:
                 if(isAllDataValid()) {
                     updateMeetData(false);
-                }else{
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), getString(R.string.select_meet_organizers_references_msg),
-                            Snackbar.LENGTH_LONG);
                 }
                 break;
 
             case R.id.btn_publish_meet:
                 if(isAllDataValid()) {
                     updateMeetData(true);
-                }else{
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), getString(R.string.select_meet_organizers_references_msg),
-                            Snackbar.LENGTH_LONG);
                 }
                 break;
 
@@ -225,23 +219,30 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonyRolesUsersList) {
-        for (MatrimonyRolesUsers matrimonyRole : matrimonyRolesUsersList) {
-            for (MatrimonyUserDetails matrimonyUserDetails : matrimonyRole.getUserDetails()) {
-                matrimonyUserDetails.setRoleName(matrimonyRole.getDisplayName());
+        if (matrimonyRolesUsersList.size() > 0) {
+            for (MatrimonyRolesUsers matrimonyRole : matrimonyRolesUsersList) {
+                for (MatrimonyUserDetails matrimonyUserDetails : matrimonyRole.getUserDetails()) {
+                    matrimonyUserDetails.setRoleName(matrimonyRole.getDisplayName());
 
-                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                customSpinnerObject.set_id(matrimonyUserDetails.getId());
-                customSpinnerObject.setName(matrimonyUserDetails.getName());
-                customSpinnerObject.setSelected(false);
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.set_id(matrimonyUserDetails.getId());
+                    customSpinnerObject.setName(matrimonyUserDetails.getName());
+                    customSpinnerObject.setSelected(false);
 
-                if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
-                    organizersList.add(matrimonyUserDetails);
-                    organizersSpinnerList.add(customSpinnerObject);
-                } else {
-                    nonOrganizersList.add(matrimonyUserDetails);
-                    nonOrganizersSpinnerList.add(customSpinnerObject);
+                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
+                        organizersList.add(matrimonyUserDetails);
+                        organizersSpinnerList.add(customSpinnerObject);
+                    } else {
+                        nonOrganizersList.add(matrimonyUserDetails);
+                        nonOrganizersSpinnerList.add(customSpinnerObject);
+                    }
                 }
             }
+        } else {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "No Organizers or References found at your meet location." +
+                            "You need to add Oragnizers and References at meet location.",
+                    Snackbar.LENGTH_LONG);
         }
     }
 
@@ -290,7 +291,10 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     public boolean isAllDataValid() {
-        if(selectedOrganizersList.size()==0 && selectedNonOrganizersList.size()==0){
+        if(selectedOrganizersList.size() == 0){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.select_meet_organizers_references_msg),
+                    Snackbar.LENGTH_LONG);
             return false;
         }
         return true;
@@ -335,6 +339,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         }
 
         dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
@@ -378,6 +383,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         }
 
         dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 

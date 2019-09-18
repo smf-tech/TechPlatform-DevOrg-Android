@@ -67,7 +67,6 @@ public class MatrimonyMeetRequestCall {
             if (apiPresenterListener == null) {
                 return;
             }
-
             try {
                 if (response != null) {
                     String res = response.toString();

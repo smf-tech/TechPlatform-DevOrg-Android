@@ -43,16 +43,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
-public class MatrimonyFragment extends Fragment implements View.OnClickListener, APIDataListener, ViewPager.OnPageChangeListener {
+public class MatrimonyFragment extends Fragment implements  View.OnClickListener , APIDataListener, ViewPager.OnPageChangeListener{
     private View matrimonyFragmentView;
     private FloatingActionButton btnCreateMeet;
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     private ViewPagerAdapter adapter;
-    private TextView tvMeetTitle, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue, tvRegAmt, btnViewProfiles, btnRegisterProfile;
-    private RecyclerView rvMeetContacts, rvMeetAnalytics;
+    private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt,tvRegPeriod,tvBadgesInfo,btnViewProfiles, btnRegisterProfile;
+    private RecyclerView rvMeetContacts,rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
-    private ArrayList<MatrimonyUserDetails> contactsList = new ArrayList<>();
+    private ArrayList<MatrimonyUserDetails> contactsList= new ArrayList<>();
     private ArrayList<MeetAnalytics> meetAnalyticsData = new ArrayList<>();
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -104,6 +105,8 @@ public class MatrimonyFragment extends Fragment implements View.OnClickListener,
         tvMeetCity = matrimonyFragmentView.findViewById(R.id.tv_meet_city);
         tvMeetVenue = matrimonyFragmentView.findViewById(R.id.tv_meet_venue);
         tvRegAmt = matrimonyFragmentView.findViewById(R.id.tv_reg_amt);
+        tvRegPeriod = matrimonyFragmentView.findViewById(R.id.tv_reg_period);
+        tvBadgesInfo = matrimonyFragmentView.findViewById(R.id.tv_badges_info);
         rvMeetContacts = matrimonyFragmentView.findViewById(R.id.rv_meet_organizer);
         rvMeetAnalytics = matrimonyFragmentView.findViewById(R.id.rv_meet_analytics);
         btnPublishMeet = matrimonyFragmentView.findViewById(R.id.btn_publish_saved_meet);
@@ -230,19 +233,27 @@ public class MatrimonyFragment extends Fragment implements View.OnClickListener,
     private void setCurrentMeetData(int position) {
         contactsList.clear();
         meetAnalyticsData.clear();
-        if (matrimonyMeetList.get(position).getIs_published()) {
+        if(matrimonyMeetList.get(position).getIs_published()){
             btnPublishMeet.setVisibility(View.GONE);
-        } else {
+        }else{
             btnPublishMeet.setVisibility(View.VISIBLE);
         }
         tvMeetTitle.setText(matrimonyMeetList.get(position).getTitle());
-        tvMeetDate.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getSchedule().getDateTime(), DAY_MONTH_YEAR));
-        tvMeetTime.setText(matrimonyMeetList.get(position).getSchedule().getMeetStartTime() + "-" +
-                matrimonyMeetList.get(position).getSchedule().getMeetEndTime());
+        tvMeetDate.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getSchedule().getDateTime(),DAY_MONTH_YEAR));
+        tvMeetTime.setText(Util.getAmPmTimeStringFromTimeString(matrimonyMeetList.get(position).getSchedule().getMeetStartTime())+"-"+
+                Util.getAmPmTimeStringFromTimeString(matrimonyMeetList.get(position).getSchedule().getMeetEndTime()));
         tvMeetCity.setText(matrimonyMeetList.get(position).getLocation().getCity());
         tvMeetVenue.setText(matrimonyMeetList.get(position).getVenue());
         tvRegAmt.setText(String.valueOf(matrimonyMeetList.get(position).getRegAmount()));
-        for (MatrimonyUserDetails matrimonyUserDetails : matrimonyMeetList.get(position).getMeetOrganizers()) {
+        tvRegPeriod.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegStartDateTime(),
+                DAY_MONTH_YEAR)+"--"+
+                Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegEndDateTime(), DAY_MONTH_YEAR));
+        if(matrimonyMeetList.get(position).getBadgeFanlize()){
+            tvBadgesInfo.setText(R.string.meet_badges_finalized);
+        } else {
+            tvBadgesInfo.setText(R.string.meet_badges_not_finalized);
+        }
+        for(MatrimonyUserDetails matrimonyUserDetails: matrimonyMeetList.get(position).getMeetOrganizers()){
             contactsList.add(matrimonyUserDetails);
         }
         meetAnalyticsData.addAll(matrimonyMeetList.get(position).getAnalytics());
@@ -262,9 +273,6 @@ public class MatrimonyFragment extends Fragment implements View.OnClickListener,
     public void setMatrimonyMeets(List<MatrimonyMeet> data) {
         matrimonyMeetList.clear();
         matrimonyMeetList.addAll(data);
-//        for(MatrimonyMeet m: data.getMeets()){
-//            matrimonyMeetList.add(m);
-//        }
         setupViewPager(meetViewPager);
         setCurrentMeetData(0);
     }
@@ -295,13 +303,21 @@ public class MatrimonyFragment extends Fragment implements View.OnClickListener,
                 startActivity(startMain);
                 break;
         }
-
     }
 
     public void showResponse(String responseStatus) {
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        getMeetsCall();
+    }
+
+    public void showResponse(String responseStatus, Integer status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if(status == 200){
+            matrimonyMeetList.get(currentPosition).setIs_published(true);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

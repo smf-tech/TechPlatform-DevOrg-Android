@@ -23,7 +23,7 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/meet_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_200dp" />
+            android:layout_height="210dp" />
 
         <TextView
             android:id="@+id/tv_meet_title"
@@ -168,6 +168,32 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_regular" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:text="Registration Period"
+                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold" />
+
+                    <TextView
+                        android:id="@+id/tv_reg_period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_regular" />
+
+                    <TextView
+                        android:id="@+id/tv_badges_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -177,12 +203,6 @@
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@color/white"
                 app:cardCornerRadius="@dimen/dimen_10dp">
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_margin="@dimen/dimen_10dp">-->
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_meet_analytics"

@@ -43,14 +43,16 @@ import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,APIDataListener, CustomSpinnerListener {
+        RadioGroup.OnCheckedChangeListener, APIDataListener, CustomSpinnerListener {
 
     private TextView tvMeetType ,tvMeetCountry, tvMeetState, tvMeetCity;
     private Button btnFirstPartMeet;
@@ -63,11 +65,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             selectedCountryId, selectedStateId, selectedCityId;
     private EditText edtMeetName, edtMeetVenue,edtMeetDate, edtMeetStartTime, edtMeetEndTime,edtMeetRegStartDate,
             edtMeetRegEndDate, edtRegAmt;
-    private RadioGroup rgPaidFree;
-    private RadioButton rbPaid, rbFree, rbOnlinePayment;
+    private RadioGroup rgPaidFree, rgOnlinePayment;
+    private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private boolean isRegPaid, isOnlinePaymentAllowed;
+    private int isPaidFreeRGChecked = 0, isOnlinePaymentRGChecked = 0;
     UserInfo userInfo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,15 +120,29 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         rgPaidFree.setOnCheckedChangeListener(this);
         rbPaid = view.findViewById(R.id.rb_paid);
         rbFree = view.findViewById(R.id.rb_free);
-        rbOnlinePayment = view.findViewById(R.id.rb_online_payment);
-        rbOnlinePayment.setOnCheckedChangeListener(this);
+        rgOnlinePayment = view.findViewById(R.id.rg_online_payment);
+        rgOnlinePayment.setOnCheckedChangeListener(this);
+        rbOnlineYes = view.findViewById(R.id.rb_online_yes);
+        rbOnlineNo = view.findViewById(R.id.rb_online_no);
         userInfo = Util.getUserObjectFromPref();
-
-        isRegPaid = false;
-        isOnlinePaymentAllowed = false;
-
-        matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
-        matrimonyMeetFirstFragmentPresenter.getMeetTypes();
+        if(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getVenue() != null &&
+                ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getVenue().length()>0){
+            if(selectedMeetType!= null && selectedMeetType.length()>0) {
+                tvMeetType.setText(selectedMeetType);
+            }
+            if(selectedCountry!= null && selectedCountry.length()>0) {
+                tvMeetCountry.setText(selectedCountry);
+            }
+            if(selectedState!= null && selectedState.length()>0) {
+                tvMeetState.setText(selectedState);
+            }
+            if(selectedCity!= null && selectedCity.length()>0) {
+                tvMeetCity.setText(selectedCity);
+            }
+        } else {
+            matrimonyMeetFirstFragmentPresenter = new CreateMeetFirstFragmentPresenter(this);
+            matrimonyMeetFirstFragmentPresenter.getMeetTypes();
+        }
     }
 
     private void setMeetData() {
@@ -137,7 +154,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         location.setState(selectedStateId);
         location.setCity(selectedCityId);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setLocation(location);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString().trim());
         MeetSchedule meetSchedule = new MeetSchedule();
         meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
         meetSchedule.setMeetStartTime(edtMeetStartTime.getText().toString());
@@ -150,7 +167,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         registrationSchedule.setRegEndDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "00:00"));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegistrationSchedule(registrationSchedule);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString()));
+        if(edtRegAmt.getText().toString().trim()!= null && edtRegAmt.getText().toString().trim().length()>0) {
+            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString().trim()));
+        }
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
     }
 
@@ -238,28 +257,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.tv_meet_types:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "MeetTypesList", meetTypesList,
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Meet Type", meetTypesList,
                         false);
                 cdd.show();
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_country:
-                CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "MeetCountryList", meetCountryList,
+                CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "Select Country", meetCountryList,
                         false);
                 cddCountry.show();
                 cddCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_state:
-                CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "MeetStateList", meetStateList,
+                CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "Select State", meetStateList,
                         false);
                 cddState.show();
                 cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_city:
-                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "MeetCityList", meetCityList,
+                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "Select City", meetCityList,
                         false);
                 cddCity.show();
                 cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -275,11 +294,31 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 Util.showTimeDialog(getActivity(), edtMeetEndTime);
                 break;
             case R.id.edt_meet_reg_date:
-                Util.showDateDialogEnableBeforeDefinedDate(getActivity(),edtMeetRegStartDate, edtMeetDate.getText().toString());
+                if(edtMeetDate.getText().toString()!=null && edtMeetDate.getText().toString().length()>0) {
+                    Util.showDateDialogEnableBetweenMinMax(getActivity(), edtMeetRegStartDate, new SimpleDateFormat("yyyy-MM-dd",
+                            Locale.getDefault()).format(new Date()), edtMeetDate.getText().toString());
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select Meet date.",
+                            Snackbar.LENGTH_LONG);
+                }
+                //showDateDialogEnableBeforeDefinedDate
                 break;
             case R.id.edt_meet_reg_end_date:
-                Util.showDateDialogEnableBetweenMinMax(getActivity(), edtMeetRegEndDate, edtMeetRegStartDate.getText().toString(),
-                        edtMeetDate.getText().toString());
+                if(edtMeetDate.getText().toString()!=null && edtMeetDate.getText().toString().length()>0) {
+                    if(edtMeetRegStartDate.getText().toString()!=null && edtMeetRegStartDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtMeetRegEndDate, edtMeetRegStartDate.getText().toString(),
+                                edtMeetDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select Meet Registration start date.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                }  else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select Meet date.",
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
         }
     }
@@ -343,17 +382,25 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     public boolean isAllDataValid(){
         if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
-                || TextUtils.isEmpty(edtRegAmt.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetDate.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetStartTime.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetEndTime.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())
-                || selectedMeetType == null || selectedState == null || selectedCity == null || selectedCountry == null ) {
+                || selectedMeetType == null || selectedStateId == null || selectedCityId == null || selectedCountryId == null
+                || isPaidFreeRGChecked == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
                     Snackbar.LENGTH_LONG);
             return false;
+        }
+        if(isPaidFreeRGChecked == 2){
+            if(TextUtils.isEmpty(edtRegAmt.getText().toString().trim()) || isOnlinePaymentRGChecked == 0){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
         }
         return true;
     }
@@ -361,7 +408,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type){
-            case "MeetTypesList":
+            case "Select Meet Type":
                 for(CustomSpinnerObject mType: meetTypesList){
                     if(mType.isSelected()){
                         selectedMeetType = mType.getName();
@@ -370,7 +417,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 tvMeetType.setText(selectedMeetType);
                 break;
-            case "MeetCountryList":
+            case "Select Country":
                 for(CustomSpinnerObject mCountry: meetCountryList){
                     if(mCountry.isSelected()){
                         selectedCountry = mCountry.getName();
@@ -385,7 +432,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
                 break;
-            case "MeetStateList":
+            case "Select State":
                 for(CustomSpinnerObject mState: meetStateList){
                     if(mState.isSelected()){
                         selectedState = mState.getName();
@@ -400,7 +447,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;
-            case "MeetCityList":
+            case "Select City":
                 for(CustomSpinnerObject mCity: meetCityList){
                     if(mCity.isSelected()){
                         selectedCity = mCity.getName();
@@ -416,22 +463,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         switch (checkedId) {
-            case R.id.rb_paid:
-                isRegPaid = true;
-                break;
-
             case R.id.rb_free:
                 isRegPaid = false;
+                isPaidFreeRGChecked = 1;
+                edtRegAmt.setVisibility(View.GONE);
+                rgOnlinePayment.setVisibility(View.GONE);
+                edtRegAmt.setText("");
+                isOnlinePaymentAllowed = false;
                 break;
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if(isOnlinePaymentAllowed) {
-            isOnlinePaymentAllowed = false;
-        } else {
-            isOnlinePaymentAllowed = true;
+            case R.id.rb_paid:
+                isRegPaid = true;
+                isPaidFreeRGChecked = 2;
+                edtRegAmt.setVisibility(View.VISIBLE);
+                rgOnlinePayment.setVisibility(View.VISIBLE);
+                break;
+            case R.id.rb_online_no:
+                isOnlinePaymentAllowed = false;
+                isOnlinePaymentRGChecked = 2;
+                break;
+            case R.id.rb_online_yes:
+                isOnlinePaymentAllowed = true;
+                isOnlinePaymentRGChecked = 1;
+                break;
         }
     }
 }

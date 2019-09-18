@@ -114,7 +114,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     @Override
     public void onItemClicked(int pos) {
-        Util.showToast("item ->" + pos + " Open detais", this);
+        //Util.showToast("item ->" + pos + " Open detais", this);
         UserProfileList userProfileList = userProfileLists.get(pos);
         Gson gson = new Gson();
         String jsonInString = gson.toJson(userProfileList);

@@ -45,18 +45,14 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
     }
 
     public void getMatrimonyUsersList(String countryId, String stateId, String cityId){
-        //Util.getUserObjectFromPref().getProjectIds().get(0).getId();
         Gson gson = new GsonBuilder().create();
-//        String paramjson = gson.toJson(getMeetOrganizersJson("5d4129345dda7642c4094b62",
-//                "5d68c8645dda765a5f17f9d3", "5c66989ec7982d31cc6b86c3", "5d6640745dda763fa96a3416"));
         String paramjson = gson.toJson(getMeetOrganizersJson(Util.getUserObjectFromPref().getProjectIds().get(0).getId(),
                 countryId, stateId, cityId));
 
         final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST);
-
-        Util.getUserObjectFromPref().getProjectIds().get(0).getId();
         Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
+        fragmentWeakReference.get().showProgressBar();
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_MEET_USERS_LIST, paramjson, getMatrimonyUsersUrl);
@@ -68,6 +64,7 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.SUBMIT_MEET);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMatrimonyMeetTypesUrl);
+        fragmentWeakReference.get().showProgressBar();
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(SUBMIT_MEET, paramjson, getMatrimonyMeetTypesUrl);
