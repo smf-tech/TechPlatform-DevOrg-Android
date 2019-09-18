@@ -87,6 +87,28 @@ public class Permissions {
         }
     }
 
+    public static <T> boolean isCallPermission(Activity context, T objectInstance) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.CALL_PHONE)== PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                if (objectInstance instanceof Fragment) {
+                    ((Fragment) objectInstance).requestPermissions(
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            Constants.CALL_PHONE);
+                } else {
+                    ActivityCompat.requestPermissions(context,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            Constants.CALL_PHONE);
+                }
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
 
 
 

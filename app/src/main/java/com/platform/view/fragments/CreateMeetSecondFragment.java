@@ -213,9 +213,10 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void closeCurrentActivity() {
-        if (getActivity() != null) {
-            getActivity().onBackPressed();
-        }
+//        if (getActivity() != null) {
+//            getActivity().onBackPressed();
+//        }
+        getActivity().finish();
     }
 
     public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonyRolesUsersList) {
@@ -325,6 +326,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             button.setOnClickListener(v -> {
                 // Close dialog
                 dialog.dismiss();
+                MatrimonyFragment.getInstance().updateMeetList();
                 closeCurrentActivity();
             });
         }

@@ -169,6 +169,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegistrationSchedule(registrationSchedule);
         if(edtRegAmt.getText().toString().trim()!= null && edtRegAmt.getText().toString().trim().length()>0) {
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString().trim()));
+        } else {
+            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(0);
         }
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
     }

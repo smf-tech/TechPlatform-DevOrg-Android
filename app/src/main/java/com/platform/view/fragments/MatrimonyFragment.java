@@ -65,10 +65,12 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     private ViewPager meetViewPager;
     private Button btnPublishMeet;
     private int currentPosition;
+    private static MatrimonyFragment instance = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);
@@ -79,6 +81,10 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             }
         }
         AppEvents.trackAppEvent(getString(R.string.event_matrimony_screen_visit));
+    }
+
+    public static MatrimonyFragment getInstance() {
+        return instance;
     }
 
     @Override
@@ -126,7 +132,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         meetViewPager.setOnPageChangeListener(this);
         //setupViewPager(meetViewPager);
 
-        meetContactsListAdapter = new MeetContactsListAdapter(contactsList);
+        meetContactsListAdapter = new MeetContactsListAdapter(contactsList, getActivity());
         RecyclerView.LayoutManager mContactsLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false);
         rvMeetContacts.setLayoutManager(mContactsLayoutManager);
@@ -141,12 +147,12 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 startActivity(createMatrimonyIntent);
             }
         });
+        getMeetsCall();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getMeetsCall();
     }
 
     public void getMeetsCall(){
@@ -239,19 +245,30 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         }
         tvMeetTitle.setText(matrimonyMeetList.get(position).getTitle());
         tvMeetDate.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getSchedule().getDateTime(),DAY_MONTH_YEAR));
-        tvMeetTime.setText(Util.getAmPmTimeStringFromTimeString(matrimonyMeetList.get(position).getSchedule().getMeetStartTime())+"-"+
+        tvMeetTime.setText(Util.getAmPmTimeStringFromTimeString(matrimonyMeetList.get(position).getSchedule().getMeetStartTime())+" - "+
                 Util.getAmPmTimeStringFromTimeString(matrimonyMeetList.get(position).getSchedule().getMeetEndTime()));
         tvMeetCity.setText(matrimonyMeetList.get(position).getLocation().getCity());
         tvMeetVenue.setText(matrimonyMeetList.get(position).getVenue());
         tvRegAmt.setText(String.valueOf(matrimonyMeetList.get(position).getRegAmount()));
         tvRegPeriod.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegStartDateTime(),
-                DAY_MONTH_YEAR)+"--"+
+                DAY_MONTH_YEAR)+" - "+
                 Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegEndDateTime(), DAY_MONTH_YEAR));
-        if(matrimonyMeetList.get(position).getBadgeFanlize()){
-            tvBadgesInfo.setText(R.string.meet_badges_finalized);
+        if(matrimonyMeetList.get(position).getAllocate()){
+            if(matrimonyMeetList.get(position).getBadgeFanlize()){
+                tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
+            } else {
+                tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
+            }
         } else {
-            tvBadgesInfo.setText(R.string.meet_badges_not_finalized);
+            tvBadgesInfo.setText(R.string.meet_badges_not_allocated);
         }
+
+//        if(matrimonyMeetList.get(position).getBadgeFanlize()){
+//            tvBadgesInfo.setText(R.string.meet_badges_finalized);
+//        } else {
+//            tvBadgesInfo.setText(R.string.meet_badges_not_finalized);
+//        }
+
         for(MatrimonyUserDetails matrimonyUserDetails: matrimonyMeetList.get(position).getMeetOrganizers()){
             contactsList.add(matrimonyUserDetails);
         }
@@ -291,7 +308,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 Snackbar.LENGTH_LONG);
     }
 
-    public void showResponse(String responseStatus, Integer status) {
+    public void showResponse(String responseStatus, int status) {
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
@@ -299,5 +316,9 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             matrimonyMeetList.get(currentPosition).setIs_published(true);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public void updateMeetList(){
+        getMeetsCall();
     }
 }
