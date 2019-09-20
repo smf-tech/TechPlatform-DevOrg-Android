@@ -167,6 +167,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         String jsonInString = gson.toJson(userProfileList);
         Intent startMain1 = new Intent(MatrimonyProfileListActivity.this, MatrimonyProfileDetailsActivity.class);
         startMain1.putExtra("filter_type", jsonInString);
+        startMain1.putExtra("meetid",meetIdReceived);
         startActivity(startMain1);
     }
 

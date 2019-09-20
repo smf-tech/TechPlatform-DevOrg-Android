@@ -68,6 +68,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private ImageView iv_aadhar, iv_education_certificates;
     private Button btn_mark_attendance,btn_interview_done;
     private TextView tv_approval_status;
+    private String meetIdReceived;
 
 
     @Override
@@ -81,6 +82,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             String jsonInString = gson.toJson(userProfileList);
             userProfileList = gson.fromJson(filterTypeReceived, UserProfileList.class);
         }
+        meetIdReceived = getIntent().getStringExtra("meetid");
         requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         initView();
@@ -152,11 +154,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_approval_status.setText(userProfileList.getIsApproved());
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")){
-            btn_interview_done.setVisibility(View.GONE);
-            btn_mark_attendance.setVisibility(View.GONE);
-        }else {
             btn_interview_done.setVisibility(View.VISIBLE);
             btn_mark_attendance.setVisibility(View.VISIBLE);
+
+        }else {
+            btn_interview_done.setVisibility(View.GONE);
+            btn_mark_attendance.setVisibility(View.GONE);
         }
 
 
@@ -321,11 +324,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
                 break;
             case R.id.btn_mark_attendance:
-                JSONObject jsonObject = matrimonyProfilesDetailsActivityPresenter.createBodyParams("5d6f90c25dda765c2f0b5dd4", userProfileList.get_id(), Constants.MARK_ATTENDANCE);
+                JSONObject jsonObject = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_ATTENDANCE);
                 matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObject,1,Constants.MARK_ATTENDANCE);
                 break;
             case R.id.btn_interview_done:
-                JSONObject jsonObj = matrimonyProfilesDetailsActivityPresenter.createBodyParams("5d6f90c25dda765c2f0b5dd4", userProfileList.get_id(), Constants.MARK_INTERVIEW);
+                JSONObject jsonObj = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_INTERVIEW);
                 matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObj,1,Constants.MARK_INTERVIEW);
                 break;
             case R.id.toolbar_back_action:
