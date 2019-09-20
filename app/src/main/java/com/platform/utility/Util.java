@@ -1,5 +1,7 @@
 package com.platform.utility;
 
+import android.app.ActionBar;
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -33,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -992,6 +995,50 @@ public class Util {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
     public static void showSimpleProgressDialog(Context context, String title,

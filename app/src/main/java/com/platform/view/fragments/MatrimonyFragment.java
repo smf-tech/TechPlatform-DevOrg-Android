@@ -351,7 +351,8 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 Snackbar.LENGTH_LONG);
         if(status == 200){
             matrimonyMeetList.get(currentPosition).setIs_published(true);
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
+            btnPublishMeet.setVisibility(View.GONE);
         }
     }
 

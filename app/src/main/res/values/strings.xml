@@ -82,7 +82,7 @@
     <string name="update_profile">Update Profile</string>
     <string name="update_profile_pic">Update profile picture</string>
     <string name="update_data_string">Do you want to Update Data?</string>
-    <string name="approve_profile">You are not approved yet.</string>
+    <string name="approve_profile">You are not approved yet. Please contact to your senior authority.</string>
     <!--<string name="approve_profile2">will approve you.</string>-->
 
     <string name="title_choose_picture">Choose Picture</string>
@@ -482,7 +482,7 @@
     <string name="meet_badges_finalized">Meet badges has been finalized.</string>
     <string name="meet_badges_not_finalized">Meet badges has not been finalized.</string>
     <string name="matrimony_meet_label">BJS Matrimonial Meet</string>
-<string name="birth_place">Birth Place</string>
+    <string name="birth_place">Birth Place</string>
     <string name="age">Age</string>
 
     <string name="meet_badges_allocated">Meet badges has been allocated.</string>
