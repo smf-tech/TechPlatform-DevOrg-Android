@@ -29,7 +29,7 @@ public class TMLandingPageRecyclerAdapter extends RecyclerView.Adapter<TMLanding
     @Override
     public EmployeeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_tm_landingpage_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.row_tm_landingpage_item_main, parent, false);
         return new EmployeeViewHolder(view);
     }
 

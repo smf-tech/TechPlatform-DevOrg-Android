@@ -18,5 +18,8 @@
     <item
         android:id="@+id/action_gen_booklet"
         android:title="Generate Booklet" />
+    <item
+        android:id="@+id/action_show_baches"
+        android:title="Show Batches" />
 
 </menu>

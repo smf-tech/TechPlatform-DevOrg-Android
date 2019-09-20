@@ -115,6 +115,8 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.8@aar') {
         transitive = true
     }
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.0.0'
     implementation 'androidx.room:room-runtime:2.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'

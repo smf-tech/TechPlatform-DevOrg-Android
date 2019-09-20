@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.app.Dialog;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,13 +27,18 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
+import com.platform.models.Matrimony.MeetBatchesResponseModel;
 import com.platform.presenter.MatrimonyMeetFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.MatrimonyBookletActivity;
+import com.platform.view.activities.CreateMatrimonyMeetActivity;
+import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.ShowMeetBatchesActivity;
 
 import java.util.Objects;
 
@@ -90,7 +96,8 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 if(meetData.getIs_published()){
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
-                if(meetData.getBadgeFanlize()){
+                //if(meetData.getBadgeFanlize()){
+                if(meetData.getBadgeFanlize() != null && meetData.getBadgeFanlize()) {
                     popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
@@ -162,6 +169,9 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 Intent bookletIntent = new Intent(getActivity(), MatrimonyBookletActivity.class);
                 bookletIntent.putExtra("meetId",meetData.getId());
                 getActivity().startActivity(bookletIntent);
+                break;
+            case R.id.action_show_baches:
+                matrimonyMeetFragmentPresenter.showMeetBaches(meetData.getId(),"showbaches");
                 break;
         }
         return false;
@@ -254,5 +264,26 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if (getActivity() != null) {
             getActivity().onBackPressed();
         }
+    }
+
+    public void showBachesResponse(String response) {
+        Util.logger("Batches response-",response);
+
+        Gson gson = new Gson();
+
+        MeetBatchesResponseModel meetBatchesResponseModel = gson.fromJson(response, MeetBatchesResponseModel.class);
+        if (meetBatchesResponseModel.getStatus().equalsIgnoreCase("200")){
+
+
+
+        Intent intent =new Intent(getActivity(), ShowMeetBatchesActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("batches_resposne",response);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        }else {
+            Util.showToast("No Batches available yet",getActivity());
+        }
+
     }
 }

@@ -307,10 +307,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void loadTeamsPage() {
 
-        Util.launchFragment(new TMUserLandingFragment(), this,
-                getString(R.string.approvals), true);
-        /*Intent startMain = new Intent(HomeActivity.this, TMFiltersListActivity.class);
-        startActivity(startMain);*/
+        /*Util.launchFragment(new TMUserLandingFragment(), this,
+                getString(R.string.approvals), true);*/
+        Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
+        startActivity(startMain);
+        Intent startMain1 = new Intent(HomeActivity.this, MatrimonyProfileListActivity.class);
+        startMain.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+        startActivity(startMain1);
+
     }
 
     private void loadReportsPage() {

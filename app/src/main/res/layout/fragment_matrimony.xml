@@ -47,7 +47,7 @@
             android:weightSum="10">
 
             <TextView
-                android:id="@+id/btn_add_leaves"
+                android:id="@+id/btn_view_profiles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_05dp"
@@ -60,7 +60,7 @@
                 android:fontFamily="@font/opensans_regular"/>
 
             <TextView
-                android:id="@+id/btn_compoff_request"
+                android:id="@+id/btn_register_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_05dp"

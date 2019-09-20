@@ -5,11 +5,9 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.platform.BuildConfig;
-import com.platform.R;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.events.CommonResponse;
 import com.platform.request.MatrimonyMeetRequestCall;
-import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
 import com.platform.view.fragments.MatrimonyMeetFragment;
 
@@ -22,6 +20,8 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
     public static final String MATRIMONY_MEET_DELETE ="matrimonyMeetDelete";
     public static final String MEET_ALLOCATE_BADGES ="meetAllocateBadges";
     public static final String MEET_FINALIZE_BADGES ="meetFinalizeBadges";
+    public static final String MEET_ALLOCATE_FINALIZE_BADGES = "meetAllocateFinalize";
+    public static final String SHOW_BATCHES_FOR_MEET = "SHOW_BATCHES_FOR_MEET";
     private final String TAG = MatrimonyMeetFragmentPresenter.class.getName();
 
     public MatrimonyMeetFragmentPresenter(MatrimonyMeetFragment mFragment){
@@ -94,6 +94,11 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
                         Log.e("TAG", "Exception");
                     }
                 }
+                if (requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.SHOW_BATCHES_FOR_MEET))
+                {
+                    fragmentWeakReference.get().showBachesResponse(response);
+                }
+
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
@@ -133,5 +138,18 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
             fragmentWeakReference.get().showProgressBar();
             requestCall.getDataApiCall(MEET_ALLOCATE_BADGES, meetAllocateFinalizeBadgesUrl);
         }
+    }
+
+    public void showMeetBaches(String meetId, String type) {
+        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        requestCall.setApiPresenterListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        String meetAllocateFinalizeBadgesUrl = null;
+        //if (type.equals("allocateBadges"))
+        {
+            meetAllocateFinalizeBadgesUrl = BuildConfig.BASE_URL
+                    + String.format(Urls.Matrimony.SHOW_MEET_BACHES, meetId);
+        }
+        requestCall.getDataApiCall(SHOW_BATCHES_FOR_MEET, meetAllocateFinalizeBadgesUrl);
     }
 }

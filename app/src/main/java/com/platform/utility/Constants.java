@@ -2,6 +2,13 @@ package com.platform.utility;
 
 public class Constants {
 
+
+    public static final String MARK_ATTENDANCE = "Attendance";
+    public static final String MARK_INTERVIEW = "Interview";
+
+    public static final String APPROVE = "approved";
+    public static final String REJECT = "rejected";
+
     public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
@@ -248,6 +255,11 @@ public class Constants {
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
+
+
+        //-------
+        public static final String IMAGE_TYPE_ADHARCARD = "ADHAR";
+        public static final String IMAGE_TYPE_EDUCATION = "EDUCATION";
     }
 
     public class Notification {

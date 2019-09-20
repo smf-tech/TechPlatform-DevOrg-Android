@@ -402,5 +402,8 @@
     <string name="meet_badges_not_allocated">Meet badges has not been allocated.</string>
     <string name="meet_timings_validation">Meet start time should be before meet end time.</string>
 
+    <string name="birth_place">Birth Place</string>
+    <string name="age">Age</string>
+
 
 </resources>

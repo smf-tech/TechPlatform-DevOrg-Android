@@ -178,6 +178,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/textinputstyle"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
                             android:layout_weight="5"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -185,11 +187,10 @@
                                 android:id="@+id/edt_start_time"
                                 style="@style/RegistrationEditTextLayout"
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_cal_event"
                                 android:focusable="false"
-                                android:layout_marginStart="@dimen/dimen_10dp"
                                 android:hint="@string/task_start_time"
-                                android:inputType="date"
+                                android:inputType="time"
+                                android:drawableEnd="@drawable/ic_cal_event"
                                 tools:ignore="Autofill"
                                 android:longClickable="false"/>
                         </com.google.android.material.textfield.TextInputLayout>

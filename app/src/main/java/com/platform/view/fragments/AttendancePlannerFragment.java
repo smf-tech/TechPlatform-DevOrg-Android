@@ -59,6 +59,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
     private TextView tvCheckInTime;
     private TextView tvCheckOutTime;
+    private TextView tvStatus;
+
 
     private Date selectedDate;
     private boolean isTeamAttendance;
@@ -78,11 +80,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private List<TeamAttendanceData> teamAttendanceList;
     private TeamAttendanceAdapter adapter;
 
-    public AttendancePlannerFragment() {
-    }
-
-    public void onCreate() {
-    }
+    public AttendancePlannerFragment() { }
+    public void onCreate() { }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -106,6 +105,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
+        tvStatus = plannerView.findViewById(R.id.tv_status);
         TextView tvUserName = plannerView.findViewById(R.id.tv_name);
         TextView tvUserRole = plannerView.findViewById(R.id.tv_role);
         ImageView ivUserProfilePic = plannerView.findViewById(R.id.iv_user_profile_pic);
@@ -145,6 +145,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
 
         isMonth = !isMonth;
         setCalendar();
+        calendarView.setSelectedDate(Calendar.getInstance().getTime());
 
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -202,10 +203,14 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     }
                     if (!attendanceDateList.getCheckOutTime().isEmpty()) {
                         tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(attendanceDateList.getCheckOutTime()), "hh:mm aa"));
-                    }   //cheack that created at is equal to today date
+                    }
+                    if (!attendanceDateList.getStatus().isEmpty()) {
+                        tvStatus.setText(attendanceDateList.getStatus());
+                    }
                 } else {
                     tvCheckInTime.setText("");
                     tvCheckOutTime.setText("");
+                    tvStatus.setText("Not Found");
                 }
             }
         }
@@ -315,7 +320,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         Calendar instance = Calendar.getInstance();
-        calendarView.setSelectedDate(instance.getTime());
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
@@ -335,8 +339,8 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
             ivCalendarMode.setRotation(0);
         }
 
-        calendarView.setSelectedDate(instance.getTime());
-        calendarView.setCurrentDate(instance.getTime());
+//        calendarView.setSelectedDate(instance.getTime());
+//        calendarView.setCurrentDate(instance.getTime());
 
     }
 

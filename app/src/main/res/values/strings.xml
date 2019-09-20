@@ -450,7 +450,7 @@
     <string name="default_notification_channel_id" translatable="false">BJS</string>
     <string name="verification_otp_will_be_sent_on_this_number">(Verification OTP will be sent on this number)</string>
 
-    <string name="matrimony_meet_label">BJS Matrimonial Meet</string>
+
     <string name="matrimony_venue_label">Venue</string>
     <string name="matrimony_datetime_label">Date-Time</string>
     <string name="view_profiles_btn_label">View Profiles</string>
@@ -481,6 +481,10 @@
     <string name="mandatory_country">Country *</string>
     <string name="meet_badges_finalized">Meet badges has been finalized.</string>
     <string name="meet_badges_not_finalized">Meet badges has not been finalized.</string>
+    <string name="matrimony_meet_label">BJS Matrimonial Meet</string>
+<string name="birth_place">Birth Place</string>
+    <string name="age">Age</string>
+
     <string name="meet_badges_allocated">Meet badges has been allocated.</string>
     <string name="meet_badges_allocated_finalized">Meet badges has been allocated and finalized.</string>
     <string name="meet_badges_allocated_not_finalized">Meet badges has been allocated but not finalized.</string>

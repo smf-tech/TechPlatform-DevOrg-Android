@@ -4,8 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,7 +18,6 @@ import com.platform.utility.Util;
 import java.util.List;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
-import static com.platform.utility.Util.getDateFromTimestamp;
 
 @SuppressWarnings("CanBeFinal")
 public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdapter.ViewHolder> {

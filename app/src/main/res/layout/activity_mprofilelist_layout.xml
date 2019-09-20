@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_background_color">
+
+    <include
+        android:id="@+id/profile_toolbar"
+        layout="@layout/app_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/profile_toolbar"
+        android:padding="@dimen/dimen_10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_matrimonyprofileview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             />
+
+
+        <ExpandableListView
+            android:id="@+id/rv_dashboard_tm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/txt_view_all_approvals"
+            android:divider="@android:color/white"
+            android:dividerHeight="@dimen/dimen_05dp"
+            android:groupIndicator="@null"
+            android:visibility="gone" />
+
+        <com.platform.view.customs.TextViewRegular
+            android:id="@+id/txt_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/no_records_available"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone" />
+
+        <com.platform.view.customs.TextViewRegular
+            android:id="@+id/txt_view_all_approvals"
+            style="@style/roboto_medium_pink_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/view_all_approvals"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+        <RelativeLayout
+            android:id="@+id/gen_frag_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/pb_gen_form_fragment"
+                style="@android:style/Widget.DeviceDefault.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:indeterminateOnly="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -27,19 +27,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
-import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.models.Matrimony.MatrimonyMeetsList;
 import com.platform.models.Matrimony.MatrimonyUserDetails;
 import com.platform.models.Matrimony.MeetAnalytics;
-import com.platform.models.Matrimony.MeetAnalyticsData;
-import com.platform.presenter.CreateMeetFirstFragmentPresenter;
 import com.platform.presenter.MatrimonyFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.MatrimonyProfileListActivity;
+import com.platform.view.activities.UserRegistrationMatrimonyActivity;
 import com.platform.view.adapters.MeetAnalyticsAdapter;
 import com.platform.view.adapters.MeetContactsListAdapter;
 import com.platform.view.adapters.ViewPagerAdapter;
@@ -55,7 +54,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     private FloatingActionButton btnCreateMeet;
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     private ViewPagerAdapter adapter;
-    private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt,tvRegPeriod,tvBadgesInfo;
+    private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt,tvRegPeriod,tvBadgesInfo,btnViewProfiles, btnRegisterProfile;
     private RecyclerView rvMeetContacts,rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
     private ArrayList<MatrimonyUserDetails> contactsList= new ArrayList<>();
@@ -122,6 +121,11 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         rvMeetAnalytics = matrimonyFragmentView.findViewById(R.id.rv_meet_analytics);
         btnPublishMeet = matrimonyFragmentView.findViewById(R.id.btn_publish_saved_meet);
         btnPublishMeet.setOnClickListener(this);
+
+        btnViewProfiles = matrimonyFragmentView.findViewById(R.id.btn_view_profiles);
+        btnRegisterProfile = matrimonyFragmentView.findViewById(R.id.btn_register_profile);
+        btnViewProfiles.setOnClickListener(this);
+        btnRegisterProfile.setOnClickListener(this);
 
         meetViewPager = matrimonyFragmentView.findViewById(R.id.meet_view_pager);
         // Disable clip to padding
@@ -312,6 +316,25 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         switch (view.getId()){
             case R.id.btn_publish_saved_meet:
                 matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId());
+                break;
+            case R.id.btn_register_profile:
+                if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime()>Util.getCurrentTimeStamp()){
+                    //Util.logger("currentTime","-> Current Time greater");
+                    Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
+                    startMain1.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
+                    startActivity(startMain1);
+                }else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Registrations closed for this meet.",
+                            Snackbar.LENGTH_LONG);
+                }
+
+                break;
+            case R.id.btn_view_profiles:
+
+                Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
+                startMain.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
+                startActivity(startMain);
                 break;
         }
     }

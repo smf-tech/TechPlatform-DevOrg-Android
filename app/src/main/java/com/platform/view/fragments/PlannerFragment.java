@@ -307,6 +307,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         if (offlineCheckinAttendaceData != null && offlineCheckoutAttendaceData != null) {
             txt_total_hours.setText(calculateHoursFromTwoDate(offlineCheckinAttendaceData.getDate(),
                     offlineCheckoutAttendaceData.getDate()));
+
         } else if (offlineCheckinAttendaceData != null) {
             updateTime(offlineCheckinAttendaceData.getDate(), 0);
         }
@@ -492,11 +493,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             public void onClick(View v) {
                 if(Util.isConnected(getContext())) {
                     Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                    intent.putExtra(Constants.Planner.KEY_IS_DASHBOARD, false);
                     intent.putExtra("title", getActivity().getString(R.string.attendance));
                     intent.putExtra("switch_fragments", "AttendancePlannerFragment");
-                    intent.putExtra("TotalHours", txt_total_hours.getText().toString());
-                    intent.putExtra("userAvailable", availableOnServer);
                     getActivity().startActivity(intent);
                 }else{
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());

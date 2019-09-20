@@ -31,9 +31,15 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
+        <activity android:name=".view.activities.UserRegistrationMatrimonyActivity" />
+        <activity android:name=".view.activities.MatrimonyProfileListActivity" />
+        <activity android:name=".view.activities.MatrimonyProfileDetailsActivity" />
+
         <activity android:name=".view.activities.NotificationsActivity" />
         <activity android:name=".view.activities.ContentDownloadedActivity" />
         <activity android:name=".view.activities.CreateMatrimonyMeetActivity" />
+        <activity android:name=".view.activities.ShowMeetBatchesActivity" />
+
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -196,7 +202,7 @@
             android:resource="@xml/circle_background" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"/>
+            android:value="@string/default_notification_channel_id" />
     </application>
 
 </manifest>

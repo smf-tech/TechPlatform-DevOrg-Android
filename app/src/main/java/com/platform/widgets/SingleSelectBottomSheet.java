@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
     private MultiSpinnerListener listener;
     public Activity activity;
     private boolean[] selectedValues;
+    private int selectedPosition;
     private ArrayList<String> dataList;
     private String spinnerText;
     public TextView toolbarTitle;
@@ -72,7 +74,7 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
         no = findViewById(R.id.btn_no);
         img_close =findViewById(R.id.toolbar_edit_action);
         toolbarTitle =findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(bottomSheetTitle);
+       // toolbarTitle.setText(bottomSheetTitle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         rv_filterchoice.setLayoutManager(layoutManager);
 
@@ -92,7 +94,9 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
         switch (v.getId()) {
             case R.id.btn_yes:
                 setSelectedFilledText();
-                listener.onValuesSelected(selectedValues, bottomSheetTitle,spinnerText);
+                if (!TextUtils.isEmpty(spinnerText)) {
+                    listener.onValuesSelected(selectedPosition, bottomSheetTitle, spinnerText);
+                }
                 dismiss();
                 break;
             case R.id.toolbar_edit_action:
@@ -111,7 +115,7 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
     }
 
     public interface MultiSpinnerListener {
-        void onValuesSelected(boolean[] selected, String spinnerName, String selectedValues);
+        void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues);
     }
 
     public class FilterChoicedapter extends RecyclerView.Adapter<FilterChoicedapter.EmployeeViewHolder> {
@@ -146,6 +150,17 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
             return dataList.size();
         }
 
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
         public class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
             TextView txtTitle, txtValue;
@@ -161,18 +176,27 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         //dataList.get(getAdapterPosition()).setSelected(isChecked);
+                        for (int i = 0; i < selectedValues.length; i++) {
+                            selectedValues[i] = false;
+                        }
                         selectedValues[getAdapterPosition()] = isChecked;
+                        if (isChecked==true) {
+                            selectedPosition = getAdapterPosition();
+                            lastSelectedPosition = getAdapterPosition();
+                        }
+
+
                     }
                 });
                 cb_select_filter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        lastSelectedPosition = getAdapterPosition();
+                        //lastSelectedPosition = getAdapterPosition();
+                        //notifyDataSetChanged();
                         notifyDataSetChanged();
-
-                        Toast.makeText(mContext,
+                        /*Toast.makeText(mContext,
                                 "selected offer is ",
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_LONG).show();*/
                     }
                 });
                 //txtValue = (TextView) itemView.findViewById(R.id.tv_value);
@@ -183,15 +207,18 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
 
 
     public void setSelectedFilledText() {
-        StringBuilder spinnerSelectedText = new StringBuilder();
+        String spinnerSelectedText = "";
         for (int i = 0; i < dataList.size(); i++) {
             if (selectedValues[i]) {
-                spinnerSelectedText.append(dataList.get(i));
-                spinnerSelectedText.append(", ");
+                //spinnerSelectedText.append(dataList.get(i));
+                //spinnerSelectedText.append(", ");
+                spinnerSelectedText = dataList.get(i);
             }
         }
-
-
+        if (lastSelectedPosition!=-1)
+        spinnerSelectedText = dataList.get(lastSelectedPosition);
+        spinnerText = spinnerSelectedText;
+/*
         if (spinnerSelectedText.length() != 0) {
             spinnerText = spinnerSelectedText.toString();
             if (spinnerText.length() > 2) {
@@ -199,6 +226,6 @@ public class SingleSelectBottomSheet extends BottomSheetDialog implements
             }
         } else {
             spinnerText = bottomSheetTitle;
-        }
+        }*/
     }
 }
