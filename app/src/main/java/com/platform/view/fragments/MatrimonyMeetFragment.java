@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.Activity;
 import android.content.Intent;
@@ -216,6 +217,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 // Close dialog
+                dialog.dismiss();
             });
         }
 

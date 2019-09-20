@@ -6,11 +6,17 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncStatusObserver;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +41,7 @@ import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
@@ -141,7 +148,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                     this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
                 if (!dialogNotApproved.isShowing()) {
-                    showApprovedDialog();
+                    //showApprovedDialog();
+                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
+                            "OK", "");
                 }
             }
 
@@ -239,7 +248,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
                     this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 
                 if (!dialogNotApproved.isShowing()) {
-                    showApprovedDialog();
+                    //showApprovedDialog();
+                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
+                            "OK", "");
                 }
             }
 
@@ -285,6 +296,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             }
         }
     }
+
 
     @SuppressWarnings("CanBeFinal")
     private
