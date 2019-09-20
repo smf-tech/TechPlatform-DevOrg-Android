@@ -43,6 +43,7 @@ import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -169,6 +170,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegistrationSchedule(registrationSchedule);
         if(edtRegAmt.getText().toString().trim()!= null && edtRegAmt.getText().toString().trim().length()>0) {
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString().trim()));
+        } else {
+            ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(0);
         }
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
     }
@@ -271,18 +274,30 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_state:
-                CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "Select State", meetStateList,
-                        false);
-                cddState.show();
-                cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if(selectedCountryId != null && selectedCountryId.length()>0) {
+                    CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "Select State", meetStateList,
+                            false);
+                    cddState.show();
+                    cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select Country.",
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.tv_meet_city:
-                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "Select City", meetCityList,
-                        false);
-                cddCity.show();
-                cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if(selectedStateId!= null && selectedStateId.length()>0) {
+                    CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "Select City", meetCityList,
+                            false);
+                    cddCity.show();
+                    cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select State.",
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_meet_date:
                 Util.showDateDialogMin(getActivity(), edtMeetDate);
@@ -394,6 +409,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Snackbar.LENGTH_LONG);
             return false;
         }
+        if(!Util.validateStartEndTime(edtMeetStartTime.getText().toString(),edtMeetEndTime.getText().toString())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.meet_timings_validation),
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
         if(isPaidFreeRGChecked == 2){
             if(TextUtils.isEmpty(edtRegAmt.getText().toString().trim()) || isOnlinePaymentRGChecked == 0){
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -418,6 +439,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetType.setText(selectedMeetType);
                 break;
             case "Select Country":
+                tvMeetState.setText("");
+                selectedState="";
+                selectedStateId="";
+                tvMeetCity.setText("");
+                selectedCity="";
+                selectedCityId="";
                 for(CustomSpinnerObject mCountry: meetCountryList){
                     if(mCountry.isSelected()){
                         selectedCountry = mCountry.getName();
@@ -433,6 +460,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case "Select State":
+                tvMeetCity.setText("");
+                selectedCity="";
+                selectedCityId="";
                 for(CustomSpinnerObject mState: meetStateList){
                     if(mState.isSelected()){
                         selectedState = mState.getName();
@@ -487,4 +517,5 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 break;
         }
     }
+
 }

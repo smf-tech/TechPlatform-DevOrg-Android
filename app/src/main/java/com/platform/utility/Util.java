@@ -974,6 +974,26 @@ public class Util {
         timePicker.show();
     }
 
+    public static boolean validateStartEndTime(String startTime, String endTime) {
+
+        String pattern = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try {
+            Date date1 = sdf.parse(startTime);
+            Date date2 = sdf.parse(endTime);
+
+            if(date1.before(date2)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void showSimpleProgressDialog(Context context, String title,
                                                 String msg, boolean isCancelable) {
         try {

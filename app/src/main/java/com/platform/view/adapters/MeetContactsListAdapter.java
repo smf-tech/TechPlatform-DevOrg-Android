@@ -1,5 +1,8 @@
 package com.platform.view.adapters;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.Matrimony.MatrimonyUserDetails;
+import com.platform.utility.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +21,11 @@ import java.util.List;
 public class MeetContactsListAdapter extends RecyclerView.Adapter<MeetContactsListAdapter.ViewHolder> {
 
     private ArrayList<MatrimonyUserDetails> usersList;
-    public MeetContactsListAdapter(final ArrayList<MatrimonyUserDetails> usersList){
+    private Activity activity;
+
+    public MeetContactsListAdapter(final ArrayList<MatrimonyUserDetails> usersList, Activity activity) {
         this.usersList = usersList;
+        this.activity = activity;
     }
 
     @NonNull
@@ -41,12 +48,23 @@ public class MeetContactsListAdapter extends RecyclerView.Adapter<MeetContactsLi
         return usersList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvContact, tvMailId;
-        public ViewHolder(@NonNull View itemView){
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            tvContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Permissions.isCallPermission(activity, this)) {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + tvContact.getText().toString()));
+                        activity.startActivity(callIntent);
+                    }
+                }
+            });
             tvMailId = itemView.findViewById(R.id.tv_mail_id);
         }
     }

@@ -15,13 +15,16 @@ import java.lang.ref.WeakReference;
 
 public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
 
-    public static final String MATRIMONY_MEET_ARCHIVE = "matrimonyMeetArchive";
+    private WeakReference<MatrimonyMeetFragment> fragmentWeakReference;
+    public static final String MATRIMONY_MEET_ARCHIVE ="matrimonyMeetArchive";
+    public static final String MATRIMONY_MEET_DELETE ="matrimonyMeetDelete";
+    public static final String MEET_ALLOCATE_BADGES ="meetAllocateBadges";
+    public static final String MEET_FINALIZE_BADGES ="meetFinalizeBadges";
     public static final String MEET_ALLOCATE_FINALIZE_BADGES = "meetAllocateFinalize";
     public static final String SHOW_BATCHES_FOR_MEET = "SHOW_BATCHES_FOR_MEET";
     private final String TAG = MatrimonyMeetFragmentPresenter.class.getName();
-    private WeakReference<MatrimonyMeetFragment> fragmentWeakReference;
 
-    public MatrimonyMeetFragmentPresenter(MatrimonyMeetFragment mFragment) {
+    public MatrimonyMeetFragmentPresenter(MatrimonyMeetFragment mFragment){
         fragmentWeakReference = new WeakReference<>(mFragment);
     }
 
@@ -33,7 +36,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
     public void onFailureListener(String requestID, String message) {
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
-            fragmentWeakReference.get().onFailureListener(requestID, message);
+            fragmentWeakReference.get().onFailureListener(requestID,message);
         }
     }
 
@@ -42,7 +45,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
             if (error != null) {
-                fragmentWeakReference.get().onErrorListener(requestID, error);
+                fragmentWeakReference.get().onErrorListener(requestID,error);
             }
         }
     }
@@ -55,25 +58,41 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                if (requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)) {
+                if(requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)){
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage());
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                                MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE, responseOBJ.getStatus());
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }
-                    //AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
-                    //fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
                 }
-                if (requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_FINALIZE_BADGES)) {
+                if(requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE)){
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage());
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                                MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE, responseOBJ.getStatus());
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }
-                    //AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
-                    //fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
+                }
+                if(requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES)){
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                                MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES, responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                }
+                if(requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.MEET_FINALIZE_BADGES)){
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                                MatrimonyMeetFragmentPresenter.MEET_FINALIZE_BADGES, responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
                 }
                 if (requestID.equalsIgnoreCase(MatrimonyMeetFragmentPresenter.SHOW_BATCHES_FOR_MEET))
                 {
@@ -82,7 +101,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
 
             }
         } catch (Exception e) {
-            fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
+            fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
         }
     }
 
@@ -94,24 +113,31 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
                 + String.format(Urls.Matrimony.MEET_ARCHIVE_DELETE, meetId, type);
         Log.d(TAG, "meetArchiveDeleteUrl: url" + meetArchiveDeleteUrl);
         fragmentWeakReference.get().showProgressBar();
-        requestCall.getDataApiCall(MATRIMONY_MEET_ARCHIVE, meetArchiveDeleteUrl);
+        if(type.equals("Deleted")){
+            requestCall.getDataApiCall(MATRIMONY_MEET_DELETE, meetArchiveDeleteUrl);
+        }
+        if(type.equals("Archive")){
+            requestCall.getDataApiCall(MATRIMONY_MEET_ARCHIVE, meetArchiveDeleteUrl);
+        }
     }
-
     public void meetAllocateBadges(String meetId, String type) {
         MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
         String meetAllocateFinalizeBadgesUrl = null;
-        if (type.equals("finalizeBadges")) {
+        if(type.equals("finalizeBadges")){
             meetAllocateFinalizeBadgesUrl = BuildConfig.BASE_URL
-                    + String.format(Urls.Matrimony.MEET_FINALISE_BADGES, meetId);
-        } else if (type.equals("allocateBadges")) {
+                    + String.format(Urls.Matrimony.MEET_ALLOCATE_BADGES, meetId,"finalizeBadge");
+            Log.d(TAG, "meetAllocateFinalizeBadgesUrl: url" + meetAllocateFinalizeBadgesUrl);
+            fragmentWeakReference.get().showProgressBar();
+            requestCall.getDataApiCall(MEET_FINALIZE_BADGES, meetAllocateFinalizeBadgesUrl);
+        }else if(type.equals("allocateBadges")){
             meetAllocateFinalizeBadgesUrl = BuildConfig.BASE_URL
-                    + String.format(Urls.Matrimony.MEET_ALLOCATE_BADGES, meetId);
+                    + String.format(Urls.Matrimony.MEET_ALLOCATE_BADGES, meetId,"allocateBadge");
+            Log.d(TAG, "meetAllocateFinalizeBadgesUrl: url" + meetAllocateFinalizeBadgesUrl);
+            fragmentWeakReference.get().showProgressBar();
+            requestCall.getDataApiCall(MEET_ALLOCATE_BADGES, meetAllocateFinalizeBadgesUrl);
         }
-        Log.d(TAG, "meetAllocateFinalizeBadgesUrl: url" + meetAllocateFinalizeBadgesUrl);
-        fragmentWeakReference.get().showProgressBar();
-        requestCall.getDataApiCall(MEET_ALLOCATE_FINALIZE_BADGES, meetAllocateFinalizeBadgesUrl);
     }
 
     public void showMeetBaches(String meetId, String type) {

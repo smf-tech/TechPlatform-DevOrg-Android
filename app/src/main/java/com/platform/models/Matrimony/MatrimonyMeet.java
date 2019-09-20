@@ -62,6 +62,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("is_archive")
     @Expose
     private Boolean isArchive;
+    @SerializedName("is_allocate")
+    @Expose
+    private Boolean isAllocate;
 
     public String getId() {
         return id;
@@ -205,6 +208,14 @@ public class MatrimonyMeet implements Serializable {
 
     public void setArchive(Boolean archive) {
         isArchive = archive;
+    }
+
+    public Boolean getAllocate() {
+        return isAllocate;
+    }
+
+    public void setAllocate(Boolean allocate) {
+        isAllocate = allocate;
     }
 
 }

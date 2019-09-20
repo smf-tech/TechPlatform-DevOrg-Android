@@ -30,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_05dp"
-            android:text="bwbqcqwebcyvcyu" />
+            android:text="1234567890"
+            android:textColor="@color/medium_blue"/>
 
         <TextView
             android:id="@+id/tv_mail_id"

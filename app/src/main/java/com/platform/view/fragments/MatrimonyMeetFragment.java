@@ -1,7 +1,10 @@
 package com.platform.view.fragments;
 
+import android.app.Dialog;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,13 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
@@ -33,12 +40,16 @@ import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.ShowMeetBatchesActivity;
 
+import java.util.Objects;
+
 public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuItemClickListener, APIDataListener {
     private View matrimonyMeetFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private MatrimonyMeetFragmentPresenter matrimonyMeetFragmentPresenter;
     MatrimonyMeet meetData;
+    PopupMenu popup;
+    private MatrimonyFragment matrimonyFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +90,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu((getActivity()), v);
+                popup = new PopupMenu((getActivity()), v);
                 popup.setOnMenuItemClickListener(MatrimonyMeetFragment.this);
                 popup.inflate(R.menu.matrimony_meet_menu);
                 if(meetData.getIs_published()){
@@ -90,6 +101,9 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                     popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
+                }
+                if(meetData.getArchive()){
+                    popup.getMenu().findItem(R.id.action_archive).setVisible(false);
                 }
                 popup.show();
             }
@@ -112,21 +126,38 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         }
     }
 
-    public void showResponse(String responseStatus) {
+    public void showResponse(String responseStatus, String requestId, int status) {
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-
+        if(requestId.equals(MatrimonyMeetFragmentPresenter.MEET_FINALIZE_BADGES)){
+            if(status == 200){
+                popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
+                meetData.setBadgeFanlize(true);
+            }
+        }
+        if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)){
+            if(status == 200){
+                popup.getMenu().findItem(R.id.action_archive).setVisible(false);
+                meetData.setArchive(true);
+            }
+        }
+        if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE)){
+            if(status == 200){
+                //matrimonyMeetList.get(currentPosition).setIs_published(true);
+                MatrimonyFragment.getInstance().updateMeetList();
+            }
+        }
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_archive:
-                matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Archive");
+                showDialog("Archive Meet", "Are you sure you want to archive this meet?","YES", "NO");
                 break;
             case R.id.action_delete:
-                matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Deleted");
+                showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
                 break;
             case R.id.action_allocate_badge:
                 matrimonyMeetFragmentPresenter.meetAllocateBadges(meetData.getId(),"allocateBadges");
@@ -144,6 +175,53 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 break;
         }
         return false;
+    }
+
+    private void showDialog(String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+                if(dialogTitle.equals("Archive Meet")){
+                    matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Archive");
+                } else if(dialogTitle.equals("Delete Meet")){
+                    matrimonyMeetFragmentPresenter.meetArchiveDelete(meetData.getId(), "Deleted");
+                }
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     @Override
