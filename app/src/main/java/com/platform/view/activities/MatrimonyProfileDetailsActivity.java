@@ -129,6 +129,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
 
 
+        btn_interview_done = findViewById(R.id.btn_interview_done);
+        btn_mark_attendance =  findViewById(R.id.btn_mark_attendance);
         //Personal details -
         tv_name = findViewById(R.id.tv_name);
         tv_birth_date = findViewById(R.id.tv_birth_date);
@@ -148,6 +150,14 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_approval_status = findViewById(R.id.tv_approval_status);
 
         tv_approval_status.setText(userProfileList.getIsApproved());
+
+        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")){
+            btn_interview_done.setVisibility(View.GONE);
+            btn_mark_attendance.setVisibility(View.GONE);
+        }else {
+            btn_interview_done.setVisibility(View.VISIBLE);
+            btn_mark_attendance.setVisibility(View.VISIBLE);
+        }
 
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
@@ -196,9 +206,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_sakha_gotra_1.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getSelf_gotra());
         tv_sakha_gotra_2.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getDada_gotra());
         tv_sakha_gotra_3.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getMama_gotra());
-        tv_sakha_gotra_4.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getDada_gotra());
+        tv_sakha_gotra_4.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getNana_gotra());
         tv_father_fullname.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_name());
-        tv_father_occupation.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_name());
+        tv_father_occupation.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_occupation());
         tv_mother_fullname.setText(userProfileList.getMatrimonial_profile().getFamily_details().getMother_name());
         tv_mother_occupation.setText(userProfileList.getMatrimonial_profile().getFamily_details().getMother_occupation());
         tv_family_income.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFamily_income());

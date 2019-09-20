@@ -36,7 +36,7 @@ public class ShowBatchesPageRecyclerAdapter extends RecyclerView.Adapter<ShowBat
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.txtTitle.setText("Group");
-        holder.txtValue.setText(String.valueOf(position));
+        holder.txtValue.setText(String.valueOf(position+1));
 
     }
 

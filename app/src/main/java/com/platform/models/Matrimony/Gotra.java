@@ -14,6 +14,9 @@ public class Gotra {
     @SerializedName("dada_gotra")
     @Expose
     private String dada_gotra;
+    @SerializedName("nana_gotra")
+    @Expose
+    private String nana_gotra;
 
     public String getSelf_gotra() {
         return self_gotra;
@@ -39,4 +42,11 @@ public class Gotra {
         this.dada_gotra = dada_gotra;
     }
 
+    public String getNana_gotra() {
+        return nana_gotra;
+    }
+
+    public void setNana_gotra(String nana_gotra) {
+        this.nana_gotra = nana_gotra;
+    }
 }

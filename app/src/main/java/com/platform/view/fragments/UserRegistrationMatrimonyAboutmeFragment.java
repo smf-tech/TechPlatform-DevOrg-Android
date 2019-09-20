@@ -102,7 +102,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_loadnext:
-                Util.showToast("Call Submit", getActivity());
+                //Util.showToast("Call Submit", getActivity());
                 setValuesInModel();
               //  ((UserRegistrationMatrimonyActivity) getActivity()).submitUserRegistrationRequest();
                 break;

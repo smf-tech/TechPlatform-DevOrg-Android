@@ -3,6 +3,7 @@ package com.platform.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ import com.platform.presenter.MatrimonyProfilesListActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.MatrimonyProfileListRecyclerAdapter;
+import com.platform.widgets.MultiSelectBottomSheet;
+import com.platform.widgets.SingleSelectBottomSheet;
 
 import org.json.JSONObject;
 
@@ -23,18 +26,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
-public class MatrimonyProfileListActivity extends BaseActivity implements View.OnClickListener, MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
-
+public class MatrimonyProfileListActivity extends BaseActivity implements View.OnClickListener, MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked,SingleSelectBottomSheet.MultiSpinnerListener{
+    private SingleSelectBottomSheet bottomSheetDialogFragment;
     private MatrimonyProfilesListActivityPresenter tmFilterListActivityPresenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
     private RecyclerView rv_matrimonyprofileview;
-    private ArrayList<UserProfileList> userProfileLists;
+    private ArrayList<UserProfileList> userProfileLists =  new ArrayList<>();
+    private ArrayList<UserProfileList> userProfileListsFiltered =new ArrayList<>();
     private String approvalType;
     private String meetIdReceived;
 
-    private ImageView toolbar_back_action;
+    private ImageView toolbar_back_action,toolbar_edit_action;
     private TextView toolbar_title,txt_no_data;
-
+    ArrayList<String> ListDrink = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +61,18 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         txt_no_data = findViewById(R.id.txt_no_data);
         txt_no_data.setVisibility(View.VISIBLE);
         toolbar_back_action= findViewById(R.id.toolbar_back_action);
+        toolbar_back_action.setVisibility(View.VISIBLE);
+
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_edit_action.setVisibility(View.INVISIBLE);
+        toolbar_edit_action.setImageResource(R.drawable.ic_approved_icon_filter);
+
+
         toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("Profile");
-        toolbar_back_action.setOnClickListener(this::onClick);
+
+        toolbar_back_action.setOnClickListener(this);
+        toolbar_edit_action.setOnClickListener(this);
 
         rv_matrimonyprofileview = findViewById(R.id.rv_matrimonyprofileview);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -68,6 +81,24 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
         tmFilterListActivityPresenter = new MatrimonyProfilesListActivityPresenter(this);
 
+        CreateFilterList();
+        matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, userProfileLists,
+                this, this);
+        rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
+    }
+
+    private void CreateFilterList() {
+        /*ListDrink.add("Male");
+        ListDrink.add("Female");
+        ListDrink.add("Paid");
+        ListDrink.add("Yet to pay");
+        ListDrink.add("Approved");
+        ListDrink.add("Rejected");
+        ListDrink.add("Deleted");*/
+
+        ListDrink.add("Approved");
+        ListDrink.add("Rejected");
+        ListDrink.add("Pending");
     }
 
 
@@ -83,6 +114,10 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             case R.id.toolbar_back_action:
                     finish();
                 break;
+            case R.id.toolbar_edit_action:
+                showMultiSelectBottomsheet("Filter","filter",ListDrink);
+                break;
+
         }
     }
 
@@ -102,13 +137,25 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     public void showPendingApprovalRequests(List<UserProfileList> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
-            userProfileLists = (ArrayList<UserProfileList>) pendingRequestList;
-            matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, pendingRequestList,
-                    this, this);
-            rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
+            userProfileListsFiltered = (ArrayList<UserProfileList>) pendingRequestList;
+            for (int i = 0; i <userProfileListsFiltered.size(); i++) {
+                userProfileLists.add(userProfileListsFiltered.get(i));
+            }
+
+
+            /*matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, userProfileLists,
+                    this, this);*/
+           // rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
+            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
             txt_no_data.setVisibility(View.GONE);
+            if (pendingRequestList!=null &&pendingRequestList.size()>0) {
+                toolbar_edit_action.setVisibility(View.VISIBLE);
+            }else {
+                toolbar_edit_action.setVisibility(View.GONE);
+            }
         } else {
             txt_no_data.setVisibility(View.VISIBLE);
+            toolbar_edit_action.setVisibility(View.GONE);
         }
     }
 
@@ -147,6 +194,54 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         }
         if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
             userProfileLists.get(position).setIsApproved(Constants.REJECT);
+        }
+    }
+
+
+    private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
+
+        bottomSheetDialogFragment = new SingleSelectBottomSheet(this, selectedOption, List, this::onValuesSelected);
+        bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.toolbarTitle.setText(Title);
+        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+
+    @Override
+    public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
+        userProfileLists.clear();
+        if ("Approved".equalsIgnoreCase(selectedValues)){
+            for (int i = 0; i < userProfileListsFiltered.size(); i++) {
+
+                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)){
+                    userProfileLists.add(userProfileListsFiltered.get(i));
+                }
+            }
+            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+
+        }else if ("Rejected".equalsIgnoreCase(selectedValues)){
+            for (int i = 0; i < userProfileListsFiltered.size(); i++) {
+
+                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)){
+                    userProfileLists.add(userProfileListsFiltered.get(i));
+                }
+            }
+            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+
+        }else if ("Pending".equalsIgnoreCase(selectedValues)){
+            for (int i = 0; i < userProfileListsFiltered.size(); i++) {
+
+                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)){
+                    userProfileLists.add(userProfileListsFiltered.get(i));
+                }
+            }
+            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+        }else {
+            for (int i = 0; i <userProfileListsFiltered.size(); i++) {
+                userProfileLists.add(userProfileListsFiltered.get(i));
+            }
+            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
         }
     }
 }

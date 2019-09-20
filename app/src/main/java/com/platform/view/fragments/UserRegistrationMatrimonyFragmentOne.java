@@ -35,6 +35,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     ArrayList<String> ListBloodGroup = new ArrayList<>();
     ArrayList<String> ListMaritalStatus = new ArrayList<>();
     ArrayList<String> ListHeight = new ArrayList<>();
+    ArrayList<String> ListHeightTemp= new ArrayList<>();
     ArrayList<String> ListWeight = new ArrayList<>();
     ArrayList<String> ListSkintone = new ArrayList<>();
     ArrayList<String> ListmatchPatrika = new ArrayList<>();
@@ -217,8 +218,9 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_height:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")) {
-                        ListHeight = getlistHeight((ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
-                        showMultiSelectBottomsheet("Height","et_height",ListHeight);
+                        ListHeight = (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues();
+                        ListHeightTemp = getlistHeight((ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Height","et_height",ListHeightTemp);
                         break;
                     }
                 }
@@ -244,15 +246,15 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     }
 
     private ArrayList<String> getlistHeight(ArrayList<String> values) {
-        ListHeight.clear();
+        ListHeightTemp.clear();
         for (int i = 0; i <values.size() ; i++) {
             int cm = Integer.parseInt(values.get(i));
             int feet = (int) (cm/30.48);
             int inches = (int) ((cm/2.54) - (feet * 12));
             Util.logger("There are " + feet + " feet and " , inches + " inches in ");
-            ListHeight.add(feet+" feet "+inches+" inches");
+            ListHeightTemp.add(feet+" feet "+inches+" inches");
         }
-        return ListHeight;
+        return ListHeightTemp;
     }
 
     private void setValuesInModel() {

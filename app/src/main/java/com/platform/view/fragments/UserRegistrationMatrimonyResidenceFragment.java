@@ -274,8 +274,9 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         }
         else if (et_primary_mobile.getText().toString().trim().length() != 10 ) {
             msg = "Please enter the valid mobile number";//getResources().getString(R.string.msg_enter_name);
-        }else if ((!TextUtils.isEmpty(et_primary_email.getText()) && Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText()).matches())) {
-            msg = "Please enter the valid email address";//getResources().getString(R.string.msg_enter_name);
+        }else //if (et_primary_email.getText().toString().trim().length() != 0 &&
+            if (!Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText().toString().trim()).matches()) {
+            msg = getResources().getString(R.string.msg_enter_valid_email_id);
         } else if (et_country.getText().toString().trim().length() == 0) {
             msg = "Please mention the Country"; //getResources().getString(R.string.msg_enter_name);
         }

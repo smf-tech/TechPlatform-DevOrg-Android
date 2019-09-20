@@ -284,14 +284,20 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId());
                 break;
             case R.id.btn_register_profile:
-                if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime()>Util.getCurrentTimeStamp()){
-                    //Util.logger("currentTime","-> Current Time greater");
-                    Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
-                    startMain1.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
-                    startActivity(startMain1);
+                if (matrimonyMeetList.get(currentPosition).getIs_published()) {
+                    if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime() > Util.getCurrentTimeStamp()) {
+                        //Util.logger("currentTime","-> Current Time greater");
+                        Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
+                        startMain1.putExtra("meetid", matrimonyMeetList.get(currentPosition).getId());
+                        startActivity(startMain1);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Registrations closed for this meet.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Registrations closed for this meet.",
+                                    .findViewById(android.R.id.content), "This meet is not published yet.",
                             Snackbar.LENGTH_LONG);
                 }
 

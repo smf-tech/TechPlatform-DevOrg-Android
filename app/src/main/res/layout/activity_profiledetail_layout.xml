@@ -1425,7 +1425,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_other_details_lebal"
                 android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <View
                     android:id="@+id/line5"
@@ -1559,7 +1559,7 @@
                             android:id="@+id/iv_aadhar"
                             android:layout_below="@+id/tv_aadhar_lable"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/dimen_200dp"
                             android:src="@mipmap/app_logo"
                             />
                     </RelativeLayout>
@@ -1580,7 +1580,7 @@
                             android:id="@+id/iv_education_certificates"
                             android:layout_below="@+id/tv_education_certificates_lable"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/dimen_200dp"
                             android:src="@mipmap/app_logo"
                             />
 
@@ -1594,10 +1594,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+
             android:background="@color/white"
             android:layout_below="@+id/cv_other_details"
-            android:gravity="bottom"
+
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
