@@ -29,7 +29,7 @@
             android:id="@+id/tv_meet_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="155dp"
             android:gravity="center_horizontal"
             android:text="BJS Matrimonial Meet"
             android:textColor="@color/white"
@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/btn_add_leaves"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:layout_weight="5"
@@ -61,7 +61,7 @@
 
             <TextView
                 android:id="@+id/btn_compoff_request"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:layout_weight="5"
@@ -73,9 +73,7 @@
                 android:fontFamily="@font/opensans_regular"/>
 
         </LinearLayout>
-
     </RelativeLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -173,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_15dp"
                         android:text="Registration Period"
-                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawableStart="@drawable/ic_calendar_icon"
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold" />
 
@@ -190,7 +188,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_15dp"
-                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawableStart="@drawable/ic_badge_icon"
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold" />
 
@@ -255,7 +253,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
         android:backgroundTint="@color/colorPrimary"
         android:rotation="45"
         app:tint="@color/white"

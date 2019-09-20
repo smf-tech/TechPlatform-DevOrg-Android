@@ -3,6 +3,7 @@ package com.platform.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -147,6 +148,19 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 startActivity(createMatrimonyIntent);
             }
         });
+        ScrollView sv = matrimonyFragmentView.findViewById(R.id.sv_matrimony_fragment);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            sv.setOnScrollChangeListener(new ScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY > oldScrollY) {
+                        btnCreateMeet.hide();
+                    } else {
+                        btnCreateMeet.show();
+                    }
+                }
+            });
+        }
         getMeetsCall();
     }
 
