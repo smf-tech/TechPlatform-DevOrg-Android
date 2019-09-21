@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:cardBackgroundColor="@color/white"
+        android:layout_margin="@dimen/dimen_05dp"
+        app:cardCornerRadius="@dimen/dimen_05dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_regular"
+                android:textStyle="bold"
+                android:text="Approved"
+                android:layout_marginStart="@dimen/dimen_10dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_circular_pb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_label"
+                android:layout_marginStart="@dimen/dimen_30dp"
+                android:layout_marginEnd="@dimen/dimen_30dp"
+                android:layout_marginTop="@dimen/dimen_20dp">
+
+                <TextView
+                    android:id="@+id/tv_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="555"
+                    android:fontFamily="@font/opensans_regular" />
+
+                <com.budiyev.android.circularprogressbar.CircularProgressBar
+                    android:id="@+id/pb_ss_analytics"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    app:animateProgress="true"
+                    app:backgroundStrokeColor="@color/lighter_grey"
+                    app:backgroundStrokeWidth="3dp"
+                    app:drawBackgroundStroke="true"
+                    app:foregroundStrokeCap="butt"
+                    app:foregroundStrokeColor="@color/colorPrimary"
+                    app:foregroundStrokeWidth="5dp"
+                    app:indeterminate="false"
+                    app:indeterminateMinimumAngle="45"
+                    app:indeterminateRotationAnimationDuration="1200"
+                    app:indeterminateSweepAnimationDuration="600"
+                    app:maximum="100"
+                    app:progress="00"
+                    app:progressAnimationDuration="100"
+                    app:startAngle="270" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_regular"
+                android:textStyle="bold"
+                android:text="1 Lac"
+                android:textSize="@dimen/dimen_20dp"
+                android:layout_below="@id/rl_circular_pb"
+                android:layout_marginStart="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_value_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_regular"
+                android:textStyle="bold"
+                android:text="(Cubic Mtr)"
+                android:layout_below="@id/tv_value"
+                android:layout_marginStart="@dimen/dimen_10dp"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

@@ -93,22 +93,12 @@ public class Urls {
     }
 
     public class Matrimony {
-
-        public static final String MEET_REFERENCES_LIST = "api/";
-        public static final String MEET_ORGANIZERS_LIST = "api/";
-
-
         //userRegistration
         public static final String USER_REGI_MASTER = "api/masterData";
         public static final String USER_REGI_SUBMIT_API = "api/insertUser";
-
         public static final String GET_MATRIMONY_PROFILE_API = "api/getMeetUsers/%1$s";
         public static final String USER_APPROVAL_API = "api/userApproval";
-
         public static final String MARK_ATTENDANCE_INTERVIEW_API = "api/markAttendance_interview";
-
-
-
         public static final String MATRIMONY_MEETS = "api/getMeet";
         public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
         public static final String MATRIMONY_USERS_LIST = "api/getMatrimonyRoleUsers";
@@ -122,5 +112,10 @@ public class Urls {
 
         public static final String PUBLISH_SAVED_MEET = "api/meetpublished/%1$s";
         public static final String DOWNLOAD_MEET_BOOKLET = "api/downloadBooklet/%1$s/%2$s";
+    }
+
+    public class SSModule {
+        public static final String GET_SS_STRUCTURE_ANALYTICS = "api/structureAnalyst";
+        public static final String GET_SS_MACHINE_ANALYTICS = "api/structureAnalyst";
     }
 }

@@ -78,7 +78,8 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.REPORTS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY)) {
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM)) {
                         //do nothing
                     } else {
                         tabNames.remove(i);
@@ -139,6 +140,10 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.MATRIMONY:
+                    tabNames.get(i).setResId(R.id.action_menu_reports);
+                    break;
+
+                case Constants.Home.SUJALAM_SUPHALAM:
                     tabNames.get(i).setResId(R.id.action_menu_reports);
                     break;
                 default:
@@ -202,6 +207,10 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.MATRIMONY:
                     adapter.addFragment(new MatrimonyFragment());
+                    break;
+
+                case Constants.Home.SUJALAM_SUPHALAM:
+                    adapter.addFragment(new SujalamSufalamFragment());
                     break;
 
                 default:
@@ -282,6 +291,10 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.MATRIMONY:
+                    //resId = tabIcons[6];
+                    break;
+
+                case Constants.Home.SUJALAM_SUPHALAM:
                     //resId = tabIcons[6];
                     break;
                 default:

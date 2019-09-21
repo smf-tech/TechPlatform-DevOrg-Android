@@ -168,6 +168,7 @@ public class Constants {
         public static final String TO_OPEN="ToOpen";
         public static final Integer NEVIGET_TO= 001;
         public static final String MATRIMONY="Matrimony";
+        public static final String SUJALAM_SUPHALAM="SujalamSuphalam";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
