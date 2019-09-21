@@ -281,12 +281,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             tvBadgesInfo.setText(R.string.meet_badges_not_allocated);
         }
 
-//        if(matrimonyMeetList.get(position).getBadgeFanlize()){
-//            tvBadgesInfo.setText(R.string.meet_badges_finalized);
-//        } else {
-//            tvBadgesInfo.setText(R.string.meet_badges_not_finalized);
-//        }
-
         for(MatrimonyUserDetails matrimonyUserDetails: matrimonyMeetList.get(position).getMeetOrganizers()){
             contactsList.add(matrimonyUserDetails);
         }
@@ -319,14 +313,16 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 break;
             case R.id.btn_register_profile:
                 if (matrimonyMeetList.get(currentPosition).getIs_published()) {
-                    if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime() > Util.getCurrentTimeStamp()) {
+                    if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime() >= Util.getCurrentTimeStamp()
+                    && matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegStartDateTime()<= Util.getCurrentTimeStamp())
+                    {
                         //Util.logger("currentTime","-> Current Time greater");
                         Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
                         startMain1.putExtra("meetid", matrimonyMeetList.get(currentPosition).getId());
                         startActivity(startMain1);
                     } else {
                         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Registrations closed for this meet.",
+                                        .findViewById(android.R.id.content), "Registrations for this meet are not open.",
                                 Snackbar.LENGTH_LONG);
                     }
                 }else {
@@ -357,7 +353,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 Snackbar.LENGTH_LONG);
         if(status == 200){
             matrimonyMeetList.get(currentPosition).setIs_published(true);
-            //adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             btnPublishMeet.setVisibility(View.GONE);
         }
     }

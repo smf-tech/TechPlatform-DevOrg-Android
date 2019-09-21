@@ -47,7 +47,7 @@
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/frame_top"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/standard_240">
+                android:layout_height="@dimen/dimen_300dp">
 
 
                 <androidx.viewpager.widget.ViewPager
@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/dimen_10dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_share" />
 
             <TextView
@@ -97,7 +98,7 @@
                 android:visibility="gone"
                 android:fontFamily="@font/opensans_bold"
                 android:textSize="@dimen/text_size_10"
-                android:background="@drawable/ic_publish_ribbon"
+                android:background="@drawable/ic_publish_ribbon_right"
                 android:paddingStart="@dimen/dimen_05dp"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

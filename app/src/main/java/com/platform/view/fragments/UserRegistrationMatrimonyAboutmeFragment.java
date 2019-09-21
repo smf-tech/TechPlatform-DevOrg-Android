@@ -307,10 +307,14 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
     private boolean isAllInputsValid() {
         String msg = "";
 
-        /*if (et_Annual_income.getText().toString().trim().length() == 0) {
-            msg = "Please enter the mobile annual income";//getResources().getString(R.string.msg_enter_name);
-        } else*/
-        if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getProfile_image().trim().length() == 0) {
+        if (et_about_me.getText().toString().trim().length() == 0) {
+            msg = "Please enter about yourself";//getResources().getString(R.string.msg_enter_name);
+            et_about_me.requestFocus();
+        } else
+        if (et_partner_expectation.getText().toString().trim().length() == 0) {
+            msg = "Please enter about expectation from partner";//getResources().getString(R.string.msg_enter_name);
+            et_partner_expectation.requestFocus();
+        } else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getProfile_image().trim().length() == 0) {
             msg = "Please upload profile image.";//getResources().getString(R.string.msg_enter_proper_date);
         }
         else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getAadhar_url().trim().length() == 0) {

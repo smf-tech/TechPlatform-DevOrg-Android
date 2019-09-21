@@ -198,16 +198,32 @@ public class UserRegistrationMatrimonyFamilyFragment extends Fragment implements
     //Validations
     private boolean isAllInputsValid() {
         String msg = "";
+        if (et_family_type.getText().toString().trim().length() == 0) {
+            msg = "Please enter about your birth Place.";
+            et_family_type.requestFocus();
+        }else if (et_Shakha_self.getText().toString().trim().length() == 0) {
+            msg = "Please enter your Shakha/Gotra.";
+            et_Shakha_self.requestFocus();
+        }else if (et_father_name.getText().toString().trim().length() == 0) {
+            msg = "Please enter fathers full name.";
+            et_father_name.requestFocus();
+        }else if (et_father_occupation.getText().toString().trim().length() == 0) {
+            msg = "Please enter fathers occupation.";
+            et_father_occupation.requestFocus();
+        }else if (et_mothers_name.getText().toString().trim().length() == 0) {
+            msg = "Please enter mothers name.";
+            et_mothers_name.requestFocus();
+        }else if (et_mothers_occupation.getText().toString().trim().length() == 0) {
+            msg = "Please enter mothers occupation.";
+            et_mothers_occupation.requestFocus();
+        }else if (et_brother.getText().toString().trim().length() == 0) {
+            msg = "Please enter number of brothers.";
+            et_brother.requestFocus();
+        }else if (et_sister.getText().toString().trim().length() == 0) {
+            msg = "Please enter number of sisters.";
+            et_sister.requestFocus();
+        }
 
-        if (et_Shakha_self.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_name);
-        } /*else if (et_shakha_mama.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_name);
-        } else if (et_shakha_dada.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_name);
-        } else if (et_shakha_nana.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_proper_date);
-        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;

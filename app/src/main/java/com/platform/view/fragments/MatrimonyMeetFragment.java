@@ -72,9 +72,11 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if (arguments != null) {
             meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
         }
+        ImageView ivIconPublished = view.findViewById(R.id.iv_icon_published);
         if(meetData.getIs_published()){
-            ImageView ivIconPublished = view.findViewById(R.id.iv_icon_published);
-            ivIconPublished.setVisibility(View.VISIBLE);
+            ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_icon_publish));
+        } else {
+            ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_meet_saved_label));
         }
         if(meetData.getMeetImageUrl() != null && !meetData.getMeetImageUrl().isEmpty()){
             ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
@@ -275,9 +277,6 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
 
         MeetBatchesResponseModel meetBatchesResponseModel = gson.fromJson(response, MeetBatchesResponseModel.class);
         if (meetBatchesResponseModel.getStatus().equalsIgnoreCase("200")){
-
-
-
         Intent intent =new Intent(getActivity(), ShowMeetBatchesActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("batches_resposne",response);

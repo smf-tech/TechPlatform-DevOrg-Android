@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -35,10 +36,6 @@ import me.relex.circleindicator.CircleIndicator;
 
 @SuppressWarnings("CanBeFinal")
 public class MatrimonyProfileDetailsActivity extends BaseActivity implements View.OnClickListener {
-
-
-
-
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
     private RequestOptions requestOptions;
@@ -67,7 +64,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates;
     private Button btn_mark_attendance,btn_interview_done;
-    private TextView tv_approval_status;
+    private TextView tv_approval_status,tv_premium;
     private String meetIdReceived;
 
 
@@ -150,12 +147,30 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_smoke = findViewById(R.id.tv_smoke);
         tv_drink = findViewById(R.id.tv_drink);
         tv_approval_status = findViewById(R.id.tv_approval_status);
+        tv_premium  = findViewById(R.id.tv_premium);
+        if (userProfileList.isIsPremium()){
+            tv_premium.setVisibility(View.VISIBLE);
+        }
 
         tv_approval_status.setText(userProfileList.getIsApproved());
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")){
-            btn_interview_done.setVisibility(View.VISIBLE);
-            btn_mark_attendance.setVisibility(View.VISIBLE);
+            if (userProfileList.isMarkAttendance()){
+                btn_interview_done.setVisibility(View.VISIBLE);
+                btn_mark_attendance.setVisibility(View.VISIBLE);
+                btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                btn_mark_attendance.setEnabled(false);
+                if (userProfileList.isInterviewDone())
+                {
+                    btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                    btn_interview_done.setEnabled(false);
+                }
+            }else {
+                btn_interview_done.setVisibility(View.VISIBLE);
+                btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                btn_interview_done.setEnabled(false);
+                btn_mark_attendance.setVisibility(View.VISIBLE);
+            }
 
         }else {
             btn_interview_done.setVisibility(View.GONE);
@@ -326,6 +341,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             case R.id.btn_mark_attendance:
                 JSONObject jsonObject = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_ATTENDANCE);
                 matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObject,1,Constants.MARK_ATTENDANCE);
+
                 break;
             case R.id.btn_interview_done:
                 JSONObject jsonObj = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_INTERVIEW);
@@ -480,9 +496,21 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
     public void updateRequestStatus(String response, int position, String requestType) {
         if (Constants.MARK_ATTENDANCE.equalsIgnoreCase(requestType)){
-            Util.showToast(requestType+" Success",this);
+            //Util.showToast(requestType+" Success",this);
+            btn_interview_done.setEnabled(true);
+            btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.colorPrimary));
+            btn_mark_attendance.setEnabled(false);
+            btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+            Util.showSuccessFailureToast(response, this, getWindow().getDecorView()
+                    .findViewById(android.R.id.content));
         }else if (Constants.MARK_INTERVIEW.equalsIgnoreCase(requestType)){
-            Util.showToast(requestType+" Success",this);
+            //Util.showToast(requestType+" Success",this);
+            Util.showSuccessFailureToast(response, this, getWindow().getDecorView()
+                    .findViewById(android.R.id.content));
+            btn_interview_done.setEnabled(false);
+            btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+            btn_mark_attendance.setEnabled(false);
+            btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
         }
     }
 }

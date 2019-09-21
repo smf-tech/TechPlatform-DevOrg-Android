@@ -25,6 +25,43 @@ public class UserProfileList {
     @SerializedName("isPremium")
     @Expose
     private boolean isPremium;
+
+    public boolean isMarkAttendance() {
+        return markAttendance;
+    }
+
+    public void setMarkAttendance(boolean markAttendance) {
+        this.markAttendance = markAttendance;
+    }
+
+    public boolean isInterviewDone() {
+        return interviewDone;
+    }
+
+    public void setInterviewDone(boolean interviewDone) {
+        this.interviewDone = interviewDone;
+    }
+
+    public boolean isPaymentDone() {
+        return paymentDone;
+    }
+
+    public void setPaymentDone(boolean paymentDone) {
+        this.paymentDone = paymentDone;
+    }
+
+    @SerializedName("markAttendance")
+    @Expose
+    private boolean markAttendance;
+
+    @SerializedName("interviewDone")
+    @Expose
+    private boolean interviewDone;
+
+    @SerializedName("paymentDone")
+    @Expose
+    private boolean paymentDone;
+
     @SerializedName("phone")
     @Expose
     private String phone;

@@ -52,9 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:visibility="gone"
-                    android:background="@drawable/ic_icon_publish"/>
+                    android:layout_marginTop="@dimen/dimen_10dp"/>
 
             </RelativeLayout>
         </LinearLayout>

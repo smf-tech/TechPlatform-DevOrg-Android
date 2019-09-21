@@ -266,17 +266,41 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
     private boolean isAllInputsValid() {
         String msg = "";
 
-        /*if (et_Annual_income.getText().toString().trim().length() == 0) {
-            msg = "Please enter the mobile annual income";//getResources().getString(R.string.msg_enter_name);
-        } else*/
+        if (et_education.getText().toString().trim().length() == 0) {
+            msg = "Please enter education category";//getResources().getString(R.string.msg_enter_name);
+            et_education.requestFocus();
+        } else
         if (et_occupation_type.getText().toString().trim().length() == 0) {
             msg = "Please select the occupation type.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_occupation_type.requestFocus();
+        } else if (et_occupation_type.getText().toString().trim().length() == 0) {
+            msg = "Please select the occupation type.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_Annual_income.getText().toString().trim().length() == 0) {
+            msg = "Please select the annual income.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_Annual_income.requestFocus();
+        } else if (et_job_profile.getText().toString().trim().length() == 0) {
+            msg = "Please enter job description.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_job_profile.requestFocus();
+        } else if (et_address.getText().toString().trim().length() == 0) {
+            msg = "Please enter your address.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_address.requestFocus();
+        } else if (et_city_town.getText().toString().trim().length() == 0) {
+            msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_city_town.requestFocus();
+        } else if (et_state.getText().toString().trim().length() == 0) {
+            msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_state.requestFocus();
+        }
+        else if (et_country.getText().toString().trim().length() == 0) {
+            msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_country.requestFocus();
         }
         else if (et_primary_mobile.getText().toString().trim().length() != 10 ) {
             msg = "Please enter the valid mobile number";//getResources().getString(R.string.msg_enter_name);
-        }else //if (et_primary_email.getText().toString().trim().length() != 0 &&
-            if (!Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText().toString().trim()).matches()) {
+            et_primary_mobile.requestFocus();
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText().toString().trim()).matches()) {
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
+            et_primary_email.requestFocus();
         } else if (et_country.getText().toString().trim().length() == 0) {
             msg = "Please mention the Country"; //getResources().getString(R.string.msg_enter_name);
         }

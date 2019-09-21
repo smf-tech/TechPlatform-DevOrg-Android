@@ -219,8 +219,8 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")) {
                         ListHeight = (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues();
-                        ListHeightTemp = getlistHeight((ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
-                        showMultiSelectBottomsheet("Height","et_height",ListHeightTemp);
+                        //ListHeightTemp = getlistHeight((ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Height","et_height",ListHeight);
                         break;
                     }
                 }
@@ -454,10 +454,24 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
 
         if (et_first_name.getText().toString().trim().length() == 0) {
             msg = "Please enter your first name.";//getResources().getString(R.string.msg_enter_name);
+            et_first_name.requestFocus();
         } else if (et_last_name.getText().toString().trim().length() == 0) {
             msg = "Please enter your last name.";//getResources().getString(R.string.msg_enter_name);
+            et_last_name.requestFocus();
         } else if (et_birth_date.getText().toString().trim().length() == 0) {
             msg = "Please enter your birth date.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_birth_place.getText().toString().trim().length()==0)
+        {
+            msg = "Please enter your birth Place.";
+            et_birth_place.requestFocus();
+        }else if (et_blood_group.getText().toString().trim().length()==0)
+        {
+            msg = "Please enter your blood group.";
+            et_blood_group.requestFocus();
+        }else if (et_marital_status.getText().toString().trim().length()==0)
+        {
+            msg = "Please enter your marital status.";
+            et_marital_status.requestFocus();
         }
         else if (et_birth_place.getText().toString().trim().length() == 0) {
             msg = "Please enter your birth place.";//getResources().getString(R.string.msg_enter_proper_date);
@@ -476,9 +490,17 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
 
         } else if (et_height.getText().toString().trim().length() == 0) {
             msg = "Please enter your height.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_weight.getText().toString().trim().length() == 0) {
+            msg = "Please enter your weight.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_sampraday.getText().toString().trim().length() == 0) {
+            msg = "Please enter your sampraday.";//getResources().getString(R.string.msg_enter_proper_date);
         }
-        else if (et_sampraday.getText().toString().trim().length() == 0) {
-            msg = "Please enter your sampradaay.";//getResources().getString(R.string.msg_enter_proper_date);
+        else if (et_drink.getText().toString().trim().length() == 0) {
+            msg = "Please enter about your drink habit.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_smoke.getText().toString().trim().length() == 0) {
+            msg = "Please enter about your smoke habit.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_special_case.getText().toString().trim().length() == 0) {
+            msg = "Please enter about special case.";//getResources().getString(R.string.msg_enter_proper_date);
         }
 
         if (TextUtils.isEmpty(msg)) {

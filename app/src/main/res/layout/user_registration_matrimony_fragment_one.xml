@@ -282,7 +282,7 @@
                             android:focusable="false"
                             android:longClickable="false"
                             android:layout_height="wrap_content"
-                            android:hint="Height" />
+                            android:hint="Height(in Feet.Inches)" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
