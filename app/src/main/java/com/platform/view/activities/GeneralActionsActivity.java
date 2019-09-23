@@ -29,8 +29,8 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
         Bundle data = getIntent().getExtras();
         setContentView(R.layout.activity_general_actions);
         fManager = getSupportFragmentManager();
-
         if (data != null && data.containsKey("switch_fragments")) {
+
             String switchToFragment = data.getString("switch_fragments") != null
                     ? data.getString("switch_fragments") : "null";
 

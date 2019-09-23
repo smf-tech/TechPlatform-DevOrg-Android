@@ -52,7 +52,18 @@
         android:layout_margin="@dimen/dimen_20dp"
         android:layerType="software"/>
 
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_ss_view"
+        android:layout_width="wrap_content"
+        style="@style/AppStyleButton"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:background="@drawable/bg_button"
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"/>
 
 </RelativeLayout>
 

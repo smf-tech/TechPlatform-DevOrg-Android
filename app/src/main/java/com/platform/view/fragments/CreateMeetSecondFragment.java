@@ -288,7 +288,6 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(false);
             createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
         }
-
     }
 
     public boolean isAllDataValid() {

@@ -30,20 +30,21 @@ public class SujalamSuphalamFragmentPresenter implements APIPresenterListener {
 
     public void getAnalyticsData(String type){
         String getSSAnalyticsUrl = "";
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
         if(type.equals(GET_STRUCTURE_ANALYTICS)) {
             getSSAnalyticsUrl = BuildConfig.BASE_URL
                     + String.format(Urls.SSModule.GET_SS_STRUCTURE_ANALYTICS);
             Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getSSAnalyticsUrl);
+            requestCall.getDataApiCall(GET_STRUCTURE_ANALYTICS, getSSAnalyticsUrl);
         }
         if(type.equals(GET_MACHINE_ANALYTICS)){
             getSSAnalyticsUrl = BuildConfig.BASE_URL
                     + String.format(Urls.SSModule.GET_SS_MACHINE_ANALYTICS);
             Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getSSAnalyticsUrl);
+            requestCall.getDataApiCall(GET_MACHINE_ANALYTICS, getSSAnalyticsUrl);
         }
-        fragmentWeakReference.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall(GET_STRUCTURE_ANALYTICS, getSSAnalyticsUrl);
     }
 
     @Override
@@ -72,18 +73,17 @@ public class SujalamSuphalamFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                if(requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS)){
-                    SSAnalyticsAPIResponse ssAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
-                    if(ssAnalyticsData.getCode() == 200) {
-                        fragmentWeakReference.get().populateAnalyticsData(ssAnalyticsData);
+                SSAnalyticsAPIResponse ssAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
+                if (ssAnalyticsData.getCode() == 200) {
+                    if (requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS)) {
+                        fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
+                    } else if (requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
+                        fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
                     }
-                } else if(requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)){
-                    //MeetTypesAPIResponse meetTypes = PlatformGson.getPlatformGsonInstance().fromJson(response, MeetTypesAPIResponse.class);
-                    //fragmentWeakReference.get().setMatrimonyMeetTypes(meetTypes.getData());
                 }
             }
-            } catch (Exception e) {
-            fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
+        } catch (Exception e) {
+            fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
         }
     }
 }

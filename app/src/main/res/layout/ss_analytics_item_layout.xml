@@ -6,7 +6,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="220dp"
         android:layout_gravity="center_vertical"
         app:cardBackgroundColor="@color/white"
         android:layout_margin="@dimen/dimen_05dp"
@@ -14,7 +14,8 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp">
 
             <TextView
                 android:id="@+id/tv_label"
@@ -22,8 +23,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_regular"
                 android:textStyle="bold"
-                android:text="Approved"
-                android:layout_marginStart="@dimen/dimen_10dp"/>
+                android:text="Approved"/>
 
             <RelativeLayout
                 android:id="@+id/rl_circular_pb"
@@ -32,7 +32,7 @@
                 android:layout_below="@+id/tv_label"
                 android:layout_marginStart="@dimen/dimen_30dp"
                 android:layout_marginEnd="@dimen/dimen_30dp"
-                android:layout_marginTop="@dimen/dimen_20dp">
+                android:layout_marginTop="@dimen/dimen_10dp">
 
                 <TextView
                     android:id="@+id/tv_result"

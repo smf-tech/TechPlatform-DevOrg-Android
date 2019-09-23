@@ -1,8 +1,8 @@
 package com.platform.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,15 +24,13 @@ import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsData;
-import com.platform.models.forms.FormStatusCount;
-import com.platform.models.forms.FormStatusCountData;
 import com.platform.presenter.SujalamSuphalamFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.SSAnalyticsAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SujalamSufalamFragment extends Fragment implements  View.OnClickListener , APIDataListener {
 
@@ -39,10 +38,12 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private TextView tvStructureView, tvMachineView, tvToggle;
+    private Button btnSsView;
     private RecyclerView rvSSAnalytics;
     private int viewType = 1;
-    private SSAnalyticsAdapter ssAnalyticsAdapter;
-    private ArrayList<SSAnalyticsData> ssAnalyticsDataList = new ArrayList<>();
+    private SSAnalyticsAdapter structureAnalyticsAdapter, machineAnalyticsAdapter;
+    private ArrayList<SSAnalyticsData> structureAnalyticsDataList = new ArrayList<>();
+    private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
 
     @Override
@@ -87,12 +88,18 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvToggle = sujalamSufalamFragmentView.findViewById(R.id.tv_toggle);
         tvStructureView.setOnClickListener(this);
         tvMachineView.setOnClickListener(this);
+        btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
+        btnSsView.setOnClickListener(this);
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
-        ssAnalyticsAdapter = new SSAnalyticsAdapter(ssAnalyticsDataList);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        rvSSAnalytics.setAdapter(ssAnalyticsAdapter);
+
+        structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
+
+        machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
+
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
+        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
     }
 
     @Override
@@ -110,6 +117,9 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 tvMachineView.setTextColor(getResources().getColor(R.color.text_lite_grey));
                 tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.NORMAL);
                 tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
+                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
+                structureAnalyticsAdapter.notifyDataSetChanged();
+                btnSsView.setText("Structure View >");
                 break;
             case R.id.tv_machine_view:
                 viewType = 2;
@@ -118,19 +128,42 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 tvStructureView.setTextColor(getResources().getColor(R.color.text_lite_grey));
                 tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.NORMAL);
                 tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
+                rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
+                machineAnalyticsAdapter.notifyDataSetChanged();
+                btnSsView.setText("Machine View >");
+                break;
+            case R.id.btn_ss_view:
+                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent.putExtra("switch_fragments", "StructureMachineListFragment");
+                if(viewType == 1) {
+                    intent.putExtra("viewType", 1);
+                } else {
+                    intent.putExtra("viewType", 2);
+                }
+                getActivity().startActivity(intent);
                 break;
         }
     }
 
-    public void populateAnalyticsData(SSAnalyticsAPIResponse analyticsData) {
+    public void populateAnalyticsData(String requestCode, SSAnalyticsAPIResponse analyticsData) {
         if (analyticsData != null) {
-            ssAnalyticsDataList.clear();
-            for (SSAnalyticsData data : analyticsData.getData()) {
-                if (data != null) {
-                    ssAnalyticsDataList.add(data);
+            if(requestCode.equals(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS)) {
+                structureAnalyticsDataList.clear();
+                for (SSAnalyticsData data : analyticsData.getData()) {
+                    if (data != null) {
+                        structureAnalyticsDataList.add(data);
+                    }
+                }
+                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
+                structureAnalyticsAdapter.notifyDataSetChanged();
+            } else if(requestCode.equals(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
+                machineAnalyticsDataList.clear();
+                for (SSAnalyticsData data : analyticsData.getData()) {
+                    if (data != null) {
+                        machineAnalyticsDataList.add(data);
+                    }
                 }
             }
-            ssAnalyticsAdapter.notifyDataSetChanged();
         }
     }
 
@@ -173,6 +206,20 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     public void closeCurrentActivity() {
         if (getActivity() != null) {
             getActivity().onBackPressed();
+        }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (sujalamSuphalamFragmentPresenter != null) {
+            sujalamSuphalamFragmentPresenter.clearData();
+            sujalamSuphalamFragmentPresenter = null;
         }
     }
 }
