@@ -116,8 +116,8 @@ public class ShowBachesDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onItemClicked(int pos) {
-        LandingPageRequest pendingRequest = pendingRequestList.get(pos);
-        showActionPopUp(pendingRequest);
+        /*LandingPageRequest pendingRequest = pendingRequestList.get(pos);
+        showActionPopUp(pendingRequest);*/
     }
 
     private void showActionPopUp(final LandingPageRequest pendingRequest) {
