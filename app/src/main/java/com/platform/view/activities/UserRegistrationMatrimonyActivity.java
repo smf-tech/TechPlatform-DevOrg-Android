@@ -1,7 +1,16 @@
 package com.platform.view.activities;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -186,4 +195,55 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        String message = "Profile registration is incomplete,\ndata will be discarded on exit.\nDo you want to Exit? ";
+        showApproveRejectDialog(this, 1, " ", message);
+    }
+
+
+    //ApproveReject Confirm dialog
+    public void showApproveRejectDialog(final Activity context, int pos, String approvalType, String dialogMessage) {
+        Dialog dialog;
+        Button btnSubmit, btn_cancel;
+        EditText edt_reason;
+        TextView tv_message;
+        Activity activity = context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_exit_confirm_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        tv_message = dialog.findViewById(R.id.tv_message);
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
+
+        tv_message.setText(dialogMessage);
+
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (approvalType.equalsIgnoreCase(Constants.APPROVE)) {
+                    //callApproveAPI(pos);
+                }
+                if (approvalType.equalsIgnoreCase(Constants.REJECT)) {
+                    //callRejectAPI(pos);
+                }
+                dialog.dismiss();
+                finish();
+            }
+        });
+        dialog.show();
+
+    }
 }

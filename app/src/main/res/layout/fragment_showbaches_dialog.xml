@@ -3,9 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/layout_title"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_male_label"
+            style="@style/StyleTextViewLable"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:text="Male"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_female_label"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:text="Female"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="@style/StyleTextViewLable"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@+id/layout_title"
         android:layout_height="wrap_content">
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

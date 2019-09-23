@@ -50,7 +50,7 @@ public class ProfileImagesPagerAdapter extends PagerAdapter {
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(48);*/
         final ImageView imageView = new ImageView(context);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         //bannerObject = bannerList.get(position);
         if (profileImageList != null) {

@@ -72,11 +72,14 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if (arguments != null) {
             meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
         }
-        ImageView ivIconPublished = view.findViewById(R.id.iv_icon_published);
+        TextView ivIconPublished = view.findViewById(R.id.iv_icon_published);
         if(meetData.getIs_published()){
-            ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_icon_publish));
+            ivIconPublished.setText("Published");//(getResources().getDrawable(R.drawable.ic_icon_publish));
         } else {
-            ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_meet_saved_label));
+            ivIconPublished.setText(" Saved");//ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_meet_saved_label));
+        }
+        if (meetData.getArchive()){
+            ivIconPublished.setText("Archived");
         }
         if(meetData.getMeetImageUrl() != null && !meetData.getMeetImageUrl().isEmpty()){
             ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
@@ -108,6 +111,8 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 if(meetData.getArchive()){
                     popup.getMenu().findItem(R.id.action_archive).setVisible(false);
                 }
+                //else if (meetData.getSchedule().getDateTime())
+
                 popup.show();
             }
         });

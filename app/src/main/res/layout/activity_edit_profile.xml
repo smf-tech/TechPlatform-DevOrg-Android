@@ -66,6 +66,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/first_name"
                     android:inputType="text|textCapWords"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 

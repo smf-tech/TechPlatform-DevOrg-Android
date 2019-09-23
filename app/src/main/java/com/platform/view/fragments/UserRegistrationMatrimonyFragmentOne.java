@@ -228,7 +228,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_complexion:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("complexion")) {
-                        showMultiSelectBottomsheet("complexion","et_complexion", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Complexion","et_complexion", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -363,13 +363,13 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         ListBloodGroup.add("O+");
         ListBloodGroup.add("O-");
 
-        ListDrink.add("no");
-        ListDrink.add("yes");
-        ListDrink.add("occasionally");
+        ListDrink.add("No");
+        ListDrink.add("Yes");
+        ListDrink.add("Occasionally");
 
-        ListSmoke.add("no");
-        ListSmoke.add("yes");
-        ListSmoke.add("occasionally");
+        ListSmoke.add("No");
+        ListSmoke.add("Yes");
+        ListSmoke.add("Occasionally");
 
         ListmatchPatrika.add("Yes");
         ListmatchPatrika.add("No");
@@ -475,8 +475,14 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         }
         else if (et_birth_place.getText().toString().trim().length() == 0) {
             msg = "Please enter your birth place.";//getResources().getString(R.string.msg_enter_proper_date);
-        }else if (!TextUtils.isEmpty(et_age.getText())){
-            if (userGender.equalsIgnoreCase(Constants.Login.MALE)){
+        }else if (!TextUtils.isEmpty(et_age.getText()) && userGender.equalsIgnoreCase(Constants.Login.MALE) && Integer.parseInt(et_age.getText().toString())<21)
+        {
+            msg = "Please enter valid marital age.";
+        }else if (!TextUtils.isEmpty(et_age.getText()) && userGender.equalsIgnoreCase(Constants.Login.MALE) && Integer.parseInt(et_age.getText().toString())<18)
+        {
+            msg = "Please enter valid marital age.";
+        }/*else
+        if (userGender.equalsIgnoreCase(Constants.Login.MALE)){
                 if (Integer.parseInt(et_age.getText().toString())<21)
                 {
                     msg = "Please enter valid marital age.";
@@ -488,7 +494,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                 }
             }
 
-        } else if (et_height.getText().toString().trim().length() == 0) {
+        } */else if (et_height.getText().toString().trim().length() == 0) {
             msg = "Please enter your height.";//getResources().getString(R.string.msg_enter_proper_date);
         }else if (et_weight.getText().toString().trim().length() == 0) {
             msg = "Please enter your weight.";//getResources().getString(R.string.msg_enter_proper_date);
