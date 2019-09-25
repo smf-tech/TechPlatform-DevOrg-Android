@@ -80,7 +80,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             userProfileList = gson.fromJson(filterTypeReceived, UserProfileList.class);
         }
         meetIdReceived = getIntent().getStringExtra("meetid");
-        requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         initView();
     }

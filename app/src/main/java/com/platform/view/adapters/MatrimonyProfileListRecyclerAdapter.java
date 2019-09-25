@@ -33,7 +33,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
             this.dataList = dataListreceived;
             this.clickListener =clickListener;
             this.buttonClickListner = approveRejectClickedListner;
-             requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+             requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
             requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         }
 

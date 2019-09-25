@@ -135,6 +135,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                     isSearchVisible = true;
                     editSearch.setVisibility(View.GONE);
                     toolbar_action.setImageResource(R.drawable.ic_search);
+                    filter("");
                 }
                 break;
 
@@ -179,8 +180,10 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             txt_no_data.setVisibility(View.GONE);
             if (pendingRequestList != null && pendingRequestList.size() > 0) {
                 //toolbar_edit_action.setVisibility(View.GONE);
+                txt_no_data.setVisibility(View.GONE);
             } else {
                 //toolbar_edit_action.setVisibility(View.GONE);
+                txt_no_data.setVisibility(View.VISIBLE);
             }
         } else {
             txt_no_data.setVisibility(View.VISIBLE);
@@ -301,6 +304,12 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             }
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
         }
+        if (userProfileLists.size()>0)
+        {
+            txt_no_data.setVisibility(View.GONE);
+        }else {
+            txt_no_data.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -359,4 +368,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     }
 
+    public void setTxt_no_data(){
+        txt_no_data.setVisibility(View.VISIBLE);
+    }
 }

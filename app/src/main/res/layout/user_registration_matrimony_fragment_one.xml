@@ -23,7 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="2dp"
             android:gravity="center"
-            android:text="Lets create your profile\nAdd some personal deatails"
+            android:text="Lets create your profile\nAdd some personal details"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +139,7 @@
                             <RadioButton
                                 android:id="@+id/gender_other"
                                 style="@style/GenderTypes"
+                                android:visibility="gone"
                                 android:text="@string/other" />
                         </RadioGroup>
 

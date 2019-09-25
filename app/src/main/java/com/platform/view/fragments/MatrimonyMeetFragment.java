@@ -142,6 +142,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             if(status == 200){
                 popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                 meetData.setBadgeFanlize(true);
+                MatrimonyFragment.getInstance().updateBadgeStatus(true);
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)){
@@ -154,6 +155,12 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
                 MatrimonyFragment.getInstance().updateMeetList();
+            }
+        }
+        if(requestId.equals(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES)){
+            if(status == 200){
+                //matrimonyMeetList.get(currentPosition).setIs_published(true);
+                MatrimonyFragment.getInstance().updateBadgeStatus(false);
             }
         }
     }

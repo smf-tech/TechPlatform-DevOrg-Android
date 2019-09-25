@@ -49,7 +49,7 @@
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/matrimony_name_label"
                         android:maxLength="50"
-                        android:inputType="textMultiLine"/>
+                        android:inputType="textMultiLine|textCapWords"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -136,7 +136,7 @@
                     <EditText
                         android:id="@+id/edit_meet_venue"
                         style="@style/RegistrationEditTextLayout"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textCapWords"
                         android:hint="@string/matrimony_venue_label" />
                     </com.google.android.material.textfield.TextInputLayout>
 

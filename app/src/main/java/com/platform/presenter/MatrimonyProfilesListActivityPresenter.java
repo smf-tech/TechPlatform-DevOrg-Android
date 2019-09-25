@@ -73,6 +73,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
             }
             } catch (JSONException e) {
                 e.printStackTrace();
+                fragmentWeakReference.get().setTxt_no_data();
             }
         }
     }

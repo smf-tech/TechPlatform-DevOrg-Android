@@ -361,4 +361,13 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void updateMeetList(){
         getMeetsCall();
     }
+
+    public void updateBadgeStatus(boolean badgeAllocatedandFinalisedflag){
+
+            if(badgeAllocatedandFinalisedflag){
+                tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
+            } else {
+                tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
+            }
+    }
 }

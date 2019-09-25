@@ -29,7 +29,7 @@ public class ShowBachesRecyclerAdapter extends RecyclerView.Adapter<ShowBachesRe
         mContext = context;
         this.dataList = male;
         this.clickListener = clickListener;
-        requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
         requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
     }
 

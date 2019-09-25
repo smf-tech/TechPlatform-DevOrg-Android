@@ -277,6 +277,12 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     UserRegistrationMatrimonyActivity.personalDetails.setHeight(heightSelected);
                     UserRegistrationMatrimonyActivity.personalDetails.setWeight(et_weight.getText().toString());   //getWeightValidated(Integer.parseInt(et_weight.getText().toString())));//et_weight.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setComplexion(et_complexion.getText().toString());
+                    if (et_patrika_match.getText().toString().equalsIgnoreCase("yes"))
+                    {
+                        UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(true);
+                    }else {
+                        UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(false);
+                    }
                     UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(Boolean.parseBoolean("YES"));
                     UserRegistrationMatrimonyActivity.personalDetails.setSect(et_sampraday.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setSmoke(et_smoke.getText().toString());
