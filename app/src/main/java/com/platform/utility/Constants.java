@@ -340,8 +340,11 @@ public class Constants {
         public static final String CONTENT_TOOLBAR_TEXT="ContentManagement";
     }
 
-    public static class Matrimony{
-        public static final String ORGANIZERS_LABEL = "Organizers";
-        public static final String REFERENCES_LABEL = "References";
+    public static class SSModule{
+        public static final String DISTRICT_LEVEL = "District Manager";
+        public static final String TALUKA_LEVEL = "Taluka Coordinator";
+        public static final String FIELD_LEVEL = "Field Associate";
+        public static final String OPERATOR = "Operator";
     }
+
 }

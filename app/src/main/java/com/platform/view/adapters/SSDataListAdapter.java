@@ -1,8 +1,14 @@
 package com.platform.view.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,16 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
-import com.platform.models.SujalamSuphalam.SSAnalyticsData;
-import com.platform.models.leaves.LeaveData;
+import com.platform.utility.Util;
+import com.platform.view.activities.SSActionsActivity;
 
 import java.util.ArrayList;
 
 public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder>  {
     private ArrayList<MachineData> ssDataList;
+    Activity activity;
 
-    public SSDataListAdapter(ArrayList<MachineData> ssDataList){
+
+    public SSDataListAdapter(Activity activity, ArrayList<MachineData> ssDataList){
         this.ssDataList = ssDataList;
+        this.activity = activity;
+        if(Util.getUserObjectFromPref().getRoleNames().equals("Operator")){
+        }
     }
     @NonNull
     @Override
@@ -31,20 +42,35 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull SSDataListAdapter.ViewHolder holder, int position) {
         MachineData machineData = ssDataList.get(position);
-//        holder.tvLabel.setText(ssAnalyticsData.getStatus());
-//        holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()));
-//        holder.tvValue.setVisibility(View.INVISIBLE);
-//        holder.tvValueUnit.setVisibility(View.INVISIBLE);
+        holder.tvStatus.setText(machineData.getStatus());
+        holder.tvMachineCode.setText(machineData.getMachineCode());
+        holder.tvCapacity.setText(machineData.getDiselTankCapacity());
+        holder.tvProvider.setText(machineData.getProviderName());
+        holder.tvMachineModel.setText(machineData.getMakeModel());
+        holder.tvContact.setText(machineData.getProviderContactNumber());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvLabel, tvResult, tvValue, tvValueUnit;
+        TextView tvStatus, tvReason, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
+        Button btnDetails;
         ViewHolder(View itemView){
             super(itemView);
-//            tvLabel = itemView.findViewById(R.id.tv_label);
-//            tvResult = itemView.findViewById(R.id.tv_result);
-//            tvValue = itemView.findViewById(R.id.tv_value);
-//            tvValueUnit = itemView.findViewById(R.id.tv_value_unit);
+            tvStatus = itemView.findViewById(R.id.tv_status);
+            tvMachineCode = itemView.findViewById(R.id.tv_machine_code);
+            tvCapacity = itemView.findViewById(R.id.tv_capacity);
+            tvProvider = itemView.findViewById(R.id.tv_provider);
+            tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
+            tvContact = itemView.findViewById(R.id.tv_contact);
+            btnDetails = itemView.findViewById(R.id.btn_details);
+            btnDetails.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(activity, SSActionsActivity.class);
+                        intent.putExtra("switch_fragments", "MachineDetailsFragment");
+                        intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                        activity.startActivity(intent);
+                    }
+                });
         }
     }
 

@@ -10,13 +10,13 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_300dp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
         <RelativeLayout
-            android:id="@+id/leave_title_layout"
+            android:id="@+id/rl_machine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -25,13 +25,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="Eligible"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:padding="@dimen/dimen_10dp"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:paddingEnd="@dimen/dimen_10dp"
                 android:background="@drawable/bg_status_label"
                 android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_status"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/tv_code_label"
@@ -39,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_status"
                 android:text="Machine Code"
+                android:textSize="@dimen/dimen_10dp"
                 android:layout_marginStart="@dimen/dimen_10dp"/>
 
             <TextView
@@ -46,9 +56,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_code_label"
-                android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
-                android:text="ASDE45GT5555"/>
+                android:fontFamily="@font/opensans_semibold"/>
 
             <TextView
                 android:id="@+id/tv_capacity_label"
@@ -57,16 +66,34 @@
                 android:layout_below="@+id/tv_machine_code"
                 android:text="Diesel Capacity"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginStart="@dimen/dimen_10dp"/>
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
 
             <TextView
                 android:id="@+id/tv_capacity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_capacity_label"
-                android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
-                android:text="150 Litres"/>
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_provider_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_capacity"
+                android:text="Provider Name"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_provider_label"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
 
             <TextView
                 android:id="@+id/tv_machine_label"
@@ -75,7 +102,8 @@
                 android:layout_below="@+id/tv_status"
                 android:layout_alignParentEnd="true"
                 android:text="Machine Model"
-                android:layout_marginEnd="@dimen/dimen_10dp"/>
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
 
             <TextView
                 android:id="@+id/tv_machine_model"
@@ -83,9 +111,59 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_machine_label"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:text="TATA HOTACHI 2OO"/>
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_machine_model"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_label_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_label"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_contact_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_label_value"
+                android:layout_alignParentEnd="true"
+                android:text="Contact Number"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_contact_label"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <Button
+                android:id="@+id/btn_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_contact"
+                android:layout_centerHorizontal="true"
+                style="@style/RegistrationEditTextLayout"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:text="View Details" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

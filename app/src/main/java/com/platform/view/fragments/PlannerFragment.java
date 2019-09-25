@@ -63,6 +63,7 @@ import com.platform.utility.Util;
 import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.LoginActivity;
 import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.adapters.EventTaskListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
@@ -119,6 +120,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     private String checkOutText;
     private String prefCheckInTime;
     Timer timer;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -289,6 +291,21 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     @Override
     public <T> void showNextScreen(T data) {
 
+    }
+
+    public void logOutUser() {
+        // remove user related shared pref data
+
+        Util.saveLoginObjectInPref("");
+
+        try {
+            Intent startMain = new Intent(getActivity(), LoginActivity.class);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(startMain);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
