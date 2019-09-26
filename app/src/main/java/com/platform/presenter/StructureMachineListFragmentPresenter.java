@@ -14,7 +14,6 @@ import com.platform.request.APIRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
-import com.platform.utility.Util;
 import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.lang.ref.WeakReference;

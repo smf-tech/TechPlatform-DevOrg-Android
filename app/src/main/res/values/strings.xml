@@ -491,4 +491,7 @@
     <string name="meet_badges_allocated_not_finalized">Meet badges has been allocated but not finalized.</string>
     <string name="meet_badges_not_allocated">Meet badges has not been allocated.</string>
     <string name="meet_timings_validation">Meet start time should be before meet end time.</string>
+    <string name="machine_mou_form">Machine MOU Record</string>
+    <string name="machine_owned_by">Machine owned by?</string>
+    <string name="mou_id">MOU Unique ID Number</string>
 </resources>

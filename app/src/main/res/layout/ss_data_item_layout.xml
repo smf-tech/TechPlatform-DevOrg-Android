@@ -153,17 +153,17 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:fontFamily="@font/opensans_semibold"/>
 
-            <Button
-                android:id="@+id/btn_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_contact"
-                android:layout_centerHorizontal="true"
-                style="@style/RegistrationEditTextLayout"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:textColor="@android:color/white"
-                android:text="View Details" />
+            <!--<Button-->
+                <!--android:id="@+id/btn_details"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/tv_contact"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--style="@style/RegistrationEditTextLayout"-->
+                <!--android:paddingStart="@dimen/dimen_10dp"-->
+                <!--android:paddingBottom="@dimen/dimen_10dp"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:text="View Details" />-->
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

@@ -79,6 +79,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
+        structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
         if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
             tvTalukaFilter.setOnClickListener(this);
             if(tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length()>0) {

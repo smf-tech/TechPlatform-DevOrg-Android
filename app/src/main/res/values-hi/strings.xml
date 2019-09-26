@@ -402,5 +402,8 @@
 
     <string name="birth_place">Birth Place</string>
     <string name="age">Age</string>
+    <string name="machine_mou_form">Machine MOU Record</string>
+    <string name="machine_owned_by">Machine owned by?</string>
+    <string name="mou_id">MOU Unique ID Number</string>
 
 </resources>

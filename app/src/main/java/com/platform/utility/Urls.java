@@ -119,6 +119,7 @@ public class Urls {
         public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalytics";
         public static final String GET_SS_STRUCTURE_LIST = "api/structureList";
         public static final String GET_SS_MACHINE_LIST = "api/machineList";
+        public static final String UPDATE_STRUCTURE_MACHINE_STATUS = "api/statusChange/%1$s/%2$s/%3$s/%4$s";
 
     }
 }

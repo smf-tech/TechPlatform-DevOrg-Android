@@ -29,10 +29,10 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         ivBackIcon.setOnClickListener(this);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
-        if (data != null && data.containsKey("switch_fragments")) {
+        if (data != null && data.containsKey("SwitchToFragment")) {
 
-            String switchToFragment = data.getString("switch_fragments") != null
-                    ? data.getString("switch_fragments") : "null";
+            String switchToFragment = data.getString("SwitchToFragment") != null
+                    ? data.getString("SwitchToFragment") : "null";
 
             String title = data.getString("title") != null
                     ? data.getString("title") : "";

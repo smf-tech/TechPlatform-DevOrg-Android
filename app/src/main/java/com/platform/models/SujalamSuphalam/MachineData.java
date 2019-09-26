@@ -3,7 +3,9 @@ package com.platform.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MachineData {
+import java.io.Serializable;
+
+public class MachineData  implements Serializable {
 
 
     @SerializedName("_id")
@@ -48,6 +50,9 @@ public class MachineData {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("statusCode")
+    @Expose
+    private Integer statusCode;
 
     public String getId() {
         return id;
@@ -159,6 +164,14 @@ public class MachineData {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
 }

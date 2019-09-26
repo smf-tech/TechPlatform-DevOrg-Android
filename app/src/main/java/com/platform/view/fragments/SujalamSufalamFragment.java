@@ -134,13 +134,13 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 break;
             case R.id.btn_ss_view:
                 Intent intent = new Intent(getActivity(), SSActionsActivity.class);
-                intent.putExtra("switch_fragments", "StructureMachineListFragment");
+                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 if(viewType == 1) {
                     intent.putExtra("viewType", 1);
-                    intent.putExtra("switch_fragments", "Structure List");
+                    intent.putExtra("title", "Structure List");
                 } else {
                     intent.putExtra("viewType", 2);
-                    intent.putExtra("switch_fragments", "Machine List");
+                    intent.putExtra("title", "Machine List");
                 }
                 getActivity().startActivity(intent);
                 break;

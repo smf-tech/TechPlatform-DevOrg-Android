@@ -3,6 +3,7 @@ package com.platform.view.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.utility.Util;
+import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
 
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.ArrayList;
 public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder>  {
     private ArrayList<MachineData> ssDataList;
     Activity activity;
-
 
     public SSDataListAdapter(Activity activity, ArrayList<MachineData> ssDataList){
         this.ssDataList = ssDataList;
@@ -53,6 +54,7 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvReason, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
         Button btnDetails;
+        RelativeLayout rlMachine;
         ViewHolder(View itemView){
             super(itemView);
             tvStatus = itemView.findViewById(R.id.tv_status);
@@ -61,16 +63,34 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvContact = itemView.findViewById(R.id.tv_contact);
-            btnDetails = itemView.findViewById(R.id.btn_details);
-            btnDetails.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            rlMachine = itemView.findViewById(R.id.rl_machine);
+//            btnDetails = itemView.findViewById(R.id.btn_details);
+//            btnDetails.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(activity, SSActionsActivity.class);
+//                    intent.putExtra("switch_fragments", "MachineDetailsFragment");
+//                    intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                    activity.startActivity(intent);
+//                }
+//            });
+            rlMachine.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("New") ) {
                         Intent intent = new Intent(activity, SSActionsActivity.class);
-                        intent.putExtra("switch_fragments", "MachineDetailsFragment");
-                        intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                        intent.putExtra("SwitchToFragment", "MachineDetailsFragment");
+                        intent.putExtra("title", "Machine Details");
+                        intent.putExtra("machineData", ssDataList.get(getAdapterPosition()));
                         activity.startActivity(intent);
+                    } if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Eligible")){
+                        Intent mouIntent = new Intent(activity, MachineMouActivity.class);
+                        mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                        activity.startActivity(mouIntent);
                     }
-                });
+                }
+            });
         }
     }
 
