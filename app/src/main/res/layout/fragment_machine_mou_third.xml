@@ -1,0 +1,281 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.platform.view.fragments.MachineMouFirstFragment"
+    android:background="@color/base_background_color">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_contract_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/textinputstyle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/edt_contract_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:drawableEnd="@drawable/ic_cal_event"
+                    android:focusable="false"
+                    android:hint="@string/contract_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/edt_rate1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/rate1_label"
+                    android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_rate1_dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tly_title"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:weightSum="10">
+
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ly_rate1_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textinputstyle"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_rate1_start_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/rate1_start_date"
+                        android:inputType="date"
+                        tools:ignore="Autofill"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ly_rate1_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_rate1_end_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="@string/rate1_end_date"
+                        android:inputType="date"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        tools:ignore="Autofill"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/edt_rate2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/rate2_label"
+                    android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_rate2_dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:weightSum="10">
+
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ly_rate2_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textinputstyle"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_rate2_start_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/rate2_start_date"
+                        android:inputType="date"
+                        tools:ignore="Autofill"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ly_rate2_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_rate2_end_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="@string/rate2_end_date"
+                        android:inputType="date"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        tools:ignore="Autofill"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/edt_rate3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/rate3_label"
+                    android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ly_rate3_dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:weightSum="10">
+
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ly_rate3_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textinputstyle"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_rate3_start_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/rate3_start_date"
+                        android:inputType="date"
+                        tools:ignore="Autofill"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ly_rate3_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_weight="5"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/edt_rate3_end_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="@string/rate3_end_date"
+                        android:inputType="date"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        tools:ignore="Autofill"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/event_pic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_img" />
+
+            <com.platform.view.customs.TextViewSemiBold
+                android:id="@+id/event_pic_label"
+                style="@style/FormLabel"
+                android:layout_below="@+id/event_pic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_gravity="center"
+                android:text="@string/event_pic"
+                android:textColor="@color/medium_grey"
+                android:fontFamily="@font/opensans"
+                android:textSize="@dimen/text_size_14" />
+
+            <Button
+            android:id="@+id/btn_third_part_mou"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AppStyleButton"
+            android:layout_gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="@string/meet_next_label"
+            android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

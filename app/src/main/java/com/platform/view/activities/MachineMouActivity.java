@@ -10,17 +10,28 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.platform.R;
-import com.platform.models.SujalamSuphalam.MachineMouData;
+import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.MachineDetailData;
 import com.platform.view.fragments.MachineMouFirstFragment;
+import com.platform.view.fragments.MachineMouFourthFragment;
+import com.platform.view.fragments.MachineMouSecondFragment;
+import com.platform.view.fragments.MachineMouThirdFragment;
 
-public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener {
+public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
     private ImageView ivBackIcon;
     private FragmentManager fManager;
     private Fragment fragment;
-    private MachineMouData machineMouData;
+    private MachineDetailData machineDetailData;
+    private static final String TAG = MachineMouActivity.class.getName();
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
+    private String machineId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +48,8 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
         if(getIntent().getStringExtra("SwitchToFragment")!=null){
             if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
-                machineMouData = new MachineMouData();
+                machineId = getIntent().getStringExtra("machineId");
+                machineDetailData = new MachineDetailData();
                 fManager = getSupportFragmentManager();
                 fragment = new MachineMouFirstFragment();
                 FragmentTransaction fTransaction = fManager.beginTransaction();
@@ -53,10 +65,13 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         if (!TextUtils.isEmpty(switchToFragment)) {
             switch (switchToFragment) {
                 case "MachineMouSecondFragment":
-                    //fragment = new MachineMouSecondFragment();
+                    fragment = new MachineMouSecondFragment();
                     break;
                 case "MachineMouThirdFragment":
-                    //fragment = new MachineMouThirdFragment();
+                    fragment = new MachineMouThirdFragment();
+                    break;
+                case "MachineMouFourthFragment":
+                    fragment = new MachineMouFourthFragment();
                     break;
             }
         }
@@ -66,12 +81,12 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 .commit();
     }
 
-    public MachineMouData getMachineMouData() {
-        return machineMouData;
+    public MachineDetailData getMachineDetailData() {
+        return machineDetailData;
     }
 
-    public void setMachineMouData(MachineMouData machineMouData) {
-        this.machineMouData = machineMouData;
+    public void setMachineDetailData(MachineDetailData machineMouData) {
+        this.machineDetailData = machineMouData;
     }
 
     @Override
@@ -96,5 +111,35 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     protected void onDestroy() {
         fragment = null;
         super.onDestroy();
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
     }
 }

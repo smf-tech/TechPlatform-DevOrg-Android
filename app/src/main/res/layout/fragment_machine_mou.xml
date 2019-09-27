@@ -21,43 +21,171 @@
             android:layout_marginEnd="@dimen/dimen_10dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tly_owner_type"
                 style="@style/textinputstyle"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_owner_type"
+                    android:id="@+id/et_owner_type"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_owned_by"
-                    android:inputType="textMultiLine"
-                    android:focusable="false"/>
+                    android:inputType="textMultiLine"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tly_mou_id"
                 style="@style/textinputstyle"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_mou_id"
+                    android:id="@+id/et_uniqueId_number"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/mou_id"
-                    android:inputType="textMultiLine"
-                    android:focusable="false"/>
+                    android:inputType="textMultiLine"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/dimen_10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/et_meet_country"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/district"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/et_meet_state"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/taluka"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_machine_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/machine_type"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_year"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/manufacturing_year"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_machine_make_model"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/make_model_machine"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_meter_working"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/meter_working"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_rto_number"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/machine_rto_number"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_chasis_number"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/chasis_number"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_excavation_capacity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/excavation_capacity"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_diesel_capacity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/diesel_capacity"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_first_part_mou"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppStyleButton"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:text="@string/meet_next_label"
+                android:layout_below="@+id/card_create_meet"
+                android:textColor="@android:color/white"/>
+
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
-
-
-
 </RelativeLayout>
-
-
-

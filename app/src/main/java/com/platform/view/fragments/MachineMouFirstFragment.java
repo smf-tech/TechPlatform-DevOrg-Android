@@ -7,19 +7,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.presenter.MachineMouFragmentPresenter;
+import com.platform.utility.Util;
+import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
@@ -32,6 +37,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     String machineId;
     private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
     private EditText editOwnerType;
+    private Button btnFirstPartMou;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +55,16 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         Bundle bundle = this.getArguments();
-        machineId = bundle.getString("machineId");
+//        machineId = bundle.getString("machineId");
+        init();
     }
 
-    private void init(){
+    private void init() {
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
+        btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
+        btnFirstPartMou.setOnClickListener(this);
     }
 
     @Override
@@ -112,7 +121,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 //        if (getActivity() != null) {
 //            getActivity().onBackPressed();
 //        }
-            getActivity().finish();
+        getActivity().finish();
     }
 
     @Override
@@ -122,13 +131,16 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.edit_owner_type:
+        switch (view.getId()) {
+            case R.id.edt_contract_date:
                 CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "Select Owner Type",
                         mOwnerTypeList, false);
                 cddCity.show();
                 cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.btn_first_part_mou:
+                ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
                 break;
         }
     }
