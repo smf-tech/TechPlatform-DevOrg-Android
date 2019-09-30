@@ -210,7 +210,7 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                 } else {
                     tvCheckInTime.setText("");
                     tvCheckOutTime.setText("");
-                    tvStatus.setText("Not Found");
+                    tvStatus.setText("Check-In pending");
                 }
             }
         }

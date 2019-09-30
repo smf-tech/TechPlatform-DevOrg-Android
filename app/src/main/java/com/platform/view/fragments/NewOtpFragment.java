@@ -34,10 +34,15 @@ import com.platform.models.user.User;
 import com.platform.presenter.OtpFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 import com.platform.view.activities.EditProfileActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OtpActivity;
+import com.platform.view.activities.SplashActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -496,7 +501,23 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         } catch (Exception e) {
             Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");
         }
+        checkAndUpdateFirebase();
     }
+
+      public void checkAndUpdateFirebase() {
+
+          PreferenceHelper  preferenceHelper = new PreferenceHelper(getContext());
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("firebase_id", preferenceHelper.getString(preferenceHelper.TOKEN));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject != null) {
+            Util.updateFirebaseIdRequests(jsonObject);
+        }
+    }
+
 
     @Override
     public void showErrorMessage(String result) {
