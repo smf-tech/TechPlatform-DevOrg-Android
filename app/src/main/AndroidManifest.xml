@@ -38,11 +38,13 @@
         <activity android:name=".view.activities.MatrimonyProfileDetailsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".view.activities.MachineMouActivity"></activity>
+        <activity android:name=".view.activities.SSActionsActivity" />
+
         <activity android:name=".view.activities.NotificationsActivity" />
         <activity android:name=".view.activities.ContentDownloadedActivity" />
         <activity android:name=".view.activities.CreateMatrimonyMeetActivity" />
         <activity android:name=".view.activities.ShowMeetBatchesActivity" />
-
         <activity android:name=".view.activities.BaseActivity" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -151,7 +153,7 @@
         <service
             android:name=".services.AttendanceService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

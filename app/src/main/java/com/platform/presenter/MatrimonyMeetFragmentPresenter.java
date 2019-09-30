@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.events.CommonResponse;
-import com.platform.request.MatrimonyMeetRequestCall;
+import com.platform.request.APIRequestCall;
 import com.platform.utility.Urls;
 import com.platform.view.fragments.MatrimonyMeetFragment;
 
@@ -106,7 +106,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
     }
 
     public void meetArchiveDelete(String meetId, String type) {
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
         final String meetArchiveDeleteUrl = BuildConfig.BASE_URL
@@ -121,7 +121,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
         }
     }
     public void meetAllocateBadges(String meetId, String type) {
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
         String meetAllocateFinalizeBadgesUrl = null;
@@ -141,7 +141,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
     }
 
     public void showMeetBaches(String meetId, String type) {
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
         String meetAllocateFinalizeBadgesUrl = null;

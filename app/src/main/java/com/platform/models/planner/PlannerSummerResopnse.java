@@ -8,7 +8,7 @@ import java.util.List;
 public class PlannerSummerResopnse {
     @SerializedName("status")
     @Expose
-    private String status;
+    private int status;
     @SerializedName("message")
     @Expose
     private String message;
@@ -16,11 +16,11 @@ public class PlannerSummerResopnse {
     @Expose
     private List<SubmoduleData> data = null;
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

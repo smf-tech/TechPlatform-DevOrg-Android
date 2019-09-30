@@ -14,11 +14,11 @@ import com.platform.utility.Util;
 
 import org.json.JSONObject;
 
-public class MatrimonyMeetRequestCall {
+public class APIRequestCall {
 
     private Gson gson;
     private APIPresenterListener apiPresenterListener;
-    private final String TAG = MatrimonyMeetRequestCall.class.getName();
+    private final String TAG = APIRequestCall.class.getName();
 
     public void setApiPresenterListener(APIPresenterListener listener) {
         this.apiPresenterListener = listener;

@@ -402,5 +402,26 @@
 
     <string name="birth_place">Birth Place</string>
     <string name="age">Age</string>
+    <string name="machine_mou_form">Machine MOU Record</string>
+    <string name="machine_owned_by">Machine owned by?</string>
+    <string name="mou_id">MOU Unique ID Number</string>
+    <string name="rate1_label">Rate 1 Amount</string>
+    <string name="contract_date">Date of signing contract</string>
+    <string name="rate1_start_date">Rate 1 From</string>
+    <string name="rate1_end_date">Rate 1 Upto</string>
+    <string name="rate2_label">Rate 2 Amount</string>
+    <string name="rate2_start_date">Rate 2 From</string>
+    <string name="rate2_end_date">Rate 2 Upto</string>
+    <string name="rate3_label">Rate 3 Amount</string>
+    <string name="rate3_start_date">Rate 3 From</string>
+    <string name="rate3_end_date">Rate 3 Upto</string>
+    <string name="machine_type">Machine Type</string>
+    <string name="manufacturing_year">Year of Manufacturing</string>
+    <string name="make_model_machine">Make and model of machine</string>
+    <string name="meter_working">Is machine meter working?</string>
+    <string name="machine_rto_number">Machine RTO number</string>
+    <string name="chasis_number">Machine chasis number</string>
+    <string name="excavation_capacity">Excavation capacity of machine per hour</string>
+    <string name="diesel_capacity">Diesel tank capacity in litres</string>
 
 </resources>

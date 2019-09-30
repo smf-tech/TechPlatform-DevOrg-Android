@@ -10,7 +10,10 @@ import com.platform.models.events.Participant;
 import com.platform.models.planner.PlannerSummerResopnse;
 import com.platform.models.planner.SubmoduleData;
 import com.platform.request.PlannerDashboardCall;
+import com.platform.request.RefreshToken;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
+import com.platform.utility.TokenRetryPolicy;
 import com.platform.view.fragments.PlannerFragment;
 
 import java.util.ArrayList;
@@ -34,8 +37,10 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
     public void onPlannerDashboardDataFetched(String response) {
         plannerFragment.hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-
             PlannerSummerResopnse data = PlatformGson.getPlatformGsonInstance().fromJson(response,PlannerSummerResopnse.class);
+            if(data.getStatus() == 1000){
+                plannerFragment.logOutUser();
+            }
             if (data != null && data.getData() != null
                     && !data.getData().isEmpty()
                     && data.getData().size() > 0) {

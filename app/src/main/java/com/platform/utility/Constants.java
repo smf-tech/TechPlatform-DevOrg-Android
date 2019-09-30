@@ -168,6 +168,7 @@ public class Constants {
         public static final String TO_OPEN="ToOpen";
         public static final Integer NEVIGET_TO= 001;
         public static final String MATRIMONY="Matrimony";
+        public static final String SUJALAM_SUPHALAM="SujalamSuphalam";
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -339,8 +340,25 @@ public class Constants {
         public static final String CONTENT_TOOLBAR_TEXT="ContentManagement";
     }
 
-    public static class Matrimony{
-        public static final String ORGANIZERS_LABEL = "Organizers";
-        public static final String REFERENCES_LABEL = "References";
+    public static class SSModule{
+        public static final String MACHINE_TYPE = "machine";
+        public static final String STRUCTURE_TYPE = "structure";
+        public static final Integer MACHINE_NEW_STATUS_CODE = 101;
+        public static final Integer MACHINE_ELIGIBLE_STATUS_CODE = 102;
+        public static final Integer MACHINE_NON_ELIGIBLE_STATUS_CODE = 103;
+        public static final Integer MACHINE_MOU_DONE_STATUS_CODE = 104;
+        public static final Integer MACHINE_MOU_TERMINATED_STATUS_CODE = 105;
+        public static final Integer MACHINE_AVAILABLE_STATUS_CODE = 106;
+        public static final Integer MACHINE_DEPLOYED_STATUS_CODE = 107;
+        public static final Integer MACHINE_WORKING_STATUS_CODE = 108;
+        public static final Integer MACHINE_BREAK_STATUS_CODE = 109;
+        public static final Integer MACHINE_STOPPED_STATUS_CODE = 110;
+        public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
+
+        public static final String DISTRICT_LEVEL = "District Manager";
+        public static final String TALUKA_LEVEL = "Taluka Coordinator";
+        public static final String FIELD_LEVEL = "Field Associate";
+        public static final String OPERATOR = "Operator";
     }
+
 }

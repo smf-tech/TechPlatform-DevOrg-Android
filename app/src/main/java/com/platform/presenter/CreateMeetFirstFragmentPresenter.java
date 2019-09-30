@@ -8,7 +8,7 @@ import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.MeetTypesAPIResponse;
 import com.platform.models.profile.JurisdictionLevelResponse;
-import com.platform.request.MatrimonyMeetRequestCall;
+import com.platform.request.APIRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
@@ -23,7 +23,6 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
     public static final String GET_MATRIMONY_MEET_TYPES ="getMatrimonyMeetTypes";
     public static final String GET_COUNTRIES = "getCountries";
     public static final String GET_STATES = "getStates";
-    public static final String GET_DISTRICTS = "getDistricts";
     public static final String GET_CITIES = "getCities";
     private final String TAG = CreateMeetFirstFragmentPresenter.class.getName();
 
@@ -40,13 +39,13 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
                 + String.format(Urls.Matrimony.MATRIMONY_MEET_TYPES);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMatrimonyMeetTypesUrl);
         fragmentWeakReference.get().showProgressBar();
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_MATRIMONY_MEET_TYPES, getMatrimonyMeetTypesUrl);
     }
 
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
 
         final String getLocationUrl = BuildConfig.BASE_URL

@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.platform.view.fragments.StructureMachineListFragment"
+    android:orientation="vertical"
+    android:background="@color/base_background_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_margin="@dimen/dimen_10dp">
+
+        <TextView
+            android:id="@+id/tv_district_filter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_30dp"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_blue_box"
+            android:hint="@string/district"
+            android:textColorHint="@color/medium_grey"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:editable="false"
+            android:longClickable="false"/>
+        <TextView
+            android:id="@+id/tv_taluka_filter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_blue_box"
+            android:hint="@string/taluka"
+            android:textColorHint="@color/medium_grey"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:editable="false"
+            android:longClickable="false"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_data_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>

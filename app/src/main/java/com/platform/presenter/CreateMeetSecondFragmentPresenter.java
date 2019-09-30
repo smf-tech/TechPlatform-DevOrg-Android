@@ -7,14 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
-import com.platform.R;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.MatrimonyMeet;
 import com.platform.models.Matrimony.MatrimonyRoleUsersAPIResponse;
-import com.platform.models.events.CommonResponse;
-import com.platform.models.leaves.LeaveData;
-import com.platform.request.MatrimonyMeetRequestCall;
-import com.platform.utility.Constants;
+import com.platform.request.APIRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -53,7 +49,7 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
                 + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST);
         Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
         fragmentWeakReference.get().showProgressBar();
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_MEET_USERS_LIST, paramjson, getMatrimonyUsersUrl);
     }
@@ -65,7 +61,7 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
                 + String.format(Urls.Matrimony.SUBMIT_MEET);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMatrimonyMeetTypesUrl);
         fragmentWeakReference.get().showProgressBar();
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(SUBMIT_MEET, paramjson, getMatrimonyMeetTypesUrl);
     }

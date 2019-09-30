@@ -133,7 +133,6 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
         leavesList.setAdapter(leavesAdapter);
     }
 
-
     private void setUIData() {
         calendarView.setOnMonthChangedListener(this);
         isMonth = !isMonth;

@@ -5,7 +5,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
-import com.platform.request.MatrimonyMeetRequestCall;
+import com.platform.request.APIRequestCall;
 import com.platform.utility.Urls;
 import com.platform.view.activities.MatrimonyBookletActivity;
 
@@ -30,7 +30,7 @@ public class MatrimonyBookletActivityPresenter implements APIPresenterListener {
                 + String.format(Urls.Matrimony.DOWNLOAD_MEET_BOOKLET, meetId, gridTypeId);
         Log.d(TAG, "downloadMeetBookletUrl: url" + downloadMeetBookletUrl);
         fragmentWeakReference.get().showProgressBar();
-        MatrimonyMeetRequestCall requestCall = new MatrimonyMeetRequestCall();
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(DOWNLOAD_MEET_BOOKLET, downloadMeetBookletUrl);
     }
