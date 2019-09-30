@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -38,6 +39,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
     private EditText editOwnerType;
     private Button btnFirstPartMou;
+    private LinearLayout llEligible;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
         btnFirstPartMou.setOnClickListener(this);
+        llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
     }
 
     @Override

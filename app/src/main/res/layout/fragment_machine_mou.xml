@@ -175,6 +175,37 @@
                     android:inputType="textMultiLine"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_eligible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btn_eligible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="Eligible" />
+
+                <Button
+                    android:id="@+id/btn_not_eligible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="Not Eligible" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btn_first_part_mou"
                 android:layout_width="match_parent"

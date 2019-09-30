@@ -20,12 +20,93 @@
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp">
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_operator_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_name"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_operator_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_contact"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_license_number"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_license_number"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/license_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:src="@drawable/ic_img" />
+
+            <com.platform.view.customs.TextViewSemiBold
+                android:id="@+id/event_pic_label"
+                style="@style/FormLabel"
+                android:layout_below="@+id/event_pic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_gravity="center"
+                android:text="@string/license_image"
+                android:textColor="@color/medium_grey"
+                android:fontFamily="@font/opensans"
+                android:textSize="@dimen/text_size_14" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_operator_training"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_training"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_app_installed"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/app_installed"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/btn_fourth_part_mou"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/AppStyleButton"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_20dp"
                 android:padding="@dimen/dimen_10dp"
                 android:text="@string/submit"
                 android:textColor="@android:color/white"/>

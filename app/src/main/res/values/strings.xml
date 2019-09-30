@@ -512,4 +512,26 @@
     <string name="chasis_number">Machine chasis number</string>
     <string name="excavation_capacity">Excavation capacity of machine per hour</string>
     <string name="diesel_capacity">Diesel tank capacity in litres</string>
+    <string name="provider_name">Machine Provider Name</string>
+    <string name="provider_contact">Provider Contact Number</string>
+    <string name="machine_mobile">Machine Attached Mobile Number</string>
+    <string name="ownership_type">Type of Ownership</string>
+    <string name="trade_name">Provider Trade Name (if firm)</string>
+    <string name="turnover_below">Turnover</string>
+    <string name="gst_reg_no">GST Registration Number</string>
+    <string name="pan_number">Pan Card Number</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="branch_name">Branch Name</string>
+    <string name="ifsc_code">IFSC Code</string>
+    <string name="bank_account_no">Bank Account Number</string>
+    <string name="confirm_account_no">Confirm Bank Account Number</string>
+    <string name="account_image">Upload Image (Cancelled Cheque/Passbook front page)</string>
+    <string name="account_holder_name">Account Holder\'s NAme</string>
+    <string name="account_type">Account Type</string>
+    <string name="operator_name">Machine Operator Name</string>
+    <string name="operator_contact">Machine Operator Contact Number</string>
+    <string name="operator_license_number">Machine Operator\'s License Number</string>
+    <string name="license_image">Machine Operator\'s License Image</string>
+    <string name="operator_training">Operator\'s training completed?</string>
+    <string name="app_installed">Mobile app installation and training done?</string>
 </resources>
