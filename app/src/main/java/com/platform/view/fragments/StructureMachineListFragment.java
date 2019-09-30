@@ -1,6 +1,10 @@
 package com.platform.view.fragments;
 
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,15 +15,22 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
@@ -38,10 +49,12 @@ import com.platform.view.customs.CustomSpinnerDialogClass;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public class StructureMachineListFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener {
+public class StructureMachineListFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener{
     private View structureMachineListFragmentView;
     int viewType;
+    final Context context = getActivity();
     private RecyclerView rvDataList;
     private final ArrayList<MachineData> ssMachineListData = new ArrayList<>();
     private SSDataListAdapter ssDataListAdapter;
@@ -91,7 +104,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ssDataListAdapter = new SSDataListAdapter(getActivity(),ssMachineListData);
+        ssDataListAdapter = new SSDataListAdapter(getActivity(), this, ssMachineListData);
         rvDataList.setAdapter(ssDataListAdapter);
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
         if(viewType == 1){
@@ -108,6 +121,54 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
             }
         }
+    }
+
+    public void takeMouDoneAction(int position){
+        showMouActionPopup();
+    }
+
+    public void showMouActionPopup() {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_mou_action_layout);
+        TextInputLayout tlyTerminateReason = dialog.findViewById(R.id.tly_terminate_reason);
+        RecyclerView rvTaluka = dialog.findViewById(R.id.rv_taluka);
+
+        RadioGroup rgMouAction = dialog.findViewById(R.id.rg_mou_action);
+        RadioButton rbTerminate, rbDeploy;
+        rbTerminate = dialog.findViewById(R.id.rb_terminate);
+        rbDeploy = dialog.findViewById(R.id.rb_deploy);
+        rgMouAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_terminate:
+                        rvTaluka.setVisibility(View.GONE);
+                        tlyTerminateReason.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.rb_deploy:
+                        tlyTerminateReason.setVisibility(View.GONE);
+                        rvTaluka.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText("What would you like to do?");
+            title.setVisibility(View.VISIBLE);
+
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                //structureMachineListFragmentPresenter.
+                // Close dialog
+                dialog.dismiss();
+            });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
     @Override
@@ -187,18 +248,19 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
                         if (tvDistrictFilter.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
                             CustomSpinnerObject talukaList = new CustomSpinnerObject();
-                            talukaList.set_id(location.getCityId());
-                            talukaList.setName(location.getCity().getName());
+                            talukaList.set_id(location.getTalukaId());
+                            talukaList.setName(location.getTaluka().getName());
                             talukaList.setSelected(false);
                             machineTalukaList.add(talukaList);
                         }
                     }
+
                 }
                 break;
 

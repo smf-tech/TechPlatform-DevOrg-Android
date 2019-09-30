@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
@@ -20,16 +21,19 @@ import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
+import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.util.ArrayList;
 
 public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder>  {
     private ArrayList<MachineData> ssDataList;
     Activity activity;
+    StructureMachineListFragment fragment;
 
-    public SSDataListAdapter(Activity activity, ArrayList<MachineData> ssDataList){
+    public SSDataListAdapter(Activity activity, StructureMachineListFragment fragment, ArrayList<MachineData> ssDataList){
         this.ssDataList = ssDataList;
         this.activity = activity;
+        this.fragment = fragment;
         if(Util.getUserObjectFromPref().getRoleNames().equals("Operator")){
         }
     }
@@ -83,12 +87,16 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
 //                        intent.putExtra("title", "Machine Details");
 //                        intent.putExtra("machineData", ssDataList.get(getAdapterPosition()));
 //                        activity.startActivity(intent);
-//                    } if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Eligible")){
+//                    }
+                    if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Eligible") ||
+                            ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("New")){
                         Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                         mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                         mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                         activity.startActivity(mouIntent);
-                //    }
+                    } else if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("MOU Done")){
+                        fragment.takeMouDoneAction(getAdapterPosition());
+                    }
                 }
             });
         }

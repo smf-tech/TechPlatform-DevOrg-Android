@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 public class MachineData  implements Serializable {
 
-
     @SerializedName("_id")
     @Expose
     private String id;
@@ -17,21 +16,12 @@ public class MachineData  implements Serializable {
     @SerializedName("owned_by")
     @Expose
     private String ownedBy;
-    @SerializedName("state")
-    @Expose
-    private String state;
     @SerializedName("district")
     @Expose
     private String district;
     @SerializedName("taluka")
     @Expose
     private String taluka;
-    @SerializedName("provider_name")
-    @Expose
-    private String providerName;
-    @SerializedName("provider_address")
-    @Expose
-    private String providerAddress;
     @SerializedName("manufactured_year")
     @Expose
     private String manufacturedYear;
@@ -44,6 +34,26 @@ public class MachineData  implements Serializable {
     @SerializedName("disel_tank_capacity")
     @Expose
     private String diselTankCapacity;
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getProviderContactNumber() {
+        return providerContactNumber;
+    }
+
+    public void setProviderContactNumber(String providerContactNumber) {
+        this.providerContactNumber = providerContactNumber;
+    }
+
+    @SerializedName("provider_name")
+    @Expose
+    private String providerName;
     @SerializedName("provider_contact_number")
     @Expose
     private String providerContactNumber;
@@ -52,7 +62,7 @@ public class MachineData  implements Serializable {
     private String status;
     @SerializedName("statusCode")
     @Expose
-    private Integer statusCode;
+    private int statusCode;
 
     public String getId() {
         return id;
@@ -78,14 +88,6 @@ public class MachineData  implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public String getDistrict() {
         return district;
     }
@@ -100,22 +102,6 @@ public class MachineData  implements Serializable {
 
     public void setTaluka(String taluka) {
         this.taluka = taluka;
-    }
-
-    public String getProviderName() {
-        return providerName;
-    }
-
-    public void setProviderName(String providerName) {
-        this.providerName = providerName;
-    }
-
-    public String getProviderAddress() {
-        return providerAddress;
-    }
-
-    public void setProviderAddress(String providerAddress) {
-        this.providerAddress = providerAddress;
     }
 
     public String getManufacturedYear() {
@@ -150,14 +136,6 @@ public class MachineData  implements Serializable {
         this.diselTankCapacity = diselTankCapacity;
     }
 
-    public String getProviderContactNumber() {
-        return providerContactNumber;
-    }
-
-    public void setProviderContactNumber(String providerContactNumber) {
-        this.providerContactNumber = providerContactNumber;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -166,12 +144,11 @@ public class MachineData  implements Serializable {
         this.status = status;
     }
 
-    public Integer getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(Integer statusCode) {
+    public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
-
 }

@@ -7,6 +7,7 @@ import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.Matrimony.MeetTypesAPIResponse;
 import com.platform.models.SujalamSuphalam.MachineDetailData;
+import com.platform.models.SujalamSuphalam.MachineDetailsAPIResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
@@ -27,15 +28,15 @@ public class MachineMouActivityPresenter implements APIPresenterListener {
         fragmentWeakReference = null;
     }
 
-//    public void getMachineDetails(){
-//        final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL
-//                + String.format(Urls.Matrimony.MATRIMONY_MEET_TYPES);
-//        Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMatrimonyMeetTypesUrl);
-//        fragmentWeakReference.get().showProgressBar();
-//        APIRequestCall requestCall = new APIRequestCall();
-//        requestCall.setApiPresenterListener(this);
-//        requestCall.getDataApiCall(GET_MACHINE_DETAILS, getMatrimonyMeetTypesUrl);
-//    }
+    public void getMachineDetails(String machineId){
+        final String getMachineDetailsUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.GET_MACHINE_DETAILS, machineId);
+        Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMachineDetailsUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall(GET_MACHINE_DETAILS, getMachineDetailsUrl);
+    }
 
     @Override
     public void onFailureListener(String requestID, String message) {
@@ -63,9 +64,10 @@ public class MachineMouActivityPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_MATRIMONY_MEET_TYPES)){
-                    //MeetTypesAPIResponse machineDetails = PlatformGson.getPlatformGsonInstance().fromJson(response, MachineDetailData.class);
-                    //fragmentWeakReference.get().setMachineDetails(machineDetails);
+                if(requestID.equalsIgnoreCase(MachineMouActivityPresenter.GET_MACHINE_DETAILS)){
+                    MachineDetailsAPIResponse machineDetailsResponse = PlatformGson.getPlatformGsonInstance().fromJson(response,
+                            MachineDetailsAPIResponse.class);
+                    fragmentWeakReference.get().setMachineDetails(machineDetailsResponse.getData());
                 }
             }
         }catch (Exception e){

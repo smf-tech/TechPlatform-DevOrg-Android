@@ -55,7 +55,8 @@
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/dimen_05dp">
 
                     <EditText
                         android:id="@+id/et_meet_country"
@@ -68,7 +69,8 @@
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dimen_05dp">
 
                     <EditText
                         android:id="@+id/et_meet_state"

@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,10 @@ import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.presenter.MachineMouFragmentPresenter;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     String machineId;
     private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
     private EditText editOwnerType;
-    private Button btnFirstPartMou;
+    private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
 
     @Override
@@ -57,8 +60,6 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle bundle = this.getArguments();
-//        machineId = bundle.getString("machineId");
         init();
     }
 
@@ -67,7 +68,16 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
         btnFirstPartMou.setOnClickListener(this);
+        btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
+        btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
+        btnEligilble.setOnClickListener(this);
+        btnNotEligible.setOnClickListener(this);
         llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
+        setMachineFirstData();
+    }
+
+    private void setMachineFirstData() {
+        //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMakeModel();
     }
 
     @Override
@@ -145,6 +155,37 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             case R.id.btn_first_part_mou:
                 ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
                 break;
+            case R.id.btn_eligible:
+                machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
+                        .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
+                        Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                break;
+            case R.id.btn_not_eligible:
+                machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
+                        .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
+                        Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                break;
+        }
+    }
+
+    public void showResponse(String responseStatus, String requestId, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if(requestId.equals(MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS)){
+            if(status == 200){
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                intent.putExtra("viewType", 2);
+                intent.putExtra("title", "Machine List");
+                getActivity().startActivity(intent);
+            }
+        }
+        if(requestId.equals(MachineMouFragmentPresenter.UPDATE_STRUCTURE_STATUS)){
+            if(status == 200){
+
+            }
         }
     }
 }

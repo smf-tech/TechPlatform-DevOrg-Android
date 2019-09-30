@@ -24,6 +24,8 @@ import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
 import com.platform.view.fragments.MachineMouThirdFragment;
 
+import java.util.List;
+
 public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
     private ImageView ivBackIcon;
     private FragmentManager fManager;
@@ -60,8 +62,8 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
                         .commit();
             }
+            machineMouActivityPresenter.getMachineDetails(machineId);
         }
-        //machineMouActivityPresenter.getMachineDetails(machineId);
     }
 
     public void openFragment(String switchToFragment) {
@@ -86,16 +88,18 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 .commit();
     }
 
-    public void setMachineDetails(MachineDetailData machineDetailData){
-
+    public void setMachineDetails(List<MachineDetailData> machineDetailData){
+        for(MachineDetailData machineDetail: machineDetailData){
+            setMachineDetailData(machineDetail);
+        }
     }
 
     public MachineDetailData getMachineDetailData() {
         return machineDetailData;
     }
 
-    public void setMachineDetailData(MachineDetailData machineMouData) {
-        this.machineDetailData = machineMouData;
+    public void setMachineDetailData(MachineDetailData machineDetail) {
+        this.machineDetailData = machineDetail;
     }
 
     @Override
