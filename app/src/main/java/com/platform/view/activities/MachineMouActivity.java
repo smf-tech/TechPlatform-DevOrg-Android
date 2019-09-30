@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.MachineDetailData;
+import com.platform.presenter.MachineMouActivityPresenter;
 import com.platform.view.fragments.MachineMouFirstFragment;
 import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
@@ -32,6 +33,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private String machineId;
+    private MachineMouActivityPresenter machineMouActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,8 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(R.string.machine_mou_form);
 
+        machineMouActivityPresenter = new MachineMouActivityPresenter(this);
+
         if(getIntent().getStringExtra("SwitchToFragment")!=null){
             if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
                 machineId = getIntent().getStringExtra("machineId");
@@ -57,6 +61,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                         .commit();
             }
         }
+        //machineMouActivityPresenter.getMachineDetails(machineId);
     }
 
     public void openFragment(String switchToFragment) {
@@ -79,6 +84,10 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
                 .commit();
+    }
+
+    public void setMachineDetails(MachineDetailData machineDetailData){
+
     }
 
     public MachineDetailData getMachineDetailData() {
@@ -111,6 +120,10 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     protected void onDestroy() {
         fragment = null;
         super.onDestroy();
+        if (machineMouActivityPresenter != null) {
+            machineMouActivityPresenter.clearData();
+            machineMouActivityPresenter = null;
+        }
     }
 
     @Override

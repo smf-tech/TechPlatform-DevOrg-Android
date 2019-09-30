@@ -13,12 +13,217 @@
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_owner_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/provider_name"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_provider_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/provider_contact"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_machine_mobile"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/machine_mobile"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_ownership"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/ownership_type"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_trade_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/trade_name"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_turnover"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/turnover_below"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_gst_reg_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/gst_reg_no"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_pan_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/pan_number"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_bank_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/bank_name"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_branch"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/branch_name"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_ifsc"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/ifsc_code"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_account_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/bank_account_no"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_confirm_account_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/confirm_account_no"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/account_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_img" />
+
+            <com.platform.view.customs.TextViewSemiBold
+                android:id="@+id/event_pic_label"
+                style="@style/FormLabel"
+                android:layout_below="@+id/event_pic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_gravity="center"
+                android:text="@string/account_image"
+                android:textColor="@color/medium_grey"
+                android:fontFamily="@font/opensans"
+                android:textSize="@dimen/text_size_14" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_account_holder_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/account_holder_name"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_account_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/account_type"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_second_part_mou"
@@ -32,5 +237,6 @@
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -77,18 +77,18 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             rlMachine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("New") ) {
-                        Intent intent = new Intent(activity, SSActionsActivity.class);
-                        intent.putExtra("SwitchToFragment", "MachineDetailsFragment");
-                        intent.putExtra("title", "Machine Details");
-                        intent.putExtra("machineData", ssDataList.get(getAdapterPosition()));
-                        activity.startActivity(intent);
-                    } if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Eligible")){
+//                    if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("New") ) {
+//                        Intent intent = new Intent(activity, SSActionsActivity.class);
+//                        intent.putExtra("SwitchToFragment", "MachineDetailsFragment");
+//                        intent.putExtra("title", "Machine Details");
+//                        intent.putExtra("machineData", ssDataList.get(getAdapterPosition()));
+//                        activity.startActivity(intent);
+//                    } if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Eligible")){
                         Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                         mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                         mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                         activity.startActivity(mouIntent);
-                    }
+                //    }
                 }
             });
         }
