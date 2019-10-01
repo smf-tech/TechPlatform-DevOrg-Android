@@ -43,6 +43,7 @@ import com.platform.models.user.UserInfo;
 import com.platform.presenter.StructureMachineListFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
+import com.platform.view.adapters.MutiselectDialogAdapter;
 import com.platform.view.adapters.SSDataListAdapter;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
@@ -63,7 +64,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private StructureMachineListFragmentPresenter structureMachineListFragmentPresenter;
     private TextView tvDistrictFilter, tvTalukaFilter;
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
-    private String selectedTaluka, selectedTalukaId;
+    private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
+    private String selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,10 +126,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     }
 
     public void takeMouDoneAction(int position){
-        showMouActionPopup();
+        showMouActionPopup(position);
     }
 
-    public void showMouActionPopup() {
+    public void showMouActionPopup(int position) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_mou_action_layout);
@@ -147,7 +149,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         tlyTerminateReason.setVisibility(View.VISIBLE);
                         break;
                     case R.id.rb_deploy:
+                        machineTalukaDeployList.addAll(machineTalukaList);
                         tlyTerminateReason.setVisibility(View.GONE);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        rvTaluka.setLayoutManager(layoutManager);
+                        MutiselectDialogAdapter mutiselectDialogAdapter  = new MutiselectDialogAdapter(getActivity(), machineTalukaDeployList, false);
+                        rvTaluka.setAdapter(mutiselectDialogAdapter);
                         rvTaluka.setVisibility(View.VISIBLE);
                         break;
                 }
@@ -160,8 +167,20 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             Button button = dialog.findViewById(R.id.btn_dialog);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
-                //structureMachineListFragmentPresenter.
                 // Close dialog
+                for(CustomSpinnerObject mDeployTaluka: machineTalukaDeployList){
+                    if(mDeployTaluka.isSelected()){
+                        selectedDeployTaluka = mDeployTaluka.getName();
+                        selectedDeployTalukaId = mDeployTaluka.get_id();
+                        break;
+                    }
+                }
+                if(selectedDeployTalukaId != null){
+                    structureMachineListFragmentPresenter.terminateSubmitMou(ssMachineListData.get(position).getId(),
+                            ssMachineListData.get(position).getMachineCode(), "Deployed", selectedDeployTalukaId);
+                } else {
+
+                }
                 dialog.dismiss();
             });
 

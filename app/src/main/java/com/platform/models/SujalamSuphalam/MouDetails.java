@@ -15,7 +15,7 @@ public class MouDetails {
     private List<String> mOUImages = null;
     @SerializedName("date_of_signing")
     @Expose
-    private Integer dateOfSigning;
+    private long dateOfSigning;
     @SerializedName("is_MOU_cancelled")
     @Expose
     private String isMOUCancelled;
@@ -39,11 +39,11 @@ public class MouDetails {
         this.mOUImages = mOUImages;
     }
 
-    public Integer getDateOfSigning() {
+    public long getDateOfSigning() {
         return dateOfSigning;
     }
 
-    public void setDateOfSigning(Integer dateOfSigning) {
+    public void setDateOfSigning(long dateOfSigning) {
         this.dateOfSigning = dateOfSigning;
     }
 

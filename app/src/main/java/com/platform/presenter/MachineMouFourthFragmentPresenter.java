@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.SujalamSuphalam.MachineDetailData;
+import com.platform.models.events.CommonResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Urls;
 import com.platform.view.fragments.MachineMouFourthFragment;
@@ -65,7 +66,9 @@ public class MachineMouFourthFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-
+                CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                        MachineMouFourthFragmentPresenter.SUBMIT_MOU, responseOBJ.getStatus());
             }
         }catch (Exception e){
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());

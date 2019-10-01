@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
@@ -93,6 +94,7 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                         Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                         mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                         mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                        mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
                         activity.startActivity(mouIntent);
                     } else if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("MOU Done")){
                         fragment.takeMouDoneAction(getAdapterPosition());

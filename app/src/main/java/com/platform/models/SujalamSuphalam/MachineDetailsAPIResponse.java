@@ -14,7 +14,7 @@ public class MachineDetailsAPIResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private List<MachineDetailData> data = null;
+    private MachineDetailData data = null;
 
     public Integer getStatus() {
         return status;
@@ -32,11 +32,11 @@ public class MachineDetailsAPIResponse {
         this.message = message;
     }
 
-    public List<MachineDetailData> getData() {
+    public MachineDetailData getData() {
         return data;
     }
 
-    public void setData(List<MachineDetailData> data) {
+    public void setData(MachineDetailData data) {
         this.data = data;
     }
 }

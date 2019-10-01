@@ -73,11 +73,13 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         btnEligilble.setOnClickListener(this);
         btnNotEligible.setOnClickListener(this);
         llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
+        machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
         setMachineFirstData();
     }
 
     private void setMachineFirstData() {
-        //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMakeModel();
+        //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy("Sagar Mahajan");
+
     }
 
     @Override

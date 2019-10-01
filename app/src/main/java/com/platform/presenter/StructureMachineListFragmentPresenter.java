@@ -30,6 +30,11 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     public static final String GET_STRUCTURE_LIST ="getStructureList";
     public static final String GET_MACHINE_LIST = "getMachineList";
     public static final String GET_TALUKAS = "getTalukas";
+    private static final String KEY_MACHINE_ID = "machineId";
+    private static final String KEY_MACHINE_CODE = "machineCode";
+    private static final String KEY_STATUS = "status";
+    private static final String KEY_DEPLOY_TALUKA = "deployTaluka";
+    public static final String TERMINATE_DEPLOY = "getTalukas";
 
     public StructureMachineListFragmentPresenter(StructureMachineListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -89,6 +94,18 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         }
     }
 
+    public void terminateSubmitMou(String machineId, String machineCode, String status, String deployTaluka){
+        Gson gson = new GsonBuilder().create();
+        String paramjson = gson.toJson(terminateDeployDataJson(machineId,machineCode,status, deployTaluka));
+        final String getTerminateDeployUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.MOU_TERMINATE_DEPLOY);
+        Log.d(TAG, "getTerminateDeployUrl: url" + getTerminateDeployUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(TERMINATE_DEPLOY, paramjson, getTerminateDeployUrl);
+    }
+
     public JsonObject getSSDataJson(String stateId, String districtId, String talukaId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_STATE_ID, stateId);
@@ -109,6 +126,23 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_STATE_ID, stateId);
         map.put(KEY_DISTRICT_ID, districtId);
+
+        JsonObject requestObject = new JsonObject();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            requestObject.addProperty(key, value);
+        }
+        return requestObject;
+    }
+
+    public JsonObject terminateDeployDataJson(String machineId, String machineCode, String status, String deployTaluka){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_MACHINE_ID, machineId);
+        map.put(KEY_MACHINE_CODE, machineCode);
+        map.put(KEY_STATUS, status);
+        map.put(KEY_DEPLOY_TALUKA, deployTaluka);
 
         JsonObject requestObject = new JsonObject();
 

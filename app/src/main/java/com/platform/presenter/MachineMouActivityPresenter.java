@@ -28,9 +28,9 @@ public class MachineMouActivityPresenter implements APIPresenterListener {
         fragmentWeakReference = null;
     }
 
-    public void getMachineDetails(String machineId){
+    public void getMachineDetails(String machineId, Integer statusCode){
         final String getMachineDetailsUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_MACHINE_DETAILS, machineId);
+                + String.format(Urls.SSModule.GET_MACHINE_DETAILS, machineId, statusCode);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMachineDetailsUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
@@ -67,7 +67,7 @@ public class MachineMouActivityPresenter implements APIPresenterListener {
                 if(requestID.equalsIgnoreCase(MachineMouActivityPresenter.GET_MACHINE_DETAILS)){
                     MachineDetailsAPIResponse machineDetailsResponse = PlatformGson.getPlatformGsonInstance().fromJson(response,
                             MachineDetailsAPIResponse.class);
-                    fragmentWeakReference.get().setMachineDetails(machineDetailsResponse.getData());
+                    fragmentWeakReference.get().setMachineDetailData(machineDetailsResponse.getData());
                 }
             }
         }catch (Exception e){
