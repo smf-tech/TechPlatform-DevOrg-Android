@@ -51,6 +51,7 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
     public static MatrimonyUserRegRequestModel.Occupational_details occupationalDetails = new MatrimonyUserRegRequestModel.Occupational_details();
     public static MatrimonyUserRegRequestModel.Residential_details residentialDetails = new MatrimonyUserRegRequestModel.Residential_details();
     public static MatrimonyUserRegRequestModel.Other_maritial_information otherMaritialInformation = new MatrimonyUserRegRequestModel.Other_maritial_information();
+
     public static MatrimonyUserRegRequestModel.Family_details.Gotra gotra = new MatrimonyUserRegRequestModel.Family_details.Gotra();
 
 
@@ -170,8 +171,20 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
     public void imageUploadedSuccessfully(String response,String type)
     {
         if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(type)) {
-            otherMaritialInformation.setProfile_image(response);
+            otherMaritialInformation.getProfile_image().add(response);
             //img_user_profle.setImageURI(finalUri);
+
+            if(otherMaritialInformation.getProfile_image()!=null && otherMaritialInformation.getProfile_image().size()>0){
+                List<String> temp =otherMaritialInformation.getProfile_image();
+                temp.clear();
+                temp.add(response);
+                otherMaritialInformation.setProfile_image((ArrayList<String>) temp);
+            } else {
+                List<String> temp =new ArrayList<String>();
+                temp.add(response);
+                otherMaritialInformation.setProfile_image((ArrayList<String>) temp);
+            }
+
         } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(type)) {
             //img_adhar.setImageURI(finalUri);
             otherMaritialInformation.setAadhar_url(response);

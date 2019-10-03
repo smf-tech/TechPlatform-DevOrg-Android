@@ -75,13 +75,11 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
 
 
-            if (!TextUtils.isEmpty(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image())) {
+            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
                 Glide.with(mContext)
                         .applyDefaultRequestOptions(requestOptions)
-                        .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image())
+                        .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().get(0))
                         .into(holder.user_profile_pic);
-
-
             }
 
         }

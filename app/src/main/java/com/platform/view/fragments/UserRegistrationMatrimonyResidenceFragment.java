@@ -28,7 +28,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
     private Button btn_load_next, btn_loadprevious;
     private TextView tv_pagetitle;
     private EditText et_address, et_city_town, et_state, et_country, et_primary_mobile, et_primary_mobile_two, et_primary_email;
-    private EditText et_education, et_occupation_type, et_employer, et_job_profile, et_Annual_income;
+    private EditText et_education,et_education_degree, et_occupation_type, et_employer, et_job_profile, et_Annual_income;
 
 
     public static UserRegistrationMatrimonyResidenceFragment newInstance() {
@@ -55,6 +55,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         //-------
         //edittext
         et_education = fragmentview.findViewById(R.id.et_education);
+        et_education_degree = fragmentview.findViewById(R.id.et_education_degree);
         et_occupation_type = fragmentview.findViewById(R.id.et_occupation_type);
         et_employer = fragmentview.findViewById(R.id.et_employer);
         et_job_profile = fragmentview.findViewById(R.id.et_job_profile);
@@ -72,6 +73,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         btn_load_next.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
         et_education.setOnClickListener(this);
+        et_education_degree.setOnClickListener(this);
         et_occupation_type.setOnClickListener(this);
         et_employer.setOnClickListener(this);
         et_job_profile.setOnClickListener(this);
@@ -111,6 +113,15 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
                     }
                 }
                 break;
+            case R.id.et_education_degree:
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("qualification_degree")) {
+                        showMultiSelectBottomsheet("Education Degree","et_education_degree", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        break;
+                    }
+                }
+                break;
+
             case R.id.et_occupation_type:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
@@ -164,8 +175,9 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
                     UserRegistrationMatrimonyActivity.residentialDetails.setPrimary_email_address(et_primary_email.getText().toString());
 
                     UserRegistrationMatrimonyActivity.educationalDetails.setEducation_level(et_education.getText().toString());
+                    UserRegistrationMatrimonyActivity.educationalDetails.setQualification_degree(et_education_degree.getText().toString());
                     UserRegistrationMatrimonyActivity.educationalDetails.setIncome(et_Annual_income.getText().toString());
-                    UserRegistrationMatrimonyActivity.educationalDetails.setQualification_degree("");
+
 
                     UserRegistrationMatrimonyActivity.occupationalDetails.setOccupation(et_occupation_type.getText().toString());
                     UserRegistrationMatrimonyActivity.occupationalDetails.setEmployer_company(et_employer.getText().toString());
@@ -204,6 +216,9 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         switch (spinnerName) {
             case "et_education":
                 et_education.setText(selectedValues);
+                break;
+            case "et_education_degree":
+                et_education_degree.setText(selectedValues);
                 break;
             case "et_occupation_type":
                 et_occupation_type.setText(selectedValues);
@@ -268,6 +283,10 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
 
         if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter education category";//getResources().getString(R.string.msg_enter_name);
+            et_education.requestFocus();
+        } else
+        if (et_education_degree.getText().toString().trim().length() == 0) {
+            msg = "Please enter education degree";//getResources().getString(R.string.msg_enter_name);
             et_education.requestFocus();
         } else
         if (et_occupation_type.getText().toString().trim().length() == 0) {
