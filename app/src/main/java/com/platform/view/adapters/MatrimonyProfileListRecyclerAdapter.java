@@ -75,7 +75,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
 
 
-            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
+            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image()!=null&&dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
                 Glide.with(mContext)
                         .applyDefaultRequestOptions(requestOptions)
                         .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().get(0))

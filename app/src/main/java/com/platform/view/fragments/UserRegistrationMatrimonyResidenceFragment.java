@@ -307,11 +307,11 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
             et_city_town.requestFocus();
         } else if (et_state.getText().toString().trim().length() == 0) {
-            msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
+            msg = "Please enter your state.";//getResources().getString(R.string.msg_enter_proper_date);
             et_state.requestFocus();
         }
         else if (et_country.getText().toString().trim().length() == 0) {
-            msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
+            msg = "Please enter your country.";//getResources().getString(R.string.msg_enter_proper_date);
             et_country.requestFocus();
         }
         else if (et_primary_mobile.getText().toString().trim().length() != 10 ) {
@@ -321,7 +321,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
             et_primary_email.requestFocus();
         } else if (et_country.getText().toString().trim().length() == 0) {
-            msg = "Please mention the Country"; //getResources().getString(R.string.msg_enter_name);
+            msg = "Please mention the country"; //getResources().getString(R.string.msg_enter_name);
         }
         /*else if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);

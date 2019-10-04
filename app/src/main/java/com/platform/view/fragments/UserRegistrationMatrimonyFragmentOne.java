@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,13 +47,16 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
     private View fragmentview;
     private Button btn_load_next;
     private TextView tv_pagetitle;
+    private LinearLayout linear_divorce_legality;
     private EditText et_first_name, et_middle_name, et_last_name, et_birth_date, et_birth_time, et_birth_place, et_blood_group,et_special_case,
-            et_age, et_marital_status, et_height, et_weight, et_complexion, et_patrika_match, et_sampraday, et_drink, et_smoke, et_residance_status;
+            et_age, et_marital_status, et_height, et_weight, et_complexion, et_patrika_match,et_sub_cast, et_sampraday, et_drink, et_smoke, et_residance_status;
     private CheckBox checkbox_community_preference;
     private String userGender = Constants.Login.MALE;
     private String userManglik ="dont know";
+    private String userDivorceLegality ="Yes";
     private String heightSelected ="0";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
+
 
     public static UserRegistrationMatrimonyFragmentOne newInstance() {
         return new UserRegistrationMatrimonyFragmentOne();
@@ -75,7 +79,8 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         //button
         btn_load_next = fragmentview.findViewById(R.id.btn_loadnext);
         btn_load_next.setOnClickListener(this);
-
+        //layout
+        linear_divorce_legality = fragmentview.findViewById(R.id.linear_divorce_legality);
         //Edit text
         et_first_name = fragmentview.findViewById(R.id.et_first_name);
         et_middle_name = fragmentview.findViewById(R.id.et_middle_name);
@@ -91,6 +96,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         et_complexion = fragmentview.findViewById(R.id.et_complexion);
         et_patrika_match = fragmentview.findViewById(R.id.et_patrika_match);
         et_sampraday = fragmentview.findViewById(R.id.et_sampraday);
+        et_sub_cast = fragmentview.findViewById(R.id.et_sub_cast);
         et_drink = fragmentview.findViewById(R.id.et_drink);
         et_special_case = fragmentview.findViewById(R.id.et_special_case);
         et_smoke = fragmentview.findViewById(R.id.et_smoke);
@@ -116,13 +122,25 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         radioGroupManglik.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
             switch (checkedId) {
                 case R.id.manglik:
-                    userManglik = "yes";
+                    userManglik = "Yes";
                     break;
                 case R.id.nonmanglik:
-                    userManglik = "no";
+                    userManglik = "No";
                     break;
                 case R.id.dontknowmanglik:
                     userManglik = "Dont know";
+                    break;
+            }
+        });
+        //devorce_legality_group
+        RadioGroup radioGroupDLegality = fragmentview.findViewById(R.id.devorce_legality_group);
+        radioGroupDLegality.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
+            switch (checkedId) {
+                case R.id.legel_yes:
+                    userDivorceLegality = "Yes";
+                    break;
+                case R.id.legel_no:
+                    userDivorceLegality = "No";
                     break;
             }
         });
@@ -236,7 +254,7 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             case R.id.et_residance_status:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("own_house")) {
-                        showMultiSelectBottomsheet("Residance Status","et_residance_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Residence Status","et_residance_status", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -273,6 +291,8 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     UserRegistrationMatrimonyActivity.personalDetails.setBirth_city(et_birth_place.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setBlood_group(et_blood_group.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setMarital_status(et_marital_status.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setIs_divorced_legal(userDivorceLegality);
+                    UserRegistrationMatrimonyActivity.personalDetails.setSub_cast(et_sub_cast.getText().toString());
 
                     UserRegistrationMatrimonyActivity.personalDetails.setHeight(heightSelected);
                     UserRegistrationMatrimonyActivity.personalDetails.setWeight(et_weight.getText().toString());   //getWeightValidated(Integer.parseInt(et_weight.getText().toString())));//et_weight.getText().toString());
@@ -283,8 +303,9 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
                     }else {
                         UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(false);
                     }
-                    UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(Boolean.parseBoolean("YES"));
+                   // UserRegistrationMatrimonyActivity.personalDetails.setMatch_patrika(Boolean.parseBoolean("YES"));
                     UserRegistrationMatrimonyActivity.personalDetails.setSect(et_sampraday.getText().toString());
+                    UserRegistrationMatrimonyActivity.personalDetails.setSub_cast(et_sub_cast.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setSmoke(et_smoke.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setDrink(et_drink.getText().toString());
                     UserRegistrationMatrimonyActivity.personalDetails.setOwn_house(et_residance_status.getText().toString());
@@ -412,10 +433,17 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
         switch (spinnerName) {
             case "et_sampraday":
                 et_sampraday.setText(selectedValues);
+
                 //  UserRegistrationMatrimonyActivity.matrimonyUserRegRequestModel.getEducational_details().setEducation_level("");
                 break;
             case "et_marital_status":
                 et_marital_status.setText(selectedValues);
+                if (selectedValues.toLowerCase().contains("div"))
+                {
+                    linear_divorce_legality.setVisibility(View.VISIBLE);
+                }else {
+                    linear_divorce_legality.setVisibility(View.GONE);
+                }
                 break;
             case "et_height":
                 et_height.setText(selectedValues);
@@ -506,6 +534,8 @@ public class UserRegistrationMatrimonyFragmentOne extends Fragment implements Vi
             msg = "Please enter your weight.";//getResources().getString(R.string.msg_enter_proper_date);
         }else if (et_sampraday.getText().toString().trim().length() == 0) {
             msg = "Please enter your sampraday.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (et_sub_cast.getText().toString().trim().length() == 0) {
+            msg = "Please enter your sub caste.";//getResources().getString(R.string.msg_enter_proper_date);
         }
         else if (et_drink.getText().toString().trim().length() == 0) {
             msg = "Please enter about your drink habit.";//getResources().getString(R.string.msg_enter_proper_date);

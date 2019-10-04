@@ -271,6 +271,41 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/linear_divorce_legality"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Is divorce legal."
+                            android:paddingStart="@dimen/dimen_05dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_height="wrap_content" />
+                        <RadioGroup
+                            android:id="@+id/devorce_legality_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_user_gender_label"
+
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/legel_yes"
+                                style="@style/GenderTypes"
+                                android:checked="true"
+                                android:text="Yes" />
+
+                            <RadioButton
+                                android:id="@+id/legel_no"
+                                style="@style/GenderTypes"
+                                android:text="No" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -390,6 +425,22 @@
                             android:layout_height="wrap_content"
                             android:hint="Sampraday / Sub Cast / Jain Sect" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/RegistrationEditTextLayout"
+                            android:layout_width="match_parent"
+                            android:id="@+id/et_sub_cast"
+
+                            android:layout_height="wrap_content"
+                            android:hint="Sub Cast" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

@@ -112,6 +112,16 @@ public class MatrimonyUserRegRequestModel {
         @SerializedName("sect")
         @Expose
         private String sect;
+
+        @SerializedName("sub_cast")
+        @Expose
+        private String sub_cast;
+
+        @SerializedName("is_divorced_legal")
+        @Expose
+        private String is_divorced_legal;
+
+
         /*@SerializedName("mobile")
         @Expose
         private String mobile;
@@ -328,6 +338,23 @@ public class MatrimonyUserRegRequestModel {
 
         public void setDrink(String drink) {
             this.drink = drink;
+        }
+
+
+        public String getSub_cast() {
+            return sub_cast;
+        }
+
+        public void setSub_cast(String sub_cast) {
+            this.sub_cast = sub_cast;
+        }
+
+        public String getIs_divorced_legal() {
+            return is_divorced_legal;
+        }
+
+        public void setIs_divorced_legal(String is_divorced_legal) {
+            this.is_divorced_legal = is_divorced_legal;
         }
     }
 
