@@ -7,20 +7,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
-import com.platform.models.SujalamSuphalam.MachineDetailData;
-import com.platform.models.events.CommonResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Urls;
-import com.platform.view.fragments.MachineMouFourthFragment;
+import com.platform.view.fragments.MachineDeployStructureListFragment;
 
 import java.lang.ref.WeakReference;
 
-public class MachineMouFourthFragmentPresenter implements APIPresenterListener {
-    private WeakReference<MachineMouFourthFragment> fragmentWeakReference;
-    private final String TAG = CreateMeetFirstFragmentPresenter.class.getName();
-    public static final String SUBMIT_MOU ="submitMou";
+public class MachineDeployStructureListFragmentPresenter implements APIPresenterListener {
+    private WeakReference<MachineDeployStructureListFragment> fragmentWeakReference;
+    private final String TAG = StructureMachineListFragmentPresenter.class.getName();
+    public static final String GET_MACHINE_DEPLOY_STRUCTURE_LIST ="getMachineDeployStructuresList";
 
-    public MachineMouFourthFragmentPresenter(MachineMouFourthFragment tmFragment) {
+    public MachineDeployStructureListFragmentPresenter(MachineDeployStructureListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
 
@@ -28,17 +26,17 @@ public class MachineMouFourthFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference = null;
     }
 
-    public void submitMouData(MachineDetailData machineDetailData) {
+    public void getDeployableStructuresList(){
         Gson gson = new GsonBuilder().create();
         fragmentWeakReference.get().showProgressBar();
-        String paramjson = gson.toJson(machineDetailData);
-        final String submitMouUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.SUBMIT_MOU);
-        Log.d(TAG, "submitMouUrl: url" + submitMouUrl);
+        //String paramjson = gson.toJson(getDistrictMachineDataJson(stateId,districtId));
+        final String getMachinesListUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
+        Log.d(TAG, "getDistrictMachineListUrl: url" + getMachinesListUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(SUBMIT_MOU, paramjson, submitMouUrl);
+        //requestCall.postDataApiCall(GET_MACHINE_DEPLOY_STRUCTURE_LIST, paramjson, getMachinesListUrl);
     }
 
     @Override
@@ -67,12 +65,12 @@ public class MachineMouFourthFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-                        MachineMouFourthFragmentPresenter.SUBMIT_MOU, responseOBJ.getStatus());
+                if (requestID.equalsIgnoreCase(MachineDeployStructureListFragmentPresenter.GET_MACHINE_DEPLOY_STRUCTURE_LIST)) {
+
+                }
             }
-        }catch (Exception e){
-            fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
+        } catch (Exception e) {
+            fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
         }
     }
 }

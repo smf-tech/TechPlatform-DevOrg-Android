@@ -29,7 +29,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     private View machineMouThirdFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private Button btnThirdPartMou;
+    private Button btnThirdPartMou, btnPreviousMou;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +54,8 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
         btnThirdPartMou = machineMouThirdFragmentView.findViewById(R.id.btn_third_part_mou);
         btnThirdPartMou.setOnClickListener(this);
+        btnPreviousMou = machineMouThirdFragmentView.findViewById(R.id.btn_previous_mou);
+        btnPreviousMou.setOnClickListener(this);
     }
 
     @Override
@@ -74,6 +76,8 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                     setMachineThirdData();
                     ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
                 }
+                break;
+            case R.id.btn_previous_mou:
                 break;
         }
     }

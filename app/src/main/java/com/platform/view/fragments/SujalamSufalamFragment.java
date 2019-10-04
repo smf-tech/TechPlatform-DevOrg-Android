@@ -95,8 +95,8 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
-
         machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
+        setStructureView();
 
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
@@ -112,26 +112,10 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_structure_view:
-                viewType = 1;
-                tvStructureView.setTextColor(getResources().getColor(R.color.dark_grey));
-                tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.BOLD);
-                tvMachineView.setTextColor(getResources().getColor(R.color.text_lite_grey));
-                tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.NORMAL);
-                tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
-                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
-                structureAnalyticsAdapter.notifyDataSetChanged();
-                btnSsView.setText("Structure View >");
+                setStructureView();
                 break;
             case R.id.tv_machine_view:
-                viewType = 2;
-                tvMachineView.setTextColor(getResources().getColor(R.color.dark_grey));
-                tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.BOLD);
-                tvStructureView.setTextColor(getResources().getColor(R.color.text_lite_grey));
-                tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.NORMAL);
-                tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
-                rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
-                machineAnalyticsAdapter.notifyDataSetChanged();
-                btnSsView.setText("Machine View >");
+                setMachineView();
                 break;
             case R.id.btn_ss_view:
                 Intent intent = new Intent(getActivity(), SSActionsActivity.class);
@@ -146,6 +130,30 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 getActivity().startActivity(intent);
                 break;
         }
+    }
+
+    private void setMachineView(){
+        viewType = 2;
+        tvMachineView.setTextColor(getResources().getColor(R.color.dark_grey));
+        tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.BOLD);
+        tvStructureView.setTextColor(getResources().getColor(R.color.text_lite_grey));
+        tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.NORMAL);
+        tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
+        rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
+        machineAnalyticsAdapter.notifyDataSetChanged();
+        btnSsView.setText("Machine View >");
+    }
+
+    private void setStructureView(){
+        viewType = 1;
+        tvStructureView.setTextColor(getResources().getColor(R.color.dark_grey));
+        tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.BOLD);
+        tvMachineView.setTextColor(getResources().getColor(R.color.text_lite_grey));
+        tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.NORMAL);
+        tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
+        rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
+        structureAnalyticsAdapter.notifyDataSetChanged();
+        btnSsView.setText("Structure View >");
     }
 
     public void populateAnalyticsData(String requestCode, SSAnalyticsAPIResponse analyticsData) {

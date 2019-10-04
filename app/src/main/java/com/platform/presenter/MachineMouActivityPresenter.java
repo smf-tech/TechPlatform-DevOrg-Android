@@ -29,6 +29,7 @@ public class MachineMouActivityPresenter implements APIPresenterListener {
     }
 
     public void getMachineDetails(String machineId, Integer statusCode){
+        fragmentWeakReference.get().showProgressBar();
         final String getMachineDetailsUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_MACHINE_DETAILS, machineId, statusCode);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getMachineDetailsUrl);

@@ -60,7 +60,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:background="@drawable/bg_button"
-        android:text="@string/submit"
         android:textAllCaps="false"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"/>

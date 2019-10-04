@@ -31,7 +31,7 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
     public void updateMachineStructureStatus(String machineId, String machineCode, int statusCode, String type) {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-
+        fragmentWeakReference.get().showProgressBar();
         final String updateStructureMachineStatusUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.UPDATE_STRUCTURE_MACHINE_STATUS, machineId, machineCode, statusCode, type);
         Log.d(TAG, "updateStatus: url " + updateStructureMachineStatusUrl);

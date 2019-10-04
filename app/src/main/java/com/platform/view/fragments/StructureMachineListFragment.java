@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -66,6 +67,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
     private String selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
+    private int mouAction = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,10 +132,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     }
 
     public void showMouActionPopup(int position) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_mou_action_layout);
         TextInputLayout tlyTerminateReason = dialog.findViewById(R.id.tly_terminate_reason);
+        EditText editTerminateReason = dialog.findViewById(R.id.edit_terminate_reason);
         RecyclerView rvTaluka = dialog.findViewById(R.id.rv_taluka);
 
         RadioGroup rgMouAction = dialog.findViewById(R.id.rg_mou_action);
@@ -145,10 +148,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.rb_terminate:
+                        mouAction = 2;
                         rvTaluka.setVisibility(View.GONE);
                         tlyTerminateReason.setVisibility(View.VISIBLE);
                         break;
                     case R.id.rb_deploy:
+                        mouAction = 1;
+                        machineTalukaDeployList.clear();
                         machineTalukaDeployList.addAll(machineTalukaList);
                         tlyTerminateReason.setVisibility(View.GONE);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -163,28 +169,56 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             TextView title = dialog.findViewById(R.id.tv_dialog_title);
             title.setText("What would you like to do?");
             title.setVisibility(View.VISIBLE);
-
+            TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+            tvCancel.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
             Button button = dialog.findViewById(R.id.btn_dialog);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
-                // Close dialog
-                for(CustomSpinnerObject mDeployTaluka: machineTalukaDeployList){
-                    if(mDeployTaluka.isSelected()){
-                        selectedDeployTaluka = mDeployTaluka.getName();
-                        selectedDeployTalukaId = mDeployTaluka.get_id();
-                        break;
+                if(mouAction != 0) {
+                    // Close dialog
+                    if (mouAction == 1) {
+                        for (CustomSpinnerObject mDeployTaluka : machineTalukaDeployList) {
+                            if (mDeployTaluka.isSelected()) {
+                                selectedDeployTaluka = mDeployTaluka.getName();
+                                selectedDeployTalukaId = mDeployTaluka.get_id();
+                                break;
+                            }
+                        }
+                        if (selectedDeployTalukaId != null) {
+                            structureMachineListFragmentPresenter.terminateSubmitMou(
+                                    ssMachineListData.get(position).getId(),
+                                    ssMachineListData.get(position).getMachineCode(),
+                                    Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE,
+                                    selectedDeployTalukaId);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select Taluka for machine deployment.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    } else if (mouAction == 2) {
+                        if (editTerminateReason.getText().toString() != null && editTerminateReason.getText().toString().length() > 0) {
+                            structureMachineListFragmentPresenter.terminateSubmitMou(
+                                    ssMachineListData.get(position).getId(),
+                                    ssMachineListData.get(position).getMachineCode(),
+                                    Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE,
+                                    editTerminateReason.getText().toString());
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please provide reason for machine Mou termination.",
+                                    Snackbar.LENGTH_LONG);
+                        }
                     }
-                }
-                if(selectedDeployTalukaId != null){
-                    structureMachineListFragmentPresenter.terminateSubmitMou(ssMachineListData.get(position).getId(),
-                            ssMachineListData.get(position).getMachineCode(), "Deployed", selectedDeployTalukaId);
+                    dialog.dismiss();
                 } else {
-
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select action.",
+                            Snackbar.LENGTH_LONG);
                 }
-                dialog.dismiss();
             });
 
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();
@@ -241,9 +275,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
     @Override
     public void closeCurrentActivity() {
-//        if (getActivity() != null) {
-//            getActivity().onBackPressed();
-//        }
         getActivity().finish();
     }
 
@@ -279,12 +310,26 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                             machineTalukaList.add(talukaList);
                         }
                     }
-
                 }
                 break;
 
             default:
                 break;
+        }
+    }
+
+    public void showResponse(String responseStatus, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if(status == 200){
+            if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
+                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
+                        "5ced0c27d42f28124c0150ba");
+            } else {
+                structureMachineListFragmentPresenter.getMachinesList("5c66989ec7982d31cc6b86c3",
+                        "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
+            }
         }
     }
 

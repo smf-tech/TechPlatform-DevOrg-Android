@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lighter_grey"
+    android:gravity="center"
+    tools:ignore="RtlSymmetry">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_machine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:paddingEnd="@dimen/dimen_10dp"
+                android:background="@drawable/bg_status_label"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_status"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/tv_code_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_status"
+                android:text="Structure Code"
+                android:textSize="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_structure_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_code_label"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_structure_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_structure_code"
+                android:text="Structure Type"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_structure_type"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_work_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_type"
+                android:text="Work Type"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_work_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_work_label"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_structure_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_status"
+                android:layout_alignParentEnd="true"
+                android:text="Structure Name"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_structure_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_structure_label"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_structure_name"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_label_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_label"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_structure_department"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_label_value"
+                android:layout_alignParentEnd="true"
+                android:text="Structure Owner Depaertment"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_department"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_structure_department"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <!--<Button-->
+            <!--android:id="@+id/btn_details"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/tv_contact"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--style="@style/RegistrationEditTextLayout"-->
+            <!--android:paddingStart="@dimen/dimen_10dp"-->
+            <!--android:paddingBottom="@dimen/dimen_10dp"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:text="View Details" />-->
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

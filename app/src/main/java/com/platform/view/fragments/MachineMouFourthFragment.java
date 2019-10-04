@@ -43,7 +43,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private Button btnFourthPartMou;
+    private Button btnFourthPartMou, btnPreviousMou;;
     private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         progressBar = machineMouFourthFragmentView.findViewById(R.id.pb_profile_act);
         btnFourthPartMou = machineMouFourthFragmentView.findViewById(R.id.btn_fourth_part_mou);
         btnFourthPartMou.setOnClickListener(this);
+        btnPreviousMou = machineMouFourthFragmentView.findViewById(R.id.btn_previous_mou);
+        btnPreviousMou.setOnClickListener(this);
         machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
     }
 
@@ -107,6 +109,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 if(isAllDataValid()) {
                     setMachineFourthData();
                 }
+                break;
+            case R.id.btn_previous_mou:
                 break;
         }
     }

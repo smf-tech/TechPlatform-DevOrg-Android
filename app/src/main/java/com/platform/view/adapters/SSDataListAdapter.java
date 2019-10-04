@@ -35,8 +35,8 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
         this.ssDataList = ssDataList;
         this.activity = activity;
         this.fragment = fragment;
-        if(Util.getUserObjectFromPref().getRoleNames().equals("Operator")){
-        }
+//        if(Util.getUserObjectFromPref().getRoleNames().equals("Operator")){
+//        }
     }
     @NonNull
     @Override
@@ -82,22 +82,24 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             rlMachine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("New") ) {
-//                        Intent intent = new Intent(activity, SSActionsActivity.class);
-//                        intent.putExtra("SwitchToFragment", "MachineDetailsFragment");
-//                        intent.putExtra("title", "Machine Details");
-//                        intent.putExtra("machineData", ssDataList.get(getAdapterPosition()));
-//                        activity.startActivity(intent);
-//                    }
-                    if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Eligible") ||
-                            ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("New")){
+                    if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE){
                         Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                         mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                         mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                        mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
+                        if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
+                        } else {
+                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
+                        }
                         activity.startActivity(mouIntent);
-                    } else if(ssDataList.get(getAdapterPosition()).getStatus().equalsIgnoreCase("MOU Done")){
+                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE){
                         fragment.takeMouDoneAction(getAdapterPosition());
+                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE){
+                        Intent intent = new Intent(activity, SSActionsActivity.class);
+                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                        intent.putExtra("title", "Deploy Machine");
+                        activity.startActivity(intent);
                     }
                 }
             });

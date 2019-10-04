@@ -25,7 +25,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private View machineMouSecondFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    Button btnSecondPartMou;
+    Button btnSecondPartMou, btnPreviousMou;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +50,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         progressBar = machineMouSecondFragmentView.findViewById(R.id.pb_profile_act);
         btnSecondPartMou = machineMouSecondFragmentView.findViewById(R.id.btn_second_part_mou);
         btnSecondPartMou.setOnClickListener(this);
+        btnPreviousMou = machineMouSecondFragmentView.findViewById(R.id.btn_previous_mou);
+        btnPreviousMou.setOnClickListener(this);
     }
 
     public boolean isAllDataValid() {
@@ -88,6 +90,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                     setMachineSecondData();
                     ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
                 }
+                break;
+            case R.id.btn_previous_mou:
                 break;
         }
     }

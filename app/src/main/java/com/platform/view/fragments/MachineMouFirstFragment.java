@@ -43,6 +43,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private EditText editOwnerType;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
+    private int statusCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,22 +65,27 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     private void init() {
+        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
-        btnFirstPartMou.setOnClickListener(this);
-        btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
-        btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
-        btnEligilble.setOnClickListener(this);
-        btnNotEligible.setOnClickListener(this);
-        llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
+        if(statusCode == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+            btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
+            btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
+            btnEligilble.setOnClickListener(this);
+            btnNotEligible.setOnClickListener(this);
+            btnFirstPartMou.setVisibility(View.GONE);
+        } else {
+            llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
+            llEligible.setVisibility(View.GONE);
+            btnFirstPartMou.setOnClickListener(this);
+        }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
         setMachineFirstData();
     }
 
     private void setMachineFirstData() {
         //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy("Sagar Mahajan");
-
     }
 
     @Override

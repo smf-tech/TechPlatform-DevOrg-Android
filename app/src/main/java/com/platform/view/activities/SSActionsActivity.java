@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.R;
+import com.platform.view.fragments.MachineDeployStructureListFragment;
 import com.platform.view.fragments.MachineDetailsFragment;
 import com.platform.view.fragments.StructureMachineListFragment;
 
@@ -43,6 +44,11 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
                 switch (switchToFragment) {
                     case "StructureMachineListFragment":
                         fragment = new StructureMachineListFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "MachineDeployStructureListFragment":
+                        fragment = new MachineDeployStructureListFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;
