@@ -142,7 +142,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_references:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "References", nonOrganizersSpinnerList,
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Contact person", nonOrganizersSpinnerList,
                         true);
                 cdd1.show();
                 cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,

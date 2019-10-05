@@ -633,7 +633,7 @@
                         <TextView
                             android:id="@+id/tv_occupation_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Address" />
+                            android:text="Occupation" />
 
                         <TextView
                             android:id="@+id/tv_occupation"
