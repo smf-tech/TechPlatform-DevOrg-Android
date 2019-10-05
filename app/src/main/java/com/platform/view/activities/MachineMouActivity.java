@@ -62,13 +62,13 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 machineId = getIntent().getStringExtra("machineId");
                 statusCode = getIntent().getIntExtra("statusCode",0);
                 machineDetailData = new MachineDetailData();
-                fManager = getSupportFragmentManager();
-                fragment = new MachineMouFirstFragment();
-                FragmentTransaction fTransaction = fManager.beginTransaction();
-                fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
-                        .commit();
+                machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
+//                fManager = getSupportFragmentManager();
+//                fragment = new MachineMouFirstFragment();
+//                FragmentTransaction fTransaction = fManager.beginTransaction();
+//                fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
+//                        .commit();
             }
-            machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
         }
     }
 
@@ -104,6 +104,10 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
     public void setMachineDetailData(MachineDetailData machineDetail) {
         this.machineDetailData = machineDetail;
+        fManager = getSupportFragmentManager();
+        fragment = new MachineMouFirstFragment();
+        FragmentTransaction fTransaction = fManager.beginTransaction();
+        fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -122,7 +126,6 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
     }
-
 
     @Override
     protected void onDestroy() {

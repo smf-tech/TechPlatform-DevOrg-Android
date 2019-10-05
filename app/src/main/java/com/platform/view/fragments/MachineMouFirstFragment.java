@@ -40,7 +40,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
     String machineId;
     private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
-    private EditText editOwnerType;
+    private EditText editOwnerType,etUniqueIdNumber,etMachineDistrict,etMachineTaluka,etMachineType,etYear,
+            etMachineMakeModel,etMeterWorking,etRtoNumber,etChasisNumber,etExcavationCapacity,etDieselCapacity;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
     private int statusCode;
@@ -68,6 +69,19 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
+        editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
+        etUniqueIdNumber = machineMouFragmentView.findViewById(R.id.et_uniqueId_number);
+        etMachineDistrict = machineMouFragmentView.findViewById(R.id.et_machine_district);
+        etMachineTaluka = machineMouFragmentView.findViewById(R.id.et_machine_taluka);
+        etMachineType = machineMouFragmentView.findViewById(R.id.et_machine_type);
+        etYear = machineMouFragmentView.findViewById(R.id.et_year);
+        etMachineMakeModel = machineMouFragmentView.findViewById(R.id.et_machine_make_model);
+        etMeterWorking = machineMouFragmentView.findViewById(R.id.et_meter_working);
+        etRtoNumber = machineMouFragmentView.findViewById(R.id.et_rto_number);
+        etChasisNumber = machineMouFragmentView.findViewById(R.id.et_chasis_number);
+        etExcavationCapacity = machineMouFragmentView.findViewById(R.id.et_excavation_capacity);
+        etDieselCapacity = machineMouFragmentView.findViewById(R.id.et_diesel_capacity);
+
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
         if(statusCode == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
             btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
@@ -86,6 +100,18 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 
     private void setMachineFirstData() {
         //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy("Sagar Mahajan");
+        editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
+        etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
+        etMachineDistrict.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDistrict());
+        etMachineTaluka.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getTaluka());
+        etMachineType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachinetype());
+        etYear.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getManufacturedYear());
+        etMachineMakeModel.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMakeModel());
+//        etMeterWorking.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+        etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
     }
 
     @Override

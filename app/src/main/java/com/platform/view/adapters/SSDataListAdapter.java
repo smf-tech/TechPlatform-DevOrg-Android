@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,12 +28,14 @@ import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.util.ArrayList;
 
-public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder>  {
+public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder> implements
+        PopupMenu.OnMenuItemClickListener   {
     private ArrayList<MachineData> ssDataList;
     Activity activity;
     StructureMachineListFragment fragment;
 
-    public SSDataListAdapter(Activity activity, StructureMachineListFragment fragment, ArrayList<MachineData> ssDataList){
+    public SSDataListAdapter(Activity activity, StructureMachineListFragment fragment,
+                             ArrayList<MachineData> ssDataList){
         this.ssDataList = ssDataList;
         this.activity = activity;
         this.fragment = fragment;
@@ -41,7 +45,8 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
     @NonNull
     @Override
     public SSDataListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ss_data_item_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ss_data_item_layout,
+                parent, false);
         return new SSDataListAdapter.ViewHolder(v);
     }
 
@@ -56,9 +61,28 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
         holder.tvContact.setText(machineData.getProviderContactNumber());
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_machine_shifting:
+                //showDialog("Archive Meet", "Are you sure you want to archive this meet?","YES", "NO");
+                break;
+            case R.id.action_machine_visit:
+                //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                break;
+            case R.id.action_diesel_record:
+                //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                break;
+            case R.id.action_machine_non_utilization:
+                //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                break;
+        }
+        return false;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvReason, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
-        Button btnDetails;
+        ImageView btnPopupMenu;
         RelativeLayout rlMachine;
         ViewHolder(View itemView){
             super(itemView);
@@ -68,6 +92,16 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
+            btnPopupMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu((activity), v);
+                    popup.setOnMenuItemClickListener(SSDataListAdapter.this);
+                    popup.inflate(R.menu.machine_forms_menu);
+                    popup.show();
+                }
+            });
             rlMachine = itemView.findViewById(R.id.rl_machine);
 //            btnDetails = itemView.findViewById(R.id.btn_details);
 //            btnDetails.setOnClickListener(new View.OnClickListener() {
@@ -82,23 +116,30 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             rlMachine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE){
+                    if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
+                            MACHINE_ELIGIBLE_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
+                                    MACHINE_NEW_STATUS_CODE){
                         Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                         mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                        if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
+                                getId());
+                        if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
                             mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
                         } else {
                             mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
                         }
                         activity.startActivity(mouIntent);
-                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE){
+                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE){
                         fragment.takeMouDoneAction(getAdapterPosition());
-                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE){
+                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE){
                         Intent intent = new Intent(activity, SSActionsActivity.class);
                         intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
                         intent.putExtra("title", "Deploy Machine");
+                        intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                         activity.startActivity(intent);
                     }
                 }

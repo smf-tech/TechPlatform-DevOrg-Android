@@ -2,13 +2,16 @@ package com.platform.view.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
@@ -17,7 +20,7 @@ import com.platform.view.fragments.MachineDeployStructureListFragment;
 
 import java.util.ArrayList;
 
-public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdapter.ViewHolder>  {
+public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdapter.ViewHolder> {
     private ArrayList<StructureData> ssStructureList;
     Activity activity;
     MachineDeployStructureListFragment fragment;
@@ -36,35 +39,35 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
 
     @Override
     public void onBindViewHolder(@NonNull StructureListAdapter.ViewHolder holder, int position) {
-        StructureData machineData = ssStructureList.get(position);
-//        holder.tvStatus.setText(machineData.getStatus());
-//        holder.tvMachineCode.setText(machineData.getMachineCode());
-//        holder.tvCapacity.setText(machineData.getDiselTankCapacity());
-//        holder.tvProvider.setText(machineData.getProviderName());
-//        holder.tvMachineModel.setText(machineData.getMakeModel());
-//        holder.tvContact.setText(machineData.getProviderContactNumber());
+        StructureData structureData = ssStructureList.get(position);
+        holder.tvStatus.setText(structureData.getStructureStatus());
+        holder.tvStructureCode.setText(structureData.getStructureCode());
+        holder.tvType.setText(structureData.getStructureType());
+        holder.tvWorkType.setText(structureData.getStructureWorkType());
+        holder.tvStructureName.setText(structureData.getStructureName());
+        holder.tvDepartment.setText(structureData.getStructureDepartmentName());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvReason, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
-        Button btnDetails;
-        RelativeLayout rlMachine;
-
+        TextView tvStatus, tvReason, tvStructureCode, tvType, tvWorkType,
+                tvStructureName, tvStructureDepartment,tvDepartment;
+        RelativeLayout rlStructure;
         ViewHolder(View itemView) {
             super(itemView);
-//            tvStatus = itemView.findViewById(R.id.tv_status);
-//            tvMachineCode = itemView.findViewById(R.id.tv_machine_code);
-//            tvCapacity = itemView.findViewById(R.id.tv_capacity);
-//            tvProvider = itemView.findViewById(R.id.tv_provider);
-//            tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
-//            tvContact = itemView.findViewById(R.id.tv_contact);
-//            rlMachine = itemView.findViewById(R.id.rl_machine);
-//            rlMachine.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                }
-//            });
+            tvStatus = itemView.findViewById(R.id.tv_status);
+            tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
+            tvType = itemView.findViewById(R.id.tv_type);
+            tvWorkType = itemView.findViewById(R.id.tv_work_type);
+            tvStructureName = itemView.findViewById(R.id.tv_structure_name);
+            tvStructureDepartment = itemView.findViewById(R.id.tv_structure_department);
+            tvDepartment = itemView.findViewById(R.id.tv_department);
+            rlStructure = itemView.findViewById(R.id.rl_structure);
+            rlStructure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fragment.deployMachine(getAdapterPosition());
+                }
+            });
         }
     }
 

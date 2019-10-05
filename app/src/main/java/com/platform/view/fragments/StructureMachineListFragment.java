@@ -94,8 +94,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         progressBarLayout = structureMachineListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
-        tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+        }
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+        }
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
         if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
             tvTalukaFilter.setOnClickListener(this);
