@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
+    private RelativeLayout pbLayout;
     private String meetIdReceived;
     private ViewPager viewPager;
     private MatrimonyViewPagerAdapter matrimonyViewPagerAdapter;
@@ -66,6 +68,7 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
         }
 
         meetIdReceived = getIntent().getStringExtra("meetid");
+        pbLayout = findViewById(R.id.progress_bar);
         viewPager = findViewById(R.id.approval_cat_view_pager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
@@ -193,6 +196,7 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
             otherMaritialInformation.setEducational_url(response);
             //img_education_cert.setImageURI(finalUri);
         }
+        hideProgressBar();
     }
 
     public void profileCreatedSuccessfully(String response)
@@ -258,5 +262,28 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
         });
         dialog.show();
 
+    }
+
+    public void showProgressBar() {
+        if (pbLayout != null && pbLayout.getVisibility() == View.GONE) {
+            pbLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    public void hideProgressBar() {
+
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                // Stuff that updates the UI
+                if (pbLayout != null && pbLayout.getVisibility() == View.VISIBLE) {
+                    pbLayout.setVisibility(View.GONE);
+                }
+
+            }
+        });
     }
 }

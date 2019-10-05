@@ -19,6 +19,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.models.Matrimony.UserProfileList;
@@ -26,6 +27,7 @@ import com.platform.presenter.MatrimonyProfilesListActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.MatrimonyProfileListRecyclerAdapter;
+import com.platform.view.fragments.TMUserFormsApprovalFragment;
 import com.platform.widgets.SingleSelectBottomSheet;
 
 import org.json.JSONObject;
@@ -214,14 +216,17 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void onRejectClicked(int pos) {
 
         approvalType = Constants.REJECT;
-        String message = "Do you want to reject?";
-        showApproveRejectDialog(this, pos, approvalType, message);
+        //String message = "Do you want to reject?";
+        //showApproveRejectDialog(this, pos, approvalType, message);
+
+        //String strReason = Util.showReasonDialog(getActivity(), pos, this);
+        showReasonDialog(this,pos);
     }
 
-    public void callRejectAPI(int pos) {
+    public void callRejectAPI(String strReason,int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
 
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT);
+        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT,strReason);
         tmFilterListActivityPresenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
         approvalType = Constants.REJECT;
 
@@ -230,7 +235,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void callApproveAPI(int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
 
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE);
+        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE ,"");
         tmFilterListActivityPresenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
         approvalType = Constants.APPROVE;
 
@@ -358,9 +363,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 if (approvalType.equalsIgnoreCase(Constants.APPROVE)) {
                     callApproveAPI(pos);
                 }
-                if (approvalType.equalsIgnoreCase(Constants.REJECT)) {
+                /*if (approvalType.equalsIgnoreCase(Constants.REJECT)) {
                     callRejectAPI(pos);
-                }
+                }*/
                 dialog.dismiss();
             }
         });
@@ -371,4 +376,74 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void setTxt_no_data(){
         txt_no_data.setVisibility(View.VISIBLE);
     }
+
+
+    public String showReasonDialog(final Activity context, int pos){
+
+
+
+        Dialog dialog;
+        Button btnSubmit,btn_cancel;
+        EditText edt_reason;
+        Activity activity =context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_reason_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                   /*Intent loginIntent = new Intent(context, LoginActivity.class);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                   context.startActivity(loginIntent);*/
+                String strReason  = edt_reason.getText().toString();
+
+                if (TextUtils.isEmpty(strReason)){
+                    Util.logger("Empty Reason","Reason Can not be blank");
+                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Reason Can not be blank",
+                            Snackbar.LENGTH_LONG);
+                }else {
+                    /*if (fragment instanceof TMUserLeavesApprovalFragment) {
+                        ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                        ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserProfileApprovalFragment) {
+                        ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserFormsApprovalFragment) {
+                        ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }*/
+                    onReceiveReason(strReason, pos);
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+
+
+        return "";
+    }
+
+    public void onReceiveReason(String strReason, int pos) {
+        callRejectAPI(strReason,pos);
+    }
+
 }

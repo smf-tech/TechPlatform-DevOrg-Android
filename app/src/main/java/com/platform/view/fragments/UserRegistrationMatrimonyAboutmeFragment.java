@@ -223,6 +223,9 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
                     if (Util.isValidImageSize(imageFile)) {
                         //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                         UserRegistrationMatrimonyActivity.userRegistrationMatrimonyActivityPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
+
+                        ((UserRegistrationMatrimonyActivity)getActivity()).showProgressBar();
+
                         if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
                             img_user_profle.setImageURI(finalUri);
                         } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {

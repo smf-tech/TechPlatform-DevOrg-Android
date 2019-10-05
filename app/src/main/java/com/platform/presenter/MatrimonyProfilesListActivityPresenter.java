@@ -117,7 +117,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
 
     //---------Approve Reject Request-----------
 
-    public JSONObject createBodyParams(String meetid,String type,String userid,String approval_type){
+    public JSONObject createBodyParams(String meetid,String type,String userid,String approval_type,String strReason){
         JSONObject requestObject = new JSONObject();
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson("");
@@ -128,6 +128,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
             requestObject.put("type", type);
             requestObject.put("approval", approval_type);
             requestObject.put("user_id", userid);
+            requestObject.put("rejection_reason",strReason);
         } catch (JSONException e) {
             e.printStackTrace();
         }
