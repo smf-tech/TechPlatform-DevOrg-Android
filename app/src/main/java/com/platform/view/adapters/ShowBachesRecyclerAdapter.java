@@ -52,10 +52,10 @@ public class ShowBachesRecyclerAdapter extends RecyclerView.Adapter<ShowBachesRe
         }else {
             holder.txtValue.setText("Badge missing");
         }
-        if (!TextUtils.isEmpty(dataList.get(0).get(position).getProfile_image())){
+        if (!TextUtils.isEmpty(dataList.get(0).get(position).getProfile_image().get(0))){
             Glide.with(mContext)
                     .applyDefaultRequestOptions(requestOptions)
-                    .load(dataList.get(0).get(position).getProfile_image())
+                    .load(dataList.get(0).get(position).getProfile_image().get(0))
                     .into(holder.user_profile_pic);
         }
 

@@ -3,6 +3,8 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class Female {
 
     @SerializedName("name")
@@ -11,7 +13,7 @@ public class Female {
 
     @SerializedName("profile_image")
     @Expose
-    private String profile_image;
+    private ArrayList<String> profile_image;
 
     @SerializedName("userId")
     @Expose
@@ -104,19 +106,19 @@ public class Female {
     }
 
 
-    public String getProfile_image() {
-        return profile_image;
-    }
-
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ArrayList<String> getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(ArrayList<String> profile_image) {
+        this.profile_image = profile_image;
     }
 }
