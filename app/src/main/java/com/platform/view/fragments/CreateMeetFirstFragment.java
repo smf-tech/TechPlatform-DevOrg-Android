@@ -157,7 +157,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setLocation(location);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString().trim());
         MeetSchedule meetSchedule = new MeetSchedule();
-        meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
+        meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), edtMeetStartTime.getText().toString()));
         meetSchedule.setMeetStartTime(edtMeetStartTime.getText().toString());
         meetSchedule.setMeetEndTime(edtMeetEndTime.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setSchedule(meetSchedule);
