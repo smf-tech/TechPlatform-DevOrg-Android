@@ -48,7 +48,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private ArrayList<UserProfileList> userProfileLists = new ArrayList<>();
     private ArrayList<UserProfileList> userProfileListsFiltered = new ArrayList<>();
     private String approvalType;
-    private String meetIdReceived;
+    public String meetIdReceived,mobileNumberReceived;
     private ImageView toolbar_back_action, toolbar_edit_action, toolbar_action;
     private TextView toolbar_title, txt_no_data;
     private boolean isSearchVisible = false;
@@ -59,6 +59,8 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         setContentView(R.layout.activity_mprofilelist_layout);
         //receive intent data
         meetIdReceived = getIntent().getStringExtra("meetid");
+
+
         initViews();
     }
 

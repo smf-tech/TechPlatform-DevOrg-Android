@@ -41,7 +41,8 @@ import java.util.List;
 
 public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
     private RelativeLayout pbLayout;
-    private String meetIdReceived;
+    public String meetIdReceived,mobileNumberReceived;
+
     private ViewPager viewPager;
     private MatrimonyViewPagerAdapter matrimonyViewPagerAdapter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> MasterDataArrayList;
@@ -68,6 +69,8 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
         }
 
         meetIdReceived = getIntent().getStringExtra("meetid");
+        mobileNumberReceived = getIntent().getStringExtra("mobileNumber");
+
         pbLayout = findViewById(R.id.progress_bar);
         viewPager = findViewById(R.id.approval_cat_view_pager);
         viewPager.setOffscreenPageLimit(3);

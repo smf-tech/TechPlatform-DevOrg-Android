@@ -180,7 +180,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
-        tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name());
+        tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name()+" "+userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
+                +" "+userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
         tv_birth_date.setText(Util.getDateFromTimestamp(userProfileList.getMatrimonial_profile().getPersonal_details().getBirthDate(), Constants.EVENT_DATE_FORMAT));
         tv_birth_time.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_time());
         tv_age.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getAge());

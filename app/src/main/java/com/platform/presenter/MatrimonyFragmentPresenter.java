@@ -95,14 +95,18 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.getDataApiCall(PUBLISH_SAVED_MEET, publishSavedMeetUrl);
     }
 
-    public void VerifyUserProfile(String mobilenumber) {
+    public void VerifyUserProfile(String mobilenumber,String userId, String meetId) {
+        Gson gson = new GsonBuilder().create();
+
+        String paramjson =gson.toJson(getCheckProfileJson(meetId,userId,mobilenumber));
+
         final String checkProfileUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Matrimony.CHECK_USER_CREATED, mobilenumber);
+                + String.format(Urls.Matrimony.REGISTER_USER_TO_MEET);//, mobilenumber,meetId);
         Log.d(TAG, "getMatrimonyMeetsUrl: url" + checkProfileUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall("CHECK_USER_CREATED", checkProfileUrl);
+        requestCall.postDataApiCall("CHECK_USER_CREATED",paramjson,checkProfileUrl);
     }
 
     public JsonObject getMeetJson(String countryId, String stateId, String cityId){
@@ -110,6 +114,24 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         map.put(KEY_COUNTRY_ID, countryId);
         map.put(KEY_STATE_ID, stateId);
         map.put(KEY_CITY_ID, cityId);
+
+        JsonObject requestObject = new JsonObject();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            requestObject.addProperty(key, value);
+        }
+
+        return requestObject;
+
+    }
+    public JsonObject getCheckProfileJson(String meetId, String userId, String mobilenumber){
+
+        HashMap<String,String> map=new HashMap<>();
+        map.put("meet_id", meetId);
+        map.put("user_id", userId);
+        map.put("mobile", mobilenumber);
 
         JsonObject requestObject = new JsonObject();
 

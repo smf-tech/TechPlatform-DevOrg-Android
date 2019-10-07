@@ -58,6 +58,7 @@ import static com.platform.utility.Constants.FORM_DATE_FORMAT;
 
 public class MatrimonyFragment extends Fragment implements  View.OnClickListener , APIDataListener, ViewPager.OnPageChangeListener{
     private View matrimonyFragmentView;
+    private String mobileNumberEntered="";
     private FloatingActionButton btnCreateMeet;
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     private ViewPagerAdapter adapter;
@@ -328,6 +329,8 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
 
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
+                startMain.putExtra("mobileNumber",mobileNumberEntered);
+
                 startActivity(startMain);
                 break;
         }
@@ -360,6 +363,8 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                     //Util.logger("currentTime","-> Current Time greater");
                     Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
                     startMain1.putExtra("meetid", matrimonyMeetList.get(currentPosition).getId());
+                    startMain1.putExtra("mobileNumber",mobileNumberEntered);
+
                     startActivity(startMain1);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -465,7 +470,8 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
 
     public void onReceiveReason(String strReason, int pos) {
         //callRejectAPI(strReason,pos);
-        matrimonyFragmentPresenter.VerifyUserProfile(strReason);
+        matrimonyFragmentPresenter.VerifyUserProfile(strReason,"",matrimonyMeetList.get(currentPosition).getId());
+        mobileNumberEntered = strReason;
     }
 
 }

@@ -65,6 +65,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         et_state = fragmentview.findViewById(R.id.et_state);
         et_country = fragmentview.findViewById(R.id.et_country);
         et_primary_mobile = fragmentview.findViewById(R.id.et_primary_mobile);
+        et_primary_mobile.setText(((UserRegistrationMatrimonyActivity)getActivity()).mobileNumberReceived);
         et_primary_mobile_two = fragmentview.findViewById(R.id.et_primary_mobile_two);
         et_primary_email = fragmentview.findViewById(R.id.et_primary_email);
 
