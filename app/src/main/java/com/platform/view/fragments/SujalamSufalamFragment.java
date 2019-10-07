@@ -26,6 +26,8 @@ import com.platform.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsData;
 import com.platform.presenter.SujalamSuphalamFragmentPresenter;
 import com.platform.utility.AppEvents;
+import com.platform.utility.Util;
+import com.platform.view.activities.CreateStructureActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.SSAnalyticsAdapter;
@@ -101,6 +103,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
+        sujalamSufalamFragmentView.findViewById(R.id.fb_create).setOnClickListener(this);
     }
 
     @Override
@@ -110,6 +113,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()){
             case R.id.tv_structure_view:
                 setStructureView();
@@ -118,7 +122,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 setMachineView();
                 break;
             case R.id.btn_ss_view:
-                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 if(viewType == 1) {
                     intent.putExtra("viewType", 1);
@@ -128,6 +132,14 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     intent.putExtra("title", "Machine List");
                 }
                 getActivity().startActivity(intent);
+                break;
+            case R.id.fb_create:
+                if(viewType==1){
+                    intent = new Intent(getActivity(), CreateStructureActivity.class);
+                    getActivity().startActivity(intent);
+                } else {
+                    Util.showToast("In progress",this);
+                }
                 break;
         }
     }
