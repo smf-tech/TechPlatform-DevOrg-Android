@@ -26,6 +26,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
     private WeakReference<MatrimonyFragment> fragmentWeakReference;
     public static final String GET_MATRIMONY_MEETS ="getMatrimonyMeets";
     public static final String PUBLISH_SAVED_MEET ="publishSavedMeet";
+
     private final String TAG = MatrimonyFragmentPresenter.class.getName();
     private static final String KEY_COUNTRY_ID = "country_id";
     private static final String KEY_STATE_ID = "state_id";
@@ -94,6 +95,16 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.getDataApiCall(PUBLISH_SAVED_MEET, publishSavedMeetUrl);
     }
 
+    public void VerifyUserProfile(String mobilenumber) {
+        final String checkProfileUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Matrimony.CHECK_USER_CREATED, mobilenumber);
+        Log.d(TAG, "getMatrimonyMeetsUrl: url" + checkProfileUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall("CHECK_USER_CREATED", checkProfileUrl);
+    }
+
     public JsonObject getMeetJson(String countryId, String stateId, String cityId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_COUNTRY_ID, countryId);
@@ -150,6 +161,15 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                         fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                }
+                if(requestID.equalsIgnoreCase("CHECK_USER_CREATED"))
+                {
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponseVerifyUser(responseOBJ.getMessage(), responseOBJ.getStatus());
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }

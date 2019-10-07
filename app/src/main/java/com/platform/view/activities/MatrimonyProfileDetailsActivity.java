@@ -259,7 +259,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_other = findViewById(R.id.tv_other);
 
         tv_about_me.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getAbout_me());
-        tv_expectations.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getActivity_achievements());
+        tv_expectations.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getExpectation_from_life_partner());
         tv_activity_chievements.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getActivity_achievements());
         tv_other.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getOther_remarks());
 

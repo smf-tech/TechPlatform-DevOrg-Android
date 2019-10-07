@@ -173,6 +173,7 @@ public class UserRegistrationMatrimonyActivity extends AppCompatActivity {
 
     public void imageUploadedSuccessfully(String response,String type)
     {
+
         if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(type)) {
             otherMaritialInformation.getProfile_image().add(response);
             //img_user_profle.setImageURI(finalUri);

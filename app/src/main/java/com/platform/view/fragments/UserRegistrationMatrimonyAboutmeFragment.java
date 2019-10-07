@@ -319,10 +319,15 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
             et_partner_expectation.requestFocus();
         } else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getProfile_image().size() <= 0) {
             msg = "Please upload profile image.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getAadhar_url()== null){
+            msg = "Please upload Adhar card image.";
         }
         else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getAadhar_url().trim().length() == 0) {
             msg = "Please upload Adhar card image.";//getResources().getString(R.string.msg_enter_name);
-        } else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url().trim().length() == 0) {
+        }else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url()== null){
+            msg = "Please education certificate image.";
+        }
+        else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url().trim().length() == 0) {
             msg = "Please education certificate image."; //getResources().getString(R.string.msg_enter_name);
         }
         /*else if (et_education.getText().toString().trim().length() == 0) {

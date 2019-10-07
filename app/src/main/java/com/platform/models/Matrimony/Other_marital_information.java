@@ -10,6 +10,10 @@ public class Other_marital_information {
     @SerializedName("about_me")
     @Expose
     private String about_me;
+    @SerializedName("expectation_from_partner")
+    @Expose
+    private String expectation_from_life_partner;
+
     @SerializedName("profile_image")
     @Expose
     private ArrayList<String> profile_image;
@@ -81,5 +85,13 @@ public class Other_marital_information {
 
     public void setProfile_image(ArrayList<String> profile_image) {
         this.profile_image = profile_image;
+    }
+
+    public String getExpectation_from_life_partner() {
+        return expectation_from_life_partner;
+    }
+
+    public void setExpectation_from_life_partner(String expectation_from_life_partner) {
+        this.expectation_from_life_partner = expectation_from_life_partner;
     }
 }

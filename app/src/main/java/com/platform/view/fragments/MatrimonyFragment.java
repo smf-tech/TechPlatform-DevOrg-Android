@@ -1,7 +1,11 @@
 package com.platform.view.fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,10 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -104,6 +111,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             ((HomeActivity) getActivity()).setActionBarTitle(title);
         }
         init();
+
     }
 
     private void init() {
@@ -312,24 +320,8 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId());
                 break;
             case R.id.btn_register_profile:
-                if (matrimonyMeetList.get(currentPosition).getIs_published()) {
-                    if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime() >= Util.getCurrentTimeStamp()
-                    && matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegStartDateTime()<= Util.getCurrentTimeStamp())
-                    {
-                        //Util.logger("currentTime","-> Current Time greater");
-                        Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
-                        startMain1.putExtra("meetid", matrimonyMeetList.get(currentPosition).getId());
-                        startActivity(startMain1);
-                    } else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Registrations for this meet are not open.",
-                                Snackbar.LENGTH_LONG);
-                    }
-                }else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "This meet is not published yet.",
-                            Snackbar.LENGTH_LONG);
-                }
+
+                showReasonDialog(getActivity(),0);
 
                 break;
             case R.id.btn_view_profiles:
@@ -358,6 +350,34 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         }
     }
 
+    public void showResponseVerifyUser(String responseStatus, int status) {
+
+        if(status == 200){
+            if (matrimonyMeetList.get(currentPosition).getIs_published()) {
+                if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime() >= Util.getCurrentTimeStamp()
+                        && matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegStartDateTime()<= Util.getCurrentTimeStamp())
+                {
+                    //Util.logger("currentTime","-> Current Time greater");
+                    Intent startMain1 = new Intent(getActivity(), UserRegistrationMatrimonyActivity.class);
+                    startMain1.putExtra("meetid", matrimonyMeetList.get(currentPosition).getId());
+                    startActivity(startMain1);
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Registrations for this meet are not open.",
+                            Snackbar.LENGTH_LONG);
+                }
+            }else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "This meet is not published yet.",
+                        Snackbar.LENGTH_LONG);
+            }
+        }else {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), responseStatus,
+                    Snackbar.LENGTH_LONG);
+        }
+    }
+
     public void updateMeetList(){
         getMeetsCall();
     }
@@ -370,4 +390,82 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
             }
     }
+
+
+
+    public String showReasonDialog(final Activity context, int pos){
+        Dialog dialog;
+        Button btnSubmit,btn_cancel;
+        EditText edt_reason;
+        Activity activity =context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_mobile_input_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                   /*Intent loginIntent = new Intent(context, LoginActivity.class);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                   context.startActivity(loginIntent);*/
+                String strReason  = edt_reason.getText().toString();
+
+
+                if (strReason.trim().length() != 10 ) {
+                    String msg = "Please enter the valid mobile number";//getResources().getString(R.string.msg_enter_name);
+                    //et_primary_mobile.requestFocus();
+                    Util.showToast(msg,getActivity());
+                }else {
+
+                    //-----------------------
+                    if (TextUtils.isEmpty(strReason)) {
+                        Util.logger("Empty Reason", "Reason Can not be blank");
+                        Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Reason Can not be blank",
+                                Snackbar.LENGTH_LONG);
+                    } else {
+                    /*if (fragment instanceof TMUserLeavesApprovalFragment) {
+                        ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                        ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserProfileApprovalFragment) {
+                        ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserFormsApprovalFragment) {
+                        ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }*/
+                        onReceiveReason(strReason, pos);
+                        dialog.dismiss();
+                    }
+                }
+            }
+        });
+        dialog.show();
+
+
+        return "";
+    }
+
+    public void onReceiveReason(String strReason, int pos) {
+        //callRejectAPI(strReason,pos);
+        matrimonyFragmentPresenter.VerifyUserProfile(strReason);
+    }
+
 }

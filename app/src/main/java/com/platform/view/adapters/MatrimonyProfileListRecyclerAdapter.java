@@ -105,7 +105,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);
                 tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
-                tv_payment_status = itemView.findViewById(R.id.tv_approval_status);
+                tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
                 tv_premium = itemView.findViewById(R.id.tv_premium);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
