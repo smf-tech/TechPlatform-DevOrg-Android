@@ -124,5 +124,6 @@ public class Urls {
         public static final String GET_MACHINE_DETAILS = "api/machineDetails/%1$s/%2$s";
         public static final String MOU_TERMINATE_DEPLOY = "api/MOUTerminateDeployed";
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
+        public static final String SHIFT_MACHINE = "api/machineShift";
     }
 }

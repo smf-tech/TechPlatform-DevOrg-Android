@@ -41,6 +41,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     private MachineDeployStructureListFragmentPresenter machineDeployStructureListFragmentPresenter;
     private final ArrayList<StructureData> structureListData = new ArrayList<>();
     String machineId;
+    String type, currentStructureId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 
         //Bundle bundle = this.getArguments();
         machineId = getActivity().getIntent().getStringExtra("machineId");
+        currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
+        type = getActivity().getIntent().getStringExtra("type");
         //viewType = bundle.getInt("viewType");
         init();
     }
@@ -81,12 +84,18 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         }
         rvStructureList = machineDeployStructureListFragmentView.findViewById(R.id.rv_structure_list);
         rvStructureList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        structureListAdapter = new StructureListAdapter(getActivity(), this, structureListData);
+        structureListAdapter = new StructureListAdapter(getActivity(), this, structureListData, type);
         rvStructureList.setAdapter(structureListAdapter);
         machineDeployStructureListFragmentPresenter = new MachineDeployStructureListFragmentPresenter(this);
-        machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-                "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
-                "machineDeployableStructures");
+        if(type.equalsIgnoreCase("deployMachine")) {
+            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
+                    "machineDeployableStructures", currentStructureId);
+        } else if(type.equalsIgnoreCase("shiftMachine")) {
+            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
+                    "machineShiftStructures", currentStructureId);
+        }
     }
 
     public void populateStructureData(String requestID, StructureListAPIResponse structureList) {
@@ -106,6 +115,16 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 
     public void deployMachine(int position) {
         machineDeployStructureListFragmentPresenter.deployMachine(structureListData.get(position).getStructureId(), machineId);
+    }
+
+    public void ShiftMachine(int position) {
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "MachineShiftingFormFragment");
+        intent.putExtra("title", "Machine Shifting");
+        intent.putExtra("machineId", machineId);
+        intent.putExtra("currentStructureId", currentStructureId);
+        intent.putExtra("newStructureId", structureListData.get(position).getStructureId());
+        startActivity(intent);
     }
 
     public void showResponse(String responseStatus, String requestId, int status) {

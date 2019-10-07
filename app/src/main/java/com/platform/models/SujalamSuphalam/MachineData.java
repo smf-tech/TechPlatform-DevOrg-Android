@@ -63,6 +63,9 @@ public class MachineData  implements Serializable {
     @SerializedName("statusCode")
     @Expose
     private int statusCode;
+    @SerializedName("deployedStrutureId")
+    @Expose
+    private String deployedStrutureId;
 
     public String getId() {
         return id;
@@ -150,5 +153,13 @@ public class MachineData  implements Serializable {
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public String getDeployedStrutureId() {
+        return deployedStrutureId;
+    }
+
+    public void setDeployedStrutureId(String deployedStrutureId) {
+        this.deployedStrutureId = deployedStrutureId;
     }
 }

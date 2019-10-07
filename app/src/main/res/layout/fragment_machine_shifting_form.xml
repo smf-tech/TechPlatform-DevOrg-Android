@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.platform.view.fragments.MachineMouFirstFragment"
+    android:background="@color/base_background_color">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_is_diesel_filled"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/is_diesel_filled"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_provided_by"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/provided_by"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_diesel_filled_quantity"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/diesel_quantity"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_start_meter_reading"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/start_meter_reading"
+                        android:maxLength="6"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_travel_distance"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/travel_distance"
+                        android:maxLength="3"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_travel_time"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/travel_time"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:textColor="@android:color/white"
+                        android:text="@string/submit" />
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

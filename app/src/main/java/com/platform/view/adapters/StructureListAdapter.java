@@ -24,11 +24,14 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
     private ArrayList<StructureData> ssStructureList;
     Activity activity;
     MachineDeployStructureListFragment fragment;
+    String type;
 
-    public StructureListAdapter(Activity activity, MachineDeployStructureListFragment fragment, ArrayList<StructureData> ssDataList){
+    public StructureListAdapter(Activity activity, MachineDeployStructureListFragment fragment,
+                                ArrayList<StructureData> ssDataList, String type){
         this.ssStructureList = ssDataList;
         this.activity = activity;
         this.fragment = fragment;
+        this.type = type;
     }
     @NonNull
     @Override
@@ -65,7 +68,11 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
             rlStructure.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fragment.deployMachine(getAdapterPosition());
+                    if(type.equalsIgnoreCase("deployMachine")) {
+                        fragment.deployMachine(getAdapterPosition());
+                    } else if(type.equalsIgnoreCase("shiftMachine")) {
+                        fragment.ShiftMachine(getAdapterPosition());
+                    }
                 }
             });
         }

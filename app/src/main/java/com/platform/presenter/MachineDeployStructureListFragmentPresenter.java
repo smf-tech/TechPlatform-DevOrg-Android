@@ -42,9 +42,10 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
         fragmentWeakReference = null;
     }
 
-    public void getDeployableStructuresList(String districtId, String talukaId, String villageId, String type){
+    public void getDeployableStructuresList(String districtId, String talukaId, String villageId,
+                                            String type, String currentStructureId){
         //Gson gson = new GsonBuilder().create();
-        String paramjson = getStructuresListJson(districtId, talukaId, villageId, type);
+        String paramjson = getStructuresListJson(districtId, talukaId, villageId, type, currentStructureId);
         final String getMachineDeployableStructuresUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
         Log.d(TAG, "getMachineDeployableStructuresUrl: url" + getMachineDeployableStructuresUrl);
@@ -68,13 +69,14 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
         requestCall.postDataApiCall(DEPLOY_MACHINE, new JSONObject(map).toString(), machineDeployUrl);
     }
 
-    public String getStructuresListJson(String districtId, String talukaId, String villageId, String type){
+    public String getStructuresListJson(String districtId, String talukaId, String villageId,
+                                        String type, String currentStructureId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_DISTRICT_ID, districtId);
         map.put(KEY_TALUKA_ID, talukaId);
         map.put(KEY_VILLAGE_ID, villageId);
         map.put(KEY_TYPE, type);
-
+        map.put(KEY_STRUCTURE_ID, currentStructureId);
         //JsonObject requestObject = new JsonObject(map);
         JSONObject jsonObject = new JSONObject(map);
 //        for (Map.Entry<String, String> entry : map.entrySet()) {

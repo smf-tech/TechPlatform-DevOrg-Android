@@ -28,8 +28,7 @@ import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.util.ArrayList;
 
-public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder> implements
-        PopupMenu.OnMenuItemClickListener   {
+public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder> {
     private ArrayList<MachineData> ssDataList;
     Activity activity;
     StructureMachineListFragment fragment;
@@ -61,29 +60,11 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
         holder.tvContact.setText(machineData.getProviderContactNumber());
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_machine_shifting:
-                //showDialog("Archive Meet", "Are you sure you want to archive this meet?","YES", "NO");
-                break;
-            case R.id.action_machine_visit:
-                //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
-                break;
-            case R.id.action_diesel_record:
-                //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
-                break;
-            case R.id.action_machine_non_utilization:
-                //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
-                break;
-        }
-        return false;
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvReason, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
+        TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
         ImageView btnPopupMenu;
         RelativeLayout rlMachine;
+        PopupMenu popup;
         ViewHolder(View itemView){
             super(itemView);
             tvStatus = itemView.findViewById(R.id.tv_status);
@@ -96,23 +77,41 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PopupMenu popup = new PopupMenu((activity), v);
-                    popup.setOnMenuItemClickListener(SSDataListAdapter.this);
+                    popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
                     popup.show();
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.action_machine_shifting:
+                                    Intent intent = new Intent(activity, SSActionsActivity.class);
+                                    intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                                    intent.putExtra("title", "Shift Machine");
+                                    intent.putExtra("type", "shiftMachine");
+                                    intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    intent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(intent);
+                                    //showDialog("Archive Meet", "Are you sure you want to archive this meet?","YES", "NO");
+                                    break;
+                                case R.id.action_machine_visit:
+                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    break;
+                                case R.id.action_diesel_record:
+                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    break;
+                                case R.id.action_machine_non_utilization:
+                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+
                 }
             });
             rlMachine = itemView.findViewById(R.id.rl_machine);
-//            btnDetails = itemView.findViewById(R.id.btn_details);
-//            btnDetails.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(activity, SSActionsActivity.class);
-//                    intent.putExtra("switch_fragments", "MachineDetailsFragment");
-//                    intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-//                    activity.startActivity(intent);
-//                }
-//            });
             rlMachine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,6 +137,7 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE){
                         Intent intent = new Intent(activity, SSActionsActivity.class);
                         intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                        intent.putExtra("type", "deployMachine");
                         intent.putExtra("title", "Deploy Machine");
                         intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                         activity.startActivity(intent);
