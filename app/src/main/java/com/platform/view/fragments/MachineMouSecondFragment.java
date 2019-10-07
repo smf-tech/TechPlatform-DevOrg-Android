@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
+import com.platform.models.SujalamSuphalam.ProviderInformation;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 
@@ -24,7 +25,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private View machineMouSecondFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    Button btnSecondPartMou;
+    Button btnSecondPartMou, btnPreviousMou;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         progressBar = machineMouSecondFragmentView.findViewById(R.id.pb_profile_act);
         btnSecondPartMou = machineMouSecondFragmentView.findViewById(R.id.btn_second_part_mou);
         btnSecondPartMou.setOnClickListener(this);
+        btnPreviousMou = machineMouSecondFragmentView.findViewById(R.id.btn_previous_mou);
+        btnPreviousMou.setOnClickListener(this);
     }
 
     public boolean isAllDataValid() {
@@ -83,8 +86,40 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_second_part_mou:
-                ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
+                if(isAllDataValid()){
+                    setMachineSecondData();
+                    ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
+                }
+                break;
+            case R.id.btn_previous_mou:
                 break;
         }
+    }
+
+    private void setMachineSecondData() {
+        //MachineData machineData = new MachineData();
+        ProviderInformation providerInformation = new ProviderInformation();
+        ((MachineMouActivity) getActivity()).getMachineDetailData().setProviderInformation(providerInformation);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setFirstName("Jitendra");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setLastName("Dhumal");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAddress("Pune");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber("9890650446");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setContactNumber("1234567890");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineMeterWorking("Yes");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setIsTurnover("Yes");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineId(((MachineMouActivity)
+                getActivity()).getMachineDetailData().getMachine().getId());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setTradeName("Sagar Mahajan");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setGSTNumber("123erft45tg");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setPANNumber("CGNGV456YH");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setBankName("SBI");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setIFSC("sbi00012");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setBranch("Kothrud");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setBankAddress("Kothrud, Pune");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAccountNo("1234543345");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setCheckBookImage("www.google.com");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAccountName("Sagar Mahajan");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAccountType("Current Account");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setCheckBookImage("www.google.com");
     }
 }

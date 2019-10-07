@@ -13,6 +13,10 @@
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,10 +59,11 @@
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/dimen_05dp">
 
                     <EditText
-                        android:id="@+id/et_meet_country"
+                        android:id="@+id/et_machine_district"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/district"
                         android:inputType="textMultiLine"/>
@@ -68,10 +73,11 @@
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dimen_05dp">
 
                     <EditText
-                        android:id="@+id/et_meet_state"
+                        android:id="@+id/et_machine_taluka"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/taluka"
                         android:inputType="textMultiLine"/>
@@ -218,5 +224,6 @@
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

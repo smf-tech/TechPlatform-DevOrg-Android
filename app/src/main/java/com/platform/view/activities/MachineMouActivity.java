@@ -17,12 +17,18 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.models.SujalamSuphalam.MachineDetailData;
+import com.platform.models.SujalamSuphalam.MouDetails;
+import com.platform.models.SujalamSuphalam.OperatorDetails;
+import com.platform.models.SujalamSuphalam.ProviderInformation;
 import com.platform.presenter.MachineMouActivityPresenter;
 import com.platform.view.fragments.MachineMouFirstFragment;
 import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
 import com.platform.view.fragments.MachineMouThirdFragment;
+
+import java.util.List;
 
 public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
     private ImageView ivBackIcon;
@@ -33,6 +39,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private String machineId;
+    private int statusCode;
     private MachineMouActivityPresenter machineMouActivityPresenter;
 
     @Override
@@ -53,15 +60,16 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         if(getIntent().getStringExtra("SwitchToFragment")!=null){
             if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
                 machineId = getIntent().getStringExtra("machineId");
+                statusCode = getIntent().getIntExtra("statusCode",0);
                 machineDetailData = new MachineDetailData();
-                fManager = getSupportFragmentManager();
-                fragment = new MachineMouFirstFragment();
-                FragmentTransaction fTransaction = fManager.beginTransaction();
-                fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
-                        .commit();
+                machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
+//                fManager = getSupportFragmentManager();
+//                fragment = new MachineMouFirstFragment();
+//                FragmentTransaction fTransaction = fManager.beginTransaction();
+//                fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
+//                        .commit();
             }
         }
-        //machineMouActivityPresenter.getMachineDetails(machineId);
     }
 
     public void openFragment(String switchToFragment) {
@@ -86,16 +94,20 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 .commit();
     }
 
-    public void setMachineDetails(MachineDetailData machineDetailData){
-
-    }
+//    public void setMachineDetails(MachineDetailData machineDetailData){
+//            setMachineDetailData(machineDetailData);
+//    }
 
     public MachineDetailData getMachineDetailData() {
         return machineDetailData;
     }
 
-    public void setMachineDetailData(MachineDetailData machineMouData) {
-        this.machineDetailData = machineMouData;
+    public void setMachineDetailData(MachineDetailData machineDetail) {
+        this.machineDetailData = machineDetail;
+        fManager = getSupportFragmentManager();
+        fragment = new MachineMouFirstFragment();
+        FragmentTransaction fTransaction = fManager.beginTransaction();
+        fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -114,7 +126,6 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
     }
-
 
     @Override
     protected void onDestroy() {

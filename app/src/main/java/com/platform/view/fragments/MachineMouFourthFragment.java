@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -26,19 +27,23 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.events.CommonResponse;
 import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineMouFourthFragmentPresenter;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
+import com.platform.view.activities.SSActionsActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener {
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private Button btnFourthPartMou;
+    private Button btnFourthPartMou, btnPreviousMou;;
     private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,23 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         progressBar = machineMouFourthFragmentView.findViewById(R.id.pb_profile_act);
         btnFourthPartMou = machineMouFourthFragmentView.findViewById(R.id.btn_fourth_part_mou);
         btnFourthPartMou.setOnClickListener(this);
+        btnPreviousMou = machineMouFourthFragmentView.findViewById(R.id.btn_previous_mou);
+        btnPreviousMou.setOnClickListener(this);
         machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
+    }
+
+    private void setMachineFourthData() {
+        OperatorDetails operatorDetails = new OperatorDetails();
+        ((MachineMouActivity) getActivity()).getMachineDetailData().setOperatorDetails(operatorDetails);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setFirstName("Kumood");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLastName("Bongale");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setAddress("Baramati");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLicenceNumber("asdg23256sdbh");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setContactNumnber("2341526678");
+        List<String> operatorImages  = new ArrayList();
+        operatorImages.add("www.google.com");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setOperatorImages(operatorImages);
+        machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
     }
 
     @Override
@@ -86,15 +107,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         switch (view.getId()){
             case R.id.btn_fourth_part_mou:
                 if(isAllDataValid()) {
-                    updateMouData();
+                    setMachineFourthData();
                 }
                 break;
+            case R.id.btn_previous_mou:
+                break;
         }
-    }
-
-    private void updateMouData() {
-        //((MachineMouActivity) getActivity()).getMachineDetailData().setMeetOrganizers(selectedOrganizersList);
-        machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
     }
 
     public boolean isAllDataValid() {
@@ -141,6 +159,22 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+    public void showResponse(String responseStatus, String requestId, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if(requestId.equals(MachineMouFourthFragmentPresenter.SUBMIT_MOU)){
+            if(status == 200){
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                intent.putExtra("viewType", 2);
+                intent.putExtra("title", "Machine List");
+                getActivity().startActivity(intent);
+            }
+        }
     }
 
     @Override

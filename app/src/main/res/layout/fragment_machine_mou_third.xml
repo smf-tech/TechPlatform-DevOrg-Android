@@ -13,6 +13,10 @@
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -266,16 +270,37 @@
                 android:fontFamily="@font/opensans"
                 android:textSize="@dimen/text_size_14" />
 
-            <Button
-            android:id="@+id/btn_third_part_mou"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/AppStyleButton"
-            android:layout_gravity="center"
-            android:padding="@dimen/dimen_10dp"
-            android:text="@string/meet_next_label"
-            android:textColor="@android:color/white"/>
+            <LinearLayout
+                android:id="@+id/ll_third_part"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:weightSum="2">
 
+                <Button
+                    android:id="@+id/btn_previous_mou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="Previous" />
+
+                <Button
+                    android:id="@+id/btn_third_part_mou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="Next" />
+
+            </LinearLayout>
         </LinearLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

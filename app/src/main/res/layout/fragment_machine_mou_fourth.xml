@@ -100,16 +100,36 @@
                     android:inputType="textMultiLine"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btn_fourth_part_mou"
+            <LinearLayout
+                android:id="@+id/ll_fourth_part"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/AppStyleButton"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_20dp"
-                android:padding="@dimen/dimen_10dp"
-                android:text="@string/submit"
-                android:textColor="@android:color/white"/>
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btn_previous_mou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="Previous" />
+
+                <Button
+                    android:id="@+id/btn_fourth_part_mou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/submit"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

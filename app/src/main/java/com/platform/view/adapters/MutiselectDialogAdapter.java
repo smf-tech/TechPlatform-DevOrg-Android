@@ -50,7 +50,6 @@ import java.util.ArrayList;
         } else {
             holder.btSelectFilter.setBackgroundResource(R.drawable.ic_custom_unchecked);
         }
-        //holder.cb_select_filter.setChecked(dataList.get(position).isSelected());
     }
 
     @Override
@@ -61,7 +60,6 @@ import java.util.ArrayList;
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitle;
-        CheckBox cb_select_filter;
         Button btSelectFilter;
 
         public ViewHolder(@NonNull View itemView) {
