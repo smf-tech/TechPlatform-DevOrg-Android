@@ -27,7 +27,6 @@ import com.platform.presenter.MatrimonyProfilesListActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.MatrimonyProfileListRecyclerAdapter;
-import com.platform.view.fragments.TMUserFormsApprovalFragment;
 import com.platform.widgets.SingleSelectBottomSheet;
 
 import org.json.JSONObject;
@@ -38,6 +37,7 @@ import java.util.List;
 @SuppressWarnings("CanBeFinal")
 public class MatrimonyProfileListActivity extends BaseActivity implements View.OnClickListener, MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked, SingleSelectBottomSheet.MultiSpinnerListener
         , SearchView.OnQueryTextListener {
+    public String meetIdReceived, mobileNumberReceived;
     ArrayList<String> ListDrink = new ArrayList<>();
     private SearchView editSearch;
     private String currentSelectedFilter = "";
@@ -48,7 +48,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private ArrayList<UserProfileList> userProfileLists = new ArrayList<>();
     private ArrayList<UserProfileList> userProfileListsFiltered = new ArrayList<>();
     private String approvalType;
-    public String meetIdReceived,mobileNumberReceived;
     private ImageView toolbar_back_action, toolbar_edit_action, toolbar_action;
     private TextView toolbar_title, txt_no_data;
     private boolean isSearchVisible = false;
@@ -222,13 +221,13 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         //showApproveRejectDialog(this, pos, approvalType, message);
 
         //String strReason = Util.showReasonDialog(getActivity(), pos, this);
-        showReasonDialog(this,pos);
+        showReasonDialog(this, pos);
     }
 
-    public void callRejectAPI(String strReason,int pos) {
+    public void callRejectAPI(String strReason, int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
 
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT,strReason);
+        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT, strReason);
         tmFilterListActivityPresenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
         approvalType = Constants.REJECT;
 
@@ -237,7 +236,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void callApproveAPI(int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
 
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE ,"");
+        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE, "");
         tmFilterListActivityPresenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
         approvalType = Constants.APPROVE;
 
@@ -311,10 +310,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             }
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
         }
-        if (userProfileLists.size()>0)
-        {
+        if (userProfileLists.size() > 0) {
             txt_no_data.setVisibility(View.GONE);
-        }else {
+        } else {
             txt_no_data.setVisibility(View.VISIBLE);
         }
     }
@@ -375,19 +373,18 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     }
 
-    public void setTxt_no_data(){
+    public void setTxt_no_data() {
         txt_no_data.setVisibility(View.VISIBLE);
     }
 
 
-    public String showReasonDialog(final Activity context, int pos){
-
+    public String showReasonDialog(final Activity context, int pos) {
 
 
         Dialog dialog;
-        Button btnSubmit,btn_cancel;
+        Button btnSubmit, btn_cancel;
         EditText edt_reason;
-        Activity activity =context;
+        Activity activity = context;
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -413,14 +410,14 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                    context.startActivity(loginIntent);*/
-                String strReason  = edt_reason.getText().toString();
+                String strReason = edt_reason.getText().toString();
 
-                if (TextUtils.isEmpty(strReason)){
-                    Util.logger("Empty Reason","Reason Can not be blank");
+                if (TextUtils.isEmpty(strReason)) {
+                    Util.logger("Empty Reason", "Reason Can not be blank");
                     Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "Reason Can not be blank",
                             Snackbar.LENGTH_LONG);
-                }else {
+                } else {
                     /*if (fragment instanceof TMUserLeavesApprovalFragment) {
                         ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
                     }
@@ -445,7 +442,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     }
 
     public void onReceiveReason(String strReason, int pos) {
-        callRejectAPI(strReason,pos);
+        callRejectAPI(strReason, pos);
     }
 
 }

@@ -119,7 +119,7 @@
                             android:id="@+id/et_shakha_dada"
                             android:inputType="text|textCapWords"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="Shakha/Gotra(Dadaji)"/>
+                            android:hint="Shakha/Gotra(Dadiji)"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -135,7 +135,7 @@
                             android:id="@+id/et_shakha_nana"
                             android:inputType="text|textCapWords"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="Shakha/Gotra(Nanaji)"/>
+                            android:hint="Shakha/Gotra(Naniji)"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout

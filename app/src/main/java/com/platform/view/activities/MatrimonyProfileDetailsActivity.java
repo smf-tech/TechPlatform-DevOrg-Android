@@ -224,8 +224,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_annual_income.setText(userProfileList.getMatrimonial_profile().getEducational_details().getIncome());
         tv_family_type.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFamily_type());
         tv_sakha_gotra_1.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getSelf_gotra());
-        tv_sakha_gotra_2.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getDada_gotra());
-        tv_sakha_gotra_3.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getMama_gotra());
+        tv_sakha_gotra_2.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getMama_gotra());
+        tv_sakha_gotra_3.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getDada_gotra());
         tv_sakha_gotra_4.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getNana_gotra());
         tv_father_fullname.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_name());
         tv_father_occupation.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_occupation());

@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/rl_meetLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -258,5 +259,30 @@
         android:rotation="45"
         app:tint="@color/white"
         android:src="@drawable/ic_close"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_no_meet"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_no_saved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_regular"
+            android:gravity="center"
+            android:text="No matrimony meet available. Please click on + icon at the bottom right corner to create new meet."
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/text_size_12" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_235dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/empty_matrimony_back" />
+    </RelativeLayout>
 
 </RelativeLayout>

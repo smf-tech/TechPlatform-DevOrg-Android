@@ -74,6 +74,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     private Button btnPublishMeet;
     private int currentPosition;
     private static MatrimonyFragment instance = null;
+    private RelativeLayout rlNoMeet, rl_meetLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +137,8 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         btnViewProfiles.setOnClickListener(this);
         btnRegisterProfile.setOnClickListener(this);
 
+        rlNoMeet = matrimonyFragmentView.findViewById(R.id.rl_no_meet);
+        rl_meetLayout = matrimonyFragmentView.findViewById(R.id.rl_meetLayout);
         meetViewPager = matrimonyFragmentView.findViewById(R.id.meet_view_pager);
         // Disable clip to padding
         meetViewPager.setClipToPadding(false);
@@ -309,9 +312,19 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
 
     public void setMatrimonyMeets(List<MatrimonyMeet> data) {
         matrimonyMeetList.clear();
-        matrimonyMeetList.addAll(data);
-        setupViewPager(meetViewPager);
-        setCurrentMeetData(0);
+        if(data.size()>0) {
+            rl_meetLayout.setVisibility(View.VISIBLE);
+            rlNoMeet.setVisibility(View.GONE);
+            matrimonyMeetList.addAll(data);
+            setupViewPager(meetViewPager);
+            setCurrentMeetData(0);
+        } else {
+            rl_meetLayout.setVisibility(View.GONE);
+            rlNoMeet.setVisibility(View.VISIBLE);
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "No Meet available at your location.",
+                    Snackbar.LENGTH_LONG);
+        }
     }
 
     @Override
@@ -356,6 +369,10 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void showResponseVerifyUser(String responseStatus, int status) {
 
         if(status == 200){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), responseStatus,
+                    Snackbar.LENGTH_LONG);
+        }else{
             if (matrimonyMeetList.get(currentPosition).getIs_published()) {
                 if (matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegEndDateTime() >= Util.getCurrentTimeStamp()
                         && matrimonyMeetList.get(currentPosition).getRegistrationSchedule().getRegStartDateTime()<= Util.getCurrentTimeStamp())
@@ -376,10 +393,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                                 .findViewById(android.R.id.content), "This meet is not published yet.",
                         Snackbar.LENGTH_LONG);
             }
-        }else {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), responseStatus,
-                    Snackbar.LENGTH_LONG);
         }
     }
 

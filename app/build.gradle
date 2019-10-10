@@ -75,7 +75,7 @@ android {
         Production {
             dimension "server"
             buildConfigField 'String', 'SMS_VERIFICATION_CODE', "\"SxZ7yx94CUf\""
-            buildConfigField 'String', 'BASE_URL', "\"http://13.233.220.137/\""
+            buildConfigField 'String', 'BASE_URL', "\"http://13.235.105.204/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
             applicationId 'com.platform'

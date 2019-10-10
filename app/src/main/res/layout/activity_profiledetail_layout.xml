@@ -878,7 +878,7 @@
                         <TextView
                             android:id="@+id/tv_sakha_gotra_2_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 2 (Mamaji)" />
+                            android:text="Sakha/Gotra (Mamaji)" />
 
                         <TextView
                             android:id="@+id/tv_sakha_gotra_2"
@@ -907,7 +907,7 @@
                         <TextView
                             android:id="@+id/tv_sakha_gotra_3_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 3 (Dadiji )" />
+                            android:text="Sakha/Gotra (Dadiji )" />
 
                         <TextView
                             android:id="@+id/tv_sakha_gotra_3"
@@ -927,7 +927,7 @@
                         <TextView
                             android:id="@+id/tv_sakha_gotra_4_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 4 (Naniji )" />
+                            android:text="Sakha/Gotra (Naniji )" />
 
                         <TextView
                             android:id="@+id/tv_sakha_gotra_4"
