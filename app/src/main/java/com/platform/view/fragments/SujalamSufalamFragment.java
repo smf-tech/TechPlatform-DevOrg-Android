@@ -103,6 +103,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
+        sujalamSuphalamFragmentPresenter.getSSMasterData();
         sujalamSufalamFragmentView.findViewById(R.id.fb_create).setOnClickListener(this);
     }
 

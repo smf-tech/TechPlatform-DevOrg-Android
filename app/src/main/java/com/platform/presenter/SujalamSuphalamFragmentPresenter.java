@@ -19,6 +19,7 @@ public class SujalamSuphalamFragmentPresenter implements APIPresenterListener {
     private final String TAG = SujalamSuphalamFragmentPresenter.class.getName();
     public static final String GET_STRUCTURE_ANALYTICS ="getStructureAnalytics";
     public static final String GET_MACHINE_ANALYTICS = "getMachineAnalytics";
+    public static final String GET_SS_MASTER_DATA = "getSSMasterData";
 
     public SujalamSuphalamFragmentPresenter(SujalamSufalamFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -45,6 +46,16 @@ public class SujalamSuphalamFragmentPresenter implements APIPresenterListener {
             Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getSSAnalyticsUrl);
             requestCall.getDataApiCall(GET_MACHINE_ANALYTICS, getSSAnalyticsUrl);
         }
+    }
+
+    public void getSSMasterData(){
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getSSMasterDaraUrl = BuildConfig.BASE_URL
+                    + String.format(Urls.SSModule.GET_SS_MASTER_DATA);
+        Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
+        requestCall.getDataApiCall(GET_SS_MASTER_DATA, getSSMasterDaraUrl);
     }
 
     @Override

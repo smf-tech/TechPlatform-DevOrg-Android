@@ -185,8 +185,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
                     Toast.LENGTH_SHORT).show();
         }
     }
-
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 

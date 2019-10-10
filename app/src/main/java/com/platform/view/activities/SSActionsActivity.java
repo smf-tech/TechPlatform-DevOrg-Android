@@ -16,6 +16,7 @@ import com.platform.R;
 import com.platform.view.fragments.MachineDeployStructureListFragment;
 import com.platform.view.fragments.MachineDetailsFragment;
 import com.platform.view.fragments.MachineShiftingFormFragment;
+import com.platform.view.fragments.MachineVisitValidationFragment;
 import com.platform.view.fragments.StructureMachineListFragment;
 
 public class SSActionsActivity extends AppCompatActivity  implements View.OnClickListener {
@@ -58,11 +59,11 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
                         fragment.setArguments(data);
                         openFragment();
                         break;
-//                    case "MachineDetailsFragment":
-//                        fragment = new MachineDetailsFragment();
-//                        fragment.setArguments(data);
-//                        openFragment();
-//                        break;
+                    case "MachineVisitValidationFragment":
+                        fragment = new MachineVisitValidationFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
                 }
             }
         }

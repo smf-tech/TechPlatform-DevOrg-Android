@@ -30,7 +30,7 @@ import com.platform.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
 
-public class MachineShiftingFormFragment extends Fragment   implements APIDataListener,
+public class MachineShiftingFormFragment extends Fragment implements APIDataListener,
         View.OnClickListener, CustomSpinnerListener {
     private View machineShiftingFormFragmentView;
     private ProgressBar progressBar;

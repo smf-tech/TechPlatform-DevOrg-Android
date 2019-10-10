@@ -7,9 +7,9 @@
     android:background="@color/base_background_color"
     tools:context="com.platform.view.activities.CreateEventTaskActivity">
 
-    <include
-    android:id="@+id/ly_app_bar"
-    layout="@layout/app_toolbar" />
+    <!--<include-->
+    <!--android:id="@+id/ly_app_bar"-->
+    <!--layout="@layout/app_toolbar" />-->
     <!---->
     <ScrollView
         android:layout_width="match_parent"
