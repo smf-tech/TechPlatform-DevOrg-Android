@@ -172,7 +172,11 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.GET_MATRIMONY_MEETS)){
-                    AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
+                    AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response,
+                            AllMatrimonyMeetsAPIResponse.class);
+                    if(allMeets.getStatus() == 1000){
+                        fragmentWeakReference.get().logOutUser();
+                    }
                     if(allMeets.getStatus() == 200){
                     fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
                     } else{

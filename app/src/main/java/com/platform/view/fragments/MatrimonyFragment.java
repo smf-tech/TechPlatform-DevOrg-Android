@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.LoginActivity;
 import com.platform.view.activities.MatrimonyProfileListActivity;
 import com.platform.view.activities.UserRegistrationMatrimonyActivity;
 import com.platform.view.adapters.MeetAnalyticsAdapter;
@@ -75,6 +77,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     private int currentPosition;
     private static MatrimonyFragment instance = null;
     private RelativeLayout rlNoMeet, rl_meetLayout;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -334,7 +337,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 matrimonyFragmentPresenter.publishSavedMeet(matrimonyMeetList.get(currentPosition).getId());
                 break;
             case R.id.btn_register_profile:
-
                 showReasonDialog(getActivity(),0);
 
                 break;
@@ -485,6 +487,21 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         //callRejectAPI(strReason,pos);
         matrimonyFragmentPresenter.VerifyUserProfile(strReason,"",matrimonyMeetList.get(currentPosition).getId());
         mobileNumberEntered = strReason;
+    }
+
+    public void logOutUser() {
+        // remove user related shared pref data
+
+        Util.saveLoginObjectInPref("");
+
+        try {
+            Intent startMain = new Intent(getActivity(), LoginActivity.class);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(startMain);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
 }
