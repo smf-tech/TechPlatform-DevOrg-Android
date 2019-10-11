@@ -142,7 +142,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.tv_meet_references:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "References", nonOrganizersSpinnerList,
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Contact person", nonOrganizersSpinnerList,
                         true);
                 cdd1.show();
                 cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -230,7 +230,8 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                     customSpinnerObject.setName(matrimonyUserDetails.getName());
                     customSpinnerObject.setSelected(false);
 
-                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
+                //    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
+                        if (matrimonyRole.getId().equals("5d983ed5ee061868395d03c2")) {
                         organizersList.add(matrimonyUserDetails);
                         organizersSpinnerList.add(customSpinnerObject);
                     } else {
@@ -261,7 +262,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                 }
             }
             meetOrganizersListAdapter.notifyDataSetChanged();
-        } else if (type.equalsIgnoreCase("References")) {
+        } else if (type.equalsIgnoreCase("Contact person")) {
             selectedNonOrganizersList.clear();
             for (CustomSpinnerObject cReference : nonOrganizersSpinnerList) {
                 if (cReference.isSelected()) {

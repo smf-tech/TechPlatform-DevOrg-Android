@@ -26,6 +26,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
     private WeakReference<MatrimonyFragment> fragmentWeakReference;
     public static final String GET_MATRIMONY_MEETS ="getMatrimonyMeets";
     public static final String PUBLISH_SAVED_MEET ="publishSavedMeet";
+
     private final String TAG = MatrimonyFragmentPresenter.class.getName();
     private static final String KEY_COUNTRY_ID = "country_id";
     private static final String KEY_STATE_ID = "state_id";
@@ -94,11 +95,43 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.getDataApiCall(PUBLISH_SAVED_MEET, publishSavedMeetUrl);
     }
 
+    public void VerifyUserProfile(String mobilenumber,String userId, String meetId) {
+        Gson gson = new GsonBuilder().create();
+
+        String paramjson =gson.toJson(getCheckProfileJson(meetId,userId,mobilenumber));
+
+        final String checkProfileUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Matrimony.REGISTER_USER_TO_MEET);//, mobilenumber,meetId);
+        Log.d(TAG, "getMatrimonyMeetsUrl: url" + checkProfileUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall("CHECK_USER_CREATED",paramjson,checkProfileUrl);
+    }
+
     public JsonObject getMeetJson(String countryId, String stateId, String cityId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_COUNTRY_ID, countryId);
         map.put(KEY_STATE_ID, stateId);
         map.put(KEY_CITY_ID, cityId);
+
+        JsonObject requestObject = new JsonObject();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            requestObject.addProperty(key, value);
+        }
+
+        return requestObject;
+
+    }
+    public JsonObject getCheckProfileJson(String meetId, String userId, String mobilenumber){
+
+        HashMap<String,String> map=new HashMap<>();
+        map.put("meet_id", meetId);
+        map.put("user_id", userId);
+        map.put("mobile", mobilenumber);
 
         JsonObject requestObject = new JsonObject();
 
@@ -139,7 +172,11 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.GET_MATRIMONY_MEETS)){
-                    AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
+                    AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response,
+                            AllMatrimonyMeetsAPIResponse.class);
+                    if(allMeets.getStatus() == 1000){
+                        fragmentWeakReference.get().logOutUser();
+                    }
                     if(allMeets.getStatus() == 200){
                     fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData(), allMeets.getEarliestMeetId());
                     } else{
@@ -150,6 +187,15 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                         fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                }
+                if(requestID.equalsIgnoreCase("CHECK_USER_CREATED"))
+                {
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponseVerifyUser(responseOBJ.getMessage(), responseOBJ.getStatus());
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }

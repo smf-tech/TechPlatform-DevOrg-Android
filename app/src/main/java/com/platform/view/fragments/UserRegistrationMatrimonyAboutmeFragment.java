@@ -102,7 +102,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_loadnext:
-                Util.showToast("Call Submit", getActivity());
+                //Util.showToast("Call Submit", getActivity());
                 setValuesInModel();
               //  ((UserRegistrationMatrimonyActivity) getActivity()).submitUserRegistrationRequest();
                 break;
@@ -222,6 +222,9 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
                     if (Util.isValidImageSize(imageFile)) {
                         //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                         UserRegistrationMatrimonyActivity.userRegistrationMatrimonyActivityPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
+
+                        ((UserRegistrationMatrimonyActivity)getActivity()).showProgressBar();
+
                         if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
                             img_user_profle.setImageURI(finalUri);
                         } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {
@@ -306,15 +309,24 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
     private boolean isAllInputsValid() {
         String msg = "";
 
-        /*if (et_Annual_income.getText().toString().trim().length() == 0) {
-            msg = "Please enter the mobile annual income";//getResources().getString(R.string.msg_enter_name);
-        } else*/
-        if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getProfile_image().trim().length() == 0) {
+        if (et_about_me.getText().toString().trim().length() == 0) {
+            msg = "Please enter about yourself";//getResources().getString(R.string.msg_enter_name);
+            et_about_me.requestFocus();
+        } else
+        if (et_partner_expectation.getText().toString().trim().length() == 0) {
+            msg = "Please enter about expectation from partner";//getResources().getString(R.string.msg_enter_name);
+            et_partner_expectation.requestFocus();
+        } else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getProfile_image().size() <= 0) {
             msg = "Please upload profile image.";//getResources().getString(R.string.msg_enter_proper_date);
+        }else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getAadhar_url()== null){
+            msg = "Please upload Adhar card image.";
         }
         else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getAadhar_url().trim().length() == 0) {
             msg = "Please upload Adhar card image.";//getResources().getString(R.string.msg_enter_name);
-        } else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url().trim().length() == 0) {
+        }else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url()== null){
+            msg = "Please education certificate image.";
+        }
+        else if (UserRegistrationMatrimonyActivity.otherMaritialInformation.getEducational_url().trim().length() == 0) {
             msg = "Please education certificate image."; //getResources().getString(R.string.msg_enter_name);
         }
         /*else if (et_education.getText().toString().trim().length() == 0) {

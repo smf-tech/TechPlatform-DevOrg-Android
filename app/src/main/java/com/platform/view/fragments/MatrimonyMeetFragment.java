@@ -72,9 +72,14 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if (arguments != null) {
             meetData = (MatrimonyMeet) arguments.getSerializable(Constants.Home.MATRIMONY);
         }
+        TextView ivIconPublished = view.findViewById(R.id.iv_icon_published);
         if(meetData.getIs_published()){
-            ImageView ivIconPublished = view.findViewById(R.id.iv_icon_published);
-            ivIconPublished.setVisibility(View.VISIBLE);
+            ivIconPublished.setText("Published");//(getResources().getDrawable(R.drawable.ic_icon_publish));
+        } else {
+            ivIconPublished.setText(" Saved");//ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_meet_saved_label));
+        }
+        if (meetData.getArchive()){
+            ivIconPublished.setText("Archived");
         }
         if(meetData.getMeetImageUrl() != null && !meetData.getMeetImageUrl().isEmpty()){
             ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
@@ -98,11 +103,22 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
                 //if(meetData.getBadgeFanlize()){
-//                if(meetData.getBadgeFanlize() != null && meetData.getBadgeFanlize()) {
-//                    popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
-//                    popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
-//                    popup.getMenu().findItem(R.id.action_delete).setVisible(false);
-//                }
+                /*if(meetData.getBadgeFanlize() != null && meetData.getBadgeFanlize()) {
+                    *//*popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
+                    popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);*//*
+                    popup.getMenu().findItem(R.id.action_delete).setVisible(false);
+                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(true);
+                }else {
+                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(false);
+                }*/
+
+                if (meetData.getRegistrationSchedule().getRegEndDateTime() <= Util.getCurrentTimeStamp())
+                {
+                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(true);
+                }else {
+                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(false);
+                }
+
                 if(meetData.getArchive()){
                     popup.getMenu().findItem(R.id.action_archive).setVisible(false);
                 }
@@ -135,6 +151,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             if(status == 200){
                 popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                 meetData.setBadgeFanlize(true);
+                MatrimonyFragment.getInstance().updateBadgeStatus(true);
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)){
@@ -147,6 +164,12 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
                 MatrimonyFragment.getInstance().updateMeetList();
+            }
+        }
+        if(requestId.equals(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES)){
+            if(status == 200){
+                //matrimonyMeetList.get(currentPosition).setIs_published(true);
+                MatrimonyFragment.getInstance().updateBadgeStatus(false);
             }
         }
     }
@@ -275,9 +298,6 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
 
         MeetBatchesResponseModel meetBatchesResponseModel = gson.fromJson(response, MeetBatchesResponseModel.class);
         if (meetBatchesResponseModel.getStatus().equalsIgnoreCase("200")){
-
-
-
         Intent intent =new Intent(getActivity(), ShowMeetBatchesActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("batches_resposne",response);

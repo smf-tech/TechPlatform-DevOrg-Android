@@ -71,7 +71,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Family type" />
+                            android:hint="Family Type" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -85,7 +85,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_Shakha_self"
-                            android:hint="(Self)Shakha/Gotra"/>
+                            android:inputType="text|textCapWords"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Shakha/Gotra(Self)"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -99,7 +101,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_shakha_mama"
-                            android:hint="(Mamaji)Shakha/Gotra"/>
+                            android:inputType="text|textCapWords"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Shakha/Gotra(Mamaji)"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -113,7 +117,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_shakha_dada"
-                            android:hint="(Dadaji)Shakha/Gotra"/>
+                            android:inputType="text|textCapWords"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Shakha/Gotra(Dadiji)"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -127,7 +133,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_shakha_nana"
-                            android:hint="(Nanaji)Shakha/Gotra"/>
+                            android:inputType="text|textCapWords"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Shakha/Gotra(Naniji)"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -141,7 +149,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_father_name"
-                            android:hint="Father's full name"/>
+                            android:inputType="text|textCapWords"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Father's Full Name"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -159,7 +169,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Father's occupation"/>
+                            android:hint="Father's Occupation"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -176,7 +186,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Family income"/>
+                            android:hint="Family Income"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -190,7 +200,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/et_mothers_name"
-                            android:hint="Mother's full name"/>
+                            android:inputType="text|textCapWords"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                            android:hint="Mother's Full Name"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -207,7 +219,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Mother's occupation"/>
+                            android:hint="Mother's Occupation"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -223,7 +235,7 @@
                             android:id="@+id/et_brother"
                             android:maxLength="2"
                             android:inputType="number"
-                            android:hint="no of brother's"/>
+                            android:hint="Number Of Brother"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -239,7 +251,7 @@
                             android:id="@+id/et_sister"
                             android:maxLength="2"
                             android:inputType="number"
-                            android:hint="No of sister's"/>
+                            android:hint="Number Of Sister"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>

@@ -47,7 +47,7 @@
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/frame_top"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/standard_240">
+                android:layout_height="@dimen/dimen_300dp">
 
 
                 <androidx.viewpager.widget.ViewPager
@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/dimen_10dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_share" />
 
             <TextView
@@ -87,19 +88,21 @@
                 android:layout_height="@dimen/dimen_25dp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:text="Premium"
-                android:id="@+id/tv_premium"
+                android:layout_width="@dimen/dimen_75dp"
+                android:layout_height="@dimen/dimen_25dp"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
+                android:text="Premium"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_premium"
                 android:layout_marginTop="@dimen/dimen_25dp"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 android:fontFamily="@font/opensans_bold"
                 android:textSize="@dimen/text_size_10"
-                android:background="@drawable/ic_publish_ribbon"
-                android:paddingStart="@dimen/dimen_05dp"
-                android:layout_height="wrap_content" />
+                android:background="@drawable/ic_publish_ribbon_right"
+                android:paddingStart="@dimen/dimen_16dp"
+                />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -632,7 +635,7 @@
                         <TextView
                             android:id="@+id/tv_occupation_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Address" />
+                            android:text="Occupation" />
 
                         <TextView
                             android:id="@+id/tv_occupation"
@@ -877,7 +880,7 @@
                         <TextView
                             android:id="@+id/tv_sakha_gotra_2_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 2 (Mamaji)" />
+                            android:text="Sakha/Gotra (Mamaji)" />
 
                         <TextView
                             android:id="@+id/tv_sakha_gotra_2"
@@ -906,7 +909,7 @@
                         <TextView
                             android:id="@+id/tv_sakha_gotra_3_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 3 (Dadiji )" />
+                            android:text="Sakha/Gotra (Dadiji )" />
 
                         <TextView
                             android:id="@+id/tv_sakha_gotra_3"
@@ -926,7 +929,7 @@
                         <TextView
                             android:id="@+id/tv_sakha_gotra_4_lable"
                             style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 4 (Naniji )" />
+                            android:text="Sakha/Gotra (Naniji )" />
 
                         <TextView
                             android:id="@+id/tv_sakha_gotra_4"
@@ -1425,7 +1428,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_other_details_lebal"
                 android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <View
                     android:id="@+id/line5"
@@ -1559,7 +1562,7 @@
                             android:id="@+id/iv_aadhar"
                             android:layout_below="@+id/tv_aadhar_lable"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/dimen_200dp"
                             android:src="@mipmap/app_logo"
                             />
                     </RelativeLayout>
@@ -1580,7 +1583,7 @@
                             android:id="@+id/iv_education_certificates"
                             android:layout_below="@+id/tv_education_certificates_lable"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/dimen_200dp"
                             android:src="@mipmap/app_logo"
                             />
 
@@ -1594,10 +1597,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+
             android:background="@color/white"
             android:layout_below="@+id/cv_other_details"
-            android:gravity="bottom"
+
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton

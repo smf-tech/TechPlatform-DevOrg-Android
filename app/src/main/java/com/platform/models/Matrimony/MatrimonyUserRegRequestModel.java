@@ -3,6 +3,8 @@ package com.platform.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class MatrimonyUserRegRequestModel {
 
     @SerializedName("meet_id")
@@ -110,6 +112,16 @@ public class MatrimonyUserRegRequestModel {
         @SerializedName("sect")
         @Expose
         private String sect;
+
+        @SerializedName("sub_cast")
+        @Expose
+        private String sub_cast;
+
+        @SerializedName("is_divorced_legal")
+        @Expose
+        private String is_divorced_legal;
+
+
         /*@SerializedName("mobile")
         @Expose
         private String mobile;
@@ -326,6 +338,23 @@ public class MatrimonyUserRegRequestModel {
 
         public void setDrink(String drink) {
             this.drink = drink;
+        }
+
+
+        public String getSub_cast() {
+            return sub_cast;
+        }
+
+        public void setSub_cast(String sub_cast) {
+            this.sub_cast = sub_cast;
+        }
+
+        public String getIs_divorced_legal() {
+            return is_divorced_legal;
+        }
+
+        public void setIs_divorced_legal(String is_divorced_legal) {
+            this.is_divorced_legal = is_divorced_legal;
         }
     }
 
@@ -648,7 +677,7 @@ public class MatrimonyUserRegRequestModel {
         private String expectation_from_life_partner;
         @SerializedName("profile_image")
         @Expose
-        private String profile_image;
+        private ArrayList<String> profile_image =new ArrayList<>();
 
         @SerializedName("aadhar_url")
         @Expose
@@ -681,13 +710,13 @@ public class MatrimonyUserRegRequestModel {
             this.expectation_from_life_partner = expectation_from_life_partner;
         }
 
-        public String getProfile_image() {
+        /*public String getProfile_image() {
             return profile_image;
         }
 
         public void setProfile_image(String profile_image) {
             this.profile_image = profile_image;
-        }
+        }*/
 
         public String getActivity_achievements() {
             return activity_achievements;
@@ -719,6 +748,14 @@ public class MatrimonyUserRegRequestModel {
 
         public void setEducational_url(String educational_url) {
             this.educational_url = educational_url;
+        }
+
+        public ArrayList<String> getProfile_image() {
+            return profile_image;
+        }
+
+        public void setProfile_image(ArrayList<String> profile_image) {
+            this.profile_image = profile_image;
         }
     }
 }

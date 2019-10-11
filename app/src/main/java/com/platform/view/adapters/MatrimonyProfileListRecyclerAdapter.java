@@ -17,6 +17,7 @@ import com.platform.R;
 import com.platform.models.Matrimony.UserProfileList;
 import com.platform.models.tm.PendingApprovalsRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<MatrimonyProfileListRecyclerAdapter.EmployeeViewHolder> {
@@ -32,7 +33,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
             this.dataList = dataListreceived;
             this.clickListener =clickListener;
             this.buttonClickListner = approveRejectClickedListner;
-             requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+             requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
             requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         }
 
@@ -51,15 +52,22 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();
             holder.txtValue.setText(s);
+            if (dataList.get(position).isPaymentDone()){
+                holder.tv_payment_status.setVisibility(View.VISIBLE);
+            }
+
             holder.tv_approval_status.setText(dataList.get(position).getIsApproved());
             if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
 
             }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
                 holder.btn_reject.setVisibility(View.GONE);
+                holder.btn_approve.setVisibility(View.VISIBLE);
             }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("a")){
                 holder.btn_approve.setVisibility(View.GONE);
+                holder.btn_reject.setVisibility(View.VISIBLE);
             }
             if (dataList.get(position).isIsPremium()){
+                holder.tv_premium.setVisibility(View.VISIBLE);
                 holder.tv_premium.setText("Premium");
             }else {
                 holder.tv_premium.setVisibility(View.GONE);
@@ -67,13 +75,11 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
 
 
-            if (!TextUtils.isEmpty(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image())) {
+            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image()!=null&&dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
                 Glide.with(mContext)
                         .applyDefaultRequestOptions(requestOptions)
-                        .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image())
+                        .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().get(0))
                         .into(holder.user_profile_pic);
-
-
             }
 
         }
@@ -83,9 +89,14 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
             return this.dataList.size();
         }
 
-        class EmployeeViewHolder extends RecyclerView.ViewHolder {
+    public void updateList(ArrayList<UserProfileList> temp) {
+            dataList =temp;
+            notifyDataSetChanged();
+    }
 
-            TextView txtTitle, txtValue,tv_approval_status,tv_premium;
+    class EmployeeViewHolder extends RecyclerView.ViewHolder {
+
+            TextView txtTitle, txtValue,tv_approval_status,tv_premium,tv_payment_status;
             ImageView user_profile_pic;
             Button btn_reject,btn_approve;
 
@@ -94,6 +105,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);
                 tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
+                tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
                 tv_premium = itemView.findViewById(R.id.tv_premium);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 

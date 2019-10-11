@@ -12,13 +12,14 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/rl_meetLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/rl_meet_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="230dp">
+        android:layout_height="245dp">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/meet_view_pager"
@@ -29,7 +30,7 @@
             android:id="@+id/tv_meet_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="155dp"
+            android:layout_marginTop="170dp"
             android:gravity="center_horizontal"
             android:text="BJS Matrimonial Meet"
             android:textColor="@color/white"
@@ -91,26 +92,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="@dimen/dimen_10dp">
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_meet_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
-                        android:textStyle="bold"
                         android:drawableStart="@drawable/ic_clock_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
-                        android:drawablePadding="@dimen/dimen_05dp"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_meet_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_20dp"
-                        android:fontFamily="@font/opensans_regular"
-                        android:layout_marginTop="@dimen/dimen_05dp"/>
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular" />
 
                     <TextView
                         android:id="@+id/tv_meet_city"
@@ -127,60 +128,59 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_20dp"
                         android:layout_marginTop="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_regular"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_contacts_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:gravity="center"
-                        android:text="Contacts"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:fontFamily="@font/opensans_semibold"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_meet_organizer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/dimen_05dp">
-                    </androidx.recyclerview.widget.RecyclerView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:text="Registration Fees"
-                        android:drawableStart="@drawable/ic_rupees_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold" />
-
-                    <TextView
-                        android:id="@+id/tv_reg_amt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_rupee_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_regular" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_15dp"
-                        android:text="Registration Period"
+                        android:drawableLeft="@drawable/ic_contacts_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:gravity="center"
+                        android:text="Contacts" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_meet_organizer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:drawableStart="@drawable/ic_rupees_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:text="Registration Fees" />
+
+                    <TextView
+                        android:id="@+id/tv_reg_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:drawableStart="@drawable/ic_rupee_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
                         android:drawableStart="@drawable/ic_calendar_icon"
                         android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold" />
+                        android:fontFamily="@font/opensans_semibold"
+                        android:text="Registration Period" />
 
                     <TextView
                         android:id="@+id/tv_reg_period"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_regular" />
 
                     <TextView
@@ -259,5 +259,30 @@
         android:rotation="45"
         app:tint="@color/white"
         android:src="@drawable/ic_close"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_no_meet"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_no_saved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_regular"
+            android:gravity="center"
+            android:text="No matrimony meet available. Please click on + icon at the bottom right corner to create new meet."
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/text_size_12" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_235dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/empty_matrimony_back" />
+    </RelativeLayout>
 
 </RelativeLayout>

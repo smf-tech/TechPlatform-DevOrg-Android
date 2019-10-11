@@ -40,7 +40,7 @@
                     android:layout_width="@dimen/dimen_75dp"
                     android:text="Approved"
                     android:id="@+id/tv_approval_status"
-                    android:layout_marginTop="@dimen/dimen_25dp"
+                    android:layout_marginTop="@dimen/dimen_16dp"
                     android:background="@drawable/ic_publish_ribbon"
                     android:paddingEnd="@dimen/dimen_10dp"
                     android:gravity="center_vertical"
@@ -49,20 +49,38 @@
                     android:textSize="@dimen/text_size_10"
                     android:paddingStart="@dimen/dimen_05dp"
                     android:layout_height="@dimen/dimen_25dp" />
+                <TextView
+                    android:layout_width="@dimen/dimen_75dp"
+                    android:text="Paid"
+                    android:id="@+id/tv_payment_status"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/ic_publish_ribbon"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:visibility="invisible"
+                    android:layout_below="@+id/tv_approval_status"
+                    android:fontFamily="@font/opensans_bold"
+                    android:textSize="@dimen/text_size_10"
+                    android:paddingStart="@dimen/dimen_05dp"
+                    android:layout_height="@dimen/dimen_25dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Premium"
-                    android:id="@+id/tv_premium"
+                    android:layout_width="@dimen/dimen_75dp"
+                    android:layout_height="@dimen/dimen_25dp"
                     android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:text="Premium"
+                    android:gravity="center_vertical"
+                    android:id="@+id/tv_premium"
                     android:layout_marginTop="@dimen/dimen_25dp"
-                    android:textColor="@color/dark_grey"
+                    android:textColor="@color/white"
                     android:visibility="gone"
                     android:fontFamily="@font/opensans_bold"
                     android:textSize="@dimen/text_size_10"
-                    android:background="@drawable/ic_publish_ribbon"
-                    android:paddingStart="@dimen/dimen_05dp"
-                    android:layout_height="wrap_content" />
+                    android:background="@drawable/ic_publish_ribbon_right"
+                    android:paddingStart="@dimen/dimen_16dp"
+                    />
 
                 <FrameLayout
                     android:layout_width="match_parent"

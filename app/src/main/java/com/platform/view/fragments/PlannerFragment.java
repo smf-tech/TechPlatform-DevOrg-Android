@@ -64,6 +64,7 @@ import com.platform.view.activities.CreateEventTaskActivity;
 import com.platform.view.activities.GeneralActionsActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.LoginActivity;
+import com.platform.view.activities.OperatorMeterReadingActivity;
 import com.platform.view.activities.PlannerDetailActivity;
 import com.platform.view.adapters.EventTaskListAdapter;
 import com.platform.view.adapters.LeaveBalanceAdapter;
@@ -125,7 +126,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        /*Intent startMain1 = new Intent(getActivity(), OperatorMeterReadingActivity.class);
+        startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+        startActivity(startMain1);*/
         if (getActivity() != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
             ((HomeActivity) getActivity()).setActionBarTitle(title);

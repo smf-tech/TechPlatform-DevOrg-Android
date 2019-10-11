@@ -177,7 +177,7 @@ public class MultiSelectBottomSheet extends BottomSheetDialog implements
         for (int i = 0; i < dataList.size(); i++) {
             if (selectedValues[i]) {
                 spinnerSelectedText.append(dataList.get(i));
-                spinnerSelectedText.append(", ");
+                spinnerSelectedText.append(",");
             }
         }
 

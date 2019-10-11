@@ -48,7 +48,8 @@
                         android:id="@+id/edit_meet_name"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/matrimony_name_label"
-                        android:inputType="textMultiLine"/>
+                        android:maxLength="50"
+                        android:inputType="textMultiLine|textCapWords"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -135,7 +136,7 @@
                     <EditText
                         android:id="@+id/edit_meet_venue"
                         style="@style/RegistrationEditTextLayout"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textCapWords"
                         android:hint="@string/matrimony_venue_label" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,42 +220,6 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <RadioGroup
-                        android:id="@+id/rg_paid_free"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/dimen_05dp">
-                        
-                        <RadioButton
-                            android:id="@+id/rb_paid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_20dp"
-                            android:text="@string/meet_paid"
-                            android:textColor="@color/dark_grey"
-                            android:fontFamily="@font/opensans"
-                            android:padding="@dimen/dimen_10dp"/>
-
-                        <RadioButton
-                            android:id="@+id/rb_free"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_30dp"
-                            android:text="@string/meet_free"
-                            android:fontFamily="@font/opensans"
-                            android:padding="@dimen/dimen_10dp"
-                            android:textColor="@color/dark_grey"/>
-
-                    </RadioGroup>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_01dp"
-                        android:layout_margin="@dimen/dimen_10dp"
-                        android:background="@color/grey" />
-
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -319,21 +284,50 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
+                    <RadioGroup
+                        android:id="@+id/rg_paid_free"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/dimen_05dp">
+                        
+                        <RadioButton
+                            android:id="@+id/rb_paid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_20dp"
+                            android:text="@string/meet_paid"
+                            android:textColor="@color/dark_grey"
+                            android:fontFamily="@font/opensans"
+                            android:padding="@dimen/dimen_10dp"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_free"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_30dp"
+                            android:text="@string/meet_free"
+                            android:fontFamily="@font/opensans"
+                            android:padding="@dimen/dimen_10dp"
+                            android:textColor="@color/dark_grey"/>
+
+                    </RadioGroup>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:layout_marginBottom="@dimen/dimen_10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayoutHint">
 
-                    <EditText
-                        android:id="@+id/edt_reg_amt"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/meet_registration_amount_label"
-                        android:inputType="number"/>
+                        <EditText
+                            android:id="@+id/edt_reg_amt"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/meet_registration_amount_label"
+                            android:inputType="number"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <RadioGroup

@@ -157,7 +157,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setLocation(location);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString().trim());
         MeetSchedule meetSchedule = new MeetSchedule();
-        meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), "00:00"));
+        meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), edtMeetStartTime.getText().toString()));
         meetSchedule.setMeetStartTime(edtMeetStartTime.getText().toString());
         meetSchedule.setMeetEndTime(edtMeetEndTime.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setSchedule(meetSchedule);
@@ -166,7 +166,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         registrationSchedule.setRegStartDateTime
                 (Util.dateTimeToTimeStamp(edtMeetRegStartDate.getText().toString(), "00:00"));
         registrationSchedule.setRegEndDateTime
-                (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "00:00"));
+                (Util.dateTimeToTimeStamp(edtMeetRegEndDate.getText().toString(), "23:59"));
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegistrationSchedule(registrationSchedule);
         if(edtRegAmt.getText().toString().trim()!= null && edtRegAmt.getText().toString().trim().length()>0) {
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(Integer.parseInt(edtRegAmt.getText().toString().trim()));
@@ -188,7 +188,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
         UserInfo userInfo = Util.getUserObjectFromPref();
         matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                "5d68c6645dda765a632b4ac3",
+                "5d98330bee061834d23798b2",
                 Constants.JurisdictionLevelName.COUNTRY_LEVEL);
     }
 
@@ -455,7 +455,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetCountry.setText(selectedCountry);
                 if(selectedCountry!="" && selectedCountry!="Country") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5d68c6645dda765a632b4ac3",
+                            "5d98330bee061834d23798b2",
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
                 break;
@@ -473,7 +473,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetState.setText(selectedState);
                 if(selectedState!="" && selectedState!="State") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5d68c6645dda765a632b4ac3",
+                            "5d98330bee061834d23798b2",
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;

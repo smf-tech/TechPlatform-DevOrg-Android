@@ -28,7 +28,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
     private Button btn_load_next, btn_loadprevious;
     private TextView tv_pagetitle;
     private EditText et_address, et_city_town, et_state, et_country, et_primary_mobile, et_primary_mobile_two, et_primary_email;
-    private EditText et_education, et_occupation_type, et_employer, et_job_profile, et_Annual_income;
+    private EditText et_education,et_education_degree, et_occupation_type, et_employer, et_job_profile, et_Annual_income;
 
 
     public static UserRegistrationMatrimonyResidenceFragment newInstance() {
@@ -55,6 +55,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         //-------
         //edittext
         et_education = fragmentview.findViewById(R.id.et_education);
+        et_education_degree = fragmentview.findViewById(R.id.et_education_degree);
         et_occupation_type = fragmentview.findViewById(R.id.et_occupation_type);
         et_employer = fragmentview.findViewById(R.id.et_employer);
         et_job_profile = fragmentview.findViewById(R.id.et_job_profile);
@@ -64,6 +65,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         et_state = fragmentview.findViewById(R.id.et_state);
         et_country = fragmentview.findViewById(R.id.et_country);
         et_primary_mobile = fragmentview.findViewById(R.id.et_primary_mobile);
+        et_primary_mobile.setText(((UserRegistrationMatrimonyActivity)getActivity()).mobileNumberReceived);
         et_primary_mobile_two = fragmentview.findViewById(R.id.et_primary_mobile_two);
         et_primary_email = fragmentview.findViewById(R.id.et_primary_email);
 
@@ -72,6 +74,7 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         btn_load_next.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
         et_education.setOnClickListener(this);
+        et_education_degree.setOnClickListener(this);
         et_occupation_type.setOnClickListener(this);
         et_employer.setOnClickListener(this);
         et_job_profile.setOnClickListener(this);
@@ -111,6 +114,15 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
                     }
                 }
                 break;
+            case R.id.et_education_degree:
+                for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                    if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("qualification_degree")) {
+                        showMultiSelectBottomsheet("Education Degree","et_education_degree", (ArrayList<String>) ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        break;
+                    }
+                }
+                break;
+
             case R.id.et_occupation_type:
                 for (int i = 0; i < ((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((UserRegistrationMatrimonyActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("occupation")) {
@@ -164,8 +176,9 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
                     UserRegistrationMatrimonyActivity.residentialDetails.setPrimary_email_address(et_primary_email.getText().toString());
 
                     UserRegistrationMatrimonyActivity.educationalDetails.setEducation_level(et_education.getText().toString());
+                    UserRegistrationMatrimonyActivity.educationalDetails.setQualification_degree(et_education_degree.getText().toString());
                     UserRegistrationMatrimonyActivity.educationalDetails.setIncome(et_Annual_income.getText().toString());
-                    UserRegistrationMatrimonyActivity.educationalDetails.setQualification_degree("");
+
 
                     UserRegistrationMatrimonyActivity.occupationalDetails.setOccupation(et_occupation_type.getText().toString());
                     UserRegistrationMatrimonyActivity.occupationalDetails.setEmployer_company(et_employer.getText().toString());
@@ -204,6 +217,9 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
         switch (spinnerName) {
             case "et_education":
                 et_education.setText(selectedValues);
+                break;
+            case "et_education_degree":
+                et_education_degree.setText(selectedValues);
                 break;
             case "et_occupation_type":
                 et_occupation_type.setText(selectedValues);
@@ -266,18 +282,47 @@ public class UserRegistrationMatrimonyResidenceFragment extends Fragment impleme
     private boolean isAllInputsValid() {
         String msg = "";
 
-        /*if (et_Annual_income.getText().toString().trim().length() == 0) {
-            msg = "Please enter the mobile annual income";//getResources().getString(R.string.msg_enter_name);
-        } else*/
+        if (et_education.getText().toString().trim().length() == 0) {
+            msg = "Please enter education category";//getResources().getString(R.string.msg_enter_name);
+            et_education.requestFocus();
+        } else
+        if (et_education_degree.getText().toString().trim().length() == 0) {
+            msg = "Please enter education degree";//getResources().getString(R.string.msg_enter_name);
+            et_education.requestFocus();
+        } else
         if (et_occupation_type.getText().toString().trim().length() == 0) {
             msg = "Please select the occupation type.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_occupation_type.requestFocus();
+        } else if (et_occupation_type.getText().toString().trim().length() == 0) {
+            msg = "Please select the occupation type.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_Annual_income.getText().toString().trim().length() == 0) {
+            msg = "Please select the annual income.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_Annual_income.requestFocus();
+        } else if (et_job_profile.getText().toString().trim().length() == 0) {
+            msg = "Please enter job description.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_job_profile.requestFocus();
+        } else if (et_address.getText().toString().trim().length() == 0) {
+            msg = "Please enter your address.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_address.requestFocus();
+        } else if (et_city_town.getText().toString().trim().length() == 0) {
+            msg = "Please enter your city.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_city_town.requestFocus();
+        } else if (et_state.getText().toString().trim().length() == 0) {
+            msg = "Please enter your state.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_state.requestFocus();
+        }
+        else if (et_country.getText().toString().trim().length() == 0) {
+            msg = "Please enter your country.";//getResources().getString(R.string.msg_enter_proper_date);
+            et_country.requestFocus();
         }
         else if (et_primary_mobile.getText().toString().trim().length() != 10 ) {
             msg = "Please enter the valid mobile number";//getResources().getString(R.string.msg_enter_name);
-        }else if ((!TextUtils.isEmpty(et_primary_email.getText()) && Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText()).matches())) {
-            msg = "Please enter the valid email address";//getResources().getString(R.string.msg_enter_name);
+            et_primary_mobile.requestFocus();
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(et_primary_email.getText().toString().trim()).matches()) {
+            msg = getResources().getString(R.string.msg_enter_valid_email_id);
+            et_primary_email.requestFocus();
         } else if (et_country.getText().toString().trim().length() == 0) {
-            msg = "Please mention the Country"; //getResources().getString(R.string.msg_enter_name);
+            msg = "Please mention the country"; //getResources().getString(R.string.msg_enter_name);
         }
         /*else if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);

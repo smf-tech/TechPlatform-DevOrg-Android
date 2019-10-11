@@ -110,6 +110,7 @@ public class MatrimonyBookletActivity extends Activity implements View.OnClickLi
         Util.snackBarToShowMsg(this.getWindow().getDecorView()
                         .findViewById(android.R.id.content), getString(R.string.msg_failure),
                 Snackbar.LENGTH_LONG);
+        Util.showToast(getString(R.string.msg_failure),this);
         onBackPressed();
     }
 
@@ -118,6 +119,7 @@ public class MatrimonyBookletActivity extends Activity implements View.OnClickLi
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.msg_failure),
                     Snackbar.LENGTH_LONG);
+        Util.showToast(getString(R.string.msg_failure),this);
             onBackPressed();
         }
 
@@ -127,7 +129,9 @@ public class MatrimonyBookletActivity extends Activity implements View.OnClickLi
         Util.snackBarToShowMsg(this.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseOBJ.getMessage(),
                 Snackbar.LENGTH_LONG);
+        Util.showToast(responseOBJ.getMessage(),this);
         onBackPressed();
+
     }
 
     @Override

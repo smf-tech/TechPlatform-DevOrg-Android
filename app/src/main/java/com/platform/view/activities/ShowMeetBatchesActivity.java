@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -74,7 +73,7 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
             Log.e(TAG, "Exception :: OtpActivity : initView");
         }*/
 
-        toolbar_back_action= findViewById(R.id.toolbar_back_action);
+        toolbar_back_action = findViewById(R.id.toolbar_back_action);
         toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("Meet Batches");
         toolbar_back_action.setOnClickListener(this::onClick);
@@ -83,12 +82,14 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.toolbar_back_action:
-                if(fManager.getBackStackEntryCount() > 0)
+                if (fManager.getBackStackEntryCount() > 0) {
                     fManager.popBackStack();
-                else
-                finish();
+                    toolbar_title.setText("Meet Batches");
+                } else {
+                    finish();
+                }
                 break;
         }
     }
@@ -105,6 +106,8 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
         bundle.putString("bachesObjectString", jsonString);
         fragment.setArguments(bundle);
         openFragment();
+
+        toolbar_title.setText("Batch " + (pos + 1));
 
 /*        FragmentManager fm = getSupportFragmentManager();
 //fragment class name : DFragment

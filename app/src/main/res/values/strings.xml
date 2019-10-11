@@ -466,7 +466,7 @@
     <string name="meet_save">Save</string>
     <string name="create_meet_msg">You have created meet successfully.</string>
     <string name="back_to_dashboard_label">Back to Dashboard</string>
-    <string name="references_label">References</string>
+    <string name="references_label">Contact person</string>
     <string name="event_matrimony_screen_visit">Event Matrimony Screen visited</string>
     <string name="ss_screen_visit">Sujalam Suphalam Screen visited</string>
     <string name="matrimony">Matrimony</string>
@@ -474,7 +474,7 @@
     <string name="matrimony_name_label">Meet Name</string>
     <string name="meet_date">Meet Date</string>
     <string name="meet_select_organizers">Select Organizers</string>
-    <string name="meet_select_references">Select References</string>
+    <string name="meet_select_references">Select contact persons</string>
     <string name="select_meet_type">Select Meet Type</string>
     <string name="meet_publish">Publish</string>
     <string name="select_meet_organizers_references_msg">Please select Organizers and References.</string>
@@ -487,9 +487,9 @@
     <string name="age">Age</string>
 
     <string name="meet_badges_allocated">Meet badges has been allocated.</string>
-    <string name="meet_badges_allocated_finalized">Meet badges has been allocated and finalized.</string>
-    <string name="meet_badges_allocated_not_finalized">Meet badges has been allocated but not finalized.</string>
-    <string name="meet_badges_not_allocated">Meet badges has not been allocated.</string>
+    <string name="meet_badges_allocated_finalized">Meet badges have been allocated and finalized.</string>
+    <string name="meet_badges_allocated_not_finalized">Meet badges have been allocated but not finalized.</string>
+    <string name="meet_badges_not_allocated">Meet badges have not been allocated.</string>
     <string name="meet_timings_validation">Meet start time should be before meet end time.</string>
     <string name="machine_mou_form">Machine MOU Record</string>
     <string name="machine_owned_by">Machine owned by?</string>

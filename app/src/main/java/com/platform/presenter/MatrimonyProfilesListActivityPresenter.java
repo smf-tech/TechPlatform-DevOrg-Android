@@ -73,6 +73,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
             }
             } catch (JSONException e) {
                 e.printStackTrace();
+                fragmentWeakReference.get().setTxt_no_data();
             }
         }
     }
@@ -116,17 +117,18 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
 
     //---------Approve Reject Request-----------
 
-    public JSONObject createBodyParams(String meetid,String type,String userid,String approval_type){
+    public JSONObject createBodyParams(String meetid,String type,String userid,String approval_type,String strReason){
         JSONObject requestObject = new JSONObject();
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson("");
         Log.d("JsonObjRequestfilter", "SubmitRequest: " + json);
 
         try {
-            requestObject.put("meet_id", "5d6f90c25dda765c2f0b5dd4");
+            requestObject.put("meet_id", meetid);
             requestObject.put("type", type);
             requestObject.put("approval", approval_type);
             requestObject.put("user_id", userid);
+            requestObject.put("rejection_reason",strReason);
         } catch (JSONException e) {
             e.printStackTrace();
         }

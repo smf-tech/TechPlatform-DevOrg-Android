@@ -90,12 +90,15 @@ public class ShowBachesDialogFragment extends DialogFragment implements View.OnC
 
         final TextView viewAllApprovals = tmFragmentView.findViewById(R.id.txt_view_all_approvals);
         viewAllApprovals.setOnClickListener(this);*/
+        if (group.getMale()!=null && group.getMale().size()>0) {
+            mAdapter = new ShowBachesRecyclerAdapter(getContext(), group.getMale(), this::onItemClicked);
+            rvLandingPageView.setAdapter(mAdapter);
+        }
 
-        mAdapter = new ShowBachesRecyclerAdapter(getContext(), group.getMale(), this::onItemClicked);
-        rvLandingPageView.setAdapter(mAdapter);
-
-        showBachesFemaleRecyclerAdapter = new ShowBachesFemaleRecyclerAdapter(getContext(), group.getFemale(), this::onItemClicked);
-        rvfemalebatchView.setAdapter(showBachesFemaleRecyclerAdapter);
+        if (group.getFemale()!=null && group.getFemale().size()>0) {
+            showBachesFemaleRecyclerAdapter = new ShowBachesFemaleRecyclerAdapter(getContext(), group.getFemale(), this::onItemClicked);
+            rvfemalebatchView.setAdapter(showBachesFemaleRecyclerAdapter);
+        }
 
 
     }
@@ -113,8 +116,8 @@ public class ShowBachesDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onItemClicked(int pos) {
-        LandingPageRequest pendingRequest = pendingRequestList.get(pos);
-        showActionPopUp(pendingRequest);
+        /*LandingPageRequest pendingRequest = pendingRequestList.get(pos);
+        showActionPopUp(pendingRequest);*/
     }
 
     private void showActionPopUp(final LandingPageRequest pendingRequest) {
