@@ -178,6 +178,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
                         fragmentWeakReference.get().logOutUser();
                     }
                     if(allMeets.getStatus() == 200){
+                        //earliestMeetId will never be null. If no value available at backend it will send empty string.
                     fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData(), allMeets.getEarliestMeetId());
                     } else{
                         fragmentWeakReference.get().showResponse(allMeets.getMessage());
