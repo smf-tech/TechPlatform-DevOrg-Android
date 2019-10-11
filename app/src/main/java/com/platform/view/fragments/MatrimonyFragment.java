@@ -286,7 +286,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         tvRegPeriod.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegStartDateTime(),
                 DAY_MONTH_YEAR)+" - "+
                 Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegEndDateTime(), DAY_MONTH_YEAR));
-        if(matrimonyMeetList.get(position).getAllocate()){
+     /*   if(matrimonyMeetList.get(position).getAllocate()){
             if(matrimonyMeetList.get(position).getBadgeFanlize()){
                 tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
             } else {
@@ -294,7 +294,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             }
         } else {
             tvBadgesInfo.setText(R.string.meet_badges_not_allocated);
-        }
+        }*/
 
         for(MatrimonyUserDetails matrimonyUserDetails: matrimonyMeetList.get(position).getMeetOrganizers()){
             contactsList.add(matrimonyUserDetails);

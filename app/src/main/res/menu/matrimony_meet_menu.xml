@@ -11,9 +11,11 @@
         android:title="Delete" />
     <item
         android:id="@+id/action_allocate_badge"
+        android:visible="false"
         android:title="Allocate Badge" />
     <item
         android:id="@+id/action_finalise_badge"
+        android:visible="false"
         android:title="Finalise Badge" />
     <item
         android:id="@+id/action_gen_booklet"
