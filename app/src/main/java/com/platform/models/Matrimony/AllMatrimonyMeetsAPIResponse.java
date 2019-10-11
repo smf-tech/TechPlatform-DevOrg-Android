@@ -15,6 +15,9 @@ public class AllMatrimonyMeetsAPIResponse {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("earliestMeetId")
+    @Expose
+    private String earliestMeetId;
 
     public Integer getStatus() {
         return status;
@@ -39,4 +42,13 @@ public class AllMatrimonyMeetsAPIResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public String getEarliestMeetId() {
+        return earliestMeetId;
+    }
+
+    public void setEarliestMeetId(String earliestMeetId) {
+        this.earliestMeetId = earliestMeetId;
+    }
+
 }

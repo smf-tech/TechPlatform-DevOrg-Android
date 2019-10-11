@@ -184,17 +184,23 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         }
     }
 
-    private void setupViewPager(ViewPager meetViewPager) {
+    private void setupViewPager(ViewPager meetViewPager, String earliestMeetId) {
 
         adapter = new ViewPagerAdapter(getChildFragmentManager());
+        int earliestMeetPosition = 0;
         for (int i = 0; i < matrimonyMeetList.size(); i++) {
             MatrimonyMeetFragment matrimonyMeetFragment = new MatrimonyMeetFragment();
+             if(earliestMeetId != null && matrimonyMeetList.get(i).getId().equals(earliestMeetId)){
+                 earliestMeetPosition = i;
+             }
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.Home.MATRIMONY, matrimonyMeetList.get(i));
             matrimonyMeetFragment.setArguments(bundle);
             adapter.addFragment(matrimonyMeetFragment, getString(R.string.matrimony));
         }
         meetViewPager.setAdapter(adapter);
+        meetViewPager.setCurrentItem(earliestMeetPosition);
+        setCurrentMeetData(earliestMeetPosition);
     }
 
     @Override
@@ -271,15 +277,15 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         tvRegPeriod.setText(Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegStartDateTime(),
                 DAY_MONTH_YEAR)+" - "+
                 Util.getDateFromTimestamp(matrimonyMeetList.get(position).getRegistrationSchedule().getRegEndDateTime(), DAY_MONTH_YEAR));
-        if(matrimonyMeetList.get(position).getAllocate()){
-            if(matrimonyMeetList.get(position).getBadgeFanlize()){
-                tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
-            } else {
-                tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
-            }
-        } else {
-            tvBadgesInfo.setText(R.string.meet_badges_not_allocated);
-        }
+//        if(matrimonyMeetList.get(position).getAllocate()){
+//            if(matrimonyMeetList.get(position).getBadgeFanlize()){
+//                tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
+//            } else {
+//                tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
+//            }
+//        } else {
+//            tvBadgesInfo.setText(R.string.meet_badges_not_allocated);
+//        }
 
 //        if(matrimonyMeetList.get(position).getBadgeFanlize()){
 //            tvBadgesInfo.setText(R.string.meet_badges_finalized);
@@ -304,11 +310,11 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void onPageScrollStateChanged(int state) {
     }
 
-    public void setMatrimonyMeets(List<MatrimonyMeet> data) {
+    public void setMatrimonyMeets(List<MatrimonyMeet> data, String earliestMeetId) {
         matrimonyMeetList.clear();
         matrimonyMeetList.addAll(data);
-        setupViewPager(meetViewPager);
-        setCurrentMeetData(0);
+        setupViewPager(meetViewPager, earliestMeetId);
+        //setCurrentMeetData(0);
     }
 
     @Override
@@ -331,7 +337,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
 
                 break;
             case R.id.btn_view_profiles:
-
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
                 startActivity(startMain);

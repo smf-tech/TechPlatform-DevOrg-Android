@@ -141,7 +141,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
                 if(requestID.equalsIgnoreCase(MatrimonyFragmentPresenter.GET_MATRIMONY_MEETS)){
                     AllMatrimonyMeetsAPIResponse allMeets = PlatformGson.getPlatformGsonInstance().fromJson(response, AllMatrimonyMeetsAPIResponse.class);
                     if(allMeets.getStatus() == 200){
-                    fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData());
+                    fragmentWeakReference.get().setMatrimonyMeets(allMeets.getData(), allMeets.getEarliestMeetId());
                     } else{
                         fragmentWeakReference.get().showResponse(allMeets.getMessage());
                     }
