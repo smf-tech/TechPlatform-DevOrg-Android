@@ -363,7 +363,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             }
         };
 
-
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
                 0,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
