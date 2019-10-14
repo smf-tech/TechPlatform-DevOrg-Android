@@ -72,7 +72,7 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "resendOtp - Resp: " + res);
+                  //  Log.d(TAG, "resendOtp - Resp: " + res);
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {
