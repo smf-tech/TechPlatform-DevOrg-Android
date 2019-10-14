@@ -34,19 +34,20 @@ public class UserRegistrationMatrimonyActivityPresenter implements MatrimonyMast
         MatrimonyMasterDataRequestCall requestCall = new MatrimonyMasterDataRequestCall();
         requestCall.setListener(this);
 
-        //fragmentWeakReference.get().showProgressBar();
+        fragmentWeakReference.get().showProgressBar();
         requestCall.getAllMasterDataRequests();
     }
     public void UserRegistrationRequests(MatrimonyUserRegRequestModel matrimonyUserRegRequestModel) {
         MatrimonyMasterDataRequestCall requestCall = new MatrimonyMasterDataRequestCall();
         requestCall.setListener(this);
 
-        //fragmentWeakReference.get().showProgressBar();
+        fragmentWeakReference.get().showProgressBar();
         requestCall.submitUserRegistrationDataRequests(matrimonyUserRegRequestModel);
     }
 
     @Override
     public void MatrimonyMasterDataRequestsFetched(String response) {
+        fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             MatrimonyMasterRequestModel matrimonyMasterRequestModel
                     = new Gson().fromJson(response, MatrimonyMasterRequestModel.class);
@@ -63,6 +64,7 @@ public class UserRegistrationMatrimonyActivityPresenter implements MatrimonyMast
 
     @Override
     public void UserRegistrationDataRequestsFetched(String response) {
+        fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             fragmentWeakReference.get().profileCreatedSuccessfully(response);
         }
@@ -78,7 +80,7 @@ public class UserRegistrationMatrimonyActivityPresenter implements MatrimonyMast
         Log.e(TAG, "onImageUploadedListener:\n" + response);
         fragmentWeakReference.get().runOnUiThread(() -> Util.showToast(
                 fragmentWeakReference.get().getResources().getString(R.string.image_upload_success),fragmentWeakReference.get()));
-        //profileActivity.get().hideProgressBar();
+        fragmentWeakReference.get().hideProgressBar();
 
         try {
             if (new JSONObject(response).has("data")) {
@@ -97,12 +99,12 @@ public class UserRegistrationMatrimonyActivityPresenter implements MatrimonyMast
 
     @Override
     public void onFailureListener(String message) {
-
+        fragmentWeakReference.get().hideProgressBar();
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-
+        fragmentWeakReference.get().hideProgressBar();
     }
 
     public void uploadProfileImage(File file, String type, final String formName) {
