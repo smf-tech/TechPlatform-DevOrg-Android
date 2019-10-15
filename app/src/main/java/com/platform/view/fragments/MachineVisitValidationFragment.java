@@ -5,6 +5,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -37,9 +41,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.Matrimony.MeetType;
+import com.platform.models.SujalamSuphalam.ImageUpload;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineVisitValidationFragmentPresenter;
 import com.platform.utility.Constants;
@@ -61,11 +71,13 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -96,8 +108,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private final String TAG = MachineVisitValidationFragment.class.getName();
     private RequestQueue rQueue;
     private ArrayList<HashMap<String, String>> arraylist;
-    private String upload_URL = "https://demonuts.com/Demonuts/JsonTest/Tennis/uploadfile.php?";
-
+    private String upload_URL = "http://13.235.124.3:8070/api/imageUpload";
+    private Bitmap mProfileCompressBitmap = null;
+    private HashMap<String, Object> imageHashmap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,7 +191,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-            showPictureDialog();
+            uploadImage();
+            //showPictureDialog();
         }
     }
 
@@ -266,12 +280,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(imageFile)) {
                         imgRegisterOne.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        uploadImage(bitmap);
+                        ImageUpload imageUpload = new ImageUpload();
+                        imageUpload.setImageName("profile1");
+                        imageUpload.setBitmap(bitmap);
+                        imageHashmap.put("image1", imageUpload);
+                        uploadImage();
                         //machineVisitValidationFragmentPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
@@ -300,7 +317,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    private void uploadImage(final Bitmap bitmap){
+    private void uploadImage(){
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -309,25 +326,12 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                         Log.d("ressssssoo",new String(response.data));
                         rQueue.getCache().clear();
                         try {
-                            JSONObject jsonObject = new JSONObject(new String(response.data));
-                            Toast.makeText(getActivity().getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-
-                            jsonObject.toString().replace("\\\\","");
-
-                            if (jsonObject.getString("status").equals("true")) {
-
-                                arraylist = new ArrayList<HashMap<String, String>>();
-                                JSONArray dataArray = jsonObject.getJSONArray("data");
-
-                                String url = "";
-                                for (int i = 0; i < dataArray.length(); i++) {
-                                    JSONObject dataobj = dataArray.getJSONObject(i);
-                                    url = dataobj.optString("pathToFile");
-                                }
-                                //Picasso.get().load(url).into(imageView);
-                            }
-                        } catch (JSONException e) {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            Log.d("response -",jsonString);
+                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
+                            Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -346,8 +350,20 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
              * */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                Gson gson =new Gson();
+                JSONObject object = createBodyParams();
+                Log.e("req -jsonObject1",object.toString());
+                JsonObject body = createBodyParamsTwo();
+
+                Log.e("req -jsonObject2",gson.toJson(body));
+
+                Log.e("req -jsonObject3",new Gson().toJson(body));
+                //params.put("testparam",new Gson().toJson(body));
+                MeetType testJsonModel =new MeetType();
+                testJsonModel.setId("1233");
+                testJsonModel.setType("Image");
                 Map<String, String> params = new HashMap<>();
-                params.put("imageUpload", "test Image Upload");  //add string parameters
+                params.put("imageUpload", new Gson().toJson(testJsonModel));  //add string parameters
                 return params;
             }
 
@@ -356,25 +372,146 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
              * */
             @Override
             protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("filename", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                mProfileCompressBitmap = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
+                        R.mipmap.app_logo);
+                mProfileCompressBitmap = drawableToBitmap(getResources().getDrawable(R.drawable.profileimagetest));
+
+                if (mProfileCompressBitmap != null)
+                    drawable = new BitmapDrawable(getResources(), mProfileCompressBitmap);
+                SimpleDateFormat dateformat = new SimpleDateFormat("MMddyyyyhhmmss");
+
+                Date date = new Date();
+                String fileName = dateformat.format(date) +"fileName0"+ ".jpg";
+                if (drawable != null) {
+                    params.put("profile", new DataPart(fileName, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+
+                //SimpleDateFormat dateformat = new SimpleDateFormat("MMddyyyyhhmmss");
+                Date date1 = new Date();
+                String fileName1 = dateformat.format(date1) +"fileName1"+ ".jpg";
+                if (drawable != null) {
+                    params.put("profile1", new DataPart(fileName1, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+
+                }
+                // SimpleDateFormat dateformat = new SimpleDateFormat("MMddyyyyhhmmss");
+                Date date2 = new Date();
+                String fileName2 = dateformat.format(date2)+"fileName2"+ ".jpg";
+                if (drawable != null) {
+                    params.put("profile2", new DataPart(fileName2, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+
+                Date date3 = new Date();
+                String fileName3 = dateformat.format(date3)+"fileName3"+ ".jpg";
+                if (drawable != null) {
+                    params.put("profile3", new DataPart(fileName3, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+                for (int i = 0;i<imageHashmap.size(); i++) {
+                    String key=(String)myVeryOwnIterator.next();
+                    ImageUpload imageUpload = (ImageUpload)imageHashmap.get(key);
+                    drawable = new BitmapDrawable(getResources(), imageUpload.getBitmap());
+//                    params.put(imageFileNames.get(i), new DataPart(fileName3, getFileDataFromDrawable(drawable),
+//                            "image/jpeg"));
+                    params.put("Image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
                 return params;
             }
         };
 
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                0,
+                3000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(getActivity());
         rQueue.add(volleyMultipartRequest);
     }
 
-    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+//    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+//        return byteArrayOutputStream.toByteArray();
+//    }
+
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public JSONObject createBodyParams() {
+        JSONObject requestObject = new JSONObject();
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson("");
+        Log.d("JsonObjRequestfilter", "SubmitRequest: " + json);
+
+        try {
+            requestObject.put("name", "RESHU");
+            requestObject.put("address", "sb road");
+            requestObject.put("city", "Pune");
+            requestObject.put("office", "BJS");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            return requestObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JsonObject createBodyParamsTwo() {
+        JsonObject requestObject = new JsonObject();
+
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson("");
+        Log.d("JsonObjRequestfilter", "SubmitRequest: " + json);
+
+        try {
+            requestObject.addProperty("name", "RESHU");
+            requestObject.addProperty("address", "sb road");
+            requestObject.addProperty("city", "Pune");
+            requestObject.addProperty("office", "BJS");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            return requestObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setData() {

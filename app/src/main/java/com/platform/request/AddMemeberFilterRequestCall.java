@@ -26,7 +26,7 @@ public class AddMemeberFilterRequestCall {
         this.listener = listener;
     }
 
-    public void getOrganizationRoles(String orgId) {
+    public void getOrganizationRoles(String orgId, String projectId) {
         Response.Listener<JSONObject> orgRolesSuccessListener = response -> {
             try {
                 if (response != null) {
@@ -43,7 +43,7 @@ public class AddMemeberFilterRequestCall {
         Response.ErrorListener orgRolesErrorListener = error -> listener.onErrorListener(error);
 
         final String getOrgProjectUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId);
+                + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId, projectId);
 //        final String getOrgProjectUrl = BuildConfig.BASE_URL
 //                + Urls.Events.GET_ORGANIZATION_ROLES;
 

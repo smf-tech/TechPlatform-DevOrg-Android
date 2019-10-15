@@ -84,8 +84,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private Spinner spState;
     private Spinner spRole;
     private Spinner spStructure;
+    private Spinner spProject;
 
-    private MultiSelectSpinner spProject;
+    //private MultiSelectSpinner spProject;
     private MultiSelectSpinner spDistrict;
     private MultiSelectSpinner spCity;
     private MultiSelectSpinner spTaluka;
@@ -125,6 +126,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
 
+    private JurisdictionType selectedProject;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
 
@@ -181,7 +183,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserOrganization = findViewById(R.id.etUserOrganization);
 
         spProject = findViewById(R.id.sp_project);
-        spProject.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_PROJECT);
+        //spProject.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_PROJECT);
 
         spRole = findViewById(R.id.sp_role);
         spCountry = findViewById(R.id.sp_user_country);
@@ -318,6 +320,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         spOrganization.setOnItemSelectedListener(this);
         spCountry.setOnItemSelectedListener(this);
         spState.setOnItemSelectedListener(this);
+        spProject.setOnItemSelectedListener(this);
         spRole.setOnItemSelectedListener(this);
         spStructure.setOnItemSelectedListener(this);
 
@@ -347,7 +350,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
-                //showMultiSelectBottomsheet();
 
                 break;
             case R.id.etUserOrganization:
@@ -391,7 +393,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
             userInfo.setUserLastName(String.valueOf(etUserLastName.getText()).trim());
             userInfo.setUserBirthDate(Util.getDateInLong(String.valueOf(etUserBirthDate.getText()).trim()));
-            //userInfo.setUserMobileNumber("7741980871");
             userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);
@@ -726,72 +727,123 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.sp_user_organization:
-                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-                        && getIntent().getStringExtra(Constants.Login.ACTION)
-                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+//                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+//                        && getIntent().getStringExtra(Constants.Login.ACTION)
+//                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
-                    UserInfo userInfo = Util.getUserObjectFromPref();
-                    this.selectedOrg = organizations.get(i);
-
-                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref(this.selectedOrg.getId()).getData();
-                    if (projectData != null && projectData.size() > 0) {
-                        showOrganizationProjects(projectData);
-
-                        boolean[] selectedValues = new boolean[projectData.size()];
-                        for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
-                            selectedValues[projectIndex]
-                                    = isContainsValue(userInfo.getProjectIds(), projectData.get(projectIndex).getId());
-                        }
-
-                        spProject.setSelectedValues(selectedValues);
-                        spProject.setPreFilledText();
-                        etUserOrganization.setText(this.selectedOrg.getOrgName());
-                    } else {
+                    //UserInfo userInfo = Util.getUserObjectFromPref();
+//                    int projectPosition = 0;
+//                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref(this.selectedOrg.getId()).getData();
+//                    if (projectData != null && projectData.size() > 0) {
+//                        showOrganizationProjects(projectData);
+//
+////                        boolean[] selectedValues = new boolean[projectData.size()];
+////                        for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
+////                            selectedValues[projectIndex]
+////                                    = isContainsValue(userInfo.getProjectIds(), projectData.get(projectIndex).getId());
+//////                            if (userInfo.getProjectIds().equals(projectData.get(projectIndex).getId())) {
+//////                                projectPosition = projectIndex;
+//////                            }
+////                        }
+//                        //spProject.setSelectedValues(selectedValues);
+//                        for(int userProjectIndex = 0; userProjectIndex< userInfo.getProjectIds().size(); userProjectIndex++ ){
+//                            for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
+//                                if (userInfo.getProjectIds().get(userProjectIndex).getId().
+//                                        equals(projectData.get(projectIndex).getId())) {
+//                                    projectPosition = projectIndex;
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        spProject.setSelection(projectPosition);
+//                        //spProject.setPreFilledText();
+//                        etUserOrganization.setText(this.selectedOrg.getOrgName());
+//                    } else {
                         if (Util.isConnected(this)) {
-                            profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
-                        } else {
-                            List<OrganizationProject> projects = new ArrayList<>();
-                            ArrayList<JurisdictionType> projectIds = userInfo.getProjectIds();
-                            for (JurisdictionType project : projectIds) {
-                                OrganizationProject op = new OrganizationProject();
-                                op.setId(project.getId());
-                                op.setOrgProjectName(project.getName());
-                                projects.add(op);
-                            }
-                            showOrganizationProjects(projects);
-                        }
-                    }
-
-                    int id = 0;
-                    List<OrganizationRole> roleData = Util.getUserRoleFromPref(this.selectedOrg.getId()).getData();
-                    if (roleData != null && roleData.size() > 0) {
-                        showOrganizationRoles(roleData);
-                        for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
-                            if (userInfo.getRoleIds().equals(roleData.get(roleIndex).getId())) {
-                                id = roleIndex;
-                            }
-                        }
-                        spRole.setSelection(id);
-                    } else {
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getOrganizationRoles(this.selectedOrg.getId());
-                        } else {
-                            List<OrganizationRole> orgRoles = new ArrayList<>();
-                            OrganizationRole or = new OrganizationRole();
-                            or.setId(userInfo.getRoleIds());
-                            or.setDisplayName(userInfo.getRoleNames());
-                            orgRoles.add(or);
-                            showOrganizationRoles(orgRoles);
-                        }
-                    }
-                } else {
-                    if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
+                            if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
                             && !TextUtils.isEmpty(organizations.get(i).getId())) {
-                        this.selectedOrg = organizations.get(i);
-                        profilePresenter.getOrganizationProjects(organizations.get(i).getId());
-                        profilePresenter.getOrganizationRoles(organizations.get(i).getId());
-                    }
-                }
+                                this.selectedOrg = organizations.get(i);
+                                profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
+                            }
+                        }
+//                        else {
+//                            List<OrganizationProject> projects = new ArrayList<>();
+//                            ArrayList<JurisdictionType> projectIds = userInfo.getProjectIds();
+//                            for (JurisdictionType project : projectIds) {
+//                                OrganizationProject op = new OrganizationProject();
+//                                op.setId(project.getId());
+//                                op.setOrgProjectName(project.getName());
+//                                projects.add(op);
+//                            }
+//                            showOrganizationProjects(projects);
+//                        }
+                //    }
+                //}
+//                else {
+//                    if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
+//                            && !TextUtils.isEmpty(organizations.get(i).getId())) {
+//                        this.selectedOrg = organizations.get(i);
+//                        profilePresenter.getOrganizationProjects(organizations.get(i).getId());
+////                        profilePresenter.getOrganizationRoles(organizations.get(i).getId(),
+////                                Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+//                    }
+//                }
+                break;
+
+            case R.id.sp_project:
+//                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
+//                        && getIntent().getStringExtra(Constants.Login.ACTION)
+//                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
+                    //UserInfo userInfo = Util.getUserObjectFromPref();
+//                    int id = 0;
+//                    List<OrganizationRole> roleData = Util.getUserRoleFromPref(this.selectedOrg.getId()).getData();
+//                    if (roleData != null && roleData.size() > 0) {
+//                        showOrganizationRoles(roleData);
+//                        for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
+//                            if (userInfo.getRoleIds().equals(roleData.get(roleIndex).getId())) {
+//                                id = roleIndex;
+//                            }
+//                        }
+//                        spRole.setSelection(id);
+//                    } else {
+                        if (Util.isConnected(this)) {
+                            if (projects != null && !projects.isEmpty() && projects.get(i) != null
+                                    && !TextUtils.isEmpty(projects.get(i).getId())) {
+                                profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
+                                        projects.get(i).getId());
+                            }
+                        }
+//                        else {
+//                            List<OrganizationRole> orgRoles = new ArrayList<>();
+//                            OrganizationRole or = new OrganizationRole();
+//                            or.setId(userInfo.getRoleIds());
+//                            or.setDisplayName(userInfo.getRoleNames());
+//                            orgRoles.add(or);
+//                            showOrganizationRoles(orgRoles);
+//                        }
+                //    }
+            //    }
+//                else {
+//                    if (projects != null && !projects.isEmpty() && projects.get(i) != null
+//                            && !TextUtils.isEmpty(projects.get(i).getId())) {
+//                        //this.selectedProject = projects.get(i);
+//                        profilePresenter.getOrganizationRoles(organizations.get(i).getId(),
+//                                projects.get(i).getId());
+//                    }
+//                }
+                selectedProjects.clear();
+//                for (int i = 0; i < selected.length; i++) {
+//                    if (selected[i]) {
+                        JurisdictionType project = new JurisdictionType();
+                        project.setId(projects.get(i).getId());
+                        project.setName(projects.get(i).getOrgProjectName());
+                        selectedProjects.add(project);
+//
+//                profilePresenter.getOrganizationRoles(organizations.get(i).getId(),
+//                        projects.get(i).getId());
+//                    }
+//                }
                 break;
 
             case R.id.sp_role:
@@ -844,7 +896,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
 
             case R.id.sp_user_country:
-                if (states != null && !states.isEmpty() && states.get(i) != null) {
+                if (countries != null && !countries.isEmpty() && countries.get(i) != null) {
                     selectedCountries.clear();
                     selectedCountries.add(countries.get(i));
 
@@ -853,20 +905,20 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.STATE_LEVEL);
-                        } else {
-                            List<String> stateNames = new ArrayList<>();
-                            UserInfo userInfo = Util.getUserObjectFromPref();
-                            List<JurisdictionType> stateObj = userInfo.getUserLocation().getStateId();
-
-                            Collections.sort(stateObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                            for (int k = 0; k < stateObj.size(); k++) {
-                                stateNames.add(stateObj.get(k).getName());
-                                this.states.add(stateObj.get(k));
-                            }
-
-                            setStateData(stateNames);
                         }
+//                        else {
+//                            List<String> stateNames = new ArrayList<>();
+//                            UserInfo userInfo = Util.getUserObjectFromPref();
+//                            List<JurisdictionType> stateObj = userInfo.getUserLocation().getStateId();
+//
+//                            Collections.sort(stateObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
+//
+//                            for (int k = 0; k < stateObj.size(); k++) {
+//                                stateNames.add(stateObj.get(k).getName());
+//                                this.states.add(stateObj.get(k));
+//                            }
+//                            setStateData(stateNames);
+//                        }
                     }
                 }
 
@@ -881,20 +933,20 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.CITY_LEVEL);
-                        } else {
-                            List<String> cityNames = new ArrayList<>();
-                            UserInfo userInfo = Util.getUserObjectFromPref();
-                            List<JurisdictionType> cityObj = userInfo.getUserLocation().getCityIds();
-
-                            Collections.sort(cityObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                            for (int k = 0; k < cityObj.size(); k++) {
-                                cityNames.add(cityObj.get(k).getName());
-                                this.cities.add(cityObj.get(k));
-                            }
-
-                            setCityData(cityNames);
                         }
+//                        else {
+//                            List<String> cityNames = new ArrayList<>();
+//                            UserInfo userInfo = Util.getUserObjectFromPref();
+//                            List<JurisdictionType> cityObj = userInfo.getUserLocation().getCityIds();
+//
+//                            Collections.sort(cityObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
+//
+//                            for (int k = 0; k < cityObj.size(); k++) {
+//                                cityNames.add(cityObj.get(k).getName());
+//                                this.cities.add(cityObj.get(k));
+//                            }
+//                            setCityData(cityNames);
+//                        }
                     }
 
                     if (spDistrict.getVisibility() == View.VISIBLE) {
@@ -902,20 +954,21 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                        } else {
-                            List<String> districtNames = new ArrayList<>();
-                            UserInfo userInfo = Util.getUserObjectFromPref();
-                            List<JurisdictionType> districtObj = userInfo.getUserLocation().getDistrictIds();
-
-                            Collections.sort(districtObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                            for (int k = 0; k < districtObj.size(); k++) {
-                                districtNames.add(districtObj.get(k).getName());
-                                this.districts.add(districtObj.get(k));
-                            }
-
-                            setDistrictData(districtNames);
                         }
+//                        else {
+//                            List<String> districtNames = new ArrayList<>();
+//                            UserInfo userInfo = Util.getUserObjectFromPref();
+//                            List<JurisdictionType> districtObj = userInfo.getUserLocation().getDistrictIds();
+//
+//                            Collections.sort(districtObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
+//
+//                            for (int k = 0; k < districtObj.size(); k++) {
+//                                districtNames.add(districtObj.get(k).getName());
+//                                this.districts.add(districtObj.get(k));
+//                            }
+//
+//                            setDistrictData(districtNames);
+//                        }
                     }
                 }
                 break;
@@ -990,30 +1043,48 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     @Override
     public void showOrganizationProjects(List<OrganizationProject> organizationProjects) {
         if (organizationProjects != null && !organizationProjects.isEmpty()) {
-            this.projects.clear();
-            this.projects.addAll(organizationProjects);
+
+            Collections.sort(organizationProjects, (j1, j2) -> j1.getOrgProjectName().compareTo(j2.getOrgProjectName()));
+
+//            this.projects.clear();
+//            this.projects.addAll(organizationProjects);
 
             List<String> projects = new ArrayList<>();
+//            List<OrganizationProject> projects = new ArrayList<>();
             for (OrganizationProject organizationProject : organizationProjects) {
+                //projects.add(organizationProject.getOrgProjectName());
                 projects.add(organizationProject.getOrgProjectName());
             }
 
-            spProject.setItems(projects, getString(R.string.project), this);
+            this.projects.clear();
+            this.projects.addAll(organizationProjects);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(EditProfileActivity.this,
+                    R.layout.layout_spinner_item, projects);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spProject.setAdapter(adapter);
+
+            //spProject.setItems(projects, getString(R.string.project), this);
 
             if (getIntent().getStringExtra(Constants.Login.ACTION) != null
                     && getIntent().getStringExtra(Constants.Login.ACTION)
                     .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
+                int projectId = 0;
                 UserInfo userInfo = Util.getUserObjectFromPref();
 
-                boolean[] selectedValues = new boolean[organizationProjects.size()];
-                for (int projectIndex = 0; projectIndex < organizationProjects.size(); projectIndex++) {
-                    selectedValues[projectIndex]
-                            = isContainsValue(userInfo.getProjectIds(), organizationProjects.get(projectIndex).getId());
+                //boolean[] selectedValues = new boolean[organizationProjects.size()];
+                for(int userProjectIndex = 0; userProjectIndex< userInfo.getProjectIds().size(); userProjectIndex++ ){
+                    for (int projectIndex = 0; projectIndex < organizationProjects.size(); projectIndex++) {
+                        if (userInfo.getProjectIds().get(userProjectIndex).getId().
+                                equals(organizationProjects.get(projectIndex).getId())) {
+                            projectId = projectIndex;
+                        }
+                    }
                 }
-
-                spProject.setSelectedValues(selectedValues);
-                spProject.setPreFilledText();
+                //spProject.setSelectedValues(selectedValues);
+                spProject.setSelection(projectId);
+                //spProject.setPreFilledText();
             }
         }
     }
