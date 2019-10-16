@@ -21,4 +21,9 @@
         android:title="Machine Non-utilization"
         />
 
+    <item
+        android:id="@+id/action_silt_transportation_record"
+        android:title="Silt Transportation Record"
+        />
+
 </menu>

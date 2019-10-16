@@ -26,12 +26,12 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
         fragmentWeakReference = null;
     }
 
-    public void getWorkingHourDetails(long selectedDate){
+    public void getWorkingHourDetails(long selectedDate, String machineId){
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
         final String getWorkingHoursRecordUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.UPDATE_STRUCTURE_MACHINE_STATUS, selectedDate);
+                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD, selectedDate, machineId);
         Log.d(TAG, "getWorkingHoursRecordUrl: url " + getWorkingHoursRecordUrl);
         fragmentWeakReference.get().showProgressBar();
             requestCall.getDataApiCall(GET_WORKING_HOURS_RECORD, getWorkingHoursRecordUrl);

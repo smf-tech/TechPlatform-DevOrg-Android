@@ -13,17 +13,21 @@ public class MachineWorkingHoursRecord {
     @Expose
     private String machineCode;
 
-    @SerializedName("working_date")
+    @SerializedName("date")
     @Expose
-    private String workingDate;
+    private long workingDate;
 
     @SerializedName("working_hours")
     @Expose
     private String workingHours;
 
-    @SerializedName("working_status")
+    @SerializedName("is_validate ")
     @Expose
-    private String workingStatus;
+    private boolean workingStatus;
+
+    @SerializedName("structure_assigned")
+    @Expose
+    private String structureAssigned;
 
     public String getMachineId() {
         return machineId;
@@ -41,11 +45,11 @@ public class MachineWorkingHoursRecord {
         this.machineCode = machineCode;
     }
 
-    public String getWorkingDate() {
+    public long getWorkingDate() {
         return workingDate;
     }
 
-    public void setWorkingDate(String workingDate) {
+    public void setWorkingDate(long workingDate) {
         this.workingDate = workingDate;
     }
 
@@ -57,12 +61,20 @@ public class MachineWorkingHoursRecord {
         this.workingHours = workingHours;
     }
 
-    public String getWorkingStatus() {
+    public boolean getWorkingStatus() {
         return workingStatus;
     }
 
-    public void setWorkingStatus(String workingStatus) {
+    public void setWorkingStatus(boolean workingStatus) {
         this.workingStatus = workingStatus;
+    }
+
+    public String getStructureAssigned() {
+        return structureAssigned;
+    }
+
+    public void setStructureAssigned(String structureAssigned) {
+        this.structureAssigned = structureAssigned;
     }
 
 }
