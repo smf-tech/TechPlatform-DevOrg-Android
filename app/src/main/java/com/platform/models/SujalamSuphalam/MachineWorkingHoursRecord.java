@@ -3,7 +3,9 @@ package com.platform.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MachineWorkingHoursRecord {
+import java.io.Serializable;
+
+public class MachineWorkingHoursRecord  implements Serializable {
 
     @SerializedName("machine_id")
     @Expose
@@ -23,7 +25,7 @@ public class MachineWorkingHoursRecord {
 
     @SerializedName("is_validate ")
     @Expose
-    private boolean workingStatus;
+    private String workingStatus;
 
     @SerializedName("structure_assigned")
     @Expose
@@ -61,11 +63,11 @@ public class MachineWorkingHoursRecord {
         this.workingHours = workingHours;
     }
 
-    public boolean getWorkingStatus() {
+    public String getWorkingStatus() {
         return workingStatus;
     }
 
-    public void setWorkingStatus(boolean workingStatus) {
+    public void setWorkingStatus(String workingStatus) {
         this.workingStatus = workingStatus;
     }
 

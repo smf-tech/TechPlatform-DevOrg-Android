@@ -1,12 +1,9 @@
 package com.platform.view.fragments;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -20,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -44,19 +40,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
-import com.platform.models.Matrimony.MeetType;
-import com.platform.models.SujalamSuphalam.ImageUpload;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineVisitValidationFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
-import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MachineWorkingHoursAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -64,10 +55,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.soundcloud.android.crop.Crop;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -133,15 +120,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         machineId = getActivity().getIntent().getStringExtra("machineId");
         currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
         //newStructureId = getActivity().getIntent().getStringExtra("newStructureId");
-        ivCalendarMode = view.findViewById(R.id.tv_calendar_mode);
-        ivCalendarMode.setOnClickListener(this);
-        calendarView = view.findViewById(R.id.calendarView);
         init();
     }
 
     private void init() {
         progressBarLayout = machineVisitValidationFragmenttView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineVisitValidationFragmenttView.findViewById(R.id.pb_profile_act);
+        ivCalendarMode = machineVisitValidationFragmenttView.findViewById(R.id.tv_calendar_mode);
+        ivCalendarMode.setOnClickListener(this);
+        calendarView = machineVisitValidationFragmenttView.findViewById(R.id.calendarView);
         etStructureCode = machineVisitValidationFragmenttView.findViewById(R.id.et_structure_code);
         etMachineCode = machineVisitValidationFragmenttView.findViewById(R.id.et_machine_code);
         etWorkingHours = machineVisitValidationFragmenttView.findViewById(R.id.et_working_hours);
@@ -161,8 +148,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         rvWorkingHours.setAdapter(machineWorkingHoursAdapter);
         machineVisitValidationFragmentPresenter = new MachineVisitValidationFragmentPresenter(this);
         calendarView.setOnMonthChangedListener(this);
+        calendarView.setOnDateChangedListener(this);
         isMonth = !isMonth;
-        //setCalendar();
+        setCalendar();
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         Date d = new Date();
         selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
@@ -288,12 +276,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                     if (Util.isValidImageSize(imageFile)) {
                         imgRegisterOne.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-//                        ImageUpload imageUpload = new ImageUpload();
-//                        imageUpload.setImageName("image1");
-//                        imageUpload.setBitmap(bitmap);
                         imageHashmap.put("image"+i, bitmap);
                         i++;
-                        //machineVisitValidationFragmentPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -327,7 +311,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Log.d("ressssssoo",new String(response.data));
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
@@ -346,101 +329,25 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                     }
                 }) {
 
-            /*
-             * If you want to add more parameters with the image
-             * you can do it here
-             * here we have only one parameter with the image
-             * which is tags
-             * */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Gson gson =new Gson();
-//                JSONObject object = createBodyParams();
-//                Log.e("req -jsonObject1",object.toString());
-                //JsonObject body = createBodyParamsTwo();
-                //params.put("testparam",new Gson().toJson(body));
-//                MeetType testJsonModel =new MeetType();
-//                testJsonModel.setId("1233");
-//                testJsonModel.setType("Image");
-                MachineWorkingHoursRecord machineWorkingHoursRecord = new MachineWorkingHoursRecord();
-                machineWorkingHoursRecord.setMachineId(machineId);
-                //machineWorkingHoursRecord.setStructureAssigned(currentStructureId);
-                machineWorkingHoursRecord.setWorkingDate(231897132);
-                //machineWorkingHoursRecord.setWorkingHours(etWorkingHours.getText().toString());
-                machineWorkingHoursRecord.setWorkingStatus(true);
-                JSONArray jsonArray = new JSONArray();
-                jsonArray.put(machineWorkingHoursRecord);
-                //machineWorkingHoursList.add(machineWorkingHoursRecord);
-
                 Map<String, String> params = new HashMap<>();
-//                params.put("formData", machineId);
-//                params.put("formData", "231897132");
-//                params.put("formData", "true");
-                params.put("formData", new Gson().toJson(machineWorkingHoursRecord));
-//                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                params.put("formData", new Gson().toJson(machineWorkingHoursList));
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
 
-            /*
-             *pass files using below method
-             * */
             @Override
             protected Map<String, DataPart> getByteData() {
-                //long imagename = System.currentTimeMillis();
                 Map<String, DataPart> params = new HashMap<>();
-                //Map<String, HashMap<String, DataPart>> params2 = new HashMap<>();
                 Drawable drawable = null;
-                HashMap<String, DataPart> imageUploadHashmap = new HashMap<>();
-//                mProfileCompressBitmap = BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
-//                        R.mipmap.app_logo);
-//                mProfileCompressBitmap = drawableToBitmap(getResources().getDrawable(R.drawable.profileimagetest));
-//
-//                if (mProfileCompressBitmap != null)
-//                    drawable = new BitmapDrawable(getResources(), mProfileCompressBitmap);
-//                SimpleDateFormat dateformat = new SimpleDateFormat("MMddyyyyhhmmss");
-//
-//                Date date = new Date();
-//                String fileName = dateformat.format(date) +"fileName0"+ ".jpg";
-//                if (drawable != null) {
-//                    params.put("profile", new DataPart(fileName, getFileDataFromDrawable(drawable),
-//                            "image/jpeg"));
-//                }
-//
-//                //SimpleDateFormat dateformat = new SimpleDateFormat("MMddyyyyhhmmss");
-//                Date date1 = new Date();
-//                String fileName1 = dateformat.format(date1) +"fileName1"+ ".jpg";
-//                if (drawable != null) {
-//                    params.put("profile1", new DataPart(fileName1, getFileDataFromDrawable(drawable),
-//                            "image/jpeg"));
-//
-//                }
-//                // SimpleDateFormat dateformat = new SimpleDateFormat("MMddyyyyhhmmss");
-//                Date date2 = new Date();
-//                String fileName2 = dateformat.format(date2)+"fileName2"+ ".jpg";
-//                if (drawable != null) {
-//                    params.put("profile2", new DataPart(fileName2, getFileDataFromDrawable(drawable),
-//                            "image/jpeg"));
-//                }
-//
-//                Date date3 = new Date();
-//                String fileName3 = dateformat.format(date3)+"fileName3"+ ".jpg";
-//                if (drawable != null) {
-//                    params.put("profile3", new DataPart(fileName3, getFileDataFromDrawable(drawable),
-//                            "image/jpeg"));
-//                }
                 Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
-                //ArrayList<DataPart> imageList = new ArrayList();
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
-                    //ImageUpload imageUpload = (ImageUpload)imageHashmap.get(key);
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-                    //imageList.add(new DataPart(key, getFileDataFromDrawable(drawable)));
-                    params.put("Image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+                    params.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
-//                    imageUploadHashmap.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
-//                            "image/jpeg"));
                 }
-                //params2.put("image", imageUploadHashmap);
                 return params;
             }
         };
@@ -453,84 +360,11 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         rQueue.add(volleyMultipartRequest);
     }
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-//    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-//        return byteArrayOutputStream.toByteArray();
-//    }
-
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
-    }
-
-    public JSONObject createBodyParams() {
-        JSONObject requestObject = new JSONObject();
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson("");
-        Log.d("JsonObjRequestfilter", "SubmitRequest: " + json);
-
-        try {
-            requestObject.put("name", "RESHU");
-            requestObject.put("address", "sb road");
-            requestObject.put("city", "Pune");
-            requestObject.put("office", "BJS");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            return requestObject;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public JsonObject createBodyParamsTwo() {
-        JsonObject requestObject = new JsonObject();
-
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson("");
-        Log.d("JsonObjRequestfilter", "SubmitRequest: " + json);
-
-        try {
-            requestObject.addProperty("name", "RESHU");
-            requestObject.addProperty("address", "sb road");
-            requestObject.addProperty("city", "Pune");
-            requestObject.addProperty("office", "BJS");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            return requestObject;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public void setData() {
@@ -602,13 +436,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             case R.id.btn_match:
                 MachineWorkingHoursRecord machineWorkingHoursRecord = new MachineWorkingHoursRecord();
                 machineWorkingHoursRecord.setMachineId(machineId);
-                machineWorkingHoursRecord.setStructureAssigned(currentStructureId);
                 machineWorkingHoursRecord.setWorkingDate(847478928);
-                machineWorkingHoursRecord.setWorkingHours(etWorkingHours.getText().toString());
-                machineWorkingHoursRecord.setWorkingStatus(false);
+                machineWorkingHoursRecord.setWorkingStatus("false");
                 machineWorkingHoursList.add(machineWorkingHoursRecord);
-                btnMatch.setEnabled(false);
-                btnMismatch.setEnabled(false);
+                machineWorkingHoursRecord.setMachineId(machineId);
+                machineWorkingHoursRecord.setWorkingDate(667478928);
+                machineWorkingHoursRecord.setWorkingStatus("false");
+                machineWorkingHoursList.add(machineWorkingHoursRecord);
+                btnMatch.setClickable(false);
+                btnMismatch.setClickable(false);
                 machineWorkingHoursAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_mismatch:
@@ -617,10 +453,10 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 machineWorkingHoursRecord2.setStructureAssigned(currentStructureId);
                 machineWorkingHoursRecord2.setWorkingDate(439848982);
                 machineWorkingHoursRecord2.setWorkingHours(etWorkingHours.getText().toString());
-                machineWorkingHoursRecord2.setWorkingStatus(true);
+                machineWorkingHoursRecord2.setWorkingStatus("true");
                 machineWorkingHoursList.add(machineWorkingHoursRecord2);
-                btnMatch.setEnabled(false);
-                btnMismatch.setEnabled(false);
+                btnMatch.setClickable(false);
+                btnMismatch.setClickable(false);
                 machineWorkingHoursAdapter.notifyDataSetChanged();
                 break;
             case R.id.img_register_one:
@@ -630,9 +466,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-
                 uploadImage();
-                //machineVisitValidationFragmentPresenter.submitWorkingHours();
+                machineVisitValidationFragmentPresenter.submitWorkingHours();
                 break;
         }
     }
@@ -641,8 +476,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         Toast.makeText(getActivity(), "date:" + date, Toast.LENGTH_SHORT).show();
         selectedDate = date.getDate();
-        btnMatch.setEnabled(true);
-        btnMismatch.setEnabled(true);
+        btnMatch.setClickable(true);
+        btnMismatch.setClickable(true);
         if(Util.isConnected(getContext())) {
             //machineVisitValidationFragmentPresenter.getWorkingHourDetails(selectedDate.getTime(), machineId);
         }else{
@@ -655,7 +490,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         if (selectedMonth != Integer.parseInt(mmFormat.format(date.getDate()))) {
             btnMatch.setClickable(true);
             btnMismatch.setClickable(true);
-            //machi.getUsersAllLeavesDetails(yyyyFormat.format(date.getDate()), mmFormat.format(date.getDate()));
             selectedMonth=Integer.parseInt(mmFormat.format(date.getDate()));
         }
     }

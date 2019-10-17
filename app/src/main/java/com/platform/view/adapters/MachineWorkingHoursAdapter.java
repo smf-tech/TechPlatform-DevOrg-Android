@@ -46,11 +46,11 @@ public class MachineWorkingHoursAdapter extends RecyclerView.Adapter<MachineWork
     public void onBindViewHolder(@NonNull MachineWorkingHoursAdapter.ViewHolder viewHolder, int position) {
         viewHolder.tvDate.setText(String.valueOf(workingHoursList.get(position).getWorkingDate()));
         viewHolder.tvWorkingHours.setText(workingHoursList.get(position).getWorkingHours());
-        if(workingHoursList.get(position).getWorkingStatus()){
-            viewHolder.tvStatus.setText("Match");
-        } else {
+//        if(workingHoursList.get(position).getWorkingStatus()){
+//            viewHolder.tvStatus.setText("Match");
+//        } else {
             viewHolder.tvStatus.setText("MisMatch");
-        }
+       //}
         //viewHolder.tvStatus.setText(workingHoursList.get(position).getWorkingStatus());
     }
 

@@ -132,10 +132,16 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     activity.startActivity(machineVisitIntent);
                                     break;
                                 case R.id.action_diesel_record:
-                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
+                                    dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
+                                    dieselRecordIntent.putExtra("title", "Record of Diesel");
+                                    dieselRecordIntent.putExtra("type", "dieselRecord");
+                                    dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    dieselRecordIntent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(dieselRecordIntent);
                                     break;
                                 case R.id.action_machine_non_utilization:
-                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+
                                     break;
                             }
                             return false;
