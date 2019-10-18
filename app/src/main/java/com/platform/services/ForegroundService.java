@@ -42,6 +42,9 @@ public class ForegroundService extends Service {
     int currentClockTime = 0;
     SharedPreferences preferences;
 
+    private int currentHours  = 0;
+    int totalHours = 0;
+
     //Handler mHandler new ha;
     @Override
     public void onCreate() {
@@ -113,6 +116,7 @@ public class ForegroundService extends Service {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("systemTime", currentSystemTime);
         editor.putInt("systemClockTime", currentClockTime);
+        editor.putInt("totalHours", currentClockTime);
         editor.apply();
     }
 
@@ -150,13 +154,27 @@ public class ForegroundService extends Service {
             int timeInterval = (int) (SystemClock.elapsedRealtime() - startTime) / 1000;
             currentClockTime = systemClockTime + timeInterval;
             currentSystemTime = ((int) System.currentTimeMillis() / 1000);
-
-
+            currentHours = timeInterval;
+           // Log.e("currentHours", "--" + currentHours);
+            totalHours = timeInterval+preferences.getInt("totalHours", 0);
             //getFormattedTime(currentClockTime);
 
             //intent.putExtra("STR_TIME", currentSystemTime - time + " " + "\n " + getFormattedTime(currentClockTime));
             intent.putExtra("STR_TIME", getFormattedTime(currentClockTime));
+            intent.putExtra("TOTAL_HOURS", totalHours);
+            intent.putExtra("CURRENT_HOURS", currentHours);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+            /*Log.e("------------", "------------" );
+            Log.e("timeInterval", "" + timeInterval);
+            Log.e("preference", "" + preferences.getInt("totalHours", 0));
+
+            Log.e("current Time", getFormattedTime(currentClockTime));
+            Log.e("Total_hours", "" + totalHours);
+            Log.e("current_hours", "" + currentHours);
+
+            Log.e("timeInterval", "" + timeInterval);*/
+
         }
 
     }

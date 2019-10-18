@@ -12,6 +12,7 @@ import com.platform.dao.FormDataDao;
 import com.platform.dao.FormResultDao;
 import com.platform.dao.ModuleDao;
 import com.platform.dao.NotificationDataDao;
+import com.platform.dao.OperatorRequestResponseModelDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.UserAttendanceDao;
@@ -206,6 +207,11 @@ public class DatabaseManager {
 
     public NotificationDataDao getNotificationDataDeo(){
         NotificationDataDao notificationDataDao=appDatabase.notificationsDataDao();
+        return notificationDataDao;
+    }
+
+    public OperatorRequestResponseModelDao getOperatorRequestResponseModelDao(){
+        OperatorRequestResponseModelDao notificationDataDao=appDatabase.operatorRequestResponseModelDao();
         return notificationDataDao;
     }
 }
