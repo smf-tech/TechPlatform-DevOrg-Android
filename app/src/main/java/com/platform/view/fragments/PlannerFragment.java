@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.dao.UserCheckOutDao;
@@ -54,6 +55,7 @@ import com.platform.models.planner.attendanceData;
 import com.platform.presenter.PlannerFragmentPresenter;
 
 import com.platform.presenter.SubmitAttendanceFragmentPresenter;
+import com.platform.receivers.ConnectivityReceiver;
 import com.platform.services.ShowTimerService;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
@@ -84,7 +86,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PlannerFragment extends Fragment implements PlatformTaskListener {
+public class PlannerFragment extends Fragment implements PlatformTaskListener,
+        ConnectivityReceiver.ConnectivityReceiverListener {
 
     private View plannerView;
     TextView tvAttendanceDetails;
@@ -258,6 +261,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
             Util.showToast(getString(R.string.msg_no_network), this);
             setOfflineAttendance();
         }
+        // register connection status listener
+        Platform.getInstance().setConnectivityListener(this);
     }
 
     @Override
@@ -919,5 +924,14 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener {
         return totalHours;
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected) {
+            Util.showToast("Yes", this);
+        } else {
+            Util.showToast("No", this);
+        }
+
+    }
 }
 

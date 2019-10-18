@@ -140,9 +140,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
             String value = entry.getValue();
             requestObject.addProperty(key, value);
         }
-
         return requestObject;
-
     }
 
     @Override

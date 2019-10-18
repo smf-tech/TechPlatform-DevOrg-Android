@@ -203,20 +203,18 @@ public class Util {
 
         if (isTokenPresent) {
             Login loginObj = getLoginObjectFromPref();
-
-
             if (loginObj != null && loginObj.getLoginData() != null &&
                     loginObj.getLoginData().getAccessToken() != null) {
                 headers.put(Constants.Login.AUTHORIZATION,
                         "Bearer " + loginObj.getLoginData().getAccessToken());
-                if (getUserObjectFromPref().getRoleIds()!=null) {
-                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
-                }
                 if (getUserObjectFromPref().getOrgId()!=null) {
                     headers.put("orgId", getUserObjectFromPref().getOrgId());
                 }
                 if (getUserObjectFromPref().getProjectIds()!=null) {
                     headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                }
+                if (getUserObjectFromPref().getRoleIds()!=null) {
+                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
             }
         }

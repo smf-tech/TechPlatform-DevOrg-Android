@@ -35,11 +35,11 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 //        requestCall.getOrganizations();
 //    }
 
-    public void getOrganizationRoles(String orgId) {
+    public void getOrganizationRoles(String orgId, String projectId) {
         AddMemeberFilterRequestCall requestCall = new AddMemeberFilterRequestCall();
         requestCall.setListener(this);
         addMemberFilterActivity.get().showProgressBar();
-        requestCall.getOrganizationRoles(orgId);
+        requestCall.getOrganizationRoles(orgId, projectId);
     }
 
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {

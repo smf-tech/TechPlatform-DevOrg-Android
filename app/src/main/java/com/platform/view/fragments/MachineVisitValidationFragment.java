@@ -1,10 +1,11 @@
 package com.platform.view.fragments;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -37,7 +37,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
@@ -46,7 +48,6 @@ import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
-import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MachineWorkingHoursAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -55,17 +56,15 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.soundcloud.android.crop.Crop;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -81,7 +80,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private String machineId, currentStructureId, newStructureId;
     private RecyclerView rvWorkingHours;
     private ImageView ivCalendarMode, imgRegisterOne, imgRegisterTwo;
-    private EditText etMachineCode;
+    private EditText etMachineCode, etStructureCode, etWorkingHours;
     private Button btnMatch, btnMismatch, btnSubmit;
     private boolean isMonth = true;
     private MaterialCalendarView calendarView;
@@ -96,8 +95,10 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private final String TAG = MachineVisitValidationFragment.class.getName();
     private RequestQueue rQueue;
     private ArrayList<HashMap<String, String>> arraylist;
-    private String upload_URL = "https://demonuts.com/Demonuts/JsonTest/Tennis/uploadfile.php?";
-
+    private String upload_URL = "http://13.235.124.3/api/machineVisit";
+    private Bitmap mProfileCompressBitmap = null;
+    private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private int i = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,18 +118,20 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
-        //currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
+        currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
         //newStructureId = getActivity().getIntent().getStringExtra("newStructureId");
-        ivCalendarMode = view.findViewById(R.id.tv_calendar_mode);
-        ivCalendarMode.setOnClickListener(this);
-        calendarView = view.findViewById(R.id.calendarView);
         init();
     }
 
     private void init() {
         progressBarLayout = machineVisitValidationFragmenttView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineVisitValidationFragmenttView.findViewById(R.id.pb_profile_act);
+        ivCalendarMode = machineVisitValidationFragmenttView.findViewById(R.id.tv_calendar_mode);
+        ivCalendarMode.setOnClickListener(this);
+        calendarView = machineVisitValidationFragmenttView.findViewById(R.id.calendarView);
+        etStructureCode = machineVisitValidationFragmenttView.findViewById(R.id.et_structure_code);
         etMachineCode = machineVisitValidationFragmenttView.findViewById(R.id.et_machine_code);
+        etWorkingHours = machineVisitValidationFragmenttView.findViewById(R.id.et_working_hours);
         btnMatch = machineVisitValidationFragmenttView.findViewById(R.id.btn_match);
         btnMismatch = machineVisitValidationFragmenttView.findViewById(R.id.btn_mismatch);
         btnMatch.setOnClickListener(this);
@@ -145,12 +148,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         rvWorkingHours.setAdapter(machineWorkingHoursAdapter);
         machineVisitValidationFragmentPresenter = new MachineVisitValidationFragmentPresenter(this);
         calendarView.setOnMonthChangedListener(this);
+        calendarView.setOnDateChangedListener(this);
         isMonth = !isMonth;
-        //setCalendar();
+        setCalendar();
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         Date d = new Date();
         selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
         etMachineCode.setText(machineId);
+        etStructureCode.setText(currentStructureId);
+        etWorkingHours.setText("9:30");
     }
 
     private void setCalendar() {
@@ -216,7 +222,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
+                    + "/Octopus/Image/picture.jpg";
 
             File imageFile = new File(imageFilePath);
             outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
@@ -266,13 +272,12 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(imageFile)) {
                         imgRegisterOne.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        uploadImage(bitmap);
-                        //machineVisitValidationFragmentPresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
+                        imageHashmap.put("image"+i, bitmap);
+                        i++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -300,34 +305,20 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    private void uploadImage(final Bitmap bitmap){
+    private void uploadImage(){
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Log.d("ressssssoo",new String(response.data));
                         rQueue.getCache().clear();
                         try {
-                            JSONObject jsonObject = new JSONObject(new String(response.data));
-                            Toast.makeText(getActivity().getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-
-                            jsonObject.toString().replace("\\\\","");
-
-                            if (jsonObject.getString("status").equals("true")) {
-
-                                arraylist = new ArrayList<HashMap<String, String>>();
-                                JSONArray dataArray = jsonObject.getJSONArray("data");
-
-                                String url = "";
-                                for (int i = 0; i < dataArray.length(); i++) {
-                                    JSONObject dataobj = dataArray.getJSONObject(i);
-                                    url = dataobj.optString("pathToFile");
-                                }
-                                //Picasso.get().load(url).into(imageView);
-                            }
-                        } catch (JSONException e) {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            Log.d("response -",jsonString);
+                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
+                            Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -338,42 +329,41 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                     }
                 }) {
 
-            /*
-             * If you want to add more parameters with the image
-             * you can do it here
-             * here we have only one parameter with the image
-             * which is tags
-             * */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("imageUpload", "test Image Upload");  //add string parameters
+                params.put("formData", new Gson().toJson(machineWorkingHoursList));
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
 
-            /*
-             *pass files using below method
-             * */
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
-                long imagename = System.currentTimeMillis();
-                params.put("filename", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                Drawable drawable = null;
+                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+                for (int i = 0;i<imageHashmap.size(); i++) {
+                    String key=(String)myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
+                    params.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
                 return params;
             }
         };
 
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                0,
+                3000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(getActivity());
         rQueue.add(volleyMultipartRequest);
     }
 
-    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -444,8 +434,30 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 setCalendar();
                 break;
             case R.id.btn_match:
+                MachineWorkingHoursRecord machineWorkingHoursRecord = new MachineWorkingHoursRecord();
+                machineWorkingHoursRecord.setMachineId(machineId);
+                machineWorkingHoursRecord.setWorkingDate(847478928);
+                machineWorkingHoursRecord.setWorkingStatus("false");
+                machineWorkingHoursList.add(machineWorkingHoursRecord);
+                machineWorkingHoursRecord.setMachineId(machineId);
+                machineWorkingHoursRecord.setWorkingDate(667478928);
+                machineWorkingHoursRecord.setWorkingStatus("false");
+                machineWorkingHoursList.add(machineWorkingHoursRecord);
+                btnMatch.setClickable(false);
+                btnMismatch.setClickable(false);
+                machineWorkingHoursAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_mismatch:
+                MachineWorkingHoursRecord machineWorkingHoursRecord2 = new MachineWorkingHoursRecord();
+                machineWorkingHoursRecord2.setMachineId(machineId);
+                machineWorkingHoursRecord2.setStructureAssigned(currentStructureId);
+                machineWorkingHoursRecord2.setWorkingDate(439848982);
+                machineWorkingHoursRecord2.setWorkingHours(etWorkingHours.getText().toString());
+                machineWorkingHoursRecord2.setWorkingStatus("true");
+                machineWorkingHoursList.add(machineWorkingHoursRecord2);
+                btnMatch.setClickable(false);
+                btnMismatch.setClickable(false);
+                machineWorkingHoursAdapter.notifyDataSetChanged();
                 break;
             case R.id.img_register_one:
                 onAddImageClick();
@@ -454,7 +466,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                //machineVisitValidationFragmentPresenter.submitWorkingHours();
+                uploadImage();
+                machineVisitValidationFragmentPresenter.submitWorkingHours();
                 break;
         }
     }
@@ -463,8 +476,10 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         Toast.makeText(getActivity(), "date:" + date, Toast.LENGTH_SHORT).show();
         selectedDate = date.getDate();
+        btnMatch.setClickable(true);
+        btnMismatch.setClickable(true);
         if(Util.isConnected(getContext())) {
-            //machineVisitValidationFragmentPresenter.getWorkingHourDetails(selectedDate.getTime());
+            //machineVisitValidationFragmentPresenter.getWorkingHourDetails(selectedDate.getTime(), machineId);
         }else{
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
@@ -473,7 +488,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         if (selectedMonth != Integer.parseInt(mmFormat.format(date.getDate()))) {
-            //machi.getUsersAllLeavesDetails(yyyyFormat.format(date.getDate()), mmFormat.format(date.getDate()));
+            btnMatch.setClickable(true);
+            btnMismatch.setClickable(true);
             selectedMonth=Integer.parseInt(mmFormat.format(date.getDate()));
         }
     }

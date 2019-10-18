@@ -15,7 +15,7 @@ public class Urls {
         public static final String GET_PROFILE = "api/user";
         public static final String GET_ORGANIZATION = "api/organizations";
         public static final String GET_ORGANIZATION_PROJECTS = "api/projects/%1$s";
-        public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s";
+        public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s/%2$s";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
         public static final String UPLOAD_IMAGE = "api/upload-image";
     }
@@ -126,8 +126,10 @@ public class Urls {
         public static final String UPDATE_STRUCTURE_MACHINE_STATUS = "api/statusChange/%1$s/%2$s/%3$s/%4$s";
         public static final String SUBMIT_MOU = "api/machineMou";
         public static final String GET_MACHINE_DETAILS = "api/machineDetails/%1$s/%2$s";
+        public static final String GET_MACHINE_WORKING_HOURS_RECORD = "api/machineDetails/%1$s/%2$s";
         public static final String MOU_TERMINATE_DEPLOY = "api/MOUTerminateDeployed";
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
+        public static final String SUBMIT_MACHINE_VISIT = "api/machineVisit";
     }
 }

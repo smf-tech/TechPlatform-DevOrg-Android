@@ -79,6 +79,34 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                 public void onClick(View v) {
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+//                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                    }
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_WORKING_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                    }
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                    }
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                    }
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -104,10 +132,16 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     activity.startActivity(machineVisitIntent);
                                     break;
                                 case R.id.action_diesel_record:
-                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
+                                    dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
+                                    dieselRecordIntent.putExtra("title", "Record of Diesel");
+                                    dieselRecordIntent.putExtra("type", "dieselRecord");
+                                    dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    dieselRecordIntent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(dieselRecordIntent);
                                     break;
                                 case R.id.action_machine_non_utilization:
-                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+
                                     break;
                             }
                             return false;

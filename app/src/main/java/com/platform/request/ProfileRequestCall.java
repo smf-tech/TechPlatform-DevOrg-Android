@@ -108,7 +108,7 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    public void getOrganizationRoles(String orgId) {
+    public void getOrganizationRoles(String orgId, String projectId) {
         Response.Listener<JSONObject> orgRolesSuccessListener = response -> {
             try {
                 if (response != null) {
@@ -125,7 +125,7 @@ public class ProfileRequestCall {
         Response.ErrorListener orgRolesErrorListener = error -> listener.onErrorListener(error);
 
         final String getOrgProjectUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId);
+                + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId, projectId);
 
         Log.d(TAG, "OrganizationRoles API: " + getOrgProjectUrl);
 

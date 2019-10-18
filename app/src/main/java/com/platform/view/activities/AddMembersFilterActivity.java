@@ -79,7 +79,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
         setContentView(R.layout.activity_add_member_filer);
 
         addMemberFilerPresenter = new AddMemberFilterActivityPresenter(this);
-        addMemberFilerPresenter.getOrganizationRoles(Util.getUserObjectFromPref().getOrgId());
+        addMemberFilerPresenter.getOrganizationRoles(Util.getUserObjectFromPref().getOrgId(), Util.getUserObjectFromPref().
+                getProjectIds().get(0).getId());
         initView();
     }
 
