@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class MachineShiftingFormFragmentPresenter implements APIPresenterListener {
     private WeakReference<MachineShiftingFormFragment> fragmentWeakReference;
-    private final String TAG = StructureMachineListFragmentPresenter.class.getName();
+    private final String TAG = MachineShiftingFormFragmentPresenter.class.getName();
     public static final String SUBMIT_MACHINE_SHIFTING_FORM ="submitMachineShiftingForm";
     private static final String CURRENT_STRUCTURE_ID = "current_structure_id";
     private static final String KEY_MACHINE_ID = "machine_id";

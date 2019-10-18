@@ -1,15 +1,25 @@
 package com.platform.view.fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +28,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
@@ -28,7 +48,10 @@ import com.platform.models.SujalamSuphalam.MachineDieselRecord;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineDieselRecordFragmentPresenter;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
+import com.platform.utility.Constants;
+import com.platform.utility.Permissions;
 import com.platform.utility.Util;
+import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.adapters.MachineDieselRecordsAdapter;
 import com.platform.view.adapters.MachineWorkingHoursAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -36,14 +59,24 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.soundcloud.android.crop.Crop;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
-public class MachineDieselRecordFragment extends Fragment  implements APIDataListener, View.OnClickListener,
+import static android.app.Activity.RESULT_OK;
+
+public class MachineDieselRecordFragment extends Fragment implements APIDataListener, View.OnClickListener,
         OnDateSelectedListener, OnMonthChangedListener {
 
     private View machineDieselRecordFragmentView;
@@ -56,11 +89,22 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
     private RecyclerView rvDieselRecords;
     private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
     private boolean isMonth = true;
-    private MaterialCalendarView calendarView;private final ArrayList<MachineDieselRecord> machineDieselRecordsList = new ArrayList<>();
+    private MaterialCalendarView calendarView;private final ArrayList<MachineDieselRecord>
+            machineDieselRecordsList = new ArrayList<>();
     private int selectedMonth;
-    private SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-    private SimpleDateFormat mmFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
+    SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
+    SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
+    SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
     private MachineDieselRecordsAdapter machineDieselRecordsAdapter;
+    private Uri outputUri;
+    private Uri finalUri;
+    private final String TAG = MachineDieselRecordFragment.class.getName();
+    private RequestQueue rQueue;
+    private String upload_URL = "http://13.235.124.3/api/dieselRecord";
+    private Bitmap mProfileCompressBitmap = null;
+    private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private int i = 0;
+    private String imageType, selectedDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,8 +156,10 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
         isMonth = !isMonth;
         setCalendar();
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
-        Date d = new Date();
-        selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
+        calendarView.getSelectedDate();
+        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
+                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
+                ddFormat.format(calendarView.getSelectedDate().getDate());
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
     }
@@ -140,22 +186,26 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
                 setCalendar();
                 break;
             case R.id.img_diesel_receipt:
-                //onAddImageClick();
+                imageType = "dieselReceipt";
+                onAddImageClick();
                 break;
             case R.id.img_register_one:
-                //onAddImageClick();
+                imageType = "registerImage";
+                onAddImageClick();
                 break;
             case R.id.img_register_two:
-                //onAddImageClick();
+                imageType = "registerImage";
+                onAddImageClick();
                 break;
             case R.id.btn_submit:
-//                uploadImage();
+                uploadImage();
 //                machineDieselRecordFragmentPresenter.submitDieselRecord();
                 break;
             case R.id.btn_add:
                 if(etDieselQuantity.getText().toString()!=null && etDieselQuantity.getText().toString().length()>0) {
                     MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
-                    machineDieselRecord.setDieselDate(123343223);
+                    machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
+                            "00:00"));
                     machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
                     machineDieselRecord.setMachineId(machineId);
                     machineDieselRecord.setStructureId(currentStructureId);
@@ -166,8 +216,6 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
                                     .findViewById(android.R.id.content), "Enter diesel quantity.",
                             Snackbar.LENGTH_LONG);
                 }
-//                uploadImage();
-//                machineDieselRecordFragmentPresenter.submitDieselRecord();
                 break;
         }
     }
@@ -175,7 +223,6 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         Calendar instance = Calendar.getInstance();
-
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
         if (isMonth) {
@@ -191,8 +238,195 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
                     .commit();
             ivCalendarMode.setRotation(0);
         }
-//        calendarView.setSelectedDate(instance.getTime());
-//        calendarView.setCurrentDate(instance.getTime());
+    }
+
+    private void onAddImageClick() {
+        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+            showPictureDialog();
+        }
+    }
+
+    private void showPictureDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setTitle(getString(R.string.title_choose_picture));
+        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+
+                case 1:
+                    takePhotoFromCamera();
+                    break;
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void takePhotoFromCamera() {
+        try {
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/MV/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            //display an error message
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
+                    Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) return;
+
+                finalUri = Util.getUri(imageFilePath);
+                Crop.of(outputUri, finalUri).start(getContext(), this);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) return;
+
+                    outputUri = data.getData();
+                    finalUri = Util.getUri(imageFilePath);
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            try {
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                if (Util.isConnected(getActivity())) {
+                    if (Util.isValidImageSize(imageFile)) {
+                        imgRegisterOne.setImageURI(finalUri);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
+                        if(imageType.equals("dieselReceipt")) {
+                            imageHashmap.put("diesel"+i, bitmap);
+                        } else if(imageType.equals("registerImage")) {
+                            imageHashmap.put("register"+i, bitmap);
+                        }
+                        i++;
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    private String getImageName() {
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+    private void uploadImage(){
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            Log.d("response -",jsonString);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(machineDieselRecordsList));
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+                for (int i = 0;i<imageHashmap.size(); i++) {
+                    String key=(String)myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
+                    params.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(getActivity());
+        rQueue.add(volleyMultipartRequest);
+    }
+
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 
     @Override
@@ -237,8 +471,10 @@ public class MachineDieselRecordFragment extends Fragment  implements APIDataLis
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        date.getDate();
-        date.getDate();
+        selectedDate = yyyyFormat.format(date.getDate())+"-"+MMFormat.format(date.getDate())+"-"+
+                ddFormat.format(date.getDate());
+        //selectedDate = date.getCalendar().toString();
+        etDieselQuantity.setText("");
     }
 
     @Override

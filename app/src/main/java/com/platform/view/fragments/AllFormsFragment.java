@@ -177,6 +177,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             hideProgressBar();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+            hideProgressBar();
+            Util.showToast(this.getString(R.string.unexpected_error_occurred), this.getActivity());
         }
     }
 
@@ -327,6 +329,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
+            hideProgressBar();
+            Util.showToast(this.getString(R.string.unexpected_error_occurred), this.getActivity());
         } finally {
             Util.setSubmittedFormsLoaded(true);
         }

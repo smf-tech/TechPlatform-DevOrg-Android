@@ -119,7 +119,8 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     intent.putExtra("title", "Shift Machine");
                                     intent.putExtra("type", "shiftMachine");
                                     intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    intent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    intent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(intent);
                                     break;
                                 case R.id.action_machine_visit:
@@ -128,7 +129,8 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     machineVisitIntent.putExtra("title", "Machine Visit and Validation");
                                     machineVisitIntent.putExtra("type", "visitMachine");
                                     machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    machineVisitIntent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    machineVisitIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(machineVisitIntent);
                                     break;
                                 case R.id.action_diesel_record:
@@ -137,10 +139,32 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     dieselRecordIntent.putExtra("title", "Record of Diesel");
                                     dieselRecordIntent.putExtra("type", "dieselRecord");
                                     dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    dieselRecordIntent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(dieselRecordIntent);
                                     break;
                                 case R.id.action_machine_non_utilization:
+                                    //
+                                    Intent machineNonUtilizationIntent = new Intent(activity, SSActionsActivity.class);
+                                    machineNonUtilizationIntent.putExtra("SwitchToFragment", "MachineNonUtilizationFragment");
+                                    machineNonUtilizationIntent.putExtra("title", "Machine Non-utilization Record");
+                                    machineNonUtilizationIntent.putExtra("type", "machineNonUtilization");
+                                    machineNonUtilizationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    machineNonUtilizationIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(machineNonUtilizationIntent);
+
+                                    break;
+                                case R.id.action_silt_transportation_record:
+                                    //
+                                    Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
+                                    siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+                                    siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+                                    siltTransportationIntent.putExtra("type", "siltTransportRecord");
+                                    siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(siltTransportationIntent);
 
                                     break;
                             }

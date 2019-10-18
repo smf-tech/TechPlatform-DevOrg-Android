@@ -14,6 +14,9 @@ import com.platform.models.SujalamSuphalam.MachineDieselRecord;
 
 import java.util.List;
 
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Util.getDateFromTimestamp;
+
 public class MachineDieselRecordsAdapter extends RecyclerView.Adapter<MachineDieselRecordsAdapter.ViewHolder> {
     private List<MachineDieselRecord> machineDieselRecordsList;
     private Fragment fragment;
@@ -43,7 +46,8 @@ public class MachineDieselRecordsAdapter extends RecyclerView.Adapter<MachineDie
 
     @Override
     public void onBindViewHolder(@NonNull MachineDieselRecordsAdapter.ViewHolder holder, int position) {
-        holder.tvDate.setText(String.valueOf(machineDieselRecordsList.get(position).getDieselDate()));
+        holder.tvDate.setText(getDateFromTimestamp(machineDieselRecordsList.get(position).
+                getDieselDate(), DAY_MONTH_YEAR));
         holder.tvDieselQuantity.setText(machineDieselRecordsList.get(position).getDieselQuantity());
     }
 
