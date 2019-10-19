@@ -103,8 +103,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private String upload_URL = "http://13.235.124.3/api/dieselRecord";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
-    private int i = 0;
+    private int dieselImageCount = 0, registerImageCount = 0;
     private String imageType, selectedDate;
+    private ImageView clickedImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -187,19 +188,23 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 break;
             case R.id.img_diesel_receipt:
                 imageType = "dieselReceipt";
+                clickedImageView = imgDieselReceipt;
                 onAddImageClick();
                 break;
             case R.id.img_register_one:
                 imageType = "registerImage";
+                clickedImageView = imgRegisterOne;
                 onAddImageClick();
                 break;
             case R.id.img_register_two:
                 imageType = "registerImage";
+                clickedImageView = imgRegisterTwo;
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                uploadImage();
-//                machineDieselRecordFragmentPresenter.submitDieselRecord();
+                if(isAllDataValid()) {
+                    uploadImage();
+                }
                 break;
             case R.id.btn_add:
                 if(etDieselQuantity.getText().toString()!=null && etDieselQuantity.getText().toString().length()>0) {
@@ -280,7 +285,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
+                    + "/Octopus/Image/picture.jpg";
 
             File imageFile = new File(imageFilePath);
             outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
@@ -308,7 +313,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
             try {
                 String imageFilePath = getImageName();
                 if (imageFilePath == null) return;
-
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
@@ -319,7 +323,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 try {
                     String imageFilePath = getImageName();
                     if (imageFilePath == null) return;
-
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
                     Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -332,14 +335,15 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(imageFile)) {
-                        imgRegisterOne.setImageURI(finalUri);
+                        clickedImageView.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
                         if(imageType.equals("dieselReceipt")) {
-                            imageHashmap.put("diesel"+i, bitmap);
+                            imageHashmap.put("diesel"+dieselImageCount, bitmap);
+                            dieselImageCount++;
                         } else if(imageType.equals("registerImage")) {
-                            imageHashmap.put("register"+i, bitmap);
+                            imageHashmap.put("register"+registerImageCount, bitmap);
+                            registerImageCount++;
                         }
-                        i++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -367,8 +371,23 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    private void uploadImage(){
+    private boolean isAllDataValid() {
+        if (machineDieselRecordsList.size() == 0) {
+            if(dieselImageCount == 0 || registerImageCount == 0){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please, click images of diesel receipt and register.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, add diesel quantity against calendar date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
+    }
 
+    private void uploadImage(){
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -407,7 +426,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-                    params.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+//                    if(imageType.equals("dieselReceipt")) {
+//                        imageHashmap.put("diesel"+i, bitmap);
+//                    } else if(imageType.equals("registerImage")) {
+//                        imageHashmap.put("register"+i, bitmap);
+//                    }
+                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
                 return params;

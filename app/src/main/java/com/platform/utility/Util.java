@@ -1123,7 +1123,7 @@ public class Util {
                 //  Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                 long fileSizeInMB = fileSizeInKB / 1024;
 
-                return fileSizeInMB <= 8;
+                return fileSizeInMB <= 5;
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }

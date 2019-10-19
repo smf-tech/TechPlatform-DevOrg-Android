@@ -97,7 +97,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private String upload_URL = "http://13.235.124.3/api/machineVisit";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
-    private int i = 0;
+    private int imageCount = 0;
+    private ImageView clickedImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +119,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
         currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
-        //newStructureId = getActivity().getIntent().getStringExtra("newStructureId");
         init();
     }
 
@@ -249,7 +249,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             try {
                 String imageFilePath = getImageName();
                 if (imageFilePath == null) return;
-
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
@@ -260,7 +259,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 try {
                     String imageFilePath = getImageName();
                     if (imageFilePath == null) return;
-
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
                     Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -273,17 +271,16 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(imageFile)) {
-                        imgRegisterOne.setImageURI(finalUri);
+                        clickedImageView.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        imageHashmap.put("image"+i, bitmap);
-                        i++;
+                        imageHashmap.put("image"+imageCount, bitmap);
+                        imageCount++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
-
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -344,7 +341,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-                    params.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
                 return params;
@@ -459,9 +456,11 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 machineWorkingHoursAdapter.notifyDataSetChanged();
                 break;
             case R.id.img_register_one:
+                clickedImageView = imgRegisterOne;
                 onAddImageClick();
                 break;
             case R.id.img_register_two:
+                clickedImageView = imgRegisterTwo;
                 onAddImageClick();
                 break;
             case R.id.btn_submit:

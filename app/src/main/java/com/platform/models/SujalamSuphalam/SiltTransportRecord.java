@@ -6,31 +6,31 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class SiltTransportRecord implements Serializable {
-    @SerializedName("structureId")
+    @SerializedName("structure_id")
     @Expose
     private String structureId;
 
-    @SerializedName("machineId")
+    @SerializedName("machine_id")
     @Expose
     private String machineId;
 
-    @SerializedName("date")
+    @SerializedName("transport_date")
     @Expose
     private long siltTransportDate;
 
-    @SerializedName("tractorTripsCount")
+    @SerializedName("tractor_trips")
     @Expose
     private String tractorTripsCount;
 
-    @SerializedName("tipperTripsCount")
+    @SerializedName("tipper_trips")
     @Expose
     private String tipperTripsCount;
 
-    @SerializedName("farmersCount")
+    @SerializedName("farmer_count")
     @Expose
     private String farmersCount;
 
-    @SerializedName("beneficiariesCount")
+    @SerializedName("beneficiaries_count")
     @Expose
     private String beneficiariesCount;
 

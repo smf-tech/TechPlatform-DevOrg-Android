@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.utility.Constants;
-import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.fragments.StructureMachineListFragment;
@@ -144,7 +143,6 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     activity.startActivity(dieselRecordIntent);
                                     break;
                                 case R.id.action_machine_non_utilization:
-                                    //
                                     Intent machineNonUtilizationIntent = new Intent(activity, SSActionsActivity.class);
                                     machineNonUtilizationIntent.putExtra("SwitchToFragment", "MachineNonUtilizationFragment");
                                     machineNonUtilizationIntent.putExtra("title", "Machine Non-utilization Record");
@@ -153,10 +151,8 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     machineNonUtilizationIntent.putExtra("currentStructureId", ssDataList.get
                                             (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(machineNonUtilizationIntent);
-
                                     break;
                                 case R.id.action_silt_transportation_record:
-                                    //
                                     Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
                                     siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
                                     siltTransportationIntent.putExtra("title", "Silt Transportation Record");
@@ -165,7 +161,6 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
                                             (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(siltTransportationIntent);
-
                                     break;
                             }
                             return false;

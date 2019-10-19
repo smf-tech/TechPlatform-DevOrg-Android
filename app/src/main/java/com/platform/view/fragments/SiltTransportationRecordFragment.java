@@ -69,15 +69,15 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private RelativeLayout progressBarLayout;
     private SiltTransportationRecordFragmentPresenter siltTransportationRecordFragmentPresenter;
     String machineId, currentStructureId;
-    private ImageView imgRegisterOne, imgRegisterTwo, imgRegisterThree;
+    private ImageView imgRegisterOne, imgRegisterTwo, imgRegisterThree, clickedImageView;
     private Uri outputUri;
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/dieselRecord";
+    private String upload_URL = "http://13.235.124.3/api/siltDetails";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
-    private int i = 0;
+    private int imageCount = 0;
     private Button btnSubmit;
     private EditText etDate, etTractorTripsCount, etTipperTripsCount, etFarmersCount, etBeneficiariesCount;
 
@@ -144,12 +144,15 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 Util.showDateDialog(getActivity(), etDate);
                 break;
             case R.id.img_register_one:
+                clickedImageView = imgRegisterOne;
                 onAddImageClick();
                 break;
             case R.id.img_register_two:
+                clickedImageView = imgRegisterTwo;
                 onAddImageClick();
                 break;
             case R.id.img_register_three:
+                clickedImageView = imgRegisterThree;
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
@@ -163,22 +166,28 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                     siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
                     siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
                     siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
-
                     uploadData(siltTransportRecord);
                 }
-//                machineDieselRecordFragmentPresenter.submitDieselRecord();
                 break;
         }
     }
 
     private boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etDate.getText().toString().trim())
+        if(imageCount == 0) {
+            if (TextUtils.isEmpty(etDate.getText().toString().trim())
                 || TextUtils.isEmpty(etTractorTripsCount.getText().toString().trim())
                 || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())
                 || TextUtils.isEmpty(etFarmersCount.getText().toString().trim())
                 || TextUtils.isEmpty(etBeneficiariesCount.getText().toString().trim())) {
+
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                        Snackbar.LENGTH_LONG);
+
+                return false;
+            }
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                            .findViewById(android.R.id.content), "Please, click image of register.",
                     Snackbar.LENGTH_LONG);
             return false;
         }
@@ -207,7 +216,6 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                     break;
             }
         });
-
         dialog.show();
     }
 
@@ -225,7 +233,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
+                    + "/Octopus/Image/picture.jpg";
 
             File imageFile = new File(imageFilePath);
             outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
@@ -253,7 +261,6 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
             try {
                 String imageFilePath = getImageName();
                 if (imageFilePath == null) return;
-
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
@@ -264,7 +271,6 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 try {
                     String imageFilePath = getImageName();
                     if (imageFilePath == null) return;
-
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
                     Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -277,10 +283,10 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(imageFile)) {
-                        imgRegisterOne.setImageURI(finalUri);
+                        clickedImageView.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        imageHashmap.put("register"+i, bitmap);
-                        i++;
+                        imageHashmap.put("register"+imageCount, bitmap);
+                        imageCount++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -348,7 +354,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-                    params.put("image"+i, new DataPart(key, getFileDataFromDrawable(drawable),
+                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
                 return params;
@@ -387,16 +393,26 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
 
     @Override
     public void showProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void closeCurrentActivity() {
-
+        getActivity().finish();
     }
 }

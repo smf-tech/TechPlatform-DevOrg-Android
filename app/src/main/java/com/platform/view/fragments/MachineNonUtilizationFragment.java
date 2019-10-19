@@ -124,16 +124,26 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
 
     @Override
     public void showProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void closeCurrentActivity() {
-
+        getActivity().finish();
     }
 }
