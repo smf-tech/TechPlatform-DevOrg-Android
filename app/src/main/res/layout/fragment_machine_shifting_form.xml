@@ -31,7 +31,6 @@
                         android:id="@+id/et_is_diesel_filled"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/is_diesel_filled"
-                        android:enabled="false"
                         android:focusable="false"
                         android:longClickable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +56,7 @@
                         android:id="@+id/et_diesel_filled_quantity"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/diesel_quantity"
-                        android:inputType="textMultiLine"/>
+                        android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -69,6 +68,7 @@
                         android:id="@+id/et_start_meter_reading"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/start_meter_reading"
+                        android:inputType="number"
                         android:maxLength="6"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,6 +81,7 @@
                         android:id="@+id/et_travel_distance"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/travel_distance"
+                        android:inputType="number"
                         android:maxLength="3"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +94,7 @@
                         android:id="@+id/et_travel_time"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/travel_time"
-                        android:inputType="textMultiLine"/>
+                        android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
