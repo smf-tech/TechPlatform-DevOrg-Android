@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class VolleyMultipartRequest extends Request<NetworkResponse> {
@@ -61,6 +62,11 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
                 dataParse(dos, data);
             }
 
+            Map<String, HashMap<String, DataPart>> imageData = getImageByteData();
+            if (data != null && data.size() > 0) {
+                dataParse(dos, data);
+            }
+
             // close multipart form data after text and file data
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
@@ -78,6 +84,10 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      * @throws AuthFailureError
      */
     protected Map<String, DataPart> getByteData() throws AuthFailureError {
+        return null;
+    }
+
+    protected Map<String, HashMap<String, DataPart>> getImageByteData() throws AuthFailureError {
         return null;
     }
 
@@ -195,6 +205,12 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         public DataPart(String name, byte[] data) {
             fileName = name;
             content = data;
+        }
+
+        public DataPart(String name, byte[] data, String mimeType) {
+            fileName = name;
+            content = data;
+            type = mimeType;
         }
 
         String getFileName() {

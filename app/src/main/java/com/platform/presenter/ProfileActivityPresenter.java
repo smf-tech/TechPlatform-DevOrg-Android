@@ -63,12 +63,12 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         requestCall.getOrganizationProjects(orgId);
     }
 
-    public void getOrganizationRoles(String orgId) {
+    public void getOrganizationRoles(String orgId, String projectId) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
         requestCall.setListener(this);
 
         profileActivity.get().showProgressBar();
-        requestCall.getOrganizationRoles(orgId);
+        requestCall.getOrganizationRoles(orgId, projectId);
     }
 
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {

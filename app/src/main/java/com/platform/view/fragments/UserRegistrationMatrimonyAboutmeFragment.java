@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +27,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.platform.R;
+import com.platform.presenter.ApprovedFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
@@ -103,7 +105,12 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
         switch (v.getId()) {
             case R.id.btn_loadnext:
                 //Util.showToast("Call Submit", getActivity());
+                btn_load_next.setEnabled(false);
                 setValuesInModel();
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    btn_load_next.setEnabled(true);
+                }, 1000);
               //  ((UserRegistrationMatrimonyActivity) getActivity()).submitUserRegistrationRequest();
                 break;
             case R.id.btn_loadprevious:

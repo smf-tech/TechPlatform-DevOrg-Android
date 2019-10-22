@@ -114,7 +114,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
 
                 if (meetData.getRegistrationSchedule().getRegEndDateTime() <= Util.getCurrentTimeStamp())
                 {
-                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(true);
+                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(false);
                 }else {
                     popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(false);
                 }

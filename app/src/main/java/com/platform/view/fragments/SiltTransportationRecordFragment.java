@@ -14,11 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,66 +38,48 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
-import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
-import com.platform.presenter.MachineVisitValidationFragmentPresenter;
+import com.platform.models.SujalamSuphalam.SiltTransportRecord;
+import com.platform.presenter.MachineDieselRecordFragmentPresenter;
+import com.platform.presenter.SiltTransportationRecordFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
-import com.platform.view.adapters.MachineWorkingHoursAdapter;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
-public class MachineVisitValidationFragment extends Fragment implements APIDataListener, View.OnClickListener,
-        OnDateSelectedListener, OnMonthChangedListener {
-    private View machineVisitValidationFragmenttView;
+public class SiltTransportationRecordFragment extends Fragment  implements APIDataListener, View.OnClickListener{
+
+    private View siltTransportationRecordFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private MachineVisitValidationFragmentPresenter machineVisitValidationFragmentPresenter;
-    private String machineId, currentStructureId, newStructureId;
-    private RecyclerView rvWorkingHours;
-    private ImageView ivCalendarMode, imgRegisterOne, imgRegisterTwo;
-    private EditText etMachineCode, etStructureCode, etWorkingHours;
-    private Button btnMatch, btnMismatch, btnSubmit;
-    private boolean isMonth = true;
-    private MaterialCalendarView calendarView;
-    private Date selectedDate;
-    private MachineWorkingHoursAdapter machineWorkingHoursAdapter;
-    private final ArrayList<MachineWorkingHoursRecord> machineWorkingHoursList = new ArrayList<>();
-    private int selectedMonth;
-    private SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-    private SimpleDateFormat mmFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
+    private SiltTransportationRecordFragmentPresenter siltTransportationRecordFragmentPresenter;
+    String machineId, currentStructureId;
+    private ImageView imgRegisterOne, imgRegisterTwo, imgRegisterThree, clickedImageView;
     private Uri outputUri;
     private Uri finalUri;
-    private final String TAG = MachineVisitValidationFragment.class.getName();
+    private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/machineVisit";
+    private String upload_URL = "http://13.235.124.3/api/siltDetails";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
-    private ImageView clickedImageView;
+    private Button btnSubmit;
+    private EditText etDate, etTractorTripsCount, etTipperTripsCount, etFarmersCount, etBeneficiariesCount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,9 +90,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        machineVisitValidationFragmenttView = inflater.inflate(R.layout.fragment_machine_visit_validation,
+        siltTransportationRecordFragmentView = inflater.inflate(R.layout.fragment_silt_transportation_record,
                 container, false);
-        return machineVisitValidationFragmenttView;
+        return siltTransportationRecordFragmentView;
     }
 
     @Override
@@ -123,62 +104,94 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     }
 
     private void init() {
-        progressBarLayout = machineVisitValidationFragmenttView.findViewById(R.id.profile_act_progress_bar);
-        progressBar = machineVisitValidationFragmenttView.findViewById(R.id.pb_profile_act);
-        ivCalendarMode = machineVisitValidationFragmenttView.findViewById(R.id.tv_calendar_mode);
-        ivCalendarMode.setOnClickListener(this);
-        calendarView = machineVisitValidationFragmenttView.findViewById(R.id.calendarView);
-        etStructureCode = machineVisitValidationFragmenttView.findViewById(R.id.et_structure_code);
-        etMachineCode = machineVisitValidationFragmenttView.findViewById(R.id.et_machine_code);
-        etWorkingHours = machineVisitValidationFragmenttView.findViewById(R.id.et_working_hours);
-        btnMatch = machineVisitValidationFragmenttView.findViewById(R.id.btn_match);
-        btnMismatch = machineVisitValidationFragmenttView.findViewById(R.id.btn_mismatch);
-        btnMatch.setOnClickListener(this);
-        btnMismatch.setOnClickListener(this);
-        btnSubmit = machineVisitValidationFragmenttView.findViewById(R.id.btn_submit);
-        btnSubmit.setOnClickListener(this);
-        imgRegisterOne = machineVisitValidationFragmenttView.findViewById(R.id.img_register_one);
+        progressBarLayout = siltTransportationRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = siltTransportationRecordFragmentView.findViewById(R.id.pb_profile_act);
+        siltTransportationRecordFragmentPresenter = new SiltTransportationRecordFragmentPresenter(this);
+        etDate = siltTransportationRecordFragmentView.findViewById(R.id.et_date);
+        etDate.setOnClickListener(this);
+        etTractorTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tractor_trips_count);
+        etTipperTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tipper_trips_count);
+        etFarmersCount = siltTransportationRecordFragmentView.findViewById(R.id.et_farmers_count);
+        etBeneficiariesCount = siltTransportationRecordFragmentView.findViewById(R.id.et_beneficiaries_count);
+        imgRegisterOne = siltTransportationRecordFragmentView.findViewById(R.id.img_register_one);
         imgRegisterOne.setOnClickListener(this);
-        imgRegisterTwo = machineVisitValidationFragmenttView.findViewById(R.id.img_register_two);
+        imgRegisterTwo = siltTransportationRecordFragmentView.findViewById(R.id.img_register_two);
         imgRegisterTwo.setOnClickListener(this);
-        machineWorkingHoursAdapter = new MachineWorkingHoursAdapter(machineWorkingHoursList, this);
-        rvWorkingHours = machineVisitValidationFragmenttView.findViewById(R.id.rv_working_hours);
-        rvWorkingHours.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvWorkingHours.setAdapter(machineWorkingHoursAdapter);
-        machineVisitValidationFragmentPresenter = new MachineVisitValidationFragmentPresenter(this);
-        calendarView.setOnMonthChangedListener(this);
-        calendarView.setOnDateChangedListener(this);
-        isMonth = !isMonth;
-        setCalendar();
-        calendarView.setSelectedDate(Calendar.getInstance().getTime());
-        Date d = new Date();
-        selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
-        etMachineCode.setText(machineId);
-        etStructureCode.setText(currentStructureId);
-        etWorkingHours.setText("9:30");
+        imgRegisterThree = siltTransportationRecordFragmentView.findViewById(R.id.img_register_three);
+        imgRegisterThree.setOnClickListener(this);
+        btnSubmit = siltTransportationRecordFragmentView.findViewById(R.id.btn_submit);
+        btnSubmit.setOnClickListener(this);
     }
 
-    private void setCalendar() {
-        calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
-        Calendar instance = Calendar.getInstance();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
-        Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
-        if (isMonth) {
-            calendarView.state().edit()
-                    .setMinimumDate(instance1.getTime())
-                    .setCalendarDisplayMode(CalendarMode.MONTHS)
-                    .commit();
-            ivCalendarMode.setRotation(180);
-        } else {
-            calendarView.state().edit()
-                    .setMinimumDate(instance1.getTime())
-                    .setCalendarDisplayMode(CalendarMode.WEEKS)
-                    .commit();
-            ivCalendarMode.setRotation(0);
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (siltTransportationRecordFragmentPresenter != null) {
+            siltTransportationRecordFragmentPresenter.clearData();
+            siltTransportationRecordFragmentPresenter = null;
         }
-//        calendarView.setSelectedDate(instance.getTime());
-//        calendarView.setCurrentDate(instance.getTime());
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.et_date:
+                Util.showDateDialog(getActivity(), etDate);
+                break;
+            case R.id.img_register_one:
+                clickedImageView = imgRegisterOne;
+                onAddImageClick();
+                break;
+            case R.id.img_register_two:
+                clickedImageView = imgRegisterTwo;
+                onAddImageClick();
+                break;
+            case R.id.img_register_three:
+                clickedImageView = imgRegisterThree;
+                onAddImageClick();
+                break;
+            case R.id.btn_submit:
+                if(isAllDataValid()) {
+                    SiltTransportRecord siltTransportRecord = new SiltTransportRecord();
+                    siltTransportRecord.setStructureId(currentStructureId);
+                    siltTransportRecord.setMachineId(machineId);
+                    siltTransportRecord.setSiltTransportDate(Util.dateTimeToTimeStamp(etDate.getText().toString(),
+                            "00:00"));
+                    siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
+                    siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                    siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
+                    siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
+                    uploadData(siltTransportRecord);
+                }
+                break;
+        }
+    }
+
+    private boolean isAllDataValid() {
+        if(imageCount == 0) {
+            if (TextUtils.isEmpty(etDate.getText().toString().trim())
+                || TextUtils.isEmpty(etTractorTripsCount.getText().toString().trim())
+                || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())
+                || TextUtils.isEmpty(etFarmersCount.getText().toString().trim())
+                || TextUtils.isEmpty(etBeneficiariesCount.getText().toString().trim())) {
+
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                        Snackbar.LENGTH_LONG);
+
+                return false;
+            }
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, click image of register.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
     }
 
     private void onAddImageClick() {
@@ -203,7 +216,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                     break;
             }
         });
-
         dialog.show();
     }
 
@@ -273,7 +285,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                     if (Util.isValidImageSize(imageFile)) {
                         clickedImageView.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        imageHashmap.put("image"+imageCount, bitmap);
+                        imageHashmap.put("register"+imageCount, bitmap);
                         imageCount++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
@@ -281,6 +293,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
+
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -301,7 +314,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    private void uploadImage(){
+    private void uploadData(SiltTransportRecord siltTransportRecord){
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -328,7 +341,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("formData", new Gson().toJson(machineWorkingHoursList));
+                params.put("formData", new Gson().toJson(siltTransportRecord));
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
@@ -361,25 +374,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
-    }
-
-    public void setData() {
-        //set data received in api
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if (machineVisitValidationFragmentPresenter != null) {
-            machineVisitValidationFragmentPresenter.clearData();
-            machineVisitValidationFragmentPresenter = null;
-        }
     }
 
     @Override
@@ -420,75 +414,5 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     @Override
     public void closeCurrentActivity() {
         getActivity().finish();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_calendar_mode:
-                isMonth = !isMonth;
-                setCalendar();
-                break;
-            case R.id.btn_match:
-                MachineWorkingHoursRecord machineWorkingHoursRecord = new MachineWorkingHoursRecord();
-                machineWorkingHoursRecord.setMachineId(machineId);
-                machineWorkingHoursRecord.setWorkingDate(847478928);
-                machineWorkingHoursRecord.setWorkingStatus("false");
-                machineWorkingHoursList.add(machineWorkingHoursRecord);
-                machineWorkingHoursRecord.setMachineId(machineId);
-                machineWorkingHoursRecord.setWorkingDate(667478928);
-                machineWorkingHoursRecord.setWorkingStatus("false");
-                machineWorkingHoursList.add(machineWorkingHoursRecord);
-                btnMatch.setClickable(false);
-                btnMismatch.setClickable(false);
-                machineWorkingHoursAdapter.notifyDataSetChanged();
-                break;
-            case R.id.btn_mismatch:
-                MachineWorkingHoursRecord machineWorkingHoursRecord2 = new MachineWorkingHoursRecord();
-                machineWorkingHoursRecord2.setMachineId(machineId);
-                machineWorkingHoursRecord2.setStructureAssigned(currentStructureId);
-                machineWorkingHoursRecord2.setWorkingDate(439848982);
-                machineWorkingHoursRecord2.setWorkingHours(etWorkingHours.getText().toString());
-                machineWorkingHoursRecord2.setWorkingStatus("true");
-                machineWorkingHoursList.add(machineWorkingHoursRecord2);
-                btnMatch.setClickable(false);
-                btnMismatch.setClickable(false);
-                machineWorkingHoursAdapter.notifyDataSetChanged();
-                break;
-            case R.id.img_register_one:
-                clickedImageView = imgRegisterOne;
-                onAddImageClick();
-                break;
-            case R.id.img_register_two:
-                clickedImageView = imgRegisterTwo;
-                onAddImageClick();
-                break;
-            case R.id.btn_submit:
-                uploadImage();
-                machineVisitValidationFragmentPresenter.submitWorkingHours();
-                break;
-        }
-    }
-
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        Toast.makeText(getActivity(), "date:" + date, Toast.LENGTH_SHORT).show();
-        selectedDate = date.getDate();
-        btnMatch.setClickable(true);
-        btnMismatch.setClickable(true);
-        if(Util.isConnected(getContext())) {
-            //machineVisitValidationFragmentPresenter.getWorkingHourDetails(selectedDate.getTime(), machineId);
-        }else{
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-        }
-    }
-
-    @Override
-    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        if (selectedMonth != Integer.parseInt(mmFormat.format(date.getDate()))) {
-            btnMatch.setClickable(true);
-            btnMismatch.setClickable(true);
-            selectedMonth=Integer.parseInt(mmFormat.format(date.getDate()));
-        }
     }
 }

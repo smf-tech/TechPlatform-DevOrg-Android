@@ -19,6 +19,7 @@
         android:title="Finalise Badge" />
     <item
         android:id="@+id/action_gen_booklet"
+        android:visible="false"
         android:title="Generate Booklet" />
     <item
         android:id="@+id/action_show_baches"

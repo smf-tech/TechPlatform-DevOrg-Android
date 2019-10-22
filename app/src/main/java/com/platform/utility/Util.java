@@ -207,6 +207,15 @@ public class Util {
                     loginObj.getLoginData().getAccessToken() != null) {
                 headers.put(Constants.Login.AUTHORIZATION,
                         "Bearer " + loginObj.getLoginData().getAccessToken());
+                if (getUserObjectFromPref().getOrgId()!=null) {
+                    headers.put("orgId", getUserObjectFromPref().getOrgId());
+                }
+                if (getUserObjectFromPref().getProjectIds()!=null) {
+                    headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                }
+                if (getUserObjectFromPref().getRoleIds()!=null) {
+                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                }
             }
         }
 
@@ -1114,7 +1123,7 @@ public class Util {
                 //  Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                 long fileSizeInMB = fileSizeInKB / 1024;
 
-                return fileSizeInMB <= 8;
+                return fileSizeInMB <= 5;
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }

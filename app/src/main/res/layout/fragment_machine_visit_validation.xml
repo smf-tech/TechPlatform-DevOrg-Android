@@ -62,24 +62,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/ll_structure_machine_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/rl_machine_ode"
+            android:id="@+id/rl_structure_code"
             style="@style/textinputstyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <EditText
-                android:id="@+id/et_machine_code"
+                android:id="@+id/et_structure_code"
                 style="@style/RegistrationEditTextLayout"
-                android:hint="Machine Code"/>
+                android:hint="Structure Code"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/rl_machine_code"
+                style="@style/textinputstyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/et_machine_code"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Machine Code"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_working_hours"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/rl_machine_ode"
+            android:layout_below="@+id/ll_structure_machine_code"
             android:weightSum="3">
 
             <com.google.android.material.textfield.TextInputLayout

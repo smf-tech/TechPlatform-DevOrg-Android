@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.utility.Constants;
-import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.fragments.StructureMachineListFragment;
@@ -79,6 +78,34 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                 public void onClick(View v) {
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+//                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                    }
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_WORKING_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                    }
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                    }
+//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE) {
+//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                    }
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -91,7 +118,8 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     intent.putExtra("title", "Shift Machine");
                                     intent.putExtra("type", "shiftMachine");
                                     intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    intent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    intent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(intent);
                                     break;
                                 case R.id.action_machine_visit:
@@ -100,14 +128,39 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     machineVisitIntent.putExtra("title", "Machine Visit and Validation");
                                     machineVisitIntent.putExtra("type", "visitMachine");
                                     machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    machineVisitIntent.putExtra("currentStructureId", ssDataList.get(getAdapterPosition()).getDeployedStrutureId());
+                                    machineVisitIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(machineVisitIntent);
                                     break;
                                 case R.id.action_diesel_record:
-                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
+                                    dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
+                                    dieselRecordIntent.putExtra("title", "Record of Diesel");
+                                    dieselRecordIntent.putExtra("type", "dieselRecord");
+                                    dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(dieselRecordIntent);
                                     break;
                                 case R.id.action_machine_non_utilization:
-                                    //showDialog("Delete Meet", "Are you sure you want to delete this meet?","YES", "NO");
+                                    Intent machineNonUtilizationIntent = new Intent(activity, SSActionsActivity.class);
+                                    machineNonUtilizationIntent.putExtra("SwitchToFragment", "MachineNonUtilizationFragment");
+                                    machineNonUtilizationIntent.putExtra("title", "Machine Non-utilization Record");
+                                    machineNonUtilizationIntent.putExtra("type", "machineNonUtilization");
+                                    machineNonUtilizationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    machineNonUtilizationIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(machineNonUtilizationIntent);
+                                    break;
+                                case R.id.action_silt_transportation_record:
+                                    Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
+                                    siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+                                    siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+                                    siltTransportationIntent.putExtra("type", "siltTransportRecord");
+                                    siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                    siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
+                                            (getAdapterPosition()).getDeployedStrutureId());
+                                    activity.startActivity(siltTransportationIntent);
                                     break;
                             }
                             return false;

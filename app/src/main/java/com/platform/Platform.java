@@ -16,6 +16,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.platform.receivers.ConnectivityReceiver;
 import com.platform.utility.Config;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
@@ -51,7 +52,7 @@ public class Platform extends Application {
         }
 
         mPlatformInstance = this;
-        Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image");
+        Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Image");
     }
 
     private void initFireBase() {
@@ -108,6 +109,10 @@ public class Platform extends Application {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 
 }

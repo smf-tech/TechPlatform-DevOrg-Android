@@ -307,7 +307,13 @@
                 android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_project" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <!--<com.platform.widgets.MultiSelectSpinner-->
+                <!--android:id="@+id/sp_project"-->
+                <!--style="@style/FormSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dimen_50dp" />-->
+
+            <Spinner
                 android:id="@+id/sp_project"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
