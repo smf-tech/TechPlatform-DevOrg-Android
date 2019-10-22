@@ -132,4 +132,8 @@ public class Urls {
         public static final String SHIFT_MACHINE = "api/machineShift";
         public static final String SUBMIT_MACHINE_VISIT = "api/machineVisit";
     }
+    public class Structure {
+        public static final String STRUCTURE_MASTER = "api/structureMasterData";
+
+    }
 }
