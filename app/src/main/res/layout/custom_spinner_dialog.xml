@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -29,16 +28,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="@dimen/dimen_10dp" />
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_apply"
                 style="@style/AppStyleBorderButton"
                 android:layout_width="wrap_content"
                 android:text="Apply"
-                android:layout_weight="1"
                 android:visibility="visible"
-                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_margin="@dimen/dimen_05dp"
                 />
         </LinearLayout>
 

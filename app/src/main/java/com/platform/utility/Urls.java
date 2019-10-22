@@ -130,4 +130,8 @@ public class Urls {
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
     }
+    public class Structure {
+        public static final String STRUCTURE_MASTER = "api/structureMasterData";
+
+    }
 }
