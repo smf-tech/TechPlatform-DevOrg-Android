@@ -67,6 +67,7 @@ import com.platform.models.tm.TMUserProfileApprovalRequest;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.LoginActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.PlannerFragment;
@@ -293,6 +294,19 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_OBJ, userData);
         editor.apply();
+    }
+
+    public static void logOutUser(Activity activity) {
+        // remove user related shared pref data
+        Util.saveLoginObjectInPref("");
+        try {
+            Intent startMain = new Intent(activity, LoginActivity.class);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity.startActivity(startMain);
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }
     }
 
     public static OrganizationResponse getUserOrgFromPref() {

@@ -512,7 +512,7 @@
     <string name="chasis_number">Machine chasis number</string>
     <string name="excavation_capacity">Excavation capacity of machine per hour</string>
     <string name="diesel_capacity">Diesel tank capacity in litres</string>
-    <string name="provider_name">Machine Provider Name</string>
+    <string name="provider_name">Machine Provider First Name</string>
     <string name="provider_contact">Provider Contact Number</string>
     <string name="machine_mobile">Machine Attached Mobile Number</string>
     <string name="ownership_type">Type of Ownership</string>
@@ -526,7 +526,7 @@
     <string name="bank_account_no">Bank Account Number</string>
     <string name="confirm_account_no">Confirm Bank Account Number</string>
     <string name="account_image">Upload Image (Cancelled Cheque/Passbook front page)</string>
-    <string name="account_holder_name">Account Holder\'s NAme</string>
+    <string name="account_holder_name">Account Holder\'s Name</string>
     <string name="account_type">Account Type</string>
     <string name="operator_name">Machine Operator Name</string>
     <string name="operator_contact">Machine Operator Contact Number</string>
@@ -542,4 +542,5 @@
     <string name="travel_distance">Approximate travel distance(Km) *</string>
     <string name="travel_time">Approximate travel time(Hr) *</string>
     <string name="diesel_provided_by">Diesel provided by</string>
+    <string name="provider_last_name">Machine Provider Last name</string>
 </resources>

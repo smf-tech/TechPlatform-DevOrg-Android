@@ -54,8 +54,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private ArrayList<CustomSpinnerObject> structureSubDepartmentList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -321,9 +319,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     public void logOutUser() {
         // remove user related shared pref data
-
         Util.saveLoginObjectInPref("");
-
         try {
             Intent startMain = new Intent(this, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);

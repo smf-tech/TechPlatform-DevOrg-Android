@@ -120,7 +120,6 @@ public class ContentManagementFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     // TODO: Rename and change types and number of parameters
     public static ContentManagementFragment newInstance(String param1, String param2) {
         ContentManagementFragment fragment = new ContentManagementFragment();
