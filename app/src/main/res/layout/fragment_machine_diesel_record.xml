@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Image 1 of Register"
+                android:text="Image of diesel receipts"
                 android:layout_gravity="center_horizontal"/>
 
             <ImageView

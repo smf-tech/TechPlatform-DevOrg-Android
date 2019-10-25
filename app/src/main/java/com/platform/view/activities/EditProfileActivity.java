@@ -1366,10 +1366,13 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
-                        stateNames.add(location.getState().getName());
-                        this.states.add(location.getState());
+//                        for (JurisdictionType country : selectedCountries) {
+//                            if (country.getName().equalsIgnoreCase(location.getCountry().getName())) {
+                                stateNames.add(location.getState().getName());
+                                this.states.add(location.getState());
+//                            }
+//                        }
                     }
-
                     setStateData(stateNames);
                 }
                 break;
@@ -1390,7 +1393,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                     }
-
                     setDistrictData(districts);
                 }
                 break;
@@ -1411,7 +1413,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                     }
-
                     setCityData(cities);
                 }
                 break;
@@ -1436,7 +1437,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                     }
-
                     setTalukaData(talukas);
                 }
                 break;
@@ -1465,7 +1465,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                     }
-
                     setVillageData(villages);
                 }
                 break;

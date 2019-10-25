@@ -103,8 +103,6 @@
                             android:gravity="center_vertical"
                             android:editable="false"
                             android:longClickable="false"/>
-
-
                     </LinearLayout>
 
                     <TextView

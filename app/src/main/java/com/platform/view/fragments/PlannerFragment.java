@@ -301,9 +301,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     public void logOutUser() {
         // remove user related shared pref data
-
         Util.saveLoginObjectInPref("");
-
         try {
             Intent startMain = new Intent(getActivity(), LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);

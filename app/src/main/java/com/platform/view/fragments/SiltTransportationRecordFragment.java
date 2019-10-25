@@ -14,11 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,69 +42,44 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
-import com.platform.listeners.CustomSpinnerListener;
-import com.platform.models.SujalamSuphalam.MachineDieselRecord;
-import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.models.SujalamSuphalam.SiltTransportRecord;
 import com.platform.presenter.MachineDieselRecordFragmentPresenter;
-import com.platform.presenter.MachineShiftingFormFragmentPresenter;
+import com.platform.presenter.SiltTransportationRecordFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
-import com.platform.view.adapters.MachineDieselRecordsAdapter;
-import com.platform.view.adapters.MachineWorkingHoursAdapter;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
-public class MachineDieselRecordFragment extends Fragment implements APIDataListener, View.OnClickListener,
-        OnDateSelectedListener, OnMonthChangedListener {
+public class SiltTransportationRecordFragment extends Fragment  implements APIDataListener, View.OnClickListener{
 
-    private View machineDieselRecordFragmentView;
+    private View siltTransportationRecordFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    private SiltTransportationRecordFragmentPresenter siltTransportationRecordFragmentPresenter;
     String machineId, currentStructureId;
-    private EditText etMachineCode, etStructureCode, etDieselQuantity;
-    private Button btnAdd, btnSubmit;
-    private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
-    private RecyclerView rvDieselRecords;
-    private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
-    private boolean isMonth = true;
-    private MaterialCalendarView calendarView;private final ArrayList<MachineDieselRecord>
-            machineDieselRecordsList = new ArrayList<>();
-    private int selectedMonth;
-    SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
-    SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
-    SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-    private MachineDieselRecordsAdapter machineDieselRecordsAdapter;
+    private ImageView imgRegisterOne, imgRegisterTwo, imgRegisterThree, clickedImageView;
     private Uri outputUri;
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/dieselRecord";
+    private String upload_URL = "http://13.235.124.3/api/siltDetails";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
-    private int dieselImageCount = 0, registerImageCount = 0;
-    private String imageType, selectedDate;
-    private ImageView clickedImageView;
+    private int imageCount = 0;
+    private Button btnSubmit;
+    private EditText etDate, etTractorTripsCount, etTipperTripsCount, etFarmersCount, etBeneficiariesCount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,8 +90,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        machineDieselRecordFragmentView = inflater.inflate(R.layout.fragment_machine_diesel_record, container, false);
-        return machineDieselRecordFragmentView;
+        siltTransportationRecordFragmentView = inflater.inflate(R.layout.fragment_silt_transportation_record,
+                container, false);
+        return siltTransportationRecordFragmentView;
     }
 
     @Override
@@ -129,40 +104,23 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     }
 
     private void init() {
-        progressBarLayout = machineDieselRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
-        progressBar = machineDieselRecordFragmentView.findViewById(R.id.pb_profile_act);
-        machineDieselRecordFragmentPresenter = new MachineDieselRecordFragmentPresenter(this);
-        ivCalendarMode = machineDieselRecordFragmentView.findViewById(R.id.tv_calendar_mode);
-        ivCalendarMode.setOnClickListener(this);
-        calendarView = machineDieselRecordFragmentView.findViewById(R.id.calendarView);
-        etStructureCode = machineDieselRecordFragmentView.findViewById(R.id.et_structure_code);
-        etMachineCode = machineDieselRecordFragmentView.findViewById(R.id.et_machine_code);
-        etDieselQuantity = machineDieselRecordFragmentView.findViewById(R.id.et_diesel_quantity);
-        btnSubmit = machineDieselRecordFragmentView.findViewById(R.id.btn_submit);
-        btnSubmit.setOnClickListener(this);
-        btnAdd = machineDieselRecordFragmentView.findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(this);
-        imgDieselReceipt = machineDieselRecordFragmentView.findViewById(R.id.img_diesel_receipt);
-        imgDieselReceipt.setOnClickListener(this);
-        imgRegisterOne = machineDieselRecordFragmentView.findViewById(R.id.img_register_one);
+        progressBarLayout = siltTransportationRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = siltTransportationRecordFragmentView.findViewById(R.id.pb_profile_act);
+        siltTransportationRecordFragmentPresenter = new SiltTransportationRecordFragmentPresenter(this);
+        etDate = siltTransportationRecordFragmentView.findViewById(R.id.et_date);
+        etDate.setOnClickListener(this);
+        etTractorTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tractor_trips_count);
+        etTipperTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tipper_trips_count);
+        etFarmersCount = siltTransportationRecordFragmentView.findViewById(R.id.et_farmers_count);
+        etBeneficiariesCount = siltTransportationRecordFragmentView.findViewById(R.id.et_beneficiaries_count);
+        imgRegisterOne = siltTransportationRecordFragmentView.findViewById(R.id.img_register_one);
         imgRegisterOne.setOnClickListener(this);
-        imgRegisterTwo = machineDieselRecordFragmentView.findViewById(R.id.img_register_two);
+        imgRegisterTwo = siltTransportationRecordFragmentView.findViewById(R.id.img_register_two);
         imgRegisterTwo.setOnClickListener(this);
-        machineDieselRecordsAdapter = new MachineDieselRecordsAdapter(machineDieselRecordsList, this);
-        rvDieselRecords = machineDieselRecordFragmentView.findViewById(R.id.rv_diesel_record);
-        rvDieselRecords.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvDieselRecords.setAdapter(machineDieselRecordsAdapter);
-        calendarView.setOnMonthChangedListener(this);
-        calendarView.setOnDateChangedListener(this);
-        isMonth = !isMonth;
-        setCalendar();
-        calendarView.setSelectedDate(Calendar.getInstance().getTime());
-        calendarView.getSelectedDate();
-        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
-                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
-                ddFormat.format(calendarView.getSelectedDate().getDate());
-        etMachineCode.setText(machineId);
-        etStructureCode.setText(currentStructureId);
+        imgRegisterThree = siltTransportationRecordFragmentView.findViewById(R.id.img_register_three);
+        imgRegisterThree.setOnClickListener(this);
+        btnSubmit = siltTransportationRecordFragmentView.findViewById(R.id.btn_submit);
+        btnSubmit.setOnClickListener(this);
     }
 
     @Override
@@ -173,76 +131,67 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void onDetach() {
         super.onDetach();
-        if (machineDieselRecordFragmentPresenter != null) {
-            machineDieselRecordFragmentPresenter.clearData();
-            machineDieselRecordFragmentPresenter = null;
+        if (siltTransportationRecordFragmentPresenter != null) {
+            siltTransportationRecordFragmentPresenter.clearData();
+            siltTransportationRecordFragmentPresenter = null;
         }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_calendar_mode:
-                isMonth = !isMonth;
-                setCalendar();
-                break;
-            case R.id.img_diesel_receipt:
-                imageType = "dieselReceipt";
-                clickedImageView = imgDieselReceipt;
-                onAddImageClick();
+            case R.id.et_date:
+                Util.showDateDialog(getActivity(), etDate);
                 break;
             case R.id.img_register_one:
-                imageType = "registerImage";
                 clickedImageView = imgRegisterOne;
                 onAddImageClick();
                 break;
             case R.id.img_register_two:
-                imageType = "registerImage";
                 clickedImageView = imgRegisterTwo;
+                onAddImageClick();
+                break;
+            case R.id.img_register_three:
+                clickedImageView = imgRegisterThree;
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
                 if(isAllDataValid()) {
-                    uploadImage();
-                }
-                break;
-            case R.id.btn_add:
-                if(etDieselQuantity.getText().toString()!=null && etDieselQuantity.getText().toString().length()>0) {
-                    MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
-                    machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
+                    SiltTransportRecord siltTransportRecord = new SiltTransportRecord();
+                    siltTransportRecord.setStructureId(currentStructureId);
+                    siltTransportRecord.setMachineId(machineId);
+                    siltTransportRecord.setSiltTransportDate(Util.dateTimeToTimeStamp(etDate.getText().toString(),
                             "00:00"));
-                    machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
-                    machineDieselRecord.setMachineId(machineId);
-                    machineDieselRecord.setStructureId(currentStructureId);
-                    machineDieselRecordsList.add(machineDieselRecord);
-                    machineDieselRecordsAdapter.notifyDataSetChanged();
-                } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Enter diesel quantity.",
-                            Snackbar.LENGTH_LONG);
+                    siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
+                    siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                    siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
+                    siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
+                    uploadData(siltTransportRecord);
                 }
                 break;
         }
     }
 
-    private void setCalendar() {
-        calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
-        Calendar instance = Calendar.getInstance();
-        Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
-        if (isMonth) {
-            calendarView.state().edit()
-                    .setMinimumDate(instance1.getTime())
-                    .setCalendarDisplayMode(CalendarMode.MONTHS)
-                    .commit();
-            ivCalendarMode.setRotation(180);
-        } else {
-            calendarView.state().edit()
-                    .setMinimumDate(instance1.getTime())
-                    .setCalendarDisplayMode(CalendarMode.WEEKS)
-                    .commit();
-            ivCalendarMode.setRotation(0);
+    private boolean isAllDataValid() {
+        if(imageCount == 0) {
+            if (TextUtils.isEmpty(etDate.getText().toString().trim())
+                || TextUtils.isEmpty(etTractorTripsCount.getText().toString().trim())
+                || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())
+                || TextUtils.isEmpty(etFarmersCount.getText().toString().trim())
+                || TextUtils.isEmpty(etBeneficiariesCount.getText().toString().trim())) {
+
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                        Snackbar.LENGTH_LONG);
+
+                return false;
+            }
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, click image of register.",
+                    Snackbar.LENGTH_LONG);
+            return false;
         }
+        return true;
     }
 
     private void onAddImageClick() {
@@ -267,7 +216,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                     break;
             }
         });
-
         dialog.show();
     }
 
@@ -337,13 +285,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                     if (Util.isValidImageSize(imageFile)) {
                         clickedImageView.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        if(imageType.equals("dieselReceipt")) {
-                            imageHashmap.put("diesel"+dieselImageCount, bitmap);
-                            dieselImageCount++;
-                        } else if(imageType.equals("registerImage")) {
-                            imageHashmap.put("register"+registerImageCount, bitmap);
-                            registerImageCount++;
-                        }
+                        imageHashmap.put("register"+imageCount, bitmap);
+                        imageCount++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -371,23 +314,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    private boolean isAllDataValid() {
-        if (machineDieselRecordsList.size() == 0) {
-            if(dieselImageCount == 0 || registerImageCount == 0){
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please, click images of diesel receipt and register.",
-                        Snackbar.LENGTH_LONG);
-                return false;
-            }
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please, add diesel quantity against calendar date.",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
-        return true;
-    }
+    private void uploadData(SiltTransportRecord siltTransportRecord){
 
-    private void uploadImage(){
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -413,7 +341,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("formData", new Gson().toJson(machineDieselRecordsList));
+                params.put("formData", new Gson().toJson(siltTransportRecord));
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
@@ -426,11 +354,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-//                    if(imageType.equals("dieselReceipt")) {
-//                        imageHashmap.put("diesel"+i, bitmap);
-//                    } else if(imageType.equals("registerImage")) {
-//                        imageHashmap.put("register"+i, bitmap);
-//                    }
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
@@ -491,18 +414,5 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void closeCurrentActivity() {
         getActivity().finish();
-    }
-
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        selectedDate = yyyyFormat.format(date.getDate())+"-"+MMFormat.format(date.getDate())+"-"+
-                ddFormat.format(date.getDate());
-        //selectedDate = date.getCalendar().toString();
-        etDieselQuantity.setText("");
-    }
-
-    @Override
-    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-
     }
 }

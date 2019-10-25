@@ -452,5 +452,7 @@
     <string name="start_meter_reading">Start Meter Reading</string>
     <string name="travel_distance">Approximate travel distance(Km) *</string>
     <string name="travel_time">Approximate travel time(Hr) *</string>
+    <string name="diesel_provided_by">Diesel provided by</string>
+    <string name="provider_last_name">Machine Provider Last name</string>
 
 </resources>

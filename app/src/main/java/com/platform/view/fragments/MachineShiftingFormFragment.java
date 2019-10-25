@@ -35,12 +35,13 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     private View machineShiftingFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    String machineId, currentStructureId, newStructureId, isDieselFilled;
+    String machineId, currentStructureId, newStructureId, isDieselFilled , dieselProvidedBy;
     private EditText etIsDieselFilled, etProvideBy, etDieselQuantity, etstartMeterReading, etTravelDistance,
      etTravelTime;
     private Button btnSubmit;
     private MachineShiftingFormFragmentPresenter machineShiftingFormFragmentPresenter;
     private ArrayList<CustomSpinnerObject> isDieselFilledOptionsList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> isDieselProvidedByList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,6 +163,12 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
                         ViewGroup.LayoutParams.MATCH_PARENT);
             break;
             case R.id.et_provided_by :
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                        getResources().getString(R.string.diesel_provided_by), isDieselProvidedByList,
+                        false);
+                cdd1.show();
+                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.btn_submit :
                 if (isAllDataValid()) {
@@ -221,6 +228,15 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
                     }
                 }
                 etIsDieselFilled.setText(isDieselFilled);
+                break;
+            case "Diesel provided by":
+                for (CustomSpinnerObject providedBy : isDieselProvidedByList) {
+                    if(providedBy.isSelected()) {
+                        dieselProvidedBy = providedBy.getName();
+                        break;
+                    }
+                }
+                etProvideBy.setText(dieselProvidedBy);
                 break;
         }
 

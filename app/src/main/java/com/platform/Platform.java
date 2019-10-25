@@ -52,7 +52,7 @@ public class Platform extends Application {
         }
 
         mPlatformInstance = this;
-        Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image");
+        Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Image");
     }
 
     private void initFireBase() {

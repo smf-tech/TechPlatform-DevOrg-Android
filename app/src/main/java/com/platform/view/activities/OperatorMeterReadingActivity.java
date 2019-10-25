@@ -43,8 +43,8 @@ public class OperatorMeterReadingActivity extends BaseActivity {
     String machine_id = "231131321";
     String status = "";
     String workTime = "";
-    String lat = "";
-    String lon = "";
+    String lat = "18.516726";
+    String lon = "73.856255";
     String image = "";
     String meter_reading = "";
     int hours = 0;

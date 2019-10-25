@@ -422,8 +422,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
             }
     }
 
-
-
     public String showReasonDialog(final Activity context, int pos){
         Dialog dialog;
         Button btnSubmit,btn_cancel;

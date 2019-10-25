@@ -15,7 +15,7 @@ public class MachineDieselRecord implements Serializable {
     @SerializedName("structure_id")
     @Expose
     private String structureId;
-    @SerializedName("maachine_id")
+    @SerializedName("machine_id")
     @Expose
     private String machineId;
 
