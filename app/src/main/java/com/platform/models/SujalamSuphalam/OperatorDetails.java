@@ -22,6 +22,12 @@ public class OperatorDetails {
     @SerializedName("contact_numnber")
     @Expose
     private String contactNumnber;
+    @SerializedName("is_training_done")
+    @Expose
+    private String isTrainingDone;
+    @SerializedName("is_app_installed")
+    @Expose
+    private String isAppInstalled;
     @SerializedName("operator_images")
     @Expose
     private List<String> operatorImages = null;
@@ -72,5 +78,20 @@ public class OperatorDetails {
 
     public void setOperatorImages(List<String> operatorImages) {
         this.operatorImages = operatorImages;
+    }
+    public String getIsTrainingDone() {
+        return isTrainingDone;
+    }
+
+    public void setIsTrainingDone(String isTrainingDone) {
+        this.isTrainingDone = isTrainingDone;
+    }
+
+    public String getIsAppInstalled() {
+        return isAppInstalled;
+    }
+
+    public void setIsAppInstalled(String isAppInstalled) {
+        this.isAppInstalled = isAppInstalled;
     }
 }

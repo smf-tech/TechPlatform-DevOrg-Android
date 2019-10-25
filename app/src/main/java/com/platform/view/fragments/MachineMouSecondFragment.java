@@ -47,9 +47,10 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private EditText etProviderFirstName, etProviderLastName, etProviderContact, etMachineMobile,
             etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
             etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
-    private String selectedOwnership, isTurnoverBelow;
+    private String selectedOwnership, isTurnoverBelow, selectedAccountType;
     private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> isTurnOverAboveList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> accountTypesList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
         etOwnership.setOnClickListener(this);
         etTurnover.setOnClickListener(this);
+        etAccountType.setOnClickListener(this);
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
                 getSSMasterDatabaseDao().getSSMasterData();
@@ -139,6 +141,18 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         turnoverNo.set_id("2");
         turnoverNo.setSelected(false);
         isTurnOverAboveList.add(turnoverNo);
+
+        CustomSpinnerObject accountSavings = new CustomSpinnerObject();
+        accountSavings.setName("Savings Account");
+        accountSavings.set_id("1");
+        accountSavings.setSelected(false);
+        accountTypesList.add(accountSavings);
+
+        CustomSpinnerObject accountCurrent = new CustomSpinnerObject();
+        accountCurrent.setName("Current Account");
+        accountCurrent.set_id("2");
+        accountCurrent.setSelected(false);
+        accountTypesList.add(accountCurrent);
     }
 
     public boolean isAllDataValid() {
@@ -194,10 +208,18 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_turnover:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Is Turnover", isTurnOverAboveList,
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Select option", isTurnOverAboveList,
                         false);
                 cdd1.show();
                 cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_account_type:
+                CustomSpinnerDialogClass cdd2 = new CustomSpinnerDialogClass(getActivity(), this, "Select Account Type",
+                        accountTypesList,
+                        false);
+                cdd2.show();
+                cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
         }
@@ -254,7 +276,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 }
                 etOwnership.setText(selectedOwnership);
                 break;
-            case "Is Turnover":
+            case "Select option":
                 for (CustomSpinnerObject isTurnover : isTurnOverAboveList) {
                     if (isTurnover.isSelected()) {
                         isTurnoverBelow = isTurnover.getName();
@@ -262,6 +284,15 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                     }
                 }
                 etTurnover.setText(isTurnoverBelow);
+                break;
+            case "Select Account Type":
+                for (CustomSpinnerObject accountType : accountTypesList) {
+                    if (accountType.isSelected()) {
+                        selectedAccountType = accountType.getName();
+                        break;
+                    }
+                }
+                etAccountType.setText(selectedAccountType);
                 break;
         }
     }

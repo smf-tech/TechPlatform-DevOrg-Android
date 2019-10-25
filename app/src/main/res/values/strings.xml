@@ -517,7 +517,7 @@
     <string name="machine_mobile">Machine Attached Mobile Number</string>
     <string name="ownership_type">Type of Ownership</string>
     <string name="trade_name">Provider Trade Name (if firm)</string>
-    <string name="turnover_below">Turnover</string>
+    <string name="turnover_below">Is Turnover less than 40 Lacs</string>
     <string name="gst_reg_no">GST Registration Number</string>
     <string name="pan_number">Pan Card Number</string>
     <string name="bank_name">Bank Name</string>

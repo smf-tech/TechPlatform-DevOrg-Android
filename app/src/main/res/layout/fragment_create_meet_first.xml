@@ -152,13 +152,14 @@
                         <EditText
                             android:id="@+id/edt_meet_date"
                             style="@style/RegistrationEditTextLayout"
-                            android:clickable="false"
                             android:drawableEnd="@drawable/ic_cal_event"
                             android:focusable="false"
+                            android:longClickable="false"
+                            android:clickable="false"
                             android:hint="@string/meet_date"
                             android:inputType="date"
                             tools:ignore="Autofill"
-                            android:longClickable="false"/>
+                            />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
