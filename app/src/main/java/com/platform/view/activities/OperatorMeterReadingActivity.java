@@ -1,5 +1,4 @@
 package com.platform.view.activities;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,14 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.room.util.StringUtil;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
@@ -38,37 +36,38 @@ import java.util.List;
 
 public class OperatorMeterReadingActivity extends BaseActivity {
 
-    ImageView img_start_meter,img_end_meter;
+    boolean flag = true;
+    boolean isStartImage = true;
+    ImageView img_start_meter, img_end_meter;
     //------
-    String machine_id ="231131321";
-    String status ="";
-    String workTime="";
-    String lat="";
-    String lon="";
-    String image="";
-    String meter_reading="";
+    String machine_id = "231131321";
+    String status = "";
+    String workTime = "";
+    String lat = "";
+    String lon = "";
+    String image = "";
+    String meter_reading = "";
     int hours = 0;
     //int totalHours =0;
-    int totalHours ;
+    int totalHours;
     int currentHours;
- //---
- String start_meter_reading="";
- String stop_meter_reading="";
-//---
-    private int state_start = 101;
-    private int state_stop = 100;
-    private int state_pause = 102;
-    private int currentState =0;
+    //---
+    String start_meter_reading = "";
+    String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService;
-    EditText et_emeter_read,et_smeter_read;
+    EditText et_emeter_read, et_smeter_read;
     TextView tv_text;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    //---
+    private int state_start = 101;
+    private int state_stop = 100;
+    private int state_pause = 102;
+    private int currentState = 0;
     private RequestOptions requestOptions;
 
-    private void updateStatusAndProceed(int currentState)
-    {
-        if (currentState==state_start){
+    private void updateStatusAndProceed(int currentState) {
+        if (currentState == state_start) {
             //editor.putInt("State", state_pause);
             startService();
             buttonPauseService.setVisibility(View.VISIBLE);
@@ -76,41 +75,41 @@ public class OperatorMeterReadingActivity extends BaseActivity {
             btnStartService.setVisibility(View.GONE);
             //-----------
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
-            Log.e("Timestamp--","---"+workTime);
-            saveOperatorStateData(machine_id,workTime,"state_start",lat,lon,meter_reading,hours,totalHours,image);
-        }else if (currentState==state_pause){
+            Log.e("Timestamp--", "---" + workTime);
+            saveOperatorStateData(machine_id, workTime, "state_start", lat, lon, meter_reading, hours, totalHours, image);
+        } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.VISIBLE);
             buttonPauseService.setText("Resume");
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
-            Log.e("Timestamp--","---"+workTime);
-            saveOperatorStateData(machine_id,workTime,"state_pause",lat,lon,meter_reading,hours,totalHours,image);
-        }else if (currentState==state_stop){
+            Log.e("Timestamp--", "---" + workTime);
+            saveOperatorStateData(machine_id, workTime, "state_pause", lat, lon, meter_reading, hours, totalHours, image);
+        } else if (currentState == state_stop) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.GONE);
             btnStartService.setVisibility(View.VISIBLE);
             et_smeter_read.setText("");
             stopService();
-            workTime =  String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
-            Log.e("Timestamp--","---"+workTime);
-            saveOperatorStateData(machine_id,workTime,"state_stop",lat,lon,et_emeter_read.getText().toString(),hours,totalHours,image);
+            workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
+            Log.e("Timestamp--", "---" + workTime);
+            saveOperatorStateData(machine_id, workTime, "state_stop", lat, lon, et_emeter_read.getText().toString(), hours, totalHours, image);
             et_emeter_read.setText("");
         }
     }
-    private void updateButtonsonRestart(int currentState)
-    {
-        if (currentState==state_pause){
+
+    private void updateButtonsonRestart(int currentState) {
+        if (currentState == state_pause) {
 
             buttonPauseService.setVisibility(View.VISIBLE);
             btnStartService.setVisibility(View.GONE);
             buttonPauseService.setText("Resume");
-        }else if (currentState==state_stop){
+        } else if (currentState == state_stop) {
 
             buttonPauseService.setVisibility(View.GONE);
             btnStartService.setVisibility(View.VISIBLE);
             stopService();
-        }else if (currentState==state_start){
+        } else if (currentState == state_start) {
 
             buttonPauseService.setVisibility(View.VISIBLE);
             btnStartService.setVisibility(View.GONE);
@@ -123,12 +122,12 @@ public class OperatorMeterReadingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_meter_reading);
-        requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
 
         machine_id = "bjs3232334";
 
-        currentState =state_start;
+        currentState = state_start;
         preferences = Platform.getInstance().getSharedPreferences(
                 "AppData", Context.MODE_PRIVATE);
         editor = Platform.getInstance().getSharedPreferences(
@@ -144,13 +143,13 @@ public class OperatorMeterReadingActivity extends BaseActivity {
         img_end_meter = findViewById(R.id.img_end_meter);
 
 
-        if (preferences.getInt("State", 0)==0){
-            currentState =state_stop;
+        if (preferences.getInt("State", 0) == 0) {
+            currentState = state_stop;
             //updateButtonsonRestart(currentState);
             editor.putInt("State", state_stop);
             editor.apply();
             updateButtonsonRestart(preferences.getInt("State", 0));
-        }else {
+        } else {
             updateButtonsonRestart(preferences.getInt("State", 0));
         }
         buttonPauseService.setOnClickListener(new View.OnClickListener() {
@@ -158,12 +157,11 @@ public class OperatorMeterReadingActivity extends BaseActivity {
             public void onClick(View view) {
 
 
-
-                if (preferences.getInt("State", 0)==state_start){
+                if (preferences.getInt("State", 0) == state_start) {
                     editor.putInt("State", state_pause);
                     editor.apply();
                     updateStatusAndProceed(state_pause);
-                }else if (preferences.getInt("State", 0)==state_pause){
+                } else if (preferences.getInt("State", 0) == state_pause) {
                     editor.putInt("State", state_start);
                     editor.apply();
                     updateStatusAndProceed(state_start);
@@ -183,39 +181,46 @@ public class OperatorMeterReadingActivity extends BaseActivity {
                     if (TextUtils.isEmpty(et_smeter_read.getText())) {
                         Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
                         et_smeter_read.requestFocus();
-                    } else if (TextUtils.isEmpty(image)) {
+                    } else if (flag) {
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .start(OperatorMeterReadingActivity.this);
+                        flag = false;
+                        isStartImage = true;
                     } else {
-                        editor.clear();
-                        editor.commit();
-
+                        editor.putInt("systemClockTime",0);
+                        editor.apply();
                         editor.putInt("State", state_start);
                         editor.apply();
                         updateStatusAndProceed(state_start);
+                        flag = true;
                     }
                 }
             }
-
-
         });
 
         btnStopService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(et_emeter_read.getText()))
-                {
+                if (TextUtils.isEmpty(et_emeter_read.getText())) {
                     Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
                     et_emeter_read.requestFocus();
-                }else {
-                    image ="";
+
+                } else if (flag) {
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .start(OperatorMeterReadingActivity.this);
+                    isStartImage = false;
+                    flag = false;
+                } else {
                     stopService();
                     editor.putInt("State", state_stop);
                     editor.apply();
                     updateStatusAndProceed(state_stop);
-
-
+                    flag = true;
+                    image = "";
+                    clearReadingImages();
+                    et_smeter_read.requestFocus();
                 }
             }
         });
@@ -227,9 +232,9 @@ public class OperatorMeterReadingActivity extends BaseActivity {
                         //double longitude = intent.getDoubleExtra(LocationBroadcastService.EXTRA_LONGITUDE, 0);
                         tv_text.setText("TIME: " + timestr);
                         tv_text.setText(timestr);
-                         totalHours = intent.getIntExtra("TOTAL_HOURS",0);
-                         currentHours = intent.getIntExtra("CURRENT_HOURS",0);
-                        hours =currentHours;
+                        totalHours = intent.getIntExtra("TOTAL_HOURS", 0);
+                        currentHours = intent.getIntExtra("CURRENT_HOURS", 0);
+                        hours = currentHours;
                         if (!TextUtils.isEmpty(timestr)) {
                            /* Log.e("current Time", timestr);
                             Log.e("Total_hours", "" + totalHours);
@@ -240,7 +245,6 @@ public class OperatorMeterReadingActivity extends BaseActivity {
                 }, new IntentFilter(ForegroundService.ACTION_LOCATION_BROADCAST)
         );
     }
-
 
 
     public void startService() {
@@ -263,22 +267,22 @@ public class OperatorMeterReadingActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("method--","---OnResume");
+        Log.e("method--", "---OnResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("method--","---OnPause");
+        Log.e("method--", "---OnPause");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("method--2","---OnDestroy");
+        Log.e("method--2", "---OnDestroy");
     }
 
-    public void saveOperatorStateData(String machine_id,String workTime,String status,String lat,String lon,String meter_reading,int hours,int totalHours,String image){
+    public void saveOperatorStateData(String machine_id, String workTime, String status, String lat, String lon, String meter_reading, int hours, int totalHours, String image) {
         OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
         operatorRequestResponseModel.setMachine_id("MachineId");
         operatorRequestResponseModel.setWorkTime(workTime);
@@ -290,26 +294,36 @@ public class OperatorMeterReadingActivity extends BaseActivity {
         operatorRequestResponseModel.setTotalHours(totalHours);
         operatorRequestResponseModel.setImage(image);
         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(operatorRequestResponseModel);
-        List<OperatorRequestResponseModel> list =  DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+        List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
         for (int i = 0; i < list.size(); i++) {
             //Log.e("method--2","---"+list.get(i).getStatus());
-            if (false){
+            if (false) {
                 //DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().deleteSinglSynccedOperatorRecord(list.get(i).get_id());
-                Glide.with(this)
-                        .applyDefaultRequestOptions(requestOptions)
-                        .load(Uri.parse(list.get(0).getImage()))
-                        .into(img_start_meter);
+
+                if (isStartImage) {
+                    Glide.with(this)
+                            .applyDefaultRequestOptions(requestOptions)
+                            .load(image)   //Uri.parse(list.get(0).getImage()))
+                            .into(img_start_meter);
+                } else {
+                    Glide.with(this)
+                            .applyDefaultRequestOptions(requestOptions)
+                            .load(image)
+                            .into(img_end_meter);
+                }
+
+
             }
-            Log.e("method--2","---"+list.get(i).getStatus());
-            Glide.with(this)
+            Log.e("method--2", "---" + list.get(i).getStatus());
+           /* Glide.with(this)
                     .applyDefaultRequestOptions(requestOptions)
                     .load(image)
-                    .into(img_start_meter);
+                    .into(img_start_meter);*/
+
+            Log.e("method--", "---"+new Gson().toJson(list.get(i)));
         }
 
     }
-
-
 
 
     @Override
@@ -320,20 +334,47 @@ public class OperatorMeterReadingActivity extends BaseActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                Glide.with(this)
+                /*Glide.with(this)
                         .applyDefaultRequestOptions(requestOptions)
                         .load("")//new File(resultUri.getPath()
-                        .into(img_start_meter);
+                        .into(img_start_meter);*/
                 image = resultUri.toString();
                 File file = new File(resultUri.getPath());
-               // image = file.getAbsolutePath();
-
+                // image = file.getAbsolutePath();
+/*
                 Glide.with(this)
                         .applyDefaultRequestOptions(requestOptions)
                         .load(image)
-                        .into(img_start_meter);
+                        .into(img_start_meter);*/
+                if (isStartImage) {
+                    Glide.with(this)
+                            .applyDefaultRequestOptions(requestOptions)
+                            .load(image)   //Uri.parse(list.get(0).getImage()))
+                            .into(img_start_meter);
+                } else {
+                    Glide.with(this)
+                            .applyDefaultRequestOptions(requestOptions)
+                            .load(image)
+                            .into(img_end_meter);
+                }
+
+
             }
 
         }
     }
+
+    public void clearReadingImages(){
+
+            Glide.with(this)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load("")   //Uri.parse(list.get(0).getImage()))
+                    .into(img_start_meter);
+
+            Glide.with(this)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load("")
+                    .into(img_end_meter);
+        }
+
 }
