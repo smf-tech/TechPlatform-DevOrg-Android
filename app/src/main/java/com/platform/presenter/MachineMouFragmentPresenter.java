@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
+import com.platform.models.SujalamSuphalam.MachineDetailData;
 import com.platform.models.events.CommonResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Constants;
@@ -17,6 +19,7 @@ import java.lang.ref.WeakReference;
 public class MachineMouFragmentPresenter  implements APIPresenterListener {
     private WeakReference<MachineMouFirstFragment> fragmentWeakReference;
     private final String TAG = StructureMachineListFragmentPresenter.class.getName();
+    public static final String CREATE_MACHINE = "cretaeMachine";
     public static final String UPDATE_MACHINE_STATUS = "updateMachineStatus";
     public static final String UPDATE_STRUCTURE_STATUS = "updateStructureStatus";
 
@@ -26,6 +29,19 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
 
     public void clearData() {
         fragmentWeakReference = null;
+    }
+
+    public void createMachine(MachineDetailData machineDetailData) {
+        Gson gson = new GsonBuilder().create();
+        fragmentWeakReference.get().showProgressBar();
+        String paramjson = gson.toJson(machineDetailData);
+        final String createMachineUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.CRETAE_MACHINE);
+        Log.d(TAG, "createMachineUrl: url" + createMachineUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(CREATE_MACHINE, paramjson, createMachineUrl);
     }
 
     public void updateMachineStructureStatus(String machineId, String machineCode, int statusCode, String type) {

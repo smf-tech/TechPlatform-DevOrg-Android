@@ -94,25 +94,46 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.edt_contract_date:
-                Util.showDateDialogMin(getActivity(), edtContractDate);
+                Util.showAllDateDialog(getActivity(), edtContractDate);
                 break;
             case R.id.edt_rate1_start_date:
                 Util.showDateDialogMin(getActivity(), edtRate1StartDate);
                 break;
             case R.id.edt_rate1_end_date:
-                Util.showDateDialogMin(getActivity(), edtRate1EndDate);
+                if(edtRate1StartDate.getText().toString().length()>0) {
+                    Util.showDateDialogEnableAfterMin(getActivity(), edtRate1EndDate,
+                            edtRate1StartDate.getText().toString());
+                } else  {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_rate1_start_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_rate2_start_date:
                 Util.showDateDialogMin(getActivity(), edtRate2StartDate);
                 break;
             case R.id.edt_rate2_end_date:
-                Util.showDateDialogMin(getActivity(), edtRate2EndDate);
+                if(edtRate2StartDate.getText().toString().length()>0) {
+                    Util.showDateDialogEnableAfterMin(getActivity(), edtRate2EndDate,
+                            edtRate2StartDate.getText().toString());
+                } else  {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_rate2_start_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_rate3_start_date:
                 Util.showDateDialogMin(getActivity(), edtRate3StartDate);
                 break;
             case R.id.edt_rate3_end_date:
-                Util.showDateDialogMin(getActivity(), edtRate3EndDate);
+                if(edtRate3StartDate.getText().toString().length()>0) {
+                    Util.showDateDialogEnableAfterMin(getActivity(), edtRate3EndDate,
+                            edtRate3StartDate.getText().toString());
+                } else  {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_rate3_start_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.btn_third_part_mou:
                 if(isAllDataValid()){

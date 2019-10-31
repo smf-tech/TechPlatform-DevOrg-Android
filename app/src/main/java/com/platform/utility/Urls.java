@@ -123,10 +123,11 @@ public class Urls {
         public static final String GET_SS_MASTER_DATA = "api/masterDataList";
         public static final String GET_SS_STRUCTURE_LIST = "api/structureList";
         public static final String GET_SS_MACHINE_LIST = "api/machineList";
+        public static final String CRETAE_MACHINE = "api/createMachine";
         public static final String UPDATE_STRUCTURE_MACHINE_STATUS = "api/statusChange/%1$s/%2$s/%3$s/%4$s";
         public static final String SUBMIT_MOU = "api/machineMou";
         public static final String GET_MACHINE_DETAILS = "api/machineDetails/%1$s/%2$s";
-        public static final String GET_MACHINE_WORKING_HOURS_RECORD = "api/machineDetails/%1$s/%2$s";
+        public static final String GET_MACHINE_WORKING_HOURS_RECORD = "api/workLog/%1$s/%2$s";
         public static final String MOU_TERMINATE_DEPLOY = "api/MOUTerminateDeployed";
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";

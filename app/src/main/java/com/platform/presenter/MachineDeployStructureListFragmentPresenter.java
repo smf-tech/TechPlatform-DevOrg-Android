@@ -11,7 +11,9 @@ import com.platform.Platform;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.SujalamSuphalam.StructureListAPIResponse;
 import com.platform.models.events.CommonResponse;
+import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.request.APIRequestCall;
+import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
 import com.platform.view.fragments.MachineDeployStructureListFragment;
@@ -33,6 +35,7 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
     public static final String DEPLOY_MACHINE ="deployMachine";
     private static final String KEY_STRUCTURE_ID = "structure_id";
     private static final String KEY_MACHINE_ID = "machine_id";
+    public static final String GET_TALUKAS = "getTalukas";
 
     public MachineDeployStructureListFragmentPresenter(MachineDeployStructureListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -67,6 +70,20 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(DEPLOY_MACHINE, new JSONObject(map).toString(), machineDeployUrl);
+    }
+
+    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        fragmentWeakReference.get().showProgressBar();
+
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+            requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
+        }
     }
 
     public String getStructuresListJson(String districtId, String talukaId, String villageId,
@@ -118,8 +135,16 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
                     if (structureListData.getStatus() == 200) {
                         fragmentWeakReference.get().populateStructureData(requestID, structureListData);
                     }
-                }
-                if (requestID.equalsIgnoreCase(MachineDeployStructureListFragmentPresenter.DEPLOY_MACHINE)) {
+                }else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_TALUKAS)){
+                    JurisdictionLevelResponse jurisdictionLevelResponse
+                            = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+                    if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
+                            && !jurisdictionLevelResponse.getData().isEmpty()
+                            && jurisdictionLevelResponse.getData().size() > 0) {
+                        fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    }
+                } else if (requestID.equalsIgnoreCase(MachineDeployStructureListFragmentPresenter.DEPLOY_MACHINE)) {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
                             MachineDeployStructureListFragmentPresenter.DEPLOY_MACHINE, responseOBJ.getStatus());

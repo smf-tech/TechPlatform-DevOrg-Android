@@ -29,6 +29,8 @@ public class MachineShiftingFormFragmentPresenter implements APIPresenterListene
     private static final String METER_REDAING = "meter_reading";
     private static final String PROVIDED_BY = "diesel_provided_by";
     private static final String IS_DIESEL_FILLED = "is_diesel_filled";
+    private static final String FORM_LAT = "lat";
+    private static final String FORM_LONG = "long";
 
     public MachineShiftingFormFragmentPresenter(MachineShiftingFormFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -40,7 +42,8 @@ public class MachineShiftingFormFragmentPresenter implements APIPresenterListene
 
     public void shiftMachine(String isDieselFilled, String providedBy, String dieselQuantity,
                              String startMeterReading, String travelDistance, String travelTime,
-                             String machineId, String currentStructureId, String newStructureId){
+                             String machineId, String currentStructureId, String newStructureId,
+                             String form_lat, String form_long){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_MACHINE_ID, machineId);
         map.put(CURRENT_STRUCTURE_ID, currentStructureId);
@@ -51,6 +54,8 @@ public class MachineShiftingFormFragmentPresenter implements APIPresenterListene
         map.put(METER_REDAING, startMeterReading);
         map.put(TRAVEL_DISTANCE, travelDistance);
         map.put(TRAVEL_TIME, travelTime);
+        map.put(FORM_LAT, form_lat);
+        map.put(FORM_LONG, form_long);
 
         final String machineShiftUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.SHIFT_MACHINE);

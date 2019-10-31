@@ -543,4 +543,9 @@
     <string name="travel_time">Approximate travel time(Hr) *</string>
     <string name="diesel_provided_by">Diesel provided by</string>
     <string name="provider_last_name">Machine Provider Last name</string>
+    <string name="enter_rate1_start_date">Please select start date for rate 1.</string>
+    <string name="enter_rate2_start_date">Please select start date for rate2.</string>
+    <string name="enter_rate3_start_date">Please select start date for rate3.</string>
+    <string name="deploy">Deploy</string>
+    <string name="create_machine">Create Machine</string>
 </resources>

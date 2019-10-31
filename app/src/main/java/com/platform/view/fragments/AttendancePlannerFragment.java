@@ -53,23 +53,16 @@ import java.util.TimeZone;
 
 public class AttendancePlannerFragment extends Fragment implements View.OnClickListener,
         RadioGroup.OnCheckedChangeListener {
-
     private View plannerView;
     private boolean isMonth = true;
-
     private TextView tvCheckInTime;
     private TextView tvCheckOutTime;
     private TextView tvStatus;
-
-
     private Date selectedDate;
     private boolean isTeamAttendance;
-
     private RelativeLayout attendanceCardLayout;
     private MaterialCalendarView calendarView;
-
     private MonthlyAttendanceFragmentPresenter monthlyAttendanceFragmentPresenter;
-
     private AttendanceDateList attendanceDateList;
     private List<AttendanceDateList> listDateWiseAttendace;
     private ProgressBar progressBar;
@@ -94,15 +87,12 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initView();
     }
 
     private void initView() {
-
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
         requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-
         tvCheckInTime = plannerView.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = plannerView.findViewById(R.id.tv_check_out_time);
         tvStatus = plannerView.findViewById(R.id.tv_status);
@@ -117,7 +107,6 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     .load(Util.getUserObjectFromPref().getProfilePic())
                     .into(ivUserProfilePic);
         }
-
         selectedDate = new Date();
         isTeamAttendance=false;
         listDateWiseAttendace=new ArrayList<AttendanceDateList>();
@@ -385,6 +374,3 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
     }
 
 }
-
-
-

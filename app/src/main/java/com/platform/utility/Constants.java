@@ -343,6 +343,7 @@ public class Constants {
     public static class SSModule{
         public static final String MACHINE_TYPE = "machine";
         public static final String STRUCTURE_TYPE = "structure";
+        public static final Integer MACHINE_CREATE_STATUS_CODE = 100;
         public static final Integer MACHINE_NEW_STATUS_CODE = 101;
         public static final Integer MACHINE_ELIGIBLE_STATUS_CODE = 102;
         public static final Integer MACHINE_NON_ELIGIBLE_STATUS_CODE = 103;

@@ -95,7 +95,12 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             btnFirstPartMou.setOnClickListener(this);
         }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
-        setMachineFirstData();
+        if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+            btnFirstPartMou.setText("Create Machine");
+            setUIForMachineCreate();
+        } else {
+            setMachineFirstData();
+        }
     }
 
     private void setMachineFirstData() {
@@ -112,6 +117,37 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 //        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
 //        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
         etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
+    }
+
+    private void setUIForMachineCreate() {
+        editOwnerType.setFocusable(true);
+        etUniqueIdNumber.setFocusable(true);
+        etMachineDistrict.setFocusable(true);
+        etMachineTaluka.setFocusable(true);
+        etMachineType.setFocusable(true);
+        etYear.setFocusable(true);
+        etMachineMakeModel.setFocusable(true);
+        etMeterWorking.setFocusable(true);
+        etRtoNumber.setFocusable(true);
+        etChasisNumber.setFocusable(true);
+        etExcavationCapacity.setFocusable(true);
+        etDieselCapacity.setFocusable(true);
+    }
+
+    private void setCreateMachineData() {
+        //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy("Sagar Mahajan");
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy(editOwnerType.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode(etUniqueIdNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDistrict(etMachineDistrict.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setTaluka(etMachineTaluka.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachinetype(etMachineType.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setManufacturedYear(etYear.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMakeModel(etMachineMakeModel.getText().toString().trim());
+//        etMeterWorking.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity(etDieselCapacity.getText().toString().trim());
     }
 
     @Override
@@ -187,7 +223,14 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.btn_first_part_mou:
-                ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
+                if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+                    if(isAllDataValid()) {
+
+                        machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
+                    }
+                } else {
+                    ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
+                }
                 break;
             case R.id.btn_eligible:
                 machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
@@ -200,6 +243,27 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                         Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
                 break;
         }
+    }
+
+    public boolean isAllDataValid() {
+        if (TextUtils.isEmpty(editOwnerType.getText().toString().trim())
+                || TextUtils.isEmpty(etUniqueIdNumber.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineType.getText().toString().trim())
+                || TextUtils.isEmpty(etYear.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineMakeModel.getText().toString().trim())
+                || TextUtils.isEmpty(etMeterWorking.getText().toString().trim())
+                || TextUtils.isEmpty(etRtoNumber.getText().toString().trim())
+                || TextUtils.isEmpty(etChasisNumber.getText().toString().trim())
+                || TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())
+                || TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
     }
 
     public void showResponse(String responseStatus, String requestId, int status) {

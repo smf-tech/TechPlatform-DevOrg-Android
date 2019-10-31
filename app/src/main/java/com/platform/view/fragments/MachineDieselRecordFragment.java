@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -49,6 +50,7 @@ import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineDieselRecordFragmentPresenter;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
@@ -106,6 +108,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private int dieselImageCount = 0, registerImageCount = 0;
     private String imageType, selectedDate;
     private ImageView clickedImageView;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,6 +167,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 ddFormat.format(calendarView.getSelectedDate().getDate());
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
+        gpsTracker = new GPSTracker(getActivity());
     }
 
     @Override
@@ -208,13 +213,22 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 break;
             case R.id.btn_add:
                 if(etDieselQuantity.getText().toString()!=null && etDieselQuantity.getText().toString().length()>0) {
-                    MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
-                    machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
-                            "00:00"));
-                    machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
-                    machineDieselRecord.setMachineId(machineId);
-                    machineDieselRecord.setStructureId(currentStructureId);
-                    machineDieselRecordsList.add(machineDieselRecord);
+                    if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+                        location = gpsTracker.getLocation();
+                        if (location != null) {
+                            MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
+                            machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
+                                    "00:00"));
+                            machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
+                            machineDieselRecord.setMachineId(machineId);
+                            machineDieselRecord.setStructureId(currentStructureId);
+                            machineDieselRecordsList.add(machineDieselRecord);
+                        } else {
+                            Util.showToast("Unable to get location", getActivity());
+                        }
+                    }  else {
+                        gpsTracker.showSettingsAlert();
+                    }
                     machineDieselRecordsAdapter.notifyDataSetChanged();
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -414,6 +428,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(machineDieselRecordsList));
+                params.put("lat", String.valueOf(location.getLatitude()));
+                params.put("long ", String.valueOf(location.getLongitude()));
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }

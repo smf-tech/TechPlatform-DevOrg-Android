@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -34,6 +35,7 @@ import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.events.CommonResponse;
 import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineMouFourthFragmentPresenter;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
@@ -55,6 +57,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private ArrayList<CustomSpinnerObject> isTrainingDoneList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> isAppInstalledList = new ArrayList<>();
     private String selectedtrainingOption, selectedAppInstalledOption;
+    private GPSTracker gpsTracker;
+    private Location location;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +105,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         optionNo.setSelected(false);
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
+        gpsTracker = new GPSTracker(getActivity());
         machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
     }
 
@@ -124,6 +129,13 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         List<String> operatorImages  = new ArrayList();
         operatorImages.add("www.google.com");
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setOperatorImages(operatorImages);
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            location = gpsTracker.getLocation();
+            if (location != null) {
+                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+            }
+        }
         machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
     }
 

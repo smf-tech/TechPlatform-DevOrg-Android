@@ -23,6 +23,7 @@ import com.platform.models.SujalamSuphalam.MouDetails;
 import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.SujalamSuphalam.ProviderInformation;
 import com.platform.presenter.MachineMouActivityPresenter;
+import com.platform.utility.Constants;
 import com.platform.view.fragments.MachineMouFirstFragment;
 import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
@@ -53,21 +54,22 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         ivBackIcon.setOnClickListener(this);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
-        toolbar_title.setText(R.string.machine_mou_form);
 
         machineMouActivityPresenter = new MachineMouActivityPresenter(this);
 
         if(getIntent().getStringExtra("SwitchToFragment")!=null){
             if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
-                machineId = getIntent().getStringExtra("machineId");
-                statusCode = getIntent().getIntExtra("statusCode",0);
-                machineDetailData = new MachineDetailData();
-                machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
-//                fManager = getSupportFragmentManager();
-//                fragment = new MachineMouFirstFragment();
-//                FragmentTransaction fTransaction = fManager.beginTransaction();
-//                fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
-//                        .commit();
+                if(getIntent().getIntExtra("statusCode", 0) ==
+                        Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+                    statusCode = getIntent().getIntExtra("statusCode",0);
+                    toolbar_title.setText(R.string.create_machine);
+                } else {
+                    toolbar_title.setText(R.string.machine_mou_form);
+                    machineId = getIntent().getStringExtra("machineId");
+                    statusCode = getIntent().getIntExtra("statusCode",0);
+                    machineDetailData = new MachineDetailData();
+                    machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
+                }
             }
         }
     }
