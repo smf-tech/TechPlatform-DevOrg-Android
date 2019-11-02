@@ -70,7 +70,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
-                android:id="@+id/license_image"
+                android:id="@+id/img_license"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"

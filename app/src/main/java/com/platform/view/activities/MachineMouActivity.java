@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
 import com.platform.view.fragments.MachineMouThirdFragment;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
@@ -42,6 +44,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private String machineId;
     private int statusCode;
     private MachineMouActivityPresenter machineMouActivityPresenter;
+    private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,10 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                         Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
                     statusCode = getIntent().getIntExtra("statusCode",0);
                     toolbar_title.setText(R.string.create_machine);
+                    fManager = getSupportFragmentManager();
+                    fragment = new MachineMouFirstFragment();
+                    FragmentTransaction fTransaction = fManager.beginTransaction();
+                    fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
                 } else {
                     toolbar_title.setText(R.string.machine_mou_form);
                     machineId = getIntent().getStringExtra("machineId");
@@ -103,6 +110,14 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     public MachineDetailData getMachineDetailData() {
         return machineDetailData;
     }
+
+    public HashMap<String, Bitmap> getImageHashmap() {
+        return imageHashmap;
+    }
+
+//    public void setImageHashmap(HashMap<String, Bitmap> imageHashmap) {
+//        this.imageHashmap = imageHashmap;
+//    }
 
     public void setMachineDetailData(MachineDetailData machineDetail) {
         this.machineDetailData = machineDetail;

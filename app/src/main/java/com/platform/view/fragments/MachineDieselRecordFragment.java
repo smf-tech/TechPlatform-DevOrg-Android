@@ -91,8 +91,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private RecyclerView rvDieselRecords;
     private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
     private boolean isMonth = true;
-    private MaterialCalendarView calendarView;private final ArrayList<MachineDieselRecord>
-            machineDieselRecordsList = new ArrayList<>();
+    private MaterialCalendarView calendarView;
+    private final ArrayList<MachineDieselRecord> machineDieselRecordsList = new ArrayList<>();
     private int selectedMonth;
     SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
     SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
