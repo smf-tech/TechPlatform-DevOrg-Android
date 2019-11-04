@@ -40,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
@@ -50,6 +51,7 @@ import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MachineWorkingHoursAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -309,6 +311,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
+    private void backToMachineList(){
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        getActivity().startActivity(intent);
+    }
+
     private void uploadImage(){
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -319,6 +330,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
                             Log.d("response -",jsonString);
+                            backToMachineList();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -377,10 +389,12 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     public void setWorkingHoursData(MachineWorkingHoursRecord machineWorkingHoursRecord) {
         //set data received in api
         etWorkingHours.setText(machineWorkingHoursRecord.getWorkingHours());
-        if(machineWorkingHoursRecord.getMisStatus().equalsIgnoreCase("approved") ||
-                machineWorkingHoursRecord.getMisStatus().equalsIgnoreCase("rejected")) {
+        if(machineWorkingHoursRecord.isActionTaken()) {
             btnMatch.setClickable(false);
             btnMismatch.setClickable(false);
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "You have already validated working hors for this date.",
+                    Snackbar.LENGTH_LONG);
         }
     }
 
@@ -451,12 +465,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 machineWorkingHoursRecord.setStructureAssigned(currentStructureId);
                 machineWorkingHoursRecord.setWorkingDate(selectedDate.getTime());
                 machineWorkingHoursRecord.setWorkingHours(etWorkingHours.getText().toString());
-                machineWorkingHoursRecord.setWorkingStatus("false");
+                machineWorkingHoursRecord.setWorkingStatus(true);
                 machineWorkingHoursList.add(machineWorkingHoursRecord);
-//                machineWorkingHoursRecord.setMachineId(machineId);
-//                machineWorkingHoursRecord.setWorkingDate(selectedDate.getTime());
-//                machineWorkingHoursRecord.setWorkingStatus("false");
-//                machineWorkingHoursList.add(machineWorkingHoursRecord);
                 btnMatch.setClickable(false);
                 btnMismatch.setClickable(false);
                 machineWorkingHoursAdapter.notifyDataSetChanged();
@@ -467,7 +477,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 machineWorkingHoursRecord2.setStructureAssigned(currentStructureId);
                 machineWorkingHoursRecord2.setWorkingDate(selectedDate.getTime());
                 machineWorkingHoursRecord2.setWorkingHours(etWorkingHours.getText().toString());
-                machineWorkingHoursRecord2.setWorkingStatus("true");
+                machineWorkingHoursRecord2.setWorkingStatus(false);
                 machineWorkingHoursList.add(machineWorkingHoursRecord2);
                 btnMatch.setClickable(false);
                 btnMismatch.setClickable(false);
@@ -483,7 +493,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 break;
             case R.id.btn_submit:
                 uploadImage();
-                machineVisitValidationFragmentPresenter.submitWorkingHours();
+                //machineVisitValidationFragmentPresenter.submitWorkingHours();
                 break;
         }
     }

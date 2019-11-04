@@ -35,16 +35,16 @@
                     android:hint="@string/machine_owned_by"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+                <!--style="@style/textinputstyle"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <EditText
-                    android:id="@+id/et_uniqueId_number"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/mou_id"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                <!--<EditText-->
+                    <!--android:id="@+id/et_uniqueId_number"-->
+                    <!--style="@style/RegistrationEditTextLayout"-->
+                    <!--android:hint="@string/mou_id"/>-->
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

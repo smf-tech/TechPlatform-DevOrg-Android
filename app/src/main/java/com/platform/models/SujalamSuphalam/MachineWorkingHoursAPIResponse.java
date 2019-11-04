@@ -10,7 +10,7 @@ public class MachineWorkingHoursAPIResponse {
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("data")
+    @SerializedName("result")
     @Expose
     private MachineWorkingHoursRecord data = null;
 

@@ -31,7 +31,9 @@
                         android:id="@+id/et_reason"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="reason for non utilization of machine"
-                        android:inputType="textMultiLine"/>
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

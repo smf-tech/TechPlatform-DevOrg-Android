@@ -71,13 +71,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"/>
+                    android:text="Status"/>
 
                 <TextView
                     android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mismatch"
                     android:layout_marginTop="@dimen/dimen_05dp"/>
 
             </LinearLayout>

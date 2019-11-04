@@ -27,6 +27,7 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.common.CustomSpinnerObject;
@@ -62,8 +63,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private ArrayList<CustomSpinnerObject> isMeterWorkingList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> manufactureYearsList = new ArrayList<>();
-    private String selectedOwner, selectedTaluka, selectedMachine, selectedMakeModel,
-            selectedIsMeterWorking, selectedYear;
+    private String selectedOwner, selectedOwnerId, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedMachine,
+            selectedMachineId, selectedMakeModel, selectedMakeModelId,
+            selectedIsMeterWorking, selectedYear, selectedYearId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
-        etUniqueIdNumber = machineMouFragmentView.findViewById(R.id.et_uniqueId_number);
+//        etUniqueIdNumber = machineMouFragmentView.findViewById(R.id.et_uniqueId_number);
         etMachineDistrict = machineMouFragmentView.findViewById(R.id.et_machine_district);
         etMachineTaluka = machineMouFragmentView.findViewById(R.id.et_machine_taluka);
         etMachineType = machineMouFragmentView.findViewById(R.id.et_machine_type);
@@ -125,8 +127,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private void setMachineFirstData() {
         editOwnerType.setFocusable(false);
         editOwnerType.setLongClickable(false);
-        etUniqueIdNumber.setFocusable(false);
-        etUniqueIdNumber.setLongClickable(false);
+//        etUniqueIdNumber.setFocusable(false);
+//        etUniqueIdNumber.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
         etMachineDistrict.setLongClickable(false);
         etMachineTaluka.setFocusable(false);
@@ -148,7 +150,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etDieselCapacity.setFocusable(false);
         etDieselCapacity.setLongClickable(false);
         editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
-        etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
+        //etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
         etMachineDistrict.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDistrict());
         etMachineTaluka.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getTaluka());
         etMachineType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachinetype());
@@ -164,8 +166,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private void setUIForMachineCreate() {
         editOwnerType.setFocusable(false);
         editOwnerType.setLongClickable(false);
-        etUniqueIdNumber.setFocusable(true);
-        etUniqueIdNumber.setLongClickable(true);
+//        etUniqueIdNumber.setFocusable(true);
+//        etUniqueIdNumber.setLongClickable(true);
         etMachineDistrict.setFocusable(false);
         etMachineDistrict.setLongClickable(false);
         etMachineTaluka.setFocusable(false);
@@ -190,12 +192,14 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         editOwnerType.setOnClickListener(this);
         //etMachineTaluka.setOnClickListener(this);
         etMachineType.setOnClickListener(this);
+        etYear.setOnClickListener(this);
         etMachineMakeModel.setOnClickListener(this);
         etMeterWorking.setOnClickListener(this);
 
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
             etMachineDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
         }
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
@@ -277,24 +281,30 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     private void setCreateMachineData() {
+        MachineData machineData = new MachineData();
+        ((MachineMouActivity) getActivity()).getMachineDetailData().setMachine(machineData);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy
-                (editOwnerType.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode
-                (etUniqueIdNumber.getText().toString().trim());
+                (selectedOwnerId);
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode
+//                (etUniqueIdNumber.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDistrict
-                (etMachineDistrict.getText().toString().trim());
+                (selectedDistrictId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setTaluka
-                (etMachineTaluka.getText().toString().trim());
+                (selectedTalukaId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachinetype
-                (etMachineType.getText().toString().trim());
+                (selectedMachineId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setManufacturedYear
-                (etYear.getText().toString().trim());
+                (selectedYearId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMakeModel
-                (etMachineMakeModel.getText().toString().trim());
-//        etMeterWorking.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
-//        etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
-//        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
-//        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+                (selectedMakeModelId);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMeterWorking
+                (etMeterWorking.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setRtoNumber
+                (etRtoNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setChasisNumber
+                (etChasisNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setExcavationCapacity
+                (etExcavationCapacity.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
                 (etDieselCapacity.getText().toString().trim());
         machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
@@ -431,11 +441,10 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     public boolean isAllDataValid() {
-        if (selectedOwner != null || TextUtils.isEmpty(etUniqueIdNumber.getText().toString().trim())
-                || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
+        if (selectedOwner.length()==0 || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
                 || TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())
-                || selectedMachine != null || TextUtils.isEmpty(etYear.getText().toString().trim())
-                || selectedMakeModel != null || selectedIsMeterWorking != null
+                || selectedMachine.length()==0 || TextUtils.isEmpty(etYear.getText().toString().trim())
+                || selectedMakeModel.length()==0 || selectedIsMeterWorking.length()==0
                 || TextUtils.isEmpty(etRtoNumber.getText().toString().trim())
                 || TextUtils.isEmpty(etChasisNumber.getText().toString().trim())
                 || TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())
@@ -456,15 +465,17 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 for (CustomSpinnerObject ownershipType : ownershipList) {
                     if (ownershipType.isSelected()) {
                         selectedOwner = ownershipType.getName();
+                        selectedOwnerId = ownershipType.get_id();
                         break;
                     }
                 }
                 editOwnerType.setText(selectedOwner);
                 break;
             case "Select Taluka":
-                for (CustomSpinnerObject isTurnover : machineTalukaList) {
-                    if (isTurnover.isSelected()) {
-                        selectedTaluka = isTurnover.getName();
+                for (CustomSpinnerObject taluka : machineTalukaList) {
+                    if (taluka.isSelected()) {
+                        selectedTaluka = taluka.getName();
+                        selectedTalukaId = taluka.get_id();
                         break;
                     }
                 }
@@ -474,6 +485,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 for (CustomSpinnerObject accountType : machineTypesList) {
                     if (accountType.isSelected()) {
                         selectedMachine = accountType.getName();
+                        selectedMachineId = accountType.get_id();
                         break;
                     }
                 }
@@ -483,6 +495,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 for (CustomSpinnerObject accountType : makeModelList) {
                     if (accountType.isSelected()) {
                         selectedMakeModel = accountType.getName();
+                        selectedMakeModelId = accountType.get_id();
                         break;
                     }
                 }
@@ -501,6 +514,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 for (CustomSpinnerObject accountType : manufactureYearsList) {
                     if (accountType.isSelected()) {
                         selectedYear = accountType.getName();
+                        selectedYearId = accountType.get_id();
                         break;
                     }
                 }

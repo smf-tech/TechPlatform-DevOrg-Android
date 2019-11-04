@@ -1,6 +1,7 @@
 package com.platform.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,13 +19,28 @@ import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
+import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.SujalamSuphalam.MasterDataList;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
+import com.platform.models.common.CustomSpinnerObject;
+import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineNonUtilizationFragmentPresenter;
 import com.platform.presenter.SiltTransportationRecordFragmentPresenter;
 import com.platform.utility.Util;
+import com.platform.view.activities.SSActionsActivity;
+import com.platform.view.customs.CustomSpinnerDialogClass;
 
-public class MachineNonUtilizationFragment extends Fragment implements View.OnClickListener, APIDataListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MachineNonUtilizationFragment extends Fragment implements View.OnClickListener, APIDataListener,
+        CustomSpinnerListener {
 
     private View siltTransportationRecordFragmentView;
     private ProgressBar progressBar;
@@ -34,7 +50,8 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
     private final String TAG = MachineNonUtilizationFragment.class.getName();
     private Button btnSubmit;
     private EditText etReason, etOtherReason;
-    private String selectedReason="", otherReason="";
+    private String selectedReason="", selectedReasonId ="101", otherReason="";
+    private ArrayList<CustomSpinnerObject> reasonsList = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +84,27 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
         etOtherReason.setOnClickListener(this);
         btnSubmit = siltTransportationRecordFragmentView.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+        masterDataList.size();
+        for(int i = 0; i<masterDataList.size(); i++) {
+            if(masterDataList.get(i).getForm().equals("machine_nonutilisation") && masterDataList.get(i).
+                    getField().equals("machineNonUtilisation")) {
+                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setSelected(false);
+                    reasonsList.add(customSpinnerObject);
+                }
+            }
+        }
     }
 
     private boolean isAllDataValid() {
@@ -98,11 +136,35 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.et_reason) {
-
+            CustomSpinnerDialogClass cddReason = new CustomSpinnerDialogClass(getActivity(), this,
+                    "Select Reason", reasonsList, false);
+            cddReason.show();
+            cddReason.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
         }
         if(view.getId() == R.id.btn_submit) {
             if(isAllDataValid()){
-                //machineNonUtilizationFragmentPresenter
+                if(otherReason.length()>0) {
+                    machineNonUtilizationFragmentPresenter.submitNonUtilization(machineId, selectedReasonId, otherReason);
+                } else {
+                    machineNonUtilizationFragmentPresenter.submitNonUtilization(machineId, selectedReasonId, otherReason);
+                }
+            }
+        }
+    }
+
+    public void showResponse(String responseStatus, String requestId, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if(requestId.equals(MachineNonUtilizationFragmentPresenter.NON_UTILIZATION)){
+            if(status == 200){
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                intent.putExtra("viewType", 2);
+                intent.putExtra("title", "Machine List");
+                getActivity().startActivity(intent);
             }
         }
     }
@@ -145,5 +207,19 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
     @Override
     public void closeCurrentActivity() {
         getActivity().finish();
+    }
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        if(type.equals("Select Reason")) {
+            for (CustomSpinnerObject reason : reasonsList) {
+                if (reason.isSelected()) {
+                    selectedReason = reason.getName();
+                    selectedReasonId = reason.get_id();
+                    break;
+                }
+            }
+            etReason.setText(selectedReason);
+        }
     }
 }

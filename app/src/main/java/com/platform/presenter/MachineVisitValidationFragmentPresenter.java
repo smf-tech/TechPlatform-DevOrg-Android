@@ -60,7 +60,7 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
         map.put("machine_id", machineId);
         map.put("log_date", selectedDate);
         final String getWorkingHoursRecordUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD, selectedDate, machineId);
+                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD);
         Log.d(TAG, "getWorkingHoursRecordUrl: url " + getWorkingHoursRecordUrl);
             requestCall.postDataApiCall(GET_WORKING_HOURS_RECORD, new JSONObject(map).toString(), getWorkingHoursRecordUrl);
     }
