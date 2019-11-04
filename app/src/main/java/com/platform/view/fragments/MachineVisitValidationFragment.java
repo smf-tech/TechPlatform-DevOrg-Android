@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -45,6 +46,7 @@ import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineVisitValidationFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
@@ -99,6 +101,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
     private ImageView clickedImageView;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -156,6 +160,10 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
         etWorkingHours.setText("9:30");
+        gpsTracker = new GPSTracker(getActivity());
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            location = gpsTracker.getLocation();
+        }
     }
 
     private void setCalendar() {
@@ -302,7 +310,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     }
 
     private void uploadImage(){
-
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -329,6 +336,10 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(machineWorkingHoursList));
+                if(location != null) {
+                    params.put("lat", String.valueOf(location.getLatitude()));
+                    params.put("long ", String.valueOf(location.getLongitude()));
+                }
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
@@ -363,9 +374,14 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         return byteArrayOutputStream.toByteArray();
     }
 
-    public void setData() {
+    public void setWorkingHoursData(MachineWorkingHoursRecord machineWorkingHoursRecord) {
         //set data received in api
-
+        etWorkingHours.setText(machineWorkingHoursRecord.getWorkingHours());
+        if(machineWorkingHoursRecord.getMisStatus().equalsIgnoreCase("approved") ||
+                machineWorkingHoursRecord.getMisStatus().equalsIgnoreCase("rejected")) {
+            btnMatch.setClickable(false);
+            btnMismatch.setClickable(false);
+        }
     }
 
     @Override
@@ -432,13 +448,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             case R.id.btn_match:
                 MachineWorkingHoursRecord machineWorkingHoursRecord = new MachineWorkingHoursRecord();
                 machineWorkingHoursRecord.setMachineId(machineId);
-                machineWorkingHoursRecord.setWorkingDate(847478928);
+                machineWorkingHoursRecord.setStructureAssigned(currentStructureId);
+                machineWorkingHoursRecord.setWorkingDate(selectedDate.getTime());
+                machineWorkingHoursRecord.setWorkingHours(etWorkingHours.getText().toString());
                 machineWorkingHoursRecord.setWorkingStatus("false");
                 machineWorkingHoursList.add(machineWorkingHoursRecord);
-                machineWorkingHoursRecord.setMachineId(machineId);
-                machineWorkingHoursRecord.setWorkingDate(667478928);
-                machineWorkingHoursRecord.setWorkingStatus("false");
-                machineWorkingHoursList.add(machineWorkingHoursRecord);
+//                machineWorkingHoursRecord.setMachineId(machineId);
+//                machineWorkingHoursRecord.setWorkingDate(selectedDate.getTime());
+//                machineWorkingHoursRecord.setWorkingStatus("false");
+//                machineWorkingHoursList.add(machineWorkingHoursRecord);
                 btnMatch.setClickable(false);
                 btnMismatch.setClickable(false);
                 machineWorkingHoursAdapter.notifyDataSetChanged();
@@ -447,7 +465,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 MachineWorkingHoursRecord machineWorkingHoursRecord2 = new MachineWorkingHoursRecord();
                 machineWorkingHoursRecord2.setMachineId(machineId);
                 machineWorkingHoursRecord2.setStructureAssigned(currentStructureId);
-                machineWorkingHoursRecord2.setWorkingDate(439848982);
+                machineWorkingHoursRecord2.setWorkingDate(selectedDate.getTime());
                 machineWorkingHoursRecord2.setWorkingHours(etWorkingHours.getText().toString());
                 machineWorkingHoursRecord2.setWorkingStatus("true");
                 machineWorkingHoursList.add(machineWorkingHoursRecord2);
@@ -477,7 +495,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         btnMatch.setClickable(true);
         btnMismatch.setClickable(true);
         if(Util.isConnected(getContext())) {
-            //machineVisitValidationFragmentPresenter.getWorkingHourDetails(selectedDate.getTime(), machineId);
+            machineVisitValidationFragmentPresenter.getWorkingHoursDetails(String.valueOf(selectedDate.getTime()), machineId);
         }else{
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }

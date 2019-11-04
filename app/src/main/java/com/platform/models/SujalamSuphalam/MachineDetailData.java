@@ -17,6 +17,12 @@ public class MachineDetailData {
     @SerializedName("mou_details")
     @Expose
     private MouDetails mouDetails;
+    @SerializedName("lat")
+    @Expose
+    private String formLat;
+    @SerializedName("long")
+    @Expose
+    private String formLong;
 
     public MachineData getMachine() {
         return machine;
@@ -48,5 +54,21 @@ public class MachineDetailData {
 
     public void setMouDetails(MouDetails mouDetails) {
         this.mouDetails = mouDetails;
+    }
+
+    public String getFormLat() {
+        return formLat;
+    }
+
+    public void setFormLat(String formLat) {
+        this.formLat = formLat;
+    }
+
+    public String getFormLong() {
+        return formLong;
+    }
+
+    public void setFormLong(String formLong) {
+        this.formLong = formLong;
     }
 }

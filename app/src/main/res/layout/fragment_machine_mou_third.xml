@@ -35,13 +35,13 @@
                 <EditText
                     android:id="@+id/edt_contract_date"
                     style="@style/RegistrationEditTextLayout"
-                    android:clickable="false"
                     android:drawableEnd="@drawable/ic_cal_event"
+                    android:clickable="false"
                     android:focusable="false"
+                    android:longClickable="false"
                     android:hint="@string/contract_date"
                     android:inputType="date"
-                    tools:ignore="Autofill"
-                    android:longClickable="false"/>
+                    tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
@@ -42,6 +44,8 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     private MachineShiftingFormFragmentPresenter machineShiftingFormFragmentPresenter;
     private ArrayList<CustomSpinnerObject> isDieselFilledOptionsList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> isDieselProvidedByList = new ArrayList<>();
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         etTravelTime.setOnClickListener(this);
         btnSubmit = machineShiftingFormFragmentView.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
+        gpsTracker = new GPSTracker(getActivity());
     }
 
     @Override
@@ -194,11 +199,20 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     }
 
     private void submitShiftingForm(){
-        machineShiftingFormFragmentPresenter.shiftMachine(etIsDieselFilled.getText().toString().trim(),
-                etProvideBy.getText().toString().trim(), etDieselQuantity.getText().toString().trim(),
-                etstartMeterReading.getText().toString().trim(), etTravelDistance.getText().toString().trim(),
-                etTravelTime.getText().toString().trim(), machineId, currentStructureId,
-                newStructureId);
+        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            location = gpsTracker.getLocation();
+            if (location != null) {
+                machineShiftingFormFragmentPresenter.shiftMachine(etIsDieselFilled.getText().toString().trim(),
+                        etProvideBy.getText().toString().trim(), etDieselQuantity.getText().toString().trim(),
+                        etstartMeterReading.getText().toString().trim(), etTravelDistance.getText().toString().trim(),
+                        etTravelTime.getText().toString().trim(), machineId, currentStructureId,
+                        newStructureId, String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        } else {
+                Util.showToast("Unable to get location.", getActivity());
+        }
     }
 
     public void showResponse(String responseStatus, String requestId, int status) {

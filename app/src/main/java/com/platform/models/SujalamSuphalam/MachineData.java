@@ -34,23 +34,6 @@ public class MachineData  implements Serializable {
     @SerializedName("disel_tank_capacity")
     @Expose
     private String diselTankCapacity;
-
-    public String getProviderName() {
-        return providerName;
-    }
-
-    public void setProviderName(String providerName) {
-        this.providerName = providerName;
-    }
-
-    public String getProviderContactNumber() {
-        return providerContactNumber;
-    }
-
-    public void setProviderContactNumber(String providerContactNumber) {
-        this.providerContactNumber = providerContactNumber;
-    }
-
     @SerializedName("provider_name")
     @Expose
     private String providerName;
@@ -161,5 +144,20 @@ public class MachineData  implements Serializable {
 
     public void setDeployedStrutureId(String deployedStrutureId) {
         this.deployedStrutureId = deployedStrutureId;
+    }
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getProviderContactNumber() {
+        return providerContactNumber;
+    }
+
+    public void setProviderContactNumber(String providerContactNumber) {
+        this.providerContactNumber = providerContactNumber;
     }
 }

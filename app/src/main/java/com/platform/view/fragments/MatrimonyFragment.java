@@ -350,13 +350,11 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 break;
             case R.id.btn_register_profile:
                 showReasonDialog(getActivity(),0);
-
                 break;
             case R.id.btn_view_profiles:
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
                 startMain.putExtra("mobileNumber",mobileNumberEntered);
-
                 startActivity(startMain);
                 break;
         }

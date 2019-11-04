@@ -7,27 +7,27 @@ public class RateDetail {
 
     @SerializedName("from_date")
     @Expose
-    private Integer fromDate;
+    private long fromDate;
     @SerializedName("to_date")
     @Expose
-    private Integer toDate;
+    private long toDate;
     @SerializedName("value")
     @Expose
     private String value;
 
-    public Integer getFromDate() {
+    public long getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Integer fromDate) {
+    public void setFromDate(long fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Integer getToDate() {
+    public long getToDate() {
         return toDate;
     }
 
-    public void setToDate(Integer toDate) {
+    public void setToDate(long toDate) {
         this.toDate = toDate;
     }
 

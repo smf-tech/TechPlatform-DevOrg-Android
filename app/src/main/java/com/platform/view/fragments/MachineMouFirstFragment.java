@@ -20,10 +20,18 @@ import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.SujalamSuphalam.MasterDataList;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.profile.Location;
+import com.platform.models.user.UserInfo;
 import com.platform.presenter.MachineMouFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
@@ -32,8 +40,11 @@ import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class MachineMouFirstFragment extends Fragment  implements APIDataListener, CustomSpinnerListener, View.OnClickListener {
+public class MachineMouFirstFragment extends Fragment  implements APIDataListener, CustomSpinnerListener,
+        View.OnClickListener {
     private View machineMouFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -45,6 +56,14 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
     private int statusCode;
+    private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineTypesList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> makeModelList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> isMeterWorkingList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> manufactureYearsList = new ArrayList<>();
+    private String selectedOwner, selectedTaluka, selectedMachine, selectedMakeModel,
+            selectedIsMeterWorking, selectedYear;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,11 +114,39 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             btnFirstPartMou.setOnClickListener(this);
         }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
-        setMachineFirstData();
+        if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+            btnFirstPartMou.setText("Create Machine");
+            setUIForMachineCreate();
+        } else {
+            setMachineFirstData();
+        }
     }
 
     private void setMachineFirstData() {
-        //((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy("Sagar Mahajan");
+        editOwnerType.setFocusable(false);
+        editOwnerType.setLongClickable(false);
+        etUniqueIdNumber.setFocusable(false);
+        etUniqueIdNumber.setLongClickable(false);
+        etMachineDistrict.setFocusable(false);
+        etMachineDistrict.setLongClickable(false);
+        etMachineTaluka.setFocusable(false);
+        etMachineTaluka.setLongClickable(false);
+        etMachineType.setFocusable(false);
+        etMachineType.setLongClickable(false);
+        etYear.setFocusable(false);
+        etYear.setLongClickable(false);
+        etMachineMakeModel.setFocusable(false);
+        etMachineMakeModel.setLongClickable(false);
+        etMeterWorking.setFocusable(false);
+        etMeterWorking.setLongClickable(false);
+        etRtoNumber.setFocusable(false);
+        etRtoNumber.setLongClickable(false);
+        etChasisNumber.setFocusable(false);
+        etChasisNumber.setLongClickable(false);
+        etExcavationCapacity.setFocusable(false);
+        etExcavationCapacity.setLongClickable(false);
+        etDieselCapacity.setFocusable(false);
+        etDieselCapacity.setLongClickable(false);
         editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
         etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
         etMachineDistrict.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDistrict());
@@ -112,6 +159,145 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 //        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
 //        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
         etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
+    }
+
+    private void setUIForMachineCreate() {
+        editOwnerType.setFocusable(false);
+        editOwnerType.setLongClickable(false);
+        etUniqueIdNumber.setFocusable(true);
+        etUniqueIdNumber.setLongClickable(true);
+        etMachineDistrict.setFocusable(false);
+        etMachineDistrict.setLongClickable(false);
+        etMachineTaluka.setFocusable(false);
+        etMachineTaluka.setLongClickable(false);
+        etMachineType.setFocusable(false);
+        etMachineType.setLongClickable(false);
+        etYear.setFocusable(false);
+        etYear.setLongClickable(false);
+        etMachineMakeModel.setFocusable(false);
+        etMachineMakeModel.setLongClickable(false);
+        etMeterWorking.setFocusable(false);
+        etMeterWorking.setLongClickable(false);
+        etRtoNumber.setFocusable(true);
+        etRtoNumber.setLongClickable(true);
+        etChasisNumber.setFocusable(true);
+        etChasisNumber.setLongClickable(true);
+        etExcavationCapacity.setFocusable(true);
+        etExcavationCapacity.setLongClickable(true);
+        etDieselCapacity.setFocusable(true);
+        etDieselCapacity.setLongClickable(true);
+
+        editOwnerType.setOnClickListener(this);
+        //etMachineTaluka.setOnClickListener(this);
+        etMachineType.setOnClickListener(this);
+        etMachineMakeModel.setOnClickListener(this);
+        etMeterWorking.setOnClickListener(this);
+
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            etMachineDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+        }
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            etMachineTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+        }
+
+        if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
+            etMachineTaluka.setOnClickListener(this);
+            if(etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length()>0) {
+                UserInfo userInfo = Util.getUserObjectFromPref();
+                machineMouFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                        "5c4ab05cd503a372d0391467",
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            }
+        }
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for(int i = 0; i<masterDataList.size(); i++) {
+            if(masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+                    getField().equals("ownedBy")) {
+                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setSelected(false);
+                    ownershipList.add(customSpinnerObject);
+                }
+            }
+            if(masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+                    getField().equals("machineType")) {
+                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setSelected(false);
+                    machineTypesList.add(customSpinnerObject);
+                }
+            }
+            if(masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+                    getField().equals("machineMake")) {
+                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setSelected(false);
+                    makeModelList.add(customSpinnerObject);
+                }
+            }
+            if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
+                    getField().equals("manufactured_year")) {
+                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setSelected(false);
+                    manufactureYearsList.add(customSpinnerObject);
+                }
+            }
+        }
+        CustomSpinnerObject workingYes = new CustomSpinnerObject();
+        workingYes.setName("Yes");
+        workingYes.set_id("1");
+        workingYes.setSelected(false);
+        isMeterWorkingList.add(workingYes);
+
+        CustomSpinnerObject workingNo = new CustomSpinnerObject();
+        workingNo.setName("No");
+        workingNo.set_id("2");
+        workingNo.setSelected(false);
+        isMeterWorkingList.add(workingNo);
+    }
+
+    private void setCreateMachineData() {
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy
+                (editOwnerType.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode
+                (etUniqueIdNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDistrict
+                (etMachineDistrict.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setTaluka
+                (etMachineTaluka.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachinetype
+                (etMachineType.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setManufacturedYear
+                (etYear.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMakeModel
+                (etMachineMakeModel.getText().toString().trim());
+//        etMeterWorking.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+//        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
+                (etDieselCapacity.getText().toString().trim());
+        machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
     }
 
     @Override
@@ -172,22 +358,16 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     @Override
-    public void onCustomSpinnerSelection(String type) {
-
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.edt_contract_date:
-                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "Select Owner Type",
-                        mOwnerTypeList, false);
-                cddCity.show();
-                cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
             case R.id.btn_first_part_mou:
-                ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
+                if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+                    if(isAllDataValid()) {
+                        setCreateMachineData();
+                    }
+                } else {
+                    ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
+                }
                 break;
             case R.id.btn_eligible:
                 machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
@@ -198,6 +378,133 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
                         .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
                         Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                break;
+            case R.id.et_owner_type:
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Ownership Type", ownershipList, false);
+                cdd.show();
+                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_machine_taluka:
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Taluka", machineTalukaList, false);
+                cdd1.show();
+                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_machine_type:
+                CustomSpinnerDialogClass cdd2 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Machine Type", machineTypesList, false);
+                cdd2.show();
+                cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_machine_make_model:
+                CustomSpinnerDialogClass cdd3 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Machine Make-Model",
+                        makeModelList,
+                        false);
+                cdd3.show();
+                cdd3.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_meter_working:
+                CustomSpinnerDialogClass cdd4 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select option",
+                        isMeterWorkingList,
+                        false);
+                cdd4.show();
+                cdd4.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_year:
+                CustomSpinnerDialogClass cdd5 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Year",
+                        manufactureYearsList,
+                        false);
+                cdd5.show();
+                cdd5.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+        }
+    }
+
+    public boolean isAllDataValid() {
+        if (selectedOwner != null || TextUtils.isEmpty(etUniqueIdNumber.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())
+                || selectedMachine != null || TextUtils.isEmpty(etYear.getText().toString().trim())
+                || selectedMakeModel != null || selectedIsMeterWorking != null
+                || TextUtils.isEmpty(etRtoNumber.getText().toString().trim())
+                || TextUtils.isEmpty(etChasisNumber.getText().toString().trim())
+                || TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())
+                || TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        switch (type) {
+            case "Select Ownership Type":
+                for (CustomSpinnerObject ownershipType : ownershipList) {
+                    if (ownershipType.isSelected()) {
+                        selectedOwner = ownershipType.getName();
+                        break;
+                    }
+                }
+                editOwnerType.setText(selectedOwner);
+                break;
+            case "Select Taluka":
+                for (CustomSpinnerObject isTurnover : machineTalukaList) {
+                    if (isTurnover.isSelected()) {
+                        selectedTaluka = isTurnover.getName();
+                        break;
+                    }
+                }
+                etMachineTaluka.setText(selectedTaluka);
+                break;
+            case "Select Machine Type":
+                for (CustomSpinnerObject accountType : machineTypesList) {
+                    if (accountType.isSelected()) {
+                        selectedMachine = accountType.getName();
+                        break;
+                    }
+                }
+                etMachineType.setText(selectedMachine);
+                break;
+            case "Select Machine Make-Model":
+                for (CustomSpinnerObject accountType : makeModelList) {
+                    if (accountType.isSelected()) {
+                        selectedMakeModel = accountType.getName();
+                        break;
+                    }
+                }
+                etMachineMakeModel.setText(selectedMakeModel);
+                break;
+            case "Select option":
+                for (CustomSpinnerObject accountType : isMeterWorkingList) {
+                    if (accountType.isSelected()) {
+                        selectedIsMeterWorking = accountType.getName();
+                        break;
+                    }
+                }
+                etMeterWorking.setText(selectedIsMeterWorking);
+                break;
+            case "Select Year":
+                for (CustomSpinnerObject accountType : manufactureYearsList) {
+                    if (accountType.isSelected()) {
+                        selectedYear = accountType.getName();
+                        break;
+                    }
+                }
+                etYear.setText(selectedYear);
                 break;
         }
     }
@@ -220,6 +527,30 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             if(status == 200){
 
             }
+        }
+    }
+
+    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+        switch (levelName) {
+            case Constants.JurisdictionLevelName.TALUKA_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    machineTalukaList.clear();
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        if (etMachineDistrict.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
+                            CustomSpinnerObject talukaList = new CustomSpinnerObject();
+                            talukaList.set_id(location.getTalukaId());
+                            talukaList.setName(location.getTaluka().getName());
+                            talukaList.setSelected(false);
+                            machineTalukaList.add(talukaList);
+                        }
+                    }
+                }
+                break;
+
+            default:
+                break;
         }
     }
 }

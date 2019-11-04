@@ -23,13 +23,17 @@ public class MachineWorkingHoursRecord  implements Serializable {
     @Expose
     private String workingHours;
 
-    @SerializedName("is_validate ")
+    @SerializedName("is_validate")
     @Expose
     private String workingStatus;
 
     @SerializedName("structure_assigned")
     @Expose
     private String structureAssigned;
+
+    @SerializedName("mis_status")
+    @Expose
+    private String misStatus;
 
     public String getMachineId() {
         return machineId;
@@ -77,6 +81,14 @@ public class MachineWorkingHoursRecord  implements Serializable {
 
     public void setStructureAssigned(String structureAssigned) {
         this.structureAssigned = structureAssigned;
+    }
+
+    public String getMisStatus() {
+        return misStatus;
+    }
+
+    public void setMisStatus(String misStatus) {
+        this.misStatus = misStatus;
     }
 
 }
