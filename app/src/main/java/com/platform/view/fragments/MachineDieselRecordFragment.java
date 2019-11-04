@@ -371,6 +371,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
+
     private boolean isAllDataValid() {
         if (machineDieselRecordsList.size() == 0) {
             if(dieselImageCount == 0 || registerImageCount == 0){

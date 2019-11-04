@@ -10,7 +10,15 @@
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".view.activities.OperatorMeterReadingActivity">
-
+    <Button
+        android:id="@+id/buttonHaltService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/red"
+        android:backgroundTint="@color/red"
+        android:text="Halt"
+        android:textColor="#fff" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -41,7 +49,7 @@
                     <EditText
                         android:id="@+id/et_smeter_read"
                         style="@style/RegistrationEditTextLayout"
-
+                        android:clickable="false"
                         android:hint="Start meter reading*"
                         android:inputType="number"
                         android:longClickable="false" />
@@ -61,7 +69,7 @@
                     <EditText
                         android:id="@+id/et_emeter_read"
                         style="@style/RegistrationEditTextLayout"
-
+                        android:clickable="false"
                         android:hint="End meter reading*"
                         android:inputType="number"
                         android:longClickable="false" />
@@ -145,13 +153,13 @@
                         android:textColor="#fff" />
 
                     <TextView
-                        android:id="@+id/tv_text"
+                        android:id="@+id/tv_text1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:layout_centerVertical="true"
-
+                        android:visibility="invisible"
                         android:text="test text"
                         android:textColor="@color/colorAccent" />
 
@@ -161,4 +169,16 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/opensans_bold"
+        android:text="test text"
+        android:textSize="@dimen/dimen_16dp"
+        android:textColor="@color/colorAccent" />
 </LinearLayout>
