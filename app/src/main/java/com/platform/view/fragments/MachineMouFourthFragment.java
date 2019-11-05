@@ -333,7 +333,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                     if (Util.isValidImageSize(imageFile)) {
                         imgLicense.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        ((MachineMouActivity) getActivity()).getImageHashmap().put("LicenseImage", bitmap);
+                        ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);
                         //imageHashmap.put("accountImage", bitmap);
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);

@@ -59,7 +59,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         TextView toolbar_title = findViewById(R.id.toolbar_title);
 
         machineMouActivityPresenter = new MachineMouActivityPresenter(this);
-
+        machineDetailData = new MachineDetailData();
         if(getIntent().getStringExtra("SwitchToFragment")!=null){
             if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
                 if(getIntent().getIntExtra("statusCode", 0) ==
@@ -74,7 +74,6 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                     toolbar_title.setText(R.string.machine_mou_form);
                     machineId = getIntent().getStringExtra("machineId");
                     statusCode = getIntent().getIntExtra("statusCode",0);
-                    machineDetailData = new MachineDetailData();
                     machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
                 }
             }

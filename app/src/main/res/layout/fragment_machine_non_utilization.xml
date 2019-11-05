@@ -45,7 +45,7 @@
                         android:id="@+id/et_other_reason"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Other Reason"
-                        android:inputType="number"/>
+                        android:visibility="gone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button

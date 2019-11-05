@@ -16,6 +16,9 @@ public class MachineData  implements Serializable {
     @SerializedName("owned_by")
     @Expose
     private String ownedBy;
+    @SerializedName("state")
+    @Expose
+    private String state;
     @SerializedName("district")
     @Expose
     private String district;
@@ -95,9 +98,6 @@ public class MachineData  implements Serializable {
     @Expose
     private String excavationCapacity;
 
-
-
-
     public String getId() {
         return id;
     }
@@ -120,6 +120,14 @@ public class MachineData  implements Serializable {
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getDistrict() {

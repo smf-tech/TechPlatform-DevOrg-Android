@@ -52,7 +52,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
     String machineId;
     private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
-    private EditText editOwnerType,etUniqueIdNumber,etMachineDistrict,etMachineTaluka,etMachineType,etYear,
+    private EditText editOwnerType,etUniqueIdNumber, etMachineState, etMachineDistrict,etMachineTaluka,etMachineType,etYear,
             etMachineMakeModel,etMeterWorking,etRtoNumber,etChasisNumber,etExcavationCapacity,etDieselCapacity;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
@@ -63,7 +63,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private ArrayList<CustomSpinnerObject> isMeterWorkingList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> manufactureYearsList = new ArrayList<>();
-    private String selectedOwner, selectedOwnerId, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedMachine,
+    private String selectedOwner, selectedOwnerId, selectedStateId, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedMachine,
             selectedMachineId, selectedMakeModel, selectedMakeModelId,
             selectedIsMeterWorking, selectedYear, selectedYearId;
 
@@ -92,6 +92,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
 //        etUniqueIdNumber = machineMouFragmentView.findViewById(R.id.et_uniqueId_number);
+        etMachineState = machineMouFragmentView.findViewById(R.id.et_machine_state);
         etMachineDistrict = machineMouFragmentView.findViewById(R.id.et_machine_district);
         etMachineTaluka = machineMouFragmentView.findViewById(R.id.et_machine_taluka);
         etMachineType = machineMouFragmentView.findViewById(R.id.et_machine_type);
@@ -129,6 +130,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         editOwnerType.setLongClickable(false);
 //        etUniqueIdNumber.setFocusable(false);
 //        etUniqueIdNumber.setLongClickable(false);
+        etMachineState.setFocusable(false);
+        etMachineState.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
         etMachineDistrict.setLongClickable(false);
         etMachineTaluka.setFocusable(false);
@@ -151,6 +154,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etDieselCapacity.setLongClickable(false);
         editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
         //etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
+        //etMachineState.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getState());
         etMachineDistrict.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDistrict());
         etMachineTaluka.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getTaluka());
         etMachineType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachinetype());
@@ -168,6 +172,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         editOwnerType.setLongClickable(false);
 //        etUniqueIdNumber.setFocusable(true);
 //        etUniqueIdNumber.setLongClickable(true);
+        etMachineState.setFocusable(false);
+        etMachineState.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
         etMachineDistrict.setLongClickable(false);
         etMachineTaluka.setFocusable(false);
@@ -196,6 +202,11 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etMachineMakeModel.setOnClickListener(this);
         etMeterWorking.setOnClickListener(this);
 
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            etMachineState.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+        }
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
             etMachineDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
@@ -287,6 +298,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 (selectedOwnerId);
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode
 //                (etUniqueIdNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setState(selectedStateId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDistrict
                 (selectedDistrictId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setTaluka

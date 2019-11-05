@@ -94,8 +94,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         progressBarLayout = machineDeployStructureListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineDeployStructureListFragmentView.findViewById(R.id.pb_profile_act);
         machineDeployStructureListFragmentPresenter = new MachineDeployStructureListFragmentPresenter(this);
-        btnDeploy.setOnClickListener(this);
         btnDeploy = machineDeployStructureListFragmentView.findViewById(R.id.btn_deploy);
+        btnDeploy.setOnClickListener(this);
         tvDistrictFilter = machineDeployStructureListFragmentView.findViewById(R.id.tv_district_filter);
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
@@ -122,7 +122,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         if(type.equalsIgnoreCase("deployMachine")) {
             machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
                     "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
-                    "machineDeployableStructures", currentStructureId);
+                    "machineDeployableStructures", "");
         } else if(type.equalsIgnoreCase("shiftMachine")) {
             machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
                     "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
@@ -246,6 +246,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         if (structureList != null) {
             if (requestID.equals(MachineDeployStructureListFragmentPresenter.GET_MACHINE_DEPLOY_STRUCTURE_LIST)) {
                 structureListData.clear();
+                filteredStructureListData.clear();
                 for (StructureData structureData : structureList.getData()) {
                     if (structureData != null) {
                         structureListData.add(structureData);
@@ -269,15 +270,14 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 }
             }
             tvTalukaFilter.setText(selectedTaluka);
-
-//            filteredStructureListData.clear();
-//            for (StructureData structureData : structureListData) {
-//                if (structureData.getTaluka().equalsIgnoreCase(selectedTaluka)) {
-//                    filteredStructureListData.add(structureData);
-//                }
-//            }
-//            rvStructureList.setAdapter(structureListAdapter);
-//            structureListAdapter.notifyDataSetChanged();
+            filteredStructureListData.clear();
+            for (StructureData structureData : structureListData) {
+                if (structureData.getTalukaId().equalsIgnoreCase(selectedTalukaId)) {
+                    filteredStructureListData.add(structureData);
+                }
+            }
+            rvStructureList.setAdapter(structureListAdapter);
+            structureListAdapter.notifyDataSetChanged();
         }
     }
 

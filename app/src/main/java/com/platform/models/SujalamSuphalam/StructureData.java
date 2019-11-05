@@ -14,6 +14,24 @@ public class StructureData {
     @SerializedName("structureCode")
     @Expose
     private String structureCode;
+    @SerializedName("state")
+    @Expose
+    private String state;
+    @SerializedName("stateId")
+    @Expose
+    private String stateId;
+    @SerializedName("district")
+    @Expose
+    private String district;
+    @SerializedName("districtId")
+    @Expose
+    private String districtId;
+    @SerializedName("taluka")
+    @Expose
+    private String taluka;
+    @SerializedName("talukaId")
+    @Expose
+    private String talukaId;
     @SerializedName("structureWorkType")
     @Expose
     private String structureWorkType;
@@ -64,6 +82,54 @@ public class StructureData {
 
     public void setStructureCode(String structureCode) {
         this.structureCode = structureCode;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getTaluka() {
+        return taluka;
+    }
+
+    public void setTaluka(String taluka) {
+        this.taluka = taluka;
+    }
+
+    public String getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(String talukaId) {
+        this.talukaId = talukaId;
     }
 
     public String getStructureWorkType() {

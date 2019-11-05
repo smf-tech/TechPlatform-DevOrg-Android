@@ -109,11 +109,19 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
 
     private boolean isAllDataValid() {
         if (selectedReason == "" || selectedReason.length() == 0) {
-            if(otherReason == "" || otherReason.length() == 0){
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Select reason or enter other reason.",
-                        Snackbar.LENGTH_LONG);
-                return false;
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please Select Non-utilization reason.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        } else {
+            if(selectedReasonId.equals("5daeb32b5b3fc94c4866c343")) {
+                otherReason = etOtherReason.getText().toString().trim();
+                if(otherReason == "" || otherReason.length() == 0){
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please Select Non-utilization reason.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
             }
         }
         return true;
@@ -144,11 +152,8 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
         }
         if(view.getId() == R.id.btn_submit) {
             if(isAllDataValid()){
-                if(otherReason.length()>0) {
-                    machineNonUtilizationFragmentPresenter.submitNonUtilization(machineId, selectedReasonId, otherReason);
-                } else {
-                    machineNonUtilizationFragmentPresenter.submitNonUtilization(machineId, selectedReasonId, otherReason);
-                }
+                machineNonUtilizationFragmentPresenter.submitNonUtilization(machineId,
+                        selectedReasonId, otherReason);
             }
         }
     }
@@ -218,6 +223,11 @@ public class MachineNonUtilizationFragment extends Fragment implements View.OnCl
                     selectedReasonId = reason.get_id();
                     break;
                 }
+            }
+            if(selectedReasonId.equals("5daeb32b5b3fc94c4866c343")) {
+                etOtherReason.setVisibility(View.VISIBLE);
+            } else {
+                etOtherReason.setVisibility(View.GONE);
             }
             etReason.setText(selectedReason);
         }
