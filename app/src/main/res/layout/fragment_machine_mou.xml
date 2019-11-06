@@ -32,20 +32,31 @@
                 <EditText
                     android:id="@+id/et_owner_type"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/machine_owned_by"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/machine_owned_by"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+                <!--style="@style/textinputstyle"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_uniqueId_number"-->
+                    <!--style="@style/RegistrationEditTextLayout"-->
+                    <!--android:hint="@string/mou_id"/>-->
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/dimen_05dp">
 
                 <EditText
-                    android:id="@+id/et_uniqueId_number"
+                    android:id="@+id/et_machine_state"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/mou_id"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/district"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -65,8 +76,7 @@
                     <EditText
                         android:id="@+id/et_machine_district"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/district"
-                        android:inputType="textMultiLine"/>
+                        android:hint="@string/district"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -79,8 +89,7 @@
                     <EditText
                         android:id="@+id/et_machine_taluka"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/taluka"
-                        android:inputType="textMultiLine"/>
+                        android:hint="@string/taluka"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -93,8 +102,7 @@
                 <EditText
                     android:id="@+id/et_machine_type"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/machine_type"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/machine_type"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -105,8 +113,7 @@
                 <EditText
                     android:id="@+id/et_year"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/manufacturing_year"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/manufacturing_year"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -117,8 +124,7 @@
                 <EditText
                     android:id="@+id/et_machine_make_model"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/make_model_machine"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/make_model_machine"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -129,8 +135,7 @@
                 <EditText
                     android:id="@+id/et_meter_working"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/meter_working"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/meter_working"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -141,8 +146,7 @@
                 <EditText
                     android:id="@+id/et_rto_number"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/machine_rto_number"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/machine_rto_number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -153,8 +157,7 @@
                 <EditText
                     android:id="@+id/et_chasis_number"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/chasis_number"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/chasis_number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -165,8 +168,7 @@
                 <EditText
                     android:id="@+id/et_excavation_capacity"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/excavation_capacity"
-                    android:inputType="textMultiLine"/>
+                    android:hint="@string/excavation_capacity"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -178,7 +180,7 @@
                     android:id="@+id/et_diesel_capacity"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/diesel_capacity"
-                    android:inputType="textMultiLine"/>
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

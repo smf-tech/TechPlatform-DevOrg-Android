@@ -16,6 +16,9 @@ public class MachineData  implements Serializable {
     @SerializedName("owned_by")
     @Expose
     private String ownedBy;
+    @SerializedName("state")
+    @Expose
+    private String state;
     @SerializedName("district")
     @Expose
     private String district;
@@ -34,23 +37,6 @@ public class MachineData  implements Serializable {
     @SerializedName("disel_tank_capacity")
     @Expose
     private String diselTankCapacity;
-
-    public String getProviderName() {
-        return providerName;
-    }
-
-    public void setProviderName(String providerName) {
-        this.providerName = providerName;
-    }
-
-    public String getProviderContactNumber() {
-        return providerContactNumber;
-    }
-
-    public void setProviderContactNumber(String providerContactNumber) {
-        this.providerContactNumber = providerContactNumber;
-    }
-
     @SerializedName("provider_name")
     @Expose
     private String providerName;
@@ -66,6 +52,51 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureId")
     @Expose
     private String deployedStrutureId;
+
+    public String isMeterWorking() {
+        return isMeterWorking;
+    }
+
+    public void setMeterWorking(String meterWorking) {
+        isMeterWorking = meterWorking;
+    }
+
+    public String getRtoNumber() {
+        return rtoNumber;
+    }
+
+    public void setRtoNumber(String rtoNumber) {
+        this.rtoNumber = rtoNumber;
+    }
+
+    public String getChasisNumber() {
+        return chasisNumber;
+    }
+
+    public void setChasisNumber(String chasisNumber) {
+        this.chasisNumber = chasisNumber;
+    }
+
+    public String getExcavationCapacity() {
+        return excavationCapacity;
+    }
+
+    public void setExcavationCapacity(String excavationCapacity) {
+        this.excavationCapacity = excavationCapacity;
+    }
+
+    @SerializedName("isMeterWorking")
+    @Expose
+    private String isMeterWorking;
+    @SerializedName("rtoNumber")
+    @Expose
+    private String rtoNumber;
+    @SerializedName("chasisNumber")
+    @Expose
+    private String chasisNumber;
+    @SerializedName("excavationCapacity")
+    @Expose
+    private String excavationCapacity;
 
     public String getId() {
         return id;
@@ -89,6 +120,14 @@ public class MachineData  implements Serializable {
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getDistrict() {
@@ -161,5 +200,20 @@ public class MachineData  implements Serializable {
 
     public void setDeployedStrutureId(String deployedStrutureId) {
         this.deployedStrutureId = deployedStrutureId;
+    }
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getProviderContactNumber() {
+        return providerContactNumber;
+    }
+
+    public void setProviderContactNumber(String providerContactNumber) {
+        this.providerContactNumber = providerContactNumber;
     }
 }

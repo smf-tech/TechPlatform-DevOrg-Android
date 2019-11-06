@@ -20,19 +20,35 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.MasterDataList;
+import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsData;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.presenter.SujalamSuphalamFragmentPresenter;
 import com.platform.utility.AppEvents;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateStructureActivity;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.SSAnalyticsAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class SujalamSufalamFragment extends Fragment implements  View.OnClickListener , APIDataListener {
 
@@ -46,6 +62,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private SSAnalyticsAdapter structureAnalyticsAdapter, machineAnalyticsAdapter;
     private ArrayList<SSAnalyticsData> structureAnalyticsDataList = new ArrayList<>();
     private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
+    private ArrayList<MasterDataList> masterDataList = new ArrayList<>();
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
 
     @Override
@@ -99,11 +116,16 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
         machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
         setStructureView();
+        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
 
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
-        sujalamSuphalamFragmentPresenter.getSSMasterData();
+        //DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().deleteSSMasterData();
+        if(ssMasterDatabaseList.size() == 0) {
+            sujalamSuphalamFragmentPresenter.getSSMasterData();
+        }
         sujalamSufalamFragmentView.findViewById(R.id.fb_create).setOnClickListener(this);
     }
 
@@ -115,7 +137,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tv_structure_view:
                 setStructureView();
                 break;
@@ -125,7 +147,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             case R.id.btn_ss_view:
                 intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-                if(viewType == 1) {
+                if (viewType == 1) {
                     intent.putExtra("viewType", 1);
                     intent.putExtra("title", "Structure List");
                 } else {
@@ -135,18 +157,21 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 getActivity().startActivity(intent);
                 break;
             case R.id.fb_create:
-                if(viewType==1){
-                    if(Util.isConnected(getActivity())){
+                if (viewType == 1) {
+                    if (Util.isConnected(getActivity())) {
                         intent = new Intent(getActivity(), CreateStructureActivity.class);
                         getActivity().startActivity(intent);
                     } else {
-                        Util.showToast(getResources().getString(R.string.msg_no_network),getActivity());
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                     }
 
                 } else {
-                    Util.showToast("In progress",this);
+                    Intent mouIntent = new Intent(getActivity(), MachineMouActivity.class);
+                    mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                    mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
+                    getActivity().startActivity(mouIntent);
+                    break;
                 }
-                break;
         }
     }
 
@@ -193,6 +218,28 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     }
                 }
             }
+        }
+    }
+
+    public void setMasterData(MasterDataResponse masterDataResponse) {
+        if(masterDataResponse.getStatus()==1000){
+            Util.logOutUser(getActivity());
+        } else {
+            JSONObject json = new JSONObject();
+//            try {
+//                json.put("masterData", masterDataResponse.getData());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+            //String ssMasterDataList = json.toString();
+            Gson gson = new GsonBuilder().create();
+            String ssMasterDataList = gson.toJson(masterDataResponse.getData());
+            Date date = Calendar.getInstance().getTime();
+            String strDate = Util.getDateFromTimestamp(date.getTime(), Constants.FORM_DATE_FORMAT);
+            SSMasterDatabase ssMasterDatabase = new SSMasterDatabase();
+            ssMasterDatabase.setDateTime(strDate);
+            ssMasterDatabase.setData(ssMasterDataList);
+            DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().insert(ssMasterDatabase);
         }
     }
 

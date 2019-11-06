@@ -1,5 +1,6 @@
 package com.platform.utility;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
@@ -67,6 +68,7 @@ import com.platform.models.tm.TMUserProfileApprovalRequest;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.LoginActivity;
 import com.platform.view.activities.TMFiltersListActivity;
 import com.platform.view.fragments.HomeFragment;
 import com.platform.view.fragments.PlannerFragment;
@@ -293,6 +295,19 @@ public class Util {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_OBJ, userData);
         editor.apply();
+    }
+
+    public static void logOutUser(Activity activity) {
+        // remove user related shared pref data
+        Util.saveLoginObjectInPref("");
+        try {
+            Intent startMain = new Intent(activity, LoginActivity.class);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity.startActivity(startMain);
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }
     }
 
     public static OrganizationResponse getUserOrgFromPref() {
@@ -853,6 +868,45 @@ public class Util {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    public static boolean isStartDateIsBeforeEndDate(String startDate, String endDate) {
+        try {
+            DateFormat formatter;
+            Date fromDate, toDate;
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            fromDate = formatter.parse(startDate);
+            toDate = formatter.parse(endDate);
+
+            if (fromDate.before(toDate) || fromDate.equals(toDate)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void showAllDateDialog(Context context, final EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateDialog.show();
+    }
+
     public static void showDateDialogMin(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
@@ -939,6 +993,28 @@ public class Util {
         dateDialog.setTitle(context.getString(R.string.select_date_title));
         dateDialog.getDatePicker().setMinDate(minDateLong);
         dateDialog.getDatePicker().setMaxDate(maxDateLong);
+        dateDialog.show();
+    }
+
+    public static void showDateDialogEnableAfterMin(Context context, final EditText editText, String minDate) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        long minDateLong = getDateInLong(minDate);
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(minDateLong);
         dateDialog.show();
     }
 

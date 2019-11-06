@@ -3,8 +3,10 @@ package com.platform.presenter;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
+import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.PlatformGson;
@@ -84,13 +86,20 @@ public class SujalamSuphalamFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                SSAnalyticsAPIResponse ssAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
-                if (ssAnalyticsData.getCode() == 200) {
-                    if (requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS)) {
-                        fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
-                    } else if (requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
-                        fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
+                if (requestID.equals(SujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS) ||
+                        requestID.equals(SujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
+                    SSAnalyticsAPIResponse ssAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
+                    if (ssAnalyticsData.getCode() == 200) {
+                        if (requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS)) {
+                            fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
+                        } else if (requestID.equalsIgnoreCase(SujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
+                            fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
+                        }
                     }
+                }
+                if(requestID.equals(SujalamSuphalamFragmentPresenter.GET_SS_MASTER_DATA)) {
+                    MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
+                    fragmentWeakReference.get().setMasterData(masterDataResponse);
                 }
             }
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -49,9 +50,11 @@ import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineDieselRecordFragmentPresenter;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MachineDieselRecordsAdapter;
 import com.platform.view.adapters.MachineWorkingHoursAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -90,8 +93,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
     private boolean isMonth = true;
     private MaterialCalendarView calendarView;
-    private final ArrayList<MachineDieselRecord>
-            machineDieselRecordsList = new ArrayList<>();
+    private final ArrayList<MachineDieselRecord> machineDieselRecordsList = new ArrayList<>();
     private int selectedMonth;
     SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
     SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
@@ -107,6 +109,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private int dieselImageCount = 0, registerImageCount = 0;
     private String imageType, selectedDate;
     private ImageView clickedImageView;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -164,6 +168,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 ddFormat.format(calendarView.getSelectedDate().getDate());
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
+        gpsTracker = new GPSTracker(getActivity());
     }
 
     @Override
@@ -209,13 +214,22 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 break;
             case R.id.btn_add:
                 if(etDieselQuantity.getText().toString()!=null && etDieselQuantity.getText().toString().length()>0) {
-                    MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
-                    machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
-                            "00:00"));
-                    machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
-                    machineDieselRecord.setMachineId(machineId);
-                    machineDieselRecord.setStructureId(currentStructureId);
-                    machineDieselRecordsList.add(machineDieselRecord);
+                    if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+                        location = gpsTracker.getLocation();
+                        if (location != null) {
+                            MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
+                            machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
+                                    "00:00"));
+                            machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
+                            machineDieselRecord.setMachineId(machineId);
+                            machineDieselRecord.setStructureId(currentStructureId);
+                            machineDieselRecordsList.add(machineDieselRecord);
+                        } else {
+                            Util.showToast("Unable to get location", getActivity());
+                        }
+                    }  else {
+                        gpsTracker.showSettingsAlert();
+                    }
                     machineDieselRecordsAdapter.notifyDataSetChanged();
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -388,6 +402,15 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         return true;
     }
 
+    private void backToMachineList(){
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        getActivity().startActivity(intent);
+    }
+
     private void uploadImage(){
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -398,6 +421,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
                             Log.d("response -",jsonString);
+                            backToMachineList();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -415,6 +439,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(machineDieselRecordsList));
+                params.put("lat", String.valueOf(location.getLatitude()));
+                params.put("long ", String.valueOf(location.getLongitude()));
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }

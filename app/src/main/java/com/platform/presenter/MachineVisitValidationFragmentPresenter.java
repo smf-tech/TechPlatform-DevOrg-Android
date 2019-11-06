@@ -22,11 +22,15 @@ import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
+import com.platform.models.SujalamSuphalam.MachineWorkingHoursAPIResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Constants;
+import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.fragments.MachineVisitValidationFragment;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -50,15 +54,18 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
         fragmentWeakReference = null;
     }
 
-    public void getWorkingHourDetails(long selectedDate, String machineId){
+    public void getWorkingHoursDetails(String selectedDate, String machineId){
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
+        Gson gson = new GsonBuilder().create();
+        HashMap<String,String> map=new HashMap<>();
+        map.put("machine_id", machineId);
+        map.put("log_date", selectedDate);
         final String getWorkingHoursRecordUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD, selectedDate, machineId);
+                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD);
         Log.d(TAG, "getWorkingHoursRecordUrl: url " + getWorkingHoursRecordUrl);
-        fragmentWeakReference.get().showProgressBar();
-            requestCall.getDataApiCall(GET_WORKING_HOURS_RECORD, getWorkingHoursRecordUrl);
+            requestCall.postDataApiCall(GET_WORKING_HOURS_RECORD, new JSONObject(map).toString(), getWorkingHoursRecordUrl);
     }
 
     public void submitWorkingHours(){
@@ -72,38 +79,6 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
 //        Log.d(TAG, "submitMachineVisitRecordUrl: url " + submitMachineVisitUrl);
 //        fragmentWeakReference.get().showProgressBar();
 //        requestCall.postDataApiCall(GET_WORKING_HOURS_RECORD, paramjson, submitMachineVisitUrl);
-    }
-
-    public void submitVisitMonitoring(ArrayList<MachineWorkingHoursRecord> requestData, HashMap<String, Bitmap> imageHashmap){
-        Gson gson = new GsonBuilder().create();
-
-        String paramjson =gson.toJson(requestData);
-
-        final String checkProfileUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.SUBMIT_MACHINE_VISIT);//, mobilenumber,meetId);
-        fragmentWeakReference.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-//        drawable = new BitmapDrawable(activity.getResources(), imageHashmap.get(key));
-        requestCall.multipartApiCall("MACHINE_VISIT",paramjson,imageHashmap,
-                fragmentWeakReference.get().getResources(),checkProfileUrl);
-    }
-
-    public JsonObject getWorkingHoursJson(String meetId, String userId, String mobilenumber){
-
-        HashMap<String,String> map=new HashMap<>();
-        map.put("meet_id", meetId);
-        map.put("user_id", userId);
-        map.put("mobile", mobilenumber);
-
-        JsonObject requestObject = new JsonObject();
-
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            requestObject.addProperty(key, value);
-        }
-        return requestObject;
     }
 
     @Override
@@ -137,7 +112,9 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
 //                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
 //                            MachineVisitValidationFragmentPresenter.SUBMIT_MACHINE_VISIT_VALIDATION_FORM, responseOBJ.getStatus());
                 } else if(requestID.equalsIgnoreCase(MachineVisitValidationFragmentPresenter.GET_WORKING_HOURS_RECORD)) {
-                    fragmentWeakReference.get().setData();
+                    MachineWorkingHoursAPIResponse machineWorkingHoursAPIResponse = PlatformGson.getPlatformGsonInstance().fromJson(response,
+                            MachineWorkingHoursAPIResponse.class);
+                    fragmentWeakReference.get().setWorkingHoursData(machineWorkingHoursAPIResponse.getData());
                 }
             }
         }catch (Exception e) {

@@ -190,7 +190,8 @@
                         android:layout_marginTop="@dimen/dimen_15dp"
                         android:drawableStart="@drawable/ic_badge_icon"
                         android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold" />
+                        android:fontFamily="@font/opensans_semibold"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

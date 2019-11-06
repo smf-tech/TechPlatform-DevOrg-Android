@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,11 +24,13 @@ import com.platform.models.SujalamSuphalam.MouDetails;
 import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.SujalamSuphalam.ProviderInformation;
 import com.platform.presenter.MachineMouActivityPresenter;
+import com.platform.utility.Constants;
 import com.platform.view.fragments.MachineMouFirstFragment;
 import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
 import com.platform.view.fragments.MachineMouThirdFragment;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
@@ -41,6 +44,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private String machineId;
     private int statusCode;
     private MachineMouActivityPresenter machineMouActivityPresenter;
+    private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +57,25 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         ivBackIcon.setOnClickListener(this);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
-        toolbar_title.setText(R.string.machine_mou_form);
 
         machineMouActivityPresenter = new MachineMouActivityPresenter(this);
-
+        machineDetailData = new MachineDetailData();
         if(getIntent().getStringExtra("SwitchToFragment")!=null){
             if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
-                machineId = getIntent().getStringExtra("machineId");
-                statusCode = getIntent().getIntExtra("statusCode",0);
-                machineDetailData = new MachineDetailData();
-                machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
-//                fManager = getSupportFragmentManager();
-//                fragment = new MachineMouFirstFragment();
-//                FragmentTransaction fTransaction = fManager.beginTransaction();
-//                fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null)
-//                        .commit();
+                if(getIntent().getIntExtra("statusCode", 0) ==
+                        Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+                    statusCode = getIntent().getIntExtra("statusCode",0);
+                    toolbar_title.setText(R.string.create_machine);
+                    fManager = getSupportFragmentManager();
+                    fragment = new MachineMouFirstFragment();
+                    FragmentTransaction fTransaction = fManager.beginTransaction();
+                    fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
+                } else {
+                    toolbar_title.setText(R.string.machine_mou_form);
+                    machineId = getIntent().getStringExtra("machineId");
+                    statusCode = getIntent().getIntExtra("statusCode",0);
+                    machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
+                }
             }
         }
     }
@@ -101,6 +109,14 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     public MachineDetailData getMachineDetailData() {
         return machineDetailData;
     }
+
+    public HashMap<String, Bitmap> getImageHashmap() {
+        return imageHashmap;
+    }
+
+//    public void setImageHashmap(HashMap<String, Bitmap> imageHashmap) {
+//        this.imageHashmap = imageHashmap;
+//    }
 
     public void setMachineDetailData(MachineDetailData machineDetail) {
         this.machineDetailData = machineDetail;

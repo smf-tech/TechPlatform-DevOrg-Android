@@ -19,17 +19,25 @@ public class MachineWorkingHoursRecord  implements Serializable {
     @Expose
     private long workingDate;
 
-    @SerializedName("working_hours")
+    @SerializedName("totalHours")
     @Expose
     private String workingHours;
 
-    @SerializedName("is_validate ")
+    @SerializedName("is_validate")
     @Expose
-    private String workingStatus;
+    private boolean workingStatus;
 
     @SerializedName("structure_assigned")
     @Expose
     private String structureAssigned;
+
+    @SerializedName("mis_status")
+    @Expose
+    private String misStatus;
+
+    @SerializedName("is_action_taken")
+    @Expose
+    private boolean isActionTaken;
 
     public String getMachineId() {
         return machineId;
@@ -63,11 +71,11 @@ public class MachineWorkingHoursRecord  implements Serializable {
         this.workingHours = workingHours;
     }
 
-    public String getWorkingStatus() {
+    public boolean getWorkingStatus() {
         return workingStatus;
     }
 
-    public void setWorkingStatus(String workingStatus) {
+    public void setWorkingStatus(boolean workingStatus) {
         this.workingStatus = workingStatus;
     }
 
@@ -79,4 +87,19 @@ public class MachineWorkingHoursRecord  implements Serializable {
         this.structureAssigned = structureAssigned;
     }
 
+    public String getMisStatus() {
+        return misStatus;
+    }
+
+    public void setMisStatus(String misStatus) {
+        this.misStatus = misStatus;
+    }
+
+    public boolean isActionTaken() {
+        return isActionTaken;
+    }
+
+    public void setActionTaken(boolean actionTaken) {
+        isActionTaken = actionTaken;
+    }
 }

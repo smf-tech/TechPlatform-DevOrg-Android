@@ -45,32 +45,39 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
     public void getMatrimonyMeets(){
         Gson gson = new GsonBuilder().create();
         String countries = "";
-        for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getCountryId().size(); i++){
-            JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(i);
-            if(i == Util.getUserObjectFromPref().getUserLocation().getCountryId().size()-1) {
-                countries = j.getId();
-            } else{
-                countries = j.getId() + ",";
+        if(Util.getUserObjectFromPref().getUserLocation().getCountryId()!=null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getCountryId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(i);
+                if (i == Util.getUserObjectFromPref().getUserLocation().getCountryId().size() - 1) {
+                    countries = j.getId();
+                } else {
+                    countries = j.getId() + ",";
+                }
             }
         }
         String states = "";
-        for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++){
-            JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
-            if(i == Util.getUserObjectFromPref().getUserLocation().getStateId().size()-1) {
-                states = j.getId();
-            } else{
-                states = j.getId() + ",";
+        if(Util.getUserObjectFromPref().getUserLocation().getStateId()!=null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                if (i == Util.getUserObjectFromPref().getUserLocation().getStateId().size() - 1) {
+                    states = j.getId();
+                } else {
+                    states = j.getId() + ",";
+                }
             }
         }
         String cities = "";
-        for(int i = 0; i<Util.getUserObjectFromPref().getUserLocation().getCityIds().size(); i++){
-            JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCityIds().get(i);
-            if(i == 0) {
-                cities = j.getId();
-            } else{
-                cities = cities+","+j.getId();
+        if(Util.getUserObjectFromPref().getUserLocation().getCityIds()!=null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getCityIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCityIds().get(i);
+                if (i == 0) {
+                    cities = j.getId();
+                } else {
+                    cities = cities + "," + j.getId();
+                }
             }
         }
+
         String paramjson = gson.toJson(getMeetJson(
                 countries,
                 states,

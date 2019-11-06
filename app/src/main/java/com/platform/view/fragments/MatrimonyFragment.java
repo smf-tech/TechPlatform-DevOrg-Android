@@ -350,13 +350,11 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 break;
             case R.id.btn_register_profile:
                 showReasonDialog(getActivity(),0);
-
                 break;
             case R.id.btn_view_profiles:
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
                 startMain.putExtra("mobileNumber",mobileNumberEntered);
-
                 startActivity(startMain);
                 break;
         }
@@ -421,8 +419,6 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
                 tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
             }
     }
-
-
 
     public String showReasonDialog(final Activity context, int pos){
         Dialog dialog;
