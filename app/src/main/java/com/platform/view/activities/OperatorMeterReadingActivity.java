@@ -116,6 +116,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             buttonPauseService.setVisibility(View.VISIBLE);
             buttonPauseService.setText("Pause");
             btnStartService.setVisibility(View.GONE);
+            et_emeter_read.setText("");
             //-----------
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
@@ -139,7 +140,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "state_stop", lat, lon, et_emeter_read.getText().toString(), hours, totalHours, image);
-            et_emeter_read.setText("");
+
             image = "";
         }else if (currentState == state_halt){
             stopService();
@@ -232,11 +233,16 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         buttonHaltService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putInt("State", state_pause);
-                editor.apply();
-                updateStatusAndProceed(state_pause);
-                updateStatusAndProceed(state_halt);
-                clearReadingImages();
+                if (currentState != state_stop) {
+                    editor.putInt("State", state_pause);
+                    editor.apply();
+                    updateStatusAndProceed(state_pause);
+                    updateStatusAndProceed(state_halt);
+                    clearReadingImages();
+                }else {
+                    Util.showToast("Please enter Start meter reading", OperatorMeterReadingActivity.this);
+                }
+
             }
         });
 
@@ -290,7 +296,11 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                     clearReadingImages();
                     et_smeter_read.requestFocus();
                 }*/
-                callStopButtonClick();
+                if (preferences.getInt("State", 0) != state_stop) {
+                    callStopButtonClick();
+                }else {
+                    Util.showToast("Please enter Start meter reading", OperatorMeterReadingActivity.this);
+                }
             }
 
         });
@@ -321,7 +331,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
             if (TextUtils.isEmpty(et_smeter_read.getText())) {
                 Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
-                et_smeter_read.requestFocus();
+                //et_smeter_read.requestFocus();
                 clearReadingImages();
                 showReadingDialog(this,1);
             } else if (flag) {
@@ -342,7 +352,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private void callStopButtonClick() {
         if (TextUtils.isEmpty(et_emeter_read.getText())) {
             Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
-            et_emeter_read.requestFocus();
+           // et_emeter_read.requestFocus();
             //takePhotoFromCamera();
             showReadingDialog(this,2);
         } else if (flag) {
@@ -358,7 +368,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             flag = true;
             image = "";
             //clearReadingImages();
-            et_smeter_read.requestFocus();
+           // et_smeter_read.requestFocus();
         }
     }
 
@@ -381,6 +391,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     @Override
     protected void onResume() {
         super.onResume();
+        if (preferences.getInt("State", 0) == state_start) {
+        }
         Log.e("method--", "---OnResume");
     }
 
@@ -735,10 +747,30 @@ public String showReadingDialog(final Activity context, int pos){
         mobileNumberEntered = strReason;*/
         if (pos==1){
             et_smeter_read.setText(strReason);
+            editor.putInt("et_smeter_read", Integer.parseInt(strReason));
+            editor.apply();
         }else {
-            et_emeter_read.setText(strReason);
+            editor.putInt("et_emeter_read", Integer.parseInt(strReason));
+            editor.apply();
+            if (isMeterReadingRight(strReason))
+            {
+                et_emeter_read.setText(strReason);
+
+            }else {
+                Util.showToast("Please enter correct meter reading", OperatorMeterReadingActivity.this);
+            }
         }
 
+    }
+
+    private boolean isMeterReadingRight(String endMeterReading) {
+        Util.logger("emeter Reading", "--"+preferences.getInt("et_emeter_read", 0));
+        Util.logger("smeter Reading", "--"+preferences.getInt("et_smeter_read", 0));
+        if ((preferences.getInt("et_emeter_read", 0) - preferences.getInt("et_smeter_read", 0)) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

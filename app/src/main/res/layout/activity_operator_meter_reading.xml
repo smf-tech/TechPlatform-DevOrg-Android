@@ -52,6 +52,8 @@
                         android:clickable="false"
                         android:hint="Start meter reading*"
                         android:inputType="number"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:longClickable="false" />
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
@@ -72,6 +74,8 @@
                         android:clickable="false"
                         android:hint="End meter reading*"
                         android:inputType="number"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:longClickable="false" />
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
@@ -129,6 +133,7 @@
                         android:layout_alignParentStart="true"
                         android:background="@color/colorAccent"
                         android:text="Start"
+                        android:backgroundTint="@color/green"
                         android:textColor="#fff" />
 
                     <Button
@@ -149,6 +154,7 @@
                         android:layout_margin="10dp"
                         android:layout_alignParentEnd="true"
                         android:background="@color/colorAccent"
+                        android:backgroundTint="@color/red"
                         android:text="Stop"
                         android:textColor="#fff" />
 
