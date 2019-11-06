@@ -5,23 +5,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -37,21 +33,22 @@ import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.models.SujalamSuphalam.MachineListAPIResponse;
+import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.SujalamSuphalam.StructureListAPIResponse;
 import com.platform.models.common.CustomSpinnerObject;
-import com.platform.models.leaves.LeaveData;
-import com.platform.models.profile.Location;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.StructureMachineListFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.adapters.MutiselectDialogAdapter;
-import com.platform.view.adapters.SSDataListAdapter;
+import com.platform.view.adapters.SSMachineListAdapter;
+import com.platform.view.adapters.SSStructureListAdapter;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class StructureMachineListFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener{
     private View structureMachineListFragmentView;
@@ -59,7 +56,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     final Context context = getActivity();
     private RecyclerView rvDataList;
     private final ArrayList<MachineData> ssMachineListData = new ArrayList<>();
-    private SSDataListAdapter ssDataListAdapter;
+    private final ArrayList<StructureData> ssStructureListData = new ArrayList<>();
+    private SSMachineListAdapter ssMachineListAdapter;
+    private SSStructureListAdapter ssStructureListAdapter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private StructureMachineListFragmentPresenter structureMachineListFragmentPresenter;
@@ -115,12 +114,18 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ssDataListAdapter = new SSDataListAdapter(getActivity(), this, ssMachineListData);
-        rvDataList.setAdapter(ssDataListAdapter);
+        ssMachineListAdapter = new SSMachineListAdapter(getActivity(), this, ssMachineListData);
+        rvDataList.setAdapter(ssMachineListAdapter);
+        ssStructureListAdapter = new SSStructureListAdapter(getActivity(), this, ssStructureListData);
+        rvDataList.setAdapter(ssStructureListAdapter);
+
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
         if(viewType == 1){
 //            structureMachineListFragmentPresenter.getStrucuresList(Util.getUserObjectFromPref().getUserLocation().getDistrictIds()
 //                    .get(0).getId(), Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
+            structureMachineListFragmentPresenter.getStrucuresList("5c669d13c7982d31cc6b86cd",
+                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447","all");
+
         } else {
 //            structureMachineListFragmentPresenter.getMachinesList(Util.getUserObjectFromPref().getUserLocation().getDistrictIds()
 //                    .get(0).getId(), Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
@@ -294,13 +299,27 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         ssMachineListData.add(machineData);
                     }
                 }
-                rvDataList.setAdapter(ssDataListAdapter);
-                ssDataListAdapter.notifyDataSetChanged();
+                rvDataList.setAdapter(ssMachineListAdapter);
+                ssMachineListAdapter.notifyDataSetChanged();
             }
         }
     }
+    public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
+        if (structureListData != null) {
+//            if (requestID.equals(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
+                ssStructureListData.clear();
+                for (StructureData structureData : structureListData.getData()) {
+                    if (structureData != null) {
+                        ssStructureListData.add(structureData);
+                    }
+                }
+//                rvDataList.setAdapter(ssStructureListAdapter);
+                ssStructureListAdapter.notifyDataSetChanged();
+//            }
+        }
+    }
 
-    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -308,7 +327,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         if (tvDistrictFilter.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
                             CustomSpinnerObject talukaList = new CustomSpinnerObject();
                             talukaList.set_id(location.getTalukaId());

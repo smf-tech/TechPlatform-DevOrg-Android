@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
-public class Location {
+public class JurisdictionLocation {
 
     @SerializedName("_id")
     @Expose

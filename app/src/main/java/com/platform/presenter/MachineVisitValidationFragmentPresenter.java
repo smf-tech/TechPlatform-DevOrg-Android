@@ -20,6 +20,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
+import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.Urls;
@@ -29,6 +31,7 @@ import com.platform.view.fragments.MachineVisitValidationFragment;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -71,6 +74,20 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
 //        requestCall.postDataApiCall(GET_WORKING_HOURS_RECORD, paramjson, submitMachineVisitUrl);
     }
 
+    public void submitVisitMonitoring(ArrayList<MachineWorkingHoursRecord> requestData, HashMap<String, Bitmap> imageHashmap){
+        Gson gson = new GsonBuilder().create();
+
+        String paramjson =gson.toJson(requestData);
+
+        final String checkProfileUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.SUBMIT_MACHINE_VISIT);//, mobilenumber,meetId);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+//        drawable = new BitmapDrawable(activity.getResources(), imageHashmap.get(key));
+        requestCall.multipartApiCall("MACHINE_VISIT",paramjson,imageHashmap,
+                fragmentWeakReference.get().getResources(),checkProfileUrl);
+    }
 
     public JsonObject getWorkingHoursJson(String meetId, String userId, String mobilenumber){
 

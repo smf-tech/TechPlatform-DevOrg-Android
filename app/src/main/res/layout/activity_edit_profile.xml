@@ -170,7 +170,7 @@
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Geo Location-->
+            <!--Geo JurisdictionLocation-->
             <LinearLayout
                 android:id="@+id/user_geo_location_view"
                 android:layout_width="match_parent"

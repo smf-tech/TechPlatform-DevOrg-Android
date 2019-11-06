@@ -3,27 +3,29 @@ package com.platform.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.MasterDataValue;
+import com.platform.models.SujalamSuphalam.Structure;
 import com.platform.models.common.CustomSpinnerObject;
-import com.platform.models.profile.Location;
-import com.platform.models.user.UserInfo;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.presenter.CreateStructureActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
@@ -31,14 +33,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateStructureActivity extends AppCompatActivity implements APIDataListener, View.OnClickListener, CustomSpinnerListener {
-
+public class CreateStructureActivity extends AppCompatActivity implements APIDataListener, View.OnClickListener,
+        CustomSpinnerListener {
 
     private RelativeLayout progressBar;
     private CreateStructureActivityPresenter presenter;
 
-    TextView etDistrict,etTaluka,etHostVillage,etCatchmentVillage,
-            etStructureType,etStructureOwnerDepartment,etSubStructureOwnerDepartment;
+    private EditText etDistrict, etTaluka, etHostVillage, etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
+            etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, etStructureOwnerDepartment,
+            etNotaDetail, etSubStructureOwnerDepartment, etAdministrativeApprovalNo, etAdministrativeApprovalDate,
+            etTechnicalSanctionNo, etAdministrativeEstimateAmount, etApproximateWorkingHours, etApproximateDieselConsumptionAmount,
+            etApproximateDieselLiters, etApproximateEstimateQuantity, etRemark;
+    private Button btSubmit;
 
     private String selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka, selectedHostVillageId,
             selectedHostVillage, selectedStructureTypeId, selectedStructureType, selectedStructureOwnerDepartmentId,
@@ -54,7 +60,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private ArrayList<CustomSpinnerObject> structureSubDepartmentList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
 
+    private Structure structureData;
 
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +75,11 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         presenter.getMaster();
         initView();
         setTitle("Create Structure");
+
+        gpsTracker = new GPSTracker(this);
+        if (gpsTracker.isGPSEnabled(this, this)) {
+            location = gpsTracker.getLocation();
+        }
     }
 
     private void initView() {
@@ -74,24 +88,45 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
 
+        structureData = new Structure();
+
         etDistrict = findViewById(R.id.et_district);
         etTaluka = findViewById(R.id.et_taluka);
         etHostVillage = findViewById(R.id.et_host_village);
+        etHostVillagePopulation = findViewById(R.id.et_host_village_population);
         etCatchmentVillage = findViewById(R.id.et_catchment_village);
-        etStructureType = findViewById(R.id.et_structure_type);
+        etCatchmentVillagePopulation = findViewById(R.id.et_catchment_village_population);
+        etGatNo = findViewById(R.id.et_gat_no);
+        etWaterShedNo = findViewById(R.id.et_water_shed_no);
+        etArea = findViewById(R.id.et_area);
+        etStructureName = findViewById(R.id.et_structure_name);
         etStructureOwnerDepartment = findViewById(R.id.et_structure_owner_department);
         etSubStructureOwnerDepartment = findViewById(R.id.et_sub_structure_owner_department);
+        etNotaDetail = findViewById(R.id.et_nota_detail);
+        etStructureType = findViewById(R.id.et_structure_type);
+        etAdministrativeApprovalNo = findViewById(R.id.et_administrative_approval_no);
+        etAdministrativeApprovalDate = findViewById(R.id.et_administrative_approval_date);
+        etTechnicalSanctionNo = findViewById(R.id.et_technical_sanction_no);
+        etAdministrativeEstimateAmount = findViewById(R.id.et_administrative_estimate_amount);
+        etApproximateWorkingHours = findViewById(R.id.et_approximate_working_hours);
+        etApproximateDieselConsumptionAmount = findViewById(R.id.et_approximate_diesel_consumption_amount);
+        etApproximateDieselLiters = findViewById(R.id.et_approximate_diesel_liters);
+        etApproximateEstimateQuantity = findViewById(R.id.et_approximate_estimate_quantity);
+        etRemark = findViewById(R.id.et_remark);
+        btSubmit = findViewById(R.id.bt_submit);
 
         etDistrict.setOnClickListener(this);
         etTaluka.setOnClickListener(this);
         etHostVillage.setOnClickListener(this);
+        etAdministrativeApprovalDate.setOnClickListener(this);
         etCatchmentVillage.setOnClickListener(this);
         etStructureType.setOnClickListener(this);
         etStructureOwnerDepartment.setOnClickListener(this);
         etSubStructureOwnerDepartment.setOnClickListener(this);
+        btSubmit.setOnClickListener(this);
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         TextView tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
@@ -109,7 +144,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdDisttrict.show();
                 csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-               break;
+                break;
             case R.id.et_taluka:
                 CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(this, this,
                         "Select Taluka", talukaList, false);
@@ -132,9 +167,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_structure_owner_department:
-                for(int i=0; i<masterDataLists.size();i++){
-                    if(masterDataLists.get(i).getField().equalsIgnoreCase("structureDept"))
-                        for (MasterDataValue obj: masterDataLists.get(i).getData()) {
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureDept"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
                             CustomSpinnerObject temp = new CustomSpinnerObject();
                             temp.set_id(obj.getId());
                             temp.setName(obj.getValue());
@@ -149,9 +184,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_sub_structure_owner_department:
-                for(int i=0; i<masterDataLists.size();i++){
-                    if(masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
-                        for (MasterDataValue obj: masterDataLists.get(i).getData()) {
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
                             CustomSpinnerObject temp = new CustomSpinnerObject();
                             temp.set_id(obj.getId());
                             temp.setName(obj.getValue());
@@ -166,15 +201,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_structure_type:
-                for(int i=0; i<masterDataLists.size();i++){
-                    if(masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
-                    for (MasterDataValue obj: masterDataLists.get(i).getData()) {
-                        CustomSpinnerObject temp = new CustomSpinnerObject();
-                        temp.set_id(obj.getId());
-                        temp.setName(obj.getValue());
-                        temp.setSelected(false);
-                        structureTypeList.add(temp);
-                    }
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            structureTypeList.add(temp);
+                        }
                 }
                 CustomSpinnerDialogClass csdStructerType = new CustomSpinnerDialogClass(this, this,
                         "Select Structure Type", structureTypeList, false);
@@ -182,16 +217,57 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
+            case R.id.et_administrative_approval_date:
+                Util.showDateDialog(this, etAdministrativeApprovalDate);
+                break;
+            case R.id.bt_submit:
+                submitStructure();
+                break;
 
         }
     }
 
+    private void submitStructure() {
+        structureData.setStateId(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId());
+        structureData.setDistrictId(selectedDistrictId);
+        structureData.setDistrict(selectedDistrict);
+        structureData.setTalukaId(selectedTalukaId);
+        structureData.setTaluka(selectedTaluka);
+        structureData.setVillageId(selectedHostVillageId);
+        structureData.setVillage(selectedHostVillage);
+        structureData.setHostVillagePopulation(etHostVillagePopulation.getText().toString());
+        structureData.setHostVillageID(android.text.TextUtils.join(",", selectedCatchmentVillageId));
+        structureData.setHostVillage(android.text.TextUtils.join(",", selectedCatchmentVillage));
+//        structureData.set(etGatNo.getText().toString());
+//        structureData.set(etWaterShedNo.getText().toString());
+//        structureData.set(etArea.getText().toString());
+        structureData.setName(etStructureName.getText().toString());
+        structureData.setDepartmentId(selectedStructureOwnerDepartmentId);
+        structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
+//        structureData.set(etNotaDetail.getText().toString());
+        structureData.setStructureType(etStructureType.getText().toString());
+//        structureData.set(etAdministrativeApprovalNo.getText().toString());
+//        structureData.set(etAdministrativeApprovalDate.getText().toString());
+        structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
+        structureData.setAdministrativeEstimateAmount(etAdministrativeEstimateAmount.getText().toString());
+        structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
+        structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
+        structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
+        structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
+        structureData.setLat(location.getLatitude());
+        structureData.setLong(location.getLongitude());
+        structureData.setFfId(Util.getUserObjectFromPref().getId());
+        structureData.setRemark(etRemark.getText().toString());
+
+        presenter.submitStructure(structureData);
+    }
+
     @Override
     public void onCustomSpinnerSelection(String type) {
-        switch (type){
+        switch (type) {
             case "Select District":
-                for(CustomSpinnerObject obj: districtList){
-                    if(obj.isSelected()){
+                for (CustomSpinnerObject obj : districtList) {
+                    if (obj.isSelected()) {
                         selectedDistrict = obj.getName();
                         selectedDistrictId = obj.get_id();
                         break;
@@ -203,8 +279,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 break;
             case "Select Taluka":
-                for(CustomSpinnerObject obj: talukaList){
-                    if(obj.isSelected()){
+                for (CustomSpinnerObject obj : talukaList) {
+                    if (obj.isSelected()) {
                         selectedTaluka = obj.getName();
                         selectedTalukaId = obj.get_id();
                         break;
@@ -217,8 +293,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
                 break;
             case "Select Host Village":
-                for(CustomSpinnerObject obj: villageList){
-                    if(obj.isSelected()){
+                for (CustomSpinnerObject obj : villageList) {
+                    if (obj.isSelected()) {
                         selectedHostVillage = obj.getName();
                         selectedHostVillageId = obj.get_id();
                         break;
@@ -229,8 +305,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             case "Select Catchment Village":
                 selectedCatchmentVillage.clear();
                 selectedCatchmentVillageId.clear();
-                for(CustomSpinnerObject obj: catchmentVillageList){
-                    if(obj.isSelected()){
+                for (CustomSpinnerObject obj : catchmentVillageList) {
+                    if (obj.isSelected()) {
                         selectedCatchmentVillage.add(obj.getName());
                         selectedCatchmentVillageId.add(obj.get_id());
                     }
@@ -238,29 +314,29 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etCatchmentVillage.setText(android.text.TextUtils.join(",", selectedCatchmentVillage));
                 break;
             case "Select Structure owner department":
-                for(CustomSpinnerObject obj: structureDepartmentList){
-                    if(obj.isSelected()){
-                        selectedStructureOwnerDepartment=obj.getName();
-                        selectedStructureOwnerDepartmentId=obj.get_id();
+                for (CustomSpinnerObject obj : structureDepartmentList) {
+                    if (obj.isSelected()) {
+                        selectedStructureOwnerDepartment = obj.getName();
+                        selectedStructureOwnerDepartmentId = obj.get_id();
                     }
                 }
-                etStructureOwnerDepartment.setText(selectedStructureType);
+                etStructureOwnerDepartment.setText(selectedStructureOwnerDepartment);
                 break;
             case "Select Sub Structure owner department":
-                for(CustomSpinnerObject obj: structureSubDepartmentList){
-                    if(obj.isSelected()){
-                        selectedSubStructureOwnerDepartment=obj.getName();
-                        selectedSubStructureOwnerDepartmentId=obj.get_id();
+                for (CustomSpinnerObject obj : structureSubDepartmentList) {
+                    if (obj.isSelected()) {
+                        selectedSubStructureOwnerDepartment = obj.getName();
+                        selectedSubStructureOwnerDepartmentId = obj.get_id();
                     }
                 }
-                etSubStructureOwnerDepartment.setText(selectedStructureType);
+                etSubStructureOwnerDepartment.setText(selectedSubStructureOwnerDepartment);
                 break;
 
             case "Select Structure Type":
-                for(CustomSpinnerObject obj: structureTypeList){
-                    if(obj.isSelected()){
-                        selectedStructureType=obj.getName();
-                        selectedStructureTypeId=obj.get_id();
+                for (CustomSpinnerObject obj : structureTypeList) {
+                    if (obj.isSelected()) {
+                        selectedStructureType = obj.getName();
+                        selectedStructureTypeId = obj.get_id();
                     }
                 }
                 etStructureType.setText(selectedStructureType);
@@ -271,12 +347,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message,this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(),this);
     }
 
     @Override
@@ -304,15 +380,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     @Override
     public void closeCurrentActivity() {
-
+        finish();
     }
 
     public void setMasterData(MasterDataResponse masterDataResponse) {
-        if(masterDataResponse.getStatus()==1000){
+        if (masterDataResponse.getStatus() == 1000) {
             logOutUser();
         } else {
-            for(MasterDataList obj:masterDataResponse.getData()){
-                if(obj.getForm().equalsIgnoreCase("structure_create")){
+            for (MasterDataList obj : masterDataResponse.getData()) {
+                if (obj.getForm().equalsIgnoreCase("structure_create")) {
                     masterDataLists.add(obj);
                 }
             }
@@ -334,7 +410,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         }
     }
 
-    public void showJurisdictionLevel(List<Location> data, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> data, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (data != null && !data.isEmpty()) {
@@ -342,7 +418,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     Collections.sort(data, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < data.size(); i++) {
-                        Location location = data.get(i);
+                        JurisdictionLocation location = data.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getDistrictId());
                         meetCountry.setName(location.getDistrict().getName());
@@ -358,7 +434,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
                     for (int i = 0; i < data.size(); i++) {
                         if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
-                            Location location = data.get(i);
+                            JurisdictionLocation location = data.get(i);
                             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                             meetCountry.set_id(location.getTalukaId());
                             meetCountry.setName(location.getTaluka().getName());
@@ -381,7 +457,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     for (int i = 0; i < data.size(); i++) {
                         if (selectedTaluka.equalsIgnoreCase(data.get(i).getTaluka().getName())) {
 
-                            Location location = data.get(i);
+                            JurisdictionLocation location = data.get(i);
                             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                             meetCountry.set_id(location.getVillageId());
                             meetCountry.setName(location.getVillage().getName());

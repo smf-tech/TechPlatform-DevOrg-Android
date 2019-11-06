@@ -40,8 +40,8 @@ import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
 import com.platform.models.login.LoginInfo;
 import com.platform.models.profile.Jurisdiction;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.profile.JurisdictionType;
-import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
@@ -52,7 +52,6 @@ import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
-import com.platform.widgets.MultiSelectBottomSheet;
 import com.platform.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
@@ -1339,7 +1338,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     @Override
-    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -1349,7 +1348,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCountry().getName().compareTo(j2.getCountry().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         countryNames.add(location.getCountry().getName());
                         this.countries.add(location.getCountry());
                     }
@@ -1365,7 +1364,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         stateNames.add(location.getState().getName());
                         this.states.add(location.getState());
                     }
@@ -1382,7 +1381,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 districts.add(location.getDistrict().getName());
@@ -1403,7 +1402,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 cities.add(location.getCity().getName());
@@ -1424,7 +1423,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 for (JurisdictionType district : selectedDistricts) {
@@ -1449,7 +1448,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 for (JurisdictionType district : selectedDistricts) {
@@ -1478,7 +1477,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 for (JurisdictionType district : selectedDistricts) {

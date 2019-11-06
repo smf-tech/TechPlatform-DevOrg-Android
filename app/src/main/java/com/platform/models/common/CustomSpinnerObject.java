@@ -14,7 +14,7 @@ public class CustomSpinnerObject{
     @SerializedName("name")
     @Expose
     private String name;
-    private boolean isSelected =true;
+    private boolean isSelected =false;
     public String get_id() {
         return _id;
     }

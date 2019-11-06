@@ -13,13 +13,12 @@ import com.platform.R;
 import com.platform.listeners.AddMemberListener;
 import com.platform.models.events.ParametersFilterMember;
 import com.platform.models.events.Participant;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.profile.JurisdictionType;
-import com.platform.models.profile.Location;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
 import com.platform.presenter.AddMemberFilterActivityPresenter;
-import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.widgets.MultiSelectSpinner;
@@ -330,7 +329,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     }
 
     @Override
-    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -340,7 +339,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         stateNames.add(location.getState().getName());
                         this.states.add(location.getState());
                     }
@@ -358,7 +357,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 districts.add(location.getDistrict().getName());
@@ -379,7 +378,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 for (JurisdictionType district : selectedDistricts) {
@@ -404,7 +403,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 for (JurisdictionType district : selectedDistricts) {
@@ -433,7 +432,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
                             if (state.getName().equalsIgnoreCase(location.getState().getName())) {
                                 for (JurisdictionType district : selectedDistricts) {

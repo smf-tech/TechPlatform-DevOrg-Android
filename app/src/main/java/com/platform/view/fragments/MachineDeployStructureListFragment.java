@@ -26,7 +26,6 @@ import com.platform.models.SujalamSuphalam.StructureListAPIResponse;
 import com.platform.presenter.MachineDeployStructureListFragmentPresenter;
 import com.platform.utility.Util;
 import com.platform.view.activities.SSActionsActivity;
-import com.platform.view.adapters.SSDataListAdapter;
 import com.platform.view.adapters.StructureListAdapter;
 
 import java.util.ArrayList;

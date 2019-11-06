@@ -1,6 +1,6 @@
 package com.platform.listeners;
 
-import com.platform.models.profile.Location;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.profile.Organization;
 import com.platform.models.profile.OrganizationProject;
 import com.platform.models.profile.OrganizationRole;
@@ -16,5 +16,5 @@ public interface ProfileTaskListener extends PlatformTaskListener {
 
     void showOrganizationRoles(List<OrganizationRole> organizationRoles);
 
-    void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName);
+    void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName);
 }

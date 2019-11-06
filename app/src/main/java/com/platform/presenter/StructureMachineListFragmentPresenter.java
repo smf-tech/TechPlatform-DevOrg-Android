@@ -11,6 +11,7 @@ import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.SujalamSuphalam.MachineListAPIResponse;
+import com.platform.models.SujalamSuphalam.StructureListAPIResponse;
 import com.platform.models.events.CommonResponse;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.request.APIRequestCall;
@@ -49,10 +50,17 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         fragmentWeakReference = null;
     }
 
-    public void getStrucuresList(String stateId, String districtId, String talukaId){
+    public void getStrucuresList(String district_id, String taluka_id, String village_id, String type){
         Gson gson = new GsonBuilder().create();
         fragmentWeakReference.get().showProgressBar();
-        String paramjson = gson.toJson(getSSDataJson(stateId, districtId,talukaId));
+
+        HashMap<String,String> map=new HashMap<>();
+        map.put("district_id", district_id);
+        map.put("taluka_id", taluka_id);
+        map.put("village_id", village_id);
+        map.put("type", type);
+
+        String paramjson = gson.toJson(map);
         final String getStructuresListUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getStructuresListUrl);
@@ -192,7 +200,10 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         try {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_STRUCTURE_LIST)) {
-
+                    StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);
+                    if (structureListData.getCode() == 200) {
+                        fragmentWeakReference.get().populateStructureData(requestID, structureListData);
+                    }
                 } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
                     //fragmentWeakReference.get().populateAnalyticsData(requestID, machineListData);
                     MachineListAPIResponse machineListData = PlatformGson.getPlatformGsonInstance().fromJson(response, MachineListAPIResponse.class);

@@ -2,7 +2,6 @@ package com.platform.models.tm;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.platform.models.profile.Location;
 
 import java.util.List;
 

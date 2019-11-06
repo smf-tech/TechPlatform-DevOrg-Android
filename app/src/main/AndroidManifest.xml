@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.platform">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -31,26 +32,45 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.CreateStructureActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.MachineMouActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.UserRegistrationMatrimonyActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.MatrimonyProfileListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.MatrimonyProfileDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.SSActionsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.OperatorMeterReadingActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.NotificationsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.ContentDownloadedActivity" />
-        <activity android:name=".view.activities.CreateMatrimonyMeetActivity" />
-        <activity android:name=".view.activities.ShowMeetBatchesActivity" />
-        <activity android:name=".view.activities.BaseActivity" />
+        <activity android:name=".view.activities.CommunityMobilizationActivity"></activity>
+        <activity android:name=".view.activities.StructureVisitMonitoringActivity" />
+        <activity android:name=".view.activities.StructurePripretionsActivity" />
+        <activity
+            android:name=".view.activities.CreateStructureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MachineMouActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.UserRegistrationMatrimonyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MatrimonyProfileListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MatrimonyProfileDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.SSActionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.OperatorMeterReadingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.NotificationsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.ContentDownloadedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.CreateMatrimonyMeetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.ShowMeetBatchesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.BaseActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.SplashActivity"
             android:screenOrientation="portrait"
@@ -224,8 +244,7 @@
         <service
             android:name=".services.ForegroundService"
             android:enabled="true"
-            android:exported="true"></service>
-
+            android:exported="true" />
     </application>
 
 </manifest>

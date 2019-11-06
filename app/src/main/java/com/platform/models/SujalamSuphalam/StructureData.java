@@ -3,7 +3,9 @@ package com.platform.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StructureData {
+import java.io.Serializable;
+
+public class StructureData implements Serializable {
 
     @SerializedName("structureId")
     @Expose
@@ -22,13 +24,13 @@ public class StructureData {
     private String structureStatus;
     @SerializedName("structureStatusCode")
     @Expose
-    private String structureStatusCode;
+    private int structureStatusCode;
     @SerializedName("lat")
     @Expose
-    private String lat;
+    private double lat;
     @SerializedName("long")
     @Expose
-    private String _long;
+    private double _long;
     @SerializedName("structureDepartmentName")
     @Expose
     private String structureDepartmentName;
@@ -82,27 +84,27 @@ public class StructureData {
         this.structureStatus = structureStatus;
     }
 
-    public String getStructureStatusCode() {
+    public int getStructureStatusCode() {
         return structureStatusCode;
     }
 
-    public void setStructureStatusCode(String structureStatusCode) {
+    public void setStructureStatusCode(int structureStatusCode) {
         this.structureStatusCode = structureStatusCode;
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLong() {
+    public double get_long() {
         return _long;
     }
 
-    public void setLong(String _long) {
+    public void set_long(double _long) {
         this._long = _long;
     }
 

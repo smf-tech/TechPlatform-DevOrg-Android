@@ -76,7 +76,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private View machineVisitValidationFragmenttView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private MachineVisitValidationFragmentPresenter machineVisitValidationFragmentPresenter;
+    private MachineVisitValidationFragmentPresenter presenter;
     private String machineId, currentStructureId, newStructureId;
     private RecyclerView rvWorkingHours;
     private ImageView ivCalendarMode, imgRegisterOne, imgRegisterTwo;
@@ -145,7 +145,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         rvWorkingHours = machineVisitValidationFragmenttView.findViewById(R.id.rv_working_hours);
         rvWorkingHours.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvWorkingHours.setAdapter(machineWorkingHoursAdapter);
-        machineVisitValidationFragmentPresenter = new MachineVisitValidationFragmentPresenter(this);
+        presenter = new MachineVisitValidationFragmentPresenter(this);
         calendarView.setOnMonthChangedListener(this);
         calendarView.setOnDateChangedListener(this);
         isMonth = !isMonth;
@@ -376,9 +376,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     @Override
     public void onDetach() {
         super.onDetach();
-        if (machineVisitValidationFragmentPresenter != null) {
-            machineVisitValidationFragmentPresenter.clearData();
-            machineVisitValidationFragmentPresenter = null;
+        if (presenter != null) {
+            presenter.clearData();
+            presenter = null;
         }
     }
 
@@ -464,8 +464,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                uploadImage();
-                machineVisitValidationFragmentPresenter.submitWorkingHours();
+//                uploadImage();
+                presenter.submitVisitMonitoring(machineWorkingHoursList,imageHashmap);
+                presenter.submitWorkingHours();
                 break;
         }
     }

@@ -131,9 +131,12 @@ public class Urls {
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
         public static final String SUBMIT_MACHINE_VISIT = "api/machineVisit";
+        public static final String STRUCTURE_VISITE_MONITORING = "api/structureVisit";
+        public static final String STRUCTURE_PREPARATION = "api/prepareStructure";
+        public static final String COMMUNITY_MOBILISATION = "api/communityMobilisation";
     }
     public class Structure {
-        public static final String STRUCTURE_MASTER = "api/structureMasterData";
-
+        public static final String STRUCTURE_MASTER = "api/masterDataList";
+        public static final String CREATE_STRUCTURE = "api/createStructure";
     }
 }

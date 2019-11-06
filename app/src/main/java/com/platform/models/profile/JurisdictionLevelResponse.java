@@ -12,7 +12,7 @@ public class JurisdictionLevelResponse {
     private String status;
     @SerializedName("data")
     @Expose
-    private List<Location> data = null;
+    private List<JurisdictionLocation> data = null;
     @SerializedName("message")
     @Expose
     private String message;
@@ -25,11 +25,11 @@ public class JurisdictionLevelResponse {
         this.status = status;
     }
 
-    public List<Location> getData() {
+    public List<JurisdictionLocation> getData() {
         return data;
     }
 
-    public void setData(List<Location> data) {
+    public void setData(List<JurisdictionLocation> data) {
         this.data = data;
     }
 
