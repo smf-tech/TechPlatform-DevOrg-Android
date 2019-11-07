@@ -455,7 +455,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetCountry.setText(selectedCountry);
                 if(selectedCountry!="" && selectedCountry!="Country") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5d98330bee061834d23798b2",
+                            "5d68c6645dda765a632b4ac3",
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
                 break;
@@ -473,7 +473,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetState.setText(selectedState);
                 if(selectedState!="" && selectedState!="State") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5d98330bee061834d23798b2",
+                            "5d68c6645dda765a632b4ac3",
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;

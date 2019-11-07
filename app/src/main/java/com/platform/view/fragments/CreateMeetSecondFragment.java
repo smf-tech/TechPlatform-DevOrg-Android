@@ -230,8 +230,8 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                     customSpinnerObject.setName(matrimonyUserDetails.getName());
                     customSpinnerObject.setSelected(false);
 
-                //    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
-                        if (matrimonyRole.getId().equals("5d983ed5ee061868395d03c2")) {
+                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
+                        //if (matrimonyRole.getId().equals("5d983ed5ee061868395d03c2")) {
                         organizersList.add(matrimonyUserDetails);
                         organizersSpinnerList.add(customSpinnerObject);
                     } else {
