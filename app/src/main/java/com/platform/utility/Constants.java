@@ -99,6 +99,7 @@ public class Constants {
         static final String USER_ORG = "userOrgObj";
         static final String USER_ROLE = "userRoleObj";
         static final String USER_PROJECT = "userProjectsObj";
+        static final String USER_ROLE_ACCESS_OBJ = "userRoleAccessObj";
 
         public static final String AUTHORIZATION = "Authorization";
 
@@ -252,7 +253,7 @@ public class Constants {
         public static final String FILE_SEP = "/";
         public static final String IMAGE_PREFIX = "picture_";
         public static final String IMAGE_SUFFIX = ".jpg";
-        public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+        public static final String IMAGE_STORAGE_DIRECTORY = "/Octopus/Image/profile";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
@@ -355,6 +356,15 @@ public class Constants {
         public static final Integer MACHINE_BREAK_STATUS_CODE = 109;
         public static final Integer MACHINE_STOPPED_STATUS_CODE = 110;
         public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
+
+        public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
+        public static final Integer ACCESS_CODE_ADD_MACHINE = 108;
+        public static final Integer ACCESS_CODE_VIEW_MACHINES = 109;
+        public static final Integer ACCESS_CODE_MOU_MACHINE = 110;
+        public static final Integer ACCESS_CODE_ELIGIBLE_MACHINE = 111;
+        public static final Integer ACCESS_CODE_MOU_TERMINATE = 102;
+        public static final Integer ACCESS_CODE_AVAILABLE_MACHINE = 113;
+        public static final Integer ACCESS_CODE_DEPLOY_MACHINE = 114;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";

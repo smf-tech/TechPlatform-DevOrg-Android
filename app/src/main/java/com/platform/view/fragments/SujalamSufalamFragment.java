@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.Platform;
@@ -31,6 +32,9 @@ import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsData;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
+import com.platform.models.home.RoleAccessAPIResponse;
+import com.platform.models.home.RoleAccessList;
+import com.platform.models.home.RoleAccessObject;
 import com.platform.presenter.SujalamSuphalamFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
@@ -57,6 +61,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private RelativeLayout progressBarLayout;
     private TextView tvStructureView, tvMachineView, tvToggle;
     private Button btnSsView;
+    private FloatingActionButton fbCreate;
     private RecyclerView rvSSAnalytics;
     private int viewType = 1;
     private SSAnalyticsAdapter structureAnalyticsAdapter, machineAnalyticsAdapter;
@@ -64,6 +69,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataList = new ArrayList<>();
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
+    private boolean isStructureAdd, isMachineAdd, isStructureView, isMachineView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +116,8 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvMachineView.setOnClickListener(this);
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
         btnSsView.setOnClickListener(this);
+        fbCreate = sujalamSufalamFragmentView.findViewById(R.id.fb_create);
+        fbCreate.setOnClickListener(this);
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
@@ -126,7 +134,20 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         if(ssMasterDatabaseList.size() == 0) {
             sujalamSuphalamFragmentPresenter.getSSMasterData();
         }
-        sujalamSufalamFragmentView.findViewById(R.id.fb_create).setOnClickListener(this);
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+        for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_MACHINE)) {
+                isMachineAdd = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
+                isStructureView = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_MACHINES)) {
+                isMachineView = true;
+            }
+        }
     }
 
     @Override
@@ -184,7 +205,17 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
         rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
         machineAnalyticsAdapter.notifyDataSetChanged();
-        btnSsView.setText("Machine View >");
+        if(isMachineView) {
+            btnSsView.setVisibility(View.VISIBLE);
+            btnSsView.setText("Machine View >");
+        } else {
+            btnSsView.setVisibility(View.INVISIBLE);
+        }
+        if(isMachineAdd) {
+            fbCreate.setVisibility(View.VISIBLE);
+        } else {
+            fbCreate.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setStructureView(){
@@ -196,7 +227,17 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
-        btnSsView.setText("Structure View >");
+        if(isStructureView) {
+            btnSsView.setVisibility(View.VISIBLE);
+            btnSsView.setText("Structure View >");
+        } else {
+            btnSsView.setVisibility(View.INVISIBLE);
+        }
+        if(isStructureAdd) {
+            fbCreate.setVisibility(View.VISIBLE);
+        } else {
+            fbCreate.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void populateAnalyticsData(String requestCode, SSAnalyticsAPIResponse analyticsData) {

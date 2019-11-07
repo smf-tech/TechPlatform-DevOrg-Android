@@ -123,6 +123,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
                 ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
 
+        if (presenter != null && Util.isConnected(context)) {
+            isSyncRequired = true;
+            UserInfo user = Util.getUserObjectFromPref();
+            presenter.getModules(user);
+            presenter.getRoleAccess();
+
+        }
         List<Modules> modulesFromDatabase = getModulesFromDatabase();
         if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {
 
@@ -193,14 +200,15 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
                 }
             });
             ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
-            return;
+            //return;
         }
 
-        if (presenter != null && Util.isConnected(context)) {
-            isSyncRequired = true;
-            UserInfo user = Util.getUserObjectFromPref();
-            presenter.getModules(user);
-        }
+//        if (presenter != null && Util.isConnected(context)) {
+//            isSyncRequired = true;
+//            UserInfo user = Util.getUserObjectFromPref();
+//            presenter.getModules(user);
+//            presenter.getRoleAccess();
+//        }
     }
 
     private List<Modules> getModulesFromDatabase() {

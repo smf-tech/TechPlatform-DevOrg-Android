@@ -18,9 +18,11 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.fragments.StructureMachineListFragment;
@@ -193,12 +195,18 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                         fragment.takeMouDoneAction(getAdapterPosition());
                     } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE){
-                        Intent intent = new Intent(activity, SSActionsActivity.class);
-                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                        intent.putExtra("type", "deployMachine");
-                        intent.putExtra("title", "Deploy Machine");
-                        intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                        activity.startActivity(intent);
+                        if(fragment.isMachineDepoly) {
+                            Intent intent = new Intent(activity, SSActionsActivity.class);
+                            intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                            intent.putExtra("type", "deployMachine");
+                            intent.putExtra("title", "Deploy Machine");
+                            intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                            activity.startActivity(intent);
+                        } else {
+                            Util.snackBarToShowMsg(fragment.getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "You can not take any action on this machine.",
+                                    Snackbar.LENGTH_LONG);
+                        }
                     }
                 }
             });

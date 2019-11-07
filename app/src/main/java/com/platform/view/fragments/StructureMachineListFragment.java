@@ -38,6 +38,9 @@ import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.models.SujalamSuphalam.MachineListAPIResponse;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.home.RoleAccessAPIResponse;
+import com.platform.models.home.RoleAccessList;
+import com.platform.models.home.RoleAccessObject;
 import com.platform.models.leaves.LeaveData;
 import com.platform.models.profile.Location;
 import com.platform.models.user.UserInfo;
@@ -70,6 +73,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
     private String selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
     private int mouAction = 0;
+    private boolean isMachineTerminate, isMachineAvailable;
+    public boolean isMachineDepoly;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,10 +139,30 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
             }
         }
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+        for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
+                isMachineTerminate = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_AVAILABLE_MACHINE)) {
+                isMachineAvailable = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
+                isMachineDepoly = true;
+            }
+        }
     }
 
     public void takeMouDoneAction(int position){
-        showMouActionPopup(position);
+        if(isMachineTerminate || isMachineAvailable) {
+            showMouActionPopup(position);
+        } else {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "You can not take any action on this machine.",
+                    Snackbar.LENGTH_LONG);
+        }
     }
 
     public void showMouActionPopup(int position) {
@@ -152,6 +177,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         RadioButton rbTerminate, rbDeploy;
         rbTerminate = dialog.findViewById(R.id.rb_terminate);
         rbDeploy = dialog.findViewById(R.id.rb_deploy);
+        if(!isMachineAvailable) {
+            rbDeploy.setVisibility(View.GONE);
+        }
+        if(!isMachineTerminate) {
+            rbTerminate.setVisibility(View.GONE);
+        }
         rgMouAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
