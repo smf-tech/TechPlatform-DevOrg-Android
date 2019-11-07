@@ -1,21 +1,17 @@
 package com.platform.view.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
@@ -27,13 +23,13 @@ import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.util.ArrayList;
 
-public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder> {
+public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdapter.ViewHolder> {
     private ArrayList<MachineData> ssDataList;
     Activity activity;
     StructureMachineListFragment fragment;
 
-    public SSDataListAdapter(Activity activity, StructureMachineListFragment fragment,
-                             ArrayList<MachineData> ssDataList){
+    public SSMachineListAdapter(Activity activity, StructureMachineListFragment fragment,
+                                ArrayList<MachineData> ssDataList){
         this.ssDataList = ssDataList;
         this.activity = activity;
         this.fragment = fragment;
@@ -42,14 +38,14 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
     }
     @NonNull
     @Override
-    public SSDataListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SSMachineListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ss_data_item_layout,
                 parent, false);
-        return new SSDataListAdapter.ViewHolder(v);
+        return new SSMachineListAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SSDataListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SSMachineListAdapter.ViewHolder holder, int position) {
         MachineData machineData = ssDataList.get(position);
         holder.tvStatus.setText(machineData.getStatus());
         holder.tvMachineCode.setText(machineData.getMachineCode());

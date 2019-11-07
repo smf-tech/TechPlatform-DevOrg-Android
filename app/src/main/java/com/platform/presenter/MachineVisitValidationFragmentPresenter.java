@@ -20,6 +20,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
+import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursAPIResponse;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Constants;
@@ -33,6 +35,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,7 +63,7 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
         map.put("machine_id", machineId);
         map.put("log_date", selectedDate);
         final String getWorkingHoursRecordUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD, selectedDate, machineId);
+                + String.format(Urls.SSModule.GET_MACHINE_WORKING_HOURS_RECORD);
         Log.d(TAG, "getWorkingHoursRecordUrl: url " + getWorkingHoursRecordUrl);
             requestCall.postDataApiCall(GET_WORKING_HOURS_RECORD, new JSONObject(map).toString(), getWorkingHoursRecordUrl);
     }

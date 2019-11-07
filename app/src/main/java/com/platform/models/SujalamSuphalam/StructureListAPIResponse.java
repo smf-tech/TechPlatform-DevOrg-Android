@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class StructureListAPIResponse {
+    @SerializedName("code")
+    @Expose
+    private Integer code;
     @SerializedName("status")
     @Expose
     private Integer status;
@@ -15,6 +18,14 @@ public class StructureListAPIResponse {
     @SerializedName("message")
     @Expose
     private String message;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 
     public Integer getStatus() {
         return status;

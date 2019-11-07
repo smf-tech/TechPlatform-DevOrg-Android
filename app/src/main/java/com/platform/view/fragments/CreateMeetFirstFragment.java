@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -12,16 +11,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -34,8 +29,7 @@ import com.platform.models.Matrimony.MeetSchedule;
 import com.platform.models.Matrimony.MeetType;
 import com.platform.models.Matrimony.RegistrationSchedule;
 import com.platform.models.common.CustomSpinnerObject;
-import com.platform.models.profile.JurisdictionType;
-import com.platform.models.profile.Location;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.CreateMeetFirstFragmentPresenter;
 import com.platform.utility.Constants;
@@ -43,10 +37,8 @@ import com.platform.utility.Util;
 import com.platform.view.activities.CreateMatrimonyMeetActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -192,7 +184,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 Constants.JurisdictionLevelName.COUNTRY_LEVEL);
     }
 
-    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -200,7 +192,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getCountryId());
                         meetCountry.setName(location.getCountry().getName());
@@ -216,7 +208,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                             CustomSpinnerObject meetState = new CustomSpinnerObject();
                             meetState.set_id(location.getStateId());
                             meetState.setName(location.getState().getName());
@@ -233,7 +225,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                             if (selectedState.equalsIgnoreCase(location.getState().getName())) {
                                 CustomSpinnerObject meetCity = new CustomSpinnerObject();
                                 meetCity.set_id(location.getCityId());

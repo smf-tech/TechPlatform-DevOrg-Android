@@ -166,9 +166,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 setIsTrainingDone(selectedtrainingOption);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
                 setIsAppInstalled(selectedAppInstalledOption);
-        List<String> operatorImages  = new ArrayList();
-        operatorImages.add("www.google.com");
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setOperatorImages(operatorImages);
+//        List<String> operatorImages  = new ArrayList();
+//        operatorImages.add("www.google.com");
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setOperatorImages(operatorImages);
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             location = gpsTracker.getLocation();
             if (location != null) {
@@ -176,8 +176,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
             }
         }
-        machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
 
+        //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
+        uploadData();
     }
 
     @Override
@@ -332,7 +333,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                     if (Util.isValidImageSize(imageFile)) {
                         imgLicense.setImageURI(finalUri);
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        ((MachineMouActivity) getActivity()).getImageHashmap().put("LicenseImage", bitmap);
+                        ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);
                         //imageHashmap.put("accountImage", bitmap);
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
@@ -360,7 +361,16 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
-    private void uploadImage(){
+    private void backToMachineList(){
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        getActivity().startActivity(intent);
+    }
+
+    private void uploadData(){
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -370,6 +380,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
                             Log.d("response -",jsonString);
+                            backToMachineList();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -387,10 +398,10 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(((MachineMouActivity) getActivity()).getMachineDetailData()));
-                if(location != null) {
-                    params.put("lat", String.valueOf(location.getLatitude()));
-                    params.put("long ", String.valueOf(location.getLongitude()));
-                }
+//                if(location != null) {
+//                    params.put("lat", String.valueOf(location.getLatitude()));
+//                    params.put("long ", String.valueOf(location.getLongitude()));
+//                }
                 params.put("imageArraySize", String.valueOf(((MachineMouActivity) getActivity()).getImageHashmap().size()));//add string parameters
                 return params;
             }

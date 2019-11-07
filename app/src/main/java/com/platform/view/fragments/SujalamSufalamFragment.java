@@ -240,14 +240,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             ssMasterDatabase.setDateTime(strDate);
             ssMasterDatabase.setData(ssMasterDataList);
             DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().insert(ssMasterDatabase);
-//            for(MasterDataList obj:masterDataResponse.getData()){
-//                if(obj.getForm().equalsIgnoreCase("structure_create")){
-//                    masterDataList.add(obj);
-//                }
-//            }
-//            List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-//                    getSSMasterDatabaseDao().getSSMasterData();
-//            list.get(0);
         }
     }
 

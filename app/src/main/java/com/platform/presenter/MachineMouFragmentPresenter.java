@@ -104,7 +104,11 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
                 if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS)) {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-                            MachineDetailsFragmentPresenter.UPDATE_MACHINE_STATUS, responseOBJ.getStatus());
+                            MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS, responseOBJ.getStatus());
+                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.CREATE_MACHINE)) {
+                    CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                            MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS, responseOBJ.getStatus());
                 } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                         = new Gson().fromJson(response, JurisdictionLevelResponse.class);

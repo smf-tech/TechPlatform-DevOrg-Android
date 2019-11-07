@@ -54,6 +54,7 @@ import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MachineDieselRecordsAdapter;
 import com.platform.view.adapters.MachineWorkingHoursAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -402,6 +403,15 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         return true;
     }
 
+    private void backToMachineList(){
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        getActivity().startActivity(intent);
+    }
+
     private void uploadImage(){
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -412,6 +422,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
                             Log.d("response -",jsonString);
+                            backToMachineList();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();

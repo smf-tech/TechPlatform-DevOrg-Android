@@ -126,7 +126,7 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_logout">Logout</string>
 
-    <!--<string name="add_location">Add Location</string>-->
+    <!--<string name="add_location">Add JurisdictionLocation</string>-->
     <!--<string name="update_user_data">Update Data</string>-->
     <!--<string name="share_app">Share App</string>-->
 
@@ -415,6 +415,39 @@
     <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
     <string name="msg_post_date">Cannot create event on past date or time</string>
 
+    <!--SS Community Mobilisation-->
+    <string-array name="activitys">
+        <item>Entry Level Activity - First Gramsabha - One time format</item>
+        <item>Community Sensitisation</item>
+        <item>Formation of Task Force</item>
+        <item>Training of Task Force member - Cluster / Taluka</item>
+        <item>Orientation of farmers for silt usage - Village</item>
+    </string-array>
+
+    <string-array name="activitys1">
+        <item>Gram Sabha</item>
+        <item>FGD (Focussed group discussion) - Youths</item>
+        <item>FGD (Focussed group discussion) - Farmers</item>
+        <item>FGD (Focussed group discussion) - Womens</item>
+        <item>FGD (Focussed group discussion) - Children</item>
+        <item>OTHER</item>
+    </string-array>
+    <string-array name="activitys2">
+        <item>AV Show</item>
+        <item>Mass Village Meeting</item>
+        <item>Children activity</item>
+        <item>Competition</item>
+    </string-array>
+    <string-array name="activitys3">
+        <item>Task Force Formation meeting</item>
+    </string-array>
+    <string-array name="activitys4">
+        <item>Water Conservation</item>
+        <item>Water Stewardship</item>
+    </string-array>
+    <string-array name="activitys5">
+        <item>Orientation of farmers for silt usage</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

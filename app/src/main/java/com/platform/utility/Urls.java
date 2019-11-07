@@ -127,14 +127,18 @@ public class Urls {
         public static final String UPDATE_STRUCTURE_MACHINE_STATUS = "api/statusChange/%1$s/%2$s/%3$s/%4$s";
         public static final String SUBMIT_MOU = "api/machineMou";
         public static final String GET_MACHINE_DETAILS = "api/machineDetails/%1$s/%2$s";
-        public static final String GET_MACHINE_WORKING_HOURS_RECORD = "api/workLog/%1$s/%2$s";
+        public static final String GET_MACHINE_WORKING_HOURS_RECORD = "api/workLog";
         public static final String MOU_TERMINATE_DEPLOY = "api/MOUTerminateDeployed";
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
         public static final String SUBMIT_MACHINE_VISIT = "api/machineVisit";
+        public static final String STRUCTURE_VISITE_MONITORING = "api/structureVisit";
+        public static final String STRUCTURE_PREPARATION = "api/prepareStructure";
+        public static final String COMMUNITY_MOBILISATION = "api/communityMobilisation";
+        public static final String NON_UTILIZATION_URL = "api/machineNonUtilization/%1$s/%2$s/%3$s";
     }
     public class Structure {
-        public static final String STRUCTURE_MASTER = "api/structureMasterData";
-
+        public static final String STRUCTURE_MASTER = "api/masterDataList";
+        public static final String CREATE_STRUCTURE = "api/createStructure";
     }
 }

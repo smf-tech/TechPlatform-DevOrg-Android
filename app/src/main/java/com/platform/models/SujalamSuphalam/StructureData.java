@@ -3,7 +3,9 @@ package com.platform.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StructureData {
+import java.io.Serializable;
+
+public class StructureData implements Serializable {
 
     @SerializedName("structureId")
     @Expose
@@ -14,6 +16,24 @@ public class StructureData {
     @SerializedName("structureCode")
     @Expose
     private String structureCode;
+    @SerializedName("state")
+    @Expose
+    private String state;
+    @SerializedName("stateId")
+    @Expose
+    private String stateId;
+    @SerializedName("district")
+    @Expose
+    private String district;
+    @SerializedName("districtId")
+    @Expose
+    private String districtId;
+    @SerializedName("taluka")
+    @Expose
+    private String taluka;
+    @SerializedName("talukaId")
+    @Expose
+    private String talukaId;
     @SerializedName("structureWorkType")
     @Expose
     private String structureWorkType;
@@ -22,13 +42,13 @@ public class StructureData {
     private String structureStatus;
     @SerializedName("structureStatusCode")
     @Expose
-    private String structureStatusCode;
+    private int structureStatusCode;
     @SerializedName("lat")
     @Expose
-    private String lat;
+    private double lat;
     @SerializedName("long")
     @Expose
-    private String _long;
+    private double _long;
     @SerializedName("structureDepartmentName")
     @Expose
     private String structureDepartmentName;
@@ -66,6 +86,54 @@ public class StructureData {
         this.structureCode = structureCode;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getTaluka() {
+        return taluka;
+    }
+
+    public void setTaluka(String taluka) {
+        this.taluka = taluka;
+    }
+
+    public String getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(String talukaId) {
+        this.talukaId = talukaId;
+    }
+
     public String getStructureWorkType() {
         return structureWorkType;
     }
@@ -82,27 +150,27 @@ public class StructureData {
         this.structureStatus = structureStatus;
     }
 
-    public String getStructureStatusCode() {
+    public int getStructureStatusCode() {
         return structureStatusCode;
     }
 
-    public void setStructureStatusCode(String structureStatusCode) {
+    public void setStructureStatusCode(int structureStatusCode) {
         this.structureStatusCode = structureStatusCode;
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLong() {
+    public double get_long() {
         return _long;
     }
 
-    public void setLong(String _long) {
+    public void set_long(double _long) {
         this._long = _long;
     }
 

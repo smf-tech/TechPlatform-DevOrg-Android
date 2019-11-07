@@ -67,7 +67,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
             etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
     private ImageView imgAccount;
-    private String selectedOwnership, isTurnoverBelow, selectedAccountType;
+    private String selectedOwnership, selectedOwnershipId, isTurnoverBelow, selectedAccountType;
     private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> isTurnOverAboveList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> accountTypesList = new ArrayList<>();
@@ -133,16 +133,6 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         };
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
         masterDataList.size();
-//        JSONArray jsonArray = null;
-//        try {
-//            jsonArray = new JSONArray(masterDbString);
-//            List<MasterDataList> list1;
-////            JSONObject jsnobject = new JSONObject(masterDbString);
-////            JSONArray jsonArray = jsnobject.getJSONArray("locations");
-//            jsonArray.get(0);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
         for(int i = 0; i<masterDataList.size(); i++) {
             if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
                     getField().equals("ownedBy")) {
@@ -419,6 +409,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 for (CustomSpinnerObject ownershipType : ownershipList) {
                     if (ownershipType.isSelected()) {
                         selectedOwnership = ownershipType.getName();
+                        selectedOwnershipId = ownershipType.get_id();
                         break;
                     }
                 }
