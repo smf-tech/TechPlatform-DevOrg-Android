@@ -356,15 +356,22 @@ public class Constants {
         public static final Integer MACHINE_BREAK_STATUS_CODE = 109;
         public static final Integer MACHINE_STOPPED_STATUS_CODE = 110;
         public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
+        public static final Integer MACHINE_MOU_EXPIRED_STATUS_CODE = 114;
+        public static final Integer MACHINE_REALEASED_STATUS_CODE = 115;
 
         public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
         public static final Integer ACCESS_CODE_ADD_MACHINE = 108;
         public static final Integer ACCESS_CODE_VIEW_MACHINES = 109;
         public static final Integer ACCESS_CODE_MOU_MACHINE = 110;
         public static final Integer ACCESS_CODE_ELIGIBLE_MACHINE = 111;
-        public static final Integer ACCESS_CODE_MOU_TERMINATE = 102;
+        public static final Integer ACCESS_CODE_MOU_TERMINATE = 112;
         public static final Integer ACCESS_CODE_AVAILABLE_MACHINE = 113;
         public static final Integer ACCESS_CODE_DEPLOY_MACHINE = 114;
+        public static final Integer ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM = 115;
+        public static final Integer ACCESS_CODE_SILT_TRANSPORT_FORM = 116;
+        public static final Integer ACCESS_CODE_DIESEL_RECORD_FORM = 117;
+        public static final Integer ACCESS_CODE_MACHINE_SHIFT_FORM = 118;
+        public static final Integer ACCESS_CODE_MACHINE_RELEASE = 119;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";

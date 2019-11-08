@@ -39,8 +39,6 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
         this.ssDataList = ssDataList;
         this.activity = activity;
         this.fragment = fragment;
-//        if(Util.getUserObjectFromPref().getRoleNames().equals("Operator")){
-//        }
     }
     @NonNull
     @Override
@@ -80,34 +78,78 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                 public void onClick(View v) {
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
-//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
-//                            Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
-//                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-//                            Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
-//                        popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-//                    }
-//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
-//                            Constants.SSModule.MACHINE_WORKING_STATUS_CODE) {
-//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-//                    }
+
+                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
+                        //popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
+                        if(fragment.isSiltTransportForm) {
+                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                        }
+                        if(fragment.isDieselRecordForm) {
+                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+                        }
+                        if(fragment.isMachineVisitValidationForm) {
+                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+                        }
+                        if(fragment.isMachineShiftForm) {
+                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+                        }
+                    }
+                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
+                        if(fragment.isSiltTransportForm) {
+                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                        }
+                        if(fragment.isDieselRecordForm) {
+                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+                        }
+                        if(fragment.isMachineVisitValidationForm) {
+                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+                        }
+                        if(fragment.isMachineShiftForm) {
+                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+                        }
+                    }
+                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
+                        if(fragment.isMachineRelease) {
+                            popup.getMenu().findItem(R.id.action_machine_release).setVisible(true);
+                        }
+                    }
 //                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
 //                            Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
-//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        if(fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
+//                        if(fragment.isDieselRecordForm) {
+//                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        }
+//                        if(fragment.isMachineVisitValidationForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        }
 //                    }
-//                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
-//                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE) {
-//                        popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-//                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-//                    }
+                    if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+                        if(fragment.isSiltTransportForm) {
+                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                        }
+                    }
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -163,6 +205,9 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                     siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
                                             (getAdapterPosition()).getDeployedStrutureId());
                                     activity.startActivity(siltTransportationIntent);
+                                    break;
+                                case R.id.action_machine_release:
+                                    fragment.releaseMachine(getAdapterPosition());
                                     break;
                             }
                             return false;

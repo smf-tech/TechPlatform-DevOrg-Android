@@ -40,6 +40,8 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     private static final String KEY_DEPLOY_TALUKA = "deploy_taluka";
     private static final String KEY_TERMINATE_REASON = "reason";
     public static final String TERMINATE_DEPLOY = "terminateDeployMachine";
+    public static final String RELEASE_MACHINE_STATUS = "releaseMachine";
+
 
     public StructureMachineListFragmentPresenter(StructureMachineListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -113,6 +115,17 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(TERMINATE_DEPLOY, paramjson, getTerminateDeployUrl);
+    }
+
+    public void updateMachineStatus(String machineId, String machineCode, int statusCode, String type) {
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        final String releaseMachineStatusUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.UPDATE_STRUCTURE_MACHINE_STATUS, machineId, machineCode, statusCode, type);
+        Log.d(TAG, "releaseMachineUrl: url " + releaseMachineStatusUrl);
+        fragmentWeakReference.get().showProgressBar();
+        requestCall.getDataApiCall(RELEASE_MACHINE_STATUS, releaseMachineStatusUrl);
     }
 
     public JsonObject getSSDataJson(String stateId, String districtId, String talukaId){
@@ -208,7 +221,8 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                         fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                 Constants.JurisdictionLevelName.TALUKA_LEVEL);
                     }
-                } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)){
+                } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
+                        ||requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)){
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                         fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());

@@ -89,6 +89,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         btnSubmit = machineShiftingFormFragmentView.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
         gpsTracker = new GPSTracker(getActivity());
+        showDialog();
     }
 
     @Override
@@ -229,6 +230,11 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
                 getActivity().startActivity(intent);
             }
         }
+    }
+
+    private void showDialog() {
+        Util.showDialog(getContext(), "Sujalam Suphalam", getResources().getString(R.string.machine_stop_alert_message),
+                "OK", "");
     }
 
     @Override

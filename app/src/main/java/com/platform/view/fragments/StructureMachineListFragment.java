@@ -74,7 +74,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private String selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
     private int mouAction = 0;
     private boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineDepoly;
+    public boolean isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm,
+            isMachineShiftForm, isMachineRelease;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,6 +152,21 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 continue;
             } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
                 isMachineDepoly = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
+                isMachineVisitValidationForm = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {
+                isSiltTransportForm = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DIESEL_RECORD_FORM)) {
+                isDieselRecordForm = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SHIFT_FORM)) {
+                isMachineShiftForm = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
+                isMachineRelease = true;
             }
         }
     }
@@ -163,6 +179,43 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                             .findViewById(android.R.id.content), "You can not take any action on this machine.",
                     Snackbar.LENGTH_LONG);
         }
+    }
+
+    public void releaseMachine(int position) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText("Sujalam Suphalam");
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText(R.string.release_machine_alert_message);
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText("Release Machine");
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            structureMachineListFragmentPresenter.updateMachineStatus(ssMachineListData.get(position).getId(),
+                    ssMachineListData.get(position).getMachineCode(),
+                    Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+            dialog.dismiss();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText("Cancel");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     public void showMouActionPopup(int position) {

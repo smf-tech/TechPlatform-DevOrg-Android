@@ -45,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.MachineWorkingHoursAPIResponse;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineVisitValidationFragmentPresenter;
 import com.platform.utility.Constants;
@@ -373,14 +374,23 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         return byteArrayOutputStream.toByteArray();
     }
 
-    public void setWorkingHoursData(MachineWorkingHoursRecord machineWorkingHoursRecord) {
+    public void setWorkingHoursData(MachineWorkingHoursAPIResponse machineWorkingHoursAPIResponse) {
         //set data received in api
-        etWorkingHours.setText(machineWorkingHoursRecord.getWorkingHours());
-        if(machineWorkingHoursRecord.isActionTaken()) {
+        if(machineWorkingHoursAPIResponse.getStatus() == 200) {
+            MachineWorkingHoursRecord machineWorkingHoursRecord = machineWorkingHoursAPIResponse.getData();
+            etWorkingHours.setText(machineWorkingHoursRecord.getWorkingHours());
+            if(machineWorkingHoursRecord.isActionTaken()) {
+                btnMatch.setClickable(false);
+                btnMismatch.setClickable(false);
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "You have already validated working hours for this date.",
+                        Snackbar.LENGTH_LONG);
+            }
+        } else if(machineWorkingHoursAPIResponse.getStatus() == 300) {
             btnMatch.setClickable(false);
             btnMismatch.setClickable(false);
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "You have already validated working hors for this date.",
+                            .findViewById(android.R.id.content), machineWorkingHoursAPIResponse.getMessage(),
                     Snackbar.LENGTH_LONG);
         }
     }
