@@ -141,4 +141,9 @@ public class Urls {
         public static final String STRUCTURE_MASTER = "api/masterDataList";
         public static final String CREATE_STRUCTURE = "api/createStructure";
     }
+
+    public class OperatorApi {
+        public static final String MACHINE_WORKLOG = "api/machineWorkLog";
+        public static final String MACHINE_DATA = "api/getMachineData";
+    }
 }

@@ -6,20 +6,38 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SyncResult;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
+import com.platform.models.Operator.OperatorRequestResponseModel;
 import com.platform.models.common.Microservice;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
 import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
+import com.platform.utility.VolleyMultipartRequest;
+import com.platform.view.activities.OperatorMeterReadingActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,14 +45,18 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedForms;
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
@@ -43,7 +65,8 @@ import static com.platform.utility.Util.getLoginObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
-
+    private String upload_URL = "http://13.235.124.3/api/machineWorkLog";
+    private RequestQueue rQueue;
     private static final String TAG = SyncAdapter.class.getSimpleName();
 
     SyncAdapter(Context context, boolean autoInitialize) {
@@ -64,6 +87,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.i(TAG, "onPerformSync: \n");
         syncSavedForms();
+        uploadImage("");
+
     }
 
     private void syncSavedForms() {
@@ -244,5 +269,88 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+    }
+
+// operator record sync
+//api call to upload record -
+private void uploadImage(String receivedImage) {
+    List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+    if (list.size()>0){
+    OperatorRequestResponseModel operatorRequestResponseModel = list.get(0);
+    String imageToSend = operatorRequestResponseModel.getImage();
+    VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+            new Response.Listener<NetworkResponse>() {
+                @Override
+                public void onResponse(NetworkResponse response) {
+                    rQueue.getCache().clear();
+                    try {
+                        String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                        Toast.makeText(getContext(), jsonString, Toast.LENGTH_LONG).show();
+                        Log.d("response Received -", jsonString);
+
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().deleteSinglSynccedOperatorRecord(list.get(0).get_id());
+                        if (list.size() > 0) {
+                            uploadImage("");
+                        } else {
+                            Toast.makeText(getContext(), "Sync Complete", Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
+
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String, String> params = new HashMap<>();
+            params.put("formData", new Gson().toJson(operatorRequestResponseModel));
+            params.put("imageArraySize", String.valueOf("1"));//add string parameters
+            return params;
+        }
+
+        @Override
+        protected Map<String, DataPart> getByteData() {
+            Map<String, DataPart> params = new HashMap<>();
+            Drawable drawable = null;
+            //   Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+            //for (int i = 0;i<imageHashmap.size(); i++)
+            {
+                // String key=(String)myVeryOwnIterator.next();
+                if (TextUtils.isEmpty(imageToSend)) {
+                    params.put("image0", new DataPart("image0", new byte[0],
+                            "image/jpeg"));
+                } else {
+                    drawable = new BitmapDrawable(getContext().getResources(), imageToSend);
+
+                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+            }
+            return params;
+        }
+    };
+
+    volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+            3000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    rQueue = Volley.newRequestQueue(getContext());
+    rQueue.add(volleyMultipartRequest);
+}
+}
+
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,9 +48,13 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.Operator.OperatorMachineData;
 import com.platform.models.Operator.OperatorRequestResponseModel;
+import com.platform.presenter.OperatorMeterReadingActivityPresenter;
 import com.platform.services.ForegroundService;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
@@ -67,7 +72,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener {
-
+    private GPSTracker gpsTracker;
+    private Location location;
+    private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
     private static final String TAG = OperatorMeterReadingActivity.class.getCanonicalName();
     private static final int REQUEST_CAPTURE_IMAGE = 100;
     Uri photoURI;
@@ -77,7 +84,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     boolean isStartImage = true;
     ImageView img_start_meter, img_end_meter;
     //------
-    String machine_id = "231131321";
+    String machine_id = "";
     String status = "";
     String workTime = "";
     String lat = "18.516726";
@@ -102,10 +109,10 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private RequestQueue rQueue;
     private String upload_URL = "http://13.235.124.3/api/machineWorkLog";
     //---
-    private int state_start = 101;
-    private int state_stop = 100;
-    private int state_pause = 102;
-    private int state_halt = 104;
+    private int state_start = 112;
+    private int state_stop = 110;
+    private int state_pause = 113;
+    private int state_halt = 111;
     private int currentState = 0;
     private RequestOptions requestOptions;
 
@@ -132,7 +139,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             saveOperatorStateData(machine_id, workTime, "state_pause", lat, lon, meter_reading, hours, totalHours, image);
             image = "";
         } else if (currentState == state_stop) {
-            //editor.putInt("State", state_start);
+            editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
             btnStartService.setVisibility(View.VISIBLE);
             et_smeter_read.setText("");
@@ -175,14 +182,14 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         setContentView(R.layout.activity_operator_meter_reading);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
-
-
+        gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
+        GetLocationofOperator();
         if (Permissions.isCameraPermissionGranted(this, this)) {
 
         }
-
-
-        machine_id = "bjs3232334";
+        operatorMeterReadingActivityPresenter = new OperatorMeterReadingActivityPresenter(this);
+        operatorMeterReadingActivityPresenter.getAllFiltersRequests();
+        //machine_id = "bjs3232334";
 
         currentState = state_start;
         preferences = Platform.getInstance().getSharedPreferences(
@@ -214,7 +221,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             @Override
             public void onClick(View view) {
 
-
+                GetLocationofOperator();
                 if (preferences.getInt("State", 0) == state_start) {
                     editor.putInt("State", state_pause);
                     editor.apply();
@@ -233,14 +240,25 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         buttonHaltService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GetLocationofOperator();
                 if (currentState != state_stop) {
-                    editor.putInt("State", state_pause);
-                    editor.apply();
-                    updateStatusAndProceed(state_pause);
+                    Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
+                }else {
                     updateStatusAndProceed(state_halt);
                     clearReadingImages();
-                }else {
-                    Util.showToast("Please enter Start meter reading", OperatorMeterReadingActivity.this);
+                    /*if (currentState==state_start){
+                        editor.putInt("State", state_pause);
+                        editor.apply();
+                        updateStatusAndProceed(state_pause);
+                        updateStatusAndProceed(state_halt);
+                        clearReadingImages();
+                    }else if (currentState==state_pause){
+                        *//*editor.putInt("State", state_pause);
+                        editor.apply();
+                        updateStatusAndProceed(state_pause);*//*
+                        updateStatusAndProceed(state_halt);
+                        clearReadingImages();
+                    }*/
                 }
 
             }
@@ -249,6 +267,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GetLocationofOperator();
            /*     if (Permissions.isCameraPermissionGranted(OperatorMeterReadingActivity.this, this)) {
 
                     if (TextUtils.isEmpty(et_smeter_read.getText())) {
@@ -276,6 +295,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         btnStopService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GetLocationofOperator();
                 /*if (TextUtils.isEmpty(et_emeter_read.getText())) {
                     Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
                     et_emeter_read.requestFocus();
@@ -410,7 +430,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
     public void saveOperatorStateData(String machine_id, String workTime, String status, String lat, String lon, String meter_reading, int hours, int totalHours, String image) {
         operatorRequestResponseModel = new OperatorRequestResponseModel();
-        operatorRequestResponseModel.setMachine_id("1574899330");
+        operatorRequestResponseModel.setMachine_id(machine_id);
         operatorRequestResponseModel.setWorkTime(workTime);
         operatorRequestResponseModel.setStatus(status);
         operatorRequestResponseModel.setLat(lat);
@@ -420,9 +440,14 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         operatorRequestResponseModel.setTotalHours(totalHours);
         operatorRequestResponseModel.setImage(image);
 
-        uploadImage(image);
 
         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(operatorRequestResponseModel);
+        //uploadImage(image);
+        if (Util.isConnected(OperatorMeterReadingActivity.this)) {
+            SyncAdapterUtils.manualRefresh();
+        }
+
+
 
         //List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
         /*for (int i = 0; i < list.size(); i++) {
@@ -773,4 +798,26 @@ public String showReadingDialog(final Activity context, int pos){
         }
     }
 
+
+
+
+    private void GetLocationofOperator(){
+        if (gpsTracker.isGPSEnabled(this, this)) {
+            location = gpsTracker.getLocation();
+            if (location != null) {
+                lat = String.valueOf(location.getLatitude());
+                lon = String.valueOf(location.getLongitude());
+                Util.logger("Lat -Long--", lat+"--"+lon);
+
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        } else {
+            Util.showToast("Unable to get location.", this);
+        }
+    }
+
+    public void showPendingApprovalRequests(OperatorMachineData operatorMachineData) {
+        machine_id = operatorMachineData.getMachine_code();
+    }
 }

@@ -183,6 +183,7 @@ public class ProfileRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
+
                     Log.d(TAG, "submitUserProfile - Resp: " + res);
                     listener.onProfileUpdated(res);
                 }
