@@ -29,6 +29,8 @@ import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.util.ArrayList;
 
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+
 public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.ViewHolder> {
     private ArrayList<MachineData> ssDataList;
     Activity activity;
@@ -57,10 +59,11 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
         holder.tvProvider.setText(machineData.getProviderName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
         holder.tvContact.setText(machineData.getProviderContactNumber());
+        holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact;
+        TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvLastUpdatedTime;
         ImageView btnPopupMenu;
         RelativeLayout rlMachine;
         PopupMenu popup;
@@ -72,6 +75,7 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override

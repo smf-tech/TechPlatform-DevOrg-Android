@@ -14,6 +14,7 @@ public class Constants {
     public static final int IS_ROLE_CHANGE = 3;
     public static final int READ_EXTERNAL_STORAGE=4;
     public static final int CALL_PHONE=5;
+    public static final int READ_PHONE_STORAGE = 1;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
@@ -372,6 +373,11 @@ public class Constants {
         public static final Integer ACCESS_CODE_DIESEL_RECORD_FORM = 117;
         public static final Integer ACCESS_CODE_MACHINE_SHIFT_FORM = 118;
         public static final Integer ACCESS_CODE_MACHINE_RELEASE = 119;
+
+        public static final Integer ACCESS_CODE_STATE = 120;
+        public static final Integer ACCESS_CODE_DISTRICT = 121;
+        public static final Integer ACCESS_CODE_TALUKA = 122;
+        public static final Integer ACCESS_CODE_VILLAGE = 123;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";

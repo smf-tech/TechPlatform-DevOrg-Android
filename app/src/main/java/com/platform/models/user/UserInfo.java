@@ -85,6 +85,9 @@ public class UserInfo implements Parcelable {
     @SerializedName("approvers")
     @Expose
     private ArrayList<Approver> approvers = null;
+    @SerializedName("device_id")
+    @Expose
+    private String device_id;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
@@ -277,9 +280,25 @@ public class UserInfo implements Parcelable {
         this.approveStatus = approveStatus;
     }
 
+    public String getDevice_id() {
+        return device_id;
+    }
+
+    public void setDevice_id(String device_id) {
+        this.device_id = device_id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
     }
 
     @Override
@@ -295,13 +314,6 @@ public class UserInfo implements Parcelable {
         parcel.writeString(userGender);
         parcel.writeString(approveStatus);
         parcel.writeString(profilePic);
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
-    }
-
-    public String getProfilePic() {
-        return profilePic;
+        parcel.writeString(device_id);
     }
 }

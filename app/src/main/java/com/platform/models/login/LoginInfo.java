@@ -19,6 +19,7 @@ public class LoginInfo implements Parcelable {
 
     private String mobileNumber;
     private String otp;
+    private String device_id;
 
     public LoginInfo() {
 
@@ -43,6 +44,14 @@ public class LoginInfo implements Parcelable {
 
     public void setOneTimePassword(String otp) {
         this.otp = otp;
+    }
+
+    public String getDeviceId() {
+        return device_id;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.device_id = deviceId;
     }
 
     @Override

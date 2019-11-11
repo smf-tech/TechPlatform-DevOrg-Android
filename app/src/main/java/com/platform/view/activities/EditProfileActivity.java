@@ -1,5 +1,6 @@
 package com.platform.view.activities;
 
+import android.Manifest;
 import android.app.Activity;
 
 import android.app.DatePickerDialog;
@@ -8,9 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -30,11 +33,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.ProfileTaskListener;
@@ -498,10 +503,42 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);
+            //if (addDeviceId()) {
 
-            profilePresenter.submitProfile(userInfo);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_PHONE_STATE},
+                                Constants.READ_PHONE_STORAGE);
+                    }
+                }
+                if(getDeviceId().length()>0) {
+                    userInfo.setDevice_id(getDeviceId());
+                    profilePresenter.submitProfile(userInfo);
+                } else {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
+                            Snackbar.LENGTH_LONG);
+                }
         }
     }
+
+    private String getDeviceId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        Constants.READ_PHONE_STORAGE);
+            } else {
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.
+                        TELEPHONY_SERVICE);
+                String deviceId = telephonyManager.getDeviceId();
+                return deviceId;
+            }
+        }
+        return "";
+    }
+
 
     private boolean isAllInputsValid() {
         String msg = "";
@@ -682,6 +719,17 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (requestCode == Constants.CAMERA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showPictureDialog();
+            }
+            if(requestCode == Constants.READ_PHONE_STORAGE) {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getDeviceId();
+                } else {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
+                            Snackbar.LENGTH_LONG);
+                }
+                return;
             }
         }
     }

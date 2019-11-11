@@ -52,6 +52,9 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureId")
     @Expose
     private String deployedStrutureId;
+    @SerializedName("updatedDate")
+    @Expose
+    private String lastUpdatedTime;
 
     public String isMeterWorking() {
         return isMeterWorking;
@@ -83,6 +86,14 @@ public class MachineData  implements Serializable {
 
     public void setExcavationCapacity(String excavationCapacity) {
         this.excavationCapacity = excavationCapacity;
+    }
+
+    public String getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+
+    public void setLastUpdatedTime(String lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
     }
 
     @SerializedName("isMeterWorking")
