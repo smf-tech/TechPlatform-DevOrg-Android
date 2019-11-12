@@ -379,6 +379,12 @@ public class Constants {
         public static final Integer ACCESS_CODE_TALUKA = 122;
         public static final Integer ACCESS_CODE_VILLAGE = 123;
 
+        //public static final Integer ROLE_CODE_SS_HO = 110;
+        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
+        public static final Integer ROLE_CODE_SS_DM = 110;
+        public static final Integer ROLE_CODE_SS_TC = 111;
+        public static final Integer ROLE_CODE_SS_OPERATOR = 113;
+
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";
         public static final String FIELD_LEVEL = "Field Associate";

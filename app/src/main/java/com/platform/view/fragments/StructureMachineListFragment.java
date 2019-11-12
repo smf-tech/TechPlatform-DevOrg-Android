@@ -69,9 +69,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private RelativeLayout progressBarLayout;
     private StructureMachineListFragmentPresenter structureMachineListFragmentPresenter;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
+    private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
-    private String selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
+    private String selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka,
+            selectedDeployTalukaId;
     private int mouAction = 0;
     private boolean isMachineTerminate, isMachineAvailable;
     public boolean isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm,
@@ -103,6 +105,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
+        tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
             tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
@@ -111,7 +114,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
             tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
         }
-        tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
             tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
@@ -158,15 +160,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         }
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
-        if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
-            tvTalukaFilter.setOnClickListener(this);
-            if(tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length()>0) {
-                UserInfo userInfo = Util.getUserObjectFromPref();
-                structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                        "5c4ab05cd503a372d0391467",
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
-            }
-        }
+//        if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
+//            tvTalukaFilter.setOnClickListener(this);
+//            if(tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length()>0) {
+//                UserInfo userInfo = Util.getUserObjectFromPref();
+//                structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+//                        "5c4ab05cd503a372d0391467",
+//                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+//            }
+//        }
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
         ssDataListAdapter = new SSDataListAdapter(getActivity(), this, filteredMachineListData);
@@ -181,9 +183,19 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
                         "5ced0c27d42f28124c0150ba");
             } else {
-                structureMachineListFragmentPresenter.getMachinesList("5c66989ec7982d31cc6b86c3",
+                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
                         "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
             }
+
+//            if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+//                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
+//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_DM)){
+//                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
+//                        "5ced0c27d42f28124c0150ba");
+//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_TC)) {
+//                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
+//                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+//            }
         }
         if(isStateFilter) {
             tvStateFilter.setOnClickListener(this);
@@ -412,7 +424,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().
+                            compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         Location location = jurisdictionLevels.get(i);
@@ -425,8 +438,39 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         }
                     }
                 }
-                break;
+                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
+                        this, "Select Taluka", machineTalukaList,
+                        false);
+                cddTaluka.show();
+                cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
 
+                break;
+            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    machineDistrictList.clear();
+                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
+                            compareTo(j2.getDistrict().getName()));
+
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        Location location = jurisdictionLevels.get(i);
+                        if (tvStateFilter.getText().toString().equalsIgnoreCase(location.getState().getName())) {
+                            CustomSpinnerObject districtList = new CustomSpinnerObject();
+                            districtList.set_id(location.getDistrictId());
+                            districtList.setName(location.getDistrict().getName());
+                            districtList.setSelected(false);
+                            machineDistrictList.add(districtList);
+                        }
+                    }
+                }
+                CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select District", machineDistrictList,
+                        false);
+                cddDistrict.show();
+                cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+
+                break;
             default:
                 break;
         }
@@ -441,24 +485,58 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
                         "5ced0c27d42f28124c0150ba");
             } else {
-                structureMachineListFragmentPresenter.getMachinesList("5c66989ec7982d31cc6b86c3",
+                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
                         "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
             }
+
+//            if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+//                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
+//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_DM)){
+//                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
+//                        "5ced0c27d42f28124c0150ba");
+//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_TC)) {
+//                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
+//                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+//            }
         }
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.tv_taluka_filter){
-            if(tvDistrictFilter.getText()!= null && tvDistrictFilter.getText().length()>0) {
-                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(), this, "Select Taluka", machineTalukaList,
-                        false);
-                cddTaluka.show();
-                cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+//            if(tvDistrictFilter.getText()!= null && tvDistrictFilter.getText().length()>0) {
+//                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(), this, "Select Taluka", machineTalukaList,
+//                        false);
+//                cddTaluka.show();
+//                cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//            } else {
+//                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+//                                .findViewById(android.R.id.content), "Your District is not available in your profile." +
+//                                "Please update your profile.",
+//                        Snackbar.LENGTH_LONG);
+//            }
+            if(tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length()>0) {
+                UserInfo userInfo = Util.getUserObjectFromPref();
+                structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                        "5c4ab05cd503a372d0391467",
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
             } else {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                 .findViewById(android.R.id.content), "Your District is not available in your profile." +
+                                "Please update your profile.",
+                        Snackbar.LENGTH_LONG);
+            }
+
+        } else if(view.getId() == R.id.tv_district_filter) {
+            if(tvStateFilter.getText() != null && tvStateFilter.getText().toString().length()>0) {
+                UserInfo userInfo = Util.getUserObjectFromPref();
+                structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                        "5c4ab05cd503a372d0391467",
+                        Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Your State is not available in your profile." +
                                 "Please update your profile.",
                         Snackbar.LENGTH_LONG);
             }
@@ -478,7 +556,25 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             tvTalukaFilter.setText(selectedTaluka);
             filteredMachineListData.clear();
             for (MachineData machineData : ssMachineListData) {
-                if (machineData.getTaluka().equalsIgnoreCase(selectedTaluka)) {
+                if (machineData.getTalukaId().equalsIgnoreCase(selectedTalukaId)) {
+                    filteredMachineListData.add(machineData);
+                }
+            }
+            rvDataList.setAdapter(ssDataListAdapter);
+            ssDataListAdapter.notifyDataSetChanged();
+
+        } else if(type.equals("Select District")){
+            for(CustomSpinnerObject mDistrict: machineDistrictList){
+                if(mDistrict.isSelected()){
+                    selectedDistrict = mDistrict.getName();
+                    selectedDistrictId = mDistrict.get_id();
+                    break;
+                }
+            }
+            tvDistrictFilter.setText(selectedDistrict);
+            filteredMachineListData.clear();
+            for (MachineData machineData : ssMachineListData) {
+                if (machineData.getDistrictId().equalsIgnoreCase(selectedDistrictId)) {
                     filteredMachineListData.add(machineData);
                 }
             }
